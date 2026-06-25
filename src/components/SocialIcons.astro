@@ -139,4 +139,12 @@ const GH_REPO = 'freemkv/freemkv';
     width: 1.25em;
     height: 1.25em;
   }
+  /* Mobile / narrow viewports: drop the text labels to save space —
+     keep just the star count (17★) and the Discord logo. */
+  @media (max-width: 50em) {
+    .freemkv-gh-stars__label,
+    .freemkv-discord__label {
+      display: none;
+    }
+  }
 </style>
