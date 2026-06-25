@@ -119,9 +119,10 @@ Decryption of Blu-ray / 4K UHD (AACS) and DVD (CSS) discs.
 | E7023 | Error | This disc is copy-protected and no key could be recovered for this title, so it can't be decrypted (the output would be unreadable). | **Cause:** This copy-protected disc yielded no usable title key, so the output would be unreadable. **Next steps:** 1. Clean the disc and retry. 2. Confirm the disc is a supported, readable copy. |
 | E7024 | Error | No host certificate is available from any key source for the drive's secure handshake. | **Cause:** No key source supplied a host certificate for the drive's secure handshake. **Next steps:** 1. Provide a key source that includes a host certificate. 2. See the Decryption Keys page for key-source setup. |
 
-## Key database (8xxx)
+## Key sources (8xxx)
 
-Downloading, writing, loading, or parsing a local `keydb.cfg`.
+Reaching a key source — downloading, writing, loading, or parsing a local key
+database (`keydb.cfg`) or an online key service.
 
 | Code | Level | Message | Cause & next steps |
 |---|---|---|---|

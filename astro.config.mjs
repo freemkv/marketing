@@ -37,9 +37,10 @@ export default defineConfig({
             'AGPL-3.0 Rust toolchain that recovers 100% of readable data from optical discs (DVD / Blu-ray / 4K UHD) and muxes to MKV, automatically, with bad-sector recovery (multi-pass sweep + targeted patch). DVDs (CSS) work out of the box; Blu-ray (AACS 1.0) and 4K UHD (AACS 2.0/2.1) require user-supplied AACS keys.',
         }),
       ],
-      social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/freemkv' },
-      ],
+      // Custom SocialIcons override renders the Discord logo + live star count
+      // + a GitHub octocat. The default social icons are disabled so the
+      // header isn't doubled up with a redundant far-left GitHub octocat.
+      social: [],
       sidebar: [
         {
           label: 'Start here',
@@ -64,6 +65,11 @@ export default defineConfig({
             { label: 'MKV Output', slug: 'mkv-output' },
             { label: 'Decryption Keys', slug: 'decryption-keys' },
             { label: 'How recovery works', slug: 'how-recovery-works' },
+          ],
+        },
+        {
+          label: 'Troubleshooting',
+          items: [
             { label: 'Troubleshooting', slug: 'troubleshooting' },
             { label: 'Error Codes', slug: 'error-codes' },
           ],
