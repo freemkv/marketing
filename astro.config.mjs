@@ -38,6 +38,7 @@ export default defineConfig({
         }),
       ],
       social: [
+        { icon: 'discord', label: 'Discord', href: 'https://discord.com/channels/1519566883282489545/' },
         { icon: 'github', label: 'GitHub', href: 'https://github.com/freemkv' },
       ],
       sidebar: [
