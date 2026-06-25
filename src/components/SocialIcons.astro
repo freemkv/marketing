@@ -15,6 +15,8 @@ const GH_REPO = 'freemkv/freemkv';
 
 <Default><slot /></Default>
 
+<a class="freemkv-download sl-flex" href="/download/">Download</a>
+
 <a
   class="freemkv-discord sl-flex"
   href="https://discord.gg/kDh5esedcg"
@@ -138,5 +140,20 @@ const GH_REPO = 'freemkv/freemkv';
   .freemkv-discord__logo {
     width: 1.25em;
     height: 1.25em;
+  }
+  /* Download: a plain text link sitting with the social cluster (before the
+     Discord icon), not a button by the brand. */
+  a.freemkv-download {
+    align-items: center;
+    color: var(--sl-color-text-accent);
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
+    padding: 0.5em;
+    margin: -0.5em;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+  a.freemkv-download:hover {
+    color: var(--sl-color-white);
   }
 </style>
