@@ -3,10 +3,6 @@ title: Troubleshooting
 description: Fixes for the most common freemkv and autorip problems. No drives detected, missing decryption keys, bad sectors, interrupted rips, and capturing a debug log.
 ---
 
-:::tip[Need help or stuck?]
-Join the [freemkv Discord](https://discord.gg/kDh5esedcg) for community help and support — the fastest way to get a hand with rips, drives, and decryption.
-:::
-
 Fixes for the problems reported most often with freemkv and autorip. Find your symptom below; if none match, capture a debug log (next) and open an issue.
 
 Hit a specific `Error: E<code> ...` line? Look it up on the [Error Codes](/error-codes/) page — every code is listed with its message, cause, and next steps.

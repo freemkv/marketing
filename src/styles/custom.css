@@ -30,6 +30,26 @@
   box-shadow: 0 0 0 0.15em var(--sl-color-accent-high);
 }
 
+/* Discord help callout (Overview page). A soft-pink, subtle-but-noticeable
+   branded box rendered as raw HTML so it carries no Starlight aside icon/emoji.
+   rgba background + border so it reads correctly in both light and dark themes. */
+.discord-callout {
+  background: rgba(236, 72, 153, 0.1);
+  border: 1px solid rgba(236, 72, 153, 0.45);
+  border-radius: 0.6rem;
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 1.5rem;
+  font-size: var(--sl-text-sm);
+}
+.discord-callout a {
+  color: #db2777;
+  font-weight: 600;
+  text-decoration: none;
+}
+.discord-callout a:hover {
+  text-decoration: underline;
+}
+
 /* Tables default to a larger font than body text in this theme — pin them to
    the body size so reference tables (e.g. the CLI output/flag matrix) read
    consistently and fit the content column instead of looking oversized. */
