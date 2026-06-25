@@ -3,11 +3,6 @@ title: License
 description: freemkv and all its components are licensed under AGPL-3.0.
 ---
 
-freemkv is free and open source software. This page covers the license and where
-to find the source.
-
-## License
-
 The entire freemkv toolchain (the freemkv CLI, libfreemkv, autorip, bdemu, and
 freemkv-keysources) is licensed under the
 [GNU Affero General Public License, version 3.0 (AGPL-3.0)](https://github.com/freemkv/freemkv/blob/main/LICENSE).
