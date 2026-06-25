@@ -134,9 +134,10 @@ freemkv verify
 
 ### update-keys — refresh the AACS key database
 
-Downloads, verifies, and installs an AACS keydb (`.txt` / `.zip` / `.gz`). `--url` is required.
+Downloads, verifies, and installs an AACS keydb (`.txt` / `.zip` / `.gz`). `--url` is required. Both `http://` and `https://` URLs are supported.
 
 ```bash
+freemkv update-keys --url https://example.org/keydb_eng.zip
 freemkv update-keys --url http://example.org/keydb_eng.zip
 ```
 
