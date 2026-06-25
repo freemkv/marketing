@@ -65,6 +65,7 @@ export default defineConfig({
             { label: 'Decryption Keys', slug: 'decryption-keys' },
             { label: 'How recovery works', slug: 'how-recovery-works' },
             { label: 'Troubleshooting', slug: 'troubleshooting' },
+            { label: 'Error Codes', slug: 'error-codes' },
           ],
         },
         {
