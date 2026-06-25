@@ -3,6 +3,8 @@ title: Changelog
 description: Notable changes across the freemkv toolchain (CLI, library, and autorip service), newest first.
 ---
 
+Subscribe via [RSS](/changelog/rss.xml).
+
 All notable changes across the freemkv toolchain (the `freemkv` CLI,
 the `libfreemkv` core library, and the `autorip` service) are recorded
 here, newest first. The format follows
