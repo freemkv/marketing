@@ -10,6 +10,26 @@
   --sl-color-accent-high: #134e4a;
 }
 
+/* Error Codes page: each code (e.g. E1002) is a self-anchoring link so it can
+   be deep-linked as /error-codes/#E1002. Keep it looking like the plain table
+   text it replaced (inherit color, no underline); the scroll-margin clears the
+   sticky header when jumping to an anchor, and :target briefly highlights the
+   code you landed on. */
+.ecode {
+  color: inherit;
+  text-decoration: none;
+  scroll-margin-top: 6rem;
+}
+.ecode:hover {
+  text-decoration: underline;
+}
+.ecode:target {
+  background: var(--sl-color-accent-high);
+  color: var(--sl-color-black);
+  border-radius: 0.2em;
+  box-shadow: 0 0 0 0.15em var(--sl-color-accent-high);
+}
+
 /* Tables default to a larger font than body text in this theme — pin them to
    the body size so reference tables (e.g. the CLI output/flag matrix) read
    consistently and fit the content column instead of looking oversized. */
