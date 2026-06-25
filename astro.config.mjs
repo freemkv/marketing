@@ -27,6 +27,7 @@ export default defineConfig({
       // (fetched client-side, cached in localStorage) next to the GitHub link.
       components: {
         SocialIcons: './src/components/SocialIcons.astro',
+        SiteTitle: './src/components/SiteTitle.astro',
       },
       // Generates /llms.txt (curated index) and /llms-full.txt (entire docs as one
       // Markdown file) so an agent can ingest the whole site in a single fetch.
