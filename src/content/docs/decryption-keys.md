@@ -29,7 +29,7 @@ mechanisms only; obtaining keys is up to you.
 ## Online key service
 
 A third-party web service looks up keys for an inserted disc on demand, so you don't
-maintain a local file.
+maintain a local file. Reach out on our support Discord for more information.
 
 In **autorip**, enable the online key service and set its URL under **Settings**.
 See [autorip Service](/autorip/#keys).
