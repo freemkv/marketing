@@ -26,7 +26,7 @@ Every source and destination is a `scheme://` URL.
 | `mkv://path.mkv` | ✓ | ✓ | Matroska movie |
 | `m2ts://path.m2ts` | ✓ | ✓ | Blu-ray transport stream |
 | `iso://path.iso` | ✓ | ✓ | Disc image |
-| `fvi://path.fvi` | — | ✓ | freemkv video index — a JSON-Lines, one-record-per-picture index file |
+| `fvi://path.fvi` | — | ✓ | freemkv video index — a JSON-Lines, one-record-per-picture index file ([spec](/fvi-format/)) |
 | `demux://path/` | — | ✓ | **(beta)** Per-track elementary streams — a directory, one file per track |
 | `dir://path/` | — | ✓ | Decrypted file tree (VIDEO\_TS / BDMV) |
 | `network://host:port` | ✓ | ✓ | TCP (listen or connect) |
@@ -47,6 +47,19 @@ Rips the **main title** by default. Pick others with `-t N`, or several at once:
 freemkv disc:// mkv://Movie.mkv          # main title → one file
 freemkv disc:// mkv://out/ -t 1 -t 3     # titles 1 and 3 → out/ (a directory)
 ```
+
+### mkv://
+
+Writes one decrypted movie. A **single title** goes to the file you name; **multiple titles** go to a **directory**, one file each, named `<disc>_t<N>.mkv`:
+
+```bash
+freemkv disc:// mkv://Movie.mkv          # single title → Movie.mkv
+freemkv disc:// mkv://out/ -t 1 -t 3     # → out/Greenland_t1.mkv, out/Greenland_t3.mkv
+```
+
+### m2ts://
+
+Same as `mkv://`, but writes a Blu-ray transport stream — one file for a single title, or `<disc>_t<N>.m2ts` per title into a directory.
 
 ### iso://
 
@@ -70,19 +83,6 @@ freemkv disc:// iso://Movie.iso          # rip the disc to a decrypted image
 
 A plain `disc:// iso://` auto-resumes if interrupted.
 
-### mkv://
-
-Writes one decrypted movie. A **single title** goes to the file you name; **multiple titles** go to a **directory**, one file each, named `<disc>_t<N>.mkv`:
-
-```bash
-freemkv disc:// mkv://Movie.mkv          # single title → Movie.mkv
-freemkv disc:// mkv://out/ -t 1 -t 3     # → out/Greenland_t1.mkv, out/Greenland_t3.mkv
-```
-
-### m2ts://
-
-Same as `mkv://`, but writes a Blu-ray transport stream — one file for a single title, or `<disc>_t<N>.m2ts` per title into a directory.
-
 ### fvi://
 
 Writes a **freemkv video index** — a JSON-Lines file (`.fvi`) with one record per coded picture, capturing the frame's type, position, and timing. It's an index *over* the video, not the video itself, so the output is a single `.fvi` file rather than a movie:
@@ -90,6 +90,8 @@ Writes a **freemkv video index** — a JSON-Lines file (`.fvi`) with one record 
 ```bash
 freemkv iso://disc.iso fvi://out.fvi
 ```
+
+See the [FVI Format](/fvi-format/) reference for the full specification.
 
 ### demux://
 
@@ -99,18 +101,6 @@ freemkv iso://disc.iso fvi://out.fvi
 freemkv iso://disc.iso demux://out/
 ```
 
-### stdio://
-
-Writes the muxed output to stdout (or reads it from stdin), so you can chain freemkv into a pipe with no intermediate file. The classic use is transcoding on the fly with ffmpeg:
-
-```bash
-freemkv disc:// stdio:// | ffmpeg -i - -c:v libx265 Movie.mkv
-```
-
-### network://host:port
-
-Streams a rip over TCP instead of to a file: one end listens (`network://0.0.0.0:9000`), the other connects (`network://192.0.2.10:9000`). Rip on the machine with the drive and mux or store on another — no shared filesystem needed.
-
 ### dir://
 
 Extracts the decrypted on-disc file tree (`VIDEO_TS/` or `BDMV/`) straight into the folder, reading and decrypting only the disc's allocated files.
@@ -118,6 +108,18 @@ Extracts the decrypted on-disc file tree (`VIDEO_TS/` or `BDMV/`) straight into 
 ```bash
 freemkv disc:// dir://Movie/
 freemkv iso://Disc.iso dir://Movie/
+```
+
+### network://host:port
+
+Streams a rip over TCP instead of to a file: one end listens (`network://0.0.0.0:9000`), the other connects (`network://192.0.2.10:9000`). Rip on the machine with the drive and mux or store on another — no shared filesystem needed.
+
+### stdio://
+
+Writes the muxed output to stdout (or reads it from stdin), so you can chain freemkv into a pipe with no intermediate file. The classic use is transcoding on the fly with ffmpeg:
+
+```bash
+freemkv disc:// stdio:// | ffmpeg -i - -c:v libx265 Movie.mkv
 ```
 
 ### null://

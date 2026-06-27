@@ -86,6 +86,7 @@ export default defineConfig({
           items: [
             { label: 'Components', slug: 'components' },
             { label: 'libfreemkv (library)', slug: 'libfreemkv' },
+            { label: 'FVI Format', slug: 'fvi-format' },
             { label: 'Changelog', slug: 'changelog' },
             { label: 'License', slug: 'license' },
           ],

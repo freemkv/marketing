@@ -17,9 +17,9 @@ change in that cycle.
 
 ## 1.1.0-beta.1 — Unreleased
 
-The first beta on top of 1.0.0. The headline is correctness: DVD rips now
-start where you expect, and lossless audio is muxed faithfully. Plus two new
-output formats and a handful of smaller fixes.
+The first beta on top of 1.0.0, headlined by a major overhaul of DVD
+processing and faithful lossless-audio muxing — plus two new output formats
+and a handful of smaller fixes.
 
 ### Added
 
@@ -38,10 +38,13 @@ output formats and a handful of smaller fixes.
 
 ### Fixed
 
-- **DVD rips now start at the movie, not the menu.** On discs that author a
-  per-title menu (for example a studio "the parental level has been set"
-  prompt), freemkv was prepending that entire menu segment to the front of the
-  feature. Rips now open on the feature's first frame.
+- **Major overhaul of DVD processing.** freemkv's DVD title and VOB
+  sector mapping was reworked from the ground up. The most visible result:
+  rips now begin at the *feature* instead of several minutes of the disc's
+  menu. On discs that author a per-title menu (for example a studio "the
+  parental level has been set" prompt), freemkv had been prepending that
+  entire menu segment to the front of the feature; rips now open on the
+  feature's first frame.
 - **Lossless audio muxed correctly.** TrueHD and DTS-HD Master Audio tracks
   are now muxed faithfully, so lossless soundtracks come through intact.
 - **`update-keys --keydb <path>` is honored.** Passing an explicit keydb path
