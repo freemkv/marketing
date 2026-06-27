@@ -180,6 +180,11 @@ Key sources (for a rip that needs decryption keys):
 | `--key-url URL` | Online key service (`https://…`); the local keydb is tried first if both are given. |
 | `--key-auth TOKEN` | Bearer token for `--key-url`. |
 
+If you supply **both** `--key-url` and `--keydb`, the local keydb is consulted
+first (local-first) and the service is only queried when the keydb has no key
+for the disc. The URL is validated before any request, and freemkv refuses to
+send disc-key material to a loopback, private, or cloud-metadata address.
+
 Title selection (`-t`) and the `iso://`-only `--raw` / `--multipass` flags are covered under [Scheme details](#scheme-details).
 
 Global (any command):

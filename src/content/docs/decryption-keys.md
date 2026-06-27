@@ -46,11 +46,8 @@ freemkv disc:// -t 1 mkv://Movie.mkv --key-url https://keys.example/keys --key-a
 ```
 
 For title selection and source/destination behavior, see the [CLI reference](/cli/#scheme-details).
-
-If you supply **both** `--key-url` and `--keydb`, the local keydb is consulted first
-(local-first) and the service is only queried when the keydb has no key for the disc.
-The URL is validated before any request, and freemkv refuses to send disc-key material to a
-loopback, private, or cloud-metadata address.
+For how `--key-url` and `--keydb` interact (local-first) and the SSRF guard on the
+service URL, see [CLI → Flags](/cli/#flags).
 
 ## Local keydb.cfg
 
