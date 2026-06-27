@@ -181,6 +181,13 @@ freemkv update-keys --url https://example.org/keydb_eng.zip
 freemkv update-keys --url http://example.org/keydb_eng.zip
 ```
 
+By default the refreshed `keydb.cfg` is written next to the `freemkv` executable. The global `--keydb PATH` flag is honored here too — it sets **where the download lands**, so you can install to any location and later rip against the same path:
+
+```bash
+freemkv update-keys --keydb /srv/freemkv/keydb.cfg --url https://example.org/keydb_eng.zip
+freemkv disc:// -t 1 mkv://Movie.mkv --keydb /srv/freemkv/keydb.cfg
+```
+
 ### version / help
 
 ```bash
