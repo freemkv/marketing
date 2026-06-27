@@ -46,9 +46,11 @@ including targeted DTS-HD MA and TrueHD edge-case fixes.
   entire menu segment to the front of the feature; rips now open on the
   feature's first frame.
 - **`--version` now matches the build stamped into MKVs.** The CLI's `--version`
-  string and the muxing/writing-application field written into every MKV come
-  from one source, so a binary and the files it produces can't report different
-  versions.
+  string and the `MuxingApp` / `WritingApp` fields written into every MKV now
+  derive from a single libfreemkv constant — the package version plus the git
+  short hash (e.g. `freemkv 1.1.0-beta.1 (g835cc99)`). The muxer previously kept
+  its own copy of that string, so the two could drift; a binary and the files it
+  produces can no longer report different versions.
 - **DTS-HD Master Audio: a false core-sync inside the lossless extension no
   longer splits an audio frame.** A byte pattern in the extension substream that
   resembled the `0x7FFE8001` core sync word could truncate the lossless
@@ -118,11 +120,12 @@ number.
   the disc — scanning every AC-3 frame and taking the maximum, so a brief 2.0
   logo bed at the feature head can't mask the real 5.1 — and routes each declared
   stream onto the sub-stream that genuinely matches.
-- **"Decryption failed" on large AACS Blu-ray titles fixed.** The unit-alignment
-  gate measured `lba % 3` against absolute disc LBA 0, but AACS aligned units are
-  anchored at each clip's encrypted-region start. A clip whose start is not
-  3-aligned had its readable units wrongly rejected — failing the feature/large
-  titles of some discs while short clips passed. The gate is now clip-anchored.
+- **"Decryption failed" on large AACS Blu-ray titles fixed.** AACS encrypts in
+  aligned units of 3 sectors (6 KiB); the unit-alignment gate measured `lba % 3`
+  against absolute disc LBA 0, but the unit grid is actually anchored at each
+  clip's encrypted-region start. A clip whose start is not 3-sector-aligned had
+  its readable units wrongly rejected — failing the feature/large titles of some
+  discs while short clips passed. The gate is now clip-anchored.
 - **Single-pass disc→MKV recovers marginal/transient sectors before failing.**
   The direct-to-MKV path now gives the drive its full ECC recovery budget on a
   bad sector (matching the multipass rip) instead of reporting a read failure a

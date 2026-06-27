@@ -8,7 +8,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'freemkv',
-      tagline: 'A composable pipeline for optical-disc video — rip, remux, demux, index. Any source to any sink, decrypted and recovered.',
+      tagline: 'Recover 100% of readable data from any optical disc — to MKV, automatically',
       favicon: '/favicon.svg',
       logo: { src: './src/assets/freemkv-icon.svg', alt: 'freemkv' },
       head: [
