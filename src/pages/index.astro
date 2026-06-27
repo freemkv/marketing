@@ -168,22 +168,49 @@ const docs = '/overview/';
             subcommands. Read from a disc, ISO, or M2TS; write to MKV, ISO, M2TS, a network
             stream, or stdout.
           </p>
+          <div class="grid pipeline-grid">
+            <article class="card">
+              <h3>Sources</h3>
+              <p>
+                <code>disc://</code> (the drive) · <code>iso://</code> · <code>mkv://</code> ·
+                <code>m2ts://</code> · <code>network://</code> · <code>stdio://</code>
+              </p>
+            </article>
+            <article class="card">
+              <h3>Sinks</h3>
+              <p>
+                <code>mkv://</code> (Matroska) · <code>m2ts://</code> (transport stream) ·
+                <code>iso://</code> (decrypted image) · <code>fvi://</code> (freemkv video index) ·
+                <code>demux://</code> (elementary streams) · <code>dir://</code> (file tree) ·
+                <code>null://</code> (benchmark)
+              </p>
+            </article>
+            <article class="card">
+              <h3>Built into the pipe</h3>
+              <p>
+                AACS (Blu-ray / 4K&nbsp;UHD) and CSS (DVD) <strong>decryption</strong>, plus
+                multi-pass <strong>bad-sector recovery</strong> — applied on the way through,
+                whatever the source or sink.
+              </p>
+            </article>
+          </div>
           <div class="terminal">
             <div class="terminal-bar" aria-hidden="true">
               <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
               <span class="terminal-title">freemkv</span>
             </div>
-            <pre class="terminal-body"><code><span class="c"># Inspect the disc and its titles</span>
-<span class="p">$</span> freemkv info disc://
+            <pre class="terminal-body"><code><span class="c"># Rip a disc straight to MKV — the main path (decrypt + mux)</span>
+<span class="p">$</span> freemkv disc:// mkv://Movie.mkv
 
-<span class="c"># Rip a disc straight to MKV — main title only (decrypt + mux)</span>
-<span class="p">$</span> freemkv disc:// -t 1 mkv://Movie.mkv
+<span class="c"># Remux an existing ISO to MKV — no disc needed, same shape</span>
+<span class="p">$</span> freemkv iso://Disc.iso mkv://Movie.mkv
 
-<span class="c"># Recover to ISO with multipass bad-sector recovery (re-run to patch)</span>
-<span class="p">$</span> freemkv disc:// iso://Disc.iso --multipass
+<span class="c"># Index a disc image, or extract its elementary streams</span>
+<span class="p">$</span> freemkv iso://Disc.iso fvi://Disc.fvi
+<span class="p">$</span> freemkv iso://Disc.iso demux://tracks/
 
-<span class="c"># Remux an existing ISO to MKV (no disc needed)</span>
-<span class="p">$</span> freemkv iso://Disc.iso mkv://Movie.mkv</code></pre>
+<span class="c"># Pipe decrypted output to another tool over stdout</span>
+<span class="p">$</span> freemkv disc:// stdio:// | ffmpeg -i - …</code></pre>
           </div>
 
           <p class="showcase-sub">Or run the whole thing as a service: insert a disc, get an MKV:</p>
@@ -196,9 +223,10 @@ const docs = '/overview/';
 <span class="p">$</span> ./autorip</code></pre>
           </div>
           <p class="showcase-note">
-            <code>-t 1</code> selects the main title — which is also the <code>disc://</code>
-            default, made explicit. Run <code>freemkv info disc://</code> to list all titles with
-            durations if you want a different one.
+            <code>disc://</code> defaults to the main title; run <code>freemkv info disc://</code>
+            to list every title with durations, or add <code>-t N</code> to pick one. The same
+            <code>--multipass</code> recovery and decryption apply to whichever source and sink
+            you compose.
           </p>
           <p class="showcase-note">
             autorip runs on Linux, macOS, and Windows as a single binary (or a Linux container).
@@ -550,6 +578,8 @@ const docs = '/overview/';
 
       /* ---------- SHOWCASE ---------- */
       .showcase { padding: clamp(3rem, 8vw, 5rem) 0; }
+      .pipeline-grid { margin-bottom: clamp(2rem, 5vw, 2.75rem); }
+      .pipeline-grid .card p { line-height: 1.9; }
       .terminal {
         max-width: 720px;
         margin: 0 auto;
