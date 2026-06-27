@@ -95,7 +95,7 @@ See the [FVI Format](/fvi-format/) reference for the full specification.
 
 ### demux://
 
-**(Beta.)** Extracts each track to its own **elementary-stream** file — video, audio, and subtitle streams split apart rather than muxed together. The destination is a **directory**, with one file written per track:
+Extracts each track to its own **elementary-stream** file — video, audio, and subtitle streams split apart rather than muxed together. The destination is a **directory**, with one file written per track:
 
 ```bash
 freemkv iso://disc.iso demux://out/
