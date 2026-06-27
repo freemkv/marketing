@@ -28,7 +28,7 @@ Once the map is clean (or an accepted-loss threshold is reached), freemkv muxes:
 | Blu-ray | AACS 1.0 | Required |
 | 4K UHD | AACS 2.0 / 2.1 | Required |
 
-DVDs decrypt with no setup. Blu-ray and 4K UHD need decryption keys you provide; see **[Decryption Keys](/decryption-keys/)**.
+DVDs decrypt with no setup. Blu-ray and 4K UHD need decryption keys you provide; see **[Decryption Keys](/decryption-keys/)**. 4K UHD covers both AACS 2.0 and 2.1 discs, and both decrypt the same way — from the keys you supply, not from the disc's variant data.
 
 ## The toolchain
 
@@ -43,8 +43,8 @@ freemkv disc:// -t 1 mkv://Movie.mkv
 # inspect a disc
 freemkv info disc://
 
-# remux an existing ISO to MKV
-freemkv iso://Disc.iso mkv://Movie.mkv
+# remux an existing ISO to MKV — main title only
+freemkv iso://Disc.iso -t 1 mkv://Movie.mkv
 ```
 
 On a `disc://` drive, freemkv rips the **main title** by default (one file). An `iso://`

@@ -91,7 +91,7 @@ start of a new stream section.
 | `generator` | string | SHOULD | Producing tool + version, e.g. `"freemkv/1.0.0-rc.6"`. |
 | `stream` | object | MUST | The indexed elementary stream (§6.1). |
 | `source` | object | MUST | Provenance root (§6.2). |
-| `timescale` | integer | MUST | Ticks per second for all `pts`/`dts` (§10). E.g. `90000`. |
+| `timescale` | integer | MUST | Ticks per second for all `pts`/`dts` (§10). E.g. `1000000000`. |
 | `picture_count` | integer | MAY | Total pictures, if known at header time; OMITTED when streaming. |
 
 ### 6.1 `stream` object
@@ -102,7 +102,7 @@ start of a new stream section.
 | `width`,`height` | integer | MUST | Coded luma dimensions in pixels. |
 | `dar` | `[int,int]` | SHOULD | Display aspect ratio as `[num,den]`. |
 | `frame_rate` | `[int,int]` | SHOULD | Nominal rate as exact rational `[num,den]` (e.g. `[24000,1001]`). |
-| `scan` | string | MUST | `"progressive"`<br>`"interlaced"`<br>`"mbaff"` |
+| `scan` | string | MUST | `"progressive"`<br>`"interlaced"`<br>`"mbaff"` _(reserved; emitted only by codecs that signal MBAFF — disc/MPEG-2 video resolves to progressive/interlaced)_ |
 | `colour` | object | SHOULD | CICP per ITU-T H.273: `primaries`, `transfer`, `matrix` (integer CICP codes or registered names)<br>`range`: `"limited"` \| `"full"`<br>HDR: `mastering_display`, `max_cll`, `max_fall` per ITU-T H.273 / SMPTE ST 2086. |
 | `language` | string | MAY | BCP 47 tag, if known. |
 

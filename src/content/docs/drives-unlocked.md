@@ -22,21 +22,21 @@ This is a best-effort list, not a promise. Drives, firmware versions, and even i
 The large majority of consumer Blu-ray drives use a **MediaTek** chipset, and freemkv supports them. This covers **~200 drive + firmware combinations**, including:
 
 - **LG**: most LG Blu-ray writers. In Windows your drive may show up as **"HL-DT-ST"**; that's LG (Hitachi-LG Data Storage), not a different brand. This is the most common family by far.
-- **ASUS**: the BW-16 series (e.g. BW-16D1HT, BW-16D1X-U) and BC-12 series. These are often LG hardware under an ASUS badge.
+- **ASUS**: the MediaTek-based BW-16 models (e.g. BW-16D1HT) and the BC-12 series. These are often LG hardware under an ASUS badge. Note that the externally similar **BW-16D1X-U** is a *rebadged Pioneer* drive on a different chipset — see Work in Progress below.
 - **HP**: a handful of rebadged BD-RE / BD-RW models.
 
 If you own an LG, ASUS, or HP Blu-ray drive from roughly **2012-2020**, it's very likely supported.
 
 ### Work in Progress
 
-**Pioneer** drives (the BDR-… series, built on a different chipset) are **not supported yet**; support is actively being worked on. Any unsupported drive falls back to the **[stock-drive AACS workflow](/drives-oem/)**.
+**Pioneer** drives (the BDR-… series, built on a different chipset) are **not supported yet**; support is actively being worked on. This also covers Pioneer drives sold under other badges, such as the **ASUS BW-16D1X-U** (a rebadged Pioneer). Any unsupported drive falls back to the **[stock-drive AACS workflow](/drives-oem/)**.
 
 ## How do I tell what I have?
 
 Check the drive's model number; it's on the label, or in Windows under **Device Manager → DVD/CD-ROM drives**:
 
-- **LG / "HL-DT-ST" / ASUS BW-16 / HP BD** → MediaTek platform → **likely supported**.
-- **Pioneer BDR-…** → **work in progress**.
+- **LG / "HL-DT-ST" / ASUS BW-16D1HT / HP BD** → MediaTek platform → **likely supported**.
+- **Pioneer BDR-… / ASUS BW-16D1X-U** → **work in progress**.
 
 ## "It works in other software but not freemkv"
 

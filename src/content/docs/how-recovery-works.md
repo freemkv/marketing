@@ -47,23 +47,29 @@ Targeted retries over only the ranges the sweep couldn't read:
   range). The sweep jumps *forward* over damage, so good data tends to sit at the *tail*
   of an unread range; reading backward hits that good data first and converges on the true
   bad-block boundary.
-- Reads a **single sector at a time**, giving each one the drive's full recovery timeout
-  (60 seconds) so firmware-level error correction has every chance to succeed. It primes the
-  drive cache with a few throwaway reads before each recovery read.
+- Reads in **adaptive batches**: up to 32 sectors at a time while the drive is healthy,
+  dropping to a single sector the moment a read fails so each one can be probed
+  individually, then climbing back to the full batch after a run of clean single reads.
+  Every read gets the drive's full recovery timeout (60 seconds) so firmware-level error
+  correction has every chance to succeed. It primes the drive cache with a few throwaway
+  reads before each recovery read.
 - Handles "not ready" sense conditions with a pause-and-retry rather than immediately
   writing the sector off.
-- A sector that still can't be read after this is marked **Unreadable**.
+- A sector that still can't be read is left **NonTrimmed** so the next pass gets another
+  shot at it; only after the final retry pass does the orchestrator promote whatever is
+  still unrecovered to **Unreadable**.
 - Watchdogs (a whole-pass timeout and a per-range time budget) prevent a hopelessly
   damaged region from stalling the run indefinitely.
 
-Each patch pass narrows the remaining damage. Multipass stops early the moment there are no
-unreadable bytes left.
+Each patch pass narrows the remaining damage. Multipass stops early the moment everything in
+the mux scope is **Finished** — no NonTried, NonTrimmed, NonScraped, or Unreadable bytes
+left to recover.
 
 :::caution[Be gentle with the drive]
 Hammering the same bad sectors in tight, repeated retries can push a drive into a
 fast-fail state where it stops attempting recovery at all. freemkv's patch pass is
-deliberately paced (single-sector reads, recovery-timeout windows, cache priming, and skip
-escalation) to coax data out of marginal media without driving the hardware into that
+deliberately paced (drop-to-single-sector probing on failure, recovery-timeout windows,
+cache priming, and skip escalation) to coax data out of marginal media without driving the hardware into that
 state.
 :::
 
@@ -71,7 +77,8 @@ state.
 
 The mapfile is freemkv's record of what's been read and what hasn't. It is a
 **ddrescue-compatible plain-text file**, written next to the ISO (`<image>.iso.mapfile`),
-and flushed after every update so an interrupted run leaves a consistent on-disk state.
+and flushed to disk at most once per second (plus a final flush when it's closed), so an
+interrupted run leaves an on-disk state at most about a second stale.
 
 Each region of the disc carries a status:
 

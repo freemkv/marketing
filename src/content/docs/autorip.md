@@ -42,7 +42,7 @@ services:
     environment:
       - AUTORIP_DIR=/config             # where settings.json + logs live
       - PORT=8080                       # web bind port (set at start, not at runtime)
-      - AUTORIP_LOG_LEVEL=autorip=info,libfreemkv=warn   # tracing filter
+      - AUTORIP_LOG_LEVEL=autorip=info,libfreemkv=warn,freemkv=warn   # tracing filter
     volumes:
       - /dev:/dev                       # live host /dev (handles USB re-enumeration)
       - ./config:/config                # settings.json + logs
@@ -100,7 +100,7 @@ These are read at container start and cannot be changed at runtime:
 |---|---|---|
 | `PORT` | `8080` | Web UI / API bind port. |
 | `AUTORIP_DIR` | `/config` | Where `settings.json` and logs are stored. |
-| `AUTORIP_LOG_LEVEL` | `autorip=info,libfreemkv=warn` | `tracing` filter for log verbosity. |
+| `AUTORIP_LOG_LEVEL` | `autorip=info,libfreemkv=warn,freemkv=warn` | `tracing` filter for log verbosity. |
 | `RIP_USER` | `autorip` | Unix user the container creates and runs the daemon as. |
 | `NFS_HOST` | _(unset)_ | If set with the two below, autorip mounts an NFS share inside the container at startup. |
 | `NFS_EXPORT` | _(unset)_ | Export path on the NFS server (e.g. `/mnt/pool/media`). |
@@ -121,7 +121,7 @@ All settings are editable in the **Settings** page of the web UI and stored in `
 | `output_dir` | `/output` | Final MKV / M2TS destination. |
 | `movie_dir` | _(empty)_ | Optional subdirectory under output for movies. |
 | `tv_dir` | _(empty)_ | Optional subdirectory under output for TV. |
-| `output_format` | `mkv` | Output container: `mkv`, `m2ts`, or `iso`. |
+| `output_format` | `mkv` | Output container: `mkv`, `m2ts`, `iso`, or `network` (stream to `network_target`). |
 | `network_target` | _(empty)_ | Network output target `host:port` (for streaming output). |
 | `keep_iso` | `false` | Keep the intermediate ISO in the library after muxing. |
 
@@ -278,8 +278,8 @@ docker logs autorip --tail=500 -f | grep '\[mux\]'
 
 autorip's recovery work survives interruptions.
 
-- **Default** (`POST /api/rip/{device}`, no param): starts fresh, but if a resumable staging directory exists, continues from where the previous run left off using mapfile-based resume.
-- **`?resume=yes`**: require an existing resumable staging directory and re-mux the captured ISO without re-reading the disc; returns 404 if none exists.
+- **Default** (`POST /api/rip/{device}`, no param): starts a fresh sweep — the mapfile is recreated and the ISO truncated. It does not delete an existing staging directory, but it does not resume one either; a disc already marked `.completed` is skipped rather than re-ripped.
+- **`?resume=yes`**: require an existing resumable staging directory. If the sweep is incomplete, it continues the partial sweep, re-reading only the not-yet-recovered ranges from the disc; if the mapfile is already fully recovered, it re-muxes the staged ISO without any disc reads. If no resumable state exists, the request still returns `200` and the rip ends in an error state (there is no synchronous `404`).
 - **`?resume=no`**: wipe staging and start completely fresh.
 
 Stopping a rip with `/api/stop/{device}` **preserves** staging, so a stopped rip resumes on the next disc insert or container restart, with no time lost on a long UHD rip.

@@ -140,11 +140,7 @@ Use `--log-level 3` for bug reports (level 4 is even more verbose). To choose wh
 
 ## Device / drive access
 
-freemkv and autorip reach your optical drive through native **SPTI** (SCSI pass-through), the standard Windows way to talk to a drive directly. No drivers and, in normal use, no special permissions: just run the program normally. You can refer to a drive by its letter (e.g. `D:`) where a device is requested.
-
-:::caution[Run-as-admin]
-You generally do **not** need to run as Administrator. If a drive isn't detected, first make sure the disc is fully seated and the drive shows up in File Explorer; only try an elevated terminal if normal access genuinely fails.
-:::
+freemkv and autorip reach your optical drive through native **SPTI** (SCSI pass-through), the standard Windows way to talk to a drive directly. No drivers are needed, but raw SCSI pass-through requires **Administrator**: open the terminal elevated ("Run as administrator") before starting the program, or drives won't be detected. You can refer to a drive by its letter (e.g. `D:`) where a device is requested.
 
 ## Common problems
 
@@ -157,6 +153,6 @@ You generally do **not** need to run as Administrator. If a drive isn't detected
 | "No drives detected" | Confirm the drive appears in File Explorer and a disc is inserted; reseat USB drives. |
 | Web page won't load at `localhost:8080` | The `serve` terminal window must stay open. If you closed it, run `.\autorip.exe serve` again. |
 | Can't find my finished movie | It's in `config\output\` next to the `.exe`, unless you changed **Output directory** in Settings (Step 5). |
-| Leftover `C:\config` from an old version | Pre-rc4 builds used `C:\config`; new builds don't. Once the app-folder `config\` is in use you can delete the old `C:\config`. |
+| Leftover `C:\config` from an old version | If `C:\config` exists and is writable, autorip still uses it (it's checked *before* the app-folder `config\`). Delete the old `C:\config` first, then restart so state lands in the app-folder `config\`. |
 
 For capturing logs and fixes that apply to every platform, see **[Troubleshooting](/troubleshooting/)**.

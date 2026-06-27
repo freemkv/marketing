@@ -3,7 +3,7 @@ title: Components
 description: The crates that make up the freemkv toolchain and how they compose.
 ---
 
-freemkv is a Rust workspace. This page maps the pieces and links to the detailed page for each. The CLI and the autorip service are both thin front ends over one shared library.
+freemkv is a family of Rust crates. This page maps the pieces and links to the detailed page for each. The CLI and the autorip service are both thin front ends over one shared library.
 
 ## libfreemkv
 
@@ -27,7 +27,7 @@ See the [autorip service](/autorip/). Published to GHCR at `ghcr.io/freemkv/auto
 
 ## freemkv-keysources
 
-Pluggable AACS key sources for libfreemkv: a key database file, an online key service, or a mapfile-derived source. This is how [decryption keys](/decryption-keys/) reach the decryption pipeline.
+Pluggable AACS key sources for libfreemkv: a key database file or an online key service. This is how [decryption keys](/decryption-keys/) reach the decryption pipeline.
 
 Published on [crates.io](https://crates.io/crates/freemkv-keysources).
 

@@ -20,7 +20,7 @@ published crate and its generated docs can lag the latest source.
 
 ```toml
 [dependencies]
-libfreemkv = "1.1.0-beta.1"
+libfreemkv = "1.0.0-rc.5.3"
 ```
 
 ## Design principles
@@ -50,6 +50,8 @@ pub enum StreamUrl {
     Stdio,                             // stdio://
     Null,                              // null://
     Dir { path: PathBuf },             // dir://path/ (decrypted file tree)
+    Demux { dir: PathBuf },            // demux://dir/ (per-track elementary streams)
+    Fvi { path: PathBuf },             // fvi://file.fvi (per-picture video index)
     Unknown { raw: String },           // unrecognized
 }
 ```
@@ -76,13 +78,14 @@ A map of the main exports (see the [source](https://github.com/freemkv/libfreemk
   by mapfile state; `Disc::patch(...)` is Pass N recovery.
 - `DiscTitle`, `Stream`, `Codec`, `Resolution`, `FrameRate`, `HdrFormat`, `ColorSpace`,
   and the audio/subtitle stream structs: structured title/stream metadata.
-- `ScanOptions`: scan controls (including AACS host credentials and keydb path).
+- `ScanOptions`: scan controls (AACS host credentials, the key-source layer, and a halt token).
 
 ### Recovery and the mapfile
 
-- `SweepOptions` / `CopyOptions` and `PatchOptions`: pass controls.
-- `CopyResult` / `PatchOutcome`: pass results (good/unreadable/pending byte counts, halt
-  status).
+- `SweepOptions` and `PatchOptions`: pass controls. (`CopyOptions` is not re-exported at the
+  crate root — reach it as `disc::CopyOptions`.)
+- `PatchOutcome`: pass results (good/unreadable/pending byte counts, halt status). (The copy
+  result type is `disc::CopyResult`, not re-exported at the crate root.)
 - The `mapfile` module: `Mapfile`, `SectorStatus` (`NonTried`, `NonTrimmed`, `NonScraped`,
   `Unreadable`, `Finished`), `MapEntry`, `MapStats`.
 
@@ -107,7 +110,6 @@ See **[How recovery works](/how-recovery-works/)** for the algorithm these types
 - `DecryptKeys`: resolved AACS/CSS key material.
 - `KeySource`: the interface a caller implements to supply keys; see
   [`freemkv-keysources`](/components/) for the bundled implementations.
-- The `keydb` module: `keydb::default_path()`, `keydb::update(url)`.
 
 ### Errors and control
 

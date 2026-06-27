@@ -15,7 +15,7 @@ This same output is produced whether you rip with the [CLI](/cli/) or let
 
 ## Track names
 
-Each audio, subtitle, and video track carries a human-readable **name** (the
+Each audio and video track carries a human-readable **name** (the
 Matroska track name field), built from the disc's own playlist and authoring data.
 
 **Audio tracks** are labeled with the name you'd recognize, plus channel layout
@@ -56,8 +56,9 @@ out of the box.
 
 freemkv sets the track flags your player relies on:
 
-- **Default track.** The first/primary video and audio tracks are marked default,
-  so the right track plays without you touching the menu.
+- **Default track.** Video and audio tracks are marked default — except
+  secondary streams (picture-in-picture video, secondary audio) the disc flags
+  as such — so the right track plays without you touching the menu.
 - **Forced subtitles.** Tracks the disc marks as forced (on-screen foreign
   dialogue, signs) are written with the forced flag set, so players display them
   automatically over the matching audio without turning on full subtitles.

@@ -54,7 +54,8 @@ service URL, see [CLI → Flags](/cli/#flags).
 A `keydb.cfg` file on disk. It is the **single source of AACS truth** — no AACS keys are
 compiled into the freemkv binary. The file holds the AACS material freemkv draws on to
 unlock a disc: device keys (DKs), processing/player keys (PKs), host certificates for the
-drive's secure handshake, and per-disc Volume Unique Key (VUK) entries.
+drive's secure handshake, and per-disc entries — a Volume Unique Key (VUK),
+unit (title) keys, or a Media Key.
 
 By default the **CLI looks for it next to the `freemkv`
 executable** — a `keydb.cfg` in the same folder as the program. freemkv is a portable,
@@ -87,6 +88,7 @@ restarts.
 
 If you rip an AACS-encrypted disc with no key source configured, freemkv **fails loudly
 and early** — a clear error message, non-zero exit, and no output file written. It never
-writes a silently-encrypted or partially-decrypted file. autorip shows "no KEYDB.cfg
-found" when no key source is available (whether because no local file exists or no online
-service is configured). DVDs are never affected.
+writes a silently-encrypted or partially-decrypted file. autorip marks the disc "Missing
+keys — no key source has a key for this disc" and, when nothing is configured at all,
+prompts "No keys are available. Configure a key source in Settings." DVDs are never
+affected.

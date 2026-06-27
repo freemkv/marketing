@@ -11,7 +11,7 @@ The `freemkv` binary has two forms:
 freemkv <source> <destination> [flags]
 
 # Subcommand: the first argument is the command.
-freemkv <subcommand> [args]              # info, verify, update-keys, version, help
+freemkv <subcommand> [args]              # info, verify, remux, update-keys, version, help
 ```
 
 A bare invocation prints usage and exits `2`.
@@ -159,6 +159,19 @@ Scans the main title and reports good / slow / recovered / bad sectors, with cha
 freemkv verify
 ```
 
+### remux — convert a file source to MKV (no drive needed)
+
+`remux` is the `<source> <destination>` form under a command word: it converts one file to another with no drive involved. The classic case is m2ts → MKV, but any file source (`m2ts://`, `iso://`) to a mux destination (`mkv://`, `m2ts://`) works. No subcommand word is actually required — a bare `<source> <destination>` does the same thing — but `freemkv remux` is accepted, and `freemkv remux` with no URLs prints remux help rather than erroring.
+
+```bash
+freemkv remux m2ts://Movie.m2ts mkv://Movie.mkv     # remux a BD transport stream to MKV
+freemkv remux iso://Disc.iso mkv://Movie.mkv        # mux an ISO image to MKV
+```
+
+| Flag | Description |
+|---|---|
+| `-t, --title N` | Select title (1-based, repeatable). Default: all titles in the source. |
+
 ### update-keys — refresh the AACS key database
 
 Downloads, verifies, and installs an AACS keydb (`.txt` / `.zip` / `.gz`). `--url` is required. Both `http://` and `https://` URLs are supported.
@@ -184,7 +197,7 @@ Key sources (for a rip that needs decryption keys):
 | Flag | Description |
 |---|---|
 | `--keydb PATH` | Override the keydb location. Without it, freemkv searches the default locations — see [Decryption Keys](/decryption-keys/). Only Blu-ray/UHD need a keydb; DVDs use none. |
-| `--key-url URL` | Online key service (`https://…`); the local keydb is tried first if both are given. |
+| `--key-url URL` | Online key service (`http://…` or `https://…`); the local keydb is tried first if both are given. |
 | `--key-auth TOKEN` | Bearer token for `--key-url`. |
 
 If you supply **both** `--key-url` and `--keydb`, the local keydb is consulted

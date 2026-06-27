@@ -44,7 +44,7 @@ Confirm both `privileged: true` and the `/dev:/dev` bind mount are present, then
 
 If `freemkv info disc://` reports no drive:
 
-- On Linux, target the SCSI generic device explicitly: use `/dev/sg*`, not `/dev/sr*`:
+- On Linux, prefer the SCSI generic device (`/dev/sg*`). A `/dev/sr*` path is also accepted and auto-resolved to its matching `sg` node via sysfs, so either works:
 
   ```bash
   freemkv info disc:///dev/sg4
@@ -94,9 +94,9 @@ Repeatedly hammering the same bad sectors can push a drive into a fast-fail stat
 - **CLI:** Ctrl-C halts cleanly and preserves the mapfile. Re-running the same `disc:// iso://` command resumes. A mux interrupted mid-write is not finalized (freemkv exits non-zero), so you never get a truncated MKV that looks complete.
 - **autorip:** `/api/stop/{device}` preserves staging; the rip resumes on the next disc insert or container restart. See [Resume](/autorip/#resume).
 
-## Raw flag rejected for MKV or M2TS output
+## Raw flag rejected for non-ISO output
 
-`--raw` writes undecrypted bytes, which is only meaningful for an `iso://` destination. freemkv rejects `--raw` with an `mkv://` or `m2ts://` destination because ciphertext can't be muxed. Drop `--raw`, or change the destination to an ISO.
+`--raw` writes undecrypted bytes, which is only meaningful for an `iso://` destination. freemkv rejects `--raw` with any destination other than `iso://` (including `mkv://`, `m2ts://`, `dir://`, `null://`, `stdio://`, and network destinations), because ciphertext can't be muxed. Drop `--raw`, or change the destination to an ISO.
 
 ## Multiple titles to one file
 
