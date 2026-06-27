@@ -23,13 +23,15 @@ Every source and destination is a `scheme://` URL.
 | URL | Source | Dest | Notes |
 |---|---|---|---|
 | `disc://` | ✓ | — | Optical drive (auto-detected; `disc:///dev/sg4` or `disc://D:` to target one) |
-| `iso://path.iso` | ✓ | ✓ | Disc image |
 | `mkv://path.mkv` | ✓ | ✓ | Matroska movie |
 | `m2ts://path.m2ts` | ✓ | ✓ | Blu-ray transport stream |
+| `iso://path.iso` | ✓ | ✓ | Disc image |
+| `fvi://path.fvi` | — | ✓ | freemkv video index — a JSON-Lines, one-record-per-picture index file |
+| `demux://path/` | — | ✓ | **(beta)** Per-track elementary streams — a directory, one file per track |
+| `dir://path/` | — | ✓ | Decrypted file tree (VIDEO\_TS / BDMV) |
 | `network://host:port` | ✓ | ✓ | TCP (listen or connect) |
 | `stdio://` | ✓ | ✓ | Stdin / stdout |
 | `null://` | — | ✓ | Discard (read-speed benchmark) |
-| `dir://path/` | — | ✓ | Decrypted file tree (VIDEO\_TS / BDMV) |
 
 `disk://` is an alias for `disc://`. Everything is **decrypted by default**; `--raw` (`iso://` only) is the sole encrypted output. BD/UHD discs need an AACS key — see [Decryption Keys](/decryption-keys/); DVDs need none.
 
@@ -81,6 +83,22 @@ freemkv disc:// mkv://out/ -t 1 -t 3     # → out/Greenland_t1.mkv, out/Greenla
 
 Same as `mkv://`, but writes a Blu-ray transport stream — one file for a single title, or `<disc>_t<N>.m2ts` per title into a directory.
 
+### fvi://
+
+Writes a **freemkv video index** — a JSON-Lines file (`.fvi`) with one record per coded picture, capturing the frame's type, position, and timing. It's an index *over* the video, not the video itself, so the output is a single `.fvi` file rather than a movie:
+
+```bash
+freemkv iso://disc.iso fvi://out.fvi
+```
+
+### demux://
+
+**(Beta.)** Extracts each track to its own **elementary-stream** file — video, audio, and subtitle streams split apart rather than muxed together. The destination is a **directory**, with one file written per track:
+
+```bash
+freemkv iso://disc.iso demux://out/
+```
+
 ### stdio://
 
 Writes the muxed output to stdout (or reads it from stdin), so you can chain freemkv into a pipe with no intermediate file. The classic use is transcoding on the fly with ffmpeg:
@@ -93,10 +111,6 @@ freemkv disc:// stdio:// | ffmpeg -i - -c:v libx265 Movie.mkv
 
 Streams a rip over TCP instead of to a file: one end listens (`network://0.0.0.0:9000`), the other connects (`network://192.0.2.10:9000`). Rip on the machine with the drive and mux or store on another — no shared filesystem needed.
 
-### null://
-
-Reads and discards everything — a read-speed benchmark or dry run, with no output written.
-
 ### dir://
 
 Extracts the decrypted on-disc file tree (`VIDEO_TS/` or `BDMV/`) straight into the folder, reading and decrypting only the disc's allocated files.
@@ -105,6 +119,10 @@ Extracts the decrypted on-disc file tree (`VIDEO_TS/` or `BDMV/`) straight into 
 freemkv disc:// dir://Movie/
 freemkv iso://Disc.iso dir://Movie/
 ```
+
+### null://
+
+Reads and discards everything — a read-speed benchmark or dry run, with no output written.
 
 ## Subcommands
 

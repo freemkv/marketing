@@ -54,7 +54,12 @@ loopback, private, or cloud-metadata address.
 
 ## Local keydb.cfg
 
-A `keydb.cfg` file on disk. By default the **CLI looks for it next to the `freemkv`
+A `keydb.cfg` file on disk. It is the **single source of AACS truth** — no AACS keys are
+compiled into the freemkv binary. The file holds the AACS material freemkv draws on to
+unlock a disc: device keys (DKs), processing/player keys (PKs), host certificates for the
+drive's secure handshake, and per-disc Volume Unique Key (VUK) entries.
+
+By default the **CLI looks for it next to the `freemkv`
 executable** — a `keydb.cfg` in the same folder as the program. freemkv is a portable,
 self-contained binary, so its key database lives beside it rather than in an OS
 configuration directory.
@@ -87,9 +92,3 @@ and early** — a clear error message, non-zero exit, and no output file written
 writes a silently-encrypted or partially-decrypted file. autorip shows "no KEYDB.cfg
 found" when no key source is available (whether because no local file exists or no online
 service is configured). DVDs are never affected.
-
-:::note[Mapfiles hold no keys]
-A multipass **mapfile** (the `.map` sidecar written by `freemkv disc:// iso:// --multipass`)
-tracks sector-recovery state only. It contains no decryption keys. Keys are looked up from
-your key sources (keydb / online service) fresh on each run.
-:::

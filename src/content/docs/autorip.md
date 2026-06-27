@@ -220,7 +220,7 @@ autorip exposes an HTTP API on the same port as the UI. JSON errors use `{"ok": 
 | Method | Path | Description |
 |---|---|---|
 | `GET` | `/api/state` | Snapshot of every drive's rip state, plus move/verify state. |
-| `GET` | `/api/version` | Running version, e.g. `{"version":"1.0.0-rc.5.3"}`. |
+| `GET` | `/api/version` | Running version, e.g. `{"version":"1.1.0-beta.1"}`. |
 | `GET` | `/api/system` | System info: mux/move queues and the output file list. |
 | `GET` | `/events` | Server-Sent Events stream of live state pushes. |
 
