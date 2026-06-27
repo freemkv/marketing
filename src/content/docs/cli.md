@@ -116,10 +116,17 @@ Streams a rip over TCP instead of to a file: one end listens (`network://0.0.0.0
 
 ### stdio://
 
-Writes the muxed output to stdout (or reads it from stdin), so you can chain freemkv into a pipe with no intermediate file. The classic use is transcoding on the fly with ffmpeg:
+Writes the muxed output to stdout (or reads it from stdin), so you can chain freemkv into a pipe with no intermediate file. The classic use is transcoding on the fly with ffmpeg, which demuxes its input in a single linear pass and so reads a pipe directly:
 
 ```bash
 freemkv disc:// stdio:// | ffmpeg -i - -c:v libx265 Movie.mkv
+```
+
+A pipe only works for tools that read their input straight through. HandBrake scans titles — it seeks around the file before encoding — so it cannot consume a non-seekable pipe. Hand it a file instead: mux with freemkv first, then transcode that:
+
+```bash
+freemkv disc:// mkv://Movie.mkv                       # decrypt + mux to a file
+HandBrakeCLI -i Movie.mkv -o Movie.mp4 --preset "Fast 1080p30"
 ```
 
 ### null://
