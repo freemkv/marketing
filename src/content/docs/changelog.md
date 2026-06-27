@@ -27,7 +27,7 @@ and a handful of smaller fixes.
   JSON-Lines index file (`.fvi`) describing every coded picture in a title:
   its type, position, and timing. An index over the video, not the video
   itself. `freemkv iso://disc.iso fvi://out.fvi`.
-- **New `demux://` output (beta).** Split a title into its individual
+- **New `demux://` output.** Split a title into its individual
   elementary streams — one file per video, audio, and subtitle track — into a
   directory. `freemkv iso://disc.iso demux://out/`.
 - **Build provenance in every MKV.** The output's muxing-application field now

@@ -64,19 +64,20 @@ executable** — a `keydb.cfg` in the same folder as the program. freemkv is a p
 self-contained binary, so its key database lives beside it rather than in an OS
 configuration directory.
 
-Download or refresh it from a URL with `update-keys` (the URL is required; there's no
-built-in default). It writes `keydb.cfg` next to the executable:
+Refresh it from a URL with the **`update-keys`** command — see the
+[CLI reference](/cli/) for the full syntax and supported formats (`.txt` / `.zip` /
+`.gz`). The short version writes `keydb.cfg` next to the executable:
 
 ```bash
-# download keydb.cfg next to the freemkv executable
 freemkv update-keys --url <KEYDB_URL>
 ```
 
-To use a `keydb.cfg` somewhere else, point the CLI at it with `--keydb`:
+The global **`--keydb`** flag points the CLI at a `keydb.cfg` anywhere — on
+`update-keys` to **download** there, and on a rip to **read** from there:
 
 ```bash
-# use a keydb.cfg from a custom path
-freemkv disc:// -t 1 mkv://Movie.mkv --keydb /path/to/keydb.cfg
+freemkv update-keys --keydb /path/to/keydb.cfg --url <KEYDB_URL>   # download to a custom path
+freemkv disc:// -t 1 mkv://Movie.mkv --keydb /path/to/keydb.cfg     # rip using it
 ```
 
 **autorip** is a long-running service rather than a portable binary, so it uses the standard

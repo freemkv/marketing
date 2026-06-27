@@ -27,7 +27,7 @@ Every source and destination is a `scheme://` URL.
 | `m2ts://path.m2ts` | ✓ | ✓ | Blu-ray transport stream |
 | `iso://path.iso` | ✓ | ✓ | Disc image |
 | `fvi://path.fvi` | — | ✓ | freemkv video index — a JSON-Lines, one-record-per-picture index file ([spec](/fvi-format/)) |
-| `demux://path/` | — | ✓ | **(beta)** Per-track elementary streams — a directory, one file per track |
+| `demux://path/` | — | ✓ | Per-track elementary streams — a directory, one file per track |
 | `dir://path/` | — | ✓ | Decrypted file tree (VIDEO\_TS / BDMV) |
 | `network://host:port` | ✓ | ✓ | TCP (listen or connect) |
 | `stdio://` | ✓ | ✓ | Stdin / stdout |
