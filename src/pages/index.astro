@@ -3,9 +3,9 @@
 // This page owns the "/" route directly (NOT part of the Starlight docs
 // collection) so it has full design freedom with none of the docs
 // sidebar / TOC / breadcrumb chrome. The docs live under /overview/ etc.
-const title = 'freemkv: Recover 100% of readable data from any optical disc';
+const title = 'freemkv: a composable pipeline for optical-disc video';
 const description =
-  'AGPL-3.0 Rust toolchain that recovers 100% of readable data from DVD, Blu-ray, and 4K UHD discs and muxes it to MKV, automatically, with multi-pass bad-sector recovery.';
+  'AGPL-3.0 Rust toolchain built on one elegant idea: every input and every output is a scheme:// URL you compose — freemkv <source> <dest>. Rip, remux, demux, index, and stream DVD, Blu-ray, and 4K UHD, with AACS/CSS decryption and multi-pass bad-sector recovery built into the pipe.';
 const download = '/download/';
 const github = 'https://github.com/freemkv';
 const docs = '/overview/';
@@ -85,7 +85,7 @@ const docs = '/overview/';
       <!-- ============ FEATURE GRID ============ -->
       <section class="features">
         <div class="section-inner">
-          <h2 class="section-title">Turn your discs into a library.</h2>
+          <h2 class="section-title">One pipeline, built on one idea.</h2>
           <div class="grid">
             <article class="card">
               <h3>Bad-sector recovery</h3>
@@ -157,7 +157,12 @@ const docs = '/overview/';
       <!-- ============ SHOWCASE / TERMINAL ============ -->
       <section class="showcase">
         <div class="section-inner">
-          <h2 class="section-title">From disc to MKV.</h2>
+          <h2 class="section-title section-title--rotate" aria-label="From disc to MKV.">
+            <span class="rot rot-1" aria-hidden="true">From disc to MKV.</span>
+            <span class="rot rot-2" aria-hidden="true">From ISO to MKV.</span>
+            <span class="rot rot-3" aria-hidden="true">From MKV to M2TS.</span>
+            <span class="rot rot-4" aria-hidden="true">From disc to ISO.</span>
+          </h2>
           <p class="section-lead">
             freemkv composes a <em>source</em> and a <em>destination</em> URL, with no rigid
             subcommands. Read from a disc, ISO, or M2TS; write to MKV, ISO, M2TS, a network
@@ -291,6 +296,31 @@ const docs = '/overview/';
         letter-spacing: -0.02em;
         margin: 0 0 0.5rem;
         text-align: center;
+      }
+      /* Rotating "From <source> to <sink>." — pure CSS, no reflow (all phrases
+         stack in one max-content grid cell), one visible at a time over a 12s
+         loop. Reduced-motion shows only the first phrase (see media query). */
+      .section-title--rotate {
+        display: grid;
+        width: max-content;
+        max-width: 100%;
+        margin-inline: auto;
+        justify-items: center;
+      }
+      .section-title--rotate .rot {
+        grid-area: 1 / 1;
+        opacity: 0;
+        animation: title-rotate 12s infinite;
+      }
+      .section-title--rotate .rot-2 { animation-delay: 3s; }
+      .section-title--rotate .rot-3 { animation-delay: 6s; }
+      .section-title--rotate .rot-4 { animation-delay: 9s; }
+      @keyframes title-rotate {
+        0%   { opacity: 0; }
+        3%   { opacity: 1; }
+        22%  { opacity: 1; }
+        25%  { opacity: 0; }
+        100% { opacity: 0; }
       }
       .section-lead {
         text-align: center;
@@ -653,6 +683,9 @@ const docs = '/overview/';
 
       @media (prefers-reduced-motion: reduce) {
         * { scroll-behavior: auto; transition: none !important; }
+        /* No cycling — show only the first phrase, "From disc to MKV." */
+        .section-title--rotate .rot { animation: none; opacity: 0; }
+        .section-title--rotate .rot-1 { opacity: 1; }
       }
     </style>
 
