@@ -3,9 +3,9 @@
 // This page owns the "/" route directly (NOT part of the Starlight docs
 // collection) so it has full design freedom with none of the docs
 // sidebar / TOC / breadcrumb chrome. The docs live under /overview/ etc.
-const title = 'freemkv: Recover 100% of readable data from any optical disc';
+const title = 'freemkv: a composable pipeline for optical-disc video';
 const description =
-  'AGPL-3.0 Rust toolchain that recovers 100% of readable data from DVD, Blu-ray, and 4K UHD discs and muxes it to MKV, automatically, with multi-pass bad-sector recovery.';
+  'AGPL-3.0 Rust toolchain built on one elegant idea: every input and every output is a scheme:// URL you compose — freemkv <source> <dest>. Rip, remux, demux, index, and stream DVD, Blu-ray, and 4K UHD, with AACS/CSS decryption and multi-pass bad-sector recovery built into the pipe.';
 const download = '/download/';
 const github = 'https://github.com/freemkv';
 const docs = '/overview/';
@@ -69,9 +69,27 @@ const docs = '/overview/';
       <section class="hero">
         <div class="hero-inner">
           <img class="hero-logo" src="/freemkv-icon.svg" alt="freemkv" width="96" height="96" />
-          <h1 class="hero-title">Own your movies, not just the discs.</h1>
+          <h1 class="hero-title">
+            <span class="rot-prefix">From</span>
+            <span class="rot" data-rot aria-hidden="true">
+              <span class="rot-word is-active">disc</span>
+              <span class="rot-word">ISO</span>
+              <span class="rot-word">MKV</span>
+              <span class="rot-word">disc</span>
+            </span>
+            <span class="rot-prefix">to</span>
+            <span class="rot" data-rot-2 aria-hidden="true">
+              <span class="rot-word is-active">MKV</span>
+              <span class="rot-word">MKV</span>
+              <span class="rot-word">M2TS</span>
+              <span class="rot-word">ISO</span>
+            </span>
+            <span class="rot-static">From disc to MKV</span>
+          </h1>
           <p class="hero-tagline">
-            The open-source 4K&nbsp;UHD, Blu-ray &amp; DVD ripper.
+            freemkv composes a source and a destination URL, with no rigid subcommands.
+            Read from a disc, ISO, or M2TS; write to MKV, ISO, M2TS, a network stream, or
+            stdout.
           </p>
           <div class="cta-row">
             <a class="btn btn-primary" href={download}>Download latest release</a>
@@ -85,7 +103,7 @@ const docs = '/overview/';
       <!-- ============ FEATURE GRID ============ -->
       <section class="features">
         <div class="section-inner">
-          <h2 class="section-title">Turn your discs into a library.</h2>
+          <h2 class="section-title">One pipeline, built on one idea.</h2>
           <div class="grid">
             <article class="card">
               <h3>Bad-sector recovery</h3>
@@ -157,28 +175,55 @@ const docs = '/overview/';
       <!-- ============ SHOWCASE / TERMINAL ============ -->
       <section class="showcase">
         <div class="section-inner">
-          <h2 class="section-title">From disc to MKV.</h2>
+          <h2 class="section-title"><code>freemkv &lt;source&gt; &lt;dest&gt;</code></h2>
           <p class="section-lead">
-            freemkv composes a <em>source</em> and a <em>destination</em> URL, with no rigid
-            subcommands. Read from a disc, ISO, or M2TS; write to MKV, ISO, M2TS, a network
-            stream, or stdout.
+            Every input and every output is a <code>scheme://</code> URL. You compose them.
+            One uniform model rips, remuxes, demuxes, indexes, and streams — the same
+            <em>source</em> → <em>sink</em> shape every time.
           </p>
+          <div class="grid pipeline-grid">
+            <article class="card">
+              <h3>Sources</h3>
+              <p>
+                <code>disc://</code> (the drive) · <code>iso://</code> · <code>mkv://</code> ·
+                <code>m2ts://</code> · <code>network://</code> · <code>stdio://</code>
+              </p>
+            </article>
+            <article class="card">
+              <h3>Sinks</h3>
+              <p>
+                <code>mkv://</code> (Matroska) · <code>m2ts://</code> (transport stream) ·
+                <code>iso://</code> (decrypted image) · <code>fvi://</code> (freemkv video index) ·
+                <code>demux://</code> (elementary streams) · <code>dir://</code> (file tree) ·
+                <code>null://</code> (benchmark)
+              </p>
+            </article>
+            <article class="card">
+              <h3>Built into the pipe</h3>
+              <p>
+                AACS (Blu-ray / 4K&nbsp;UHD) and CSS (DVD) <strong>decryption</strong>, plus
+                multi-pass <strong>bad-sector recovery</strong> — applied on the way through,
+                whatever the source or sink.
+              </p>
+            </article>
+          </div>
           <div class="terminal">
             <div class="terminal-bar" aria-hidden="true">
               <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
               <span class="terminal-title">freemkv</span>
             </div>
-            <pre class="terminal-body"><code><span class="c"># Inspect the disc and its titles</span>
-<span class="p">$</span> freemkv info disc://
+            <pre class="terminal-body"><code><span class="c"># Rip a disc straight to MKV — the main path (decrypt + mux)</span>
+<span class="p">$</span> freemkv disc:// mkv://Movie.mkv
 
-<span class="c"># Rip a disc straight to MKV — main title only (decrypt + mux)</span>
-<span class="p">$</span> freemkv disc:// -t 1 mkv://Movie.mkv
+<span class="c"># Remux an existing ISO to MKV — no disc needed, same shape</span>
+<span class="p">$</span> freemkv iso://Disc.iso mkv://Movie.mkv
 
-<span class="c"># Recover to ISO with multipass bad-sector recovery (re-run to patch)</span>
-<span class="p">$</span> freemkv disc:// iso://Disc.iso --multipass
+<span class="c"># Index a disc image, or extract its elementary streams</span>
+<span class="p">$</span> freemkv iso://Disc.iso fvi://Disc.fvi
+<span class="p">$</span> freemkv iso://Disc.iso demux://tracks/
 
-<span class="c"># Remux an existing ISO to MKV (no disc needed)</span>
-<span class="p">$</span> freemkv iso://Disc.iso mkv://Movie.mkv</code></pre>
+<span class="c"># Pipe decrypted output to another tool over stdout</span>
+<span class="p">$</span> freemkv disc:// stdio:// | ffmpeg -i - …</code></pre>
           </div>
 
           <p class="showcase-sub">Or run the whole thing as a service: insert a disc, get an MKV:</p>
@@ -191,9 +236,10 @@ const docs = '/overview/';
 <span class="p">$</span> ./autorip</code></pre>
           </div>
           <p class="showcase-note">
-            <code>-t 1</code> selects the main title — which is also the <code>disc://</code>
-            default, made explicit. Run <code>freemkv info disc://</code> to list all titles with
-            durations if you want a different one.
+            <code>disc://</code> defaults to the main title; run <code>freemkv info disc://</code>
+            to list every title with durations, or add <code>-t N</code> to pick one. The same
+            <code>--multipass</code> recovery and decryption apply to whichever source and sink
+            you compose.
           </p>
           <p class="showcase-note">
             autorip runs on Linux, macOS, and Windows as a single binary (or a Linux container).
@@ -422,6 +468,32 @@ const docs = '/overview/';
         letter-spacing: -0.03em;
         margin: 0 0 0.75rem;
       }
+
+      /* Animated "From <source> to <sink>" headline. Two synchronized
+         rotators fade through pairs; the layout never reflows because all
+         words share one inline-grid cell sized to the widest member.
+         JS toggles .is-active; if JS never runs, the first words (disc/MKV)
+         stay shown, so it still reads "From disc to MKV". */
+      .rot {
+        display: inline-grid;
+        vertical-align: baseline;
+        color: var(--teal-dark);
+      }
+      .rot-word {
+        grid-area: 1 / 1;
+        opacity: 0;
+        transition: opacity 0.45s ease;
+      }
+      .rot-word.is-active { opacity: 1; }
+      .rot-static { display: none; }
+
+      @media (prefers-reduced-motion: reduce) {
+        /* No animation: collapse the rotators, show one static headline. */
+        .rot,
+        .rot-prefix { display: none; }
+        .rot-word { transition: none; }
+        .rot-static { display: inline; }
+      }
       .hero-tagline {
         font-size: clamp(1.05rem, 3.2vw, 1.4rem);
         font-weight: 600;
@@ -520,6 +592,13 @@ const docs = '/overview/';
 
       /* ---------- SHOWCASE ---------- */
       .showcase { padding: clamp(3rem, 8vw, 5rem) 0; }
+      .pipeline-grid { margin-bottom: clamp(2rem, 5vw, 2.75rem); }
+      .pipeline-grid .card p { line-height: 1.9; }
+      .section-title code {
+        background: var(--teal-tint);
+        font-size: 0.85em;
+        padding: 0.12em 0.4em;
+      }
       .terminal {
         max-width: 720px;
         margin: 0 auto;
@@ -657,6 +736,34 @@ const docs = '/overview/';
     </style>
 
     <script>
+      // Rotating "From <source> to <sink>" hero headline. Cycles the two
+      // synchronized rotators through paired examples every 3s with a smooth
+      // opacity fade. Honors prefers-reduced-motion: when set, we leave the
+      // static fallback in place and never start the timer.
+      (() => {
+        const reduce =
+          window.matchMedia &&
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce) return;
+
+        const rotators = Array.from(document.querySelectorAll('[data-rot], [data-rot-2]'))
+          .map((el) => Array.from(el.querySelectorAll('.rot-word')));
+        if (!rotators.length) return;
+
+        const count = Math.min(...rotators.map((words) => words.length));
+        if (count < 2) return;
+
+        let i = 0;
+        setInterval(() => {
+          const next = (i + 1) % count;
+          for (const words of rotators) {
+            words[i].classList.remove('is-active');
+            words[next].classList.add('is-active');
+          }
+          i = next;
+        }, 3000);
+      })();
+
       // Live GitHub star count for the nav. Fetched client-side and cached in
       // localStorage (1h TTL) to stay under the unauthenticated rate limit
       // (~60 req/hr/IP). No token. On failure, the link stays as just the star
