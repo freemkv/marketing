@@ -17,12 +17,20 @@ change in that cycle.
 
 ## 1.1.0-beta.1 — Unreleased
 
-The first beta on top of 1.0.0, headlined by a major overhaul of DVD
-processing — plus two new output formats and a handful of smaller fixes,
-including targeted DTS-HD MA and TrueHD edge-case fixes.
+The first beta on top of 1.0.0, headlined by a **post-read decrypt-verify
+gate** that catches silent bad reads during the rip and a major overhaul of
+DVD processing — plus two new output formats, AACS correctness fixes, and a
+handful of smaller fixes including targeted DTS-HD MA and TrueHD edge cases.
 
 ### Added
 
+- **Post-read decrypt-verify gate (Blu-ray / UHD).** Every encrypted unit is
+  now verified — decrypted and checked against the disc's own structure —
+  *during* the rip, before it's accepted as good. A unit that can't be
+  decrypted is treated like a bad read and retried, catching the rare "silent
+  bad read" where a sector comes back without an error but its contents are
+  subtly wrong. It only ever flags a unit it is certain about, so it never turns
+  a good read bad, and it can be disabled at build time.
 - **New `fvi://` output — a freemkv video index.** Write a compact
   JSON-Lines index file (`.fvi`) describing every coded picture in a title:
   its type, position, and timing. An index over the video, not the video
@@ -64,9 +72,34 @@ including targeted DTS-HD MA and TrueHD edge-case fixes.
 - **`update-keys --keydb <path>` is honored.** Passing an explicit keydb path
   now downloads to that path; previously it was ignored and the file always
   landed in the default location.
+- **AACS reliability fixes.** On bus-encrypted discs the flag that says "this
+  needs a drive bus key" was read from the wrong bit, which could let a rip
+  proceed without the key and produce garbage instead of failing clearly — it is
+  now read per spec (confirmed against real discs). The check that accepts a
+  decryption key is also stricter, so a wrong key can no longer coincidentally
+  pass and corrupt a unit.
+- **autorip: ISO rips now require a complete disc image.** The "Max Acceptable
+  Main Movie Loss" tolerance is a muxed-output (MKV / M2TS) setting and is
+  ignored for an ISO rip — an ISO is captured whole or the rip stops, so a
+  leftover MKV tolerance can't quietly let an ISO accept loss.
+- **autorip: aborted rips can resume instead of starting over.** A rip that
+  stops because of unrecoverable loss keeps its progress and re-checks on the
+  next attempt (after cleaning the disc, raising the loss tolerance, or another
+  recovery pass) rather than discarding everything.
 - **autorip resume no longer races the muxer.** A staging directory that the
   mux worker already owns is no longer offered for resume, so a manual resume
   can't disturb a file the muxer is still reading.
+- **autorip progress is now two states: Good and Maybe — never more.** The live
+  rip card dropped the old `Feature` / `Cosmetic` / `No chance` / `Lost` chips.
+  **Good** is whatever has been read and verified clean; **Maybe** is everything
+  not yet good — pending, skipped, or not-yet-decryptable, all folded together,
+  because a later pass (or simply power-cycling a stuck drive) often still
+  recovers it. Nothing is declared "lost" while the rip is still running. Whether
+  a rip passes is decided only at the end, against your loss tolerance. The Maybe
+  chip shows whole-disc bytes but the *movie* time they cost, at millisecond
+  precision — so `Maybe 990 MB · 0:00` is 990 MB of extras with zero movie impact
+  (it passes), while `Maybe 12 KB · ~1 ms` is a few seconds-of-movie sectors that
+  a zero-loss setting will correctly reject.
 
 ## 1.0.0
 
