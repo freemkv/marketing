@@ -15,6 +15,32 @@ The toolchain releases as a set: every component ships the same version
 number on each release, even when a given component has no functional
 change in that cycle.
 
+## 1.2.0
+
+### Added
+
+- **A gap never breaks the movie.** When a disc has a spot freemkv genuinely
+  cannot decrypt — a key the disc never yielded, after the rip has already
+  retried and re-read it — the muxer no longer lets that corrupt or stall the
+  output. The undecryptable span is concealed with empty filler packets, and
+  video resumes cleanly at the next keyframe, so the finished MKV plays and
+  scans clean end to end (no broken frames, no missing-reference errors). The
+  lost span is measured and logged, never silently dropped. Discs with no such
+  gap are byte-for-byte unaffected.
+
+### Changed
+
+- **autorip always delivers a finished rip.** A disc that swept and patched is
+  always muxed and delivered; autorip no longer second-guesses an
+  already-finished file and quarantines it over decrypt-time loss (that loss is
+  now concealed into a clean, playable file and simply reported). The
+  perfect-rip tolerance (`abort_on_lost_secs`) still governs the read/recovery
+  phase, where retries can actually change the outcome.
+- **One key-resolution path, one hex parser.** The CLI and the autorip service
+  now capture a disc's decryption inputs through the exact same library path
+  (and a single shared hex parser), so they behave identically — including
+  carrying each disc's AACS version so keys are read at that disc's own layout.
+
 ## 1.1.0
 
 ### Added
