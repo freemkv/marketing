@@ -15,7 +15,7 @@ The toolchain releases as a set: every component ships the same version
 number on each release, even when a given component has no functional
 change in that cycle.
 
-## 1.1.0-beta.1 — Unreleased
+## 1.1.0
 
 The first beta on top of 1.0.0, headlined by a **post-read decrypt-verify
 gate** that catches silent bad reads during the rip and a major overhaul of
@@ -56,7 +56,7 @@ handful of smaller fixes including targeted DTS-HD MA and TrueHD edge cases.
 - **`--version` now matches the build stamped into MKVs.** The CLI's `--version`
   string and the `MuxingApp` / `WritingApp` fields written into every MKV now
   derive from a single libfreemkv constant — the package version plus the git
-  short hash (e.g. `freemkv 1.1.0-beta.1 (g835cc99)`). The muxer previously kept
+  short hash (e.g. `freemkv 1.1.0 (g835cc99)`). The muxer previously kept
   its own copy of that string, so the two could drift; a binary and the files it
   produces can no longer report different versions.
 - **DTS-HD Master Audio: a false core-sync inside the lossless extension no
