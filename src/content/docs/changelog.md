@@ -15,7 +15,7 @@ The toolchain releases as a set: every component ships the same version
 number on each release, even when a given component has no functional
 change in that cycle.
 
-## 1.2.0
+## 1.2.0 <small>2026-06-29</small>
 
 ### Added
 
@@ -30,8 +30,8 @@ change in that cycle.
 
 ### Changed
 
-- **autorip always delivers a finished rip.** A disc that swept and patched is
-  always muxed and delivered; autorip no longer second-guesses an
+- **autorip always delivers a finished rip.** A disc that was swept and patched
+  is always muxed and delivered; autorip no longer second-guesses an
   already-finished file and quarantines it over decrypt-time loss (that loss is
   now concealed into a clean, playable file and simply reported). The
   perfect-rip tolerance (`abort_on_lost_secs`) still governs the read/recovery
@@ -54,15 +54,15 @@ change in that cycle.
   UHD and Blu-ray differ), so the right keys are derived instead of occasionally
   the wrong ones.
 
-## 1.1.0
+## 1.1.0 <small>2026-06-28</small>
 
 ### Added
 
 - **Post-read decrypt-verify gate.** Every AACS unit read off the disc is now
   buffered, re-aligned to its clip-file 6144-byte unit grid, and verified
   (CPI flag → decrypt → strict all-32 TS-sync, matching libaacs `_verify_ts`)
-  before it is signed off as good. A unit that neither a held nor a
-  freshly-fetched key decrypts is treated exactly like a bad read — re-read by
+  before it is signed off as good. A unit that no held or freshly-fetched key
+  decrypts is treated exactly like a bad read — re-read by
   the patch pass, terminal loss only if truly unrecoverable — closing the
   "silent bad read" class where a sector reads OK but its ciphertext is subtly
   wrong. **Fail-safe:** it only ever downgrades a unit it is *confident* is bad;
@@ -153,12 +153,7 @@ change in that cycle.
   timestamp could regress (non-monotonic-DTS warnings to the muxer); the running
   timestamp is now clamped so it never goes backward.
 
-### Tests
-
-- 58 new tests across the toolchain (AACS key resolution, the unlocker seam, the
-  key sources, DVD/CSS, `dir://` routing, and autorip keydb resolution).
-
-## 1.0.0-rc.5.3
+## 1.0.0-rc.5.3 <small>2026-06-24</small>
 
 ### Added
 
@@ -179,7 +174,7 @@ change in that cycle.
 - **Fail loud on missing keys or bad input** instead of silently writing an
   undecrypted file.
 
-## 1.0.0-rc.5.2
+## 1.0.0-rc.5.2 <small>2026-06-24</small>
 
 ### Fixed
 
@@ -252,7 +247,7 @@ change in that cycle.
   base on the opening keyframe's real PTS so the t=0 floor never corrupts it.
   Regression tests pin all three.
 
-## 1.0.0-rc.5.1
+## 1.0.0-rc.5.1 <small>2026-06-24</small>
 
 ### Fixed
 
@@ -328,7 +323,7 @@ change in that cycle.
   (e.g. a 2.0 stream in place of 5.1). Diagnose with
   `freemkv info disc://… --log-level 3`; fix tracked for the next release.
 
-## 1.0.0-rc.4.2
+## 1.0.0-rc.4.2 <small>2026-06-23</small>
 
 ### Fixed
 
@@ -339,7 +334,7 @@ change in that cycle.
   `sync_all` so the flush succeeds on Windows, where `FlushFileBuffers`
   rejects a read-only handle with `ERROR_ACCESS_DENIED`.
 
-## 1.0.0-rc.4
+## 1.0.0-rc.4 <small>2026-06-23</small>
 
 An audit-driven round of correctness, durability, and Windows-transport
 fixes. No API changes; behavior is more conservative on damaged media and
@@ -377,7 +372,7 @@ on partial decryption.
 - The per-read `Drive::read` trace event was demoted to TRACE so a debug
   log isn't flooded by per-sector reads.
 
-## 1.0.0-rc.2
+## 1.0.0-rc.2 <small>2026-06-22</small>
 
 Second release candidate for 1.0. libfreemkv is the core library: disc scan,
 multipass sector recovery, content decryption (CSS, AACS 1.0/2.0), and the
@@ -442,7 +437,7 @@ hardening.
 - The macOS SCSI shim uses `posix_spawn` directly instead of `system()` / `sh
   -c`, eliminating a command-injection vector on the device-path string.
 
-## 1.0.0-rc.1
+## 1.0.0-rc.1 <small>2026-06-21</small>
 
 First release candidate for 1.0 — the first tagged 1.0 milestone of the core
 library. Established the full feature set: multipass sector recovery, content
