@@ -41,6 +41,19 @@ change in that cycle.
   (and a single shared hex parser), so they behave identically — including
   carrying each disc's AACS version so keys are read at that disc's own layout.
 
+### Fixed
+
+- **No more phantom loss at a title's tail.** A title's encrypted content can end
+  partway through an alignment unit, with the disc padding the rest with zeros.
+  freemkv used to demand a full unit and counted that legitimate padding as a
+  bad spot — showing a small phantom "loss" on an otherwise flawless rip (and, if
+  retries were exhausted, a truncated MKV). Such tails now decrypt and mux
+  cleanly, with no invented loss.
+- **On-demand keys read at the disc's own layout.** A key fetched mid-rip for a
+  not-yet-sampled part of the disc is now parsed at that disc's AACS layout (4K
+  UHD and Blu-ray differ), so the right keys are derived instead of occasionally
+  the wrong ones.
+
 ## 1.1.0
 
 ### Added
