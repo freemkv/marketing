@@ -17,10 +17,10 @@ change in that cycle.
 
 ## 1.1.0
 
-The first beta on top of 1.0.0, headlined by a **post-read decrypt-verify
-gate** that catches silent bad reads during the rip and a major overhaul of
-DVD processing — plus two new output formats, AACS correctness fixes, and a
-handful of smaller fixes including targeted DTS-HD MA and TrueHD edge cases.
+Headlined by a **post-read decrypt-verify gate** that catches silent bad reads
+during the rip and a major overhaul of DVD processing — plus two new output
+formats, AACS correctness fixes, and a handful of smaller fixes including
+targeted DTS-HD MA and TrueHD edge cases.
 
 ### Added
 
@@ -30,7 +30,7 @@ handful of smaller fixes including targeted DTS-HD MA and TrueHD edge cases.
   decrypted is treated like a bad read and retried, catching the rare "silent
   bad read" where a sector comes back without an error but its contents are
   subtly wrong. It only ever flags a unit it is certain about, so it never turns
-  a good read bad, and it can be disabled at build time.
+  a good read bad.
 - **New `fvi://` output — a freemkv video index.** Write a compact
   JSON-Lines index file (`.fvi`) describing every coded picture in a title:
   its type, position, and timing. An index over the video, not the video
