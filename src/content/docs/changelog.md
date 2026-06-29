@@ -17,42 +17,86 @@ change in that cycle.
 
 ## 1.1.0
 
-Headlined by a **post-read decrypt-verify gate** that catches silent bad reads
-during the rip and a major overhaul of DVD processing — plus two new output
-formats, AACS correctness fixes, and a handful of smaller fixes including
-targeted DTS-HD MA and TrueHD edge cases.
-
 ### Added
 
-- **Post-read decrypt-verify gate (Blu-ray / UHD).** Every encrypted unit is
-  now verified — decrypted and checked against the disc's own structure —
-  *during* the rip, before it's accepted as good. A unit that can't be
-  decrypted is treated like a bad read and retried, catching the rare "silent
-  bad read" where a sector comes back without an error but its contents are
-  subtly wrong. It only ever flags a unit it is certain about, so it never turns
-  a good read bad.
-- **New `fvi://` output — a freemkv video index.** Write a compact
-  JSON-Lines index file (`.fvi`) describing every coded picture in a title:
-  its type, position, and timing. An index over the video, not the video
-  itself. `freemkv iso://disc.iso fvi://out.fvi`.
-- **New `demux://` output.** Split a title into its individual
-  elementary streams — one file per video, audio, and subtitle track — into a
-  directory. `freemkv iso://disc.iso demux://out/`.
-- **Build provenance in every MKV.** The output's muxing-application field now
-  records the exact freemkv build that produced the file, so any MKV can be
-  traced back to the version that made it.
-- **New error code E7025 ("AACS bus key unavailable")**, with a clear message
-  and recovery steps on the Error Codes page.
+- **Post-read decrypt-verify gate.** Every AACS unit read off the disc is now
+  buffered, re-aligned to its clip-file 6144-byte unit grid, and verified
+  (CPI flag → decrypt → strict all-32 TS-sync, matching libaacs `_verify_ts`)
+  before it is signed off as good. A unit that neither a held nor a
+  freshly-fetched key decrypts is treated exactly like a bad read — re-read by
+  the patch pass, terminal loss only if truly unrecoverable — closing the
+  "silent bad read" class where a sector reads OK but its ciphertext is subtly
+  wrong. **Fail-safe:** it only ever downgrades a unit it is *confident* is bad;
+  every uncertainty (no keys, a merely-missing key, an unread/zero-filled sector,
+  a non-AACS disc) leaves the read byte-for-byte as before. Gated by a
+  compile-time kill-switch (`POST_READ_VERIFY`), and container-pluggable (BD/UHD
+  transport stream today, with an HD-DVD program-stream seam in place).
+- **Every error is now `Error: E<code> <message>`, with an Error Codes
+  reference.** User-facing errors show their code so you can look it up, and a
+  new **Error Codes** page lists every code with its message, cause, and next
+  steps. A contract test guarantees every error variant has a code, a message in
+  all seven languages, and a Codes-page entry. Messages are source-agnostic
+  ("key source", never a specific database).
+
+### Changed
+
+- **AACS decrypt acceptance is now standards-strict.** A key is accepted only
+  when the decrypted unit has the TS sync byte on *all* 32 source packets
+  (libaacs `_verify_ts`), replacing a majority-vote heuristic where a wrong key
+  could coincidentally restore enough syncs to pass and silently corrupt a unit.
+- keydb download/save moved out of the library into freemkv-keysources;
+  libfreemkv no longer has any keydb I/O (it already held no keys).
 
 ### Fixed
 
-- **Major overhaul of DVD processing.** freemkv's DVD title and VOB
-  sector mapping was reworked from the ground up. The most visible result:
-  rips now begin at the *feature* instead of several minutes of the disc's
-  menu. On discs that author a per-title menu (for example a studio "the
-  parental level has been set" prompt), freemkv had been prepending that
-  entire menu segment to the front of the feature; rips now open on the
-  feature's first frame.
+- **AACS content-certificate bus-encryption flag read from the wrong bit.** The
+  flag is bit 7 of byte 1 (libaacs `p[1] >> 7`) but was read as bit 0, so a
+  bus-encrypted disc parsed as *not* bus-encrypted — defeating the fail-loud
+  guard that refuses to decrypt bus-wrapped data to garbage when no bus key was
+  obtained. Also corrected the cc_id offset (byte 14) and the AACS2 type marker
+  (`0x10`). Confirmed against real retail content certificates.
+
+- **DVD rips now start on the movie, not the disc menu.** A VTS title VOB's
+  start sector was read from the IFO as a VTS-relative pointer but used as an
+  absolute disc address, so a DVD title's read extents began `ifo_lba` sectors
+  too early — the rip opened on the disc's menu / VMGI region and only drifted
+  into the feature minutes later (Silence of the Lambs, for example, showed
+  several minutes of the main menu before the movie). The title VOB is now
+  rebased to its absolute on-disc location, so the rip begins at the first frame
+  of the feature. Aspect ratio and chapter timing were already correct; only the
+  starting sector was wrong. (Covered by a new absolute-placement regression
+  test.)
+- **Container metadata correctness.** Unknown colorimetry now emits the CICP
+  "unspecified" code point (2) consistently across the MKV track and the FVI
+  sidecar (previously 0); PGS subtitle wipes use the NORMAL composition state
+  rather than a full epoch reset; and FVI source-byte offsets are written
+  within-sector per the format spec.
+- **Multi-extent AACS alignment in `dir://` extraction.** AACS encrypts in
+  aligned units of 3 sectors (6 KiB), and the decrypt-on-read gate accepts a read
+  only when its LBA is unit-aligned against a base. The `dir://` file-tree
+  extractor set that base once, to the file's first extent. A fragmented file
+  (Long-AD / continuation-ICB allocation) has later extents starting at arbitrary
+  LBAs whose distance from the first extent is generally not a multiple of 3
+  sectors, so the first read of every later extent failed the gate, returned a
+  decrypt error, and the whole extent was written as a zero-filled hole — even
+  though the sectors were readable. The unit base is now re-anchored per extent
+  (matching the mux read paths), so each extent gates on its own unit grid.
+  Decryption math is unchanged. Same class as the rc.5.2 clip-anchor fix.
+- **Distinct "no key" reasons.** When AACS key resolution has usable material
+  (device or processing keys) but cannot obtain the disc's Volume ID — needed to
+  derive the unit key — freemkv now reports a distinct "AACS Volume ID
+  unavailable" error (E7017) instead of collapsing it into the generic "no key"
+  error (E7022), which is now reserved for a genuine absence of any key material.
+  No key derivation or descramble logic changed — only the reason reported on a
+  resolution failure.
+- **autorip keydb writes go to the right path.** Auto-download, daily refresh,
+  the "Update KEYDB" button, and the startup existence-check now resolve to the
+  service's config path (matching where reads look); they previously used the
+  CLI's executable-local default.
+- **Crash-safety hardening** in `dir://` extraction and keydb writes (fsync of
+  files and parent directories around rename).
+- **Windows-reserved filenames** (`CON`, `NUL`, `COM1`…) inside a disc's file
+  tree are safely renamed on extraction instead of aborting the walk.
 - **`--version` now matches the build stamped into MKVs.** The CLI's `--version`
   string and the `MuxingApp` / `WritingApp` fields written into every MKV now
   derive from a single libfreemkv constant — the package version plus the git
@@ -69,45 +113,11 @@ targeted DTS-HD MA and TrueHD edge cases.
   source PES timing lagged the audio access-unit cadence, the muxed decode
   timestamp could regress (non-monotonic-DTS warnings to the muxer); the running
   timestamp is now clamped so it never goes backward.
-- **`update-keys --keydb <path>` is honored.** Passing an explicit keydb path
-  now downloads to that path; previously it was ignored and the file always
-  landed in the default location.
-- **AACS reliability fixes.** On bus-encrypted discs the flag that says "this
-  needs a drive bus key" was read from the wrong bit, which could let a rip
-  proceed without the key and produce garbage instead of failing clearly — it is
-  now read per spec (confirmed against real discs). The check that accepts a
-  decryption key is also stricter, so a wrong key can no longer coincidentally
-  pass and corrupt a unit.
-- **autorip: ISO rips now require a complete disc image.** The "Max Acceptable
-  Main Movie Loss" tolerance is a muxed-output (MKV / M2TS) setting and is
-  ignored for an ISO rip — an ISO is captured whole or the rip stops, so a
-  leftover MKV tolerance can't quietly let an ISO accept loss.
-- **autorip: aborted rips can resume instead of starting over.** A rip that
-  stops because of unrecoverable loss keeps its progress and re-checks on the
-  next attempt (after cleaning the disc, raising the loss tolerance, or another
-  recovery pass) rather than discarding everything.
-- **autorip resume no longer races the muxer.** A staging directory that the
-  mux worker already owns is no longer offered for resume, so a manual resume
-  can't disturb a file the muxer is still reading.
-- **autorip progress is now two states: Good and Maybe — never more.** The live
-  rip card dropped the old `Feature` / `Cosmetic` / `No chance` / `Lost` chips.
-  **Good** is whatever has been read and verified clean; **Maybe** is everything
-  not yet good — pending, skipped, or not-yet-decryptable, all folded together,
-  because a later pass (or simply power-cycling a stuck drive) often still
-  recovers it. Nothing is declared "lost" while the rip is still running. Whether
-  a rip passes is decided only at the end, against your loss tolerance. The Maybe
-  chip shows whole-disc bytes but the *movie* time they cost, at millisecond
-  precision — so `Maybe 990 MB · 0:00` is 990 MB of extras with zero movie impact
-  (it passes), while `Maybe 12 KB · ~1 ms` is a few seconds-of-movie sectors that
-  a zero-loss setting will correctly reject.
 
-## 1.0.0
+### Tests
 
-First stable release of the freemkv toolchain. Consolidates the full 1.0
-release-candidate series (rc.1 through rc.5.3) into one stable baseline, with
-no functional change over rc.5.3. From here the `freemkv` CLI, the `libfreemkv`
-core library, and the `autorip` service ship as a set on a shared version
-number.
+- 58 new tests across the toolchain (AACS key resolution, the unlocker seam, the
+  key sources, DVD/CSS, `dir://` routing, and autorip keydb resolution).
 
 ## 1.0.0-rc.5.3
 
