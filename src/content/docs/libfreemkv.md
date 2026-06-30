@@ -9,7 +9,7 @@ sector-level retry, AACS/CSS decryption, and MKV muxing. The [CLI](/cli/) and
 embedding it; the [download page](/download/) covers the ready-to-run tools.
 
 - Source (authoritative): [github.com/freemkv/libfreemkv](https://github.com/freemkv/libfreemkv)
-- Crate: `libfreemkv` on [crates.io](https://crates.io/crates/libfreemkv)
+- Consumed by git tag
 - License: AGPL-3.0
 
 :::note[Authoritative API reference]

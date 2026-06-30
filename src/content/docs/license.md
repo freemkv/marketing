@@ -18,4 +18,4 @@ Every component is open source:
 
 - CLI and core library: [github.com/freemkv/freemkv](https://github.com/freemkv/freemkv)
 - All repositories: [github.com/freemkv](https://github.com/freemkv)
-- Published crate: [crates.io/crates/libfreemkv](https://crates.io/crates/libfreemkv)
+- Core library source: [github.com/freemkv/libfreemkv](https://github.com/freemkv/libfreemkv)

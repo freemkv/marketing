@@ -9,7 +9,7 @@ freemkv is a family of Rust crates. This page maps the pieces and links to the d
 
 The core engine. It owns the mapfile and multipass recovery model, sector-level retry, AACS and CSS decryption, and MKV muxing. Everything else consumes it.
 
-Published on [crates.io](https://crates.io/crates/libfreemkv). For current API signatures, see the source on [GitHub](https://github.com/freemkv/libfreemkv) — the generated docs on docs.rs can lag the latest source.
+Source on [GitHub](https://github.com/freemkv/libfreemkv) — the authoritative, current API. Consumed by git tag.
 
 See the [library overview](/libfreemkv/).
 
@@ -29,7 +29,7 @@ See the [autorip service](/autorip/). Published to GHCR at `ghcr.io/freemkv/auto
 
 Pluggable AACS key sources for libfreemkv: a key database file or an online key service. This is how [decryption keys](/decryption-keys/) reach the decryption pipeline.
 
-Published on [crates.io](https://crates.io/crates/freemkv-keysources).
+Source on [GitHub](https://github.com/freemkv/freemkv-keysources) — consumed by git tag.
 
 ## bdemu
 
