@@ -200,7 +200,7 @@ When a rip aborts on loss, the staging directory is preserved so you can review 
 
 The dashboard at `http://<host>:8080` shows each drive's current state and live progress (status, percentage, ETA, bad ranges). From it you can:
 
-- Scan, rip, verify, stop, and eject per drive.
+- Scan, rip, stop, and eject per drive.
 - Edit any [configuration](#configuration-reference) value in **Settings**.
 - Review held rips (when title matching needs confirmation) and pick the correct title, optionally via a TMDB search.
 - Inspect per-device logs and the system debug log.

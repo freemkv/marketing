@@ -82,7 +82,7 @@ freemkv is built to recover damaged discs, but behavior depends on the mode:
 
 Tips:
 
-- Run `freemkv verify disc://` for a read-only health check. It reports good / slow / recovered / bad sectors and exits non-zero on anything truly unrecoverable.
+- Use multipass mode (CLI `--multipass`, or autorip `max_retries ≥ 1`) to retry bad ranges — freemkv reports good / recovered / unrecoverable sectors as it goes.
 - In autorip, set `abort_on_lost_secs` above `0` to tolerate a bounded amount of main-movie loss rather than failing on a disc that can't be read perfectly.
 
 :::caution[Don't keep retrying a dying disc]

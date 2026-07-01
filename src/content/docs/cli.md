@@ -6,12 +6,12 @@ description: Every freemkv subcommand, flag, and stream URL.
 The `freemkv` binary has two forms:
 
 ```bash
-# Rip / remux: a source and a destination. No command word — the action is
-# implied by passing two URLs.
-freemkv <source> <destination> [flags]
+# Convert: a source and a destination. There is NO command word — the action
+# is the URL pair itself (rip a disc, convert an ISO to MKV, remux an m2ts…).
+freemkv <source-url> <dest-url> [flags]
 
 # Subcommand: the first argument is the command.
-freemkv <subcommand> [args]              # info, verify, remux, update-keys, version, help
+freemkv <subcommand> [args]              # info, update-keys, version, help
 ```
 
 A bare invocation prints usage and exits `2`.
@@ -151,21 +151,13 @@ freemkv info iso://Disc.iso
 | `-v, --verbose` | Add technical detail — AACS version + MKB version, and per-stream PIDs and audio sample rates. A handful of extra fields, not a flood; off by default to keep the listing scannable (turn it on when debugging a mux or AACS issue). |
 | `--share` | Capture the drive's profile to a zip and print a ready-to-paste GitHub issue for the community drive-compatibility database. On a **release build + interactive terminal**, freemkv then offers to submit it for you — a `[Y/n]` prompt (default **yes**) that posts the issue to GitHub if you accept. `--mask` redacts drive serials first. Nothing is sent unless you confirm at that prompt. |
 
-### verify — check disc health
+### Converting a file to MKV (no drive needed)
 
-Scans the main title and reports good / slow / recovered / bad sectors, with chapter + timestamp per damaged region. Writes nothing. **Exits `1` if any sector is unrecoverable** — scriptable as a pass/fail gate. Defaults to `disc://`.
-
-```bash
-freemkv verify
-```
-
-### remux — convert a file source to MKV (no drive needed)
-
-`remux` is the `<source> <destination>` form under a command word: it converts one file to another with no drive involved. The classic case is m2ts → MKV, but any file source (`m2ts://`, `iso://`) to a mux destination (`mkv://`, `m2ts://`) works. No subcommand word is actually required — a bare `<source> <destination>` does the same thing — but `freemkv remux` is accepted, and `freemkv remux` with no URLs prints remux help rather than erroring.
+There is **no `remux` command** — converting a file is just the `<source-url> <dest-url>` form with a file source. Any file source (`m2ts://`, `iso://`) to a mux destination (`mkv://`, `m2ts://`) works, no drive involved.
 
 ```bash
-freemkv remux m2ts://Movie.m2ts mkv://Movie.mkv     # remux a BD transport stream to MKV
-freemkv remux iso://Disc.iso mkv://Movie.mkv        # mux an ISO image to MKV
+freemkv m2ts://Movie.m2ts mkv://Movie.mkv       # convert a BD transport stream to MKV
+freemkv iso://Disc.iso -t 1 mkv://Movie.mkv     # convert an ISO's main title to MKV
 ```
 
 | Flag | Description |
@@ -231,6 +223,6 @@ Keys are never written to logs. One Ctrl-C halts a rip cleanly (tray unlocked, m
 | Code | Meaning |
 |---|---|
 | `0` | Success. |
-| `1` | Failed (rip / mux / scan error, bad flag, missing key) or `verify` found unrecoverable sectors. |
+| `1` | Failed (rip / mux / scan error, bad flag, missing key). |
 | `2` | No subcommand or URL (usage printed). |
 | `130` | Second Ctrl-C. |

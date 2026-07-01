@@ -130,9 +130,6 @@ freemkv iso://Disc.iso mkv://Movie.mkv
 
 See the [CLI reference](/cli/) for full options.
 
-To check a disc without writing anything, `freemkv verify` runs the read path read-only and
-reports health (good, slow, recovered, bad).
-
 ## Running it from autorip
 
 [autorip](/autorip/) performs the entire flow automatically on disc insert, with a
