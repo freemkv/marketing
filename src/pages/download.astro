@@ -155,6 +155,7 @@ const autoripPlatforms = [
             <span class="hero-version-label">Latest release</span>
             <span class="hero-version-num" data-latest-version>v1.2.0</span>
           </div>
+          <div class="hero-version-date" data-latest-date>July 1, 2026</div>
           <p class="hero-foot">Free &amp; open source · Linux, macOS &amp; Windows · Intel &amp; ARM</p>
         </div>
       </section>
@@ -430,13 +431,28 @@ const autoripPlatforms = [
           }
         }
 
-        function populate(tags) {
+        // Format an ISO date (release tag date) as e.g. "July 1, 2026".
+        function fmtDate(iso) {
+          if (!iso) return '';
+          var d = new Date(iso);
+          if (isNaN(d.getTime())) return '';
+          return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        function populate(tags, latestDate) {
           if (!tags || !tags.length) return;
-          // Auto-update the hero "Latest release" badge to the newest tag, so a
-          // new release shows up without editing this page.
+          // The baked static badge is ALREADY the latest release (the release
+          // script bakes it in), so the API call only VERIFIES it. Rewrite the
+          // text only when it genuinely differs — a no-op avoids the version/date
+          // "flash" on load when the static is already correct.
           document.querySelectorAll('[data-latest-version]').forEach(function (el) {
-            el.textContent = tags[0];
+            if (el.textContent !== tags[0]) el.textContent = tags[0];
           });
+          if (latestDate) {
+            document.querySelectorAll('[data-latest-date]').forEach(function (el) {
+              if (el.textContent !== latestDate) el.textContent = latestDate;
+            });
+          }
           // Populate every toolbar's picker (CLI + autorip). Each select
           // drives the same global applyVersion, so changing either one
           // rewrites all asset links across both sections.
@@ -459,7 +475,7 @@ const autoripPlatforms = [
             if (!raw) return null;
             var obj = JSON.parse(raw);
             if (!obj || (Date.now() - obj.t) > TTL_MS) return null;
-            return obj.tags;
+            return obj;
           } catch (e) { return null; }
         }
 
@@ -470,19 +486,21 @@ const autoripPlatforms = [
         fetch(API, { headers: { Accept: 'application/vnd.github+json' } })
           .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
           .then(function (rels) {
-            var tags = (rels || [])
-              .filter(function (r) { return !r.draft; })
-              .map(function (r) { return r.tag_name; });
-            if (!tags.length) { if (cached) populate(cached); return; }
+            var list = (rels || []).filter(function (r) { return !r.draft; });
+            var tags = list.map(function (r) { return r.tag_name; });
+            if (!tags.length) { if (cached) populate(cached.tags, cached.date); return; }
+            // The newest release's date (published_at, falling back to the tag's
+            // created_at) — shown under the version and backfilled into the cache.
+            var latestDate = fmtDate(list[0].published_at || list[0].created_at);
             try {
-              localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), tags: tags }));
+              localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), tags: tags, date: latestDate }));
             } catch (e) { /* private mode / quota, non-fatal */ }
-            populate(tags);
+            populate(tags, latestDate);
           })
           .catch(function () {
             // API failed (rate-limit, offline). Fall back to the cached list if
-            // present; otherwise the static badge + latest/download links stand.
-            if (cached) populate(cached);
+            // present; otherwise the static badge + date + latest/download links stand.
+            if (cached) populate(cached.tags, cached.date);
           });
       })();
 
@@ -748,6 +766,12 @@ const autoripPlatforms = [
       }
       .hero-version-num {
         font-weight: 800;
+        letter-spacing: 0.01em;
+      }
+      .hero-version-date {
+        margin-top: 0.4rem;
+        color: var(--muted);
+        font-size: 0.8rem;
         letter-spacing: 0.01em;
       }
       .hero-foot {
