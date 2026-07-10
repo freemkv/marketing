@@ -1,6 +1,6 @@
 ---
 title: How AACS Works (1.0 / 2.0 / 2.1)
-description: AACS is an encryption scheme, not a disc format. A reference for how it is applied across Blu-ray (AACS 1.0), 4K UHD (AACS 2.0 or 2.1, the forensic FMTS layer), and HD-DVD. The shared key hierarchy, the on-disc structures, and what is confirmed versus reverse-engineered.
+description: AACS is an encryption scheme, not a disc format. A reference for how it is applied across Blu-ray (AACS 1.0), 4K UHD (AACS 2.0 or 2.1, the forensic FMTS layer), and HD-DVD. The shared key hierarchy, the on-disc structures, and what is confirmed versus still under investigation.
 ---
 
 AACS (Advanced Access Content System) is an encryption scheme, not a disc format. It is the
@@ -15,15 +15,10 @@ anywhere. This page builds the reference from the disc up. It reads top to botto
 progression: first what all AACS versions share, then what each of 1.0, 2.0, and 2.1 adds on
 top.
 
-Every claim here is one of two kinds. Either it is confirmed evidence, meaning it is read or
-derived directly against real retail discs, or it is reverse-engineered, meaning it is a
-current working model and is flagged as such. Nothing in between is presented as fact.
-
-:::caution[Reverse-engineering in progress]
-The 2.1 sections are an active effort. Anything marked **Reverse-engineered** or
-**Unconfirmed** is a working model, not a specification, and it changes as we learn more.
-This page carries no key material or algorithm constants, only format and structure
-evidence. DVDs use CSS, not AACS. See [Decryption Keys](/decryption-keys/).
+:::caution[Work in progress]
+The AACS 2.1 / FMTS material here is an active investigation — a current working model, not a
+finished specification, and it changes as we learn more. It carries no key material or algorithm
+constants, only format and structure. DVDs use CSS, not AACS; see [Decryption Keys](/decryption-keys/).
 :::
 
 ## One scheme, several versions, several formats
@@ -451,7 +446,7 @@ Inside `MKB_RO.inf`, the change from 2.0 to 2.1 is best read at the record level
   which is a property of the selector rather than a per-disc number. This is the pool the
   selector indexes into during the Media Key derivation.
 - **`0x2d` is new: per-disc variant seed.** A smaller, structured record: the per-disc seed data
-  that feeds the derivation. It is the least reversed of the three. Call it structured per-disc
+  that feeds the derivation. It is the least understood of the three. Call it structured per-disc
   seed data.
 
 | Version | MKB records for the Media Key |
@@ -474,7 +469,7 @@ The **structure** is confirmed: which records exist, that they are 2.1-only, the
 shape, and the wrapped key-group table indexed by the selector. All of that is verified against
 real discs. What is still theory is the **derivation**: what those records do cryptographically,
 how a device's keys pick and unwrap its key group to reach the Media Key. That is the
-reverse-engineered Media Key Precursor model, and it has not been run end to end. The block is a
+Media Key Precursor model, and it has not been run end to end. The block is a
 test key database holding only per-disc VUKs, not device or processing keys, so there is no
 covering Processing Key to feed the chain and check against the `0x86` verify. Structure proven,
 derivation not yet executed.
@@ -519,7 +514,7 @@ The point of the Precursor step is that different device groups arrive at *diffe
 Keys for the same disc. That is the first of 2.1's two traitor-tracing layers: the key you can
 derive already narrows down which player group you belong to.
 
-:::note[Reverse-engineered]
+:::note[Working model]
 The model of the Precursor-to-Media-Key step is pinned against real variant MKBs. It has not
 yet been run end to end, for lack of a covering 2.1 Processing Key to test against the `0x86`
 verify. The record and field *sizing* is fixed against a retail 2.1 `MKB_RO.inf`: the
@@ -877,8 +872,7 @@ a clean single-variant stream.
 
 The internal layout is now settled: the key store holds one key per variant for each forensic
 segment, and the segment map ties every unit range to its group and its variant, so the routing
-from a unit to the right key is confirmed. The open questions, which are the
-reverse-engineering frontier:
+from a unit to the right key is confirmed. The open questions:
 
 1. The exact derivation of a usable segment key from that stored key material. The layout is
    known; the cryptographic step from the selected key material to a working key is not.
@@ -900,14 +894,14 @@ reverse-engineering frontier:
 | MKB record framing and record types `0x04` / `0x05` / `0x81` / `0x86` | **Confirmed** |
 | `0x05` Media Key Data: the Media Key wrapped once per subset, opened by that subset's PK | **Confirmed.** Implemented; every 2.0 disc decrypts through it |
 | `0x0c` replaces `0x05` on 2.1 in the same per-subset shape | **Confirmed. Structure, verified against real discs** |
-| That the `0x0c` value is a Media Key Precursor (not the final Media Key) | **Theory. Derivation, reverse-engineered** |
+| That the `0x0c` value is a Media Key Precursor (not the final Media Key) | **Theory. Derivation under investigation** |
 | MKB Type field to generation (`0x00041003` / `0x48141003` / `0x48151003`) | **Confirmed** against retail discs |
 | `IndividualSegment.tbl` format | **Confirmed.** Parses a retail disc |
 | 2.1 disc fingerprint: `AACS/` carries `IndividualSegment.tbl` + `SegmentKey00001.tbl` | **Confirmed** on retail 2.1 discs |
 | 2.1 variant records `0x0c` / `0x2d` / `0x2f` are exclusive to 2.1 (absent on 2.0) | **Confirmed. Structure, verified across a library of discs** |
 | MKB Type value and the variant records always agree (2.1 has both, 2.0 has neither) | **Confirmed. Structure, verified across a library of discs** |
 | The wrapped key-group table, indexed by the selector across the selector space | **Confirmed. Structure, verified against real discs** |
-| The Media Key Precursor step: how the records pick and unwrap a key group | **Theory. Derivation, reverse-engineered, not yet executed** (no covering Processing Key) |
+| The Media Key Precursor step: how the records pick and unwrap a key group | **Theory. Derivation under investigation, not yet executed** (no covering Processing Key) |
 | `0x2d` per-slot selection, nonce position, one field width | **Unconfirmed.** Needs a covering 2.1 key |
 | `SegmentKey.tbl` container: file header + one fixed-size record per selector value | **Confirmed** against retail discs |
 | A forensic unit is indistinguishable (CPI, sync state) from ordinary encrypted content; the segment map is the sole locator | **Confirmed. Measured** |
