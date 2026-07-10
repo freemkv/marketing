@@ -19,17 +19,22 @@ change in that cycle.
 
 ### Licensing
 
-- **Relicensed to the MIT License, from 1.3.1 onwards** — releases up to and
-  including 1.3.0 remain under AGPL-3.0. freemkv is an independent Rust
-  implementation of the standard, publicly documented disc formats and
-  cryptographic algorithms.
+- **Relicensed to the MIT License, from 1.3.1 onwards** (releases up to and
+  including 1.3.0 remain under AGPL-3.0). All code is an independent Rust
+  implementation of the public/standard disc formats and cryptographic
+  algorithms; comments that cross-referenced GPL/LGPL C projects (libdvdcss,
+  libaacs, libbluray, libdvdread, libdvdnav) were dropped, and the CSS content
+  cipher and the Stevenson title-key attack are attributed to their published
+  cryptanalysis rather than any particular software.
 
 ### Added
 
 - **Authoritative HD-DVD title composition** from the Advanced-Content playlist
   (`ADV_OBJ/VPLST000.XPL`): each title's clips, real duration, display name, and
-  chapters come from the disc's own playlist. A layer-break split composes into
-  one title with its two parts as clips (with title-time offsets).
+  chapters come from the disc's own playlist instead of a clip-name heuristic. A
+  layer-break split (`FEATURE_1`+`FEATURE_2`, `feature`/`feature_Divide`) composes
+  into ONE title with the two parts as clips and their title-time offsets. Falls
+  back to the clip-name heuristic when no playlist is present.
 
 ## 1.3.0 — 2026-07-08
 
