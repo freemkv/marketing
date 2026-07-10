@@ -15,17 +15,14 @@ The toolchain releases as a set: every component ships the same version
 number on each release, even when a given component has no functional
 change in that cycle.
 
-## 1.3.1 — 2026-07-10
+## 1.3.1
+
+<small>2026-07-10</small>
 
 ### Licensing
 
 - **Relicensed to the MIT License, from 1.3.1 onwards** (releases up to and
-  including 1.3.0 remain under AGPL-3.0). All code is an independent Rust
-  implementation of the public/standard disc formats and cryptographic
-  algorithms; comments that cross-referenced GPL/LGPL C projects (libdvdcss,
-  libaacs, libbluray, libdvdread, libdvdnav) were dropped, and the CSS content
-  cipher and the Stevenson title-key attack are attributed to their published
-  cryptanalysis rather than any particular software.
+  including 1.3.0 remain under AGPL-3.0).
 
 ### Added
 
@@ -36,7 +33,9 @@ change in that cycle.
   into ONE title with the two parts as clips and their title-time offsets. Falls
   back to the clip-name heuristic when no playlist is present.
 
-## 1.3.0 — 2026-07-08
+## 1.3.0
+
+<small>2026-07-08</small>
 
 ### Added
 
@@ -119,7 +118,9 @@ change in that cycle.
 - **Decrypt thread count is resolved once** and cached off the per-buffer hot
   path (the env var and `available_parallelism` are no longer probed per call).
 
-## 1.2.2 — 2026-07-04
+## 1.2.2
+
+<small>2026-07-04</small>
 
 ### Added
 
@@ -171,7 +172,9 @@ change in that cycle.
   can be cleared without restarting the container (the mover re-records any that
   are still genuinely failing on its next tick).
 
-## 1.2.1 — 2026-07-02
+## 1.2.1
+
+<small>2026-07-02</small>
 
 ### Fixed
 
@@ -191,7 +194,9 @@ change in that cycle.
   source DTS frames — valid framing, bad audio blocks — are passed through
   faithfully; freemkv never fabricates or drops audio it can't prove is bad.
 
-## 1.2.0 — 2026-07-01
+## 1.2.0
+
+<small>2026-07-01</small>
 
 ### Breaking
 
@@ -670,7 +675,7 @@ consumers are the in-tree toolchain crates.
   `sync_all` so the flush succeeds on Windows, where `FlushFileBuffers`
   rejects a read-only handle with `ERROR_ACCESS_DENIED`.
 
-## 1.0.0-rc.4
+## 1.0.0-rc.4 — UNRELEASED
 
 An audit-driven round of correctness, durability, and Windows-transport
 fixes. No API changes; behavior is more conservative on damaged media and
