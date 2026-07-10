@@ -21,19 +21,21 @@ change in that cycle.
 
 ### Added
 
-- **Groundwork for AACS 2.1 (FMTS) variant decode.** The library now carries a
-  forensic-variant tag on each unit key (`0` for ordinary content, `1..=32` for
-  a variant) and the logic to resolve a disc's single variant and pick the
-  matching segments while dropping the others. This is the foundation for a
-  clean 2.1 rip that selects one variant; the full decode lands once a variant
-  key source is wired.
+- **AACS 2.1 (FMTS) variant-decode foundation.** `UnitKey` gains a
+  `variant_number` field (`0` = ordinary content, `1..=32` = a forensic
+  variant) with `UnitKey::new` / `UnitKey::variant` constructors, and a new
+  `aacs::variant_select` module resolves a disc's single forensic variant and
+  classifies each aligned unit — decrypt with the default key, decrypt with the
+  variant key, drop a foreign variant, or conceal a keyless forensic unit. This
+  is the groundwork for selecting one variant's segments and dropping the other
+  31; the decrypt-pipeline wiring lands with the variant key source.
 
 ### Fixed
 
-- **Corrected the AACS 2.1 segment map field**: the per-segment value in
-  `IndividualSegment.tbl` is the forensic *variant* (it cycles 1–32 across the
-  table on a retail disc), not a running segment number — so variant selection
-  now reads the right field.
+- **`IndividualSegment.tbl`: the per-record field is the variant, not a segment
+  number.** `Segment.number` → `Segment.variant`. Verified against a retail 2.1
+  disc, the field cycles `1..=32` across the table (a per-variant tag) rather
+  than counting up, so variant selection routes on the correct value.
 
 ## 1.3.1
 
