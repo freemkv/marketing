@@ -148,7 +148,7 @@ freemkv info iso://Disc.iso
 |---|---|
 | `-f, --full` | List every title (default: the first five, with a "+N more" footer). |
 | `-b, --basic` | Title rows only — omit the per-stream (video/audio/subtitle) detail. |
-| `-v, --verbose` | Add technical detail — AACS version + MKB version, and per-stream PIDs and audio sample rates. A handful of extra fields, not a flood; off by default to keep the listing scannable (turn it on when debugging a mux or AACS issue). |
+| `-v, --verbose` | Add technical detail — the drive, device, and disc region; the AACS generation (1.0 / 2.0 / 2.1) and MKB version; the disc hash and Volume ID; the resolved keys (Volume Unique Key and each CPS unit key); and per-stream PIDs (video, audio, **and subtitles**) with audio sample rates. Off by default to keep the listing scannable — turn it on when debugging a mux or AACS issue. |
 | `--share` | Capture the drive's profile to a zip and print a ready-to-paste GitHub issue for the community drive-compatibility database. On a **release build + interactive terminal**, freemkv then offers to submit it for you — a `[Y/n]` prompt (default **yes**) that posts the issue to GitHub if you accept. `--mask` redacts drive serials first. Nothing is sent unless you confirm at that prompt. |
 
 ### Converting a file to MKV (no drive needed)

@@ -85,6 +85,7 @@ export default defineConfig({
           label: 'Reference',
           items: [
             { label: 'Components', slug: 'components' },
+            { label: 'How AACS Works', slug: 'aacs' },
             { label: 'libfreemkv (library)', slug: 'libfreemkv' },
             { label: 'FVI Format', slug: 'fvi-format' },
             { label: 'Changelog', slug: 'changelog' },
