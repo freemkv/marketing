@@ -504,15 +504,15 @@ derivation not yet executed.
 <text class="l2" x="254" y="84" text-anchor="middle">walk</text>
 <rect class="b2" x="340" y="70" width="176" height="46" rx="8"/>
 <text class="t2" x="428" y="90" text-anchor="middle">Media Key Precursor</text>
-<text class="n2" x="428" y="106" text-anchor="middle">2.1 only</text>
+<text class="n2" x="428" y="106" text-anchor="middle">2.1 only · modeled</text>
 <line class="a2" x1="516" y1="93" x2="686" y2="93" marker-end="url(#ah2)"/>
 <text class="l2" x="601" y="72" text-anchor="middle">+ Variant Key Data</text>
 <text class="l2" x="601" y="86" text-anchor="middle">+ KCD constant</text>
 <rect class="b2" x="688" y="70" width="150" height="46" rx="8"/>
 <text class="t2" x="763" y="90" text-anchor="middle">Media Key</text>
 <text class="n2" x="763" y="106" text-anchor="middle">verified by 0x86</text>
-<path class="a2" d="M95 70 C95 30 428 30 428 24" fill="none" stroke-dasharray="4 4" marker-end="url(#ah2)"/>
-<text class="n2" x="260" y="20" text-anchor="middle">on 1.0 / 2.0 the walk yields the Media Key directly (no Precursor)</text>
+<path class="a2" d="M95 70 C95 24 763 24 763 66" fill="none" stroke-dasharray="4 4" marker-end="url(#ah2)"/>
+<text class="n2" x="429" y="18" text-anchor="middle">on 1.0 / 2.0 the walk yields the Media Key directly (no Precursor)</text>
 <line class="a2" x1="763" y1="116" x2="763" y2="150" marker-end="url(#ah2)"/>
 <text class="n2" x="763" y="170" text-anchor="middle">wrong derivation fails the verify,</text>
 <text class="n2" x="763" y="184" text-anchor="middle">never emits a bad key</text>
