@@ -569,14 +569,11 @@ slightly different ways. Only one variant is meant for any given player.
 
 :::note[A note on names]
 The terms here are grounded in what the disc itself calls things, not invented. **Segment Key**
-and **Individual Segment** are the disc's own terms: they are literally the on-disc filenames
-`SegmentKey00001.tbl` and `IndividualSegment.tbl`. The classical AACS name for this idea, tracing
-a leaker by varying the content itself, is **Sequence Keys** and the **Sequence Key Block (SKB)**,
-from AACS's pre-recorded video mechanism. Naming it once lets you connect the disc-level terms to
-the older AACS concept without overstating how much of that spec we have pinned. Keep the two
-vocabularies distinct: **Media Key Variant** (Layer 1, in the MKB, where "Variant" and "Variant
-Key Data" belong) versus **Segment Keys / Sequence Keys** (Layer 2, in the content). They are
-separate mechanisms that happen to meet at the 16-bit selector.
+and **Individual Segment** are the disc's own terms: the on-disc filenames `SegmentKey00001.tbl`
+and `IndividualSegment.tbl`. Keep the two 2.1 variant layers distinct: **Media Key Variant**
+(Layer 1, in the MKB, where "Variant" and "Variant Key Data" belong) versus the **segment keys**
+(Layer 2, in the content). They are not two separate secrets: both descend from the same Media
+Key Precursor, and they meet at the 16-bit selector.
 :::
 
 Two files in `AACS/` describe the segments, and only 2.1 discs have them.
@@ -598,11 +595,11 @@ Two files in `AACS/` describe the segments, and only 2.1 discs have them.
   against a constant, so the layout, and with it the size of the small key set each record
   carries, is the same on every 2.1 disc. That is the confirmed, structural half of the grouping
   model in [Where the sizes come from](#where-the-sizes-come-from): a device carries a handful of
-  sequence keys, not one per segment. How that key material maps onto the segments is now
+  variant keys, not one per segment. How that key material maps onto the segments is now
   confirmed too: within the store each forensic segment has its own set of keys, one key for each
   variant that segment is authored in, and a device uses the single key that matches its own
-  assigned variant. What is still open is the cryptographic step that turns that stored key
-  material into a usable key, and where a device's variant assignment comes from.
+  variant. What is still open is the cryptographic step that turns the Media Key Precursor and
+  this stored key material into a usable per-variant key.
 
 How a decoder *finds* the segments is worth stating, because it is not from the stream. A
 forensic unit carries the **same encryption signature** as any ordinary encrypted unit: the
@@ -648,7 +645,7 @@ The purpose of the segments is to watermark the leaker into the decoded *video*,
 keys. The bulk of the movie decrypts with the ordinary Unit Key and is identical on every
 copy of the title. The forensic segments are the exception: each needs a variant segment key,
 and any given licensed device can decrypt only one variant per segment. Which one is fixed by
-that device's keys, through the variant number the derivation below describes.
+that device's place in the key tree, through the per-variant derivation below.
 
 So every licensed device produces a subtly different decoded video. The movie is the same, but
 the specific variant chosen at each segment differs from device to device. That per-segment
@@ -666,39 +663,39 @@ what identifies the source.
 
 ### How the two forensic layers connect
 
-The two layers are joined by a single value: the variant number a player computes from its
-Sequence Keys. The AACS forensic system defines this directly. A player walks the disc's
-Sequence Key Block with its own Sequence Keys, the same style of subset-difference walk the MKB
-uses, and arrives at one variant number, its forensic identity for the disc. That number does
-two jobs. In Layer 1 it selects the player's entry in the MKB's 2.1-only variant data, which
-yields a variant media key. In Layer 2 the same number selects the player's per-segment keys in
-the content. One identity, produced once, drives both.
+The two layers are joined at the **Media Key Precursor**. The same Kmp the MKB walk yields for
+standard content is also the input to the variant branch: run through the 2.1 variant algorithm
+(the `0x2f` variant key data and the `0x2d` seed), it produces a **per-variant Media Key**. That
+per-variant Media Key is the shared root of both forensic layers. In Layer 1 it is the variant
+media key the MKB's 2.1-only variant records describe; in Layer 2 it cascades to a per-variant
+VUK and the per-segment keys in the content. One Precursor, one per-variant chain, driving both —
+there is no separate second secret and no separate block to walk.
 
-So the cross-layer link that otherwise has to be inferred from both tables being the same width
-is, in the scheme, a single variant number by construction. What is not yet demonstrated against
-real discs is the execution: no Sequence Keys are in hand to run the Sequence Key Block walk,
-and the exact step from the selected `SegmentKey00001.tbl` material to a working per-segment key
-is still open. The routing is spec-defined; the crypto has not been run end to end.
+Which variant a device lands on follows from its place in the subset-difference tree: its subset
+gives its Processing Key, its Processing Key gives its Kmp, and the variant branch off that Kmp
+is what fingerprints it. What is not yet demonstrated end to end is the crypto: with no covering
+Processing Key in hand, the exact algorithm from Kmp to the per-variant Media Key — and from the
+selected `SegmentKey00001.tbl` material to a working per-segment key — is still a working model.
 
 ### Where the sizes come from
 
 The interesting property of this scheme is that a device holds only a **small, fixed set of
-sequence keys**, yet that small set covers **all** the segments in a feature, and the on-disc
+variant keys**, yet that small set covers **all** the segments in a feature, and the on-disc
 key store is nonetheless enormous. Both facts follow from the same design, without needing any
 specific disc's numbers.
 
 Start from the segments. A title has some number of forensic segments. That count is an
 authoring choice, not a constant: more segments give finer-grained tracing. The size of a
 device's key set is the opposite, a constant fixed by the format: the per-device record has one
-layout on every 2.1 disc, so the number of sequence keys a device holds does not vary from title
+layout on every 2.1 disc, so the number of variant keys a device holds does not vary from title
 to title even as the segment count does. A device is not given one key per segment, that would
-not scale. Instead the segments are **partitioned into groups**, one group per sequence key the
+not scale. Instead the segments are **partitioned into groups**, one group per variant key the
 device holds, so the device's small key set covers every segment. Conceptually:
 
-> number of segments = (sequence keys per device) x (segments per group)
+> number of segments = (variant keys per device) x (segments per group)
 
 <figure>
-<svg viewBox="0 0 820 210" role="img" xmlns="http://www.w3.org/2000/svg" aria-label="Illustrative grouping: the forensic segments are partitioned into groups, one group per sequence key a device holds. A device's few keys together cover every segment. Not to scale.">
+<svg viewBox="0 0 820 210" role="img" xmlns="http://www.w3.org/2000/svg" aria-label="Illustrative grouping: the forensic segments are partitioned into groups, one group per variant key a device holds. A device's few keys together cover every segment. Not to scale.">
 <style>
 .gt{fill:currentColor;font:600 13px system-ui,sans-serif}
 .gc{fill:currentColor;font:12px system-ui,sans-serif;opacity:.75}
@@ -712,7 +709,7 @@ device holds, so the device's small key set covers every segment. Conceptually:
 <rect x="112" y="52" width="32" height="26" fill="#3ba55d" opacity="0.75"/>
 <rect x="148" y="52" width="32" height="26" fill="#3ba55d" opacity="0.75"/>
 <path class="gbr" stroke="#3ba55d" d="M40 88 L40 96 L180 96 L180 88"/>
-<text class="gk" x="110" y="114" text-anchor="middle" fill="#3ba55d">sequence key 1</text>
+<text class="gk" x="110" y="114" text-anchor="middle" fill="#3ba55d">variant key 1</text>
 </g>
 <g>
 <rect x="204" y="52" width="32" height="26" fill="#4c8dff" opacity="0.75"/>
@@ -720,7 +717,7 @@ device holds, so the device's small key set covers every segment. Conceptually:
 <rect x="276" y="52" width="32" height="26" fill="#4c8dff" opacity="0.75"/>
 <rect x="312" y="52" width="32" height="26" fill="#4c8dff" opacity="0.75"/>
 <path class="gbr" stroke="#4c8dff" d="M204 88 L204 96 L344 96 L344 88"/>
-<text class="gk" x="274" y="114" text-anchor="middle" fill="#4c8dff">sequence key 2</text>
+<text class="gk" x="274" y="114" text-anchor="middle" fill="#4c8dff">variant key 2</text>
 </g>
 <g>
 <rect x="368" y="52" width="32" height="26" fill="#f5a623" opacity="0.8"/>
@@ -728,7 +725,7 @@ device holds, so the device's small key set covers every segment. Conceptually:
 <rect x="440" y="52" width="32" height="26" fill="#f5a623" opacity="0.8"/>
 <rect x="476" y="52" width="32" height="26" fill="#f5a623" opacity="0.8"/>
 <path class="gbr" stroke="#f5a623" d="M368 88 L368 96 L508 96 L508 88"/>
-<text class="gk" x="438" y="114" text-anchor="middle" fill="#f5a623">sequence key 3</text>
+<text class="gk" x="438" y="114" text-anchor="middle" fill="#f5a623">variant key 3</text>
 </g>
 <g>
 <rect x="532" y="52" width="32" height="26" fill="#b36ae2" opacity="0.8"/>
@@ -736,7 +733,7 @@ device holds, so the device's small key set covers every segment. Conceptually:
 <rect x="604" y="52" width="32" height="26" fill="#b36ae2" opacity="0.8"/>
 <rect x="640" y="52" width="32" height="26" fill="#b36ae2" opacity="0.8"/>
 <path class="gbr" stroke="#b36ae2" d="M532 88 L532 96 L672 96 L672 88"/>
-<text class="gk" x="602" y="114" text-anchor="middle" fill="#b36ae2">sequence key 4</text>
+<text class="gk" x="602" y="114" text-anchor="middle" fill="#b36ae2">variant key 4</text>
 </g>
 <text class="gc" x="40" y="150">A device holds one key per group (four here). Its few keys together cover every segment.</text>
 <text class="gc" x="40" y="170">The disc stores a full key set for every possible device path, so the table dwarfs any one device's set.</text>
@@ -748,7 +745,7 @@ Now the on-disc key store. `SegmentKey.tbl` does not store one device's keys. It
 key set for **every possible device path**, one record per value of the selector, across the
 full selector space. So its size is not the per-device key count. Conceptually:
 
-> table size = (selector space) x (sequence keys per device)
+> table size = (selector space) x (variant keys per device)
 
 That is why the store is far larger than any one player needs. Every player reads only the one
 record its selector points at and holds only that set. Which set it holds is precisely its
@@ -763,31 +760,30 @@ Standard content needs only the **Unit Key**. A Unit Key can come from a Volume 
 which is what a key database supplies. No device keys are involved. That is why the bulk of a
 2.1 movie decodes with only a VUK: it is enough for everything outside the forensic segments.
 
-The forensic segments need more than a Processing Key. The player's variant number comes from a
-second secret set, the **Sequence Keys**, walked against the disc's Sequence Key Block, and
-turning that number into a usable variant media key also needs the **Processing Key** from the
-ordinary MKB walk. Both are AACS-issued player credentials, that is, a legitimate player's own
-secrets. A leaked VUK or Unit Key produces neither.
+The forensic segments need the **Media Key Precursor**. The per-variant keys branch off Kmp —
+run through the 2.1 variant algorithm — and reaching Kmp needs the **Processing Key** from the
+ordinary MKB walk, an AACS-issued player credential. A leaked VUK or Unit Key sits below the
+Media Key; it never reaches the Precursor, so it never reaches the variant branch.
 
 Two consequences follow, and they are the whole point of the design. First, the forensic layer
-cannot be bypassed with leaked disc keys alone. You need a real player's key sets, meaning an
+cannot be bypassed with leaked disc keys alone. You need a real player's device keys, meaning an
 actual player. Second, if you do rip with a real player's keys, the output carries that player's
 selection pattern, so the act of defeating the forensic layer is also the act of signing your
 name to the leak. Leaking disc keys does not defeat it. Leaking a player self-incriminates.
 
 This is also exactly why an end-to-end 2.1 decode is blocked with disc keys alone. A key
-database of VUKs, with neither a covering Processing Key nor the Sequence Keys, decodes the bulk
-of the movie but cannot derive the variant number or the variant media key that unlock the
-segments. The wall is not a missing algorithm, it is a missing class of key.
+database of VUKs, with no covering Processing Key, decodes the bulk of the movie but cannot run
+the Precursor's variant branch to the per-variant Media Key that unlocks the segments. The wall
+is not a missing algorithm, it is a missing class of key.
 
 ### How a segment key is derived
 
-Putting the whole chain in one place. This is the spec-defined answer to "how do you get a
-segment key." It is not one ladder but two, run in parallel and joined near the end. The AACS
-forensic system gives a licensed player a second secret independent of its Device Keys.
+Putting the whole chain in one place. This is the working-model answer to "how do you get a
+segment key," and it is one ladder, not two. The forensic keys branch off the **Media Key
+Precursor** — the same Kmp the MKB walk already produces for standard content.
 
 <figure>
-<svg viewBox="0 0 720 560" role="img" xmlns="http://www.w3.org/2000/svg" aria-label="The spec-defined forensic key derivation runs two player secrets in parallel. On the left, Device Keys walk the MKB to a Processing Key, which also yields the Media Key. On the right, Sequence Keys walk the Sequence Key Block to a variant number, the player's forensic identity. The two tracks converge: the variant number plus the Processing Key plus the MKB's 2.1 variant data give a variant media key; that key with the Volume ID and the SegmentKey table gives the segment key for this player's variant, which decrypts the forensic segment with the same cipher as ordinary content.">
+<svg viewBox="0 0 720 620" role="img" xmlns="http://www.w3.org/2000/svg" aria-label="One key ladder with a branch. Device Keys walk the MKB to the Processing Key and then the Media Key Precursor. The Precursor branches two ways. The standard branch goes Media Key, Volume Unique Key, Unit Key, ordinary content. The variant branch runs the Precursor through the 2.1 variant algorithm using the 0x2f variant key data and 0x2d seed to a per-variant Media Key, then a per-variant Volume Unique Key, a per-variant Unit Key, and decrypts the forensic segment with the same cipher as ordinary content. A VUK sits below the Media Key and reaches neither the Precursor nor the variant branch.">
 <defs>
 <marker id="ah3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
 <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
@@ -795,73 +791,83 @@ forensic system gives a licensed player a second secret independent of its Devic
 </defs>
 <style>
 .sbx{fill:none;stroke:currentColor;stroke-width:1.4}
-.sti{fill:currentColor;font:600 14px system-ui,sans-serif}
-.ssu{fill:currentColor;font:11.5px system-ui,sans-serif;opacity:.7}
+.sti{fill:currentColor;font:600 13.5px system-ui,sans-serif}
+.ssu{fill:currentColor;font:11px system-ui,sans-serif;opacity:.7}
 .sar{stroke:currentColor;stroke-width:1.4}
 .slb2{fill:currentColor;font:11px system-ui,sans-serif;opacity:.62}
 </style>
-<rect class="sbx" x="30" y="20" width="290" height="48" rx="8"/>
-<text class="sti" x="46" y="44">Device Keys</text>
-<text class="ssu" x="46" y="60">issued to a licensed player</text>
-<line class="sar" x1="175" y1="68" x2="175" y2="118" marker-end="url(#ah3)"/>
-<text class="slb2" x="185" y="97">walk the MKB</text>
-<rect class="sbx" x="30" y="118" width="290" height="48" rx="8"/>
-<text class="sti" x="46" y="142">Processing Key</text>
-<text class="ssu" x="46" y="158">also yields the Media Key</text>
-<rect class="sbx" x="400" y="20" width="290" height="48" rx="8"/>
-<text class="sti" x="416" y="44">Sequence Keys</text>
-<text class="ssu" x="416" y="60">a second, per-player secret set</text>
-<line class="sar" x1="545" y1="68" x2="545" y2="118" marker-end="url(#ah3)"/>
-<text class="slb2" x="535" y="97" text-anchor="end">walk the Sequence Key Block</text>
-<rect class="sbx" x="400" y="118" width="290" height="48" rx="8"/>
-<text class="sti" x="416" y="142">Variant Number</text>
-<text class="ssu" x="416" y="158">the player's forensic identity</text>
-<line class="sar" x1="175" y1="166" x2="300" y2="228" marker-end="url(#ah3)"/>
-<line class="sar" x1="545" y1="166" x2="420" y2="228" marker-end="url(#ah3)"/>
-<rect class="sbx" x="220" y="230" width="280" height="48" rx="8"/>
-<text class="sti" x="236" y="254">Variant Media Key</text>
-<text class="ssu" x="236" y="270">from the MKB's 2.1-only variant data</text>
-<line class="sar" x1="360" y1="278" x2="360" y2="330" marker-end="url(#ah3)"/>
-<text class="slb2" x="370" y="308">+ Volume ID + SegmentKey table</text>
-<rect class="sbx" x="220" y="330" width="280" height="48" rx="8"/>
-<text class="sti" x="236" y="354">Segment key for this variant</text>
-<text class="ssu" x="236" y="370">one variant per forensic segment</text>
-<line class="sar" x1="360" y1="378" x2="360" y2="430" marker-end="url(#ah3)"/>
-<text class="slb2" x="370" y="408">same cipher as ordinary content</text>
-<rect class="sbx" x="220" y="430" width="280" height="48" rx="8"/>
-<text class="sti" x="236" y="454">Decrypt the forensic segment</text>
-<text class="ssu" x="236" y="470">AES-CBC over the aligned unit</text>
+<rect class="sbx" x="210" y="16" width="300" height="44" rx="8"/>
+<text class="sti" x="360" y="35" text-anchor="middle">Device Keys</text>
+<text class="ssu" x="360" y="50" text-anchor="middle">issued to a licensed player</text>
+<line class="sar" x1="360" y1="60" x2="360" y2="96" marker-end="url(#ah3)"/>
+<text class="slb2" x="370" y="82">walk the MKB</text>
+<rect class="sbx" x="210" y="100" width="300" height="44" rx="8"/>
+<text class="sti" x="360" y="127" text-anchor="middle">Processing Key</text>
+<line class="sar" x1="360" y1="144" x2="360" y2="180" marker-end="url(#ah3)"/>
+<text class="slb2" x="370" y="166">read out the Precursor</text>
+<rect class="sbx" x="210" y="184" width="300" height="44" rx="8"/>
+<text class="sti" x="360" y="203" text-anchor="middle">Media Key Precursor (Kmp)</text>
+<text class="ssu" x="360" y="218" text-anchor="middle">2.1 only — the branch point</text>
+<line class="sar" x1="330" y1="228" x2="205" y2="286" marker-end="url(#ah3)"/>
+<text class="slb2" x="150" y="262" text-anchor="middle">standard</text>
+<line class="sar" x1="390" y1="228" x2="515" y2="286" marker-end="url(#ah3)"/>
+<text class="slb2" x="600" y="256" text-anchor="middle">variant branch:</text>
+<text class="slb2" x="600" y="270" text-anchor="middle">Kmp through the 0x2f / 0x2d algo</text>
+<rect class="sbx" x="50" y="290" width="250" height="44" rx="8"/>
+<text class="sti" x="175" y="317" text-anchor="middle">Media Key</text>
+<rect class="sbx" x="420" y="290" width="250" height="44" rx="8"/>
+<text class="sti" x="545" y="317" text-anchor="middle">per-variant Media Key</text>
+<line class="sar" x1="175" y1="334" x2="175" y2="368" marker-end="url(#ah3)"/>
+<line class="sar" x1="545" y1="334" x2="545" y2="368" marker-end="url(#ah3)"/>
+<rect class="sbx" x="50" y="372" width="250" height="44" rx="8"/>
+<text class="sti" x="175" y="399" text-anchor="middle">Volume Unique Key</text>
+<rect class="sbx" x="420" y="372" width="250" height="44" rx="8"/>
+<text class="sti" x="545" y="399" text-anchor="middle">per-variant VUK</text>
+<line class="sar" x1="175" y1="416" x2="175" y2="450" marker-end="url(#ah3)"/>
+<line class="sar" x1="545" y1="416" x2="545" y2="450" marker-end="url(#ah3)"/>
+<rect class="sbx" x="50" y="454" width="250" height="44" rx="8"/>
+<text class="sti" x="175" y="481" text-anchor="middle">Unit Key</text>
+<rect class="sbx" x="420" y="454" width="250" height="44" rx="8"/>
+<text class="sti" x="545" y="481" text-anchor="middle">per-variant Unit Key</text>
+<line class="sar" x1="175" y1="498" x2="175" y2="532" marker-end="url(#ah3)"/>
+<line class="sar" x1="545" y1="498" x2="545" y2="532" marker-end="url(#ah3)"/>
+<rect class="sbx" x="50" y="536" width="250" height="48" rx="8"/>
+<text class="sti" x="175" y="558" text-anchor="middle">Ordinary content</text>
+<text class="ssu" x="175" y="573" text-anchor="middle">a VUK is enough to reach here</text>
+<rect class="sbx" x="420" y="536" width="250" height="48" rx="8"/>
+<text class="sti" x="545" y="558" text-anchor="middle">Decrypt the forensic segment</text>
+<text class="ssu" x="545" y="573" text-anchor="middle">same AES-CBC over the aligned unit</text>
 </svg>
-<figcaption><em>The AACS spec-defined derivation. Two independent player secrets, Device Keys and
-Sequence Keys, converge on a variant media key and then a segment key. The routing is spec;
-nothing here can run from a VUK, which reaches neither secret, and the final step to a usable
-per-segment key has not been executed end to end.</em></figcaption>
+<figcaption><em>The working model. One ladder: Device Keys walk the MKB to the Processing Key and
+the Media Key Precursor. Standard content descends the ordinary Media Key → VUK → Unit Key. The
+forensic segments branch off the same Precursor — through the 2.1 variant algorithm — into a
+per-variant Media Key → per-variant VUK → per-variant Unit Key. A VUK sits below the Media Key,
+so it reaches neither the Precursor nor the variant branch. The exact Precursor-to-variant step
+has not been run end to end.</em></figcaption>
 </figure>
 
-The pivot to notice is that **two separate player secrets are required, not one**. Device Keys
-drive the ordinary Media Key chain and yield the Processing Key. A second, independent set, the
-Sequence Keys, drives the forensic system: the player walks the disc's Sequence Key Block with
-its Sequence Keys and arrives at a single variant number, its forensic identity for this disc.
-Because Sequence Keys differ from player to player, different players reach different variant
-numbers. The variant number, combined with the Processing Key and the MKB's 2.1-only variant
-data, yields a variant media key, and a different variant number yields a different variant
-media key, hence a different variant decrypt. From that variant media key, the disc Volume ID,
-and the SegmentKey table, the device derives the per-segment key for its own variant. That chain
-settles who can and cannot reach a segment key:
+The pivot to notice is that there is **one player secret, not two**: the Device Keys. The
+forensic system does not add a second key set — it adds a branch off the Media Key Precursor. The
+ordinary walk takes DK → PK → Kmp and, for standard content, Kmp → Media Key → VUK → Unit Key.
+The variant branch takes the same Kmp and runs it through the 2.1 variant algorithm (the `0x2f`
+variant key data and `0x2d` seed) to a **per-variant Media Key**, then a per-variant VUK and a
+per-variant Unit Key. Because a device's Kmp depends on its place in the subset-difference tree,
+different devices arrive at different variants — which is exactly what fingerprints them. That
+chain settles who can and cannot reach a segment key:
 
-- A **licensed player** holds both key sets, so it walks both blocks, reaches its variant
-  number, and derives its own segment keys, one variant per segment, which is exactly what
+- A **licensed player** holds the Device Keys, so it walks to its Kmp and takes the variant
+  branch to its own per-variant keys, one variant per segment, which is exactly what
   fingerprints it.
-- Someone holding a player's **extracted Device and Sequence Keys** can do the same, and their
-  rip is fingerprinted too.
-- A ripper holding only a **VUK or Unit Key** cannot, because a VUK reaches neither the
-  Processing Key nor the variant number. It reaches the Unit Key and the standard content, and
-  stops there.
+- Someone holding a player's **extracted Device Keys** can do the same, and their rip is
+  fingerprinted too.
+- A ripper holding only a **VUK or Unit Key** cannot, because a VUK sits below the Media Key —
+  it never reaches the Precursor, so it never reaches the variant branch. It decrypts the
+  standard content and stops there.
 
-There is no disc-key shortcut. The route runs through two player-issued secrets: Device Keys to
-the Processing Key, and Sequence Keys to the variant number, before either can yield a variant
-media key and, from it, a segment key. Every 2.1 rip that clears the forensic layer walks that
-path, and walking it is what stamps the player's identity into the result.
+There is no disc-key shortcut. The route runs through the Processing Key and the Media Key
+Precursor, a player-issued credential, before the variant branch can yield a per-variant Media
+Key and, from it, a segment key. Every 2.1 rip that clears the forensic layer walks that path,
+and walking it is what stamps the player's identity into the result.
 
 This is also why a straight rip is not enough on 2.1. The ordinary keys yield a decoded
 stream, but decrypting a variant segment with the ordinary Unit Key produces garbage. On a
@@ -874,11 +880,11 @@ The internal layout is now settled: the key store holds one key per variant for 
 segment, and the segment map ties every unit range to its group and its variant, so the routing
 from a unit to the right key is confirmed. The open questions:
 
-1. The exact derivation of a usable segment key from that stored key material. The layout is
-   known; the cryptographic step from the selected key material to a working key is not.
-2. Where a device's variant assignment comes from, and whether the per-segment key set is one
-   unmarked base version plus a fixed number of forensic variants. Both are plausible readings,
-   not confirmed facts.
+1. The exact algorithm from the Media Key Precursor to the per-variant Media Key, and from the
+   selected `SegmentKey00001.tbl` material to a working per-segment key. The layout is known;
+   the cryptographic step is not.
+2. Whether the per-segment key set is one unmarked base version plus a fixed number of forensic
+   variants. A plausible reading, not a confirmed fact.
 3. How a decoder picks one coherent variant per segment and writes it back to a clean,
    single-variant stream.
 
@@ -888,7 +894,7 @@ from a unit to the right key is confirmed. The open questions:
 |---|---|
 | Key hierarchy (DK, PK, MK, VUK, UK) for 1.0 and 2.0 | **Confirmed.** Rips work end to end |
 | Standard 2.1 content: decodes with a Unit Key (from a VUK, no device keys) | **Confirmed.** Works today, bulk of the movie |
-| Forensic 2.1 segments: need a real player's Device Keys and Sequence Keys (variant number from the Sequence-Key walk, variant media key via the Processing Key) | **Confirmed** as the requirement. The wall: a keydb of VUKs reaches neither |
+| Forensic 2.1 segments: the per-variant keys branch off the Media Key Precursor (needs the Processing Key), which a VUK never reaches | **Confirmed** as the requirement. The wall: a keydb of VUKs stops at the Media Key |
 | CPI (byte 0) encrypted-unit test | **Confirmed** |
 | `Unit_Key_RO.inf` stride: 48 (1.0), 64 (2.x) | **Confirmed** |
 | MKB record framing and record types `0x04` / `0x05` / `0x81` / `0x86` | **Confirmed** |
@@ -911,11 +917,11 @@ from a unit to the right key is confirmed. The open questions:
 | The record payload is a small fixed key set, far fewer than the number of segments (the grouping); segment count is a per-disc authoring choice, the per-device key-set size is not | **Confirmed** |
 | The key store holds one key per variant for each forensic segment; a device uses the key matching its own variant | **Confirmed. Code-proven** |
 | The segment map ties each unit range to a segment group and a variant, not just to a location | **Confirmed. Code-proven** |
-| A licensed player holds two independent secrets: Device Keys (the Media Key chain) and Sequence Keys (the forensic system), which differ per player | **Spec.** AACS Sequence-Key system |
-| The player's variant number is produced by walking the disc's Sequence Key Block with its Sequence Keys; this is where the device's variant assignment comes from | **Spec.** Resolves the earlier open provenance question, not verified against our own discs |
-| The variant number selects the MKB's 2.1 variant data to derive a variant media key; a different number gives a different variant decrypt (traitor tracing) | **Spec** |
+| The forensic keys branch off the Media Key Precursor (Kmp), not a separate Sequence-Key secret | **Working model.** One player secret (Device Keys); no Sequence Keys / SKB |
+| A device's variant follows from its subset / Processing Key → its Media Key Precursor | **Working model.** Not run end to end |
+| The Precursor, run through the `0x2f` / `0x2d` variant algorithm, yields a per-variant Media Key; a different Kmp gives a different variant (traitor tracing) | **Working model** |
 | Content-key selection per unit: a normal unit uses the unit key (whole CPS unit), a forensic unit uses the segment key (one segment, the device's variant), both feeding the same per-unit cipher | **Confirmed / spec** |
-| Link between the layers: one variant number, from the Sequence-Key walk, drives both the MKB variant data and the SegmentKey selection | **Spec.** One identity by construction; not executed against our discs |
+| Link between the layers: one per-variant Media Key, from the Kmp variant branch, drives both the MKB variant data and the SegmentKey selection | **Working model.** Not executed against our discs |
 | The cryptographic derivation of a usable segment key from its stored key material | **Unknown.** Active work |
 | Whether the per-segment key set is one unmarked base version plus forensic variants | **Theory.** A plausible reading, not confirmed |
 | Variant selection back to a clean single-variant stream | **Unknown.** Active work |
