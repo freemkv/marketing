@@ -409,11 +409,20 @@ Everything from the Media Key down (VUK, Unit Keys, aligned units) is unchanged 
 between the Processing Key and the Media Key, and it adds a second forensic layer below the
 Unit Keys (the FMTS variant segments, covered next).
 
-On 1.0 and 2.0 the walk yields the Media Key directly. On 2.1 the same walk yields a **Media
-Key Precursor** instead. The final Media Key comes from combining that Precursor with
-disc-supplied Variant Key Data and a fixed algorithm constant named the **Key Correction Data
-(KCD)**. The `0x86` Verify record still gates the *final* Media Key, so a wrong derivation
-fails cleanly rather than emitting a bad key.
+On 1.0 and 2.0 the walk yields the Media Key directly, and that step is identical between the
+two. On 2.1 the same walk yields a **Media Key Precursor** instead: the device opens its subset's
+`0x0c` value with its Processing Key and folds in its media-key-**variant number**. The precursor
+is then corrected into the real Media Key using the disc's **Variant Key Data** (the `0x2f`
+table, picked by the selector) and a fixed algorithm constant, the **Key Correction Data (KCD)**.
+Even the *base*, non-variant 2.1 Media Key goes through this insert. The `0x86` Verify record
+still gates the *final* Media Key, so a wrong derivation fails cleanly rather than emitting a bad
+key.
+
+This is the only place 2.1 differs. Below the Media Key the ladder is **identical across all
+three generations** — Media Key → VUK → Unit Key → block key → content — down to just cosmetic
+differences (the `Unit_Key_RO.inf` stride, 48 on 1.0 versus 64 on 2.x, and the verify record,
+`0x81` versus `0x86`). 1.0 and 2.0 even share the Processing-Key-to-Media-Key step; 2.1 inserts
+exactly **one rung**, the precursor plus KCD, between the Processing Key and the Media Key.
 
 #### What 2.1 adds, concretely
 
@@ -811,8 +820,8 @@ Precursor** — the same Kmp the MKB walk already produces for standard content.
 <line class="sar" x1="330" y1="228" x2="205" y2="286" marker-end="url(#ah3)"/>
 <text class="slb2" x="150" y="262" text-anchor="middle">standard</text>
 <line class="sar" x1="390" y1="228" x2="515" y2="286" marker-end="url(#ah3)"/>
-<text class="slb2" x="600" y="256" text-anchor="middle">variant branch:</text>
-<text class="slb2" x="600" y="270" text-anchor="middle">Kmp through the 0x2f / 0x2d algo</text>
+<text class="slb2" x="600" y="256" text-anchor="middle">variant branch: fold in the variant no.,</text>
+<text class="slb2" x="600" y="270" text-anchor="middle">via 0x2f (VKD) + KCD</text>
 <rect class="sbx" x="50" y="290" width="250" height="44" rx="8"/>
 <text class="sti" x="175" y="317" text-anchor="middle">Media Key</text>
 <rect class="sbx" x="420" y="290" width="250" height="44" rx="8"/>
