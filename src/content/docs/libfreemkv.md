@@ -10,7 +10,7 @@ embedding it; the [download page](/download/) covers the ready-to-run tools.
 
 - Source (authoritative): [github.com/freemkv/libfreemkv](https://github.com/freemkv/libfreemkv)
 - Consumed by git tag
-- License: AGPL-3.0
+- License: MIT
 
 :::note[Authoritative API reference]
 This page is a high-level map. For exact, current signatures, read the source on
