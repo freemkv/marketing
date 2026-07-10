@@ -926,7 +926,7 @@ from a unit to the right key is confirmed. The open questions:
 | The record payload is a small fixed key set, far fewer than the number of segments (the grouping); segment count is a per-disc authoring choice, the per-device key-set size is not | **Confirmed** |
 | The key store holds one key per variant for each forensic segment; a device uses the key matching its own variant | **Confirmed. Code-proven** |
 | The segment map ties each unit range to a segment group and a variant, not just to a location | **Confirmed. Code-proven** |
-| The forensic keys branch off the Media Key Precursor (Kmp), not a separate Sequence-Key secret | **Working model.** One player secret (Device Keys); no Sequence Keys / SKB |
+| The forensic keys branch off the Media Key Precursor (Kmp), not a second player secret | **Working model.** One player secret: the Device Keys |
 | A device's variant follows from its subset / Processing Key → its Media Key Precursor | **Working model.** Not run end to end |
 | The Precursor, run through the `0x2f` / `0x2d` variant algorithm, yields a per-variant Media Key; a different Kmp gives a different variant (traitor tracing) | **Working model** |
 | Content-key selection per unit: a normal unit uses the unit key (whole CPS unit), a forensic unit uses the segment key (one segment, the device's variant), both feeding the same per-unit cipher | **Confirmed / spec** |
