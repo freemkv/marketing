@@ -15,6 +15,26 @@ The toolchain releases as a set: every component ships the same version
 number on each release, even when a given component has no functional
 change in that cycle.
 
+## 1.3.2
+
+<small>2026-07-10</small>
+
+### Added
+
+- **Groundwork for AACS 2.1 (FMTS) variant decode.** The library now carries a
+  forensic-variant tag on each unit key (`0` for ordinary content, `1..=32` for
+  a variant) and the logic to resolve a disc's single variant and pick the
+  matching segments while dropping the others. This is the foundation for a
+  clean 2.1 rip that selects one variant; the full decode lands once a variant
+  key source is wired.
+
+### Fixed
+
+- **Corrected the AACS 2.1 segment map field**: the per-segment value in
+  `IndividualSegment.tbl` is the forensic *variant* (it cycles 1–32 across the
+  table on a retail disc), not a running segment number — so variant selection
+  now reads the right field.
+
 ## 1.3.1
 
 <small>2026-07-10</small>

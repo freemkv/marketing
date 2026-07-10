@@ -589,10 +589,12 @@ Two files in `AACS/` describe the segments, and only 2.1 discs have them.
 
 - **`IndividualSegment.tbl`**, the segment map. **Confirmed** format, parsed against a retail disc: an
   8-byte header (`type`, a segment `count`, `record_size`), then that many fixed-size records,
-  each `{marker, segment_number, flag, start_spn, end_spn}`. The offsets are source-packet
-  numbers, so a byte offset is `spn * 192`. The number of segments is not fixed by the scheme.
-  It is an authoring choice: more segments means finer-grained tracing. The segments are spread
-  across the whole feature rather than clustered.
+  each `{marker, variant, flag, start_spn, end_spn}`. The `variant` field is the forensic-variant
+  tag, not a running index: measured on a retail disc it cycles `1, 2, …, 32, 1, 2, …` down the
+  table in file order — the records are grouped 32-to-a-cycle, one per variant. The offsets are
+  source-packet numbers, so a byte offset is `spn * 192`. The number of segments is not fixed by
+  the scheme. It is an authoring choice: more segments means finer-grained tracing. The segments
+  are spread across the whole feature rather than clustered.
 - **`SegmentKey00001.tbl`**, the per-segment variant keys. One per CPS unit, numbered. The
   container structure is **partly confirmed**: a small file header followed by a fixed-size
   record for every possible device path, one record for every value of the selector across the
