@@ -590,18 +590,22 @@ Two files in `AACS/` describe the segments, and only 2.1 discs have them.
 - **`IndividualSegment.tbl`**, the segment map. **Confirmed** format, parsed against a retail disc: an
   8-byte header (`type`, a segment `count`, `record_size`), then that many fixed-size records,
   each `{marker, variant, flag, start_spn, end_spn}`. The `variant` field is the forensic-variant
-  tag, not a running index: measured on a retail disc it cycles `1, 2, …, 32, 1, 2, …` down the
-  table in file order — the records are grouped 32-to-a-cycle, one per variant. The offsets are
+  tag, not a running index: measured on a retail 2.1 disc, **792 records of 16 bytes** with the
+  `variant` field cycling `1, 2, …, 32, 1, 2, …` down the table in file order — **25 groups (24
+  full cycles of 32 plus a final partial cycle of 24)**, one record per variant per cycle. Each
+  segment is a **2560-source-packet (~480 KB)** range; `start_spn` increases monotonically down
+  the table, the segments spread **~68 MB apart** across the ~54 GB feature. The offsets are
   source-packet numbers, so a byte offset is `spn * 192`. The number of segments is not fixed by
   the scheme. It is an authoring choice: more segments means finer-grained tracing. The segments
   are spread across the whole feature rather than clustered.
 - **`SegmentKey00001.tbl`**, the per-segment variant keys. One per CPS unit, numbered. The
-  container structure is **partly confirmed**: a small file header followed by a fixed-size
-  record for every possible device path, one record for every value of the selector across the
-  full selector space. The header ends in the record size and carries the selector-space field.
-  Each record opens with an identical sub-header, then a fixed-size payload of high-entropy
-  (encrypted) key material. That payload holds a **small fixed set of key values, far fewer than
-  the number of segments** in the feature. The record is a fixed-size structure defined by the
+  container structure is **confirmed by measurement**: an 8-byte header (a selector `count` and a
+  `record_size`) followed by one fixed-size record per value of the 16-bit selector. The header's
+  count field reads `0xffff`, a sentinel for the **full 65536-value selector space** — measured on
+  a retail 2.1 disc, **65536 records of 536 bytes each**, which the total file size confirms
+  exactly: `8 + 65536 × 536 = 35,127,304` bytes. A ~35 MB store. Each record opens with an 8-byte sub-header, then a fixed-size payload of
+  high-entropy (encrypted) key material: **33 sixteen-byte key slots**. That is a **small fixed
+  set (33), far fewer than the 792 segments** in the feature. The record is a fixed-size structure defined by the
   format, not a per-disc quantity: a decoder validates the table by checking its record size
   against a constant, so the layout, and with it the size of the small key set each record
   carries, is the same on every 2.1 disc. That is the confirmed, structural half of the grouping
