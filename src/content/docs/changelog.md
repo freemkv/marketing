@@ -21,26 +21,33 @@ change in that cycle.
 
 ### Fixed
 
-- **FMTS (AACS 2.1) forensic discs now mux cleanly.** A forensic segment interleaves
-  your device group's variant with a foreign group's at the aligned-unit level. The
-  mux decrypted only your half but left the foreign half in the stream as ciphertext,
-  trusting the demuxer to drop it — which instead tripped concealed-gap keyframe
-  resyncs that discarded good frames around every segment (visible playback glitches).
-  freemkv now reads **only your variant's units** (the segment map says which); the
-  foreign half is never read, decrypted, or muxed. On a 4K UHD test disc this took
-  concealed-gap resyncs from **349 → 0** and recovered ~2 GB of previously-dropped
-  frames.
-- **keydb device keys are no longer silently dropped on an uppercase `0X` hex
-  prefix.** Hex parsing is centralized and case-insensitive across the toolchain.
+- **FMTS (AACS 2.1) forensic discs now mux to a clean, single-variant stream.** A
+  forensic segment interleaves the local device group's variant with a foreign
+  group's at the aligned-unit level. The mux decrypted only our half but left the
+  foreign half in the buffer as ciphertext, on the assumption that the demuxer
+  "drops untouched ciphertext cleanly." It does not — a foreign unit's bytes hit a
+  tracked PID at the 192-byte stride, mis-parse, and trip the demux's concealed-gap
+  keyframe resync, which discards good frames of ours around every segment (visible
+  playback glitches). `AacsKeyMap::read_plan` now turns the map into the title's
+  read plan: every default / CPS unit, plus inside a forensic segment **only our
+  phase's units**. The foreign half is never read, decrypted, or handed to the
+  demux. On a retail 4K UHD title this took concealed-gap resyncs from **349 → 0**
+  and recovered ~2 GB of previously-dropped frames. Wired into **both** mux paths —
+  the file-backed highway (`build_iso_pipeline`) and the inline live-drive
+  `DiscStream` (`with_key_map`) — so single- and multi-pass FMTS rips are both clean.
 
 ### Changed
 
-- **All forensic keys are resolved before the rip.** autorip resolves the complete
-  FMTS forensic key map up front (fail-fast), honoring the **Capture Discs Without
-  Keys** setting.
-- **Library hardening.** Key-bearing types now redact their `Debug` output (no key
-  material can reach a log), the internal-only API surface was narrowed, and
-  duplicate methods were collapsed to one.
+- **Key-bearing types redact their `Debug` output.** Every type that carries key
+  material (device keys, processing keys, unit keys, media keys, VUKs, resolved
+  chains, CSS/AACS state, …) now prints a `<redacted>` marker instead of the bytes,
+  so no key can reach a log or panic message. Each is covered by a test asserting no
+  key byte appears.
+- **Hex parsing is centralized and case-insensitive.** A single set of canonical
+  `0x`/`0X`-tolerant hex→integer parsers replaces scattered ad-hoc parsing (this is
+  what silently dropped keydb device keys written with an uppercase `0X` prefix).
+- **Internal-only public surface narrowed to `pub(crate)`, and duplicate
+  `foo_with_X` methods collapsed to one** — no behavioral change, smaller API.
 
 ## 1.4.4
 
@@ -49,12 +56,22 @@ change in that cycle.
 ### Fixed
 
 - **Online key requests are no longer silently dropped on discs that yield few
-  sample units.** The online key source requires at least `MIN_SAMPLE_UNITS` (8)
-  encrypted-content samples — too few can match an incidental unit (a false positive,
-  most acute on AACS 2.1 forensic-variant content). autorip gathered only 4, so every
-  lookup was skipped before it reached the service and surfaced as "key service down."
-  autorip's sample count is now tied to `MIN_SAMPLE_UNITS` with a **compile-time
-  floor**, so it can never regress below the minimum again.
+  sample units.** The online key source refuses any request carrying fewer than
+  `MIN_SAMPLE_UNITS` (8) encrypted-content samples — too few can match an
+  incidental unit rather than the one asked about (a false positive, most acute on
+  AACS 2.1 forensic-variant content). autorip gathered only 4, so every online
+  lookup was skipped before it ever reached the key service and surfaced to the
+  user as "key service down." autorip's sample count is now tied to
+  `MIN_SAMPLE_UNITS` with a **compile-time floor**, so it can never regress below
+  the minimum again.
+
+### Changed
+
+- **The online request is assembled from a proven-sufficient sample set.** New
+  `DecodeSampleSet` (`libfreemkv::keysource`) wraps the content-unit samples and
+  can only be constructed with at least `MIN_SAMPLE_UNITS` of them — so an online
+  key request cannot be built from too few samples. The minimum is validated once,
+  at construction, rather than by a runtime check a caller could forget.
 
 ## 1.4.3
 
@@ -62,11 +79,21 @@ change in that cycle.
 
 ### Changed
 
-- **AACS 2.1 forensic-variant online lookups.** The online key reply is parsed as a
-  list — a single Unit Key for an ordinary disc, or the full ordered set for a
-  forensic-variant disc — and the query draws its sample from the canonical index-1
-  anchor segment. `MIN_SAMPLE_UNITS` now has a single definition in the base library,
-  shared by the online source and libfreemkv's own forensic query.
+- **`MIN_SAMPLE_UNITS` moved to the base crate.** The minimum sample count an
+  online key request must carry now has a single definition in
+  `libfreemkv::keysource`; `freemkv-keysources` re-exports it, so the online source
+  and libfreemkv's own forensic query size their requests from one shared value.
+- **The online unit-key reply is parsed as a list.** A response carries either a
+  single Unit Key (ordinary disc) or the full ordered set (an AACS 2.1
+  forensic-variant disc); the client accepts both and maps array position to
+  forensic index.
+
+### Added
+
+- **Forensic-variant online query samples the anchor segment.** On an AACS 2.1
+  forensic-variant disc the online key query draws its sample from the first
+  forensic segment (index 1) — one canonical, deterministic sample — instead of an
+  arbitrary segment.
 
 ## 1.4.2
 
