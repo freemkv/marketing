@@ -28,6 +28,46 @@ const docs = '/overview/';
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://freemkv.org/freemkv-icon.svg" />
+    <link rel="canonical" href="https://freemkv.org/" />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebSite',
+            '@id': 'https://freemkv.org/#website',
+            url: 'https://freemkv.org/',
+            name: 'freemkv',
+            description,
+            publisher: { '@id': 'https://freemkv.org/#org' },
+          },
+          {
+            '@type': 'Organization',
+            '@id': 'https://freemkv.org/#org',
+            name: 'freemkv',
+            url: 'https://freemkv.org/',
+            logo: 'https://freemkv.org/freemkv-icon.svg',
+            sameAs: ['https://github.com/freemkv'],
+          },
+          {
+            '@type': 'SoftwareApplication',
+            '@id': 'https://freemkv.org/#app',
+            name: 'freemkv',
+            description,
+            applicationCategory: 'MultimediaApplication',
+            operatingSystem: 'Linux, macOS, Windows',
+            processorRequirements: 'Intel, ARM',
+            url: 'https://freemkv.org/',
+            downloadUrl: 'https://freemkv.org/download/',
+            license: 'https://opensource.org/licenses/MIT',
+            isAccessibleForFree: true,
+            author: { '@id': 'https://freemkv.org/#org' },
+            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+          },
+        ],
+      })}
+    />
   </head>
   <body>
     <!-- ============ STICKY NAV ============ -->
@@ -68,11 +108,18 @@ const docs = '/overview/';
       <!-- ============ HERO ============ -->
       <section class="hero">
         <div class="hero-inner">
+          <p class="eyebrow">MIT&nbsp;Licensed · 100%&nbsp;Rust · Rip&nbsp;&amp;&nbsp;Mux</p>
           <img class="hero-logo" src="/freemkv-icon.svg" alt="freemkv" width="96" height="96" />
-          <h1 class="hero-title">Own your movies, not just the discs.</h1>
-          <p class="hero-tagline">
-            The open-source 4K&nbsp;UHD, Blu-ray &amp; DVD ripper.
-          </p>
+          <h1 class="hero-title">Own your <span class="hl">movies</span>, not just the&nbsp;discs.</h1>
+          <ul class="format-pills" aria-label="Supported disc formats">
+            <li class="fmt fmt-uhd">UHD</li>
+            <li class="fmt fmt-bd">BD</li>
+            <li class="fmt fmt-hddvd">HD&nbsp;DVD</li>
+            <li class="fmt fmt-dvd">DVD</li>
+          </ul>
+          <ul class="aacs-pills" aria-label="Supported AACS versions">
+            <li class="aacs">AACS 1.0, 2.0, &amp; 2.1</li>
+          </ul>
           <div class="cta-row">
             <a class="btn btn-primary" href={download}>Download latest release</a>
             <a class="btn btn-secondary" href={docs}>Read the docs</a>
@@ -96,7 +143,7 @@ const docs = '/overview/';
               </p>
             </article>
             <article class="card">
-              <h3>DVD, Blu-ray &amp; 4K&nbsp;UHD → MKV</h3>
+              <h3>Disc → MKV</h3>
               <p>
                 Mux every readable title to a standards-clean MKV: video, audio,
                 subtitles, chapters. DVDs (CSS) work out of the box; Blu-ray and 4K&nbsp;UHD
@@ -453,12 +500,68 @@ const docs = '/overview/';
         letter-spacing: -0.03em;
         margin: 0 0 0.75rem;
       }
-      .hero-tagline {
-        font-size: clamp(1.05rem, 3.2vw, 1.4rem);
+      .hero-title .hl {
+        background: linear-gradient(100deg, #0d9488 0%, #115e59 60%, #14b8a6 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+      .eyebrow {
+        display: block;
+        width: fit-content;
+        max-width: 100%;
+        margin: 0 auto 1.5rem;
+        padding: 0.4rem 1rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.6);
+        color: var(--slate);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .format-pills,
+      .aacs-pills {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0;
+      }
+      .format-pills {
+        margin: 1.25rem auto 0.6rem;
+      }
+      .aacs-pills {
+        margin: 0 auto 1.5rem;
+      }
+      .format-pills .fmt {
+        min-width: 5.5rem;
+        box-sizing: border-box;
+        text-align: center;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        padding: 0.3rem 0.75rem;
+        border-radius: 999px;
+        border: 1px solid;
+      }
+      /* Well-known disc-format colours: UHD black, Blu-ray blue, HD DVD red, DVD silver. */
+      .fmt-uhd   { color: #0f172a; background: rgba(15, 23, 42, 0.07);  border-color: rgba(15, 23, 42, 0.4); }
+      .fmt-bd    { color: #1d4ed8; background: rgba(37, 99, 235, 0.12); border-color: rgba(37, 99, 235, 0.4); }
+      .fmt-hddvd { color: #dc2626; background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.4); }
+      .fmt-dvd   { color: #64748b; background: rgba(100, 116, 139, 0.1); border-color: rgba(100, 116, 139, 0.4); }
+      .aacs-pills .aacs {
+        font-size: 0.72rem;
         font-weight: 600;
+        letter-spacing: 0.03em;
+        padding: 0.24rem 0.65rem;
+        border-radius: 999px;
         color: var(--teal-darker);
-        margin: 0 auto 1rem;
-        max-width: 32ch;
+        background: rgba(13, 148, 136, 0.09);
+        border: 1px solid rgba(13, 148, 136, 0.3);
       }
       .hero-sub {
         color: var(--slate);

@@ -14,6 +14,49 @@ export default defineConfig({
       head: [
         { tag: 'meta', attrs: { property: 'og:image', content: 'https://freemkv.org/freemkv-icon.svg' } },
         { tag: 'meta', attrs: { name: 'twitter:card', content: 'summary' } },
+        // Site-wide JSON-LD structured data — emitted into every docs page's
+        // <head> so search engines and agents get the WebSite + Organization +
+        // SoftwareApplication graph on any entry point. The custom landing page
+        // (src/pages/index.astro) injects the same graph itself.
+        {
+          tag: 'script',
+          attrs: { type: 'application/ld+json' },
+          content: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@graph': [
+              {
+                '@type': 'WebSite',
+                '@id': 'https://freemkv.org/#website',
+                url: 'https://freemkv.org/',
+                name: 'freemkv',
+                description:
+                  'MIT Rust toolchain that rips and muxes DVD, Blu-ray, and 4K UHD to MKV with AACS/CSS decryption and multi-pass bad-sector recovery.',
+                publisher: { '@id': 'https://freemkv.org/#org' },
+              },
+              {
+                '@type': 'Organization',
+                '@id': 'https://freemkv.org/#org',
+                name: 'freemkv',
+                url: 'https://freemkv.org/',
+                logo: 'https://freemkv.org/freemkv-icon.svg',
+                sameAs: ['https://github.com/freemkv'],
+              },
+              {
+                '@type': 'SoftwareApplication',
+                '@id': 'https://freemkv.org/#app',
+                name: 'freemkv',
+                applicationCategory: 'MultimediaApplication',
+                operatingSystem: 'Linux, macOS, Windows',
+                url: 'https://freemkv.org/',
+                downloadUrl: 'https://freemkv.org/download/',
+                license: 'https://opensource.org/licenses/MIT',
+                isAccessibleForFree: true,
+                author: { '@id': 'https://freemkv.org/#org' },
+                offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+              },
+            ],
+          }),
+        },
         // Default to the light theme on first visit (clean, neutral) — the
         // theme toggle still works and persists the user's choice thereafter.
         {

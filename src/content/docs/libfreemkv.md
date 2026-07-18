@@ -20,7 +20,7 @@ published crate and its generated docs can lag the latest source.
 
 ```toml
 [dependencies]
-libfreemkv = "1.0.0-rc.5.3"
+libfreemkv = "1.4.4"
 ```
 
 ## Design principles

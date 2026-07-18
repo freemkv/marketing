@@ -29,7 +29,8 @@ mechanisms only; obtaining keys is up to you.
 ## Online key service
 
 A third-party web service looks up keys for an inserted disc on demand, so you don't
-maintain a local file. Reach out on our support Discord for more information.
+maintain a local file — and it's generally much more compatible with AACS 2.0+ discs.
+<u>Reach out on our support Discord for more access information.</u>
 
 In **autorip**, enable the online key service and set its URL under **Settings**.
 See [autorip Service](/autorip/#keys).

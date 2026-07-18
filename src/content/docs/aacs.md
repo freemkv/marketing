@@ -603,18 +603,19 @@ Two files in `AACS/` describe the segments, and only 2.1 discs have them.
   `record_size`) followed by one fixed-size record per value of the 16-bit selector. The header's
   count field reads `0xffff`, a sentinel for the **full 65536-value selector space** — measured on
   a retail 2.1 disc, **65536 records of 536 bytes each**, which the total file size confirms
-  exactly: `8 + 65536 × 536 = 35,127,304` bytes. A ~35 MB store. Each record opens with an 8-byte sub-header, then a fixed-size payload of
-  high-entropy (encrypted) key material: **33 sixteen-byte key slots**. That is a **small fixed
-  set (33), far fewer than the 792 segments** in the feature. The record is a fixed-size structure defined by the
-  format, not a per-disc quantity: a decoder validates the table by checking its record size
-  against a constant, so the layout, and with it the size of the small key set each record
-  carries, is the same on every 2.1 disc. That is the confirmed, structural half of the grouping
-  model in [Where the sizes come from](#where-the-sizes-come-from): a device carries a handful of
-  variant keys, not one per segment. How that key material maps onto the segments is now
-  confirmed too: within the store each forensic segment has its own set of keys, one key for each
-  variant that segment is authored in, and a device uses the single key that matches its own
-  variant. What is still open is the cryptographic step that turns the Media Key Precursor and
-  this stored key material into a usable per-variant key.
+  exactly: `8 + 65536 × 536 = 35,127,304` bytes. A ~35 MB store. Each record opens with an 8-byte sub-header, then a 528-byte
+  payload of high-entropy (encrypted) key material. The record's *internal* layout is **not yet
+  reversed**; `528 = 33 × 16` suggests **33 sixteen-byte slots**, but that is an inference from the
+  size, not a parsed structure. Either way it is a **small fixed set, far fewer than the 792
+  segments** in the feature. The record size itself is a fixed structural constant — a decoder
+  validates the table by checking it against a constant — so it is the same on every 2.1 disc. That
+  is the confirmed, structural half of the grouping model in
+  [Where the sizes come from](#where-the-sizes-come-from): a device carries a handful of variant
+  keys, not one per segment. How that key material maps onto the segments is a **working model** —
+  within the store each forensic segment would carry a key per variant it is authored in, and a
+  device uses the one matching its variant — but that mapping, and the cryptographic step that turns
+  the Media Key Precursor and this stored material into a usable per-variant key, are both still
+  open.
 
 How a decoder *finds* the segments is worth stating, because it is not from the stream. A
 forensic unit carries the **same encryption signature** as any ordinary encrypted unit: the
@@ -653,6 +654,50 @@ differs from one play of the disc to the next. The key that derivation finally p
 not. For a fixed disc and a fixed unit the AES key is fixed, the same on every play, because
 the ciphertext on the disc is fixed and AES is deterministic. The obfuscation conceals how the
 key is reached, not the key itself.
+
+### Inside a segment: the interleave, confirmed by decode
+
+A note on terms first, because two different things both get called "variant" loosely. The
+**variant** proper is the AACS 2.1 Media Key Variant — a device's position in the 65536-value
+selector space (Layer 1, in the MKB), which decides *which set* of keys a device receives. That
+layer is not what a ripper touches. What the segment map deals with is the **index**: the `1..32`
+tag each `IndividualSegment.tbl` record carries, selecting one of **32 index keys**. All 32 index
+keys belong to a single variant, whose number is unknown and irrelevant to the decode.
+
+With a full set of the 32 index keys in hand, the inside of a segment can be read straight off
+the disc, and it is simpler than the ~35 MB key store suggests. Each `IndividualSegment.tbl`
+record spans **2560 source packets = 80 aligned units** (6144 bytes each). Those 80 units are not
+uniform: they **interleave in two stride-2 halves**, 40 units each. Applying the segment's index
+key — the key whose number equals the record's `index` tag — decrypts one half to a full, clean
+transport stream (sync `0x47` restored on all 32 packets of each unit). The other half belongs to a
+different device group's variant; freemkv never reads or decodes it — the segment map tells the
+reader which half is ours, so only our units are fetched, decrypted, and muxed. The index-1
+segment's units open under index key 1, the index-2 segment's under key 2, and so on as the tag
+cycles `1..32` down the map. The second interleaved half is not yet identified.
+
+Two facts fall out, both confirmed by decoding a retail disc:
+
+- The whole feature's forensic content is covered by **32 index keys plus the ordinary Unit
+  Key**: one index key per tag, reused across every segment that carries that tag, and the Unit
+  Key for the ~99% of the feature outside any segment. Measured, that is **40 of every segment's
+  80 units** decrypting cleanly under the tag's key, the other 40 belonging to the second half.
+- A plausible reading of the earlier 32-versus-33 question is 33 = 32 index keys + 1 base
+  (`528 = 33 × 16`). But that is an **inference from the record size**, not a parsed layout — the
+  528-byte record's internals are not yet reversed. What is proven is that **32 index keys**
+  (obtained from a key source, not derived on-disc) decode the segments; how they sit inside the
+  record is open.
+
+Because the tag alone picks the key, a decoder needs nothing from the stream to route a forensic
+unit. It reads the segment's `index` from `IndividualSegment.tbl`, applies index key = tag to the
+units the segment covers, and the Unit Key everywhere else — the same "map decides per unit" rule
+already described, now with the key selection pinned to a single field.
+
+What is confirmed here is the **structure and the mapping**: given the 32 index keys, precisely
+which units open under which key, verified to full transport-stream sync on a retail disc and
+cross-checked against an independent key source that returns the same 32 keys from verified
+samples. What is still a working model is the **derivation** of those keys from
+`SegmentKey00001.tbl` and the Media Key Precursor — the open crypto step noted above — and the
+makeup of the second interleaved half.
 
 ### Why the forensic layer exists
 
@@ -891,17 +936,21 @@ real 2.1 disc that shows up as HEVC reference-frame errors
 means decrypting each segment with its segment key and splicing one coherent variant back into
 a clean single-variant stream.
 
-The internal layout is now settled: the key store holds one key per variant for each forensic
-segment, and the segment map ties every unit range to its group and its variant, so the routing
-from a unit to the right key is confirmed. The open questions:
+The container and the routing are settled: the segment map ties every unit range to its forensic
+index tag, and with the 32 index keys in hand the routing from a unit to the right key is confirmed
+and code-proven. The 528-byte `SegmentKey` record's *internal* layout is **not yet reversed** — that
+a record holds 33 sixteen-byte slots is an inference (`528 = 33 × 16`), not a parsed fact. The open
+questions:
 
 1. The exact algorithm from the Media Key Precursor to the per-variant Media Key, and from the
    selected `SegmentKey00001.tbl` material to a working per-segment key. The layout is known;
    the cryptographic step is not.
 2. Whether the per-segment key set is one unmarked base version plus a fixed number of forensic
    variants. A plausible reading, not a confirmed fact.
-3. How a decoder picks one coherent variant per segment and writes it back to a clean,
-   single-variant stream.
+3. *(Resolved on the decode side.)* Writing one coherent variant per segment back to a clean,
+   single-variant stream: freemkv reads only its own variant's units — the segment map says which —
+   so the alternate variant is never read or decoded and the output is clean. The remaining open
+   step is the on-disc key derivation in (1).
 
 ## Confirmed versus theorized
 
@@ -928,9 +977,9 @@ from a unit to the right key is confirmed. The open questions:
 | A forensic unit is indistinguishable (CPI, sync state) from ordinary encrypted content; the segment map is the sole locator | **Confirmed. Measured** |
 | Normal and forensic units share one decrypt path: the same AES-CBC over the same aligned unit, differing only in the key source (unit key vs segment key), routed per unit by the segment map | **Confirmed. Measured** |
 | The per-unit content key is deterministic: a fixed function of (disc, unit), reproducible across plays, even though the derivation is obfuscated | **Confirmed. Measured** |
-| The `SegmentKey` per-device record is a fixed-size structure defined by the format (record size checked against a constant), so the per-device key-set size is a scheme constant, identical across 2.1 discs | **Confirmed. Code-proven** |
+| The `SegmentKey` per-device record is a fixed-size structure defined by the format (record size checked against a constant), identical across 2.1 discs | **Confirmed. Code-proven** (container + record size). The record's internal key-set size is inferred (528 = 33 × 16), not parsed |
 | The record payload is a small fixed key set, far fewer than the number of segments (the grouping); segment count is a per-disc authoring choice, the per-device key-set size is not | **Confirmed** |
-| The key store holds one key per variant for each forensic segment; a device uses the key matching its own variant | **Confirmed. Code-proven** |
+| The key store holds one key per variant for each forensic segment; a device uses the key matching its own variant | **Inferred.** The container geometry is measured, but the 528-byte record's internal key layout is not yet reversed |
 | The segment map ties each unit range to a segment group and a variant, not just to a location | **Confirmed. Code-proven** |
 | The forensic keys branch off the Media Key Precursor (Kmp), not a second player secret | **Working model.** One player secret: the Device Keys |
 | A device's variant follows from its subset / Processing Key → its Media Key Precursor | **Working model.** Not run end to end |
@@ -939,4 +988,4 @@ from a unit to the right key is confirmed. The open questions:
 | Link between the layers: one per-variant Media Key, from the Kmp variant branch, drives both the MKB variant data and the SegmentKey selection | **Working model.** Not executed against our discs |
 | The cryptographic derivation of a usable segment key from its stored key material | **Unknown.** Active work |
 | Whether the per-segment key set is one unmarked base version plus forensic variants | **Theory.** A plausible reading, not confirmed |
-| Variant selection back to a clean single-variant stream | **Unknown.** Active work |
+| Variant selection back to a clean single-variant stream | **Confirmed.** freemkv reads only its own variant's units (the segment map decides which); the alternate variant is never read or decoded, so the muxed output is a clean, single-variant stream — verified on retail 2.1 discs |

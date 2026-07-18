@@ -15,6 +15,59 @@ The toolchain releases as a set: every component ships the same version
 number on each release, even when a given component has no functional
 change in that cycle.
 
+## 1.4.5
+
+<small>2026-07-18</small>
+
+### Fixed
+
+- **FMTS (AACS 2.1) forensic discs now mux cleanly.** A forensic segment interleaves
+  your device group's variant with a foreign group's at the aligned-unit level. The
+  mux decrypted only your half but left the foreign half in the stream as ciphertext,
+  trusting the demuxer to drop it — which instead tripped concealed-gap keyframe
+  resyncs that discarded good frames around every segment (visible playback glitches).
+  freemkv now reads **only your variant's units** (the segment map says which); the
+  foreign half is never read, decrypted, or muxed. On a 4K UHD test disc this took
+  concealed-gap resyncs from **349 → 0** and recovered ~2 GB of previously-dropped
+  frames.
+- **keydb device keys are no longer silently dropped on an uppercase `0X` hex
+  prefix.** Hex parsing is centralized and case-insensitive across the toolchain.
+
+### Changed
+
+- **All forensic keys are resolved before the rip.** autorip resolves the complete
+  FMTS forensic key map up front (fail-fast), honoring the **Capture Discs Without
+  Keys** setting.
+- **Library hardening.** Key-bearing types now redact their `Debug` output (no key
+  material can reach a log), the internal-only API surface was narrowed, and
+  duplicate methods were collapsed to one.
+
+## 1.4.4
+
+<small>2026-07-17</small>
+
+### Fixed
+
+- **Online key requests are no longer silently dropped on discs that yield few
+  sample units.** The online key source requires at least `MIN_SAMPLE_UNITS` (8)
+  encrypted-content samples — too few can match an incidental unit (a false positive,
+  most acute on AACS 2.1 forensic-variant content). autorip gathered only 4, so every
+  lookup was skipped before it reached the service and surfaced as "key service down."
+  autorip's sample count is now tied to `MIN_SAMPLE_UNITS` with a **compile-time
+  floor**, so it can never regress below the minimum again.
+
+## 1.4.3
+
+<small>2026-07-17</small>
+
+### Changed
+
+- **AACS 2.1 forensic-variant online lookups.** The online key reply is parsed as a
+  list — a single Unit Key for an ordinary disc, or the full ordered set for a
+  forensic-variant disc — and the query draws its sample from the canonical index-1
+  anchor segment. `MIN_SAMPLE_UNITS` now has a single definition in the base library,
+  shared by the online source and libfreemkv's own forensic query.
+
 ## 1.4.2
 
 <small>2026-07-15</small>
