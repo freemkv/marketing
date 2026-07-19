@@ -80,13 +80,14 @@ freemkv iso://Movie.iso mp4://Movie.mp4 -t 1
 
 **MP4 is a compatibility export, not the archival path — use `mkv://` to keep
 everything.** MP4 can only carry codecs it has a mapping for, so freemkv muxes the
-video (HEVC / H.264, with HDR10 colour signalling) plus every Dolby audio track
-(AC-3, E-AC-3 / DD+ incl. Atmos), and **leaves out — loudly, never silently —**
-what MP4 can't hold: lossless **TrueHD** and **DTS-HD MA** audio, and **PGS /
-VobSub** bitmap subtitles (MP4 subtitles are text-only). freemkv prints exactly
-which tracks were excluded and why before it muxes. If a title has *no*
+video (HEVC / H.264, with HDR10 colour signalling) plus the audio MP4 supports —
+**AC-3, E-AC-3 / DD+** (incl. Atmos) and **DTS / DTS-HD** — and **leaves out —
+loudly, never silently —** what MP4 can't hold: lossless **TrueHD**, **LPCM**, and
+**PGS / VobSub** bitmap subtitles (MP4 subtitles are text-only). freemkv prints
+exactly which tracks were excluded and why before it muxes. If a title has *no*
 MP4-compatible video at all (e.g. a VC-1 or MPEG-2 disc), the mux fails rather
-than writing a broken file.
+than writing a broken file. Output is **faststart** (the index is written first,
+so it streams over HTTP without a pre-fetch).
 
 **As a source**, `mp4://` reads a progressive MP4 back into the pipeline, so it
 flows to any destination — convert an MP4 to MKV, re-extract its tracks, or dump

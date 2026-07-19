@@ -24,13 +24,15 @@ change in that cycle.
 - **Native MP4, both directions (`mp4://`).** A progressive ISO-BMFF muxer *and*
   demuxer. As output, a disc goes straight to a play-everywhere `.mp4` in one
   decrypt pass — no ffmpeg round-trip — carrying HEVC / H.264 video (with HDR10
-  colour) and the Dolby audio family (AC-3, E-AC-3 / DD+). MP4 is a
-  **compatibility export, not archival**: it can't hold TrueHD, DTS-HD MA, or
-  bitmap subtitles, so those are excluded with a **loud, itemized report — never a
-  silent drop** (`mkv://` stays the keep-everything path). As input, `mp4://`
-  reads a progressive MP4 back into the pipeline, so `mp4:// mkv://` converts with
-  no re-encode and `mp4://` flows to every other sink. Verified frame-for-frame
-  equivalent to `ffmpeg -c copy`, and round-trip frame-exact.
+  colour) and the audio MP4 supports (AC-3, E-AC-3 / DD+, DTS / DTS-HD). Output is
+  **faststart** (index first, so it streams over HTTP). MP4 is a **compatibility
+  export, not archival**: it can't hold TrueHD, LPCM, or bitmap subtitles, so
+  those are excluded with a **loud, itemized report — never a silent drop**
+  (`mkv://` stays the keep-everything path). As input, `mp4://` reads a
+  progressive MP4 back into the pipeline, so `mp4:// mkv://` converts with no
+  re-encode and `mp4://` flows to every other sink. Verified frame-for-frame
+  equivalent to `ffmpeg -c copy` (incl. a real DTS-HD MA 7.1 track), and
+  round-trip frame-exact.
 - **Five extraction sinks — dissect a title, don't just rip it.** New destinations
   that each pull one facet of a title out on its own:
   - **`video://dir/`** — every video track to its own file, as a raw elementary
