@@ -25,7 +25,7 @@ Every source and destination is a `scheme://` URL.
 | `disc://` | ✓ | — | Optical drive (auto-detected; `disc:///dev/sg4` or `disc://D:` to target one) |
 | `mkv://path.mkv` | ✓ | ✓ | Matroska movie |
 | `m2ts://path.m2ts` | ✓ | ✓ | Blu-ray transport stream |
-| `mp4://path.mp4` | — | ✓ | MP4 (ISO-BMFF) — a play-everywhere compatibility export |
+| `mp4://path.mp4` | ✓ | ✓ | MP4 (ISO-BMFF) — read *or* write; a play-everywhere compatibility export |
 | `iso://path.iso` | ✓ | ✓ | Disc image |
 | `fvi://path.fvi` | — | ✓ | freemkv video index — a JSON-Lines, one-record-per-picture index file ([spec](/fvi-format/)) |
 | `demux://path/` | — | ✓ | Per-track elementary streams — a directory, one file per track |
@@ -87,6 +87,16 @@ VobSub** bitmap subtitles (MP4 subtitles are text-only). freemkv prints exactly
 which tracks were excluded and why before it muxes. If a title has *no*
 MP4-compatible video at all (e.g. a VC-1 or MPEG-2 disc), the mux fails rather
 than writing a broken file.
+
+**As a source**, `mp4://` reads a progressive MP4 back into the pipeline, so it
+flows to any destination — convert an MP4 to MKV, re-extract its tracks, or dump
+its metadata:
+
+```bash
+freemkv mp4://Movie.mp4 mkv://Movie.mkv     # MP4 → MKV, no re-encode
+freemkv mp4://Movie.mp4 audio://tracks/     # pull its audio back out
+freemkv mp4://Movie.mp4 json://Movie.json   # inspect its structure
+```
 
 ### iso://
 
