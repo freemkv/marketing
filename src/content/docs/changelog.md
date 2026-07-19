@@ -21,8 +21,11 @@ change in that cycle.
 
 ### Added
 
-- **Four extraction sinks — dissect a title, don't just rip it.** New destinations
+- **Five extraction sinks — dissect a title, don't just rip it.** New destinations
   that each pull one facet of a title out on its own:
+  - **`video://dir/`** — every video track to its own file, as a raw elementary
+    stream in the codec's native form (`.hevc`, `.h264`, `.vc1`, `.m2v`, `.obu`).
+    No audio, no subtitles.
   - **`audio://dir/`** — every audio track to its own file, in its native container
     (`.thd`, `.dts` / `.dtshd`, `.ac3`, `.eac3`, `.aac`, `.flac`). No video, no
     subtitles. BD/DVD LPCM, which has no container of its own, is written as
@@ -38,9 +41,10 @@ change in that cycle.
     purpose; subtitle codec / language / forced / qualifier), the clip list, and the
     chapter points.
 
-  `audio://` and `sub://` are the demux path with a track-**kind filter**;
-  `chapters://` and `json://` read none of the elementary streams (scan-only) and
-  return in seconds. All four are documented in the [CLI reference](/cli/).
+  `video://`, `audio://`, and `sub://` are the demux path with a track-**kind
+  filter**; `chapters://` and `json://` read none of the elementary streams
+  (scan-only) and return in seconds. All five are documented in the
+  [CLI reference](/cli/).
 - **`E7026`** now has a user-facing message in all seven locales (AACS 2.1 FMTS
   variant key missing) — previously the CLI showed the raw key path.
 

@@ -28,6 +28,7 @@ Every source and destination is a `scheme://` URL.
 | `iso://path.iso` | ✓ | ✓ | Disc image |
 | `fvi://path.fvi` | — | ✓ | freemkv video index — a JSON-Lines, one-record-per-picture index file ([spec](/fvi-format/)) |
 | `demux://path/` | — | ✓ | Per-track elementary streams — a directory, one file per track |
+| `video://path/` | — | ✓ | Video tracks only — a directory, one native elementary-stream file per track |
 | `audio://path/` | — | ✓ | Audio tracks only — a directory, one native-container file per track |
 | `sub://path/` | — | ✓ | Subtitle tracks only — a directory, one file (`.sup` / `.idx`+`.sub`) per track |
 | `chapters://path` | — | ✓ | Chapter markers for one title — a single file (`.xml` / `.txt` / `.vtt`) |
@@ -103,6 +104,17 @@ Extracts each track to its own **elementary-stream** file — video, audio, and 
 
 ```bash
 freemkv iso://disc.iso demux://out/
+```
+
+### video://
+
+`demux://` narrowed to **video only** — each video track to its own file in a
+directory, as a raw **elementary stream** in the codec's native form: `.hevc`,
+`.h264`, `.vc1`, `.m2v` (MPEG-2), `.obu` (AV1). No audio, no subtitles. Useful for
+stream analysis or feeding a re-encoder the exact bitstream off the disc.
+
+```bash
+freemkv iso://disc.iso video://tracks/     # e.g. tracks/Movie t00 HEVC.hevc
 ```
 
 ### audio://
