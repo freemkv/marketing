@@ -1,0 +1,30 @@
+---
+// Custom Head override: render Starlight's default <head> (title, description,
+// canonical, OG, the global SoftwareApplication graph from astro.config), then
+// add a per-page TechArticle JSON-LD so every docs page carries structured data
+// specific to that page — not just the site-wide app graph.
+import Default from '@astrojs/starlight/components/Head.astro';
+
+const route = Astro.locals.starlightRoute;
+const site = 'https://freemkv.org';
+const url = new URL(Astro.url.pathname, site).href;
+const title = route?.entry?.data?.title ?? 'freemkv';
+const description = route?.entry?.data?.description ?? '';
+
+const article = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  '@id': `${url}#article`,
+  headline: title,
+  name: title,
+  description,
+  url,
+  inLanguage: 'en',
+  isPartOf: { '@id': 'https://freemkv.org/#website' },
+  about: { '@id': 'https://freemkv.org/#app' },
+  publisher: { '@id': 'https://freemkv.org/#org' },
+};
+---
+
+<Default><slot /></Default>
+<script type="application/ld+json" set:html={JSON.stringify(article)} />

@@ -69,6 +69,8 @@ export default defineConfig({
       // Override the header social icons to add a live GitHub star count
       // (fetched client-side, cached in localStorage) next to the GitHub link.
       components: {
+        // Per-page TechArticle JSON-LD (extends the default <head>).
+        Head: './src/components/Head.astro',
         SocialIcons: './src/components/SocialIcons.astro',
       },
       // Generates /llms.txt (curated index) and /llms-full.txt (entire docs as one
