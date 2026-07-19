@@ -25,6 +25,7 @@ Every source and destination is a `scheme://` URL.
 | `disc://` | ✓ | — | Optical drive (auto-detected; `disc:///dev/sg4` or `disc://D:` to target one) |
 | `mkv://path.mkv` | ✓ | ✓ | Matroska movie |
 | `m2ts://path.m2ts` | ✓ | ✓ | Blu-ray transport stream |
+| `mp4://path.mp4` | — | ✓ | MP4 (ISO-BMFF) — a play-everywhere compatibility export |
 | `iso://path.iso` | ✓ | ✓ | Disc image |
 | `fvi://path.fvi` | — | ✓ | freemkv video index — a JSON-Lines, one-record-per-picture index file ([spec](/fvi-format/)) |
 | `demux://path/` | — | ✓ | Per-track elementary streams — a directory, one file per track |
@@ -65,6 +66,27 @@ freemkv disc:// mkv://out/ -t 1 -t 3     # → out/Greenland_t1.mkv, out/Greenla
 ### m2ts://
 
 Same as `mkv://`, but writes a Blu-ray transport stream — one file for a single title, or `<disc>_t<N>.m2ts` per title into a directory.
+
+### mp4://
+
+Writes a single self-contained **MP4** (ISO-BMFF) — the container that plays
+everywhere (browsers, phones, Apple devices, editors). Like `mkv://`, a single
+title goes to the file you name and multiple titles go to a directory as
+`<disc>_t<N>.mp4`.
+
+```bash
+freemkv iso://Movie.iso mp4://Movie.mp4 -t 1
+```
+
+**MP4 is a compatibility export, not the archival path — use `mkv://` to keep
+everything.** MP4 can only carry codecs it has a mapping for, so freemkv muxes the
+video (HEVC / H.264, with HDR10 colour signalling) plus every Dolby audio track
+(AC-3, E-AC-3 / DD+ incl. Atmos), and **leaves out — loudly, never silently —**
+what MP4 can't hold: lossless **TrueHD** and **DTS-HD MA** audio, and **PGS /
+VobSub** bitmap subtitles (MP4 subtitles are text-only). freemkv prints exactly
+which tracks were excluded and why before it muxes. If a title has *no*
+MP4-compatible video at all (e.g. a VC-1 or MPEG-2 disc), the mux fails rather
+than writing a broken file.
 
 ### iso://
 
