@@ -15,6 +15,35 @@ The toolchain releases as a set: every component ships the same version
 number on each release, even when a given component has no functional
 change in that cycle.
 
+## 1.5.0
+
+<small>Unreleased</small>
+
+### Added
+
+- **Four extraction sinks — dissect a title, don't just rip it.** New destinations
+  that each pull one facet of a title out on its own:
+  - **`audio://dir/`** — every audio track to its own file, in its native container
+    (`.thd`, `.dts` / `.dtshd`, `.ac3`, `.eac3`, `.aac`, `.flac`). No video, no
+    subtitles. BD/DVD LPCM, which has no container of its own, is written as
+    headerless big-endian `.pcm`.
+  - **`sub://dir/`** — every subtitle track to its own file: PGS as `.sup`, VobSub
+    as a paired `.idx` + `.sub`, text subtitles as `.srt`. No video, no audio.
+  - **`chapters://file`** — a title's chapter markers as a single sidecar, in the
+    format the output extension selects: `.xml` (Matroska), `.txt` / `.ogm` (OGM
+    simple), or `.vtt` (WebVTT).
+  - **`json://file`** — one title's complete structure as JSON: identity, duration
+    and size, every stream with full detail (video resolution / frame rate / HDR /
+    colour space / aspect; audio codec / channels / sample rate / language /
+    purpose; subtitle codec / language / forced / qualifier), the clip list, and the
+    chapter points.
+
+  `audio://` and `sub://` are the demux path with a track-**kind filter**;
+  `chapters://` and `json://` read none of the elementary streams (scan-only) and
+  return in seconds. All four are documented in the [CLI reference](/cli/).
+- **`E7026`** now has a user-facing message in all seven locales (AACS 2.1 FMTS
+  variant key missing) — previously the CLI showed the raw key path.
+
 ## 1.4.5
 
 <small>2026-07-18</small>
