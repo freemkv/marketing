@@ -28,6 +28,10 @@ Every source and destination is a `scheme://` URL.
 | `iso://path.iso` | ✓ | ✓ | Disc image |
 | `fvi://path.fvi` | — | ✓ | freemkv video index — a JSON-Lines, one-record-per-picture index file ([spec](/fvi-format/)) |
 | `demux://path/` | — | ✓ | Per-track elementary streams — a directory, one file per track |
+| `audio://path/` | — | ✓ | Audio tracks only — a directory, one native-container file per track |
+| `sub://path/` | — | ✓ | Subtitle tracks only — a directory, one file (`.sup` / `.idx`+`.sub`) per track |
+| `chapters://path` | — | ✓ | Chapter markers for one title — a single file (`.xml` / `.txt` / `.vtt`) |
+| `json://path.json` | — | ✓ | One title's structure (streams, chapters, clips) as JSON — a single file |
 | `dir://path/` | — | ✓ | Decrypted file tree (VIDEO\_TS / BDMV) |
 | `network://host:port` | ✓ | ✓ | TCP (listen or connect) |
 | `stdio://` | ✓ | ✓ | Stdin / stdout |
@@ -100,6 +104,45 @@ Extracts each track to its own **elementary-stream** file — video, audio, and 
 ```bash
 freemkv iso://disc.iso demux://out/
 ```
+
+### audio://
+
+`demux://` narrowed to **audio only** — every audio track to its own file in a directory, each in its **native container** so a player reads the codec's own headers directly: `.thd` (TrueHD), `.dts` / `.dtshd`, `.ac3`, `.eac3`, `.aac`, `.flac`. No video, no subtitles.
+
+```bash
+freemkv iso://disc.iso audio://tracks/     # e.g. tracks/Movie t01 eng TrueHD.thd, … eng EAC3.eac3
+```
+
+> **LPCM note.** Blu-ray/DVD LPCM has no container of its own, so it's written as headerless big-endian `.pcm` (Matroska `A_PCM/INT/BIG`). To play it you must tell the player its sample rate, channel count, and bit depth by hand.
+
+### sub://
+
+`demux://` narrowed to **subtitles only** — every subtitle track to its own file: PGS as `.sup`, VobSub as a paired `.idx` + `.sub`, text subtitles as `.srt`. No video, no audio.
+
+```bash
+freemkv iso://disc.iso sub://subs/         # e.g. subs/Movie t03 eng PGS.sup
+```
+
+### chapters://
+
+Writes just the **chapter markers** of one title — a single sidecar file, no audio/video. The format follows the **output extension**: `.xml` (Matroska chapters, the default), `.txt` / `.ogm` (OGM simple), or `.vtt` (WebVTT). Because it's one title's chapters, pick the title with `-t` when the source has several.
+
+```bash
+freemkv iso://disc.iso chapters://Movie.xml -t 1    # Matroska XML
+freemkv iso://disc.iso chapters://Movie.vtt -t 1    # WebVTT cues
+```
+
+Only the disc scan runs — no demux — so it returns in seconds.
+
+### json://
+
+Writes one title's **structure as JSON**: playlist identity, duration and size, every stream with its full detail (video resolution / frame rate / HDR / colour space / aspect; audio codec / channels / sample rate / language / purpose; subtitle codec / language / forced / qualifier), the clip list, and the chapter points. A machine-readable view for scripting or cataloguing — everything the scan resolved, nothing dropped.
+
+```bash
+freemkv iso://disc.iso json://Movie.json -t 1
+```
+
+Like `chapters://`, it's scan-only (no demux) and near-instant.
 
 ### dir://
 
