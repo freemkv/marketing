@@ -15,7 +15,9 @@ The toolchain releases as a set: every component ships the same version
 number on each release, even when a given component has no functional
 change in that cycle.
 
-## 1.5.0 — 2026-07-19
+## 1.5.0
+
+<small>2026-07-19</small>
 
 ### Added
 
