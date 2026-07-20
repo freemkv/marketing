@@ -14,7 +14,7 @@ mv freemkv-* freemkv && chmod +x freemkv
 ./freemkv --version
 ```
 
-For autorip, run that same binary as a service, or run it as a Docker container (see [autorip Service](/autorip/) for a full compose example).
+For autorip, run that same binary as a service, or run it as a Docker container (see [autorip Service](/docs/autorip/) for a full compose example).
 
 ## File locations
 
@@ -22,7 +22,7 @@ For autorip, run that same binary as a service, or run it as a Docker container 
 
 | What | Path |
 |---|---|
-| AACS keys | see **[Decryption Keys](/decryption-keys/)** |
+| AACS keys | see **[Decryption Keys](/docs/decryption-keys/)** |
 | Diagnostic log | off by default (see below) |
 
 The CLI keeps the terminal clean and never writes a log unless asked. Run with `--log-level 3` to write `./log.txt` in the current directory, or `--log-file PATH` to choose the destination.
@@ -46,4 +46,4 @@ Bind these to host directories so settings and the AACS key database persist acr
 ## Known quirks / troubleshooting
 
 - If a rip can't see the drive in the container, confirm both `privileged: true` and the `/dev:/dev` mount are present.
-- For capturing logs and other common fixes, see [Troubleshooting](/troubleshooting/).
+- For capturing logs and other common fixes, see [Troubleshooting](/docs/troubleshooting/).

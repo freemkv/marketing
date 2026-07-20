@@ -18,7 +18,7 @@ top.
 :::caution[Work in progress]
 The AACS 2.1 / FMTS material here is an active investigation — a current working model, not a
 finished specification, and it changes as we learn more. It carries no key material or algorithm
-constants, only format and structure. DVDs use CSS, not AACS; see [Decryption Keys](/decryption-keys/).
+constants, only format and structure. DVDs use CSS, not AACS; see [Decryption Keys](/docs/decryption-keys/).
 :::
 
 ## One scheme, several versions, several formats
@@ -397,7 +397,7 @@ goes deeper, so revoking one device costs less of the tree.
 **Bus encryption.** The drive re-encrypts read data on the drive-to-host link. That layer has
 to be removed before you can even read ciphertext off the disc. It comes off one of two ways:
 a firmware-unlocked drive that strips it in place, or the AACS host-certificate handshake. See
-[Unlocked drives](/drives-unlocked/).
+[Unlocked drives](/docs/drives-unlocked/).
 
 Everything from the Media Key down (VUK, Unit Keys, aligned units) is unchanged from 1.0.
 `Unit_Key_RO.inf` moves to a 64-byte stride, and the Verify record is `0x86` instead of

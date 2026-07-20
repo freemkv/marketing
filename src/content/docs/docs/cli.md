@@ -37,13 +37,13 @@ Every source and destination is a `scheme://` URL.
 | `demux://path/` | — | ✓ | All tracks as per-track elementary streams — a directory, one file per track |
 | `chapters://path` | — | ✓ | Chapter markers for one title — a single file (`.xml` / `.txt` / `.vtt`) |
 | `json://path.json` | — | ✓ | One title's structure (streams, chapters, clips) as JSON — a single file |
-| `fvi://path.fvi` | — | ✓ | freemkv video index — a JSON-Lines, one-record-per-picture index file ([spec](/fvi-format/)) |
+| `fvi://path.fvi` | — | ✓ | freemkv video index — a JSON-Lines, one-record-per-picture index file ([spec](/docs/fvi-format/)) |
 | **Transports** | | | |
 | `network://host:port` | ✓ | ✓ | TCP (listen or connect) |
 | `stdio://` | ✓ | ✓ | Stdin / stdout |
 | `null://` | — | ✓ | Discard (read-speed benchmark) |
 
-`disk://` is an alias for `disc://`. Everything is **decrypted by default**; `--raw` (`iso://` only) is the sole encrypted output. BD/UHD discs need an AACS key — see [Decryption Keys](/decryption-keys/); DVDs need none.
+`disk://` is an alias for `disc://`. Everything is **decrypted by default**; `--raw` (`iso://` only) is the sole encrypted output. BD/UHD discs need an AACS key — see [Decryption Keys](/docs/decryption-keys/); DVDs need none.
 
 ## Scheme details
 
@@ -133,7 +133,7 @@ Writes a **freemkv video index** — a JSON-Lines file (`.fvi`) with one record 
 freemkv iso://disc.iso fvi://out.fvi
 ```
 
-See the [FVI Format](/fvi-format/) reference for the full specification.
+See the [FVI Format](/docs/fvi-format/) reference for the full specification.
 
 ### demux://
 
@@ -287,7 +287,7 @@ Key sources (for a rip that needs decryption keys):
 
 | Flag | Description |
 |---|---|
-| `--keydb PATH` | Override the keydb location. Without it, freemkv searches the default locations — see [Decryption Keys](/decryption-keys/). Only Blu-ray/UHD need a keydb; DVDs use none. |
+| `--keydb PATH` | Override the keydb location. Without it, freemkv searches the default locations — see [Decryption Keys](/docs/decryption-keys/). Only Blu-ray/UHD need a keydb; DVDs use none. |
 | `--key-url URL` | Online key service (`http://…` or `https://…`); the local keydb is tried first if both are given. |
 | `--key-auth TOKEN` | Bearer token for `--key-url`. |
 

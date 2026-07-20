@@ -6,7 +6,7 @@ description: How the sweep/patch two-pass design, the mapfile, and the mux pipel
 This page explains how freemkv extracts everything a drive can read from a disc: the
 two-pass sweep-and-patch design, the mapfile that drives it, and the mux pipeline that turns
 recovered sectors into a playable container. The recovery engine lives in
-[libfreemkv](/components/) and is shared by both the [CLI](/cli/) and [autorip](/autorip/).
+[libfreemkv](/docs/components/) and is shared by both the [CLI](/docs/cli/) and [autorip](/docs/autorip/).
 
 ## The principle
 
@@ -92,13 +92,13 @@ Each region of the disc carries a status:
 
 Because the mapfile is persisted continuously, recovery is **resumable**: an interrupted
 sweep or a later patch run picks up exactly where it left off, and the patch pass knows
-precisely which ranges still need work. This powers [autorip's resume](/autorip/#resume)
+precisely which ranges still need work. This powers [autorip's resume](/docs/autorip/#resume)
 and the CLI's auto-resuming `disc:// iso://` copy.
 
 ## Mux
 
-Once the map is clean (or an [accepted-loss threshold](/autorip/#accepted-loss) is reached),
-freemkv **muxes**: it decrypts the captured data (see [Decryption Keys](/decryption-keys/))
+Once the map is clean (or an [accepted-loss threshold](/docs/autorip/#accepted-loss) is reached),
+freemkv **muxes**: it decrypts the captured data (see [Decryption Keys](/docs/decryption-keys/))
 and writes the titles to the output container.
 
 Muxing runs through a three-stage threaded pipeline so reading/decrypting, demultiplexing,
@@ -109,7 +109,7 @@ and codec parsing all overlap:
 3. **Parse**: codec parsers turn PES frames into the elementary streams the container needs.
 
 This keeps the drive (or ISO read) saturated instead of stalling between stages. The
-library entry point is `build_iso_pipeline`; see the [library overview](/libfreemkv/) for
+library entry point is `build_iso_pipeline`; see the [library overview](/docs/libfreemkv/) for
 the API.
 
 ## Running it from the CLI
@@ -128,9 +128,9 @@ freemkv disc:// iso://Disc.iso --multipass
 freemkv iso://Disc.iso mkv://Movie.mkv
 ```
 
-See the [CLI reference](/cli/) for full options.
+See the [CLI reference](/docs/cli/) for full options.
 
 ## Running it from autorip
 
-[autorip](/autorip/) performs the entire flow automatically on disc insert, with a
+[autorip](/docs/autorip/) performs the entire flow automatically on disc insert, with a
 configurable retry count and accepted-loss threshold, with no commands to type.

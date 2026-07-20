@@ -4,8 +4,8 @@ description: The core Rust library behind freemkv. Disc scanning, multipass reco
 ---
 
 libfreemkv is the engine the whole toolchain composes: disc scanning, multipass recovery,
-sector-level retry, AACS/CSS decryption, and MKV muxing. The [CLI](/cli/) and
-[autorip](/autorip/) are thin front ends over it. This page maps the library for developers
+sector-level retry, AACS/CSS decryption, and MKV muxing. The [CLI](/docs/cli/) and
+[autorip](/docs/autorip/) are thin front ends over it. This page maps the library for developers
 embedding it; the [download page](/download/) covers the ready-to-run tools.
 
 - Source (authoritative): [github.com/freemkv/libfreemkv](https://github.com/freemkv/libfreemkv)
@@ -89,7 +89,7 @@ A map of the main exports (see the [source](https://github.com/freemkv/libfreemk
 - The `mapfile` module: `Mapfile`, `SectorStatus` (`NonTried`, `NonTrimmed`, `NonScraped`,
   `Unreadable`, `Finished`), `MapEntry`, `MapStats`.
 
-See **[How recovery works](/how-recovery-works/)** for the algorithm these types drive.
+See **[How recovery works](/docs/how-recovery-works/)** for the algorithm these types drive.
 
 ### Muxing and streams
 
@@ -113,13 +113,13 @@ See **[How recovery works](/how-recovery-works/)** for the algorithm these types
 
 - `DecryptKeys`: resolved AACS/CSS key material.
 - `KeySource`: the interface a caller implements to supply keys; see
-  [`freemkv-keysources`](/components/) for the bundled implementations.
+  [`freemkv-keysources`](/docs/components/) for the bundled implementations.
 
 ### Errors and control
 
 - `Error`: a numeric-coded error enum; `Result<T>` is `Result<T, Error>`.
   `Error::KeydbLoad` carries the path; the sentinel `<no keydb in search paths>` signals a
-  missing keydb (see [Decryption Keys](/decryption-keys/)).
+  missing keydb (see [Decryption Keys](/docs/decryption-keys/)).
 - `Halt`: a cooperative cancellation token; a progress-callback trait reports pass
   progress and can request a halt.
 
@@ -145,9 +145,9 @@ through this pipeline.
   keylessly by the Stevenson known-plaintext attack (`css::crack_key`).
 - **AACS (Blu-ray / 4K UHD)**: no key material is compiled in; keys come through a
   `KeySource` — either a local `keydb.cfg` (searched in default OS paths; see
-  [Decryption Keys](/decryption-keys/)) or an online key service; overridable via
+  [Decryption Keys](/docs/decryption-keys/)) or an online key service; overridable via
   `ScanOptions`.
 - A missing key database for an AACS disc surfaces as `Error::KeydbLoad` with the sentinel
   path `<no keydb in search paths>`, which front ends render as "no KEYDB.cfg found."
 
-Full detail is on the [Decryption Keys](/decryption-keys/) page.
+Full detail is on the [Decryption Keys](/docs/decryption-keys/) page.

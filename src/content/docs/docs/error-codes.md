@@ -9,7 +9,7 @@ This page lists every code, its message, and what to do about it. The codes are
 stable across releases, so you can search this page (or a bug report) by code.
 
 For a symptom-first walkthrough of the most common problems, start with
-[Troubleshooting](/troubleshooting/). For any failure or hang, capture a debug log
+[Troubleshooting](/docs/troubleshooting/). For any failure or hang, capture a debug log
 first — re-run with `--log-level 3` (writes `./log.txt`).
 
 :::note[How to read a code]
@@ -185,4 +185,4 @@ If a code's next steps don't resolve it, open an issue with:
   Debug toggle in autorip and collect the container logs.
 - Your freemkv version (`freemkv version`) and platform.
 
-See [Troubleshooting](/troubleshooting/#capturing-a-debug-log) for log details.
+See [Troubleshooting](/docs/troubleshooting/#capturing-a-debug-log) for log details.

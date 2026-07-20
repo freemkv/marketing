@@ -9,7 +9,7 @@ freemkv is a Rust toolchain for optical-disc backup. Its goal is to **recover 10
 
 "Readable" is the bound: **if a sector can be read off the disc, freemkv reads it.** Not best-effort: everything the drive can physically recover, pursued through transient errors and marginal media.
 
-If you just want to rip a disc, the **[CLI reference](/cli/)** has every command, or run the **[autorip service](/autorip/)** and let it do it on disc insert.
+If you just want to rip a disc, the **[CLI reference](/docs/cli/)** has every command, or run the **[autorip service](/docs/autorip/)** and let it do it on disc insert.
 
 ## The recovery model
 
@@ -18,7 +18,7 @@ Disc recovery runs in two phases:
 - **Pass 1, sweep.** A sequential read of the whole disc, tolerant of bad sectors. When a sector won't read, freemkv records the range and skips ahead instead of aborting, so one bad spot never costs you the rest of the disc.
 - **Pass N, patch.** Targeted retries on the bad ranges from the sweep: multi-attempt, with a per-sector recovery timeout, cache priming, and bisection of unread ranges to find the good middle of a partly-damaged region.
 
-Once the map is clean (or an accepted-loss threshold is reached), freemkv muxes: decrypt the disc and write the titles to MKV. See **[How recovery works](/how-recovery-works/)** for the full model.
+Once the map is clean (or an accepted-loss threshold is reached), freemkv muxes: decrypt the disc and write the titles to MKV. See **[How recovery works](/docs/how-recovery-works/)** for the full model.
 
 ## Formats and decryption
 
@@ -28,7 +28,7 @@ Once the map is clean (or an accepted-loss threshold is reached), freemkv muxes:
 | Blu-ray | AACS 1.0 | Required |
 | 4K UHD | AACS 2.0 / 2.1 | Required |
 
-DVDs decrypt with no setup. Blu-ray and 4K UHD need decryption keys you provide; see **[Decryption Keys](/decryption-keys/)**. 4K UHD covers both AACS 2.0 and 2.1 discs, and both decrypt the same way — from the keys you supply, not from the disc's variant data.
+DVDs decrypt with no setup. Blu-ray and 4K UHD need decryption keys you provide; see **[Decryption Keys](/docs/decryption-keys/)**. 4K UHD covers both AACS 2.0 and 2.1 discs, and both decrypt the same way — from the keys you supply, not from the disc's variant data.
 
 ## The toolchain
 
@@ -51,15 +51,15 @@ On a `disc://` drive, freemkv rips the **main title** by default (one file). An 
 image instead rips **every** title — one file each, to a directory. Add `-t N` to choose a
 specific title; run `freemkv info disc://` to list them with durations.
 
-Available for Linux, macOS, and Windows. See the **[CLI reference](/cli/)**.
+Available for Linux, macOS, and Windows. See the **[CLI reference](/docs/cli/)**.
 
-**autorip**: a service (Linux, macOS, Windows) that watches your optical drives, runs the full pipeline on disc insert, and exposes a web UI. Insert a disc, get an MKV, repeat. See the **[autorip service](/autorip/)**.
+**autorip**: a service (Linux, macOS, Windows) that watches your optical drives, runs the full pipeline on disc insert, and exposes a web UI. Insert a disc, get an MKV, repeat. See the **[autorip service](/docs/autorip/)**.
 
-Both compose libfreemkv, the core library that handles recovery, sector-level retry, AACS decryption, and MKV muxing. See **[Components](/components/)** for the breakdown of every crate.
+Both compose libfreemkv, the core library that handles recovery, sector-level retry, AACS decryption, and MKV muxing. See **[Components](/docs/components/)** for the breakdown of every crate.
 
 ## Next steps
 
-- **[Install](/install/)**: prebuilt binaries or build from source.
-- **[Platforms](/platforms-windows/)**: per-OS setup, file locations, and drive access (Windows, macOS, Linux).
-- **[CLI reference](/cli/)**: every subcommand, flag, and stream URL.
-- **[Decryption Keys](/decryption-keys/)**: what Blu-ray and UHD need.
+- **[Install](/docs/install/)**: prebuilt binaries or build from source.
+- **[Platforms](/docs/platforms-windows/)**: per-OS setup, file locations, and drive access (Windows, macOS, Linux).
+- **[CLI reference](/docs/cli/)**: every subcommand, flag, and stream URL.
+- **[Decryption Keys](/docs/decryption-keys/)**: what Blu-ray and UHD need.

@@ -5,6 +5,36 @@ import starlightLlmsTxt from 'starlight-llms-txt';
 
 export default defineConfig({
   site: 'https://freemkv.org',
+  // The documentation moved from the site root to `/docs/…` (the marketing
+  // pages `/` and `/download/` stay at the root). These static redirects keep
+  // every previously-published doc URL alive — GitHub Pages has no server-side
+  // redirects, so Astro emits a small meta-refresh + canonical stub per entry.
+  // They are excluded from the sitemap (see the sitemap `filter` below) so only
+  // the canonical `/docs/…` URLs are advertised to crawlers.
+  redirects: {
+    '/docs': '/docs/overview/',
+    '/overview': '/docs/overview/',
+    '/install': '/docs/install/',
+    '/platforms-windows': '/docs/platforms-windows/',
+    '/platforms-macos': '/docs/platforms-macos/',
+    '/platforms-linux': '/docs/platforms-linux/',
+    '/cli': '/docs/cli/',
+    '/autorip': '/docs/autorip/',
+    '/mkv-output': '/docs/mkv-output/',
+    '/decryption-keys': '/docs/decryption-keys/',
+    '/how-recovery-works': '/docs/how-recovery-works/',
+    '/troubleshooting': '/docs/troubleshooting/',
+    '/error-codes': '/docs/error-codes/',
+    '/drives-oem': '/docs/drives-oem/',
+    '/drives-unlocked': '/docs/drives-unlocked/',
+    '/components': '/docs/components/',
+    '/aacs': '/docs/aacs/',
+    '/hddvd': '/docs/hddvd/',
+    '/libfreemkv': '/docs/libfreemkv/',
+    '/fvi-format': '/docs/fvi-format/',
+    '/changelog': '/docs/changelog/',
+    '/license': '/docs/license/',
+  },
   integrations: [
     starlight({
       title: 'freemkv',
@@ -90,51 +120,52 @@ export default defineConfig({
         {
           label: 'Start here',
           items: [
-            { label: 'Overview', slug: 'overview' },
-            { label: 'Install', slug: 'install' },
+            { label: 'Overview', slug: 'docs/overview' },
+            { label: 'Install', slug: 'docs/install' },
           ],
         },
         {
           label: 'Platforms',
           items: [
-            { label: 'Windows', slug: 'platforms-windows' },
-            { label: 'macOS', slug: 'platforms-macos' },
-            { label: 'Linux', slug: 'platforms-linux' },
+            { label: 'Windows', slug: 'docs/platforms-windows' },
+            { label: 'macOS', slug: 'docs/platforms-macos' },
+            { label: 'Linux', slug: 'docs/platforms-linux' },
           ],
         },
         {
           label: 'Guides',
           items: [
-            { label: 'CLI Reference', slug: 'cli' },
-            { label: 'autorip Service', slug: 'autorip' },
-            { label: 'MKV Output', slug: 'mkv-output' },
-            { label: 'Decryption Keys', slug: 'decryption-keys' },
-            { label: 'How recovery works', slug: 'how-recovery-works' },
+            { label: 'CLI Reference', slug: 'docs/cli' },
+            { label: 'autorip Service', slug: 'docs/autorip' },
+            { label: 'MKV Output', slug: 'docs/mkv-output' },
+            { label: 'Decryption Keys', slug: 'docs/decryption-keys' },
+            { label: 'How recovery works', slug: 'docs/how-recovery-works' },
           ],
         },
         {
           label: 'Troubleshooting',
           items: [
-            { label: 'Troubleshooting', slug: 'troubleshooting' },
-            { label: 'Error Codes', slug: 'error-codes' },
+            { label: 'Troubleshooting', slug: 'docs/troubleshooting' },
+            { label: 'Error Codes', slug: 'docs/error-codes' },
           ],
         },
         {
           label: 'Drive Support',
           items: [
-            { label: 'OEM (stock) drives', slug: 'drives-oem' },
-            { label: 'Unlocked drives', slug: 'drives-unlocked' },
+            { label: 'OEM (stock) drives', slug: 'docs/drives-oem' },
+            { label: 'Unlocked drives', slug: 'docs/drives-unlocked' },
           ],
         },
         {
           label: 'Reference',
           items: [
-            { label: 'Components', slug: 'components' },
-            { label: 'How AACS Works', slug: 'aacs' },
-            { label: 'libfreemkv (library)', slug: 'libfreemkv' },
-            { label: 'FVI Format', slug: 'fvi-format' },
-            { label: 'Changelog', slug: 'changelog' },
-            { label: 'License', slug: 'license' },
+            { label: 'Components', slug: 'docs/components' },
+            { label: 'How AACS Works', slug: 'docs/aacs' },
+            { label: 'HD DVD Format', slug: 'docs/hddvd' },
+            { label: 'libfreemkv (library)', slug: 'docs/libfreemkv' },
+            { label: 'FVI Format', slug: 'docs/fvi-format' },
+            { label: 'Changelog', slug: 'docs/changelog' },
+            { label: 'License', slug: 'docs/license' },
           ],
         },
       ],

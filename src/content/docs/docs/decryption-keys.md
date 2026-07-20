@@ -33,7 +33,7 @@ maintain a local file — and it's generally much more compatible with AACS 2.0+
 <u>Reach out on our support Discord for more access information.</u>
 
 In **autorip**, enable the online key service and set its URL under **Settings**.
-See [autorip Service](/autorip/#keys).
+See [autorip Service](/docs/autorip/#keys).
 
 In the **CLI**, point at the service with `--key-url` (and `--key-auth` if it requires a
 bearer token):
@@ -46,9 +46,9 @@ freemkv disc:// -t 1 mkv://Movie.mkv --key-url https://keys.example/keys
 freemkv disc:// -t 1 mkv://Movie.mkv --key-url https://keys.example/keys --key-auth <TOKEN>
 ```
 
-For title selection and source/destination behavior, see the [CLI reference](/cli/#scheme-details).
+For title selection and source/destination behavior, see the [CLI reference](/docs/cli/#scheme-details).
 For how `--key-url` and `--keydb` interact (local-first) and the SSRF guard on the
-service URL, see [CLI → Flags](/cli/#flags).
+service URL, see [CLI → Flags](/docs/cli/#flags).
 
 ## Local keydb.cfg
 
@@ -64,7 +64,7 @@ self-contained binary, so its key database lives beside it rather than in an OS
 configuration directory.
 
 Refresh it from a URL with the **`update-keys`** command — see the
-[CLI reference](/cli/) for the full syntax and supported formats (`.txt` / `.zip` /
+[CLI reference](/docs/cli/) for the full syntax and supported formats (`.txt` / `.zip` /
 `.gz`). The short version writes `keydb.cfg` next to the executable:
 
 ```bash
@@ -82,7 +82,7 @@ freemkv disc:// -t 1 mkv://Movie.mkv --keydb /path/to/keydb.cfg     # rip using 
 **autorip** is a long-running service rather than a portable binary, so it uses the standard
 config location `~/.config/freemkv/keydb.cfg` and can also download and refresh the file for
 you from **Settings**. For the Docker image, bind-mount a host keys directory to
-`/root/.config/freemkv` (see [autorip → Deploy](/autorip/#deploy)) so it persists across
+`/root/.config/freemkv` (see [autorip → Deploy](/docs/autorip/#deploy)) so it persists across
 restarts.
 
 ## When keys are missing

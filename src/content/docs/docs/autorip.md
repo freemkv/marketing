@@ -3,7 +3,7 @@ title: autorip Service
 description: Deploy and configure the autorip service. Web UI, HTTP API, recovery tuning, and resume.
 ---
 
-autorip is a rip service: insert a disc, and it rips automatically to MKV. A browser-based UI shows live progress, settings, and history, with nothing to type. This page covers deploying autorip and tuning it; for the manual command-line workflow, see the [CLI reference](/cli/).
+autorip is a rip service: insert a disc, and it rips automatically to MKV. A browser-based UI shows live progress, settings, and history, with nothing to type. This page covers deploying autorip and tuning it; for the manual command-line workflow, see the [CLI reference](/docs/cli/).
 
 On disc insert, autorip runs the full pipeline automatically: a tolerant sweep, targeted patch retries on bad ranges, decrypt, and mux to MKV. Multiple drives rip in parallel, each with independent state.
 
@@ -68,7 +68,7 @@ Then open `http://<host>:8080`.
 :::caution[privileged is mandatory]
 Without `privileged: true`, the container starts fine but detects **zero** optical drives,
 and the UI reports "No drives detected" with no other error. This is the single most common
-setup mistake. See [Troubleshooting](/troubleshooting/).
+setup mistake. See [Troubleshooting](/docs/troubleshooting/).
 :::
 
 ### Mount reference
@@ -83,7 +83,7 @@ setup mistake. See [Troubleshooting](/troubleshooting/).
 
 ### Decryption keys
 
-DVDs need none; Blu-ray and 4K UHD need keys. See **[Decryption Keys](/decryption-keys/)** for the options (a local file or an online service). autorip's key settings live in [Configuration → Keys](#keys) below.
+DVDs need none; Blu-ray and 4K UHD need keys. See **[Decryption Keys](/docs/decryption-keys/)** for the options (a local file or an online service). autorip's key settings live in [Configuration → Keys](#keys) below.
 
 For Docker, bind-mount a host directory to `/root/.config/freemkv` so keys persist across restarts:
 
@@ -167,7 +167,7 @@ All settings are editable in the **Settings** page of the web UI and stored in `
 
 ## Recovery
 
-autorip wraps the same recovery engine as the [freemkv CLI](/cli/); see [How recovery works](/how-recovery-works/) for the full sweep-and-patch model. The `max_retries` setting selects between two modes.
+autorip wraps the same recovery engine as the [freemkv CLI](/docs/cli/); see [How recovery works](/docs/how-recovery-works/) for the full sweep-and-patch model. The `max_retries` setting selects between two modes.
 
 ### Pass modes
 

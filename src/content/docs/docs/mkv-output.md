@@ -10,8 +10,8 @@ freemkv writes a **finished, library-ready MKV** with named tracks, language tag
 default and forced flags, named chapters, and a title. Drop it into Plex,
 Jellyfin, Kodi, or Infuse and it reads right, with no pass through a tag editor.
 
-This same output is produced whether you rip with the [CLI](/cli/) or let
-[autorip](/autorip/) do it automatically on disc insert.
+This same output is produced whether you rip with the [CLI](/docs/cli/) or let
+[autorip](/docs/autorip/) do it automatically on disc insert.
 
 ## Track names
 
@@ -76,5 +76,5 @@ identifying the freemkv build that produced it (visible in MediaInfo as
 
 ## Next steps
 
-- Rip a disc yourself with the [CLI](/cli/).
-- Set up hands-free ripping with [autorip](/autorip/).
+- Rip a disc yourself with the [CLI](/docs/cli/).
+- Set up hands-free ripping with [autorip](/docs/autorip/).

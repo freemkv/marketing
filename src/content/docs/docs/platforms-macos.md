@@ -18,7 +18,7 @@ mv freemkv-* freemkv && chmod +x freemkv
 
 | What | Path |
 |---|---|
-| AACS keys | see **[Decryption Keys](/decryption-keys/)** |
+| AACS keys | see **[Decryption Keys](/docs/decryption-keys/)** |
 | Diagnostic log | off by default (see below) |
 
 The CLI keeps the terminal clean and never writes a log unless asked. Run with `--log-level 3` to write `./log.txt` in the current directory, or `--log-file PATH` to choose the destination.
@@ -30,4 +30,4 @@ freemkv obtains **exclusive** access to the optical drive through IOKit. To do s
 ## Known quirks / troubleshooting
 
 - If the disc is mounted by the Finder, freemkv unmounts it to take exclusive access; that's expected.
-- For capturing logs and other common fixes, see [Troubleshooting](/troubleshooting/).
+- For capturing logs and other common fixes, see [Troubleshooting](/docs/troubleshooting/).

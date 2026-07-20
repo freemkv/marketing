@@ -28,7 +28,7 @@ const title = 'Download freemkv: Linux, macOS & Windows';
 const description =
   'Download prebuilt freemkv and autorip binaries for Linux, macOS, and Windows (Intel & ARM). Free & open source. Or build from source.';
 
-const docs = '/overview/';
+const docs = '/docs/overview/';
 const github = 'https://github.com/freemkv';
 const cliRepo = 'https://github.com/freemkv/freemkv';
 const autoripRepo = 'https://github.com/freemkv/autorip';
@@ -109,6 +109,53 @@ const autoripPlatforms = [
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://freemkv.org/freemkv-icon.svg" />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebPage',
+            '@id': 'https://freemkv.org/download/#webpage',
+            url: 'https://freemkv.org/download/',
+            name: title,
+            description,
+            inLanguage: 'en',
+            isPartOf: { '@id': 'https://freemkv.org/#website' },
+            about: { '@id': 'https://freemkv.org/#app' },
+            primaryImageOfPage: 'https://freemkv.org/freemkv-icon.svg',
+          },
+          {
+            '@type': 'WebSite',
+            '@id': 'https://freemkv.org/#website',
+            url: 'https://freemkv.org/',
+            name: 'freemkv',
+            publisher: { '@id': 'https://freemkv.org/#org' },
+          },
+          {
+            '@type': 'Organization',
+            '@id': 'https://freemkv.org/#org',
+            name: 'freemkv',
+            url: 'https://freemkv.org/',
+            logo: 'https://freemkv.org/freemkv-icon.svg',
+            sameAs: ['https://github.com/freemkv'],
+          },
+          {
+            '@type': 'SoftwareApplication',
+            '@id': 'https://freemkv.org/#app',
+            name: 'freemkv',
+            applicationCategory: 'MultimediaApplication',
+            operatingSystem: 'Linux, macOS, Windows',
+            url: 'https://freemkv.org/',
+            downloadUrl: 'https://freemkv.org/download/',
+            license: 'https://opensource.org/licenses/MIT',
+            isAccessibleForFree: true,
+            author: { '@id': 'https://freemkv.org/#org' },
+            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+          },
+        ],
+      })}
+    />
   </head>
   <body>
     <!-- ============ STICKY NAV ============ -->
@@ -211,7 +258,7 @@ const autoripPlatforms = [
             <a href={allReleases} data-all-releases>All releases on GitHub →</a>
           </p>
           <p class="dl-note dl-note-sub">
-            New here? The <a href="/install/">install guide</a> covers PATH, drive
+            New here? The <a href="/docs/install/">install guide</a> covers PATH, drive
             permissions, and keys.
           </p>
         </div>
@@ -267,8 +314,8 @@ const autoripPlatforms = [
             Static binary: download, <code>chmod +x</code> (or run the <code>.exe</code>), start
             the daemon, then open
             <code>http://&lt;host&gt;:8080</code>. DVDs work out of the box; Blu-ray and
-            4K&nbsp;UHD need <a href="/decryption-keys/">decryption keys</a>. See the
-            <a href="/autorip/">autorip docs</a> for drive permissions and a systemd unit.
+            4K&nbsp;UHD need <a href="/docs/decryption-keys/">decryption keys</a>. See the
+            <a href="/docs/autorip/">autorip docs</a> for drive permissions and a systemd unit.
           </p>
 
           <!-- Docker (secondary) -->
@@ -314,8 +361,8 @@ const autoripPlatforms = [
 <span class="p">$</span> ./target/release/freemkv --version</code></pre>
           </div>
           <div class="cta-row after-cta">
-            <a class="btn btn-secondary" href="/overview/">Get started →</a>
-            <a class="btn btn-ghost" href="/install/">Install docs</a>
+            <a class="btn btn-secondary" href="/docs/overview/">Get started →</a>
+            <a class="btn btn-ghost" href="/docs/install/">Install docs</a>
           </div>
         </div>
       </section>

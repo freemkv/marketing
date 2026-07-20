@@ -3,12 +3,12 @@ title: Unlocked drives
 description: What an unlocked-firmware optical drive is, why it helps, and which drive families freemkv supports today.
 ---
 
-Some optical drives can run **modified ("unlocked") firmware** in place of the manufacturer's stock firmware. Unlocking lifts restrictions the manufacturer built in, most notably **[rip-lock](/drives-oem/#rip-lock-why-a-stock-drive-can-be-slow)** (the artificial speed cap), as well as the host-certificate requirement, so ripping is **faster and more reliable**. If you rip a lot of discs, an unlocked drive is the nicer experience.
+Some optical drives can run **modified ("unlocked") firmware** in place of the manufacturer's stock firmware. Unlocking lifts restrictions the manufacturer built in, most notably **[rip-lock](/docs/drives-oem/#rip-lock-why-a-stock-drive-can-be-slow)** (the artificial speed cap), as well as the host-certificate requirement, so ripping is **faster and more reliable**. If you rip a lot of discs, an unlocked drive is the nicer experience.
 
-You don't *need* an unlocked drive (**[stock drives work](/drives-oem/)**), but a supported unlocked drive is the smoothest path, especially for 4K UHD.
+You don't *need* an unlocked drive (**[stock drives work](/docs/drives-oem/)**), but a supported unlocked drive is the smoothest path, especially for 4K UHD.
 
 :::note[Unlocking is not decryption]
-An unlocked drive reads discs faster and more reliably, but it does **not** decrypt them. AACS-protected Blu-ray and 4K UHD discs still need **decryption keys** — see **[Decryption Keys](/decryption-keys/)**. (DVDs need no keys either way.)
+An unlocked drive reads discs faster and more reliably, but it does **not** decrypt them. AACS-protected Blu-ray and 4K UHD discs still need **decryption keys** — see **[Decryption Keys](/docs/decryption-keys/)**. (DVDs need no keys either way.)
 :::
 
 ## Which drives does freemkv support?
@@ -29,7 +29,7 @@ If you own an LG, ASUS, or HP Blu-ray drive from roughly **2012-2020**, it's ver
 
 ### Work in Progress
 
-**Pioneer** drives (the BDR-… series, built on a different chipset) are **not supported yet**; support is actively being worked on. This also covers Pioneer drives sold under other badges, such as the **ASUS BW-16D1X-U** (a rebadged Pioneer). Any unsupported drive falls back to the **[stock-drive AACS workflow](/drives-oem/)**.
+**Pioneer** drives (the BDR-… series, built on a different chipset) are **not supported yet**; support is actively being worked on. This also covers Pioneer drives sold under other badges, such as the **ASUS BW-16D1X-U** (a rebadged Pioneer). Any unsupported drive falls back to the **[stock-drive AACS workflow](/docs/drives-oem/)**.
 
 ## How do I tell what I have?
 
@@ -53,5 +53,5 @@ freemkv info disc:// --share --mask
 This captures your drive's identity and capabilities so we can add or verify support. `--mask` hides your serial number. freemkv can submit the profile **straight to GitHub** for you, or just print it so you can copy-paste it into a new issue. Every profile helps us extend support to more drives.
 
 :::note[This list keeps changing]
-Drive support is an **evolving list**. Each freemkv release can add new drive families and firmware versions (Pioneer is next on the roadmap), so support will change over time. If your drive isn't covered yet, it may well be in a later release; keep an eye on the **[Changelog](/changelog/)**.
+Drive support is an **evolving list**. Each freemkv release can add new drive families and firmware versions (Pioneer is next on the roadmap), so support will change over time. If your drive isn't covered yet, it may well be in a later release; keep an eye on the **[Changelog](/docs/changelog/)**.
 :::

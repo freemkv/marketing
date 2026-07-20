@@ -94,7 +94,7 @@ So if your `autorip.exe` is at `<install dir>\autorip.exe`, then:
 |---|---|
 | Settings | `<install dir>\config\settings.json` |
 | Logs (one file per drive) | `<install dir>\config\logs\` |
-| AACS keys | see **[Decryption Keys](/decryption-keys/)** |
+| AACS keys | see **[Decryption Keys](/docs/decryption-keys/)** |
 | Work-in-progress (staging) | `<install dir>\config\staging\` |
 | **Finished movies** | `<install dir>\config\output\` |
 
@@ -119,12 +119,12 @@ $env:AUTORIP_DIR = "D:\autorip-data"
 
 | What | Where |
 |---|---|
-| AACS keys | see **[Decryption Keys](/decryption-keys/)** |
+| AACS keys | see **[Decryption Keys](/docs/decryption-keys/)** |
 | Diagnostic log | off by default (see [Logs](#step-7-turning-on-logs-for-bug-reports)) |
 
 ## Step 6: Decryption keys for Blu-ray and UHD
 
-**DVDs work out of the box.** **Blu-ray and 4K UHD discs are AACS-encrypted** and need keys: autorip can download and refresh them automatically, you can point it at an online key service, or you can supply your own keys. It works the same on every platform, so it's all on one page: **[Decryption Keys](/decryption-keys/)**.
+**DVDs work out of the box.** **Blu-ray and 4K UHD discs are AACS-encrypted** and need keys: autorip can download and refresh them automatically, you can point it at an online key service, or you can supply your own keys. It works the same on every platform, so it's all on one page: **[Decryption Keys](/docs/decryption-keys/)**.
 
 ## Step 7: Turning on logs (for bug reports)
 
@@ -155,4 +155,4 @@ freemkv and autorip reach your optical drive through native **SPTI** (SCSI pass-
 | Can't find my finished movie | It's in `config\output\` next to the `.exe`, unless you changed **Output directory** in Settings (Step 5). |
 | Leftover `C:\config` from an old version | If `C:\config` exists and is writable, autorip still uses it (it's checked *before* the app-folder `config\`). Delete the old `C:\config` first, then restart so state lands in the app-folder `config\`. |
 
-For capturing logs and fixes that apply to every platform, see **[Troubleshooting](/troubleshooting/)**.
+For capturing logs and fixes that apply to every platform, see **[Troubleshooting](/docs/troubleshooting/)**.

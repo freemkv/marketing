@@ -5,9 +5,9 @@ description: Fixes for the most common freemkv and autorip problems. No drives d
 
 Fixes for the problems reported most often with freemkv and autorip. Find your symptom below; if none match, capture a debug log (next) and open an issue.
 
-Hit a specific `Error: E<code> ...` line? Look it up on the [Error Codes](/error-codes/) page — every code is listed with its message, cause, and next steps.
+Hit a specific `Error: E<code> ...` line? Look it up on the [Error Codes](/docs/error-codes/) page — every code is listed with its message, cause, and next steps.
 
-**First, make sure you're on the latest version.** Many reported problems are already fixed in a newer release — check the [changelog](/changelog/) and update before digging further. You can confirm your running version from the [Checking versions](#checking-versions) section below.
+**First, make sure you're on the latest version.** Many reported problems are already fixed in a newer release — check the [changelog](/docs/changelog/) and update before digging further. You can confirm your running version from the [Checking versions](#checking-versions) section below.
 
 ## Capturing a debug log
 
@@ -22,7 +22,7 @@ freemkv <source> <dest> --log-level 3 --log-file freemkv-debug.log
 
 In autorip, enable the Debug toggle in the web UI (or `POST /api/debug`), reproduce the problem, then collect the container logs.
 
-For where files (config, keys, logs, staging, output) live, see your platform page: [Windows](/platforms-windows/), [macOS](/platforms-macos/), or [Linux](/platforms-linux/).
+For where files (config, keys, logs, staging, output) live, see your platform page: [Windows](/docs/platforms-windows/), [macOS](/docs/platforms-macos/), or [Linux](/docs/platforms-linux/).
 
 ## No drives detected in autorip
 
@@ -38,7 +38,7 @@ services:
       - /dev:/dev
 ```
 
-Confirm both `privileged: true` and the `/dev:/dev` bind mount are present, then restart the container. See [Deploy](/autorip/#deploy).
+Confirm both `privileged: true` and the `/dev:/dev` bind mount are present, then restart the container. See [Deploy](/docs/autorip/#deploy).
 
 ## No drive found on the CLI
 
@@ -61,7 +61,7 @@ You tried to read an AACS-encrypted disc (Blu-ray or 4K UHD) and no key source h
 - **A local key database** (`keydb.cfg`): download or refresh it with `freemkv update-keys --url <keydb-url>`, or point `--keydb PATH` at one you already have.
 - **An online key service:** configure it with `--key-url URL`.
 
-**[Decryption Keys](/decryption-keys/)** covers both options for the CLI and for autorip.
+**[Decryption Keys](/docs/decryption-keys/)** covers both options for the CLI and for autorip.
 
 ## Drive rejected the disc's security credentials
 
@@ -78,7 +78,7 @@ Re-run with `--log-level 3` (writes `./log.txt`) and attach the log if you open 
 freemkv is built to recover damaged discs, but behavior depends on the mode:
 
 - **Single-pass** (CLI direct disc → MKV, or autorip `max_retries = 0`): no retries; a read error fails the rip.
-- **Multipass** (CLI `--multipass`, or autorip `max_retries ≥ 1`): the sweep records bad ranges and skips ahead; patch passes then re-read only those ranges from the disc. Use this mode for any disc you suspect is scratched. See [How recovery works](/how-recovery-works/).
+- **Multipass** (CLI `--multipass`, or autorip `max_retries ≥ 1`): the sweep records bad ranges and skips ahead; patch passes then re-read only those ranges from the disc. Use this mode for any disc you suspect is scratched. See [How recovery works](/docs/how-recovery-works/).
 
 Tips:
 
@@ -92,7 +92,7 @@ Repeatedly hammering the same bad sectors can push a drive into a fast-fail stat
 ## An interrupted rip
 
 - **CLI:** Ctrl-C halts cleanly and preserves the mapfile. Re-running the same `disc:// iso://` command resumes. A mux interrupted mid-write is not finalized (freemkv exits non-zero), so you never get a truncated MKV that looks complete.
-- **autorip:** `/api/stop/{device}` preserves staging; the rip resumes on the next disc insert or container restart. See [Resume](/autorip/#resume).
+- **autorip:** `/api/stop/{device}` preserves staging; the rip resumes on the next disc insert or container restart. See [Resume](/docs/autorip/#resume).
 
 ## Raw flag rejected for non-ISO output
 
