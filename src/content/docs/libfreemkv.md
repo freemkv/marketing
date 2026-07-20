@@ -95,8 +95,12 @@ See **[How recovery works](/how-recovery-works/)** for the algorithm these types
 
 - `build_iso_pipeline(...)`: the three-stage prefetch, demux, parse pipeline used by all
   file-backed mux paths.
-- Stream types: `DiscStream`, `MkvStream`, `M2tsStream`, `NetworkStream`, `StdioStream`,
-  `NullStream`; the `PesStream` trait is the common `read()` interface.
+- Stream types: `DiscStream`, `MkvStream`, `M2tsStream`, `Mp4Reader` (MP4 input),
+  `NetworkStream`, `StdioStream`, `NullStream`; the `Stream` trait is the common
+  `read()` interface.
+- Write-only sinks (dest-only): `Mp4Sink` (MP4 output), the per-track-class demux
+  sinks (`video://` / `audio://` / `sub://` / `demux://`), and the metadata sinks
+  (`chapters://` / `json://` / `fvi://`).
 - `input(...)`, `output(...)`, `parse_url(...)`, `StreamUrl`.
 
 ### Drives and SCSI

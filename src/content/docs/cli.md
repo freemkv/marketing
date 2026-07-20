@@ -22,19 +22,23 @@ Every source and destination is a `scheme://` URL.
 
 | URL | Source | Dest | Notes |
 |---|---|---|---|
+| **Discs & images** | | | |
 | `disc://` | ✓ | — | Optical drive (auto-detected; `disc:///dev/sg4` or `disc://D:` to target one) |
-| `mkv://path.mkv` | ✓ | ✓ | Matroska movie |
+| `iso://path.iso` | ✓ | ✓ | Disc image |
+| `dir://path/` | — | ✓ | Decrypted file tree (VIDEO\_TS / BDMV) |
+| **Container files** | | | |
+| `mkv://path.mkv` | ✓ | ✓ | Matroska movie — the keep-everything archival path |
 | `m2ts://path.m2ts` | ✓ | ✓ | Blu-ray transport stream |
 | `mp4://path.mp4` | ✓ | ✓ | MP4 (ISO-BMFF) — read *or* write; a play-everywhere compatibility export |
-| `iso://path.iso` | ✓ | ✓ | Disc image |
-| `fvi://path.fvi` | — | ✓ | freemkv video index — a JSON-Lines, one-record-per-picture index file ([spec](/fvi-format/)) |
-| `demux://path/` | — | ✓ | Per-track elementary streams — a directory, one file per track |
+| **Extraction sinks** (one facet of a title) | | | |
 | `video://path/` | — | ✓ | Video tracks only — a directory, one native elementary-stream file per track |
 | `audio://path/` | — | ✓ | Audio tracks only — a directory, one native-container file per track |
 | `sub://path/` | — | ✓ | Subtitle tracks only — a directory, one file (`.sup` / `.idx`+`.sub`) per track |
+| `demux://path/` | — | ✓ | All tracks as per-track elementary streams — a directory, one file per track |
 | `chapters://path` | — | ✓ | Chapter markers for one title — a single file (`.xml` / `.txt` / `.vtt`) |
 | `json://path.json` | — | ✓ | One title's structure (streams, chapters, clips) as JSON — a single file |
-| `dir://path/` | — | ✓ | Decrypted file tree (VIDEO\_TS / BDMV) |
+| `fvi://path.fvi` | — | ✓ | freemkv video index — a JSON-Lines, one-record-per-picture index file ([spec](/fvi-format/)) |
+| **Transports** | | | |
 | `network://host:port` | ✓ | ✓ | TCP (listen or connect) |
 | `stdio://` | ✓ | ✓ | Stdin / stdout |
 | `null://` | — | ✓ | Discard (read-speed benchmark) |
