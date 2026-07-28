@@ -15,6 +15,18 @@ The toolchain releases as a set: every component ships the same version
 number on each release, even when a given component has no functional
 change in that cycle.
 
+## 1.6.0
+
+<small>Unreleased</small>
+
+### Added
+
+- **freemkv for Mac — a native desktop app.** Open a disc or a disc image, tick
+  the titles and tracks you want, press Rip. It runs the same engine as the CLI,
+  so it inherits the same recovery, decryption, and mux behaviour — there is
+  nothing new to learn and nothing the CLI can do that it can't. Ships as a
+  `.dmg` for Apple Silicon and Intel. **A Windows app is in development.**
+
 ## 1.5.0
 
 <small>2026-07-19</small>

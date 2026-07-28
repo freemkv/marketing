@@ -31,8 +31,30 @@ const description =
 const docs = '/docs/overview/';
 const github = 'https://github.com/freemkv';
 const cliRepo = 'https://github.com/freemkv/freemkv';
+const guiRepo = 'https://github.com/freemkv/freemkv-gui';
 const autoripRepo = 'https://github.com/freemkv/autorip';
 const allReleases = `${cliRepo}/releases`;
+
+// Desktop GUI. macOS ships today as a .dmg per architecture, matching the two
+// macOS flavors the CLI ships. The Windows shell is in progress — it is listed
+// as a disabled card rather than a dead link, because a download button that
+// 404s is worse than one that says "not yet".
+const guiPlatforms = [
+  {
+    name: 'macOS',
+    os: 'macos',
+    builds: [
+      { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon', file: 'freemkv-gui-aarch64-macos.dmg' },
+      { key: 'macos-x64', arch: 'x86_64', label: 'Intel', file: 'freemkv-gui-x86_64-macos.dmg' },
+    ],
+  },
+  {
+    name: 'Windows',
+    os: 'windows',
+    soon: true,
+    builds: [],
+  },
+];
 
 // CLI binaries, all OSes. `key` is "<os>-<arch>" used by the detector.
 // `file` is the plain runnable-binary asset name (matches release.yml).
@@ -205,6 +227,73 @@ const autoripPlatforms = [
           </div>
           <div class="hero-version-date" data-latest-date>July 19, 2026</div>
           <p class="hero-foot">Free &amp; open source · Linux, macOS &amp; Windows · Intel &amp; ARM</p>
+        </div>
+      </section>
+
+      <!-- ============ DESKTOP GUI ============ -->
+      <section class="downloads" id="gui">
+        <div class="section-inner">
+          <h2 class="section-title">freemkv for Mac</h2>
+          <p class="section-lead">
+            The desktop app: open a disc or an image, tick the titles and tracks you
+            want, press Rip. Same engine as the CLI, nothing to learn.
+            <strong>Windows is coming soon.</strong>
+          </p>
+
+          <!-- Version picker + detected-platform banner (JS-enhanced) -->
+          <div class="dl-toolbar" data-dl-toolbar>
+            <div class="dl-detected-banner" data-detected-banner hidden>
+              <span class="dl-detected-eyebrow">Detected</span>
+              <span data-detected-label>your platform</span>
+            </div>
+            <label class="dl-version-pick" hidden data-version-pick>
+              <span class="dl-version-label">Version</span>
+              <select data-version-select aria-label="Choose release version">
+                <option value="latest">Latest</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="grid grid-gui">
+            {guiPlatforms.map((p) => (
+              <article class={p.soon ? 'card card-soon' : 'card'} data-os={p.soon ? undefined : p.os}>
+                <h3 class="card-title">{p.name}</h3>
+                {p.soon ? (
+                  <div class="dl-list">
+                    <span class="dl-soon-badge">Coming soon</span>
+                    <p class="dl-soon-note">
+                      The Windows app is in development. The
+                      <a href={`${cliRepo}/releases/latest`}>CLI</a> runs on Windows today.
+                    </p>
+                  </div>
+                ) : (
+                  <div class="dl-list">
+                    {p.builds.map((b) => (
+                      <a
+                        class="btn btn-primary dl-btn"
+                        data-key={b.key}
+                        data-asset={b.file}
+                        href={`${guiRepo}/releases/latest/download/${b.file}`}
+                        download
+                      >
+                        <span class="dl-main">Download <span class="dl-arch">{b.arch}</span></span>
+                        <span class="dl-sub">{b.label}</span>
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </article>
+            ))}
+          </div>
+          <p class="dl-note">
+            The app is not notarized yet, so the first launch needs
+            <strong>right-click → Open</strong> (double-clicking reports an unidentified
+            developer). After that it opens normally.
+          </p>
+          <p class="dl-note dl-note-sub">
+            Prefer a <code>.zip</code> of the <code>.app</code>, or another version?
+            <a href={`${guiRepo}/releases`}>All GUI releases on GitHub →</a>
+          </p>
         </div>
       </section>
 
@@ -468,7 +557,11 @@ const autoripPlatforms = [
         function applyVersion(tag) {
           document.querySelectorAll('a[data-asset]').forEach(function (a) {
             var asset = a.getAttribute('data-asset');
-            var repo = asset.indexOf('autorip') === 0 ? autoripRepo : cliRepo;
+            // Order matters: GUI assets are named "freemkv-gui-*", which also
+            // matches the CLI's "freemkv-*" prefix, so test the GUI first.
+            var repo = cliRepo;
+            if (asset.indexOf('autorip') === 0) repo = autoripRepo;
+            else if (asset.indexOf('freemkv-gui') === 0) repo = guiRepo;
             a.href = tag === 'latest'
               ? repo + '/releases/latest/download/' + asset
               : repo + '/releases/download/' + tag + '/' + asset;
@@ -948,6 +1041,37 @@ const autoripPlatforms = [
         cursor: pointer;
       }
       .dl-version-pick select:hover { border-color: var(--teal); }
+
+      /* GUI: two cards (macOS + the not-yet Windows one), so keep them
+         centred rather than stretched across the CLI's three-column grid. */
+      .grid-gui {
+        max-width: 720px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .card-soon {
+        opacity: 0.75;
+        border-style: dashed;
+      }
+      .card-soon:hover { transform: none; }
+      .dl-soon-badge {
+        display: inline-block;
+        align-self: center;
+        padding: 0.35rem 0.8rem;
+        border-radius: 999px;
+        background: var(--teal-tint);
+        color: var(--teal-darker);
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+      .dl-soon-note {
+        margin: 0.7rem 0 0;
+        font-size: 0.85rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
 
       /* Detected-card emphasis + matching-arch button. */
       .card.is-detected {
