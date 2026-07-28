@@ -89,7 +89,8 @@ restarts.
 
 If you rip an AACS-encrypted disc with no key source configured, freemkv **fails loudly
 and early** — a clear error message, non-zero exit, and no output file written. It never
-writes a silently-encrypted or partially-decrypted file. autorip marks the disc "Missing
-keys — no key source has a key for this disc" and, when nothing is configured at all,
-prompts "No keys are available. Configure a key source in Settings." DVDs are never
-affected.
+writes a silently-encrypted or partially-decrypted file. On a multi-title rip (`-t all` /
+multiple `-t N`), it stops after the *first* title's failure instead of repeating the
+same error for every remaining title. autorip marks the disc "Missing keys — no key
+source has a key for this disc" and, when nothing is configured at all, prompts "No keys
+are available. Configure a key source in Settings." DVDs are never affected.

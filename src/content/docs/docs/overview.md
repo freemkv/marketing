@@ -37,19 +37,20 @@ freemkv ships in two ways, both built on a shared core.
 **freemkv CLI**: manual, scriptable control. Every input and output is a `scheme://` stream URL:
 
 ```bash
-# rip a disc to MKV — main title only
-freemkv disc:// -t 1 mkv://Movie.mkv
+# rip a disc to MKV — main title (the default)
+freemkv disc:// mkv://Movie.mkv
 
 # inspect a disc
 freemkv info disc://
 
-# remux an existing ISO to MKV — main title only
-freemkv iso://Disc.iso -t 1 mkv://Movie.mkv
+# remux an existing ISO to MKV — main title (the default)
+freemkv iso://Disc.iso mkv://Movie.mkv
 ```
 
-On a `disc://` drive, freemkv rips the **main title** by default (one file). An `iso://`
-image instead rips **every** title — one file each, to a directory. Add `-t N` to choose a
-specific title; run `freemkv info disc://` to list them with durations.
+freemkv rips the **main title** by default (one file), for any source —
+`disc://` or `iso://`. Add `-t N` to choose a specific title, or `-t all` to
+rip every title on the disc (one file each, to a directory); run `freemkv info
+disc://` to list titles with durations.
 
 Available for Linux, macOS, and Windows. See the **[CLI reference](/docs/cli/)**.
 

@@ -64,12 +64,18 @@ What each scheme does, and when to reach for it.
 
 ### disc://
 
-Rips the **main title** by default. Pick others with `-t N`, or several at once:
+Rips the **main title** by default. Pick others with `-t N`, several at once, or
+`-t all` for every title on the disc:
 
 ```bash
 freemkv disc:// mkv://Movie.mkv          # main title → one file
 freemkv disc:// mkv://out/ -t 1 -t 3     # titles 1 and 3 → out/ (a directory)
+freemkv disc:// mkv://out/ -t all        # every title → out/ (a directory)
 ```
+
+> Before 1.6.0, no `-t` meant *every* title. That default flipped to the main
+> title only — obfuscated discs with dozens of near-equal-length playlists
+> were ripping everything. Pass `-t all` to get the old behavior back.
 
 ### mkv://
 
@@ -118,12 +124,15 @@ freemkv mp4://Movie.mp4 json://Movie.json   # inspect its structure
 
 ### iso://
 
-**As a source** (`iso://Movie.iso`), it rips **all titles** by default — so the *output* has to be a directory, because multiple titles means multiple files:
+**As a source** (`iso://Movie.iso`), it rips the **main title** by default, same as `disc://`:
 
 ```bash
-freemkv iso://Movie.iso mkv://out/             # every title → out/Movie_t1.mkv, out/Movie_t2.mkv, …
-freemkv iso://Movie.iso mkv://Movie.mkv -t 1   # just title 1 → a single file
+freemkv iso://Movie.iso mkv://Movie.mkv        # main title → a single file (the default)
+freemkv iso://Movie.iso mkv://out/ -t all      # every title → out/Movie_t1.mkv, out/Movie_t2.mkv, …
 ```
+
+`-t all` rips every title; because multiple titles means multiple files, the
+*output* then has to be a directory.
 
 **As a destination** (`iso://Movie.iso`), it writes a decrypted sector image of the disc:
 
@@ -267,7 +276,7 @@ freemkv iso://Disc.iso -t 1 mkv://Movie.mkv     # convert an ISO's main title to
 
 | Flag | Description |
 |---|---|
-| `-t, --title N` | Select title (1-based, repeatable). Default: all titles in the source. |
+| `-t, --title N` | Select title (1-based, repeatable). Default: the main title. Use `-t all` for every title in the source. |
 
 ### update-keys — refresh the AACS key database
 
@@ -321,7 +330,7 @@ Global (any command):
 | `-q, --quiet` | Suppress stdout. |
 | `RUST_LOG` | Power-user filter; enables file logging and wins over `--log-level`. |
 
-Keys are never written to logs. One Ctrl-C halts a rip cleanly (tray unlocked, mapfile preserved); a second forces exit `130`.
+Keys are never written to logs. One Ctrl-C halts a rip cleanly (tray unlocked, mapfile preserved); a second forces exit `130`. On a multi-title rip (`-t all` / multiple `-t N`), Ctrl-C is a **full stop** of the whole rip, not just the title in progress.
 
 ## Exit codes
 

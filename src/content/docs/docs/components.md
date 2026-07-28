@@ -3,7 +3,7 @@ title: Components
 description: The crates that make up the freemkv toolchain and how they compose.
 ---
 
-freemkv is a family of Rust crates. This page maps the pieces and links to the detailed page for each. The CLI and the autorip service are both thin front ends over one shared library.
+freemkv is a family of Rust crates. This page maps the pieces and links to the detailed page for each. The CLI and the autorip service are both thin front ends over the same core library, libfreemkv — increasingly through freemkv-engine, the shared rip-orchestration layer described below.
 
 ## libfreemkv
 
@@ -12,6 +12,16 @@ The core engine. It owns the mapfile and multipass recovery model, sector-level 
 Source on [GitHub](https://github.com/freemkv/libfreemkv) — the authoritative, current API. Consumed by git tag.
 
 See the [library overview](/docs/libfreemkv/).
+
+## freemkv-engine
+
+A shared rip-orchestration layer that sits between libfreemkv and the front
+ends. It owns the recovery strategy (sweep, patch, multipass) and the
+multi-title rip loop, so every front end drives the same policy instead of
+reimplementing it. The `freemkv` CLI runs on it today; other front ends
+(autorip, a future desktop UI) are expected to move onto it over time.
+
+Source on [GitHub](https://github.com/freemkv/freemkv-engine) — consumed by git tag.
 
 ## freemkv
 
