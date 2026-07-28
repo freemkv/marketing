@@ -277,6 +277,19 @@ freemkv iso://Disc.iso -t 1 mkv://Movie.mkv     # convert an ISO's main title to
 | Flag | Description |
 |---|---|
 | `-t, --title N` | Select title (1-based, repeatable). Default: the main title. Use `-t all` for every title in the source. |
+| `-a, --audio SPEC` | Audio streams to keep: `all` (default), `none`, or a comma-separated language list (names or ISO codes). Video is always kept. |
+| `-s, --subtitles SPEC` | Subtitle streams to keep: `all` (default), `none`, or a comma-separated language list. |
+
+Pick which language tracks land in the output — otherwise every audio and subtitle stream is kept (the archival default, identical to before 1.6.0):
+
+```bash
+freemkv iso://Movie.iso mkv://Movie.mkv -a eng,spa -s eng   # English + Spanish audio, English subtitles
+freemkv disc:// mkv://Movie.mkv -a English -s none          # English audio only, no subtitles
+```
+
+Language tags match by identity: `English`, `en`, and `eng` all select the same track. A language that isn't on the disc lists the disc's actual languages and stops, rather than silently shipping the wrong file.
+
+> On a **rip** (source *and* destination), `-s` means **subtitles**. On an info-only invocation (`freemkv info disc://`, no destination), `-s` / `--share` still submits the drive profile; use the long form `--share` when in doubt.
 
 ### update-keys — refresh the AACS key database
 
