@@ -1,25 +1,27 @@
 ---
 title: Install
-description: Get the freemkv CLI or the autorip service. A prebuilt binary or build from source.
+description: Get freemkv — the command line, the desktop app, or the autorip service. A prebuilt binary or build from source.
 ---
 
-There are two programs: the **freemkv CLI** (manual, one disc at a time) and the **autorip service** (a hands-off web app). Both are a single download with no runtime or dependencies. Grab a prebuilt binary, or build from source.
+There are two programs: **freemkv** — one binary that is both a **command-line tool** and a **native desktop app** — and the **autorip service** (a hands-off web app). Both are a single download with no runtime or dependencies. Grab a prebuilt binary, or build from source.
 
-For per-OS setup (where files live, how to reach the optical drive, and platform quirks), see your **[platform page](/docs/platforms-windows/)** (Windows, macOS, Linux).
+`freemkv` picks its face from how you start it: run `freemkv <args>` for the CLI, or open the app (on macOS today; Windows next) for a window. It's the same binary either way — the desktop app just adds a UI over the same engine.
+
+For per-OS setup (where files live, how to reach the optical drive, and platform quirks), see your **[platform page](/docs/platforms-macos/)** (macOS, Windows, Linux).
 
 ## Prebuilt binaries
 
-Go to the **[Download](/download/)** page; it detects your OS and hands you the right build (Linux, macOS, or Windows; Intel or ARM, except macOS, which is Apple Silicon only). It's one self-contained file per program; download and run it. The exact run command differs slightly per OS, so follow your platform page:
+Go to the **[Download](/download/)** page; it detects your OS and hands you the right build. Download and run it — one self-contained file, no dependencies. The exact steps differ per OS, so follow your platform page:
 
-- **[Windows](/docs/platforms-windows/)**: download the `.zip`, extract, run from a terminal.
-- **[macOS](/docs/platforms-macos/)**: `chmod +x` and run; the disc is unmounted for exclusive access.
-- **[Linux](/docs/platforms-linux/)**: `chmod +x` and run; drive access via the `cdrom` group.
+- **[macOS](/docs/platforms-macos/)**: the **desktop app** as a `.dmg` (drag to Applications, open, rip), or a standalone **CLI binary** for scripts and `brew`.
+- **[Windows](/docs/platforms-windows/)**: the **CLI** `freemkv.exe` (the desktop app is in development).
+- **[Linux](/docs/platforms-linux/)**: the **CLI** binary (`chmod +x` and run; drive access via the `cdrom` group).
 
 Every build has a matching `.sha256` checksum on its releases page — [freemkv](https://github.com/freemkv/freemkv/releases) for the CLI, [autorip](https://github.com/freemkv/autorip/releases) for the service.
 
 ## autorip
 
-[autorip](/docs/autorip/) is a web app: insert a disc and it rips automatically to MKV, with progress, settings, and history in the browser. It runs on Linux, macOS, or Windows as a single binary, or (on Linux) as a Docker container.
+[autorip](/docs/autorip/) is a web app: insert a disc and it rips automatically to MKV, with progress, settings, and history in the browser. It runs on Windows, macOS, or Linux as a single binary, or (on Linux) as a Docker container.
 
 ```bash
 # binary: download, make it executable, start the service

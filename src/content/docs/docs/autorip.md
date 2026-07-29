@@ -7,7 +7,7 @@ autorip is a rip service: insert a disc, and it rips automatically to MKV. A bro
 
 On disc insert, autorip runs the full pipeline automatically: a tolerant sweep, targeted patch retries on bad ranges, decrypt, and mux to MKV. Multiple drives rip in parallel, each with independent state.
 
-autorip runs on Linux, macOS, or Windows, on a host with an optical drive (a home server or NAS works well). Run it as a single binary, or (on Linux) via Docker. Linux is the most-tested target; the configuration and API reference below apply to every platform. The container and udev rip-on-insert trigger are Linux-only; on macOS and Windows the daemon polls for inserted discs.
+autorip runs on Windows, macOS, or Linux, on a host with an optical drive (a home server or NAS works well). Run it as a single binary, or (on Linux) via Docker. The configuration and API reference below apply to every platform. The container and udev rip-on-insert trigger are Linux-only; on macOS and Windows the daemon polls for inserted discs.
 
 ![autorip ripping a disc, showing the matched title, poster, and live per-pass progress](/autorip-ripper.png)
 

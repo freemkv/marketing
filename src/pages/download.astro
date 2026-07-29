@@ -24,35 +24,37 @@
 // documented in each repo's INSTALL.md:
 //   CLI (freemkv):  freemkv-<arch>-<os>[.exe]
 //   autorip:        autorip-<arch>-<os>[.exe]
-const title = 'Download freemkv: Linux, macOS & Windows';
+const title = 'Download freemkv: Windows, macOS & Linux';
 const description =
-  'Download prebuilt freemkv and autorip binaries for Linux, macOS, and Windows (Intel & ARM). Free & open source. Or build from source.';
+  'Download prebuilt freemkv and autorip binaries for Windows, macOS, and Linux (Intel & ARM). Free & open source. Or build from source.';
 
 const docs = '/docs/overview/';
 const github = 'https://github.com/freemkv';
 const cliRepo = 'https://github.com/freemkv/freemkv';
-const guiRepo = 'https://github.com/freemkv/freemkv-gui';
+// The desktop app and the CLI are now ONE binary in the `freemkv` repo — the
+// .dmg ships the same `freemkv` that powers the command line.
+const guiRepo = cliRepo;
 const autoripRepo = 'https://github.com/freemkv/autorip';
 const allReleases = `${cliRepo}/releases`;
 
-// Desktop GUI. macOS ships today as a .dmg per architecture, matching the two
-// macOS flavors the CLI ships. The Windows shell is in progress — it is listed
-// as a disabled card rather than a dead link, because a download button that
-// 404s is worse than one that says "not yet".
+// Desktop app. macOS ships today as a .dmg per architecture; the .app contains
+// the same `freemkv` binary that runs the CLI. The Windows shell is in progress
+// — listed as a disabled card rather than a dead link, because a download
+// button that 404s is worse than one that says "not yet".
 const guiPlatforms = [
-  {
-    name: 'macOS',
-    os: 'macos',
-    builds: [
-      { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon', file: 'freemkv-gui-aarch64-macos.dmg' },
-      { key: 'macos-x64', arch: 'x86_64', label: 'Intel', file: 'freemkv-gui-x86_64-macos.dmg' },
-    ],
-  },
   {
     name: 'Windows',
     os: 'windows',
     soon: true,
     builds: [],
+  },
+  {
+    name: 'macOS',
+    os: 'macos',
+    builds: [
+      { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon', file: 'freemkv-aarch64-macos.dmg' },
+      { key: 'macos-x64', arch: 'x86_64', label: 'Intel', file: 'freemkv-x86_64-macos.dmg' },
+    ],
   },
 ];
 
@@ -60,11 +62,10 @@ const guiPlatforms = [
 // `file` is the plain runnable-binary asset name (matches release.yml).
 const cliPlatforms = [
   {
-    name: 'Linux',
-    os: 'linux',
+    name: 'Windows',
+    os: 'windows',
     builds: [
-      { key: 'linux-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'freemkv-x86_64-linux' },
-      { key: 'linux-arm64', arch: 'ARM64', label: 'aarch64', file: 'freemkv-aarch64-linux' },
+      { key: 'windows-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'freemkv-x86_64-windows.exe' },
     ],
   },
   {
@@ -76,23 +77,22 @@ const cliPlatforms = [
     ],
   },
   {
-    name: 'Windows',
-    os: 'windows',
+    name: 'Linux',
+    os: 'linux',
     builds: [
-      { key: 'windows-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'freemkv-x86_64-windows.zip' },
+      { key: 'linux-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'freemkv-x86_64-linux' },
     ],
   },
 ];
 
-// autorip binaries: Linux, macOS, Windows (the Docker image is Linux).
+// autorip binaries: Windows, macOS, Linux (the Docker image is Linux).
 // Grouped by OS into columns, matching the CLI layout above.
 const autoripPlatforms = [
   {
-    name: 'Linux',
-    os: 'linux',
+    name: 'Windows',
+    os: 'windows',
     builds: [
-      { key: 'linux-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'autorip-x86_64-linux' },
-      { key: 'linux-arm64', arch: 'ARM64', label: 'aarch64', file: 'autorip-aarch64-linux' },
+      { key: 'windows-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'autorip-x86_64-windows.zip' },
     ],
   },
   {
@@ -104,10 +104,11 @@ const autoripPlatforms = [
     ],
   },
   {
-    name: 'Windows',
-    os: 'windows',
+    name: 'Linux',
+    os: 'linux',
     builds: [
-      { key: 'windows-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'autorip-x86_64-windows.zip' },
+      { key: 'linux-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'autorip-x86_64-linux' },
+      { key: 'linux-arm64', arch: 'ARM64', label: 'aarch64', file: 'autorip-aarch64-linux' },
     ],
   },
 ];
@@ -167,7 +168,7 @@ const autoripPlatforms = [
             '@id': 'https://freemkv.org/#app',
             name: 'freemkv',
             applicationCategory: 'MultimediaApplication',
-            operatingSystem: 'Linux, macOS, Windows',
+            operatingSystem: 'Windows, macOS, Linux',
             url: 'https://freemkv.org/',
             downloadUrl: 'https://freemkv.org/download/',
             license: 'https://opensource.org/licenses/MIT',
@@ -223,21 +224,20 @@ const autoripPlatforms = [
           <div class="hero-version">
             <span class="hero-version-dot" aria-hidden="true"></span>
             <span class="hero-version-label">Latest release</span>
-            <span class="hero-version-num" data-latest-version>v1.5.2</span>
+            <span class="hero-version-num" data-latest-version>v1.6.0</span>
           </div>
           <div class="hero-version-date" data-latest-date>July 19, 2026</div>
-          <p class="hero-foot">Free &amp; open source · Linux, macOS &amp; Windows · Intel &amp; ARM</p>
+          <p class="hero-foot">Free &amp; open source · Windows, macOS &amp; Linux · Intel &amp; ARM</p>
         </div>
       </section>
 
       <!-- ============ DESKTOP GUI ============ -->
       <section class="downloads" id="gui">
         <div class="section-inner">
-          <h2 class="section-title">freemkv for Mac</h2>
+          <h2 class="section-title">freemkv</h2>
           <p class="section-lead">
             The desktop app: open a disc or an image, tick the titles and tracks you
-            want, press Rip. Same engine as the CLI, nothing to learn.
-            <strong>Windows is coming soon.</strong>
+            want, press Rip.
           </p>
 
           <!-- Version picker + detected-platform banner (JS-enhanced) -->
@@ -302,8 +302,8 @@ const autoripPlatforms = [
         <div class="section-inner">
           <h2 class="section-title">freemkv CLI</h2>
           <p class="section-lead">
-            One static binary, no runtime, no container. Linux, macOS &amp; Windows
-            (Intel &amp; ARM). Download, <code>chmod +x</code>, run.
+            One static binary, no runtime, no container. Windows, macOS, &amp; Linux
+            (Intel &amp; ARM). Download and run.
           </p>
 
           <!-- Version picker + detected-platform banner (JS-enhanced) -->
@@ -359,7 +359,7 @@ const autoripPlatforms = [
           <h2 class="section-title">autorip</h2>
           <p class="section-lead">
             A web service for hands-off ripping: insert a disc and it rips automatically to
-            MKV. Runs on <strong>Linux, macOS, and Windows</strong> as a single binary (below);
+            MKV. Runs on <strong>Windows, macOS, and Linux</strong> as a single binary (below);
             the Docker image is Linux. Linux is the most-tested target.
           </p>
 

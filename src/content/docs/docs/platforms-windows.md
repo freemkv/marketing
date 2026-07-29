@@ -5,6 +5,10 @@ description: A complete step-by-step Windows guide for freemkv and autorip, cove
 
 freemkv runs natively on Windows. There are two programs, each a single file: **`freemkv.exe`** (the command-line tool) and **`autorip.exe`** (a self-contained service you open in your browser). This page walks through everything start to finish; if you've never run a program from a terminal before, you can still follow along.
 
+:::note[Desktop app in development]
+A native Windows desktop app — the same `freemkv.exe` binary, opened as a window instead of a terminal command — is in development and not yet shipping. It's already available on macOS; see the **[macOS](/docs/platforms-macos/)** page for what it looks like. Until the Windows build lands, use `freemkv.exe` from a terminal as described below, or run `autorip.exe` for hands-off ripping.
+:::
+
 ## Step 1: Download and unzip
 
 Go to the **[Download](/download/)** page. There are two programs, downloaded separately, each as its own **`.zip`**:

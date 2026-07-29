@@ -5,6 +5,8 @@ description: Running freemkv and autorip on Linux. File locations, /dev/sg* SCSI
 
 On Linux both tools run natively as single static binaries. The `autorip` service can *also* run as a Docker container (the common choice for an always-on home server or NAS), but it's the same binary either way.
 
+freemkv is CLI-only on Linux — there's no desktop shell here. The native desktop app (pick titles in a window, press Rip) is a macOS/Windows thing; see [macOS](/docs/platforms-macos/) or [Windows](/docs/platforms-windows/) if that's what you're after. On Linux, `autorip`'s web UI is the point-and-click option.
+
 ## Install / how to run
 
 Download the Linux build from the **[Download](/download/)** page, make it executable, and run it:

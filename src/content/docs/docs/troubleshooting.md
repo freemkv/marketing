@@ -22,7 +22,13 @@ freemkv <source> <dest> --log-level 3 --log-file freemkv-debug.log
 
 In autorip, enable the Debug toggle in the web UI (or `POST /api/debug`), reproduce the problem, then collect the container logs.
 
+In the **desktop app** (macOS today), the log panel shows the same detail as `--log-level 3` as the rip runs — no flags to set. Use the copy button on the panel to grab it for a bug report.
+
 For where files (config, keys, logs, staging, output) live, see your platform page: [Windows](/docs/platforms-windows/), [macOS](/docs/platforms-macos/), or [Linux](/docs/platforms-linux/).
+
+## macOS: "app is damaged" / can't open
+
+On first launch, macOS Gatekeeper blocks the app because it isn't notarized: **right-click the app → Open**, then confirm in the dialog that appears. This is a one-time step, and only applies to the desktop app — the plain `freemkv` CLI binary doesn't hit this dialog. See [macOS](/docs/platforms-macos/) for the full walkthrough.
 
 ## No drives detected in autorip
 

@@ -3,7 +3,7 @@ title: CLI Reference
 description: Every freemkv subcommand, flag, and stream URL.
 ---
 
-The `freemkv` binary has two forms:
+The `freemkv` CLI has two forms:
 
 ```bash
 # Convert: a source and a destination. There is NO command word — the action
@@ -15,6 +15,8 @@ freemkv <subcommand> [args]              # info, update-keys, version, help
 ```
 
 A bare invocation prints usage and exits `2`.
+
+The same binary also opens as a desktop app — run `freemkv gui`, or open the `.app` on macOS (see [macOS](/docs/platforms-macos/)) — if you'd rather pick titles in a window than pass flags.
 
 ## Stream URLs
 

@@ -1,18 +1,49 @@
 ---
 title: macOS
-description: Running freemkv on macOS. File locations, IOKit exclusive drive access, and /dev/diskN devices.
+description: freemkv on macOS — the native desktop app and the CLI, both from one binary. Install, drive access, and file locations.
 ---
 
-freemkv runs natively on macOS as a single static binary.
+On macOS, `freemkv` is **one binary with two faces**: a native desktop app and
+the command line. Both run the same engine — the app just opens a window.
 
-## Install / how to run
+## The desktop app
 
-Download the macOS build (Intel or Apple Silicon) from the **[Download](/download/)** page, make it executable, and run it:
+Download the macOS **`.dmg`** (Apple Silicon or Intel) from the
+**[Download](/download/)** page, open it, and drag **`freemkv.app`** out —
+to Applications, or just your Downloads folder; anywhere works, there's no
+install step. Double-click it, then pick a disc or a disc image, tick the titles
+and tracks you want, choose a format, and press **Rip**.
+
+![The freemkv desktop app on macOS with a disc image loaded — per-title and per-track selection, output format, and a live log.](/freemkv-gui.png)
+
+- **Open a source** with the file picker, or **drag an `.iso` / `.mkv` /
+  `.m2ts` / `.mp4`** straight onto the window.
+- **Per-title and per-track selection** with tri-state rollup, an output-format
+  picker that follows the source, live progress (engine speed + ETA), and a
+  copyable log.
+- **First launch:** the app is not notarized yet, so macOS Gatekeeper blocks the
+  first open. Right-click the app → **Open** → **Open** once, and it launches
+  normally thereafter.
+
+## The command line
+
+The very same binary is the full `freemkv` CLI. If you installed the app, the
+executable lives inside it:
 
 ```bash
-mv freemkv-* freemkv && chmod +x freemkv
-./freemkv --version
+/Applications/freemkv.app/Contents/MacOS/freemkv --version
 ```
+
+Or download the standalone **CLI binary** for macOS (Apple Silicon or Intel)
+from the [Download](/download/) page — handy for scripts, `brew`, or CI:
+
+```bash
+mv freemkv-*-macos freemkv && chmod +x freemkv
+./freemkv iso://Disc.iso mkv://Movie.mkv
+```
+
+From a terminal, `freemkv gui` opens the desktop window; any other invocation is
+the CLI. See the **[CLI reference](/docs/cli/)** for the full command grammar.
 
 ## File locations
 
@@ -29,5 +60,6 @@ freemkv obtains **exclusive** access to the optical drive through IOKit. To do s
 
 ## Known quirks / troubleshooting
 
+- The desktop app is **not notarized**, so the first launch needs right-click → **Open** (once).
 - If the disc is mounted by the Finder, freemkv unmounts it to take exclusive access; that's expected.
 - For capturing logs and other common fixes, see [Troubleshooting](/docs/troubleshooting/).

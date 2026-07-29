@@ -25,13 +25,13 @@ Source on [GitHub](https://github.com/freemkv/freemkv-engine) — consumed by gi
 
 ## freemkv
 
-The command-line front end, for Linux, macOS, and Windows. Every operation is a `scheme://` stream URL: rip a disc to MKV, copy a disc to an ISO, remux an existing image, inspect a disc, or refresh the key database.
+The command-line front end, for Windows, macOS, and Linux. Every operation is a `scheme://` stream URL: rip a disc to MKV, copy a disc to an ISO, remux an existing image, inspect a disc, or refresh the key database.
 
 See the [CLI reference](/docs/cli/). Get a binary from the [Download](/download/) page.
 
 ## autorip
 
-A cross-platform rip service (Linux, macOS, Windows). It auto-detects optical drives, runs the full sweep, patch, and mux pipeline on disc insert, and exposes a web UI for settings, live progress, and history. Resumable, with a configurable accepted-loss threshold. Runs as a single binary, or via Docker on Linux.
+A cross-platform rip service (Windows, macOS, Linux). It auto-detects optical drives, runs the full sweep, patch, and mux pipeline on disc insert, and exposes a web UI for settings, live progress, and history. Resumable, with a configurable accepted-loss threshold. Runs as a single binary, or via Docker on Linux.
 
 See the [autorip service](/docs/autorip/). Published to GHCR at `ghcr.io/freemkv/autorip:latest`.
 

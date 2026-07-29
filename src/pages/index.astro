@@ -56,7 +56,7 @@ const docs = '/docs/overview/';
             name: 'freemkv',
             description,
             applicationCategory: 'MultimediaApplication',
-            operatingSystem: 'Linux, macOS, Windows',
+            operatingSystem: 'Windows, macOS, Linux',
             processorRequirements: 'Intel, ARM',
             url: 'https://freemkv.org/',
             downloadUrl: 'https://freemkv.org/download/',
@@ -125,7 +125,7 @@ const docs = '/docs/overview/';
             <a class="btn btn-secondary" href={docs}>Read the docs</a>
             <a class="btn btn-ghost" href={github}>View on GitHub</a>
           </div>
-          <p class="hero-foot">Free &amp; open source · Linux, macOS &amp; Windows · Intel &amp; ARM</p>
+          <p class="hero-foot">Free &amp; open source · Windows, macOS, &amp; Linux · Intel &amp; ARM</p>
         </div>
       </section>
 
@@ -162,18 +162,9 @@ const docs = '/docs/overview/';
               </p>
             </article>
             <article class="card">
-              <h3>Insert a disc, get an MKV</h3>
-              <p>
-                autorip is a service that auto-detects optical drives, runs the full
-                sweep → patch → mux pipeline on disc insert, and exposes a resumable web
-                UI for settings, progress, and history. Run it as a single binary or in a
-                container.
-              </p>
-            </article>
-            <article class="card">
               <h3>Open source, single binary</h3>
               <p>
-                Pure Rust. Download a prebuilt binary for Linux, macOS, or Windows, or
+                Pure Rust. Download a prebuilt binary for Windows, macOS, or Linux, or
                 build from source. The whole toolchain is licensed
                 <strong>MIT</strong>: run it anywhere, audit it, build on it.
               </p>
@@ -222,9 +213,24 @@ const docs = '/docs/overview/';
             <span class="rot rot-4" aria-hidden="true">From disc to ISO.</span>
           </h2>
           <p class="section-lead">
-            freemkv composes a <em>source</em> and a <em>destination</em> URL, with no rigid
-            subcommands. Read from a disc, ISO, or M2TS; write to MKV, ISO, M2TS, a network
-            stream, or stdout.
+            Open the desktop app, pick the titles and tracks you want, choose a
+            format, and press <strong>Rip</strong> — the same engine, in a window.
+          </p>
+          <!-- TODO(windows-gui): this is the macOS app. When the Windows shell
+               ships, swap (or alternate) this for a Windows screenshot. -->
+          <figure class="shot">
+            <img
+              src="/freemkv-gui.png"
+              alt="freemkv desktop app with a DVD image loaded — per-title and per-track selection, output format, and a live log"
+              width="1180"
+              loading="lazy"
+            />
+          </figure>
+
+          <p class="showcase-sub">
+            Prefer a command line? The <em>same</em> binary composes a <em>source</em>
+            and a <em>destination</em> URL — no rigid subcommands. Read from a disc,
+            ISO, or M2TS; write to MKV, ISO, M2TS, a network stream, or stdout.
           </p>
           <div class="terminal">
             <div class="terminal-bar" aria-hidden="true">
@@ -261,7 +267,7 @@ const docs = '/docs/overview/';
             you compose.
           </p>
           <p class="showcase-note">
-            autorip runs on Linux, macOS, and Windows as a single binary (or a Linux container).
+            autorip runs on Windows, macOS, and Linux as a single binary (or a Linux container).
             <a href="/download/">Download autorip</a> · see the
             <a href="/docs/autorip/">autorip docs</a> for setup and
             <a href="/docs/decryption-keys/">decryption keys</a> for Blu-ray and 4K&nbsp;UHD.
@@ -676,6 +682,18 @@ const docs = '/docs/overview/';
         text-align: left;
       }
       .terminal-compact { margin-top: 1.5rem; }
+      .shot {
+        max-width: 900px;
+        margin: 1.25rem auto 0;
+      }
+      .shot img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: var(--radius);
+        border: 1px solid #1e293b;
+        box-shadow: 0 24px 60px -28px rgba(15, 23, 42, 0.55);
+      }
       .terminal-bar {
         display: flex;
         align-items: center;

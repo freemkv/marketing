@@ -9,7 +9,7 @@ freemkv is a Rust toolchain for optical-disc backup. Its goal is to **recover 10
 
 "Readable" is the bound: **if a sector can be read off the disc, freemkv reads it.** Not best-effort: everything the drive can physically recover, pursued through transient errors and marginal media.
 
-If you just want to rip a disc, the **[CLI reference](/docs/cli/)** has every command, or run the **[autorip service](/docs/autorip/)** and let it do it on disc insert.
+If you just want to rip a disc, the **[CLI reference](/docs/cli/)** has every command, run the **[autorip service](/docs/autorip/)** and let it do it on disc insert, or open the desktop app — pick titles, press Rip.
 
 ## The recovery model
 
@@ -32,7 +32,7 @@ DVDs decrypt with no setup. Blu-ray and 4K UHD need decryption keys you provide;
 
 ## The toolchain
 
-freemkv ships in two ways, both built on a shared core.
+freemkv ships in three ways, all built on a shared core.
 
 **freemkv CLI**: manual, scriptable control. Every input and output is a `scheme://` stream URL:
 
@@ -52,11 +52,13 @@ freemkv rips the **main title** by default (one file), for any source —
 rip every title on the disc (one file each, to a directory); run `freemkv info
 disc://` to list titles with durations.
 
-Available for Linux, macOS, and Windows. See the **[CLI reference](/docs/cli/)**.
+Available for Windows, macOS, and Linux. See the **[CLI reference](/docs/cli/)**.
 
-**autorip**: a service (Linux, macOS, Windows) that watches your optical drives, runs the full pipeline on disc insert, and exposes a web UI. Insert a disc, get an MKV, repeat. See the **[autorip service](/docs/autorip/)**.
+**freemkv desktop app**: the same binary, opened as a window instead of run as a command — pick titles and tracks, choose an output format, and watch live progress. Available on macOS today, with a native Windows app in development; Linux stays CLI-only. See the **[macOS](/docs/platforms-macos/)** page.
 
-Both compose libfreemkv, the core library that handles recovery, sector-level retry, AACS decryption, and MKV muxing. See **[Components](/docs/components/)** for the breakdown of every crate.
+**autorip**: a service (Windows, macOS, Linux) that watches your optical drives, runs the full pipeline on disc insert, and exposes a web UI. Insert a disc, get an MKV, repeat. See the **[autorip service](/docs/autorip/)**.
+
+All three compose libfreemkv, the core library that handles recovery, sector-level retry, AACS decryption, and MKV muxing. See **[Components](/docs/components/)** for the breakdown of every crate.
 
 ## Next steps
 

@@ -17,8 +17,9 @@ DVDs decrypt automatically. There are no keys to install and nothing to configur
 | 4K UHD  | AACS 2.0 / 2.1 |
 
 AACS-encrypted discs decrypt only when you supply AACS keys. No AACS keys are built in.
-Provide them one of two ways: an online key service or a local `keydb.cfg`. Both autorip and
-the `freemkv` CLI support either source.
+Provide them one of two ways: an online key service or a local `keydb.cfg`. autorip, the
+`freemkv` CLI, and the desktop app all support either source — the desktop app shows which
+one resolved the disc's key right in its key-state line.
 
 :::note[You supply the keys]
 freemkv ships with no AACS keys built in, and this website does not link to, host, or
