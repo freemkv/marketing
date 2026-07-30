@@ -124,9 +124,26 @@ function markdownSectionToHtml(body: string): string {
 
 export async function GET(context: { site?: URL | string }) {
   const docs = await getCollection('docs');
-  const changelog = docs.find((d) => d.id === 'changelog' || d.slug === 'changelog');
+  // The docs restructure moved every entry under a `docs/` prefix, so the
+  // collection id is now `docs/changelog`. The old bare `changelog` forms are
+  // kept as fallbacks so this keeps working either way — matching on only one
+  // shape is what silently turned the whole feed into a 404 body before.
+  const changelog = docs.find(
+    (d) =>
+      d.id === 'docs/changelog' ||
+      d.id === 'changelog' ||
+      // `slug` on older Astro content-collection entries.
+      (d as { slug?: string }).slug === 'docs/changelog' ||
+      (d as { slug?: string }).slug === 'changelog',
+  );
   if (!changelog) {
-    return new Response('changelog not found', { status: 404 });
+    // Fail the BUILD rather than emitting a file whose body is an error string:
+    // a static host serves that with HTTP 200 and every feed reader accepts it
+    // as the feed. Loud at build time is the only way this stays honest.
+    throw new Error(
+      "RSS: no 'changelog' entry in the docs collection " +
+        `(saw ids: ${docs.map((d) => d.id).join(', ')})`,
+    );
   }
 
   // Split the raw markdown body on top-level `## ` headings, one item per
@@ -168,7 +185,9 @@ export async function GET(context: { site?: URL | string }) {
 
     items.push({
       title,
-      link: `${SITE}/changelog/#${anchor}`,
+      // Canonical page URL after the docs restructure. `/changelog/` is only a
+      // meta-refresh stub now, which a feed reader would show as a blank page.
+      link: `${SITE}/docs/changelog/#${anchor}`,
       description: descriptionHtml || title,
       ...(date ? { pubDate: new Date(`${date}T00:00:00Z`) } : {}),
     });

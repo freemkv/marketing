@@ -9,22 +9,44 @@ freemkv runs natively on Windows. There are two programs, each a single file: **
 A native Windows desktop app — the same `freemkv.exe` binary, opened as a window instead of a terminal command — is in development and not yet shipping. It's already available on macOS; see the **[macOS](/docs/platforms-macos/)** page for what it looks like. Until the Windows build lands, use `freemkv.exe` from a terminal as described below, or run `autorip.exe` for hands-off ripping.
 :::
 
-## Step 1: Download and unzip
+<!-- ══ TODO(windows-gui): ADD THE WINDOWS SCREENSHOT HERE ═══════════════════
+     When the Windows desktop shell ships, drop a REAL capture at
+         public/freemkv-gui-windows.png
+     (spec: 2360 x 1520 px, Windows 11 light theme, app window only, a disc
+     image loaded with titles/tracks visible and a few log lines — i.e. the
+     same state as the macOS shot in platforms-macos.md), then replace this
+     comment with:
 
-Go to the **[Download](/download/)** page. There are two programs, downloaded separately, each as its own **`.zip`**:
+     ![The freemkv desktop app on Windows with a disc image loaded — per-title
+     and per-track selection, output format, and a live log.](/freemkv-gui-windows.png)
 
-- **autorip**: the automatic service with a web page (insert a disc, it rips by itself). **Most people want this one.**
-- **freemkv**: the command-line tool (manual, one disc at a time).
+     *The freemkv desktop app on Windows.*
 
-Pick the one you want (you can grab both). **Unzip it:** find the downloaded `.zip` in your `Downloads` folder, then **right-click it → Extract All… → Extract**. Inside is the single program, `autorip.exe` (or `freemkv.exe`).
+     No image is rendered until then: the shell does not exist yet, so no
+     genuine screenshot of it exists, and a mock-up or a relabelled macOS
+     capture would misrepresent the product.
+     ═══════════════════════════════════════════════════════════════════════ -->
 
-Windows names the extracted folder after the zip; rename it to something tidy like `freemkv` and keep it wherever you like (leaving it in Downloads is fine):
+## Step 1: Download
+
+Go to the **[Download](/download/)** page. There are two programs, downloaded separately:
+
+- **autorip**: the automatic service with a web page (insert a disc, it rips by itself). **Most people want this one.** Ships as a **`.zip`** (`autorip-x86_64-windows.zip`).
+- **freemkv**: the command-line tool (manual, one disc at a time). Ships as a plain **`.exe`** (`freemkv-x86_64-windows.exe`) — no zip to open.
+
+Pick the one you want (you can grab both).
+
+**If you downloaded autorip's `.zip`:** find it in your `Downloads` folder, then **right-click it → Extract All… → Extract**. Inside is the single program, `autorip.exe`.
+
+**If you downloaded `freemkv-x86_64-windows.exe`:** it is already the program — just rename it to `freemkv.exe` so the commands below match.
+
+Keep the program in a folder of its own, named something tidy like `freemkv`, wherever you like (leaving it in Downloads is fine):
 
 ```
 C:\Users\you\Downloads\freemkv\autorip.exe
 ```
 
-There's **no installer**; the extracted `.exe` *is* the program.
+There's **no installer**; the `.exe` *is* the program.
 
 Throughout the rest of this page, **`<install dir>`** means the folder that holds the `.exe`, wherever you put it (the example above is `C:\Users\you\Downloads\freemkv`). Substitute your own path wherever you see it.
 

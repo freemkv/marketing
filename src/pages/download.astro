@@ -37,16 +37,32 @@ const guiRepo = cliRepo;
 const autoripRepo = 'https://github.com/freemkv/autorip';
 const allReleases = `${cliRepo}/releases`;
 
-// Desktop app. macOS ships today as a .dmg per architecture; the .app contains
-// the same `freemkv` binary that runs the CLI. The Windows shell is in progress
-// — listed as a disabled card rather than a dead link, because a download
-// button that 404s is worse than one that says "not yet".
+// ── Desktop app ────────────────────────────────────────────────────────────
+// Both platforms run the SAME `freemkv` binary; only the wrapper differs.
+//   macOS   → .dmg per architecture, containing freemkv.app  (release.yml `build`)
+//   Windows → .zip containing freemkv.exe            (release.yml `build-windows`)
+//
+// ONE SWITCH: `windowsAppShipping`. The Windows card is a structural peer of
+// macOS either way (same grid, same card markup, real asset names below); this
+// flag only decides whether it renders download buttons or the "in development"
+// note. Flip it to `true` in the same commit that ships the Windows desktop
+// shell — nothing else on this page needs to change.
+//
+// It is FALSE today on purpose: `freemkv-x86_64-windows.zip` is built and
+// attached by the release workflow, but the .exe inside still falls through to
+// the CLI when asked for a window, so a "Download" button here would hand the
+// visitor something that isn't the app yet. A button that lies is worse than a
+// card that says "not yet".
+const windowsAppShipping = false;
+
 const guiPlatforms = [
   {
     name: 'Windows',
     os: 'windows',
-    soon: true,
-    builds: [],
+    soon: !windowsAppShipping,
+    builds: [
+      { key: 'windows-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'freemkv-x86_64-windows.zip' },
+    ],
   },
   {
     name: 'macOS',
@@ -87,6 +103,12 @@ const cliPlatforms = [
 
 // autorip binaries: Windows, macOS, Linux (the Docker image is Linux).
 // Grouped by OS into columns, matching the CLI layout above.
+//
+// NOTE: there is intentionally NO macOS Intel entry. autorip's release matrix
+// dropped `x86_64-apple-darwin` (a pre-existing macOS-runner linker issue in a C
+// dependency), so `autorip-x86_64-macos` is never attached to a release and a
+// button for it 404s. Do not re-add it here without first re-adding the target
+// to autorip's release workflow.
 const autoripPlatforms = [
   {
     name: 'Windows',
@@ -100,7 +122,6 @@ const autoripPlatforms = [
     os: 'macos',
     builds: [
       { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon', file: 'autorip-aarch64-macos' },
-      { key: 'macos-x64', arch: 'x86_64', label: 'Intel', file: 'autorip-x86_64-macos' },
     ],
   },
   {
@@ -236,8 +257,8 @@ const autoripPlatforms = [
         <div class="section-inner">
           <h2 class="section-title">freemkv</h2>
           <p class="section-lead">
-            The desktop app: open a disc or an image, tick the titles and tracks you
-            want, press Rip.
+            The desktop app, for Windows and macOS: open a disc or an image, tick the
+            titles and tracks you want, press Rip.
           </p>
 
           <!-- Version picker + detected-platform banner (JS-enhanced) -->
@@ -260,10 +281,12 @@ const autoripPlatforms = [
                 <h3 class="card-title">{p.name}</h3>
                 {p.soon ? (
                   <div class="dl-list">
-                    <span class="dl-soon-badge">Coming soon</span>
+                    <span class="dl-soon-badge">In development</span>
                     <p class="dl-soon-note">
-                      The Windows app is in development. The
-                      <a href={`${cliRepo}/releases/latest`}>CLI</a> runs on Windows today.
+                      The Windows desktop app is being built now. The
+                      <a href="#cli">Windows CLI</a> below is the same program and
+                      works today — see the
+                      <a href="/docs/platforms-windows/">Windows guide</a>.
                     </p>
                   </div>
                 ) : (
@@ -286,13 +309,20 @@ const autoripPlatforms = [
             ))}
           </div>
           <p class="dl-note">
-            The app is not notarized yet, so the first launch needs
-            <strong>right-click → Open</strong> (double-clicking reports an unidentified
-            developer). After that it opens normally.
+            <strong>macOS:</strong> the app is not notarized yet, so the first launch
+            needs <strong>right-click → Open</strong> (double-clicking reports an
+            unidentified developer). After that it opens normally.
+            {windowsAppShipping && (
+              <Fragment>
+                {' '}<strong>Windows:</strong> the <code>.exe</code> is not code-signed
+                yet, so SmartScreen shows “Windows protected your PC” on first run —
+                click <strong>More info → Run anyway</strong> once.
+              </Fragment>
+            )}
           </p>
           <p class="dl-note dl-note-sub">
             Prefer a <code>.zip</code> of the <code>.app</code>, or another version?
-            <a href={`${guiRepo}/releases`}>All GUI releases on GitHub →</a>
+            <a href={`${guiRepo}/releases`}>All desktop releases on GitHub →</a>
           </p>
         </div>
       </section>
@@ -405,6 +435,8 @@ const autoripPlatforms = [
             <code>http://&lt;host&gt;:8080</code>. DVDs work out of the box; Blu-ray and
             4K&nbsp;UHD need <a href="/docs/decryption-keys/">decryption keys</a>. See the
             <a href="/docs/autorip/">autorip docs</a> for drive permissions and a systemd unit.
+            On macOS, autorip is Apple&nbsp;Silicon only — on an Intel Mac,
+            <a href="#source">build from source</a> or use the Docker image.
           </p>
 
           <!-- Docker (secondary) -->
@@ -430,7 +462,7 @@ const autoripPlatforms = [
       </section>
 
       <!-- ============ BUILD FROM SOURCE ============ -->
-      <section class="block block-alt">
+      <section class="block block-alt" id="source">
         <div class="section-inner">
           <h2 class="section-title">Build from source</h2>
           <p class="section-lead">
@@ -557,11 +589,12 @@ const autoripPlatforms = [
         function applyVersion(tag) {
           document.querySelectorAll('a[data-asset]').forEach(function (a) {
             var asset = a.getAttribute('data-asset');
-            // Order matters: GUI assets are named "freemkv-gui-*", which also
-            // matches the CLI's "freemkv-*" prefix, so test the GUI first.
-            var repo = cliRepo;
-            if (asset.indexOf('autorip') === 0) repo = autoripRepo;
-            else if (asset.indexOf('freemkv-gui') === 0) repo = guiRepo;
+            // Two repos only. The desktop app and the CLI are the SAME binary in
+            // the SAME repo (freemkv), so every non-autorip asset — .dmg, .zip,
+            // bare binary, .exe — resolves against cliRepo. (There is no longer
+            // a "freemkv-gui-*" asset family; that naming was retired when the
+            // GUI and CLI merged into one binary. `guiRepo === cliRepo`.)
+            var repo = asset.indexOf('autorip') === 0 ? autoripRepo : cliRepo;
             a.href = tag === 'latest'
               ? repo + '/releases/latest/download/' + asset
               : repo + '/releases/download/' + tag + '/' + asset;

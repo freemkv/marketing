@@ -14,7 +14,9 @@ to Applications, or just your Downloads folder; anywhere works, there's no
 install step. Double-click it, then pick a disc or a disc image, tick the titles
 and tracks you want, choose a format, and press **Rip**.
 
-![The freemkv desktop app on macOS with a disc image loaded — per-title and per-track selection, output format, and a live log.](/freemkv-gui.png)
+![The freemkv desktop app on macOS with a disc image loaded — per-title and per-track selection, output format, and a live log.](/freemkv-gui-macos.png)
+
+*The freemkv desktop app on macOS.*
 
 - **Open a source** with the file picker, or **drag an `.iso` / `.mkv` /
   `.m2ts` / `.mp4`** straight onto the window.

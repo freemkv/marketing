@@ -216,15 +216,24 @@ const docs = '/docs/overview/';
             Open the desktop app, pick the titles and tracks you want, choose a
             format, and press <strong>Rip</strong> — the same engine, in a window.
           </p>
-          <!-- TODO(windows-gui): this is the macOS app. When the Windows shell
-               ships, swap (or alternate) this for a Windows screenshot. -->
+          <!-- The Windows shot is a REAL capture from the Windows build running on
+               Windows Server 2022 (freemkv-private/ui-study/shots-windows/02-progress.png),
+               not a mock-up. It is rendered at its native 1044px rather than
+               upscaled to the 1180px the macOS shot uses, so it stays sharp.
+               A 2x recapture (2088x1576) would let it match the macOS shot's
+               on-page size; until then native width is the honest choice. -->
           <figure class="shot">
             <img
-              src="/freemkv-gui.png"
-              alt="freemkv desktop app with a DVD image loaded — per-title and per-track selection, output format, and a live log"
-              width="1180"
+              src="/freemkv-gui-windows.png"
+              alt="The freemkv desktop app on Windows ripping a disc image — source and output details, read rate, free space, and a live progress bar"
+              width="1044"
               loading="lazy"
             />
+            <figcaption class="shot-caption">
+              The freemkv desktop app on Windows. See also the
+              <a href="/docs/platforms-macos/">macOS guide</a> and the
+              <a href="/docs/platforms-windows/">Windows guide</a>.
+            </figcaption>
           </figure>
 
           <p class="showcase-sub">
@@ -693,6 +702,14 @@ const docs = '/docs/overview/';
         border-radius: var(--radius);
         border: 1px solid #1e293b;
         box-shadow: 0 24px 60px -28px rgba(15, 23, 42, 0.55);
+      }
+      /* Names the OS in the shot, so a macOS screenshot is never mistaken for
+         the (still in development) Windows app. */
+      .shot-caption {
+        margin: 0.85rem auto 0;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.85rem;
       }
       .terminal-bar {
         display: flex;
