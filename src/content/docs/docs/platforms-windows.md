@@ -3,29 +3,69 @@ title: Windows
 description: A complete step-by-step Windows guide for freemkv and autorip, covering downloading, getting past SmartScreen, running from PowerShell, where your files go, and fixing common problems.
 ---
 
-freemkv runs natively on Windows. There are two programs, each a single file: **`freemkv.exe`** (the command-line tool) and **`autorip.exe`** (a self-contained service you open in your browser). This page walks through everything start to finish; if you've never run a program from a terminal before, you can still follow along.
+freemkv runs natively on Windows. Like the macOS build, **`freemkv.exe` is one
+binary with two faces** — a native desktop app and the full command line, both
+driving the same engine. Alongside it, **`autorip.exe`** is a self-contained
+service you open in your browser for hands-off ripping.
 
-:::note[Desktop app in development]
-A native Windows desktop app — the same `freemkv.exe` binary, opened as a window instead of a terminal command — is in development and not yet shipping. It's already available on macOS; see the **[macOS](/docs/platforms-macos/)** page for what it looks like. Until the Windows build lands, use `freemkv.exe` from a terminal as described below, or run `autorip.exe` for hands-off ripping.
-:::
+This page covers all three. If you have never run a program from a terminal, you
+can still follow along — the step-by-step walkthrough starts below.
 
-<!-- ══ TODO(windows-gui): ADD THE WINDOWS SCREENSHOT HERE ═══════════════════
-     When the Windows desktop shell ships, drop a REAL capture at
-         public/freemkv-gui-windows.png
-     (spec: 2360 x 1520 px, Windows 11 light theme, app window only, a disc
-     image loaded with titles/tracks visible and a few log lines — i.e. the
-     same state as the macOS shot in platforms-macos.md), then replace this
-     comment with:
+## The desktop app
+
+New in 1.6.0: a native Win32 desktop shell, built with the same engine as the
+CLI. Open it with:
+
+```powershell
+.\freemkv.exe gui
+```
+
+Note the `gui` argument. **Double-clicking `freemkv.exe` currently starts the
+command line, not the window** — on macOS a bare double-click works because
+Finder launches an `.app` bundle with no arguments, and Windows has no equivalent
+signal. Until that is resolved, make a shortcut with `gui` on the end of the
+target if you want a desktop icon.
+
+The window is the same four pages as the macOS app — disc/title selection with
+per-track checkboxes, output format, live progress, and a log — with Windows
+conventions throughout: menus in the window rather than a global bar, `Ctrl`
+instead of `Cmd`, `F1` for the docs, and Settings under **File**.
+
+<!-- ══ TODO(windows-gui): screenshot ═══════════════════════════════════════
+     public/freemkv-gui-windows.png EXISTS and is a genuine capture of the app
+     running on Windows Server 2022, but it is not usable here yet:
+       * the PrintWindow capture baked black padding around the window;
+       * it shows the progress page, so most of the frame is an empty log pane;
+       * 1044x788, against the macOS shot's 2360x1520;
+       * the title bar shows the DEFAULT Windows icon (no icon resource is
+         embedded in the build yet).
+     Needed: the TITLES page with a disc image loaded, cropped tight to the
+     window, 2x, with the app icon present — i.e. the same state as the macOS
+     shot in platforms-macos.md. Then add:
 
      ![The freemkv desktop app on Windows with a disc image loaded — per-title
      and per-track selection, output format, and a live log.](/freemkv-gui-windows.png)
 
      *The freemkv desktop app on Windows.*
-
-     No image is rendered until then: the shell does not exist yet, so no
-     genuine screenshot of it exists, and a mock-up or a relabelled macOS
-     capture would misrepresent the product.
      ═══════════════════════════════════════════════════════════════════════ -->
+
+Not yet shipping in a release: the app is built and tested on Windows but is not
+offered on the [Download](/download/) page until the launch behaviour above is
+settled. Build from source, or use the CLI and autorip as described below.
+
+## The command line
+
+The very same `freemkv.exe` is the complete CLI — no separate download, no
+different engine:
+
+```powershell
+.\freemkv.exe --version
+.\freemkv.exe info disc://
+```
+
+See the **[CLI reference](/docs/cli/)** for the full command grammar. Everything
+the desktop app does, the CLI does, and both write to the same settings and key
+locations described under **Where are my files?** below.
 
 ## Step 1: Download
 

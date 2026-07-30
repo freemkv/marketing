@@ -216,22 +216,27 @@ const docs = '/docs/overview/';
             Open the desktop app, pick the titles and tracks you want, choose a
             format, and press <strong>Rip</strong> — the same engine, in a window.
           </p>
-          <!-- The Windows shot is a REAL capture from the Windows build running on
-               Windows Server 2022 (freemkv-private/ui-study/shots-windows/02-progress.png),
-               not a mock-up. It is rendered at its native 1044px rather than
-               upscaled to the 1180px the macOS shot uses, so it stays sharp.
-               A 2x recapture (2088x1576) would let it match the macOS shot's
-               on-page size; until then native width is the honest choice. -->
+          <!-- TODO(windows-hero): swap to /freemkv-gui-windows.png once a USABLE capture
+               exists. The current public/freemkv-gui-windows.png is genuine (the app
+               running on Windows Server 2022) but is not fit for a hero image:
+                 * the PrintWindow capture baked BLACK PADDING around the window, which
+                   compounds with .shot img's own border into a thick frame;
+                 * it is the progress page, so ~60% of the frame is an empty log pane;
+                 * 1044x788 against the macOS shot's 2360x1520, so it cannot fill the
+                   1180px slot without going soft;
+                 * the title bar shows the DEFAULT Windows icon — the build embeds a
+                   manifest but no icon resource.
+               Needed: the TITLES page with an ISO loaded (matching what this alt text
+               describes), cropped tight to the window, 2x, with the app icon present. -->
           <figure class="shot">
             <img
-              src="/freemkv-gui-windows.png"
-              alt="The freemkv desktop app on Windows ripping a disc image — source and output details, read rate, free space, and a live progress bar"
-              width="1044"
+              src="/freemkv-gui-macos.png"
+              alt="The freemkv desktop app on macOS with a DVD image loaded — per-title and per-track selection, output format, and a live log"
+              width="1180"
               loading="lazy"
             />
             <figcaption class="shot-caption">
-              The freemkv desktop app on Windows. See also the
-              <a href="/docs/platforms-macos/">macOS guide</a> and the
+              The freemkv desktop app on macOS. See also the
               <a href="/docs/platforms-windows/">Windows guide</a>.
             </figcaption>
           </figure>
