@@ -16,7 +16,7 @@ freemkv <subcommand> [args]              # info, update-keys, version, help
 
 A bare invocation prints usage and exits `2`.
 
-The same binary also opens as a desktop app — run `freemkv gui`, or open the `.app` on macOS (see [macOS](/docs/platforms-macos/)) — if you'd rather pick titles in a window than pass flags.
+On **Windows and macOS** the same binary also opens as a desktop app — run `freemkv gui`, or open the `.app` on macOS (see [macOS](/docs/platforms-macos/)) — if you'd rather pick titles in a window than pass flags. The Linux build is command line only; there is no `gui` subcommand on Linux.
 
 ## Stream URLs
 
@@ -27,7 +27,7 @@ Every source and destination is a `scheme://` URL.
 | URL | Source | Dest | Notes |
 |---|---|---|---|
 | `disc://` | ✓ | — | Optical drive (auto-detected; `disc:///dev/sg4` or `disc://D:` to target one) |
-| `iso://path.iso` | ✓ | ✓ | Disc image |
+| `iso://path.iso` | ✓ | ✓ | Disc image — readable from anything; **writable only from a `disc://` source** |
 | `dir://path/` | — | ✓ | Decrypted file tree (VIDEO\_TS / BDMV) |
 
 **Container files**
@@ -142,6 +142,15 @@ freemkv iso://Movie.iso mkv://out/ -t all      # every title → out/Movie_t1.mk
 freemkv disc:// iso://Movie.iso          # rip the disc to a decrypted image
 ```
 
+:::caution[An ISO destination needs a physical disc]
+Writing an `iso://` is a raw **sector copy off a drive**, not a stream — so the
+source must be `disc://`. There is no ISO-to-ISO decrypt copy: `freemkv
+iso://In.iso iso://Out.iso` is not a supported route, and neither is any other
+file source. To get a decrypted image you must have the disc in a drive. An
+existing image is a *source* only — send it to `mkv://`, `mp4://`, `dir://`, or
+any extraction sink instead.
+:::
+
 …plus two flags that work **only with `iso://`**:
 
 - **`--multipass`** — sweep, then retry the bad sectors, with a resumable **mapfile** sidecar (sector state only — never keys). Re-run until clean. Damaged-disc workflow: `disc:// iso:// --multipass`, then `iso:// mkv://`.
@@ -232,17 +241,17 @@ Streams a rip over TCP instead of to a file: one end listens (`network://0.0.0.0
 
 ### stdio://
 
-Writes the muxed output to stdout (or reads it from stdin), so you can chain freemkv into a pipe with no intermediate file. The classic use is transcoding on the fly with ffmpeg, which demuxes its input in a single linear pass and so reads a pipe directly:
+Writes the muxed output to stdout (or reads it from stdin), so you can chain freemkv into a pipe with no intermediate file. The classic use is transcoding on the fly: hand the stream to a transcoder that demuxes its input in a single linear pass, and it reads the pipe directly:
 
 ```bash
-freemkv disc:// stdio:// | ffmpeg -i - -c:v libx265 Movie.mkv
+freemkv disc:// stdio:// | your-transcoder -i - -o Movie.mkv
 ```
 
-A pipe only works for tools that read their input straight through. HandBrake scans titles — it seeks around the file before encoding — so it cannot consume a non-seekable pipe. Hand it a file instead: mux with freemkv first, then transcode that:
+A pipe only works for tools that read their input straight through. A transcoder that scans titles first — seeking around the file before encoding — cannot consume a non-seekable pipe. Hand it a file instead: mux with freemkv first, then transcode that:
 
 ```bash
-freemkv disc:// mkv://Movie.mkv                       # decrypt + mux to a file
-HandBrakeCLI -i Movie.mkv -o Movie.mp4 --preset "Fast 1080p30"
+freemkv disc:// mkv://Movie.mkv        # decrypt + mux to a file
+your-transcoder -i Movie.mkv -o Movie.mp4
 ```
 
 ### null://
@@ -267,6 +276,14 @@ freemkv info iso://Disc.iso
 | `-v, --verbose` | Add technical detail — the drive, device, and disc region; the AACS generation (1.0 / 2.0 / 2.1) and MKB version; the disc hash and Volume ID; the resolved keys (Volume Unique Key and each CPS unit key); and per-stream PIDs (video, audio, **and subtitles**) with audio sample rates. Off by default to keep the listing scannable — turn it on when debugging a mux or AACS issue. |
 | `--share` | Capture the drive's profile to a zip and print a ready-to-paste GitHub issue for the community drive-compatibility database. On a **release build + interactive terminal**, freemkv then offers to submit it for you — a `[Y/n]` prompt (default **yes**) that posts the issue to GitHub if you accept. `--mask` redacts drive serials first. Nothing is sent unless you confirm at that prompt. |
 
+:::caution[`--share` is a separate route]
+`--share` takes over the whole invocation and accepts only `--mask`, `-q`, `-v`,
+`--log-file` and `-h`. Combining it with the listing flags fails —
+`freemkv info disc:// --share --full` exits 1 with *Unknown option: --full*, and so
+does `--log-level` on this route. On an `iso://` URL only `--full` is read; the other
+listing flags are ignored.
+:::
+
 ### Converting a file to MKV (no drive needed)
 
 There is **no `remux` command** — converting a file is just the `<source-url> <dest-url>` form with a file source. Any file source (`m2ts://`, `iso://`) to a mux destination (`mkv://`, `m2ts://`) works, no drive involved.
@@ -281,6 +298,11 @@ freemkv iso://Disc.iso -t 1 mkv://Movie.mkv     # convert an ISO's main title to
 | `-t, --title N` | Select title (1-based, repeatable). Default: the main title. Use `-t all` for every title in the source. |
 | `-a, --audio SPEC` | Audio streams to keep: `all` (default), `none`, or a comma-separated language list (names or ISO codes). Video is always kept. |
 | `-s, --subtitles SPEC` | Subtitle streams to keep: `all` (default), `none`, or a comma-separated language list. |
+
+`-t` / `-a` / `-s` apply **only to a `disc://` or `iso://` source** — those are the
+sources freemkv scans into a title list. Pairing them with a stream/file source
+(`m2ts://`, `mp4://`, `mkv://`, `network://`, `stdio://`) is rejected before the rip
+starts, so of the two examples above only the `iso://` one takes them.
 
 Pick which language tracks land in the output — otherwise every audio and subtitle stream is kept (the archival default, identical to before 1.6.0):
 
@@ -339,10 +361,11 @@ Global (any command):
 
 | Flag | Description |
 |---|---|
-| `--language CODE` | UI language — freemkv is fully localized in **7**: `en` `de` `es` `fr` `it` `nl` `pt` (alias `--lang`). |
-| `--log-level N` | Enable a diagnostic **log file**: 1 = warn … 4 = trace (the terminal stays clean). For bug reports use `--log-level 3`. |
+| `--language CODE` | UI language — freemkv is fully localized in **29**: `ca` `cs` `da` `de` `el` `en` `es` `es-419` `fi` `fr` `hu` `id` `it` `ja` `ko` `nl` `no` `pl` `pt` `pt-br` `ro` `ru` `sk` `sv` `tr` `uk` `vi` `zh-hans` `zh-hant` (alias `--lang`). |
+| `--log-level N` | Enable a diagnostic **log file**: 1 = warn … 4 = trace (the terminal stays clean). For bug reports use `--log-level 3`. Not accepted on the `info … --share` route, which has its own flag set. |
 | `--log-file PATH` | Where to write the log (default `./log.txt`). |
 | `-q, --quiet` | Suppress stdout. |
+| `--force` | On a `dir://` destination, extract into a folder that is not empty (otherwise E9026 stops the run). |
 | `RUST_LOG` | Power-user filter; enables file logging and wins over `--log-level`. |
 
 Keys are never written to logs. One Ctrl-C halts a rip cleanly (tray unlocked, mapfile preserved); a second forces exit `130`. On a multi-title rip (`-t all` / multiple `-t N`), Ctrl-C is a **full stop** of the whole rip, not just the title in progress.

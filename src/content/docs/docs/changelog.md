@@ -1,31 +1,360 @@
 ---
 title: Changelog
-description: Notable changes across the freemkv toolchain (CLI, library, and autorip service), newest first.
+description: Notable changes in the libfreemkv core library behind freemkv, newest first, with links to the per-component release notes for the CLI, desktop app, and autorip.
 ---
 
 <a href="/docs/changelog/rss.xml" aria-label="Subscribe via RSS" title="Subscribe via RSS" style="display:inline-flex;align-items:center"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#f26522" aria-hidden="true"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20A2.18 2.18 0 0 1 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 4.95a10.61 10.61 0 0 1 10.61 10.61h-2.83A7.78 7.78 0 0 0 4 12.22V9.39Z"/></svg></a>
 
-All notable changes across the freemkv toolchain (the `freemkv` CLI,
-the `libfreemkv` core library, and the `autorip` service) are recorded
-here, newest first. The format follows
-[Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and the project
-follows semantic versioning.
+Notable changes across the freemkv toolchain, newest first. The format
+follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and the
+project follows semantic versioning.
 
 The toolchain releases as a set: every component ships the same version
 number on each release, even when a given component has no functional
 change in that cycle.
 
+:::note[Scope of this page]
+This page mirrors the **`libfreemkv` core library** changelog — the engine
+behind every front end. Changes to the `freemkv` command line and desktop app,
+and the `autorip` service are published on their own release pages:
+[freemkv releases](https://github.com/freemkv/freemkv/releases) ·
+[autorip releases](https://github.com/freemkv/autorip/releases). For what
+changed in the tools you actually run, start there; for what changed
+underneath them, read on.
+:::
+
 ## 1.6.0
 
-<small>Unreleased</small>
+<small>2026-08-02</small>
+
+### Fixed
+
+- **An `.fvi` index named itself as its own source.** The `fvi://` sink was
+  handed the DESTINATION path as its `source_path`, so every index reported
+  `source.path` as the file it was writing. `source.medium` was always `file`
+  whatever the real source, and `source.title` always `0` whatever title was
+  muxed — `docs/FVI_FORMAT.md` §6 defines all three as describing the input.
+  Beyond the wrong data, it made the format non-reproducible: two machines
+  indexing identical bytes produced different files purely because they wrote
+  to different paths, and a local filesystem path leaked into a shareable file.
+  `output()` now takes the source provenance explicitly. One of the crate's own
+  tests had been asserting the wrong value, which is why the suite never caught
+  it.
+- **A key service that was DOWN was reported as "this disc has no key".** A
+  failed lookup and a successful lookup that found nothing shared a match arm,
+  so an unreachable service, a rejected token and a rate limit all arrived as
+  "no entry". New codes distinguish them: `E7028` service unreachable or 5xx,
+  `E7029` token rejected, `E7030` rate limited. An operator hunting a missing
+  VUK during a transient outage was the actual, observed cost.
+
+### Breaking
+
+- **`Resolution::pixels()` now returns `Option<(u32, u32)>`, not a bare tuple.**
+  The previous sentinel for "unresolved" was `(0, 0)` — a pair every caller
+  could mistake for a usable value, and one did (see `mp4` under Fixed). Every
+  caller now has to choose what an unresolved resolution means for it: the
+  Matroska and metadata sinks take `.unwrap_or((0, 0))` with the reason stated
+  at each site, the VobSub writer degrades to a palette-only `.idx`, and the
+  MP4 sink refuses the track.
+- **`DiscSession::into_drive()` returns `Result<Drive, Error>`, not a bare
+  `Drive`.** The empty-slot state it used to panic on is reachable through
+  ordinary public use (`stage_drive_as_reader` moves the drive out; calling
+  `into_drive()` twice moves it out again), so the panic was not guarding
+  caller error — it was guarding a legitimate second call.
+- **`DiscSession::drive()` / `drive_mut()` removed.** Dead public API with
+  zero callers anywhere in the toolchain, and panicking accessors are not
+  worth preserving the shape of.
+- **`clpi`: the unused EP-map → sector-extent path deleted** (`get_extents`,
+  `resolved_ep_map`, `full_pts`, `full_spn`, `parse_cpi`, `EpCoarse`,
+  `EpFine`, and the `ep_coarse`/`ep_fine`/`version` fields on `ClipInfo`).
+  Crate-internal (`pub(crate)`), so not source-breaking for an external
+  consumer, but listed here because it removes surface: nothing in the
+  toolchain called it, it carried a truncation bug (fixed in a prior commit,
+  then removed with the code it fixed), and `ClipInfo` keeps only
+  `source_packet_count` and `streams`.
+- New error codes: **E9055** (`Mp4UnknownResolution`), **E9056**
+  (`SyncTimeout`), **E9057** (`SyncWorkerLost`). Front-ends rendering error
+  strings need entries for all three.
 
 ### Added
 
-- **freemkv for Mac — a native desktop app.** Open a disc or a disc image, tick
-  the titles and tracks you want, press Rip. It runs the same engine as the CLI,
-  so it inherits the same recovery, decryption, and mux behaviour — there is
-  nothing new to learn and nothing the CLI can do that it can't. Ships as a
-  `.dmg` for Apple Silicon and Intel. **A Windows app is in development.**
+- **High-level orchestration API — a single mux driver and a disc session.**
+  `mux_stream` drives the whole read → decrypt → demux → write pipeline for any
+  source (`MuxInput::Url` / `Iso` / `Session` / `Live`), so consumers stop
+  hand-rolling the frame pump. `DiscSession` hoists drive open + SCSI bring-up +
+  scan + key resolution behind one type; `scan_iso` does the same for a
+  file-backed ISO; `resolve_keys` / `resolve_keys_for` resolve base AACS keys.
+  These let the CLI and autorip shrink to thin front-ends (and back the new
+  `freemkv-engine` crate).
+- **Per-title stream selection (`StreamSelection`).** A pure primitive that
+  prunes a `DiscTitle`'s audio/subtitle streams to a chosen set of PIDs (video
+  is always kept) before the mux builds its demux state — so track headers,
+  `codec_privates`, and frame routing all follow the pruned list, with no
+  demux-internal filter. Carried on `MuxOptions.selection` /
+  `InputOptions.selection` (both default to keep-everything, a no-op).
+  Languages are the caller's concern; the library speaks PIDs.
+- `DiscTitle::audio_streams()` / `subtitle_streams()` / `video_streams()` —
+  typed iterators over each stream class.
+- `MuxOptions` gains a per-call write-pipeline `send_deadline` and derives
+  `Default`.
+
+### Changed
+
+- **The recovery strategy moved to the new `freemkv-engine` crate.** Sweep,
+  patch, the retry-decision state machine, mapfile bookkeeping, and damage
+  classification are freemkv's specific recovery *philosophy*, not disc-access
+  primitives — they now live in `freemkv-engine`, which composes libfreemkv's
+  public API. The library keeps the raw single-shot read, SCSI-sense-fact
+  translation (`SenseFamily`, now in `scsi`), decrypt, and the mux highway.
+- Small deliberate `pub` promotions to support the engine as an external
+  consumer: `Disc::resolve_content_key_map` / `encrypted_content_ranges`,
+  `io::WritebackFile`, `drive::extract_scsi_context`, `disc::locate_ranges`.
+- New typed error classifiers re-exported at the crate root — `is_halt`,
+  `is_skippable_title_stub`, `is_disc_level_no_key` — and a new error variant
+  `SelectionPidUnknown` (E6014).
+
+### Fixed
+
+- **An undecryptable CSS disc no longer exits successfully.**
+  `Error::CssKeyMissing` (E7023) carried two conditions needing opposite
+  responses: one title of a multi-VTS DVD failing its own re-crack — correctly
+  skippable, the rest of the disc still rips — and the *whole disc* failing its
+  crack (`Disc::css_error`), where every title fails identically. Both raised
+  E7023, which `is_skippable_title_stub` classifies, so an uncrackable disc
+  iterated all N titles logging "title skipped" and exited 0. The disc-wide gate
+  (`Disc::ensure_decryptable[_keys]`) now raises `Error::CssNoDiscKey`
+  (**E7027**) — the CSS analogue of `NoDiscKey` (E7022), classified by
+  `is_disc_level_no_key`, so a rip loop fails fast. The per-title raise keeps
+  E7023 and stays skippable.
+- **A corrupt `mkv://` input is no longer reported as a title worth silently
+  skipping.** `Error::MkvInvalid` (E6008) carried two unrelated meanings: the
+  genuine "this title produced no muxable frames" stub — which
+  `is_skippable_title_stub` classifies as skippable, so an all-titles rip drops
+  the title and finishes the rest — and *every* malformed-input rejection in the
+  MKV read path. A truncated file, a bad VINT, a cluster timestamp past
+  `i64::MAX`, a BlockGroup child overrunning its group: all of them classified as
+  skippable, so a broken source was passed over by a run that then exited
+  successfully. The read path now raises `Error::MkvSourceInvalid`
+  (**E9053**) — the counterpart of `Mp4Invalid` (E9049) — and the writer's
+  unrepresentable-element-size guards raise `Error::MkvUnencodable` (**E9054**).
+  Neither is skippable. `E6008` now means only the no-muxable-frames stub (the
+  mux driver's headers-never-resolved gate and the MKV muxer's zero-frame
+  `finish()` guard). The `json://` sink's metadata-encoding guard, which also
+  raised `MkvInvalid`, now raises `NoMetadata` (E9008) like `mux::meta`'s.
+  Front-ends rendering error strings need entries for E9053 and E9054 (and for
+  E9051 / E9052, split off `E6008` earlier in this cycle for the same reason).
+- **The FMTS (AACS 2.1) forensic key resolution now runs once per disc, not once
+  per title.** `Disc::resolve_content_key_map` resolves every title, and the FMTS
+  branch ran ahead of everything else — so each playlist re-walked the UDF
+  filesystem to re-read `/AACS/IndividualSegment.tbl`, re-ran the forensic anchor
+  probe and the per-index phase probe, and **re-asked the key service for the
+  disc's index-key set**. On a 60-playlist AACS 2.1 disc that was 60 identical
+  key-service round trips (a key-server storm) and tens of thousands of random
+  6144-byte reads for one disc-wide answer. The UDF walk is now memoised for the
+  whole disc and the index keys + phases per distinct extent list — the only
+  per-title input to the probes. A read-faulted phase probe is deliberately never
+  memoised, so one bad read is not spread across the remaining playlists. The
+  per-title UDF walk was paid on **every** disc, FMTS or not, so a plain BD sweep
+  loses ~59 full-stroke seeks too. The multi-CPS extent memo added in 1.6.0 is
+  also reachable on an FMTS disc for the first time.
+- **Mux correctness pass** (the `v1.4.0..HEAD` 10-phase audit): DTS core-header
+  false-drops that dropped good DTS frames; the TrueHD channel-correction probe
+  now runs correctly on AACS discs (7.1/Atmos no longer understated as 5.1);
+  an FMTS phase-probe read fault is distinguished from a wrong key; multi-CPS
+  and orphan-clip keying; the AACS key map is now a *positive* map (a sector
+  with no key passes through rather than failing), with fail-loud on genuinely
+  unresolvable keys; a user Stop mid-read is reported as `completed = false`
+  (a stop is not a failure), not a spurious error.
+- **`udf`: deleted files and directories are no longer read as if they still
+  existed.** File-characteristics bit 2 (Deleted, ECMA-167 4/14.4.4) was never
+  decoded, so a deleted File Identifier Descriptor's ICB was followed like any
+  other. A deleted FID is permitted to point at extent length zero — not at a
+  File Entry at all — so following it reads whatever descriptor happens to sit
+  at that LBA: a deleted *directory* landed on the File Set Descriptor and
+  failed enumeration of the **entire volume**; a deleted *file* read back as a
+  genuine zero-byte entry.
+- **`udf`: the Metadata File is now located from the Metadata Partition Map,
+  not assumed to sit at block 0.** UDF 2.50 2.2.10 records a
+  partition-relative Uint32 at offset 40 of the map that is the only
+  authoritative answer to where the file lives; block 0 is merely where most
+  authoring tools happen to put it. A conformant volume that recorded it
+  elsewhere was rejected as not-a-UDF-filesystem, or — on a volume carrying a
+  decoy descriptor at block 0 — silently mounted the wrong filesystem and
+  reported success. Block 0 stays in the candidate chain, so a volume with no
+  map or a wrong one keeps mounting exactly as before; the map is trusted only
+  when its partition type identifier actually reads `*UDF Metadata Partition`
+  (a Virtual or Sparable map is also ECMA-167 Type 2 and records unrelated
+  fields at the same offset).
+- **`udf`: a read fault while locating the Metadata File is now a read error,
+  not "not a UDF disc."** The candidate-loop fix above discarded the
+  distinction between "read fine and the bytes say no" (structural) and
+  "could not read" (transient) — a single marginal-sector fault fell through
+  to the block-0 fallback, mis-tagged, and came back as
+  `Error::UdfNotFilesystem`. `mux::resolve` **memoises that verdict for the
+  whole disc**, so one flaky read silently demoted every remaining title to
+  the base-Unit-Key-only path on an AACS 2.1 forensic disc. The same
+  read-fault-vs-negative-verdict fix is applied to the Volume Descriptor
+  Sequence fallback below.
+- **`udf`: `file_start_lba` no longer returns an unrecorded extent's LBA.**
+  A prior change correctly started retaining ECMA-167 4/14.14.1.1 type-1
+  (allocated-but-not-recorded) extents rather than dropping them — dropping
+  one slides every later extent down by the hole's length — but
+  `file_start_lba` still took the *first* extent unconditionally, so it could
+  hand back a hole's LBA rather than where the file's data actually begins.
+  `ifo.rs` uses this value as the base for every VTS VOB extent
+  (`file_start_lba(IFO) + vtstt_vobs + cell.first_sector`), so a DVD whose IFO
+  opens with a type-1 descriptor read its **entire video title set from the
+  wrong sectors** — no error anywhere, the reads just landed on unrelated
+  data.
+- **`udf`: the Volume Descriptor Sequence fallback now retries on outcome, not
+  on the anchor's declared shape.** The Main VDS was selected from the
+  anchor's declared extent whenever the extent's *shape* was usable (length,
+  location, no address wrap) and the customary fixed location was tried only
+  when the shape itself failed. Shape is a property of the field, not of what
+  is actually there: a stale anchor, a rewritten volume, or deliberate
+  corruption can pass every shape check and point at nothing, in which case
+  the sweep finds no Partition Descriptor and the volume is rejected — on
+  exactly the damaged-disc branch recovery exists for, with no recovery path.
+  Both locations are now candidates and the fallback fires on whether
+  following the anchor actually found anything.
+- **`css`: a sector whose cached title key is proven stale and whose re-crack
+  fails is no longer descrambled with the stale key anyway.** That produced
+  garbage payload behind an intact clear header instead of a hard failure.
+  Raises `Error::DecryptFailed`, matching AACS's behaviour on the same
+  condition.
+- **`decrypt`: an encrypted unit outside every key-map range no longer passes
+  through as ciphertext counted as good bytes.** `extract` could report a
+  scrambled file as complete with exit code 0.
+- **`mux`: frames dropped by the resync gate now reach `errors()`.** The gate
+  zeroes its counter at each resync, so a gap that resolved was previously
+  invisible to the error count even though frames were genuinely lost.
+- **`mux`: a discard by the 8 MiB access-unit backstop now marks the following
+  unit discontinuous.** Previously the resync gate never armed after corrupt
+  input recovered via the backstop, so the discontinuity that should have
+  triggered a resync went undetected.
+- **`mp4`: a video track with no resolved resolution is now refused
+  (`E_MP4_UNKNOWN_RESOLUTION`, E9055) instead of written as a structurally
+  valid, unrenderable 0x0 track.** `Resolution::pixels()`'s old `(0, 0)`
+  sentinel for "unknown" was indistinguishable from a real answer, and MP4 has
+  no optional-element mechanism to omit the field the way Matroska does —
+  `tkhd` and `VisualSampleEntry` both make width/height mandatory. See
+  `pixels()` under Breaking.
+- **`labels`: Deluxe master-enum selection no longer iterates a `HashMap`.**
+  Iteration order over a `HashMap` is unspecified, so the same disc could emit
+  different commentary/SDH labels on different runs. Selection is now
+  deterministic.
+- **`io`: a cancelled rip during the bounded fsync is no longer reported as a
+  hard I/O failure.** The three bounded-fsync failure modes returned bare
+  `io::ErrorKind` values with no `E<code>` prefix, so `is_halt()` — which only
+  recognises that prefix — could not tell a user Stop from a wedged NFS mount
+  from a lost worker thread, and a genuine cancel surfaced as a hard failure
+  at the end of an otherwise-complete mux. They now carry distinct codes:
+  `Error::Halted`, `Error::SyncTimeout` (**E9056**), and
+  `Error::SyncWorkerLost` (**E9057**) — see New error codes under Breaking.
+- **`session`: `into_drive()` is fallible; `drive()` / `drive_mut()` deleted.**
+  See Breaking.
+- **`clpi`: the unused EP-map → sector-extent path deleted**, including a
+  truncation bug it carried (`out_time` past the last EP entry resolved short
+  of EOF). See Breaking.
+
+### Tests
+
+- The suite grew from ~2,570 to **2,994** tests over this cycle.
+- A long-standing intermittent failure (roughly 1 run in 10 under the full
+  parallel suite) was diagnosed and removed. It came from asserting on a
+  `tracing` capture: the capturing subscriber is installed thread-local while
+  `tracing`'s callsite-interest cache is global, so the two could race
+  regardless of how carefully the capture was serialised. The predicate is
+  now a named function tested as a plain value, with no subscriber involved.
+  Measured clean afterward: 14 consecutive full-suite runs, 2,994 passed, 0
+  failed.
+
+## 1.5.2
+
+<small>2026-07-22</small>
+
+### Fixed
+
+- TrueHD 7.1/Atmos channel correction now works on AACS-encrypted (Blu-ray/UHD)
+  discs. The channel-correction probe was built without an AACS key map, so on
+  every AACS disc its first read failed and the correction was silently skipped —
+  a 7.1/Atmos TrueHD track was muxed with its MPLS-declared channel count (often
+  understated 5.1). The probe now resolves and installs the same key map the mux
+  read uses.
+- AACS 2.1 (FMTS) discs: a non-forensic title (menu/extras playlist, or any clip
+  that carries no forensic segments) no longer hard-fails the rip. `resolve_fmts_key_map`
+  now filters segments to those addressable within the title and falls back to the
+  base Unit-Key map when none apply — previously the first non-forensic title
+  aborted the whole-disc decrypt and blocked muxing any non-main title. A
+  forensic phase probe whose sampled units are all source-zero padding (an
+  even/odd tie) no longer aborts the rip either.
+- Multi-CPS AACS `dir://` extraction now decrypts each clip with its own CPS-unit
+  key instead of keying the whole disc with unit key 0 (which silently wrote
+  secondary-CPS files as garbage). A missing key fails loud at resolve. Single-CPS
+  extraction is unchanged (one key opens every unit, orphan clips included).
+- A trailing partial aligned unit that is inside a mapped range AND flagged
+  encrypted now fails loud (a CBC fragment split across a boundary cannot be
+  decrypted) instead of being emitted as ciphertext-as-clear.
+- CSS DVDs no longer mux to garbage. Every DVD read path — the file-backed mux
+  highway (`build_iso_pipeline`) and the live-drive single-pass `DiscStream` —
+  now resolves the per-VTS title key at read time through one shared step
+  (`resolve_dvd_title_key`), cracked keylessly in playback order from the title's
+  own extents. An uncrackable title hard-fails (E7023) instead of passing
+  scrambled sectors through as plaintext; `--raw` skips the crack entirely; a
+  user Stop mid-crack surfaces as `Halted`.
+
+### Changed
+
+- DVD scan no longer cracks a title key up front (the key is per-VTS, so a single
+  disc key was meaningless). Scan does only the CSS bus-auth read-unlock — hoisted
+  before the UDF prefetch so scrambled small/menu VOBs no longer cost a rejected
+  read each. Cuts a CSS-DVD scan from ~25s to ~6s.
+- Unlocker report: the DVD entry is renamed `CSS` → `DVD`.
+
+## 1.5.1
+
+<small>2026-07-20</small>
+
+### Fixed
+
+- **TrueHD audio is no longer silently dropped (and no longer sends decoders out
+  of memory).** The previous release added an MLP major-sync checksum gate to drop
+  genuinely-undecodable audio frames, but the checksum was computed with mismatched
+  byte order — the 16-bit CRC result was folded in one endianness and compared in
+  the other — so it never validated a real major sync. The parser then judged every
+  major sync corrupt and dropped every audio frame from the first one onward,
+  flushing the whole TrueHD track at the end of the file: de-interleaved from the
+  video, which sent players and integrity checkers into an unbounded memory spiral
+  ("decoder ran out of memory"). The checksum now matches the reference
+  implementation byte-exact (cross-verified against real 7.1/Atmos and 5.1 discs),
+  so major syncs validate and only genuinely-corrupt frames are dropped; as a
+  safety net, a major sync the parser still can't validate is kept rather than
+  allowed to drop an entire track. TrueHD titles produced after the checksum gate
+  landed need a re-rip.
+- **HD DVD AACS key files are now found on every disc, not just the common
+  layout.** The AACS directory and title-key filename on HD DVD are chosen by
+  the authoring house, and freemkv previously assumed one fixed spelling
+  (`/ANY!/VTKF000.AACS`). Discs that name their AACS directory differently (e.g.
+  `AAC!` instead of `ANY!`) or ship numbered title-key files (`VTKF090.AACS` /
+  `VTKF100.AACS` rather than `VTKF000.AACS`) are now handled: the AACS directory
+  is located by its contents and every title-key file in it is picked up. Blu-ray
+  and UHD are unaffected.
+- **HD DVD multi-title decryption reads the right keys.** The HD DVD title-key
+  file (`VTKF*.AACS`) stores its keys in 36-byte records — per the AACS HD DVD
+  specification, and confirmed byte-exact on real discs. freemkv had been reading
+  them at a 32-byte stride, which lands the first key correctly but drifts off
+  every key after it, so only single-title discs decrypted. Discs with more than
+  one protected title now recover every title's key instead of only the first.
+  (Choosing the correct title-key file when a disc carries several playlists
+  still needs verification against an encrypted HD DVD.)
+- **A dirty disc can no longer "rip clean" but decode with errors.** freemkv now
+  asks the drive to *report* marginal reads instead of silently returning
+  best-effort data as success — on smudged/scratched media a drive can hand back
+  subtly-wrong bytes with a clean status, which used to slip through the rip and
+  surface only as playback/decode errors. A read the drive had to fight for is
+  now distrusted and re-read in the patch pass: a clean re-read wins, and a spot
+  that's genuinely unreadable becomes an honest gap rather than silently-wrong
+  data. Best-effort per drive, and it changes nothing on a clean disc.
 
 ## 1.5.0
 
@@ -37,7 +366,7 @@ change in that cycle.
   any sink (`mp4:// mkv://`, `mp4:// audio://`, `mp4:// json://`, …). The round-trip
   is frame-exact.
 - **Native MP4 output (`mp4://`)** — a disc goes straight to a play-everywhere
-  `.mp4` in one decrypt pass, no ffmpeg. Carries HEVC / H.264 video (with HDR10) and
+  `.mp4` in one decrypt pass, no external transcoder. Carries HEVC / H.264 video (with HDR10) and
   AC-3, E-AC-3, and DTS / DTS-HD audio, and is faststart by default so it plays over
   HTTP without downloading the end first. It's a **compatibility export, not
   archival**: MP4 can't hold TrueHD, LPCM, or bitmap (PGS / VobSub) subtitles, so
@@ -442,7 +771,7 @@ change in that cycle.
   Program Stream packs several DTS core frames into one PES packet; the parser
   stamped every access unit with that single PES timestamp and no per-frame
   duration, so consecutive frames collided on one PTS and a strict decode/remux
-  (ffmpeg) rejected the track — `non monotonically increasing dts to muxer`.
+  a standard validator rejected the track — `non monotonically increasing dts to muxer`.
   The DTS parser now derives each core frame's duration from its header
   (`(NBLKS+1)*32` samples ÷ the `SFREQ` sample rate) and re-bases to each PES's
   own container timestamp, advancing by a frame duration only *within* a single
@@ -531,7 +860,7 @@ consumers are the in-tree toolchain crates.
   frame. The undecryptable aligned unit is concealed as NULL transport-stream
   packets (PID 0x1FFF, invisible to every real stream), and the codec layer
   **drops forward to the next keyframe** so no frame with a dangling reference
-  reaches the muxer. An ffmpeg deep scan of the result is clean — no missing
+  reaches the muxer. A deep validator scan of the result is clean — no missing
   references, no partial frames. The loss is tallied and logged, never silently
   dropped, and the mux always completes. Audio and subtitle tracks have no
   cross-frame references, so only the directly-affected frames are dropped there.
@@ -632,7 +961,7 @@ consumers are the in-tree toolchain crates.
   discontinuity — a continuity-counter break, an adaptation-field
   discontinuity_indicator, or a concealed-loss gap — the AC-3 / DTS / TrueHD
   parsers held a *truncated* partial access unit and spliced the post-gap bytes
-  onto it, manufacturing a corrupt frame (ffmpeg "exponent out of range" /
+  onto it, manufacturing a corrupt frame (a validator reports "exponent out of range" /
   "Failed to decode block code(s)" / "Invalid data found") and, for TrueHD, a
   non-monotonic timestamp band on multi-segment titles. The video path already
   resynced via the keyframe gate; the audio parsers now do too — on a
@@ -640,7 +969,7 @@ consumers are the in-tree toolchain crates.
   syncword, rebasing the timestamp from the post-gap PES. A discontinuity becomes
   a clean single-frame gap instead of a corrupt splice. Audio has no inter-frame
   references, so dropping the truncated partial is the complete fix; the approach
-  matches FFmpeg's parser layer and GStreamer's `tsdemux`.
+  matches how mainstream transport-stream demuxers behave.
 - **Drive-prep firmware unlock skipped for DVD discs.** An
   `if disc_is_dvd() { return }` guard in `Drive::init()` (present since
   1.0.0-rc.1) bypassed the entire drive-prep unlock step for DVDs. That unlock is
@@ -783,12 +1112,13 @@ consumers are the in-tree toolchain crates.
   SD-DVD.** rc.5.1 added a 20 ms `DefaultDecodedFieldDuration` field element to
   the 576i/480i track header on the theory that Windows derives fps from it.
   Captured evidence showed that element made Windows Explorer report 12.5 fps
-  (half) and MediaInfo flip the track to "Frame rate mode: Variable", while
-  MK's rip of the same disc omits it. The element is therefore no longer
-  written (`MkvTrack::video` now passes `field_duration_ns == 0`); the track
-  keeps `FlagInterlaced=1` + `FieldOrder=TFF` and the full-frame 40 ms
-  `DefaultDuration` (`1/DefaultDuration` = 25 fps), matching MK. How a given
-  player or shell handler chooses to display interlaced fps is not guaranteed.
+  (half) and MediaInfo flip the track to "Frame rate mode: Variable". The
+  element is optional in RFC 9559 and nothing requires it for interlaced SD, so
+  it is no longer written (`MkvTrack::video` now passes `field_duration_ns == 0`);
+  the track keeps `FlagInterlaced=1` + `FieldOrder=TFF` and the full-frame 40 ms
+  `DefaultDuration` (`1/DefaultDuration` = 25 fps), which is the frame rate the
+  source actually carries. How a given player or shell handler chooses to display
+  interlaced fps is not guaranteed.
 - **Correct AC-3 audio track selected on DVDs with non-standard sub-stream
   ordering.** freemkv assigned each declared audio stream a physical sub-stream
   by ordinal (`0x80+n`), assuming the IFO's first stream lives at `0x80`. On

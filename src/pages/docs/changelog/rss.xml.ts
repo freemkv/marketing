@@ -196,7 +196,7 @@ export async function GET(context: { site?: URL | string }) {
   return rss({
     title: 'freemkv Changelog',
     description:
-      'Notable changes across the freemkv toolchain (CLI, library, and autorip service), newest first.',
+      'Notable changes in the libfreemkv core library behind freemkv, newest first.',
     site: context.site ?? SITE,
     items,
   });

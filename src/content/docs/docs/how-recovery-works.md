@@ -5,8 +5,10 @@ description: How the sweep/patch two-pass design, the mapfile, and the mux pipel
 
 This page explains how freemkv extracts everything a drive can read from a disc: the
 two-pass sweep-and-patch design, the mapfile that drives it, and the mux pipeline that turns
-recovered sectors into a playable container. The recovery engine lives in
-[libfreemkv](/docs/components/) and is shared by both the [CLI](/docs/cli/) and [autorip](/docs/autorip/).
+recovered sectors into a playable container. Since 1.6.0 the recovery engine lives in
+[freemkv-engine](/docs/components/) (`freemkv_engine::recovery`) — it moved out of
+libfreemkv, which keeps the sector-read and SCSI layer underneath it — and is shared by both
+the [CLI](/docs/cli/) and [autorip](/docs/autorip/).
 
 ## The principle
 
@@ -47,12 +49,24 @@ Targeted retries over only the ranges the sweep couldn't read:
   range). The sweep jumps *forward* over damage, so good data tends to sit at the *tail*
   of an unread range; reading backward hits that good data first and converges on the true
   bad-block boundary.
-- Reads in **adaptive batches**: up to 32 sectors at a time while the drive is healthy,
-  dropping to a single sector the moment a read fails so each one can be probed
-  individually, then climbing back to the full batch after a run of clean single reads.
-  Every read gets the drive's full recovery timeout (60 seconds) so firmware-level error
-  correction has every chance to succeed. It primes the drive cache with a few throwaway
-  reads before each recovery read.
+- Reads in **32-sector batches**, falling back to single-sector reads inside any batch that
+  comes back partly dead, so a bad spot costs granularity only where it actually is.
+- Runs a **chain of recovery handlers** over each still-bad section, in breadth-first tiers.
+  Each handler is one idea — probe the middle of the range (bisect), jump past a long dead
+  run, sweep backwards, sweep forwards — and each gets a hard wall-clock deadline, so no
+  single handler can grind a dead zone indefinitely. Whatever one handler leaves, the next
+  tries from a different angle.
+  - **Tier 0** scouts fast (max speed, 10-second timeout) to grab the readable bulk.
+  - **Tier 1** re-reads the residue deep, giving the drive its full 60-second recovery
+    window so firmware-level error correction has every chance to succeed.
+  - **Tier 2** runs marginal specialists on only what survives tiers 0-1, each targeting one
+    physical failure mode: slower spindle, cache-bypass (FUA) re-read, cache priming,
+    oscillating and speed-sweeping reads. A technique that doesn't suit this disc scores low
+    and self-deprioritises rather than being dropped.
+- A handler that recovers nothing for four consecutive reads **yields early** to the next
+  one instead of burning its whole time budget on a dead zone.
+- A sustained run of drive fast-fail responses is detected as a **wedge** and aborts the
+  pass, rather than hammering a drive that has stopped attempting recovery at all.
 - Handles "not ready" sense conditions with a pause-and-retry rather than immediately
   writing the sector off.
 - A sector that still can't be read is left **NonTrimmed** so the next pass gets another
@@ -68,9 +82,9 @@ left to recover.
 :::caution[Be gentle with the drive]
 Hammering the same bad sectors in tight, repeated retries can push a drive into a
 fast-fail state where it stops attempting recovery at all. freemkv's patch pass is
-deliberately paced (drop-to-single-sector probing on failure, recovery-timeout windows,
-cache priming, and skip escalation) to coax data out of marginal media without driving the hardware into that
-state.
+deliberately paced (single-sector probing inside a failed batch, per-handler deadlines,
+early yield on unproductive reads, and wedge detection) to coax data out of marginal media
+without driving the hardware into that state.
 :::
 
 ## The mapfile

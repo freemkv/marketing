@@ -1,12 +1,20 @@
 ---
 title: libfreemkv
-description: The core Rust library behind freemkv. Disc scanning, multipass recovery, AACS/CSS decryption, and MKV muxing.
+description: The core Rust library behind freemkv. Disc scanning, sector reading, AACS/CSS decryption, and MKV muxing.
 ---
 
-libfreemkv is the engine the whole toolchain composes: disc scanning, multipass recovery,
-sector-level retry, AACS/CSS decryption, and MKV muxing. The [CLI](/docs/cli/) and
+libfreemkv is the engine the whole toolchain composes: disc scanning, sector reading,
+AACS/CSS decryption, and MKV muxing. The [CLI](/docs/cli/) and
 [autorip](/docs/autorip/) are thin front ends over it. This page maps the library for developers
 embedding it; the [download page](/download/) covers the ready-to-run tools.
+
+:::note[Recovery moved out in 1.6.0]
+The sweep/patch strategy, the ddrescue mapfile, damage classification and the multipass
+loop are **no longer part of libfreemkv**. They live in the
+[`freemkv-engine`](/docs/components/) crate as
+`freemkv_engine::recovery::{copy, sweep, patch}`. libfreemkv keeps the raw single-shot
+sector read and the SCSI-fact translation the strategy is built on.
+:::
 
 - Source (authoritative): [github.com/freemkv/libfreemkv](https://github.com/freemkv/libfreemkv)
 - Consumed by git tag
@@ -20,15 +28,15 @@ published crate and its generated docs can lag the latest source.
 
 ```toml
 [dependencies]
-libfreemkv = "1.4.4"
+libfreemkv = "1.6.0"
 ```
 
 ## Design principles
 
 - **Streams are PES.** Every stream type reads its format into PES frames, or writes PES
   frames into its format. No byte-level `Read`/`Write`; no `Seek` on streams.
-- **`Disc::copy()` for sector dumps.** A disc-to-ISO copy is a raw sector operation, not a
-  stream.
+- **Sector dumps are not streams.** A disc-to-ISO copy is a raw sector operation, driven by
+  `freemkv_engine::recovery::copy` over libfreemkv's `SectorSource`.
 - **`DiscStream` is any disc.** A physical drive or an ISO file behind the same type, just
   with a different sector source.
 - **No English in the library.** Errors are numeric codes (`Error` enum); applications
@@ -43,15 +51,21 @@ Sources and destinations are addressed by `scheme://` URLs, parsed into `StreamU
 ```rust
 pub enum StreamUrl {
     Disc { device: Option<PathBuf> },  // disc://  or  disc:///dev/sgN
-    Iso { path: PathBuf },             // iso://image.iso
     M2ts { path: PathBuf },            // m2ts://file.m2ts
     Mkv { path: PathBuf },             // mkv://file.mkv
+    Mp4 { path: PathBuf },             // mp4://file.mp4 (compatibility export)
     Network { addr: String },          // network://host:port
     Stdio,                             // stdio://
-    Null,                              // null://
+    Iso { path: PathBuf },             // iso://image.iso
     Dir { path: PathBuf },             // dir://path/ (decrypted file tree)
+    Null,                              // null://
     Demux { dir: PathBuf },            // demux://dir/ (per-track elementary streams)
+    Video { dir: PathBuf },            // video://dir/ (video tracks only)
+    Audio { dir: PathBuf },            // audio://dir/ (audio tracks only)
+    Sub { dir: PathBuf },              // sub://dir/   (subtitle tracks only)
     Fvi { path: PathBuf },             // fvi://file.fvi (per-picture video index)
+    Chapters { path: PathBuf },        // chapters://file.xml|.txt|.vtt
+    Json { path: PathBuf },            // json://file.json (title metadata)
     Unknown { raw: String },           // unrecognized
 }
 ```
@@ -63,7 +77,7 @@ to open streams. Bare paths without a scheme are rejected.
 `disc://` is **not** opened via `input()`. A live disc requires
 `Drive::open()` → `Disc::scan()` → `DiscStream::new()` directly, because the live-drive read
 path carries adaptive bad-sector retry that the generic resolver doesn't. For a raw disc →
-ISO copy, use `Disc::copy()` / `Disc::sweep()`, not the URL resolver.
+ISO copy, use `freemkv_engine::recovery::copy`, not the URL resolver.
 :::
 
 ## Public API surface
@@ -74,20 +88,23 @@ A map of the main exports (see the [source](https://github.com/freemkv/libfreemk
 
 - `Disc`: a scanned disc with titles, streams, format, AACS/CSS state.
 - `Disc::scan(...)` scans a live drive; `Disc::scan_image(...)` scans an ISO.
-- `Disc::sweep(...)` is the Pass 1 forward read; `Disc::copy(...)` runs sweep or patch, dispatched
-  by mapfile state; `Disc::patch(...)` is Pass N recovery.
+- `Disc::identify(...)` is the fast path — UDF only, no playlist parse.
 - `DiscTitle`, `Stream`, `Codec`, `Resolution`, `FrameRate`, `HdrFormat`, `ColorSpace`,
   and the audio/subtitle stream structs: structured title/stream metadata.
 - `ScanOptions`: scan controls (AACS host credentials, the key-source layer, and a halt token).
 
-### Recovery and the mapfile
+### Recovery and the mapfile — in `freemkv-engine`, not here
 
-- `SweepOptions` and `PatchOptions`: pass controls. (`CopyOptions` is not re-exported at the
-  crate root — reach it as `disc::CopyOptions`.)
-- `PatchOutcome`: pass results (good/unreadable/pending byte counts, halt status). (The copy
-  result type is `disc::CopyResult`, not re-exported at the crate root.)
-- The `mapfile` module: `Mapfile`, `SectorStatus` (`NonTried`, `NonTrimmed`, `NonScraped`,
-  `Unreadable`, `Finished`), `MapEntry`, `MapStats`.
+None of the recovery surface lives in libfreemkv any more. In the `freemkv-engine` crate:
+
+- `freemkv_engine::recovery::{copy, sweep, patch}`: the copy driver, the Pass 1 forward
+  sweep, and the Pass N targeted retry.
+- `freemkv_engine::recovery::mapfile`: `Mapfile`, `SectorStatus` (`NonTried`, `NonTrimmed`,
+  `NonScraped`, `Unreadable`, `Finished`), `MapStats`, `mapfile_path_for`.
+
+What libfreemkv still owns is the layer underneath: `Drive::read(lba, count, buf, recovery)`
+(one CDB, no inline retry — `recovery` only selects the 10 s vs 60 s timeout), `ScsiSense` /
+`SenseFamily` for classifying what the drive reported, and `WritebackFile` for the output.
 
 See **[How recovery works](/docs/how-recovery-works/)** for the algorithm these types drive.
 
@@ -95,8 +112,9 @@ See **[How recovery works](/docs/how-recovery-works/)** for the algorithm these 
 
 - `build_iso_pipeline(...)`: the three-stage prefetch, demux, parse pipeline used by all
   file-backed mux paths.
-- Stream types: `DiscStream`, `MkvStream`, `M2tsStream`, `Mp4Reader` (MP4 input),
-  `NetworkStream`, `StdioStream`, `NullStream`; the `Stream` trait is the common
+- Stream types: `DiscStream`, `MkvStream`, `M2tsStream`, `NetworkStream`, `StdioStream`,
+  `NullStream`; the `pes::Stream` trait, re-exported at the crate root as `PesStream`
+  (to avoid colliding with `disc::Stream`, the codec-kind enum), is the common
   `read()` interface.
 - Write-only sinks (dest-only): `Mp4Sink` (MP4 output), the per-track-class demux
   sinks (`video://` / `audio://` / `sub://` / `demux://`), and the metadata sinks
