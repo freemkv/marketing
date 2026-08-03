@@ -25,9 +25,76 @@ underneath them, read on.
 
 ## 1.6.0
 
-<small>2026-08-02</small>
+<small>2026-08-03</small>
 
 ### Fixed
+
+- **A vendor label's forced-subtitle field was read as a boolean when it is an
+  enumeration, mislabelling full dialogue tracks and discarding the real forced
+  tracks.** One vendor's `playlists.xml` carries a per-subtitle-slot cell that
+  looks like a flag; the parser treated the value `1` as "this track is forced"
+  and every other value as "not forced". Measured across every image in the
+  corpus that uses this format — seven distinct discs — the cell takes four
+  values, and `1` is not the forced one: it marks a FULL dialogue track that
+  additionally contains some forced-narrative signs. Decoding three of those
+  discs and counting every PGS display set: all nine tracks bearing `1` on one
+  disc are full tracks of 949-1411 display sets, all seven on another are full
+  tracks of 1602-1651, and neither disc's `1` tracks are anything but full —
+  which is how a language ended up presenting as two identical full subtitle
+  tracks with one of them flagged forced. The values that DO name a dedicated
+  forced-narrative track, `2` and `3`, were being thrown away: they take their
+  own trailing stream slots, one per localized language, and measure 7 to 59
+  display sets against the 1216-2655 of the full tracks they duplicate. So the
+  reading was wrong in both directions. The cell is now classified as the enumeration it is; only a
+  dedicated forced slot earns the flag, an unrecognised value never does, and
+  the "contains forced signs" value is dropped rather than weakened into a
+  forced label. This is not something content could have corrected afterwards:
+  clearing a wrong forced label requires a disc whose authoring sets
+  `forced_on_flag`, and measured discs in this format do not set it — so on
+  those discs the vendor cell was, and remains, the only evidence there is.
+  Four of the crate's own tests had been asserting the boolean reading. The
+  other two parsers that emit a forced qualifier from vendor metadata were
+  audited and are structurally immune — in both, the forced marker names a slot
+  of its own rather than hanging off a full track's entry — and are now pinned
+  by tests saying so.
+- **Content-based forced-subtitle detection never observed anything on a
+  feature-length disc.** The PGS probe spent its entire 256 MiB budget on the
+  first sectors of a title, where a feature has no subtitles at all — it hit
+  the budget, observed zero display sets, and contributed nothing to any
+  verdict, so the vendor label was always the only input. The same budget is
+  now SPREAD across each extent as ~16 MiB sample windows sized in proportion
+  to the extent (still on the AACS aligned-unit grid, still bounded by the same
+  ceiling): a track is disproven by any single non-forced display set anywhere,
+  and a genuine forced track is small enough to be caught by the spread. Cost
+  is unchanged; placement is not. The probe also stops spending budget on a
+  track the moment it is disproven, and skips an extent that owes evidence only
+  for such tracks.
+- **A partially-read extent's evidence was memoised as if the whole extent had
+  been read.** A budget-cut (and now sampled) read covers a fraction of an
+  extent, but its result was filed under the extent's full key and replayed to
+  every other playlist sharing the clip — turning a prefix into an absence
+  claim about the whole extent. Cache entries now carry the coverage behind
+  them, and an entry only answers for a run that intended to read no more than
+  it did. Positive evidence (a non-forced display set was seen) still answers
+  regardless, being irretractable.
+- **A forced verdict could rest on a single display set.** Calling a track
+  forced is an absence claim — "no display set here was un-flagged" — and a
+  sampled read sees a fraction of a track. Measured on real discs: tracks exist
+  that carry `forced_on_flag` on about a quarter of their display sets and not
+  on the rest, so catching one flagged set and nothing else is exactly what a
+  wrong promotion looks like. A sampled run now needs at least two display sets
+  before it may assert forced; a run that read every extent end to end has no
+  unread gap and may still promote off one (single-sign forced tracks exist).
+- **Content could never correct a wrong vendor forced label.** The muxer only
+  ever promoted `FlagForced` 0 → 1, so a track labelled forced stayed forced in
+  the output even when the mux had seen every one of its two thousand display
+  sets and not one was forced. Content may now clear the flag too — in the
+  muxer and in the scan-time probe — behind a single shared guard: the absence
+  of `forced_on_flag` means nothing on a disc whose authoring never sets it, so
+  a demotion requires that some other track demonstrably uses the flag AND that
+  the track have the shape of a full dialogue track rather than of a
+  forced-narrative one. Where no track on the disc uses the flag, nothing is
+  demotable.
 
 - **An `.fvi` index named itself as its own source.** The `fvi://` sink was
   handed the DESTINATION path as its `source_path`, so every index reported
@@ -40,6 +107,119 @@ underneath them, read on.
   `output()` now takes the source provenance explicitly. One of the crate's own
   tests had been asserting the wrong value, which is why the suite never caught
   it.
+- **A vendor label list was re-numbered from 1 inside every title, so the same
+  label landed on a different physical stream in each.** A label list describes
+  ONE playlist's stream table, but it was applied to every title on the disc by
+  per-type ordinal. Where sibling playlists cover the identical feature clip
+  and enumerate different subtitle sets — one carrying a full track the other
+  omits — identical ordinals resolve to different PIDs, and the same stream
+  came out flagged forced in one title and not in the other. On the title such
+  a disc actually offers as the rip target, that put `forced` on an
+  873 MB full-dialogue English subtitle track: the user is shown "English" and
+  "English (Forced)", picks either, and gets the same subtitles. Labels are now
+  bound to the stream a PID identifies, not to a position in a list. The title
+  whose per-type stream-language sequence reproduces the label list is treated
+  as the table the list describes; the `(clip, PID)` facts it yields bind every
+  other playlist over that clip, so a flag lands on the same elementary stream
+  whichever playlist enumerates it, and a stream the list never described is
+  left alone. Streams no such fact reaches still bind by ordinal, but a label
+  whose language contradicts the stream it would land on is now dropped rather
+  than applied — an unlabelled track is a far smaller harm than a mislabelled
+  one, all the more since the muxer can only undo a wrong `forced` on discs
+  whose authoring sets `forced_on_flag` at all. Across the disc-image corpus
+  this cleared every cross-title label conflict, on both affected vendor
+  formats.
+- **Streams borrowed from the playlists were merged into the vendor label list
+  by a number that meant something else, so a bonus clip could be labelled from
+  the feature's tracks.** A vendor label's `stream_number` is a slot in the one
+  stream table its config blob describes. The labels merged in from the
+  playlists to cover streams the vendor named nothing for carried a different
+  number entirely: a dense counter over every distinct stream found while
+  scanning the whole disc in directory order, related to no playlist's slot
+  numbering at all. The merge matched the two by equality, and the binder then
+  counted streams against the result. Measured across the 44-image corpus: 22
+  discs merge such labels, and of the 566 places one lands on a stream, 443
+  (78%) are a stream it does not describe — the label states which PID it read
+  itself from, and it is a different one. 142 of those were already stopped by
+  the language check added alongside the ordinal binding; 301 were applied. The
+  streams-only labels carry no editorial payload, so the direct damage is
+  confined to codec text, but the polluted list is also what the anchor gate
+  reads, and on 11 disc/stream-type pairs it is what decides the anchor — which
+  is how it reaches the vendor's forced and SDH flags. The same defect ran
+  through the clip-info orphan streams, numbered from `max + 1` of a list they
+  share no coordinate system with.
+
+  A label now either NAMES the elementary stream it describes — `(clip, PID)`,
+  read out of the very table the stream itself is built from — or it does not,
+  and only the ones that do not are ever reached by counting. Playlist- and
+  clip-info-derived labels bind by that name and by nothing else; the vendor's
+  bind through the language-sequence anchor as before, over the vendor's own
+  slots only. A named stream outranks a guessed one, so an editorial flag
+  reaches a stream only where the disc's own numbering puts it there. The
+  presence of the name is the provenance marker, which is what the anchor gate
+  was missing: it can now tell the vendor's slots from the borrowed ones, so a
+  slot the vendor never named no longer breaks the sequence, and a title with
+  fewer streams than the list has slots is no longer eligible to hold it. An
+  orphan stream, being in no playlist, is in no title, and now binds to nothing
+  rather than to whatever counted its way.
+
+  Over the corpus, 41 of 44 images are byte-identical and every one of the
+  three that move loses a label it should never have had: a dozen featurette
+  playlists stop reporting a feature subtitle's SDH marking on their own
+  single, unrelated subtitle; eleven menu and bonus titles stop advertising the
+  feature's object-audio format on plain stereo tracks; and on a disc whose
+  every title carries one audio stream, a regional-variant tag that had been
+  asserted on all seventeen titles is asserted on none — that disc's tables are
+  too short to anchor anything, so the tag is no longer claimed anywhere, and
+  in exchange every title now states the codec it actually carries, which none
+  of them did before. No feature title changes on any image. Six of the crate's
+  own tests had been asserting the invented numbering, including one pinning
+  the disc-global counter as a deliberate property.
+- **A subtitle the content probe demoted went on calling itself forced.** The
+  probe writes its verdict to the stream's `forced` flag but left the
+  qualifier alone, and those are two renderings of one fact for two different
+  consumers: the muxer writes Matroska `FlagForced` from the flag, the JSON
+  metadata sidecar writes its qualifier string from the qualifier. A track the
+  probe cleared therefore shipped with a sidecar calling it forced next to a
+  header saying it is not. The demotion now clears the qualifier with the flag.
+  Only a forced claim is cleared — an SDH marking says something the probe
+  neither confirmed nor refuted, and is left alone.
+- **Vendor stream labels were numbered by parsed entry, not by stream slot.**
+  Label blobs contain entries the parser deliberately does not interpret, but
+  those entries still occupy a stream-number slot. Counting only the parsed
+  ones shifted every later label up by the number skipped, so on discs with an
+  uninterpreted entry early in the list the language, forced, SDH and
+  commentary flags were attached to the wrong tracks — a subtitle track could
+  present as both a plain and a forced variant of the same language, with the
+  forced flag landing on neither or both. Four parsers shared the defect
+  (`pixelogic`, `paramount`, `mpls_universal`, `deluxe`); the rest are now
+  pinned by tests proving they are immune. Three of the crate's own tests had
+  been asserting the shifted numbering.
+- **A feature's stream list ran on past its end and picked up menu clips as
+  streams.** The parser for one vendor's label blob finds the feature
+  playlist's section by name and ends it at the next named section — but on
+  most discs of that authoring style the feature playlist IS the last named
+  section, and the trailing per-language notice, disclaimer and dub-credit
+  cards carry no name marker at all. The walk therefore swallowed the whole
+  tail of the blob as more of the feature's own stream list. Those cards are
+  named per language, in the same shape as a stream token, so each one silently
+  advanced a stream-number counter, and the ones whose name collided with a
+  catalogued component were labelled as streams outright — on one disc, five
+  audio labels for slots 10 to 14 of a playlist that has nine. The same
+  collisions were being reported as vocabulary gaps and cost that disc's parse
+  its high-confidence rating. A section now also ends where the next one's
+  stream list begins, which is at a video slot the section has already listed.
+  Eight of eleven affected-format discs in the test corpus have no terminating
+  marker; two of them were producing labels for streams their feature playlist
+  does not contain. No other label parser walks a flat entry sequence this way
+  — the rest scope each stream to a structural range or read its number off the
+  entry itself, and two more now carry tests pinning that.
+- **A forced-narrative subtitle marker went uncatalogued.** The token marking
+  the signs-and-on-screen-text pass that accompanies a dubbed presentation was
+  not in the vocabulary, so that track lost its forced flag while every other
+  language in the same run kept theirs. Vocabulary gaps are also no longer
+  silent: an unrecognized component now produces one aggregated warning per
+  parse naming the distinct components, rather than a bool nobody could see.
 - **A key service that was DOWN was reported as "this disc has no key".** A
   failed lookup and a successful lookup that found nothing shared a match arm,
   so an unreachable service, a rejected token and a rate limit all arrived as
@@ -1138,7 +1318,7 @@ consumers are the in-tree toolchain crates.
   The direct-to-MKV path now gives the drive its full ECC recovery budget on a
   bad sector (matching the multipass rip) instead of reporting a read failure a
   multipass rip would have recovered.
-- **4K decode glitches at non-seamless clip joins fixed (Top Gun class).**
+- **4K decode glitches at non-seamless clip joins fixed.**
   Titles assembled from clips joined at non-seamless boundaries no longer drop
   reference frames at the join ("Could not find ref" stutter); the splice
   keyframe is rewritten so the decoder discards only the genuinely-dangling
@@ -1265,7 +1445,7 @@ consumers are the in-tree toolchain crates.
   `sync_all` so the flush succeeds on Windows, where `FlushFileBuffers`
   rejects a read-only handle with `ERROR_ACCESS_DENIED`.
 
-## 1.0.0-rc.4 — UNRELEASED
+## 1.0.0-rc.4
 
 An audit-driven round of correctness, durability, and Windows-transport
 fixes. No API changes; behavior is more conservative on damaged media and
