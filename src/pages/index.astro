@@ -216,28 +216,26 @@ const docs = '/docs/overview/';
             Open the desktop app, pick the titles and tracks you want, choose a
             format, and press <strong>Rip</strong> — the same engine, in a window.
           </p>
-          <!-- TODO(windows-hero): swap to /freemkv-gui-windows.png once a USABLE capture
-               exists. The current public/freemkv-gui-windows.png is genuine (the app
-               running on Windows Server 2022) but is not fit for a hero image:
-                 * the PrintWindow capture baked BLACK PADDING around the window, which
-                   compounds with .shot img's own border into a thick frame;
-                 * it is the progress page, so ~60% of the frame is an empty log pane;
-                 * 1044x788 against the macOS shot's 2360x1520, so it cannot fill the
-                   1180px slot without going soft;
-                 * the title bar shows the DEFAULT Windows icon — the build embeds a
-                   manifest but no icon resource.
-               Needed: the TITLES page with an ISO loaded (matching what this alt text
-               describes), cropped tight to the window, 2x, with the app icon present. -->
+          <!-- The hero shot is Windows. The black padding the PrintWindow capture
+               baked around the window has been cropped off, so it no longer
+               compounds with `.shot img`'s own border.
+               Still worth replacing when a better capture exists: this is the
+               PROGRESS page (the copy above promises title/track selection, which
+               the TITLES page shows), it is 1030x781 against a 1180px slot so it
+               renders slightly soft, and the title bar carries the DEFAULT Windows
+               icon because the build embeds a manifest but no icon resource.
+               Wanted: the titles page with an image loaded, cropped tight, at 2x,
+               with the app icon present. -->
           <figure class="shot">
             <img
-              src="/freemkv-gui-macos.png"
-              alt="The freemkv desktop app on macOS with a DVD image loaded — per-title and per-track selection, output format, and a live log"
+              src="/freemkv-gui-windows.png"
+              alt="The freemkv desktop app on Windows part-way through a rip — source and output details, progress with elapsed and remaining time, and a live log"
               width="1180"
               loading="lazy"
             />
             <figcaption class="shot-caption">
-              The freemkv desktop app on macOS. See also the
-              <a href="/docs/platforms-windows/">Windows guide</a>.
+              The freemkv desktop app on Windows. See also the
+              <a href="/docs/platforms-macos/">macOS guide</a>.
             </figcaption>
           </figure>
 
@@ -708,8 +706,8 @@ const docs = '/docs/overview/';
         border: 1px solid #1e293b;
         box-shadow: 0 24px 60px -28px rgba(15, 23, 42, 0.55);
       }
-      /* Names the OS in the shot, so a macOS screenshot is never mistaken for
-         the (still in development) Windows app. */
+      /* Names the OS in the shot, so neither platform's capture is mistaken for
+         the other's app. */
       .shot-caption {
         margin: 0.85rem auto 0;
         text-align: center;
