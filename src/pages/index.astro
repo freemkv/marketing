@@ -216,20 +216,18 @@ const docs = '/docs/overview/';
             Open the desktop app, pick the titles and tracks you want, choose a
             format, and press <strong>Rip</strong> — the same engine, in a window.
           </p>
-          <!-- The hero shot is Windows. The black padding the PrintWindow capture
-               baked around the window has been cropped off, so it no longer
-               compounds with `.shot img`'s own border.
-               Still worth replacing when a better capture exists: this is the
-               PROGRESS page (the copy above promises title/track selection, which
-               the TITLES page shows), it is 1030x781 against a 1180px slot so it
-               renders slightly soft, and the title bar carries the DEFAULT Windows
-               icon because the build embeds a manifest but no icon resource.
-               Wanted: the titles page with an image loaded, cropped tight, at 2x,
-               with the app icon present. -->
+          <!-- The Windows app on its titles page with an image open, which is what
+               the copy above promises. Captured on a clean Windows Server 2022
+               desktop at 1920x1080, window sized to 1700x980 and cropped to the
+               window itself, so there is no wallpaper or capture padding to fight
+               `.shot img`'s own border.
+               The disc is a SYNTHETIC image built for this shot — a feature plus
+               three extras, authored from generated video — so no commercial title
+               appears on the page. -->
           <figure class="shot">
             <img
               src="/freemkv-gui-windows.png"
-              alt="The freemkv desktop app on Windows part-way through a rip — source and output details, progress with elapsed and remaining time, and a live log"
+              alt="The freemkv desktop app on Windows with a disc image open — per-title and per-track selection with chapters and durations, output format, and a live log"
               width="1180"
               loading="lazy"
             />
