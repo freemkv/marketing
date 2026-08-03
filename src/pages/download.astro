@@ -38,31 +38,26 @@ const autoripRepo = 'https://github.com/freemkv/autorip';
 const allReleases = `${cliRepo}/releases`;
 
 // ── Desktop app ────────────────────────────────────────────────────────────
-// Both platforms run the SAME `freemkv` binary; only the wrapper differs.
-//   macOS   → .dmg per architecture, containing freemkv.app  (release.yml `build`)
-//   Windows → .zip containing freemkv.exe            (release.yml `build-windows`)
+// Each platform ships the windowed image; the CLI is a separate download.
+//   macOS   → .dmg per architecture, containing freemkv.app   (release.yml `build`)
+//   Windows → .zip containing freemkv-gui.exe                 (release.yml `build-windows`)
 //
 // ONE SWITCH: `windowsAppShipping`. The Windows card is a structural peer of
 // macOS either way (same grid, same card markup, real asset names below); this
-// flag only decides whether it renders download buttons or the "in development"
-// note. Flip it to `true` in the same commit that ships the Windows desktop
-// shell — nothing else on this page needs to change.
+// flag only decides whether it renders download buttons or an "in development"
+// note.
 //
-// It is FALSE today on purpose — but NOT because the app is missing. The Win32
-// shell is real, it is built and linted by CI on every push, and
-// `build-windows` attaches `freemkv-x86_64-windows.zip` to every release. What
-// is missing is PACKAGING the double-clickable image:
-//   * the windowed entry point exists as its own bin target, `freemkv-gui`,
-//     which is what carries `#![windows_subsystem = "windows"]` (a PE subsystem
-//     is fixed at link time, so it cannot be a runtime branch in freemkv.exe);
-//   * but the release zip is built from `freemkv.exe` alone, so
-//     `freemkv-gui.exe` never reaches a user. Double-clicking the extracted
-//     `freemkv.exe` runs the console CLI, prints usage and exits 2.
-// A "Download the Windows app" button that hands the visitor a .zip whose .exe
-// opens a black window and closes is worse than a card that says "not yet".
-// Flip this to `true` in the same release that adds `freemkv-gui.exe` to the
-// zip — see /docs/platforms-windows/, which documents the same caveat.
-const windowsAppShipping = false;
+// It was false for as long as the Windows .zip carried `freemkv.exe`, the
+// CONSOLE image: extracting and double-clicking that opens a console, prints
+// usage and closes, and a "Download the Windows app" button that does this is
+// worse than a card admitting the app is not ready. The desktop image is a
+// separate bin target, `freemkv-gui`, because it carries
+// `#![windows_subsystem = "windows"]` and a PE subsystem is fixed at link time
+// — it cannot be a runtime branch inside freemkv.exe.
+//
+// The .zip now carries `freemkv-gui.exe` alone, and release.yml fails the build
+// if the console binary appears there instead, so this cannot silently regress.
+const windowsAppShipping = true;
 
 const guiPlatforms = [
   {

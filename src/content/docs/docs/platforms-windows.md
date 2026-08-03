@@ -3,10 +3,10 @@ title: Windows
 description: A complete step-by-step Windows guide for freemkv and autorip, covering downloading, getting past SmartScreen, running from PowerShell, where your files go, and fixing common problems.
 ---
 
-freemkv runs natively on Windows. Like the macOS build, **`freemkv.exe` is one
-binary with two faces** — a native desktop app and the full command line, both
-driving the same engine. Alongside it, **`autorip.exe`** is a self-contained
-service you open in your browser for hands-off ripping.
+freemkv runs natively on Windows as **two programs sharing one engine**:
+`freemkv-gui.exe`, the desktop app you double-click, and `freemkv.exe`, the full
+command line. Alongside them, **`autorip.exe`** is a self-contained service you
+open in your browser for hands-off ripping.
 
 This page covers all three. If you have never run a program from a terminal, you
 can still follow along — the step-by-step walkthrough starts below.
@@ -14,17 +14,14 @@ can still follow along — the step-by-step walkthrough starts below.
 ## The desktop app
 
 New in 1.6.0: a native Win32 desktop shell, built with the same engine as the
-CLI. Open it with:
+CLI. Download the Windows **.zip**, extract it, and double-click
+**`freemkv-gui.exe`**. No terminal, no arguments.
 
-```powershell
-.\freemkv.exe gui
-```
-
-Note the `gui` argument. **Double-clicking `freemkv.exe` currently starts the
-command line, not the window** — on macOS a bare double-click works because
-Finder launches an `.app` bundle with no arguments, and Windows has no equivalent
-signal. Until that is resolved, make a shortcut with `gui` on the end of the
-target if you want a desktop icon.
+Two programs rather than one because Windows decides at *link* time whether an
+image owns a console: `freemkv.exe` is a console program, so double-clicking it
+opens a black window and prints usage. `freemkv-gui.exe` is the windowed image
+of the same code. (`.\freemkv.exe gui` still opens the same window if you prefer
+to start it from a terminal.)
 
 The window is the same four pages as the macOS app — disc/title selection with
 per-track checkboxes, output format, live progress, and a log — with Windows
@@ -69,14 +66,15 @@ locations described under **Where are my files?** below.
 
 ## Step 1: Download
 
-Go to the **[Download](/download/)** page. There are two programs, downloaded separately:
+Go to the **[Download](/download/)** page. There are three programs, downloaded separately:
 
+- **freemkv desktop app**: the window you double-click — open a disc or image, tick what you want, press Rip. Ships as a **`.zip`** (`freemkv-x86_64-windows.zip`) containing `freemkv-gui.exe`.
 - **autorip**: the automatic service with a web page (insert a disc, it rips by itself). **Most people want this one.** Ships as a **`.zip`** (`autorip-x86_64-windows.zip`).
 - **freemkv**: the command-line tool (manual, one disc at a time). Ships as a plain **`.exe`** (`freemkv-x86_64-windows.exe`) — no zip to open.
 
-Pick the one you want (you can grab both).
+Pick the one you want (you can grab all three).
 
-**If you downloaded autorip's `.zip`:** find it in your `Downloads` folder, then **right-click it → Extract All… → Extract**. Inside is the single program, `autorip.exe`.
+**If you downloaded a `.zip`:** find it in your `Downloads` folder, then **right-click it → Extract All… → Extract**. Inside is a single program — `freemkv-gui.exe` for the desktop app, `autorip.exe` for autorip.
 
 **If you downloaded `freemkv-x86_64-windows.exe`:** it is already the program — just rename it to `freemkv.exe` so the commands below match.
 
