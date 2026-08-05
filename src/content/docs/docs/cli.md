@@ -27,7 +27,7 @@ Every source and destination is a `scheme://` URL.
 | URL | Source | Dest | Notes |
 |---|---|---|---|
 | `disc://` | ✓ | — | Optical drive (auto-detected; `disc:///dev/sg4` or `disc://D:` to target one) |
-| `iso://path.iso` | ✓ | ✓ | Disc image — readable from anything; **writable only from a `disc://` source** |
+| `iso://path.iso` | ✓ | ✓ | Disc image — readable from anything; writable from `disc://` (rip a disc) or from another `iso://` (decrypt an image you have) |
 | `dir://path/` | — | ✓ | Decrypted file tree (VIDEO\_TS / BDMV) |
 
 **Container files**
@@ -58,7 +58,7 @@ Every source and destination is a `scheme://` URL.
 | `stdio://` | ✓ | ✓ | Stdin / stdout |
 | `null://` | — | ✓ | Discard (read-speed benchmark) |
 
-`disk://` is an alias for `disc://`. Everything is **decrypted by default**; `--raw` (`iso://` only) is the sole encrypted output. BD/UHD discs need an AACS key — see [Decryption Keys](/docs/decryption-keys/); DVDs need none.
+`disk://` is an alias for `disc://`. Everything is **decrypted by default**; `--raw` (`disc:// → iso://` only) is the sole encrypted output. BD/UHD discs need an AACS key — see [Decryption Keys](/docs/decryption-keys/); DVDs need none.
 
 ## Scheme details
 
@@ -136,25 +136,30 @@ freemkv iso://Movie.iso mkv://out/ -t all      # every title → out/Movie_t1.mk
 `-t all` rips every title; because multiple titles means multiple files, the
 *output* then has to be a directory.
 
-**As a destination** (`iso://Movie.iso`), it writes a decrypted sector image of the disc:
+**As a destination** (`iso://Movie.iso`), it writes a decrypted sector image — from
+the disc in a drive, or from an image you already have:
 
 ```bash
 freemkv disc:// iso://Movie.iso          # rip the disc to a decrypted image
+freemkv iso://In.iso iso://Out.iso       # decrypt an image you already have
 ```
 
-:::caution[An ISO destination needs a physical disc]
-Writing an `iso://` is a raw **sector copy off a drive**, not a stream — so the
-source must be `disc://`. There is no ISO-to-ISO decrypt copy: `freemkv
-iso://In.iso iso://Out.iso` is not a supported route, and neither is any other
-file source. To get a decrypted image you must have the disc in a drive. An
-existing image is a *source* only — send it to `mkv://`, `mp4://`, `dir://`, or
-any extraction sink instead.
+:::note[Two ways to write an ISO, and they behave differently]
+`disc:// → iso://` is the **recovery path**: multi-pass retry, a resumable
+mapfile, damage handling — everything a disc with bad sectors needs.
+
+`iso:// → iso://` is a plain sequential copy with none of that, because a file
+has no marginal media to retry. It exists to decrypt an image without hunting
+down the disc again. `--multipass` and `--raw` are drive operations and are
+rejected here (see below).
 :::
 
-…plus two flags that work **only with `iso://`**:
+…plus two flags for the `disc:// → iso://` rip specifically — they describe how
+to read a *drive*, so they need a `disc://` source as well as an `iso://`
+destination:
 
 - **`--multipass`** — sweep, then retry the bad sectors, with a resumable **mapfile** sidecar (sector state only — never keys). Re-run until clean. Damaged-disc workflow: `disc:// iso:// --multipass`, then `iso:// mkv://`.
-- **`--raw`** — write the sectors **encrypted**, a faithful image. You can't mux or benchmark ciphertext, so both flags error on any other destination.
+- **`--raw`** — write the sectors **encrypted**, a faithful image. You can't mux or benchmark ciphertext, so both flags error on any other destination — and there is no drive to re-read or leave encrypted on a file source, so both also error on any source that isn't `disc://`.
 
 A plain `disc:// iso://` auto-resumes if interrupted.
 
@@ -355,7 +360,7 @@ first (local-first) and the service is only queried when the keydb has no key
 for the disc. The URL is validated before any request, and freemkv refuses to
 send disc-key material to a loopback, private, or cloud-metadata address.
 
-Title selection (`-t`) and the `iso://`-only `--raw` / `--multipass` flags are covered under [Scheme details](#scheme-details).
+Title selection (`-t`) and the `disc:// → iso://`-only `--raw` / `--multipass` flags are covered under [Scheme details](#scheme-details).
 
 Global (any command):
 

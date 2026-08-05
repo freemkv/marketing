@@ -100,9 +100,12 @@ Repeatedly hammering the same bad sectors can push a drive into a fast-fail stat
 - **CLI:** Ctrl-C halts cleanly and preserves the mapfile. Re-running the same `disc:// iso://` command resumes. A mux interrupted mid-write is not finalized (freemkv exits non-zero), so you never get a truncated MKV that looks complete.
 - **autorip:** `/api/stop/{device}` preserves staging; the rip resumes on the next disc insert or container restart. See [Resume](/docs/autorip/#resume).
 
-## Raw flag rejected for non-ISO output
+## Raw or multipass flag rejected
 
-`--raw` writes undecrypted bytes, which is only meaningful for an `iso://` destination. freemkv rejects `--raw` with any destination other than `iso://` (including `mkv://`, `m2ts://`, `dir://`, `null://`, `stdio://`, and network destinations), because ciphertext can't be muxed. Drop `--raw`, or change the destination to an ISO.
+`--raw` and `--multipass` describe how to read a **drive**: `--raw` leaves the sectors coming off the disc encrypted, and `--multipass` re-reads bad sectors over several passes. Both need a `disc://` source *and* an `iso://` destination, and each half is checked on its own.
+
+- **Wrong destination.** freemkv rejects both flags for any destination other than `iso://` (including `mkv://`, `m2ts://`, `dir://`, `null://`, `stdio://`, and network destinations), because ciphertext can't be muxed and there is no sector image to recover into. Drop the flag, or change the destination to an ISO.
+- **Wrong source.** Since 1.6.1 an `iso://` destination no longer implies a disc — `iso://In.iso iso://Out.iso` decrypts an image you already have. There is no drive there to re-read or to leave encrypted, so both flags are rejected for any source that isn't `disc://`. Drop the flag, or point the command at the disc in a drive.
 
 ## Multiple titles to one file
 
