@@ -28,7 +28,7 @@ Every source and destination is a `scheme://` URL.
 |---|---|---|---|
 | `disc://` | ✓ | — | Optical drive (auto-detected; `disc:///dev/sg4` or `disc://D:` to target one) |
 | `iso://path.iso` | ✓ | ✓ | Disc image — readable from anything; writable from `disc://` (rip a disc) or from another `iso://` (decrypt an image you have) |
-| `dir://path/` | — | ✓ | Decrypted file tree (VIDEO\_TS / BDMV) |
+| `dir://path/` | ✓ | ✓ | Decrypted file tree (VIDEO\_TS / BDMV) — readable as a source too, so a folder backup works anywhere an image does |
 
 **Container files**
 
@@ -233,12 +233,28 @@ Like `chapters://`, it's scan-only (no demux) and near-instant.
 
 ### dir://
 
-Extracts the decrypted on-disc file tree (`VIDEO_TS/` or `BDMV/`) straight into the folder, reading and decrypting only the disc's allocated files.
+**As a destination**, extracts the decrypted on-disc file tree (`VIDEO_TS/` or
+`BDMV/`) straight into the folder, reading and decrypting only the disc's
+allocated files.
 
 ```bash
 freemkv disc:// dir://Movie/
 freemkv iso://Disc.iso dir://Movie/
 ```
+
+**As a source**, reads an extracted folder anywhere a disc image works — the
+shape most backup tools produce. A folder that is already decrypted needs no
+key; one that still carries an `AACS` directory is judged by its content rather
+than by the directory being present, so a decrypted backup is not refused for a
+leftover folder.
+
+```bash
+freemkv dir://Movie/ mkv://Movie.mkv
+freemkv dir://Movie/ iso://Movie.iso
+freemkv info dir://Movie/
+```
+
+3D folders are refused rather than produce a silently wrong result.
 
 ### network://host:port
 
