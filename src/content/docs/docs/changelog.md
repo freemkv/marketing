@@ -23,6 +23,47 @@ changed in the tools you actually run, start there; for what changed
 underneath them, read on.
 :::
 
+## 1.6.1
+
+<small>2026-08-07</small>
+
+### Added
+
+- **A disc image can be decrypted without the disc.** `iso://In.iso
+  iso://Out.iso` writes a decrypted image from an encrypted one. Ripping from a
+  drive is unchanged and still uses the recovery path, because multi-pass retry
+  and damage handling exist for media that returns read errors — a file does not.
+- **A disc kept as a folder can be read directly.** An extracted `VIDEO_TS` or
+  `BDMV` folder works anywhere an image does, as a source or a destination.
+  A decrypted backup is judged by its content, not by whether a leftover `AACS`
+  directory is present. 3D folders are refused rather than silently mishandled.
+
+### Fixed
+
+- **Blu-ray titles built from several clips ran minutes long, with sound
+  drifting ahead of picture.** Such discs store the feature as a chain of clips
+  and use the playlist to say which part of each to play. Those marks were never
+  read, so skipped stretches became dead time and overlaps put the same moment
+  on the timeline twice. One title declared 2h11m and contained 2h13m; the worst
+  ran 13 minutes long, with audio adrift from about half an hour in. Every track
+  is now placed by the byte offset it was read from, so each clip contributes
+  exactly the span the playlist gives it. Measured on four affected titles:
+  timelines now land within 12 ms of the declared runtime. Single-clip titles,
+  DVDs and HD-DVDs were never affected.
+- **A decrypted DVD image could lose most of its title list.** The scrambling
+  test read two flag bits and nothing else, which is only meaningful inside an
+  MPEG-2 pack. Applied to arbitrary sectors it also matched IFO and filesystem
+  structures: on a real disc it destroyed 1912 bytes of the sector carrying
+  `TT_SRPT`, so a disc enumerating 38 titles produced an image enumerating 10,
+  silently, at exit 0. Descrambling now requires a pack start code.
+- **Chapter marks and durations on NTSC DVDs ran about 0.1% short** — some
+  3.6 seconds per hour, so a mark near the end of a feature could land seconds
+  before the scene it names. DVD times are timecode, and NTSC timecode ticks
+  every 30 frames while the video runs at 30000/1001 fps. They are now converted
+  through an exact frame count. PAL discs were never affected.
+
+  Reported and fixed by AnimeFN (freemkv#25, libfreemkv#1).
+
 ## 1.6.0
 
 <small>2026-08-03</small>
