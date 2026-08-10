@@ -6,9 +6,20 @@ description: freemkv on macOS — the native desktop app and the CLI, both from 
 On macOS, `freemkv` is **one binary with two faces**: a native desktop app and
 the command line. Both run the same engine — the app just opens a window.
 
+## Install with Homebrew (easiest)
+
+```sh
+brew install --cask freemkv/tap/freemkv   # desktop app
+brew install freemkv/tap/freemkv          # command line
+```
+
+This is the path with no friction. Homebrew fetches with `curl`, which never
+marks a file as quarantined, so the security prompt below simply does not
+happen. Everything else on this page still applies.
+
 ## The desktop app
 
-Download the macOS **`.dmg`** (Apple Silicon or Intel) from the
+Or download the macOS **`.dmg`** (Apple Silicon or Intel) from the
 **[Download](/download/)** page, open it, and drag **`freemkv.app`** out —
 to Applications, or just your Downloads folder; anywhere works, there's no
 install step. Double-click it, then pick a disc or a disc image, tick the titles

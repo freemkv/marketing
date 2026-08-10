@@ -313,13 +313,21 @@ const autoripPlatforms = [
               </article>
             ))}
           </div>
+          <p class="dl-note dl-brew">
+            <strong>macOS — easiest:</strong> install with Homebrew and it just opens,
+            with nothing to click through.
+            <code class="dl-cmd">brew install --cask freemkv/tap/freemkv</code>
+          </p>
           <p class="dl-note">
-            <strong>macOS:</strong> nothing here is notarized yet, so the first launch
-            is blocked. Open it, click <strong>Done</strong>, then go to
-            <strong>System Settings → Privacy &amp; Security</strong> and click
-            <strong>Open Anyway</strong> next to the freemkv line. After that it opens
-            normally. (macOS 15 removed the old right-click → Open shortcut.) The same
-            applies to a downloaded CLI binary.
+            <strong>Downloading the <code>.dmg</code> instead?</strong> freemkv is not
+            notarized by Apple yet, so macOS blocks the first launch. Open it, click
+            <strong>Done</strong>, then go to
+            <strong>System Settings → Privacy &amp; Security</strong>, scroll down and
+            click <strong>Open Anyway</strong> next to the freemkv line. After that it
+            opens normally. (macOS 15 removed the old right-click → Open shortcut, so
+            older instructions no longer work.) A downloaded CLI binary is blocked the
+            same way — Homebrew avoids it because it fetches with <code>curl</code>,
+            which never marks the file as quarantined.
             {windowsAppShipping && (
               <Fragment>
                 {' '}<strong>Windows:</strong> the <code>.exe</code> is not code-signed
@@ -379,8 +387,17 @@ const autoripPlatforms = [
               </article>
             ))}
           </div>
+          <p class="dl-note dl-brew">
+            <strong>macOS or Linux — easiest:</strong> Homebrew installs it on PATH and
+            skips the macOS security prompt entirely.
+            <code class="dl-cmd">brew install freemkv/tap/freemkv</code>
+          </p>
           <p class="dl-note">
             Each binary has a matching <code>.sha256</code> checksum on the release page.
+            On macOS a binary downloaded in a browser is blocked on first run — allow it
+            once in <strong>System Settings → Privacy &amp; Security</strong>, or run
+            <code>xattr -d com.apple.quarantine ./freemkv</code>. Fetching with
+            <code>curl</code> or Homebrew avoids this altogether.
             Prefer archives or another version?
             <a href={allReleases} data-all-releases>All releases on GitHub →</a>
           </p>
@@ -1020,6 +1037,23 @@ const autoripPlatforms = [
         font-weight: 500;
         opacity: 0.85;
         white-space: normal;
+      }
+      /* The recommended install. Set apart from the caveat note under it so the
+         path with no friction reads first. */
+      .dl-brew { color: var(--fg, inherit); }
+      .dl-cmd {
+        display: block;
+        width: fit-content;
+        max-width: 100%;
+        margin: 0.55rem auto 0;
+        padding: 0.45rem 0.8rem;
+        border: 1px solid var(--border, rgba(127, 127, 127, 0.35));
+        border-radius: 6px;
+        font-family: var(--mono);
+        font-size: 0.88rem;
+        overflow-x: auto;
+        white-space: nowrap;
+        user-select: all;
       }
       .dl-note {
         text-align: center;
