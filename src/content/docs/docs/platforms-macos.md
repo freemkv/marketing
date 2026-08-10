@@ -9,7 +9,7 @@ the command line. Both run the same engine — the app just opens a window.
 ## Install with Homebrew (easiest)
 
 ```sh
-brew install --cask freemkv/tap/freemkv   # desktop app
+brew install --cask freemkv/tap/freemkv-app   # desktop app
 brew install freemkv/tap/freemkv          # command line
 ```
 
