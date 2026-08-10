@@ -282,7 +282,7 @@ const autoripPlatforms = [
 
           <div class="grid grid-gui">
             {guiPlatforms.map((p) => (
-              <article class={p.soon ? 'card card-soon' : 'card'} data-os={p.soon ? undefined : p.os}>
+              <article class={p.soon ? 'card card-soon' : 'card'} data-os={p.soon ? undefined : p.os} data-platform-card>
                 <h3 class="card-title">{p.name}</h3>
                 {p.soon ? (
                   <div class="dl-list">
@@ -320,14 +320,9 @@ const autoripPlatforms = [
           </p>
           <p class="dl-note">
             <strong>Downloading the <code>.dmg</code> instead?</strong> freemkv is not
-            notarized by Apple yet, so macOS blocks the first launch. Open it, click
-            <strong>Done</strong>, then go to
-            <strong>System Settings → Privacy &amp; Security</strong>, scroll down and
-            click <strong>Open Anyway</strong> next to the freemkv line. After that it
-            opens normally. (macOS 15 removed the old right-click → Open shortcut, so
-            older instructions no longer work.) A downloaded CLI binary is blocked the
-            same way — Homebrew avoids it because it fetches with <code>curl</code>,
-            which never marks the file as quarantined.
+            notarized by Apple yet, so macOS blocks the first launch — allow it once in
+            <strong>System Settings → Privacy &amp; Security</strong>.
+            <a href="/docs/platforms-macos/#apple-could-not-verify-freemkv-on-first-launch">Full walkthrough →</a>
             {windowsAppShipping && (
               <Fragment>
                 {' '}<strong>Windows:</strong> the <code>.exe</code> is not code-signed
@@ -368,7 +363,7 @@ const autoripPlatforms = [
 
           <div class="grid">
             {cliPlatforms.map((p) => (
-              <article class="card" data-os={p.os}>
+              <article class="card" data-os={p.os} data-platform-card>
                 <h3 class="card-title">{p.name}</h3>
                 <div class="dl-list">
                   {p.builds.map((b) => (
@@ -394,10 +389,9 @@ const autoripPlatforms = [
           </p>
           <p class="dl-note">
             Each binary has a matching <code>.sha256</code> checksum on the release page.
-            On macOS a binary downloaded in a browser is blocked on first run — allow it
-            once in <strong>System Settings → Privacy &amp; Security</strong>, or run
-            <code>xattr -d com.apple.quarantine ./freemkv</code>. Fetching with
-            <code>curl</code> or Homebrew avoids this altogether.
+            On macOS a browser download is blocked on first run —
+            <a href="/docs/platforms-macos/#apple-could-not-verify-freemkv-on-first-launch">here is why and how to allow it</a>;
+            Homebrew and <code>curl</code> avoid it entirely.
             Prefer archives or another version?
             <a href={allReleases} data-all-releases>All releases on GitHub →</a>
           </p>
@@ -435,7 +429,7 @@ const autoripPlatforms = [
           <!-- Bare binary (primary): columns by OS, matching the CLI -->
           <div class="grid">
             {autoripPlatforms.map((p) => (
-              <article class="card" data-os={p.os}>
+              <article class="card" data-os={p.os} data-platform-card>
                 <h3 class="card-title">{p.name}</h3>
                 <div class="dl-list">
                   {p.builds.map((b) => (
@@ -611,9 +605,58 @@ const autoripPlatforms = [
 
         // Rewrite every asset link for the chosen tag. "latest" → the
         // version-less URL; a concrete tag → .../download/<tag>/<asset>.
+        // tag -> Set of asset names actually attached to that release, filled
+        // from the same API response that populates the picker.
+        //
+        // WHY: asset names have changed over time. v1.5.2 shipped no .dmg at
+        // all, and no x86_64 macOS CLI binary. Building every link from the
+        // CURRENT naming meant picking an older version handed the visitor a
+        // download button that 404s — silently, because nothing here checked
+        // the release actually had the file. The API already returns the asset
+        // list, so a button can be disabled instead of lying.
+        var assetsByTag = Object.create(null);
+
+        function markUnavailable(a, unavailable) {
+          if (unavailable) {
+            a.setAttribute('data-unavailable', '');
+            a.removeAttribute('href');
+          } else {
+            a.removeAttribute('data-unavailable');
+          }
+        }
+
+        // A card whose every button is hidden must say so rather than render as
+        // an empty box. The desktop app did not exist before 1.6.0, so choosing
+        // an older version legitimately leaves the macOS and Windows app cards
+        // with nothing to offer.
+        function syncEmptyCards() {
+          document.querySelectorAll('[data-platform-card]').forEach(function (card) {
+            var links = card.querySelectorAll('a[data-asset]');
+            if (!links.length) return;
+            var hidden = card.querySelectorAll('a[data-asset][data-unavailable]').length;
+            var empty = hidden === links.length;
+            card.toggleAttribute('data-card-empty', empty);
+            var note = card.querySelector('[data-none-note]');
+            if (!note && empty) {
+              note = document.createElement('p');
+              note.className = 'dl-none';
+              note.setAttribute('data-none-note', '');
+              note.textContent = 'Not released for this version.';
+              card.appendChild(note);
+            }
+            if (note) note.hidden = !empty;
+          });
+        }
+
         function applyVersion(tag) {
+          var known = assetsByTag[tag];
           document.querySelectorAll('a[data-asset]').forEach(function (a) {
             var asset = a.getAttribute('data-asset');
+            // Only judge when the release's real asset list is known; with no
+            // data (API down, cache miss) leave the link alone rather than
+            // disabling a download that probably works.
+            if (known && !known[asset]) { markUnavailable(a, true); return; }
+            markUnavailable(a, false);
             // Two repos only. The desktop app and the CLI are the SAME binary in
             // the SAME repo (freemkv), so every non-autorip asset — .dmg, .zip,
             // bare binary, .exe — resolves against cliRepo. (There is no longer
@@ -628,6 +671,7 @@ const autoripPlatforms = [
           if (all) {
             all.href = tag === 'latest' ? allReleases : cliRepo + '/releases/tag/' + tag;
           }
+          syncEmptyCards();
         }
 
         // Format an ISO date (release tag date) as e.g. "July 1, 2026".
@@ -666,6 +710,12 @@ const autoripPlatforms = [
             sel.addEventListener('change', function () { applyVersion(sel.value); });
             pick.hidden = false;
           });
+          // Judge the CURRENT selection now that the asset lists are known —
+          // otherwise the default "latest" view keeps whatever the static HTML
+          // shipped, and a retired asset stays clickable until someone changes
+          // the dropdown.
+          var first = document.querySelector('[data-version-select]');
+          applyVersion(first && first.value ? first.value : 'latest');
         }
 
         function readCache() {
@@ -687,6 +737,13 @@ const autoripPlatforms = [
           .then(function (rels) {
             var list = (rels || []).filter(function (r) { return !r.draft; });
             var tags = list.map(function (r) { return r.tag_name; });
+            list.forEach(function (r) {
+              var set = Object.create(null);
+              (r.assets || []).forEach(function (as) { set[as.name] = true; });
+              assetsByTag[r.tag_name] = set;
+            });
+            // "latest" resolves to the newest release, so it shares its assets.
+            if (tags.length) assetsByTag.latest = assetsByTag[tags[0]];
             if (!tags.length) { if (cached) populate(cached.tags, cached.date); return; }
             // The newest release's date (published_at, falling back to the tag's
             // created_at) — shown under the version and backfilled into the cache.
@@ -1054,6 +1111,17 @@ const autoripPlatforms = [
         overflow-x: auto;
         white-space: nowrap;
         user-select: all;
+      }
+      /* A download the SELECTED version never published — hidden outright.
+         The desktop app did not exist before 1.6.0 and the Intel macOS CLI was
+         never built for those tags, so offering the button at all (even greyed)
+         invites a click on something that cannot be produced. */
+      a[data-unavailable] { display: none !important; }
+      .dl-none {
+        margin: 0.6rem 0 0;
+        font-size: 0.85rem;
+        color: var(--muted);
+        text-align: center;
       }
       .dl-note {
         text-align: center;

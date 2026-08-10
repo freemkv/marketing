@@ -27,6 +27,10 @@ mv autorip-* autorip && chmod +x autorip
 
 One static binary, no container, no runtime. Drive access uses the `cdrom` group or a udev rule (no `--privileged`); point `AUTORIP_DIR`, `OUTPUT_DIR`, and `STAGING_DIR` at local paths.
 
+DVDs work out of the box. Blu-ray and 4K UHD need [decryption keys](/docs/decryption-keys/).
+
+**On macOS, autorip ships for Apple Silicon only.** The Intel target was dropped from the release matrix over a linker issue in a C dependency, so there is no `autorip-x86_64-macos` asset. On an Intel Mac, build from source or run the Docker image. A macOS binary downloaded in a browser is also blocked on first run — see [the macOS page](/docs/platforms-macos/#apple-could-not-verify-freemkv-on-first-launch).
+
 ### Docker
 
 Published to GHCR as `ghcr.io/freemkv/autorip` (`:latest` and `:vX.Y.Z`). Drop this compose file on a host with an optical drive and bring it up:
