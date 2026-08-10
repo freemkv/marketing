@@ -24,8 +24,10 @@ and tracks you want, choose a format, and press **Rip**.
   picker that follows the source, live progress (engine speed + ETA), and a
   copyable log.
 - **First launch:** the app is not notarized yet, so macOS Gatekeeper blocks the
-  first open. Right-click the app → **Open** → **Open** once, and it launches
-  normally thereafter.
+  first open. Double-click it, click **Done** on the dialog, then open **System
+  Settings → Privacy & Security**, scroll down to the line naming freemkv and
+  click **Open Anyway**. It launches normally from then on. (Right-click →
+  **Open** used to work; macOS 15 Sequoia removed that shortcut.)
 
 ## The command line
 
@@ -62,6 +64,6 @@ freemkv obtains **exclusive** access to the optical drive through IOKit. To do s
 
 ## Known quirks / troubleshooting
 
-- The desktop app is **not notarized**, so the first launch needs right-click → **Open** (once).
+- Nothing here is **notarized** yet, so the first launch of the app — and the first run of a downloaded CLI binary — is blocked until you allow it once in **System Settings → Privacy & Security → Open Anyway**. Right-click → **Open** no longer works on macOS 15 Sequoia. For the CLI you can instead run `xattr -d com.apple.quarantine ./freemkv`.
 - If the disc is mounted by the Finder, freemkv unmounts it to take exclusive access; that's expected.
 - For capturing logs and other common fixes, see [Troubleshooting](/docs/troubleshooting/).

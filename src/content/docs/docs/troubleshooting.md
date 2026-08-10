@@ -28,7 +28,22 @@ For where files (config, keys, logs, staging, output) live, see your platform pa
 
 ## macOS: "app is damaged" / can't open
 
-On first launch, macOS Gatekeeper blocks the app because it isn't notarized: **right-click the app → Open**, then confirm in the dialog that appears. This is a one-time step, and only applies to the desktop app — the plain `freemkv` CLI binary doesn't hit this dialog. See [macOS](/docs/platforms-macos/) for the full walkthrough.
+freemkv isn't notarized yet, so macOS Gatekeeper blocks anything you download until you allow it once.
+
+1. Double-click the app. It refuses — the dialog says macOS "could not verify" it. Click **Done**.
+2. Open **System Settings → Privacy & Security** and scroll down. There is now a line naming freemkv, with an **Open Anyway** button. Click it and confirm.
+
+That's a one-time step per download.
+
+Older guides (including earlier versions of this page) say to right-click the app and choose **Open**. **macOS 15 Sequoia removed that shortcut** — the blocked dialog no longer offers anything but **Done**, and Open Anyway in System Settings is the only route.
+
+This applies to the **CLI binary too**, not just the desktop app: a downloaded `freemkv` is quarantined the same way and is refused the first time you run it. Allow it in System Settings as above, or strip the quarantine flag yourself:
+
+```bash
+xattr -d com.apple.quarantine ./freemkv
+```
+
+See [macOS](/docs/platforms-macos/) for the full walkthrough.
 
 ## No drives detected in autorip
 

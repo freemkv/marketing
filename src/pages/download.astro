@@ -314,9 +314,12 @@ const autoripPlatforms = [
             ))}
           </div>
           <p class="dl-note">
-            <strong>macOS:</strong> the app is not notarized yet, so the first launch
-            needs <strong>right-click → Open</strong> (double-clicking reports an
-            unidentified developer). After that it opens normally.
+            <strong>macOS:</strong> nothing here is notarized yet, so the first launch
+            is blocked. Open it, click <strong>Done</strong>, then go to
+            <strong>System Settings → Privacy &amp; Security</strong> and click
+            <strong>Open Anyway</strong> next to the freemkv line. After that it opens
+            normally. (macOS 15 removed the old right-click → Open shortcut.) The same
+            applies to a downloaded CLI binary.
             {windowsAppShipping && (
               <Fragment>
                 {' '}<strong>Windows:</strong> the <code>.exe</code> is not code-signed
