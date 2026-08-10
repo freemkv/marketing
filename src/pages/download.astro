@@ -319,16 +319,10 @@ const autoripPlatforms = [
             <code class="dl-cmd">brew install --cask freemkv/tap/freemkv</code>
           </p>
           <p class="dl-note">
-            <strong>Downloading the <code>.dmg</code> instead?</strong> freemkv is not
-            notarized by Apple yet, so macOS blocks the first launch — allow it once in
-            <strong>System Settings → Privacy &amp; Security</strong>.
-            <a href="/docs/platforms-macos/#apple-could-not-verify-freemkv-on-first-launch">Full walkthrough →</a>
-            {windowsAppShipping && (
-              <Fragment>
-                {' '}<strong>Windows:</strong> the <code>.exe</code> is not code-signed
-                yet, so SmartScreen shows “Windows protected your PC” on first run —
-                click <strong>More info → Run anyway</strong> once.
-              </Fragment>
+            Downloaded a <code>.dmg</code> or <code>.exe</code>? Neither is signed yet, so
+            the first launch is blocked once —
+            <a href="/docs/platforms-macos/#apple-could-not-verify-freemkv-on-first-launch">macOS</a>{windowsAppShipping && (
+              <Fragment>{' · '}<a href="/docs/platforms-windows/">Windows</a></Fragment>
             )}
           </p>
           <p class="dl-note dl-note-sub">
@@ -449,13 +443,8 @@ const autoripPlatforms = [
             ))}
           </div>
           <p class="block-note">
-            Static binary: download, <code>chmod +x</code> (or run the <code>.exe</code>), start
-            the daemon, then open
-            <code>http://&lt;host&gt;:8080</code>. DVDs work out of the box; Blu-ray and
-            4K&nbsp;UHD need <a href="/docs/decryption-keys/">decryption keys</a>. See the
-            <a href="/docs/autorip/">autorip docs</a> for drive permissions and a systemd unit.
-            On macOS, autorip is Apple&nbsp;Silicon only — on an Intel Mac,
-            <a href="#source">build from source</a> or use the Docker image.
+            Runs as a daemon with a web UI on port 8080.
+            <a href="/docs/autorip/#binary">Setup, keys and drive permissions →</a>
           </p>
 
           <!-- Docker (secondary) -->
