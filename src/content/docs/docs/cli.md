@@ -297,12 +297,24 @@ freemkv info iso://Disc.iso
 | `-v, --verbose` | Add technical detail — the drive, device, and disc region; the AACS generation (1.0 / 2.0 / 2.1) and MKB version; the disc hash and Volume ID; the resolved keys (Volume Unique Key and each CPS unit key); and per-stream PIDs (video, audio, **and subtitles**) with audio sample rates. Off by default to keep the listing scannable — turn it on when debugging a mux or AACS issue. |
 | `--share` | Capture the drive's profile to a zip and print a ready-to-paste GitHub issue for the community drive-compatibility database. On a **release build + interactive terminal**, freemkv then offers to submit it for you — a `[Y/n]` prompt (default **yes**) that posts the issue to GitHub if you accept. `--mask` redacts drive serials first. Nothing is sent unless you confirm at that prompt. |
 
-:::caution[`--share` is a separate route]
-`--share` takes over the whole invocation and accepts only `--mask`, `-q`, `-v`,
-`--log-file` and `-h`. Combining it with the listing flags fails —
-`freemkv info disc:// --share --full` exits 1 with *Unknown option: --full*, and so
-does `--log-level` on this route. On an `iso://` URL only `--full` is read; the other
-listing flags are ignored.
+:::caution[`--share` does not combine with the listing flags]
+`--share` is its own command: it captures the drive profile instead of listing
+titles, so the flags that shape a listing do not apply to it. It accepts
+`--mask`, `-q`, `-v`, `--log-file` and `-h`, and nothing else.
+
+Anything else is rejected rather than ignored, so a mistake is visible:
+
+```bash
+freemkv info disc:// --share --full     # exits 1: Unknown option: --full
+```
+
+`--log-level` is refused here for the same reason — use `--log-file`.
+:::
+
+:::note[`info` on an image reads only `--full`]
+`freemkv info iso://Disc.iso` supports `--full`. The other listing flags are
+accepted but have no effect on an image, because they select what to read from
+a *drive*.
 :::
 
 ### Converting a file to MKV (no drive needed)
