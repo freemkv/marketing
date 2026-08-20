@@ -155,3 +155,217 @@ For the full technical detail behind a release, see the per-component notes:
 - Correctly labels forced versus full-dialogue subtitle tracks
 - An undecryptable CSS DVD now errors instead of reporting success
 - A corrupt `mkv://` input now errors instead of returning an empty result
+
+## 1.5.2
+
+<small>2026-07-22</small>
+
+**Command line**
+
+- The unlock report now labels DVDs as "DVD" instead of "CSS".
+
+**Discs & decoding**
+
+- TrueHD 7.1/Atmos audio is now corrected on AACS-encrypted Blu-ray and UHD discs, instead of falling back to a 5.1 channel count.
+- AACS 2.1 menu and extras titles that carry no forensic key now rip using the disc's base key instead of failing.
+- Multi-key AACS discs now decrypt each clip with its own key, fixing garbled secondary content.
+- CSS DVDs no longer produce garbled output; every read now uses the correct per-title key.
+- Scanning a CSS DVD is much faster — about 25 seconds down to about 6.
+- A disc that can't be decrypted now stops with an error instead of writing scrambled data or a truncated block out as a broken file.
+
+## 1.5.1
+
+<small>2026-07-20</small>
+
+**Discs & decoding**
+
+- TrueHD audio was being silently dropped entirely (and could send some players into a runaway memory spiral); it is fixed. Titles ripped while this was broken need a re-rip.
+- HD DVD AACS keys are now found whatever directory and filename layout the studio used, not just the most common one.
+- HD DVD discs with more than one protected title now decrypt all of them instead of just the first.
+- A disc with marginal, barely-readable spots no longer "rips clean" while hiding corrupted data; those spots are now retried and either recover or are reported as an honest gap.
+
+## 1.5.0
+
+<small>2026-07-19</small>
+
+**Command line**
+
+- New MP4 output — rip straight to a play-everywhere MP4 with no external transcoder. It's a compatibility export: tracks MP4 can't hold (TrueHD, LPCM, bitmap subtitles) are listed and excluded rather than silently dropped.
+- MP4 can now also be used as a source, for a frame-exact round trip into any other format.
+- Five new single-part exports: video-only, audio-only, and subtitle-only files, a chapter-markers sidecar, and a full title-structure JSON.
+
+**Discs & decoding**
+
+- Forced subtitles can now be detected from the subtitle content itself, so discs that don't flag them are handled correctly too.
+- Corrupt audio frames are now dropped cleanly instead of muxed as glitches, across every audio format, while keeping picture and sound in sync.
+- TrueHD: brief bursts of stream damage no longer throw away a whole track or shift the audio that follows.
+- Uncommon free-format MP2/MP3 audio is no longer rejected.
+
+## 1.4.5
+
+<small>2026-07-18</small>
+
+**Discs & decoding**
+
+- AACS 2.1 forensic discs now produce a clean stream, instead of visible playback glitches and dropped frames around each forensic segment.
+- A decryption key written with an uppercase prefix is no longer silently ignored.
+
+**Security**
+
+- Decryption keys can no longer end up in a log or crash message.
+
+## 1.4.4
+
+<small>2026-07-17</small>
+
+**Discs & decoding**
+
+- Online key lookups were sometimes skipped before ever reaching the key service; they now run reliably.
+
+## 1.4.3
+
+<small>2026-07-17</small>
+
+**Discs & decoding**
+
+- The online key service can now return a full forensic key set as well as a single key.
+
+## 1.4.2
+
+<small>2026-07-15</small>
+
+**Discs & decoding**
+
+- Fixed a bug where content that decrypted fine but didn't parse as clean video could blank out good picture and repeatedly re-query the key server for a key it already had.
+
+## 1.4.1
+
+<small>2026-07-14</small>
+
+**Discs & decoding**
+
+- A single bad packet no longer causes a whole block of good video to be discarded.
+- A track is now flagged 3D only when that information is actually present on the disc.
+
+## 1.4.0
+
+<small>2026-07-13</small>
+
+**Discs & decoding**
+
+- Blu-ray 3D (MVC) support — a 3D disc rips to a single MKV that preserves both eyes, with no transcoding or side-by-side conversion. The 2D view is byte-identical to a standard 2D rip.
+
+## 1.3.2
+
+<small>2026-07-10</small>
+
+**Discs & decoding**
+
+- Better recognition of AACS 2.1 forensic-variant discs, ahead of full decryption support.
+
+## 1.3.1
+
+<small>2026-07-10</small>
+
+**Discs & decoding**
+
+- HD-DVD titles now use the disc's own playlist for clip order, duration, name, and chapters instead of guessing from filenames, with the old guess kept as a fallback.
+
+**Project**
+
+- Relicensed to the MIT License from 1.3.1 onward (releases through 1.3.0 remain AGPL-3.0).
+
+## 1.3.0
+
+<small>2026-07-08</small>
+
+**Discs & decoding**
+
+- AACS 2.1 (FMTS) discs are now recognized as their own format and mostly rip, with only the not-yet-supported forensic segments skipped.
+- Initial HD-DVD support — HD-DVD is detected as its own format and its video and audio rip through the pipeline. Title composition is still a best guess, so a disc that authors two features under one naming scheme may show as a single title.
+- Older program-stream video (H.264, VC-1, HEVC on HD-DVD and older discs) now gets correct per-frame timestamps.
+- The main feature is now picked by physical size, so a disc that splits its feature across many small clips is no longer passed over for a shorter composite.
+- More reliable track-label detection across differing disc authoring, with a last-resort fallback that reads menu-artwork languages.
+
+**Security**
+
+- Disc metadata (title, labels) is now cleaned before it's printed, so a malicious disc can't inject terminal control sequences.
+
+## 1.2.2
+
+<small>2026-07-04</small>
+
+**Discs & decoding**
+
+- AACS 2.1 Media Key Variant support now matches real variant discs.
+- Fixed AACS device-key fallback that had been silently broken.
+- Resolving the AACS processing key on UHD discs is roughly 15× faster — about 37 seconds down to about 2.4.
+
+## 1.2.1
+
+<small>2026-07-02</small>
+
+**Discs & decoding**
+
+- DVD DTS audio no longer muxes with timestamps that some strict players rejected.
+
+## 1.2.0
+
+<small>2026-07-01</small>
+
+**Command line**
+
+- Progress now includes a per-range breakdown of damage — chapter, movie-time offset, and at-risk time.
+- A rip now reports which unlock mechanisms (firmware, AACS, CSS) actually ran.
+
+**Discs & decoding**
+
+- Damaged-disc recovery now tries a wider set of techniques, re-ranked per disc by what's actually working.
+- Added an optional recovery mode for discs with heavily hardened damage.
+- A new "fast capture" pass grabs every readable block first, before falling back to slower per-sector recovery.
+- A block that genuinely can't be decrypted is now concealed cleanly so the file still plays, instead of writing broken data.
+- Recovery can no longer hang forever on a wedged drive.
+- Every DVD now rips at full speed — a drive speed-up had been skipped for DVDs.
+- DVD DTS/LPCM tracks that weren't the disc's first audio no longer come out silent.
+- Real video is no longer dropped at the end of an encrypted fragment.
+- Audio no longer corrupts across a stream discontinuity.
+- Online key lookups for disc images now send the required data, instead of every request being rejected.
+- Discs using an older AACS version now read their keys correctly.
+- Fixed a possible crash on a corrupt disc.
+
+## 1.1.0
+
+<small>2026-06-28</small>
+
+**Command line**
+
+- Every user-facing error now shows an error code, with a new Error Codes reference page listing the cause and next steps for each, in all supported languages.
+- Windows-reserved filenames on a disc are now safely renamed on extraction instead of aborting.
+
+**Discs & decoding**
+
+- Every decrypted unit is now verified before it's accepted, catching a class of silent bad read.
+- Stricter AACS acceptance, so a wrong key can't coincidentally pass and quietly corrupt output.
+- DVD rips now start on the actual movie instead of the disc's menu screens.
+- Multi-part files in folder extraction no longer have later parts written as empty holes.
+- Fixed a rare false frame-split in DTS-HD Master Audio.
+- Fixed TrueHD timestamps stepping backward under certain source timing.
+- Fixed several container-metadata issues (color info, subtitle wipe, sidecar alignment).
+
+**Security**
+
+- Fixed a misread flag that could defeat a safety check meant to refuse decrypting encrypted-bus content with no bus key.
+
+## 1.0.0
+
+<small>2026-06-24</small>
+
+First stable release.
+
+- A command-line tool that rips optical discs to MKV.
+- Decrypts DVDs (CSS — including keyless recovery, with no key database needed), Blu-ray, and UHD (AACS 1.0/2.0).
+- Keys are resolved from a local key database and verified against real disc content before use.
+- Multipass recovery reads through bad sectors on scratched or damaged discs, and can resume after an interruption.
+- MKV output from a fast threaded pipeline, with support for HEVC, H.264, VC-1, MPEG-2, TrueHD, DTS(-HD), and PGS subtitles.
+- Can also write a decrypted file tree or a whole-disc ISO image.
+- Works across Windows, macOS, and Linux.
