@@ -13,6 +13,15 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases).
 
+## 1.6.6
+
+<small>2026-08-20</small>
+
+**Autorip**
+- Webhooks can now point at your LAN (e.g. a Home Assistant automation) — the private-address guard no longer blocks them
+
+_This release aligns all components to 1.6.6; only autorip changed._
+
 ## 1.6.5
 
 <small>2026-08-20</small>
