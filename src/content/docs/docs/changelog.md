@@ -13,6 +13,17 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases).
 
+## 1.6.8
+
+<small>2026-08-21</small>
+
+**Autorip**
+- Webhooks now fire per pipeline stage — **Rip** (the disc is read and the drive is free), **Mux** (the MKV is produced), and **Move** (the file lands in your library) — each independently selectable per hook
+- The **Rip** notification now arrives the moment the drive is free, so you can load the next disc while the mux keeps running in the background — instead of only arriving once the mux had finished
+- The Ripper tab's "still working in the background" banner now also shows while a file is being moved, not just while muxing
+
+_This release aligns all components to 1.6.8; only autorip changed._
+
 ## 1.6.7
 
 <small>2026-08-21</small>
