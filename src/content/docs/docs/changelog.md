@@ -13,6 +13,18 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases).
 
+## 1.6.7
+
+<small>2026-08-21</small>
+
+**Autorip**
+- Each webhook can now choose whether it fires on rip complete, move complete, or both
+- The Move card shows a separate progress bar for every moved file — the movie and its kept ISO each get their own
+- A title that is being moved is no longer listed twice in the Move card
+- A failed webhook now logs the real reason (e.g. the connection was reset) instead of a generic "uncategorized error"
+
+_This release aligns all components to 1.6.7; only autorip changed._
+
 ## 1.6.6
 
 <small>2026-08-20</small>
