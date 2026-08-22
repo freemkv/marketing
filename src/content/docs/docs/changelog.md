@@ -13,6 +13,16 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases).
 
+## 1.6.9
+
+<small>2026-08-22</small>
+
+**Autorip**
+- **Automatic per-episode TV ripping** — insert a series disc and every episode comes out as its own `Show S01E02 - Title.mkv`, filed into `TV/Show (Year)/Season NN/`, with no operator step. Episodes are matched to TMDB and numbered correctly even when a season is split across several discs.
+- **Manual Rename** — file a disc under any exact name you type, with no TMDB match required, so an alternate cut (e.g. a “Super Duper Cut”) no longer collides with an already-ripped title.
+
+_This release aligns all components to 1.6.9; only autorip changed._
+
 ## 1.6.8
 
 <small>2026-08-21</small>
