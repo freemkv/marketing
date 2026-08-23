@@ -13,6 +13,19 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases).
 
+## 1.6.10
+
+<small>2026-08-23</small>
+
+**Ripping**
+
+- Fixed rare Dolby TrueHD / Atmos audio errors on discs that carry a gap in their
+  transport stream: the ripped track could make some players report audio glitches
+  around the affected moment, or an integrity checker flag the file as corrupt.
+  freemkv now resynchronises the audio cleanly across such gaps, so the muxed file
+  plays back and verifies without the errors. (The gapped instant is in the source
+  and can't be recovered, but the file is no longer flagged corrupt.)
+
 ## 1.6.9
 
 <small>2026-08-22</small>
