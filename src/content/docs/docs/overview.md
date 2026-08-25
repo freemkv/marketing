@@ -3,7 +3,7 @@ title: Overview
 description: What freemkv is, how the recovery model works, and how the toolchain fits together.
 ---
 
-<div class="discord-callout"><strong>Need help or stuck?</strong> Join the <a href="https://discord.gg/kDh5esedcg">freemkv Discord</a> for community help and support — the fastest way to get a hand with rips, drives, and decryption.</div>
+<div class="discord-callout"><strong>Need help or stuck?</strong> Join the <a href="https://discord.gg/yu7xMGTyek">freemkv Discord</a> for community help and support — the fastest way to get a hand with rips, drives, and decryption.</div>
 
 freemkv is a Rust toolchain for optical-disc backup. Its goal is to **recover 100% of readable data from any optical disc, automatically**, then decrypt and mux the result to MKV.
 
