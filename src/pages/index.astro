@@ -357,6 +357,8 @@ const docs = '/docs/overview/';
         color: var(--teal-darker);
         padding: 0.1em 0.35em;
         border-radius: 5px;
+        /* Keep scheme chips (video://, chapters://, …) from breaking mid-token. */
+        white-space: nowrap;
       }
 
       .section-inner {
@@ -739,7 +741,8 @@ const docs = '/docs/overview/';
         font-size: clamp(0.78rem, 2.2vw, 0.92rem);
         line-height: 1.7;
       }
-      .terminal-body code { background: none; color: inherit; padding: 0; }
+      /* Terminal blocks keep <pre> newlines — undo the inline-chip nowrap. */
+      .terminal-body code { background: none; color: inherit; padding: 0; white-space: pre; }
       .terminal-body .c { color: #64748b; }
       .terminal-body .p { color: #2dd4bf; }
       .showcase-sub {
