@@ -13,6 +13,24 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases).
 
+## 1.6.11
+
+<small>2026-08-26</small>
+
+**Ripping**
+
+- More reliable main-feature detection on Blu-ray and DVD discs: freemkv now
+  follows the disc's own on-disc navigation to find the main feature, instead
+  of guessing from title length alone, so it's far less likely to be fooled by
+  a decoy title.
+
+**Autorip**
+
+- Fixed a rare case where a disc could get stuck endlessly retrying a failed
+  mux step instead of being marked as failed and moving on.
+
+_This release aligns all components to 1.6.11._
+
 ## 1.6.10
 
 <small>2026-08-23</small>
