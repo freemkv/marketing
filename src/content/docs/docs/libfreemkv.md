@@ -159,8 +159,9 @@ through this pipeline.
 
 - **CSS (DVD)** is built in, with no external key file needed. On a CSS-enforcing drive,
   `unlock_css_reads` issues the classic bus-auth handshake purely to unlock scrambled-sector
-  reads; no player keys are compiled in and none are used. Title keys are recovered
-  keylessly by the Stevenson known-plaintext attack (`css::crack_key`).
+  reads; no player keys are compiled in and none are used. CSS descrambling is keyless:
+  the title key is recovered directly from the scrambled stream, so no device or player
+  key is ever needed.
 - **AACS (Blu-ray / 4K UHD)**: no key material is compiled in; keys come through a
   `KeySource` — either a local `keydb.cfg` (searched in default OS paths; see
   [Decryption Keys](/docs/decryption-keys/)) or an online key service; overridable via
