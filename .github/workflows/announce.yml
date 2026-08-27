@@ -43,16 +43,28 @@ jobs:
           # slug github-slugger emits (1.6.11 -> 1611), matching the live page.
           VER=$(grep -m1 -E '^## [0-9]' "$CL" | sed 's/^## //')
           ANCHOR=${VER//./}
-
-          # The section body = lines between "## VER" and the next "## ",
-          # with the HTML bits (the <small>date</small> tag) stripped so it
-          # reads as clean markdown in Discord.
-          BODY=$(awk -v v="## $VER" '$0==v{f=1;next} f&&/^## /{exit} f{print}' "$CL" \
-                   | sed -E 's/<[^>]+>//g')
-
           URL="https://freemkv.org/docs/changelog/#${ANCHOR}"
-          CONTENT=$(printf '@everyone **freemkv %s** was just released.\n\n%s\n\n%s' \
-                    "$VER" "$BODY" "$URL")
+
+          # The section = lines between "## VER" and the next "## ", with the
+          # HTML bits (the <small>date</small> tag) stripped so it reads as
+          # clean markdown in Discord.
+          SECTION=$(awk -v v="## $VER" '$0==v{f=1;next} f&&/^## /{exit} f{print}' "$CL" \
+                      | sed -E 's/<[^>]+>//g')
+
+          # The first non-blank line is the release date. Fold it into the
+          # header rather than leaving it as an orphan line in the body.
+          FIRST=$(printf '%s\n' "$SECTION" | awk 'NF{print; exit}')
+          if printf '%s' "$FIRST" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'; then
+            HEADER="@everyone **freemkv $VER** — released $FIRST"
+            BODY=$(printf '%s\n' "$SECTION" | awk 'NF&&!seen{seen=1;next} seen{print}')
+          else
+            HEADER="@everyone **freemkv $VER** was just released."
+            BODY="$SECTION"
+          fi
+          # Trim leading blank lines so the body starts at the first heading.
+          BODY=$(printf '%s\n' "$BODY" | awk 'NF{f=1} f')
+
+          CONTENT=$(printf '%s\n\n%s\n\n%s' "$HEADER" "$BODY" "$URL")
 
           # Discord hard-limits `content` to 2000 chars; leave headroom.
           CONTENT=${CONTENT:0:1900}
