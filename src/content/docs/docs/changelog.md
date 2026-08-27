@@ -13,6 +13,21 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases).
 
+## 1.6.12
+
+<small>2026-08-27</small>
+
+**Ripping**
+
+- **macOS:** fixed a case where the disc could unmount partway through a rip —
+  seen as `E1000` ("Write failed"), with the disc then re-mounting on its own.
+  freemkv now holds an exclusive claim on the drive for the whole rip, so the
+  system no longer takes it back mid-read.
+- If the disc or drive state changes underneath a rip, freemkv now reacquires
+  the drive and restarts the pass instead of failing the read.
+
+_This release aligns all components to 1.6.12._
+
 ## 1.6.11
 
 <small>2026-08-26</small>
