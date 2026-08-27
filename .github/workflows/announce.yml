@@ -1,0 +1,65 @@
+name: Announce release on Discord
+
+# When a new version lands on the changelog page, drop a plain-text note in
+# the Discord release channel. Fires AFTER "Deploy site to Pages" succeeds so
+# the #anchor link it posts is already live, and only when this deploy's push
+# actually added a changelog entry — an unrelated site change posts nothing.
+on:
+  workflow_run:
+    workflows: ["Deploy site to Pages"]
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  announce:
+    # Successful deploy, from main only.
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 2   # need the parent to diff the changelog
+
+      - name: Post the newest changelog entry to Discord
+        env:
+          HOOK: ${{ secrets.DISCORD_RELEASE_WEBHOOK }}
+        run: |
+          set -euo pipefail
+          CL=src/content/docs/docs/changelog.md
+
+          # Nothing to announce unless this deploy's commit touched the changelog.
+          if git rev-parse HEAD~1 >/dev/null 2>&1 && git diff --quiet HEAD~1 HEAD -- "$CL"; then
+            echo "changelog.md unchanged in this deploy — nothing to announce"
+            exit 0
+          fi
+          [ -n "${HOOK:-}" ] || { echo "::warning::DISCORD_RELEASE_WEBHOOK unset — skipping"; exit 0; }
+
+          # Newest version = first "## x.y.z" heading. Anchor is the dotless
+          # slug github-slugger emits (1.6.11 -> 1611), matching the live page.
+          VER=$(grep -m1 -E '^## [0-9]' "$CL" | sed 's/^## //')
+          ANCHOR=${VER//./}
+
+          # The section body = lines between "## VER" and the next "## ",
+          # with the HTML bits (the <small>date</small> tag) stripped so it
+          # reads as clean markdown in Discord.
+          BODY=$(awk -v v="## $VER" '$0==v{f=1;next} f&&/^## /{exit} f{print}' "$CL" \
+                   | sed -E 's/<[^>]+>//g')
+
+          URL="https://freemkv.org/docs/changelog/#${ANCHOR}"
+          CONTENT=$(printf '@everyone **freemkv %s** was just released.\n\n%s\n\n%s' \
+                    "$VER" "$BODY" "$URL")
+
+          # Discord hard-limits `content` to 2000 chars; leave headroom.
+          CONTENT=${CONTENT:0:1900}
+
+          # allowed_mentions.parse=["everyone"] is REQUIRED for @everyone to
+          # actually ping when posting through a webhook.
+          jq -n --arg c "$CONTENT" \
+            '{content:$c, allowed_mentions:{parse:["everyone"]}}' \
+          | curl -fsS -X POST "$HOOK" -H 'Content-Type: application/json' -d @-
+          echo "Announced freemkv $VER"
