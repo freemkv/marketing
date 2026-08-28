@@ -13,6 +13,19 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases).
 
+## 1.6.13
+
+<small>2026-08-28</small>
+
+**Drive support**
+
+- `freemkv info disc:// --share` now captures a few additional drive
+  responses on Pioneer / Renesas drives. If you have one of these drives and
+  would like to help us add support for it, re-run the command and share the
+  profile it prints.
+
+_This release aligns all components to 1.6.13._
+
 ## 1.6.12
 
 <small>2026-08-27</small>
