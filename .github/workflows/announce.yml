@@ -4,44 +4,66 @@ name: Announce release on Discord
 # the Discord release channel. Fires AFTER "Deploy site to Pages" succeeds so
 # the #anchor link it posts is already live, and only when this deploy's push
 # actually added a changelog entry — an unrelated site change posts nothing.
+#
+# Manual fire: workflow_dispatch (optional `version` input; blank = newest)
+# posts unconditionally, bypassing the diff guard — a recovery path for when
+# the automatic run missed (e.g. the changelog deploy was cancelled by a later
+# same-second deploy, so the successful deploy's tip did not touch the file).
 on:
   workflow_run:
     workflows: ["Deploy site to Pages"]
     types: [completed]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to announce (blank = newest changelog entry)"
+        required: false
+        default: ""
 
 permissions:
   contents: read
 
 jobs:
   announce:
-    # Successful deploy, from main only.
+    # Automatic: a successful deploy from main. Manual: always.
     if: >
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'main'
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           fetch-depth: 2   # need the parent to diff the changelog
 
       - name: Post the newest changelog entry to Discord
         env:
           HOOK: ${{ secrets.DISCORD_RELEASE_WEBHOOK }}
+          EVENT: ${{ github.event_name }}
+          VER_INPUT: ${{ github.event.inputs.version }}
         run: |
           set -euo pipefail
           CL=src/content/docs/docs/changelog.md
 
-          # Nothing to announce unless this deploy's commit touched the changelog.
-          if git rev-parse HEAD~1 >/dev/null 2>&1 && git diff --quiet HEAD~1 HEAD -- "$CL"; then
-            echo "changelog.md unchanged in this deploy — nothing to announce"
-            exit 0
+          # Automatic runs announce only when THIS deploy's commit touched the
+          # changelog. A manual dispatch always announces (bypasses the guard).
+          if [ "${EVENT:-}" != "workflow_dispatch" ]; then
+            if git rev-parse HEAD~1 >/dev/null 2>&1 && git diff --quiet HEAD~1 HEAD -- "$CL"; then
+              echo "changelog.md unchanged in this deploy — nothing to announce"
+              exit 0
+            fi
           fi
           [ -n "${HOOK:-}" ] || { echo "::warning::DISCORD_RELEASE_WEBHOOK unset — skipping"; exit 0; }
 
-          # Newest version = first "## x.y.z" heading. Anchor is the dotless
-          # slug github-slugger emits (1.6.11 -> 1611), matching the live page.
-          VER=$(grep -m1 -E '^## [0-9]' "$CL" | sed 's/^## //')
+          # Version = the dispatch input if given, else the newest "## x.y.z"
+          # heading. Anchor is the dotless slug github-slugger emits (1.6.11 ->
+          # 1611), matching the live page.
+          if [ -n "${VER_INPUT:-}" ]; then
+            VER="$VER_INPUT"
+          else
+            VER=$(grep -m1 -E '^## [0-9]' "$CL" | sed 's/^## //')
+          fi
           ANCHOR=${VER//./}
           URL="https://freemkv.org/docs/changelog/#${ANCHOR}"
 
@@ -50,6 +72,7 @@ jobs:
           # clean markdown in Discord.
           SECTION=$(awk -v v="## $VER" '$0==v{f=1;next} f&&/^## /{exit} f{print}' "$CL" \
                       | sed -E 's/<[^>]+>//g')
+          [ -n "$SECTION" ] || { echo "::error::no changelog section for '$VER'"; exit 1; }
 
           # The first non-blank line is the release date. Fold it into the
           # header rather than leaving it as an orphan line in the body.
