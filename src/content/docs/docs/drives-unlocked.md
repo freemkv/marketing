@@ -31,6 +31,12 @@ If you own an LG, ASUS, or HP Blu-ray drive from roughly **2012-2020**, it's ver
 
 **Pioneer** drives (the BDR-… series, built on a different chipset) are **not supported yet**; support is actively being worked on. This also covers Pioneer drives sold under other badges, such as the **ASUS BW-16D1X-U** (a rebadged Pioneer). Any unsupported drive falls back to the **[stock-drive AACS workflow](/docs/drives-oem/)**.
 
+## Firmwares Supported:
+
+- **[FreeMKV](/docs/firmware-tools/)**
+- **MK**
+- **OmniDrive** (untested)
+
 ## How do I tell what I have?
 
 Check the drive's model number; it's on the label, or in Windows under **Device Manager → DVD/CD-ROM drives**:

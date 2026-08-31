@@ -1,0 +1,844 @@
+---
+// "Find your drive" — /firmware/find/.
+// Typeable search over the drive index in src/data/firmware-index.json using a
+// compact custom combobox (capped, scrollable, field-width list — no native
+// datalist balloon). Search matches on MODEL NAME only; brand and chip are
+// never shown in the picker. Selecting a model reveals a versions dropdown,
+// then a short detail card with either a download button (for a hosted base)
+// or a disabled "Unavailable" button plus a "donate it on Discord" call to
+// action (for a base we don't host yet — crowdsources the missing firmware).
+import FirmwareNavDropdown from '../../components/FirmwareNavDropdown.astro';
+import firmwareIndex from '../../data/firmware-index.json';
+
+const title = 'Find your drive firmware — freemkv';
+const description =
+  'Search your optical drive model to find its firmware base image for freemkv.';
+
+const docs = '/docs/overview/';
+const github = 'https://github.com/freemkv';
+const firmwareRepo = 'https://github.com/freemkv/freemkv-firmware';
+const firmwareBaseUrl = `${firmwareRepo}/releases/latest/download`;
+
+// Only LG BU40N rev 1.00 has a real hosted release asset today. Every other
+// model/revision shows the "ask on Discord" line instead of a dead link.
+const HOSTED = new Set(['BU40N:1.00']);
+const hostedList = [...HOSTED];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href="https://freemkv.org/firmware/find/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://freemkv.org/freemkv-icon.svg" />
+    <meta property="og:url" content="https://freemkv.org/firmware/find/" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://freemkv.org/freemkv-icon.svg" />
+  </head>
+  <body>
+    <!-- ============ STICKY NAV ============ -->
+    <header class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="/">
+          <img src="/freemkv-icon.svg" alt="" width="32" height="32" />
+          <span>freemkv</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href={docs}>Docs</a>
+          <a href="/download/">Software</a>
+          <FirmwareNavDropdown active="find" />
+          <a
+            class="nav-discord"
+            href="https://discord.gg/yu7xMGTyek"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Discord"
+          >
+            <svg class="nav-discord-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.211.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.891.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.331c-1.183 0-2.157-1.086-2.157-2.42 0-1.333.956-2.42 2.157-2.42 1.21 0 2.176 1.096 2.157 2.42 0 1.334-.956 2.42-2.157 2.42zm7.975 0c-1.183 0-2.157-1.086-2.157-2.42 0-1.333.955-2.42 2.157-2.42 1.21 0 2.176 1.096 2.157 2.42 0 1.334-.946 2.42-2.157 2.42z"/></svg>
+          </a>
+          <a
+            class="gh-stars"
+            href="https://github.com/freemkv/freemkv"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub stars"
+            data-gh-repo="freemkv/freemkv"
+          >
+            <span class="gh-stars-num"><span data-gh-stars hidden></span>★</span>
+            <svg class="gh-stars-logo" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- ============ HERO ============ -->
+      <section class="hero">
+        <div class="hero-inner">
+          <h1 class="hero-title">Find your drive</h1>
+          <p class="hero-lead">
+            Type your drive's model number to find its firmware base image.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============ SEARCH ============ -->
+      <section class="block">
+        <div class="section-inner">
+          <div class="picker">
+            <div class="picker-row">
+              <label class="picker-label" for="drive-search">Drive model</label>
+              <div class="combo" data-combo>
+                <input
+                  class="picker-input"
+                  id="drive-search"
+                  type="text"
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-controls="drive-options"
+                  aria-autocomplete="list"
+                  placeholder="e.g. BU40N"
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+                <ul class="picker-options" id="drive-options" role="listbox" aria-label="Drive models" hidden></ul>
+              </div>
+            </div>
+            <div class="picker-row" id="rev-row" hidden>
+              <label class="picker-label" for="drive-rev">Firmware revision</label>
+              <select class="picker-select" id="drive-rev" aria-label="Select firmware revision"></select>
+            </div>
+          </div>
+
+          <div class="picker-detail" id="drive-detail"></div>
+
+          <p class="block-note">
+            Don't see your drive listed, or want to help us add one? Drop by
+            <a href="https://discord.gg/yu7xMGTyek">Discord</a>.
+          </p>
+
+          <div class="next-step">
+            <a class="next-step-link" href="/firmware/modify/">
+              Next: modify it <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <script define:vars={{ firmwareIndex, hostedList, firmwareBaseUrl }}>
+        (function () {
+          var searchInput = document.getElementById('drive-search');
+          var optionsList = document.getElementById('drive-options');
+          var revRow = document.getElementById('rev-row');
+          var revSel = document.getElementById('drive-rev');
+          var detail = document.getElementById('drive-detail');
+          if (!searchInput || !optionsList || !revSel || !detail) return;
+
+          var hosted = {};
+          hostedList.forEach(function (k) { hosted[k] = true; });
+
+          var filtered = [];
+          var activeIdx = -1;
+
+          // Number of hosted (downloadable) revisions for a model — the
+          // basis for the Available/Unavailable split in the picker list.
+          function hostedCount(d) {
+            var n = 0;
+            d.versions.forEach(function (v) {
+              if (hosted[d.model + ':' + v.rev]) n++;
+            });
+            return n;
+          }
+
+          function findModel(name) {
+            var needle = (name || '').trim().toLowerCase();
+            if (!needle) return null;
+            return firmwareIndex.find(function (d) { return d.model.toLowerCase() === needle; }) || null;
+          }
+
+          // Substring match on MODEL NAME only — no brand, no chip.
+          function filterModels(q) {
+            var needle = (q || '').trim().toLowerCase();
+            if (!needle) return firmwareIndex.slice();
+            return firmwareIndex.filter(function (d) {
+              return d.model.toLowerCase().indexOf(needle) !== -1;
+            });
+          }
+
+          function closeList() {
+            optionsList.hidden = true;
+            searchInput.setAttribute('aria-expanded', 'false');
+            activeIdx = -1;
+          }
+
+          function addGroupLabel(text) {
+            var li = document.createElement('li');
+            li.className = 'picker-group-label';
+            li.setAttribute('role', 'presentation');
+            li.textContent = text;
+            optionsList.appendChild(li);
+          }
+
+          function addOption(d, count) {
+            var li = document.createElement('li');
+            li.className = 'picker-option' + (count > 0 ? '' : ' picker-option-unavailable');
+            li.setAttribute('role', 'option');
+            li.textContent = count > 0 ? d.model + ' (' + count + ')' : d.model;
+            li.addEventListener('mousedown', function (e) {
+              e.preventDefault();
+              choose(d);
+            });
+            optionsList.appendChild(li);
+          }
+
+          // Split the model list into an "Available" group (>=1 hosted
+          // revision) shown first, and an "Unavailable" group (0 hosted
+          // revisions) shown after — so a model with no firmware files is
+          // obvious before it's ever selected.
+          function openList(list) {
+            optionsList.innerHTML = '';
+            if (!list.length) {
+              filtered = [];
+              var empty = document.createElement('li');
+              empty.className = 'picker-empty';
+              empty.textContent = 'No matching drive models';
+              optionsList.appendChild(empty);
+            } else {
+              var available = [];
+              var unavailable = [];
+              list.forEach(function (d) {
+                var n = hostedCount(d);
+                (n > 0 ? available : unavailable).push({ d: d, n: n });
+              });
+              filtered = available.concat(unavailable).map(function (e) { return e.d; });
+
+              if (available.length) {
+                addGroupLabel('Available');
+                available.forEach(function (e) { addOption(e.d, e.n); });
+              }
+              if (unavailable.length) {
+                addGroupLabel('Unavailable');
+                unavailable.forEach(function (e) { addOption(e.d, e.n); });
+              }
+            }
+            optionsList.hidden = false;
+            searchInput.setAttribute('aria-expanded', 'true');
+            activeIdx = -1;
+          }
+
+          function setActive(idx) {
+            var opts = optionsList.querySelectorAll('.picker-option');
+            if (!opts.length) return;
+            if (idx < 0) idx = opts.length - 1;
+            if (idx >= opts.length) idx = 0;
+            for (var i = 0; i < opts.length; i++) opts[i].classList.remove('is-active');
+            opts[idx].classList.add('is-active');
+            opts[idx].scrollIntoView({ block: 'nearest' });
+            activeIdx = idx;
+          }
+
+          function choose(d) {
+            searchInput.value = d.model;
+            closeList();
+            populateRevs(d);
+            render();
+          }
+
+          function populateRevs(d) {
+            revSel.innerHTML = '';
+            d.versions.forEach(function (v, i) {
+              var opt = document.createElement('option');
+              opt.value = String(i);
+              opt.textContent = v.rev;
+              revSel.appendChild(opt);
+            });
+          }
+
+          function render() {
+            var d = findModel(searchInput.value);
+            if (!d) {
+              revRow.hidden = true;
+              detail.innerHTML = '';
+              detail.hidden = true;
+              return;
+            }
+            revRow.hidden = false;
+            detail.hidden = false;
+
+            var v = d.versions[Number(revSel.value) || 0];
+            var key = d.model + ':' + v.rev;
+            var isHosted = !!hosted[key];
+
+            var bodyHtml;
+            if (isHosted) {
+              bodyHtml =
+                '<a class="btn btn-primary dl-btn drive-fw-btn" href="' + firmwareBaseUrl + '/' + v.file + '" download>' +
+                '<span class="dl-main">Download <span class="dl-arch">' + v.file + '</span></span>' +
+                '</a>' +
+                '<div class="drive-fw-hint">' +
+                '<span class="drive-fw-hint-label">Then build it:</span>' +
+                '<code class="drive-fw-cmd">freemkv-fw create ' + v.file + ' my-drive.freemkv.bin</code>' +
+                '</div>';
+            } else {
+              bodyHtml =
+                '<span class="btn drive-fw-btn drive-fw-btn-disabled" aria-disabled="true">Unavailable</span>' +
+                '<p class="drive-fw-hint drive-fw-note">Have this firmware? ' +
+                '<a class="drive-fw-link" href="https://discord.gg/yu7xMGTyek">Donate it on Discord →</a></p>';
+            }
+
+            detail.innerHTML =
+              '<div class="drive-detail-head">' +
+              '<h3 class="card-title drive-title">' + d.brand + ' ' + d.model + '</h3>' +
+              '<span class="drive-rev">rev ' + v.rev + '</span>' +
+              '</div>' +
+              bodyHtml;
+          }
+
+          searchInput.addEventListener('input', function () {
+            openList(filterModels(searchInput.value));
+            var d = findModel(searchInput.value);
+            if (d) {
+              populateRevs(d);
+              render();
+            } else {
+              revRow.hidden = true;
+              detail.hidden = true;
+              detail.innerHTML = '';
+            }
+          });
+          searchInput.addEventListener('focus', function () {
+            if (optionsList.hidden) openList(filterModels(searchInput.value));
+          });
+          searchInput.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              if (optionsList.hidden) openList(filterModels(searchInput.value));
+              setActive(activeIdx + 1);
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              setActive(activeIdx - 1);
+            } else if (e.key === 'Enter') {
+              if (!optionsList.hidden && activeIdx >= 0 && filtered[activeIdx]) {
+                e.preventDefault();
+                choose(filtered[activeIdx]);
+              }
+            } else if (e.key === 'Escape') {
+              closeList();
+            }
+          });
+          document.addEventListener('click', function (e) {
+            if (!e.target.closest('[data-combo]')) closeList();
+          });
+          revSel.addEventListener('change', render);
+
+          detail.hidden = true;
+          revRow.hidden = true;
+        })();
+      </script>
+    </main>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer">
+      <div class="section-inner footer-inner">
+        <div class="footer-brand">
+          <img src="/freemkv-icon.svg" alt="" width="28" height="28" />
+          <span>freemkv</span>
+        </div>
+        <nav class="footer-links" aria-label="Footer">
+          <a href={docs}>Docs</a>
+          <a href={github}>GitHub</a>
+          <a href="https://github.com/freemkv/freemkv/blob/main/LICENSE">License (MIT)</a>
+        </nav>
+      </div>
+      <p class="footer-copy">MIT · Recover 100% of readable data from any optical disc.</p>
+    </footer>
+
+    <script is:inline>
+      (function () {
+        var el = document.querySelector('a.gh-stars');
+        if (!el) return;
+        var repo = el.dataset.ghRepo;
+        var countEl = el.querySelector('[data-gh-stars]');
+        if (!repo || !countEl) return;
+        var CACHE_KEY = 'freemkv:gh-stars:' + repo;
+        var TTL_MS = 60 * 60 * 1000;
+        function format(n) {
+          if (!isFinite(n) || n < 0) return '';
+          if (n < 1000) return String(n);
+          var k = n / 1000;
+          var s = k < 10 ? k.toFixed(1) : Math.round(k).toString();
+          return s.replace(/\.0$/, '') + 'k';
+        }
+        function show(n) {
+          var text = format(n);
+          if (!text) return;
+          countEl.textContent = text;
+          countEl.hidden = false;
+          el.setAttribute('aria-label', 'GitHub stars: ' + n.toLocaleString());
+        }
+        try {
+          var raw = localStorage.getItem(CACHE_KEY);
+          if (raw) {
+            var cached = JSON.parse(raw);
+            if (cached && typeof cached.count === 'number') {
+              show(cached.count);
+              if (Date.now() - cached.ts < TTL_MS) return;
+            }
+          }
+        } catch (e) {}
+        fetch('https://api.github.com/repos/' + repo, {
+          headers: { Accept: 'application/vnd.github+json' },
+        })
+          .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)); })
+          .then(function (data) {
+            var count = data && data.stargazers_count;
+            if (typeof count !== 'number') return;
+            show(count);
+            try { localStorage.setItem(CACHE_KEY, JSON.stringify({ count: count, ts: Date.now() })); } catch (e) {}
+          })
+          .catch(function () {});
+      })();
+    </script>
+
+    <style>
+      :root {
+        --teal: #0d9488;
+        --teal-dark: #0f766e;
+        --teal-darker: #115e59;
+        --teal-tint: #f0fdfa;
+        --ink: #0f172a;
+        --slate: #475569;
+        --muted: #64748b;
+        --line: #e2e8f0;
+        --bg: #ffffff;
+        --bg-soft: #f8fafc;
+        --radius: 14px;
+        --maxw: 1080px;
+        --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: var(--font);
+        color: var(--ink);
+        background: var(--bg);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: var(--teal-dark); text-decoration: none; }
+      a:hover { color: var(--teal-darker); }
+      code {
+        font-family: var(--mono);
+        font-size: 0.9em;
+        background: var(--teal-tint);
+        color: var(--teal-darker);
+        padding: 0.1em 0.35em;
+        border-radius: 5px;
+      }
+
+      .section-inner {
+        max-width: var(--maxw);
+        margin: 0 auto;
+        padding: 0 clamp(1rem, 4vw, 2rem);
+      }
+
+      /* ---------- NAV ---------- */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: saturate(180%) blur(10px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-inner {
+        max-width: var(--maxw);
+        margin: 0 auto;
+        padding: 0.75rem clamp(1rem, 4vw, 2rem);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        font-weight: 750;
+        font-size: 1.15rem;
+        color: var(--ink);
+        letter-spacing: -0.01em;
+      }
+      .brand img { display: block; }
+      .nav-links {
+        display: flex;
+        gap: clamp(0.75rem, 3vw, 1.75rem);
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .nav-links a {
+        color: var(--slate);
+        font-weight: 550;
+        font-size: 0.95rem;
+      }
+      .nav-links a:hover { color: var(--teal-dark); }
+      .nav-links a[aria-current="page"] { color: var(--teal-dark); font-weight: 650; }
+      .nav-links a.gh-stars {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        font-variant-numeric: tabular-nums;
+      }
+      .gh-stars-num { line-height: 1; white-space: nowrap; }
+      .gh-stars-logo { width: 1.2em; height: 1.2em; }
+      .nav-links a.nav-discord {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+      }
+      .nav-discord-logo { width: 1.15em; height: 1.15em; }
+
+      /* ---------- BUTTONS ---------- */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.7rem 1.3rem;
+        border-radius: 10px;
+        font-weight: 650;
+        font-size: 0.98rem;
+        border: 1.5px solid transparent;
+        transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease;
+        white-space: nowrap;
+        max-width: 100%;
+      }
+      .btn:active { transform: translateY(1px); }
+      .btn-primary {
+        background: var(--teal);
+        color: #fff;
+        box-shadow: 0 6px 18px -8px rgba(13, 148, 136, 0.7);
+      }
+      .btn-primary:hover { background: var(--teal-dark); color: #fff; }
+
+      /* ---------- HERO ---------- */
+      .hero {
+        background:
+          radial-gradient(60% 120% at 50% -10%, rgba(13, 148, 136, 0.1), transparent 60%),
+          var(--bg-soft);
+        border-bottom: 1px solid var(--line);
+        padding: clamp(2.5rem, 8vw, 4.5rem) 0 clamp(2.25rem, 6vw, 3.5rem);
+      }
+      .hero-inner {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 0 clamp(1rem, 4vw, 2rem);
+        text-align: center;
+      }
+      .hero-title {
+        font-size: clamp(2rem, 7vw, 3rem);
+        line-height: 1.08;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        margin: 0 0 0.75rem;
+      }
+      .hero-lead {
+        margin: 1.25rem auto 0;
+        max-width: 56ch;
+        color: var(--slate);
+        font-size: clamp(1rem, 2.5vw, 1.12rem);
+      }
+
+      /* ---------- CONTENT BLOCKS ---------- */
+      .block { padding: clamp(2.5rem, 7vw, 4rem) 0; }
+      .block-note {
+        max-width: 640px;
+        margin: 1.5rem auto 0;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      /* ---------- DRIVE PICKER ---------- */
+      .picker {
+        max-width: 640px;
+        margin: 0 auto;
+        display: grid;
+        gap: 1.1rem;
+      }
+      .picker-row {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        text-align: left;
+      }
+      .picker-label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--teal-dark);
+      }
+      .picker-input,
+      .picker-select {
+        appearance: none;
+        width: 100%;
+        font: inherit;
+        font-size: 1.15rem;
+        font-weight: 650;
+        color: var(--ink);
+        background: #fff;
+        border: 1.5px solid var(--line);
+        border-radius: 12px;
+        padding: 0.9rem 1.1rem;
+        box-shadow: 0 10px 26px -16px rgba(15, 23, 42, 0.25);
+      }
+      .picker-select {
+        background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2364748b'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E") no-repeat right 1rem center;
+        background-size: 1.15rem;
+        padding-right: 2.75rem;
+        cursor: pointer;
+      }
+      .picker-input:hover,
+      .picker-select:hover { border-color: #cbd5e1; }
+      .picker-input:focus-visible,
+      .picker-select:focus-visible {
+        outline: none;
+        border-color: var(--teal);
+        box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15);
+      }
+
+      /* ---------- COMBOBOX (compact, capped, field-width) ---------- */
+      .combo { position: relative; }
+      .picker-options {
+        position: absolute;
+        top: calc(100% + 0.4rem);
+        left: 0;
+        right: 0;
+        z-index: 30;
+        margin: 0;
+        padding: 0.3rem;
+        list-style: none;
+        background: #fff;
+        border: 1.5px solid var(--line);
+        border-radius: 12px;
+        box-shadow: 0 18px 40px -20px rgba(15, 23, 42, 0.4);
+        max-height: 17.5rem; /* ~8–9 rows, then scroll */
+        overflow-y: auto;
+        overscroll-behavior: contain;
+      }
+      .picker-options[hidden] { display: none; }
+      .picker-option {
+        padding: 0.55rem 0.75rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--slate);
+        cursor: pointer;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .picker-option:hover,
+      .picker-option.is-active {
+        background: var(--teal-tint);
+        color: var(--teal-dark);
+      }
+      .picker-group-label {
+        padding: 0.4rem 0.75rem 0.2rem;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--teal-dark);
+      }
+      .picker-group-label:not(:first-child) {
+        margin-top: 0.3rem;
+        border-top: 1px solid var(--line);
+        padding-top: 0.5rem;
+      }
+      .picker-option-unavailable {
+        color: var(--muted);
+        font-weight: 500;
+      }
+      .picker-option-unavailable:hover,
+      .picker-option-unavailable.is-active {
+        background: var(--bg-soft);
+        color: var(--slate);
+      }
+      .picker-empty {
+        padding: 0.55rem 0.75rem;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+      .picker-detail {
+        max-width: 640px;
+        margin: 1.5rem auto 0;
+        background: #fff;
+        border: 1.5px solid var(--line);
+        border-radius: 12px;
+        padding: 1.4rem 1.5rem;
+        text-align: left;
+        box-shadow: 0 10px 26px -16px rgba(15, 23, 42, 0.25);
+      }
+      .drive-detail-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.9rem;
+      }
+      .drive-title { margin: 0; }
+      .drive-rev {
+        font-family: var(--mono);
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+      .drive-fw-btn { width: 100%; }
+      /* Un-hosted firmware: a clearly disabled, non-clickable button so it can
+         never dead-end on a broken download. Paired with a donate CTA below. */
+      .drive-fw-btn-disabled {
+        background: var(--bg-soft);
+        color: var(--muted);
+        border-color: var(--line);
+        box-shadow: none;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .drive-fw-hint {
+        margin: 0.9rem 0 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+      /* Stacked layout: label on its own line, then the command on its own
+         full-width block line — nothing runs on or wraps awkwardly. */
+      .drive-fw-hint:not(.drive-fw-note) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+      }
+      .drive-fw-hint-label { font-weight: 600; color: var(--slate); }
+      .drive-fw-cmd {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0.55rem 0.7rem;
+        background: var(--code-bg, #f1f5f9);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        font-family: var(--mono);
+        font-size: 0.85rem;
+        color: var(--ink, var(--slate));
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+      }
+      /* Clean accent link — no raw underline, subtle hover. */
+      .drive-fw-link {
+        align-self: flex-start;
+        font-weight: 600;
+        color: var(--teal-dark);
+        text-decoration: none;
+        transition: color 0.12s ease, border-color 0.12s ease;
+        border-bottom: 1px solid transparent;
+      }
+      .drive-fw-link:hover,
+      .drive-fw-link:focus-visible {
+        color: var(--teal);
+        border-bottom-color: currentColor;
+        text-decoration: none;
+      }
+
+      /* ---------- NEXT-STEP LINK (Find → Modify → Flash journey) ---------- */
+      .next-step {
+        margin: 2.5rem auto 0;
+        text-align: center;
+      }
+      .next-step-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.7rem 1.4rem;
+        border: 1.5px solid var(--line);
+        border-radius: 999px;
+        font-weight: 650;
+        font-size: 1rem;
+        color: var(--teal-dark);
+        text-decoration: none;
+        transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+      }
+      .next-step-link span { transition: transform 0.15s ease; }
+      .next-step-link:hover,
+      .next-step-link:focus-visible {
+        color: var(--teal-darker);
+        border-color: var(--teal);
+        background: var(--teal-tint);
+      }
+      .next-step-link:hover span,
+      .next-step-link:focus-visible span { transform: translateX(3px); }
+
+      /* ---------- FOOTER ---------- */
+      .footer {
+        background: var(--ink);
+        color: #cbd5e1;
+        padding: 2.5rem 0 1.75rem;
+      }
+      .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .footer-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 700;
+        color: #fff;
+      }
+      .footer-links {
+        display: flex;
+        gap: clamp(0.75rem, 3vw, 1.5rem);
+        flex-wrap: wrap;
+      }
+      .footer-links a { color: #cbd5e1; font-size: 0.92rem; }
+      .footer-links a:hover { color: #5eead4; }
+      .footer-copy {
+        max-width: var(--maxw);
+        margin: 1.75rem auto 0;
+        padding: 1.25rem clamp(1rem, 4vw, 2rem) 0;
+        border-top: 1px solid #1e293b;
+        color: #64748b;
+        font-size: 0.82rem;
+        text-align: center;
+      }
+
+      /* ---------- RESPONSIVE ---------- */
+      @media (max-width: 640px) {
+        .nav-inner { justify-content: center; }
+        .footer-inner { justify-content: center; text-align: center; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * { scroll-behavior: auto; transition: none !important; }
+      }
+    </style>
+  </body>
+</html>

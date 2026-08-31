@@ -138,6 +138,8 @@ const autoripPlatforms = [
     ],
   },
 ];
+
+import FirmwareNavDropdown from '../components/FirmwareNavDropdown.astro';
 ---
 
 <!doctype html>
@@ -216,7 +218,8 @@ const autoripPlatforms = [
         </a>
         <nav class="nav-links" aria-label="Primary">
           <a href={docs}>Docs</a>
-          <a href="/download/" aria-current="page">Download</a>
+          <a href="/download/" aria-current="page">Software</a>
+          <FirmwareNavDropdown />
           <a
             class="nav-discord"
             href="https://discord.gg/yu7xMGTyek"

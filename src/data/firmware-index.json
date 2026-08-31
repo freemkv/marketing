@@ -1,0 +1,420 @@
+[
+ {
+  "brand": "ASUS",
+  "model": "BC-12B1ST",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "3.01",
+    "file": "BC-12B1ST_3.01.bin",
+    "sha256": "69e5c2b5f7ca5c1cc8a94fad68d5c5175eaf35cefb4234cc82c1ef4d84548001"
+   }
+  ]
+ },
+ {
+  "brand": "ASUS",
+  "model": "BC-12D2HT",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "3.00",
+    "file": "BC-12D2HT_3.00.bin",
+    "sha256": "dd03cdae194de03a710b5f6e88dfedf421fd20667a3cc9ec58e828bd769ab2ed"
+   },
+   {
+    "rev": "3.01",
+    "file": "BC-12D2HT_3.01.bin",
+    "sha256": "dc88b3e4d44a9ad6d139a8da9ad294b799bd1e4e41bf03edd4aa151cd8e4f0b7"
+   }
+  ]
+ },
+ {
+  "brand": "ASUS",
+  "model": "BW-16D1H-U",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "A203",
+    "file": "BW-16D1H-U_A203.bin",
+    "sha256": "df4452bbbd06dbd8463d67e4aadd0a9d4e7576a7a6d76c3526da66aa3ba1d713"
+   }
+  ]
+ },
+ {
+  "brand": "ASUS",
+  "model": "BW-16D1HT",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "3.01",
+    "file": "BW-16D1HT_3.01.bin",
+    "sha256": "2e243a167739d4e46ad7095db7cb5452c2980579a0cb359208945a0bbe0f3f29"
+   },
+   {
+    "rev": "3.02",
+    "file": "BW-16D1HT_3.02.bin",
+    "sha256": "0d085b4c854bfc03c08b2e7fde1b25096bdf888eaa65adbb28a10b529ced07ac"
+   },
+   {
+    "rev": "3.03",
+    "file": "BW-16D1HT_3.03.bin",
+    "sha256": "48c7b55faf306f91fe0358004abdb60dbb019f8c917cee55b2af3a859de7e29b"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "BE16NU50",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.01",
+    "file": "BE16NU50_1.01.bin",
+    "sha256": "9c46e6972b7950004e9746256c97b79e8e681faad1a4174b542477ad6ff5257e"
+   },
+   {
+    "rev": "1.02",
+    "file": "BE16NU50_1.02.bin",
+    "sha256": "f5eb16235209bafa7b3c9efb89fcfbb13d24ab1bb10be844d04fd258e14f44ee"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "BH14NS50",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.01",
+    "file": "BH14NS50_1.01.bin",
+    "sha256": "0a12a6ebf0b49b80b90344ac8e81adb9789a937b35563e91801a7f3e112a6d6f"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "BH14NS58",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.00",
+    "file": "BH14NS58_1.00.bin",
+    "sha256": "aaeea1ba97d05fae0b4de1ff1b84076f8ba897cb15b45a398f9bc4c25fe1738b"
+   },
+   {
+    "rev": "1.01",
+    "file": "BH14NS58_1.01.bin",
+    "sha256": "b65c63e53960b1a85def70b9916e55a5440902cce802a04803d40c367da33302"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "BH16NS40",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.00",
+    "file": "BH16NS40_1.00.bin",
+    "sha256": "ab21af6945e901c56b9f29755433cf4785e9cdc106bb123d943aea0e90d04d9e"
+   },
+   {
+    "rev": "1.01",
+    "file": "BH16NS40_1.01.bin",
+    "sha256": "208a80d0d30c1841ad0bd33d49be032dfe2110c7f50ba6298ec51851c69035b6"
+   },
+   {
+    "rev": "1.02",
+    "file": "BH16NS40_1.02.bin",
+    "sha256": "8f5bf9536115fd6aece78d1ff6b6a7e51e3fc0d927f2ae8fd64d6121401a5dea"
+   },
+   {
+    "rev": "1.03",
+    "file": "BH16NS40_1.03.bin",
+    "sha256": "547cff99467cb43ab82c3430f718210a1d8bc919892fb57e8153a8c9263d119f"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "BH16NS50",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.01",
+    "file": "BH16NS50_1.01.bin",
+    "sha256": "2de9ddd7b9d6836c0b76cd0ac0455af7670cd95eb275801e244a7d8b6d4e518a"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "BH16NS55",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.01",
+    "file": "BH16NS55_1.01.bin",
+    "sha256": "ce732330b3cabca5f6b0cbcf1b6fc1abd4117d6fd047fe4f9330b6b25337b521"
+   },
+   {
+    "rev": "1.02",
+    "file": "BH16NS55_1.02.bin",
+    "sha256": "64cff02c3db347a2100284a406687a5a911463d65808db5c5c811a4cefc4fe57"
+   },
+   {
+    "rev": "1.03",
+    "file": "BH16NS55_1.03.bin",
+    "sha256": "e086fbe75d4c0c05ccc0117092b083d1847649ec6bf6ce2c5762a03b012d2d71"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "BH16NS58",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.01",
+    "file": "BH16NS58_1.01.bin",
+    "sha256": "fccfc7bd4b7008a9f9a329d3e7a1debc373628be1077abd468b5dffdea959df1"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "BH16NS60",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.00",
+    "file": "BH16NS60_1.00.bin",
+    "sha256": "93868c4ea14b914240bdf2782ed63618b785f657668d28199badf695933fcbe9"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "BP50NB40",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.01",
+    "file": "BP50NB40_1.01.bin",
+    "sha256": "148d89cc6ea4351c987913ec0417152808a2fb32c06c230c2ef9a1585233ed50"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "BP55EB40",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.01",
+    "file": "BP55EB40_1.01.bin",
+    "sha256": "4ed5cdc974eb79feafbba2312ffb4d54ae30b1a77a30aa7ee172a51fc64f4c09"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "BP60NB10",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.00",
+    "file": "BP60NB10_1.00.bin",
+    "sha256": "04f879f0bf676ede526f7d07f20f5c949caac7e00dbb1b2620d0c1601780d29a"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "BU40N",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.00",
+    "file": "BU40N_1.00.bin",
+    "sha256": "221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4"
+   },
+   {
+    "rev": "1.01",
+    "file": "BU40N_1.01.bin",
+    "sha256": "103b9da94c91212df6313b150d3cf7e10c6b891a4ab65c49773e891a05f96a2e"
+   },
+   {
+    "rev": "1.02",
+    "file": "BU40N_1.02.bin",
+    "sha256": "6d8b000f7bff9b73d4dac7c48fc92c42714936148d4aa3618b33c45656caee2e"
+   },
+   {
+    "rev": "BN11",
+    "file": "BU40N_BN11.bin",
+    "sha256": "c0b346b0e2a7fc601ac68fe826fba20b1057eecffdc86ce96fe460184073d7f6"
+   },
+   {
+    "rev": "BU10",
+    "file": "BU40N_BU10.bin",
+    "sha256": "14d86e9949d93126d6ec7eaa11eeaba512569f51a8ecfce9d707cb0cec6b5e24"
+   },
+   {
+    "rev": "BW41",
+    "file": "BU40N_BW41.bin",
+    "sha256": "3b9dd9b4c9bd295b1b4cd9d94ce592522588e95a5569f529306b962b337d0e4b"
+   },
+   {
+    "rev": "BW42",
+    "file": "BU40N_BW42.bin",
+    "sha256": "c68cd76b6ca94c077ee7c1fd4ab4ebee06056683158f2259302fd687069e5dca"
+   },
+   {
+    "rev": "FR07",
+    "file": "BU40N_FR07.bin",
+    "sha256": "71fef6641146747077c44e641a95995bdaaaeae114109b7ac1faaad3294e7db1"
+   },
+   {
+    "rev": "U100",
+    "file": "BU40N_U100.bin",
+    "sha256": "de24b0003fb08526382463ff60e8d5565cd92db875750e5695c740dce9775186"
+   },
+   {
+    "rev": "U101",
+    "file": "BU40N_U101.bin",
+    "sha256": "7bf0db2cee29906c0eb96fa7664a819c8a798b639d16ca8525e85d8c829902a7"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "BU50N",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.00",
+    "file": "BU50N_1.00.bin",
+    "sha256": "e98152fe2a7be4e9394522265e159652a065879f2407ef6fa38603f7b8d04720"
+   },
+   {
+    "rev": "BW51",
+    "file": "BU50N_BW51.bin",
+    "sha256": "d1e4d3d704c6f2f8ea200d64ff39e3a1a564769dfa66798039015c615536cf4b"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "CH12NS40",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.01",
+    "file": "CH12NS40_1.01.bin",
+    "sha256": "2e3433314276e0fc7c487404fa761945aec51eca588bb4d0e20d799af05c27d5"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "UH12NS40",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.01",
+    "file": "UH12NS40_1.01.bin",
+    "sha256": "2bb0b5833c835db5a48d089511a1f6da675b7a61cb77576e6cf6b46e2795c60b"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "WH14NS40",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.00",
+    "file": "WH14NS40_1.00.bin",
+    "sha256": "8489a3a5b34ea7ee6046fec6db02be825dee1205646c10ed7d11d4809c45deeb"
+   },
+   {
+    "rev": "1.01",
+    "file": "WH14NS40_1.01.bin",
+    "sha256": "fc3013be680340b6a413a7aa8773cc0bdd2bd1144d3ceb2002983bacfeff8442"
+   },
+   {
+    "rev": "1.02",
+    "file": "WH14NS40_1.02.bin",
+    "sha256": "40eb760e23f100d55e86e9c061c73428d4087ef712294e4dbfcefa3093837a1a"
+   },
+   {
+    "rev": "1.03",
+    "file": "WH14NS40_1.03.bin",
+    "sha256": "44945dad6c56aef1ce2f166f5b391462356e229bbdac3d0aa044196a8d2e3866"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "WH16NS40",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.01",
+    "file": "WH16NS40_1.01.bin",
+    "sha256": "eee6563f68a414eb1dbc9048ab0820d01003320b080988437f762ca23d727e56"
+   },
+   {
+    "rev": "1.02",
+    "file": "WH16NS40_1.02.bin",
+    "sha256": "7f26c559774b87a8da10c42d5ce72b8f1af3aa369d14d64f7d880d2b20b0327a"
+   },
+   {
+    "rev": "1.03",
+    "file": "WH16NS40_1.03.bin",
+    "sha256": "a5c1ee57513553a5f28d8f1ce9de0157f45d8479ea5ea890397dabe389747864"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "WH16NS58",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.V5",
+    "file": "WH16NS58_1.V5.bin",
+    "sha256": "bed2ef00714d163b6484eb42419782fc5b03bb4c92705e4dfde4121d59cb2239"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "WH16NS60",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.00",
+    "file": "WH16NS60_1.00.bin",
+    "sha256": "5e2ec51fb3559623e555aadf280c96268fee6da0acfa7b4000c0d4564e7da073"
+   },
+   {
+    "rev": "1.01",
+    "file": "WH16NS60_1.01.bin",
+    "sha256": "29b7f24c55f43f04c65fab72b2b300cd635cd62a03d13115784d5903b398328a"
+   }
+  ]
+ },
+ {
+  "brand": "LG",
+  "model": "WP50NB40",
+  "ready": false,
+  "versions": [
+   {
+    "rev": "1.01",
+    "file": "WP50NB40_1.01.bin",
+    "sha256": "bea3a823370a985afe37ce6a6aad4b67ef7af15307f622aaac1f76bc7a1dbb5c"
+   }
+  ]
+ }
+]

@@ -34,6 +34,9 @@ export default defineConfig({
     '/fvi-format': '/docs/fvi-format/',
     '/changelog': '/docs/changelog/',
     '/license': '/docs/license/',
+    // firmware-commands was merged into firmware-tools (single consolidated
+    // firmware reference page) — keep the old URL alive.
+    '/docs/firmware-commands': '/docs/firmware-tools/',
   },
   integrations: [
     starlight({
@@ -154,6 +157,7 @@ export default defineConfig({
           items: [
             { label: 'OEM (stock) drives', slug: 'docs/drives-oem' },
             { label: 'Unlocked drives', slug: 'docs/drives-unlocked' },
+            { label: 'Firmware', slug: 'docs/firmware-tools' },
           ],
         },
         {
