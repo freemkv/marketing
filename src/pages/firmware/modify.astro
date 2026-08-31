@@ -56,6 +56,7 @@ const fwCapabilities = [
   { name: 'Region-free', detail: 'Every DVD reads as region-free (DVD-only)', status: 'ready' },
   { name: 'Diagnostic Dump', detail: '64-byte firmware RAM windows', status: 'ready' },
 ];
+import '../../styles/site.css';
 ---
 
 <!doctype html>
@@ -77,7 +78,7 @@ const fwCapabilities = [
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://freemkv.org/freemkv-icon.svg" />
   </head>
-  <body>
+  <body class="page-modify">
     <!-- ============ STICKY NAV ============ -->
     <header class="nav">
       <div class="nav-inner">
@@ -118,10 +119,13 @@ const fwCapabilities = [
       <section class="hero">
         <div class="hero-inner">
           <h1 class="hero-title">freemkv-fw</h1>
+          <div class="hero-badge">
+            <span class="hero-badge-dot" aria-hidden="true"></span>
+            <span>Alpha</span>
+          </div>
           <p class="hero-lead">
             <strong>freemkv-fw</strong> turns any stock MediaTek image into
-            freemkv firmware — re-signed so the drive accepts it — and
-            verifies a file or a live drive.
+            freemkv firmware, re-signed so the drive accepts it.
           </p>
         </div>
       </section>
@@ -169,72 +173,27 @@ const fwCapabilities = [
             ))}
           </div>
 
-          <p class="block-note">
-            Every build sets the <strong>downgrade-enable (DE) byte</strong>, so a
-            freemkv image installs <strong>over any existing firmware version</strong> —
-            newer OEM or MK — instead of being blocked by the drive's anti-rollback.
-            (Proven on hardware: with DE set the drive accepts a lower version; with it
-            cleared the same downgrade is rejected and nothing is written.)
-          </p>
-          <p class="block-note">
-            <code>create</code> auto-detects the model from the image. The
-            drive stays stock until the freemkv command is knocked. See the
-            <a href="/docs/firmware-tools/#command-reference">full command reference</a> for
-            exactly what each capability rides.
-          </p>
-
-          <h2 class="section-title subhead" id="verify">freemkv-fw verify</h2>
-          <p class="section-lead">
-            <code>verify</code> answers one question two ways: point it at a
-            <strong>file</strong> to check the firmware's own integrity, or at
-            a <strong>live drive</strong> (e.g. <code>/dev/sg0</code>) to ask
-            the drive directly and report what it says back.
-          </p>
-
-          <div class="terminal">
-            <div class="terminal-bar" aria-hidden="true">
-              <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
-              <span class="terminal-title">freemkv-fw verify</span>
+          <div class="note-row">
+            <div class="cap-note">
+              <span class="cap-dot cap-dot-ready" aria-hidden="true"></span>
+              <p>
+                Sets the <strong>downgrade-enable (DE) byte</strong>, so freemkv
+                installs over any existing firmware, OEM or 3rd party.
+              </p>
             </div>
-            <pre class="terminal-body"><code><span class="c"># File verify — checks the image's own integrity table</span>
-<span class="p">$</span> freemkv-fw verify BU40N_1.00.freemkv.bin
-<span class="ok">ok</span> — integrity table valid, freemkv capabilities present
-
-<span class="c"># Live verify — asks the drive itself</span>
-<span class="p">$</span> freemkv-fw verify /dev/sg0
-<span class="ok">freemkv detected</span> — drive answered the identity check</code></pre>
+            <div class="cap-note">
+              <span class="cap-dot cap-dot-ready" aria-hidden="true"></span>
+              <p>
+                The drive stays <strong>100% stock</strong> until freemkv
+                commands are enabled, and can be disabled again on the fly.
+              </p>
+            </div>
           </div>
 
-          <p class="section-lead cmd-teaser">
-            Every freemkv-fw command rides a single knocked
-            <code>READ BUFFER</code> — the drive stays 100% OEM until
-            activated, and every toggle is designed to be reversible without
-            reflashing.
-            <a href="/docs/firmware-tools/#command-reference">Firmware command reference →</a>
-          </p>
-
-          <div class="grid dl-grid">
-            {platforms.map((p) => (
-              <article class="card" data-os={p.os}>
-                <h3 class="card-title">{p.name}</h3>
-                <div class="dl-list">
-                  {p.builds.map((b) => (
-                    <a
-                      class="btn btn-primary dl-btn"
-                      href={`${firmwareRepo}/releases/latest/download/${assetFor('fw', b)}`}
-                      download
-                    >
-                      <span class="dl-main">Download <span class="dl-arch">{b.arch}</span></span>
-                      <span class="dl-sub">{b.label}</span>
-                    </a>
-                  ))}
-                </div>
-              </article>
-            ))}
+          <div class="coming-soon" role="status">
+            <span class="coming-soon-dot" aria-hidden="true"></span>
+            <span class="coming-soon-title">Downloads coming soon</span>
           </div>
-          <p class="dl-note">
-            <a href={firmwareReleases}>All releases on GitHub →</a>
-          </p>
 
           <div class="next-step">
             <a class="next-step-link" href="/firmware/flash/">
@@ -308,429 +267,5 @@ const fwCapabilities = [
       })();
     </script>
 
-    <style>
-      :root {
-        --teal: #0d9488;
-        --teal-dark: #0f766e;
-        --teal-darker: #115e59;
-        --teal-tint: #f0fdfa;
-        --ink: #0f172a;
-        --slate: #475569;
-        --muted: #64748b;
-        --line: #e2e8f0;
-        --bg: #ffffff;
-        --bg-soft: #f8fafc;
-        --radius: 14px;
-        --maxw: 1080px;
-        --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
-          Arial, sans-serif;
-        --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-      }
-
-      * { box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
-      body {
-        margin: 0;
-        font-family: var(--font);
-        color: var(--ink);
-        background: var(--bg);
-        line-height: 1.6;
-        -webkit-font-smoothing: antialiased;
-      }
-      a { color: var(--teal-dark); text-decoration: none; }
-      a:hover { color: var(--teal-darker); }
-      code {
-        font-family: var(--mono);
-        font-size: 0.9em;
-        background: var(--teal-tint);
-        color: var(--teal-darker);
-        padding: 0.1em 0.35em;
-        border-radius: 5px;
-      }
-
-      .section-inner {
-        max-width: var(--maxw);
-        margin: 0 auto;
-        padding: 0 clamp(1rem, 4vw, 2rem);
-      }
-      .section-title {
-        font-size: clamp(1.6rem, 4vw, 2.25rem);
-        font-weight: 750;
-        letter-spacing: -0.02em;
-        margin: 0 0 0.5rem;
-        text-align: center;
-      }
-      .section-title.subhead {
-        font-size: clamp(1.15rem, 2.6vw, 1.4rem);
-        margin-top: 2.75rem;
-        scroll-margin-top: 5.5rem;
-      }
-      .section-lead {
-        text-align: center;
-        color: var(--muted);
-        max-width: 56ch;
-        margin: 0 auto 2.5rem;
-        font-size: clamp(1rem, 2.5vw, 1.1rem);
-      }
-
-      /* ---------- NAV ---------- */
-      .nav {
-        position: sticky;
-        top: 0;
-        z-index: 50;
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: saturate(180%) blur(10px);
-        border-bottom: 1px solid var(--line);
-      }
-      .nav-inner {
-        max-width: var(--maxw);
-        margin: 0 auto;
-        padding: 0.75rem clamp(1rem, 4vw, 2rem);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-      .brand {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.55rem;
-        font-weight: 750;
-        font-size: 1.15rem;
-        color: var(--ink);
-        letter-spacing: -0.01em;
-      }
-      .brand img { display: block; }
-      .nav-links {
-        display: flex;
-        gap: clamp(0.75rem, 3vw, 1.75rem);
-        align-items: center;
-        flex-wrap: wrap;
-      }
-      .nav-links a {
-        color: var(--slate);
-        font-weight: 550;
-        font-size: 0.95rem;
-      }
-      .nav-links a:hover { color: var(--teal-dark); }
-      .nav-links a[aria-current="page"] { color: var(--teal-dark); font-weight: 650; }
-      .nav-links a.gh-stars {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4em;
-        font-variant-numeric: tabular-nums;
-      }
-      .gh-stars-num { line-height: 1; white-space: nowrap; }
-      .gh-stars-logo { width: 1.2em; height: 1.2em; }
-      .nav-links a.nav-discord {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4em;
-      }
-      .nav-discord-logo { width: 1.15em; height: 1.15em; }
-
-      /* ---------- BUTTONS ---------- */
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.7rem 1.3rem;
-        border-radius: 10px;
-        font-weight: 650;
-        font-size: 0.98rem;
-        border: 1.5px solid transparent;
-        transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease;
-        white-space: nowrap;
-        max-width: 100%;
-      }
-      .btn:active { transform: translateY(1px); }
-      .btn-primary {
-        background: var(--teal);
-        color: #fff;
-        box-shadow: 0 6px 18px -8px rgba(13, 148, 136, 0.7);
-      }
-      .btn-primary:hover { background: var(--teal-dark); color: #fff; }
-
-      /* ---------- HERO ---------- */
-      .hero {
-        background:
-          radial-gradient(60% 120% at 50% -10%, rgba(13, 148, 136, 0.1), transparent 60%),
-          var(--bg-soft);
-        border-bottom: 1px solid var(--line);
-        padding: clamp(2.5rem, 8vw, 4.5rem) 0 clamp(2.25rem, 6vw, 3.5rem);
-      }
-      .hero-inner {
-        max-width: 760px;
-        margin: 0 auto;
-        padding: 0 clamp(1rem, 4vw, 2rem);
-        text-align: center;
-      }
-      .hero-title {
-        font-size: clamp(2rem, 7vw, 3rem);
-        line-height: 1.08;
-        font-weight: 800;
-        letter-spacing: -0.03em;
-        margin: 0 0 0.75rem;
-      }
-      .hero-lead {
-        margin: 1.25rem auto 0;
-        max-width: 56ch;
-        color: var(--slate);
-        font-size: clamp(1rem, 2.5vw, 1.12rem);
-      }
-
-      /* ---------- CONTENT BLOCKS ---------- */
-      .block { padding: clamp(2.5rem, 7vw, 4rem) 0; }
-      .kicker {
-        display: block;
-        text-align: center;
-        color: var(--teal-dark);
-        font-weight: 750;
-        font-size: 0.8rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        margin-bottom: 0.6rem;
-      }
-      .block-note {
-        max-width: 640px;
-        margin: 1.5rem auto 0;
-        text-align: center;
-        color: var(--muted);
-        font-size: 0.92rem;
-      }
-
-      /* ---------- DOWNLOAD CARDS ---------- */
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: clamp(1rem, 3vw, 1.5rem);
-      }
-      .dl-grid { margin-top: 2rem; }
-      .card {
-        background: #fff;
-        border: 1px solid var(--line);
-        border-radius: var(--radius);
-        padding: 1.75rem 1.5rem;
-        text-align: center;
-        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-      }
-      .card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 14px 34px -18px rgba(15, 23, 42, 0.25);
-        border-color: #cbd5e1;
-      }
-      .card-title {
-        font-size: 1.3rem;
-        margin: 0 0 1.1rem;
-        letter-spacing: -0.01em;
-      }
-      .dl-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.6rem;
-      }
-      .dl-btn {
-        flex-direction: column;
-        gap: 0.1rem;
-        padding: 0.7rem 1rem;
-        width: 100%;
-        line-height: 1.3;
-        white-space: normal;
-      }
-      .dl-main { font-size: 1rem; }
-      .dl-arch {
-        font-family: var(--mono);
-        font-size: 0.85em;
-        opacity: 0.95;
-      }
-      .dl-sub {
-        font-size: 0.78rem;
-        font-weight: 500;
-        opacity: 0.85;
-        white-space: normal;
-      }
-      .dl-note {
-        text-align: center;
-        color: var(--muted);
-        font-size: 0.9rem;
-        margin: 2rem auto 0;
-        max-width: 60ch;
-      }
-      .dl-note a { margin-left: 0.4rem; font-weight: 600; }
-
-      /* ---------- NEXT-STEP LINK (Find → Modify → Flash journey) ---------- */
-      .next-step {
-        margin: 2.5rem auto 0;
-        text-align: center;
-      }
-      .next-step-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        padding: 0.7rem 1.4rem;
-        border: 1.5px solid var(--line);
-        border-radius: 999px;
-        font-weight: 650;
-        font-size: 1rem;
-        color: var(--teal-dark);
-        text-decoration: none;
-        transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
-      }
-      .next-step-link span { transition: transform 0.15s ease; }
-      .next-step-link:hover,
-      .next-step-link:focus-visible {
-        color: var(--teal-darker);
-        border-color: var(--teal);
-        background: var(--teal-tint);
-      }
-      .next-step-link:hover span,
-      .next-step-link:focus-visible span { transform: translateX(3px); }
-
-      /* ---------- FREEMKV-FW CAPABILITY GRID ---------- */
-      .cap-grid {
-        margin: 2rem auto 1.5rem;
-        max-width: 900px;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      }
-      .cap-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 0.75rem;
-        padding: 1rem 1.1rem;
-        background: var(--bg-soft);
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        text-align: left;
-      }
-      .cap-dot {
-        flex: none;
-        width: 0.6rem;
-        height: 0.6rem;
-        margin-top: 0.35rem;
-        border-radius: 999px;
-      }
-      .cap-dot-ready { background: var(--teal); }
-      .cap-dot-wip { background: #f59e0b; }
-      .cap-body { display: flex; flex-direction: column; gap: 0.15rem; }
-      .cap-name {
-        font-weight: 700;
-        color: var(--ink);
-        font-size: 0.95rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-      .cap-wip {
-        font-size: 0.65rem;
-        font-weight: 750;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        color: #92400e;
-        background: #fef3c7;
-        border: 1px solid #fde68a;
-        border-radius: 999px;
-        padding: 0.05rem 0.5rem;
-      }
-      .cap-detail { color: var(--muted); font-size: 0.85rem; }
-
-      /* ---------- COMMAND TEASER ---------- */
-      .cmd-teaser a {
-        color: var(--teal-darker);
-        font-weight: 600;
-        white-space: nowrap;
-      }
-
-      /* ---------- TERMINAL ---------- */
-      .terminal {
-        max-width: 720px;
-        margin: 0 auto;
-        background: #0b1220;
-        border-radius: var(--radius);
-        overflow: hidden;
-        box-shadow: 0 24px 60px -28px rgba(15, 23, 42, 0.55);
-        border: 1px solid #1e293b;
-        text-align: left;
-      }
-      .terminal-bar {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.6rem 0.9rem;
-        background: #111a2e;
-        border-bottom: 1px solid #1e293b;
-      }
-      .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
-      .dot-r { background: #ff5f56; }
-      .dot-y { background: #ffbd2e; }
-      .dot-g { background: #27c93f; }
-      .terminal-title {
-        margin-left: 0.6rem;
-        color: #64748b;
-        font-size: 0.78rem;
-        font-family: var(--mono);
-      }
-      .terminal-body {
-        margin: 0;
-        padding: 1.25rem;
-        overflow-x: auto;
-        color: #e2e8f0;
-        font-family: var(--mono);
-        font-size: clamp(0.78rem, 2.2vw, 0.92rem);
-        line-height: 1.7;
-        text-align: left;
-      }
-      .terminal-body code { background: none; color: inherit; padding: 0; }
-      .terminal-body .c { color: #64748b; }
-      .terminal-body .p { color: #2dd4bf; }
-      .terminal-body .ok { color: #4ade80; font-weight: 600; }
-      .terminal-body .fail { color: #fb923c; font-weight: 600; }
-
-      /* ---------- FOOTER ---------- */
-      .footer {
-        background: var(--ink);
-        color: #cbd5e1;
-        padding: 2.5rem 0 1.75rem;
-      }
-      .footer-inner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-      .footer-brand {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-weight: 700;
-        color: #fff;
-      }
-      .footer-links {
-        display: flex;
-        gap: clamp(0.75rem, 3vw, 1.5rem);
-        flex-wrap: wrap;
-      }
-      .footer-links a { color: #cbd5e1; font-size: 0.92rem; }
-      .footer-links a:hover { color: #5eead4; }
-      .footer-copy {
-        max-width: var(--maxw);
-        margin: 1.75rem auto 0;
-        padding: 1.25rem clamp(1rem, 4vw, 2rem) 0;
-        border-top: 1px solid #1e293b;
-        color: #64748b;
-        font-size: 0.82rem;
-        text-align: center;
-      }
-
-      /* ---------- RESPONSIVE ---------- */
-      @media (max-width: 640px) {
-        .nav-inner { justify-content: center; }
-        .footer-inner { justify-content: center; text-align: center; }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        * { scroll-behavior: auto; transition: none !important; }
-      }
-    </style>
   </body>
 </html>
