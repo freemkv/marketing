@@ -108,8 +108,8 @@ is generic and can also identify drives running other unlock firmwares:
 | Firmware | Support |
 |---|---|
 | **[FreeMKV](#command-reference)** | Fully supported — freemkv builds, verifies, and identifies it |
-| **MK** (MK) | Supported |
-| **OmniDrive** | Untested — MK (Partial) |
+| **MK** | Partial |
+| **OmniDrive** | Untested |
 
 See [Unlocked drives](/docs/drives-unlocked/) for which physical drive families these firmwares
 target.
