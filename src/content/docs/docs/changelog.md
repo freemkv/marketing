@@ -13,6 +13,16 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases).
 
+## 1.6.14
+
+<small>2026-08-31</small>
+
+**Fixes**
+
+- The web dashboard no longer briefly hangs while scanning a large library.
+
+_This release aligns all components to 1.6.14._
+
 ## 1.6.13
 
 <small>2026-08-28</small>
