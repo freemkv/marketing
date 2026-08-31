@@ -210,8 +210,8 @@ all MediaTek **MT1959** OEM images. Once the patches are applied, the image's in
 **Downgrade-enable — flash over any existing version.** By default a drive refuses to accept an
 older firmware than the one it's running (anti-rollback). freemkv sets the DE byte
 (`0x1EC056 = 0xDE`) in every image it builds, which flips that gate off — so a freemkv image
-installs cleanly **over any existing firmware version**, whether that's a newer OEM release or a
-MK build. This is proven on hardware: with the DE byte set the drive accepts a lower version;
+installs cleanly **over any existing firmware version**. This is proven on hardware: with the DE
+byte set the drive accepts a lower version;
 with it cleared the same downgrade is rejected (`ILLEGAL REQUEST / INVALID FIELD IN CDB`) and
 nothing is written.
 
