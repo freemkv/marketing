@@ -5,6 +5,11 @@ import starlightLlmsTxt from 'starlight-llms-txt';
 
 export default defineConfig({
   site: 'https://freemkv.org',
+  // Local dev only: force file-watch polling. In this environment fsevents
+  // don't fire for editor writes, so HMR misses changes without polling.
+  vite: {
+    server: { watch: { usePolling: true, interval: 200 } },
+  },
   // The documentation moved from the site root to `/docs/…` (the marketing
   // pages `/` and `/download/` stay at the root). These static redirects keep
   // every previously-published doc URL alive — GitHub Pages has no server-side

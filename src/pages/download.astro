@@ -40,7 +40,10 @@ const allReleases = `${cliRepo}/releases`;
 // ── Desktop app ────────────────────────────────────────────────────────────
 // Each platform ships the windowed image; the CLI is a separate download.
 //   macOS   → .dmg per architecture, containing freemkv.app   (release.yml `build`)
+//             — NOT offered as a direct download button here; see `gui: 'brew'`
+//             below and the guiPlatforms rendering.
 //   Windows → .zip containing freemkv-gui.exe                 (release.yml `build-windows`)
+//             — direct download; unsigned .exe is fine on Windows.
 //
 // ONE SWITCH: `windowsAppShipping`. The Windows card is a structural peer of
 // macOS either way (same grid, same card markup, real asset names below); this
@@ -59,11 +62,19 @@ const allReleases = `${cliRepo}/releases`;
 // if the console binary appears there instead, so this cannot silently regress.
 const windowsAppShipping = true;
 
+// macOS GUI distribution, matching the rest of freemkv (see flash.astro /
+// modify.astro): the .dmg is ad-hoc-signed, not notarized, so a browser
+// download of it is Gatekeeper-blocked on first launch. Homebrew's cask
+// strips the quarantine attribute after install, so it is the ONLY GUI
+// download path offered here — no direct ".dmg download" button. (The .dmg
+// itself still exists as a release asset for people who want Apple's
+// Gatekeeper prompt instead of trusting this tap; it's reachable from "All
+// desktop releases on GitHub" below, just not a primary button.)
 const guiPlatforms = [
   {
     name: 'Windows',
     os: 'windows',
-    soon: !windowsAppShipping,
+    gui: windowsAppShipping ? 'download' : 'soon',
     builds: [
       { key: 'windows-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'freemkv-x86_64-windows.zip' },
     ],
@@ -71,6 +82,7 @@ const guiPlatforms = [
   {
     name: 'macOS',
     os: 'macos',
+    gui: 'brew',
     builds: [
       { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon', file: 'freemkv-aarch64-macos.dmg' },
       { key: 'macos-x64', arch: 'x86_64', label: 'Intel', file: 'freemkv-x86_64-macos.dmg' },
@@ -286,9 +298,9 @@ import '../styles/site.css';
 
           <div class="grid grid-gui">
             {guiPlatforms.map((p) => (
-              <article class={p.soon ? 'card card-soon' : 'card'} data-os={p.soon ? undefined : p.os} data-platform-card>
+              <article class={p.gui === 'soon' ? 'card card-soon' : 'card'} data-os={p.gui === 'soon' ? undefined : p.os} data-platform-card>
                 <h3 class="card-title">{p.name}</h3>
-                {p.soon ? (
+                {p.gui === 'soon' ? (
                   <div class="dl-list">
                     <span class="dl-soon-badge">In development</span>
                     <p class="dl-soon-note">
@@ -297,6 +309,13 @@ import '../styles/site.css';
                       works today — see the
                       <a href="/docs/platforms-windows/">Windows guide</a>.
                     </p>
+                  </div>
+                ) : p.gui === 'brew' ? (
+                  <div class="dl-list">
+                    <div class="dl-brew">
+                      <span class="dl-sub">Install with Homebrew — it just opens, nothing to click through:</span>
+                      <pre class="dl-brew-cmd"><code>brew install --cask freemkv/tap/freemkv-app</code></pre>
+                    </div>
                   </div>
                 ) : (
                   <div class="dl-list">
@@ -317,20 +336,13 @@ import '../styles/site.css';
               </article>
             ))}
           </div>
-          <p class="dl-note dl-brew">
-            <strong>macOS — easiest:</strong> install with Homebrew and it just opens,
-            with nothing to click through.
-            <code class="dl-cmd">brew install --cask freemkv/tap/freemkv-app</code>
-          </p>
           <p class="dl-note">
-            Downloaded a <code>.dmg</code> or <code>.exe</code>? Neither is signed yet, so
-            the first launch is blocked once —
-            <a href="/docs/platforms-macos/#apple-could-not-verify-freemkv-on-first-launch">macOS</a>{windowsAppShipping && (
-              <Fragment>{' · '}<a href="/docs/platforms-windows/">Windows</a></Fragment>
-            )}
+            Downloaded a <code>.exe</code>? It isn't signed yet, so the first launch
+            is blocked once — <a href="/docs/platforms-windows/">here is why and how to allow it</a>.
           </p>
           <p class="dl-note dl-note-sub">
-            Prefer a <code>.zip</code> of the <code>.app</code>, or another version?
+            Want the raw <code>.dmg</code> instead of Homebrew (Apple's own Gatekeeper
+            prompt instead of trusting this tap), or another version?
             <a href={`${guiRepo}/releases`}>All desktop releases on GitHub →</a>
           </p>
         </div>

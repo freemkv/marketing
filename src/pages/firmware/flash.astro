@@ -14,10 +14,21 @@ const github = 'https://github.com/freemkv';
 const firmwareRepo = 'https://github.com/freemkv/freemkv-firmware';
 const firmwareReleases = `${firmwareRepo}/releases`;
 
+// GUI distribution per platform, matching the rest of freemkv:
+//   windows -> direct download of the (unsigned) .exe zip
+//   macos   -> Homebrew cask (ad-hoc signed .app in a .dmg; the cask strips
+//              quarantine) — a browser download would be Gatekeeper-blocked
+//   linux   -> no GUI at all (we only ship a Linux CLI, like every freemkv app)
+// The CLI is a direct download on all three.
+// One cask ships BOTH firmware GUIs (freemkv-flash-gui + freemkv-fw-gui) — they
+// live in the same repo and are versioned together. The main freemkv app stays
+// its own cask (separate repo/version).
+const guiCask = 'freemkv-firmware';
 const platforms = [
   {
     name: 'Windows',
     os: 'windows',
+    gui: 'download',
     builds: [
       { arch: 'x86_64', label: 'Intel / AMD 64-bit', slug: 'windows-x86_64', ext: 'zip' },
     ],
@@ -25,6 +36,7 @@ const platforms = [
   {
     name: 'macOS',
     os: 'macos',
+    gui: 'brew',
     builds: [
       { arch: 'ARM64', label: 'Apple Silicon', slug: 'macos-arm64', ext: 'tar.gz' },
       { arch: 'x86_64', label: 'Intel', slug: 'macos-x86_64', ext: 'tar.gz' },
@@ -33,6 +45,7 @@ const platforms = [
   {
     name: 'Linux',
     os: 'linux',
+    gui: false,
     builds: [
       { arch: 'x86_64', label: 'Intel / AMD 64-bit', slug: 'linux-x86_64', ext: 'tar.gz' },
     ],
@@ -157,13 +170,15 @@ import '../../styles/site.css';
           <div class="notice">
             <h2 class="notice-title">Beta: <code>info</code> and <code>dump</code> are the safe, recommended commands</h2>
             <p>
-              <code>freemkv-flash</code> is tested on a single model (LG BU40N).
+              We have run every <code>freemkv-flash</code> command — including
+              <code>flash</code> — on the LG BU40N with no problems.
               <br />
               <code>info</code> and <code>dump</code> are read-only and safe to
               run on any supported drive today.
               <br />
-              <code>flash</code> is experimental. It can permanently brick a
-              drive if interrupted or given the wrong image.
+              Caution using <code>flash</code> on anything other than a BU40N: it
+              can permanently brick a drive if interrupted or given the wrong
+              image.
               <br />
               It backs up before writing and reads back after, but always keep
               your own dump too.
@@ -176,15 +191,33 @@ import '../../styles/site.css';
                 <h3 class="card-title">{p.name}</h3>
                 <div class="dl-list">
                   {p.builds.map((b) => (
-                    <a
-                      class="btn btn-primary dl-btn"
-                      href={`${firmwareRepo}/releases/latest/download/${assetFor('flash', b)}`}
-                      download
-                    >
-                      <span class="dl-main">Download <span class="dl-arch">{b.arch}</span></span>
-                      <span class="dl-sub">{b.label}</span>
-                    </a>
+                    <>
+                      <a
+                        class="btn btn-primary dl-btn"
+                        href={`${firmwareRepo}/releases/latest/download/${assetFor('flash', b)}`}
+                        download
+                      >
+                        <span class="dl-main">Download <span class="dl-arch">{b.arch}</span> · CLI</span>
+                        <span class="dl-sub">{b.label} — terminal</span>
+                      </a>
+                      {p.gui === 'download' && (
+                        <a
+                          class="btn btn-secondary dl-btn"
+                          href={`${firmwareRepo}/releases/latest/download/${assetFor('flash-gui', b)}`}
+                          download
+                        >
+                          <span class="dl-main">Download <span class="dl-arch">{b.arch}</span> · GUI</span>
+                          <span class="dl-sub">{b.label} — app</span>
+                        </a>
+                      )}
+                    </>
                   ))}
+                  {p.gui === 'brew' && (
+                    <div class="dl-brew">
+                      <span class="dl-sub">GUI app — install with Homebrew (flash + modify):</span>
+                      <pre class="dl-brew-cmd"><code>brew install --cask freemkv/tap/{guiCask}</code></pre>
+                    </div>
+                  )}
                 </div>
               </article>
             ))}

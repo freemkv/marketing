@@ -18,10 +18,20 @@ const firmwareReleases = `${firmwareRepo}/releases`;
 // Asset names MUST match what the freemkv-firmware release workflow attaches
 // (release.yml): `freemkv-<tool>-<os>-<arch>.<ext>` — tar.gz on Linux/macOS,
 // zip on Windows.
+// GUI distribution per platform, matching the rest of freemkv:
+//   windows -> direct download of the (unsigned) .exe zip
+//   macos   -> Homebrew cask (ad-hoc signed .app in a .dmg; the cask strips
+//              quarantine) — a browser download would be Gatekeeper-blocked
+//   linux   -> no GUI at all (we only ship a Linux CLI, like every freemkv app)
+// The CLI is a direct download on all three.
+// One cask ships BOTH firmware GUIs (freemkv-flash-gui + freemkv-fw-gui) — they
+// live in the same repo and are versioned together.
+const guiCask = 'freemkv-firmware';
 const platforms = [
   {
     name: 'Windows',
     os: 'windows',
+    gui: 'download',
     builds: [
       { arch: 'x86_64', label: 'Intel / AMD 64-bit', slug: 'windows-x86_64', ext: 'zip' },
     ],
@@ -29,6 +39,7 @@ const platforms = [
   {
     name: 'macOS',
     os: 'macos',
+    gui: 'brew',
     builds: [
       { arch: 'ARM64', label: 'Apple Silicon', slug: 'macos-arm64', ext: 'tar.gz' },
       { arch: 'x86_64', label: 'Intel', slug: 'macos-x86_64', ext: 'tar.gz' },
@@ -37,6 +48,7 @@ const platforms = [
   {
     name: 'Linux',
     os: 'linux',
+    gui: false,
     builds: [
       { arch: 'x86_64', label: 'Intel / AMD 64-bit', slug: 'linux-x86_64', ext: 'tar.gz' },
     ],
@@ -51,9 +63,8 @@ const assetFor = (tool, b) => `freemkv-${tool}-${b.slug}.${b.ext}`;
 const fwCapabilities = [
   { name: 'Identity', detail: 'Answers the "are you freemkv?" ping', status: 'ready' },
   { name: 'Speed', detail: 'Settable read-speed ceiling — lifts the riplock cap for full-rate ripping', status: 'ready' },
-  { name: 'Volume ID (VID)', detail: 'Returns the disc AACS Volume ID in plaintext in the command response', status: 'ready' },
-  { name: 'Bus Encryption', detail: 'Removes AACS in-transit (bus) encryption so read data comes back in the clear', status: 'ready' },
   { name: 'Region-free', detail: 'Every DVD reads as region-free (DVD-only)', status: 'ready' },
+  { name: 'Raw Read', detail: 'Approves the host cert so the drive drops AACS drive↔host auth — it releases the Volume ID to a normal READ DISC STRUCTURE and, with no bus key, returns sectors unencrypted on the bus (content stays AACS-encrypted at rest; the host applies title keys)', status: 'ready' },
   { name: 'Diagnostic Dump', detail: '64-byte firmware RAM windows', status: 'ready' },
 ];
 import '../../styles/site.css';
@@ -121,7 +132,7 @@ import '../../styles/site.css';
           <h1 class="hero-title">freemkv-fw</h1>
           <div class="hero-badge">
             <span class="hero-badge-dot" aria-hidden="true"></span>
-            <span>Alpha</span>
+            <span>Beta</span>
           </div>
           <p class="hero-lead">
             <strong>freemkv-fw</strong> turns any stock MediaTek image into
@@ -148,9 +159,8 @@ import '../../styles/site.css';
 
   Identity ................. <span class="ok">added</span>
   Speed .................... <span class="ok">added</span>
-  Volume ID (VID) .......... <span class="ok">added</span>
-  Bus Encryption ........... <span class="ok">added</span>
   Region-free .............. <span class="ok">added</span>
+  Raw Read ................. <span class="ok">added</span>
   Diagnostic Dump .......... <span class="ok">added</span>
 
 <span class="c">Downgrade-enable (DE) byte ... set (flashes over any version)</span>
@@ -176,24 +186,67 @@ import '../../styles/site.css';
           <div class="note-row">
             <div class="cap-note">
               <span class="cap-dot cap-dot-ready" aria-hidden="true"></span>
-              <p>
-                Sets the <strong>downgrade-enable (DE) byte</strong>, so freemkv
-                installs over any existing firmware, OEM or 3rd party.
-              </p>
+              <div class="cap-body">
+                <span class="cap-name">Downgrade Enable</span>
+                <span class="cap-detail">
+                  Sets the downgrade-enable (DE) byte, so freemkv installs over
+                  any existing firmware, OEM or 3rd party.
+                </span>
+              </div>
             </div>
             <div class="cap-note">
               <span class="cap-dot cap-dot-ready" aria-hidden="true"></span>
-              <p>
-                The drive stays <strong>100% stock</strong> until freemkv
-                commands are enabled, and can be disabled again on the fly.
-              </p>
+              <div class="cap-body">
+                <span class="cap-name">Stays Stock</span>
+                <span class="cap-detail">
+                  The drive stays 100% stock until freemkv commands are enabled,
+                  and can be disabled again on the fly.
+                </span>
+              </div>
             </div>
           </div>
 
-          <div class="coming-soon" role="status">
-            <span class="coming-soon-dot" aria-hidden="true"></span>
-            <span class="coming-soon-title">Downloads coming soon</span>
+          <div class="grid dl-grid">
+            {platforms.map((p) => (
+              <article class="card" data-os={p.os}>
+                <h3 class="card-title">{p.name}</h3>
+                <div class="dl-list">
+                  {p.builds.map((b) => (
+                    <>
+                      <a
+                        class="btn btn-primary dl-btn"
+                        href={`${firmwareRepo}/releases/latest/download/${assetFor('fw', b)}`}
+                        download
+                      >
+                        <span class="dl-main">Download <span class="dl-arch">{b.arch}</span> · CLI</span>
+                        <span class="dl-sub">{b.label} — terminal</span>
+                      </a>
+                      {p.gui === 'download' && (
+                        <a
+                          class="btn btn-secondary dl-btn"
+                          href={`${firmwareRepo}/releases/latest/download/${assetFor('fw-gui', b)}`}
+                          download
+                        >
+                          <span class="dl-main">Download <span class="dl-arch">{b.arch}</span> · GUI</span>
+                          <span class="dl-sub">{b.label} — app</span>
+                        </a>
+                      )}
+                    </>
+                  ))}
+                  {p.gui === 'brew' && (
+                    <div class="dl-brew">
+                      <span class="dl-sub">GUI app — install with Homebrew (flash + modify):</span>
+                      <pre class="dl-brew-cmd"><code>brew install --cask freemkv/tap/{guiCask}</code></pre>
+                    </div>
+                  )}
+                </div>
+              </article>
+            ))}
           </div>
+          <p class="dl-note">
+            <a href={firmwareReleases}>All releases on GitHub →</a>
+            <a href={firmwareRepo}>View on GitHub →</a>
+          </p>
 
           <div class="next-step">
             <a class="next-step-link" href="/firmware/flash/">

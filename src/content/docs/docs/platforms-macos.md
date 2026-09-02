@@ -53,11 +53,17 @@ sets the quarantine flag that triggers the check.
 
 ## The desktop app
 
-Or download the macOS **`.dmg`** (Apple Silicon or Intel) from the
-**[Download](/download/)** page, open it, and drag **`freemkv.app`** out —
-to Applications, or just your Downloads folder; anywhere works, there's no
-install step. Double-click it, then pick a disc or a disc image, tick the titles
-and tracks you want, choose a format, and press **Rip**.
+`brew install --cask freemkv/tap/freemkv-app` (above) is the recommended way to
+get the app — the cask strips the quarantine flag after install, so it opens
+immediately with nothing to click through.
+
+If you'd rather have Apple's own Gatekeeper prompt than trust this tap, the
+**`.dmg`** (Apple Silicon or Intel) is still on the
+**[All desktop releases](https://github.com/freemkv/freemkv/releases)** page linked from
+[Download](/download/). Open it and drag **`freemkv.app`** out — to
+Applications, or just your Downloads folder; anywhere works, there's no install
+step. Double-click it, then pick a disc or a disc image, tick the titles and
+tracks you want, choose a format, and press **Rip**.
 
 ![The freemkv desktop app on macOS with a disc image loaded — per-title and per-track selection, output format, and a live log.](/freemkv-gui-macos.png)
 

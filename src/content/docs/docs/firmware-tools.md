@@ -30,9 +30,8 @@ below for exactly what each capability rides on the wire.
 |---|---|---|
 | Identity | Answers the "are you freemkv?" ping | ready |
 | Speed | Sets the read-speed / riplock ceiling — a settable cap, not just on/off | ready |
-| Volume ID (VID) | Returns the disc's AACS Volume ID in plaintext in the command response | ready |
-| Bus Encryption | Removes AACS in-transit (bus) encryption so read data comes back in the clear (content stays AACS-at-rest encrypted; the host applies title keys) | ready |
 | Region-free | Every DVD reads as region-free (DVD-only) | ready |
+| Raw Read | Approves the host certificate so the drive drops AACS drive↔host authentication. The drive then releases the Volume ID (and the other AACS-gated values) to a normal `READ DISC STRUCTURE`, and because no AKE handshake ran there's no bus key, so reads come back exactly as they sit on the disc — bus encryption is off for free (content stays AACS-at-rest encrypted; the host applies title keys) | ready |
 | Diagnostic Dump | Reads 64-byte windows of firmware RAM | ready (diagnostic use) |
 
 These map 1:1 to the sub-functions in the [command reference](#command-reference) below. Every
@@ -158,14 +157,13 @@ about a bare `READ BUFFER` command changes.
 |---|---|---|---|
 | `3C 0E C0 DE 01` | Identity | `0x01` | ready |
 | `3C 0E C0 DE 02 <cap>` | Speed | `0x02` | ready |
-| `3C 0E C0 DE 03 01/00` | Volume ID (VID) | `0x03` | ready |
-| `3C 0E C0 DE 04 01/00` | Bus Encryption | `0x04` | ready |
-| `3C 0E C0 DE 05 01/00` | Region-free | `0x05` | ready |
-| `3C 0E C0 DE 06`–`08` | *(reserved)* | `0x06`–`0x08` | reserved (future capabilities) |
+| `3C 0E C0 DE 03 01/00` | Region-free | `0x03` | ready |
+| `3C 0E C0 DE 04 01/00` | Raw Read | `0x04` | ready |
+| `3C 0E C0 DE 05`–`08` | *(reserved)* | `0x05`–`0x08` | reserved (future capabilities) |
 | `3C 0E C0 DE 09 <addr32>` | Diagnostic Dump | `0x09` | ready (diagnostic use) |
 
 **Toggle polarity is uniform:** state `00` = OEM behavior, state `01` = patched/enabled. This
-holds for every toggle (`0x03`, `0x04`, `0x05`), with two documented exceptions — **Speed**
+holds for every toggle (`0x03`, `0x04`), with two documented exceptions — **Speed**
 (`0x02`), where the state byte **is** the read-speed cap value, and the **Diagnostic Dump**
 (`0x09`), where `cdb[5..9]` carry a 32-bit address. With any toggle set to `00` (or Speed set to
 `00` = OEM), the drive behaves byte-identically to stock OEM firmware — that OEM-compatibility
@@ -180,18 +178,18 @@ guarantee is the point of the design.
   the cap value** — this is a settable cap, not a simple on/off: `00` = OEM (the stock speed
   ramp), `01`–`FF` set the ceiling to that value, and `FF` = max / uncapped. Use it to lift the
   playback-speed riplock so discs read back at the drive's full rate for ripping.
-- **Volume ID (VID) (`0x03`, toggle).** State `01` reads the disc's AACS Volume ID in plaintext;
-  state `00` = OEM. Returns the `freemkv` magic followed by the 16-byte VID. Needs a disc loaded,
-  and because the command returns data the host supplies an allocation length for the VID
-  response.
-- **Bus Encryption (`0x04`, toggle).** State `01` removes AACS in-transit (bus) encryption so
-  read data comes back in the clear over the SCSI bus; state `00` = OEM. Content stays
-  AACS-at-rest encrypted — the host still applies the title keys — this only strips the
-  drive-to-host transport layer.
-- **Region-free (`0x05`, toggle).** State `01` makes every DVD read as region-free (RPC-free),
+- **Region-free (`0x03`, toggle).** State `01` makes every DVD read as region-free (RPC-free),
   regardless of the disc's region code or the drive's region setting; state `00` = OEM.
   **DVD-only** — it does not affect Blu-ray or UHD, which aren't RPC-region-locked.
-- **Sub-functions `0x06`–`0x08` — reserved.** Held reserved for future capabilities and wire-ABI
+- **Raw Read (`0x04`, toggle).** State `01` approves the host certificate, so the drive stops
+  enforcing AACS drive↔host authentication; state `00` = OEM. One unlock, two consequences: the
+  drive **releases the Volume ID** (and the other AACS-gated values) to a normal `READ DISC
+  STRUCTURE` request, and because no AKE handshake ever ran there is **no bus key**, so `READ(10)`
+  returns sectors exactly as they sit on the disc — **bus encryption is off for free**. This only
+  removes the drive's transport / access-control policing; sectors are still AACS-encrypted at
+  rest and the host applies the title keys. VID release and bus-encryption-off are not separate
+  toggles — they both follow from this one command.
+- **Sub-functions `0x05`–`0x08` — reserved.** Held reserved for future capabilities and wire-ABI
   stability; not advertised as capabilities today. These slots will not be reused or renumbered.
 - **Diagnostic Dump (`0x09`, read-only).** Returns a fixed 64-byte window read from the 32-bit
   address packed big-endian across `cdb[5..9]` (`cdb[5]` = address bits 31:24 … `cdb[8]` =
@@ -221,11 +219,10 @@ Responses are **not** uniform — read each command's response by its own rule:
 
 - **Identity (`0x01`)** returns the ASCII `freemkv` magic followed by a 1-byte version. This is
   the command to use to confirm you're talking to freemkv-flashed firmware.
-- **Volume ID (VID) (`0x03`)** with state `01` returns the `freemkv` magic followed by the
-  16-byte AACS Volume ID; state `00` reverts to OEM. Supply an allocation length large enough for
-  the response.
 - **Diagnostic Dump (`0x09`)** returns exactly **64 raw bytes** from the requested address.
-- **Toggles (`0x02`, `0x04`, `0x05`)** return a 1-byte status (`01` = ok, `00` = fail).
+- **Toggles (`0x02`, `0x03`, `0x04`)** return a 1-byte status (`01` = ok, `00` = fail). Once
+  **Raw Read (`0x04`)** is on, read the released Volume ID with a normal `READ DISC STRUCTURE`
+  request — it does not come back in the toggle's own response.
 
 ### Safety
 
@@ -233,7 +230,7 @@ Responses are **not** uniform — read each command's response by its own rule:
 **Identity (`0x01`) and the Diagnostic Dump (`0x09`) are read-only and safe** — they report
 a value and change no drive state. Start with `0x01` to confirm the drive is freemkv-flashed.
 
-The runtime commands (`0x02`, `0x03`, `0x04`, `0x05`) are **reversible**: state `01` enables the
+The runtime commands (`0x02`, `0x03`, `0x04`) are **reversible**: state `01` enables the
 patched behavior (for Speed, any cap value enables it), and sending the command again with state
 `00` reverts to byte-identical OEM behavior. Nothing they change is meant to be permanent, and
 nothing requires reflashing.
@@ -259,17 +256,17 @@ sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 FF 00 00 00 00    # Speed → uncapped
 sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 00 00 00 00 00    # Speed → OEM ramp
 ```
 
-Volume ID — turn it on and read the disc's plaintext VID (magic + 16-byte VID):
+Region-free on:
 
 ```bash
-sg_raw -r 32 /dev/sg0 3C 0E C0 DE 03 01 00 00 20 00   # VID on → "freemkv" + 16-byte VID
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 03 01 00 00 00 00    # Region-free → on
 ```
 
-Bus Encryption on, Region-free on:
+Raw Read on — approve the host cert; the drive then releases the Volume ID to a normal `READ
+DISC STRUCTURE` and returns sectors unencrypted on the bus:
 
 ```bash
-sg_raw -r 1 /dev/sg0 3C 0E C0 DE 04 01 00 00 00 00    # Bus Encryption → on
-sg_raw -r 1 /dev/sg0 3C 0E C0 DE 05 01 00 00 00 00    # Region-free → on
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 04 01 00 00 00 00    # Raw Read → on
 ```
 
 Diagnostic Dump at an address of your choice (`0xAABBCCDD` shown as a placeholder) — expect
