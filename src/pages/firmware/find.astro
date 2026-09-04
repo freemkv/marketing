@@ -357,13 +357,14 @@ import '../../styles/site.css';
 
             var bodyHtml;
             if (isHosted) {
+              var dlName = v.file.split('/').pop();
               bodyHtml =
                 '<a class="btn btn-primary dl-btn drive-fw-btn" href="' + firmwareBaseUrl + '/' + v.file + '" download>' +
-                '<span class="dl-main">Download <span class="dl-arch">' + v.file + '</span></span>' +
+                '<span class="dl-main">Download</span>' +
                 '</a>' +
                 '<div class="drive-fw-hint">' +
                 '<span class="drive-fw-hint-label">Then build it:</span>' +
-                '<code class="drive-fw-cmd">freemkv-fw create ' + v.file + ' my-drive.freemkv.bin</code>' +
+                '<code class="drive-fw-cmd">freemkv-fw create ' + dlName + ' my-drive.freemkv.bin</code>' +
                 '</div>';
             } else {
               bodyHtml =
