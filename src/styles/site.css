@@ -154,10 +154,22 @@ a[data-unavailable] { display: none !important; }
 .picker-option-unavailable { color: var(--muted); font-weight: 500; }
 .picker-option-unavailable:hover, .picker-option-unavailable.is-active { background: var(--bg-soft); color: var(--slate); }
 .picker-empty { padding: 0.55rem 0.75rem; color: var(--muted); font-size: 0.92rem; }
+/* Revision combobox: readonly input styled like a select (caret + pointer). */
+#drive-rev { cursor: pointer; padding-right: 2.75rem; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2364748b'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E") no-repeat right 1rem center; background-size: 1.15rem; }
+/* Reserve the revision row's vertical space when no model is chosen, so
+   revealing it never shifts the detail card / page below it. */
+.rev-row.is-hidden { visibility: hidden; }
 .picker-detail { max-width: 640px; margin: 1.5rem auto 0; background: #fff; border: 1.5px solid var(--line); border-radius: 12px; padding: 1.4rem 1.5rem; text-align: left; box-shadow: 0 10px 26px -16px rgba(15, 23, 42, 0.25); }
 .drive-detail-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
 .drive-title { margin: 0; }
 .drive-rev { font-family: var(--mono); font-size: 0.82rem; color: var(--muted); }
+/* Detail-box facts (chipset · media · region variant) + capability chips. */
+.drive-facts { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: -0.3rem 0 0.9rem; }
+.drive-fact { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em; color: var(--teal-dark); background: var(--teal-tint); border-radius: 6px; padding: 0.18rem 0.5rem; }
+.drive-fact-variant { font-family: var(--mono); font-weight: 600; color: var(--slate); background: var(--bg-soft); }
+.drive-caps { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin: 0 0 1rem; }
+.drive-caps-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.drive-cap { font-size: 0.78rem; font-weight: 600; color: var(--ink); background: #fff; border: 1.5px solid var(--line); border-radius: 999px; padding: 0.2rem 0.65rem; }
 .drive-fw-btn { width: 100%; }
 .drive-fw-btn-disabled { background: var(--bg-soft); color: var(--muted); border-color: var(--line); box-shadow: none; cursor: not-allowed; pointer-events: none; }
 .drive-fw-hint { margin: 0.9rem 0 0; color: var(--muted); font-size: 0.9rem; line-height: 1.6; }

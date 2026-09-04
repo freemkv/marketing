@@ -1,25 +1,24 @@
 name: Deploy site to Pages
 
-# Builds the Astro/Starlight site and deploys it to GitHub Pages (freemkv.org).
+# Builds the Astro/Starlight site and deploys it to CLOUDFLARE Pages
+# (project "freemkv" -> freemkv.org). The site moved off GitHub Pages; deploys
+# are now a direct wrangler upload of the built dist/ to Cloudflare.
+#
+# Requires two repo secrets:
+#   CLOUDFLARE_API_TOKEN   - freemkv account token with Pages:Edit
+#   CLOUDFLARE_ACCOUNT_ID  - the freemkv Cloudflare account id
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# One deploy at a time; cancel a superseded in-progress run so the
-# deploy-pages step never sees stale duplicate "github-pages" artifacts
-# from queued runs (the "Multiple artifacts ... unexpectedly found" failure).
+# One deploy at a time; cancel a superseded in-progress run.
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -30,16 +29,9 @@ jobs:
           cache-dependency-path: package-lock.json
       - run: npm ci
       - run: npm run build   # astro build -> dist/
-      - uses: actions/upload-pages-artifact@v5
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
         with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v5
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=freemkv --branch=main
