@@ -18,13 +18,29 @@ file or a live drive is already freemkv.
 ### create
 
 ```bash
-freemkv-fw create <input.bin> <output.freemkv.bin>
+freemkv-fw create <input.bin> [output.freemkv.bin]     # default output: <input-stem>.freemkv.bin
+freemkv-fw create <input.bin> --json                   # machine-readable per-capability report
+freemkv-fw create <input.bin> --audit                  # verify every applied patch actually landed
 ```
 
-Takes one input image and produces one output image. It auto-detects the drive model from the
-input and adds every capability it knows how to add, reporting each one as added or failed. The
-drive stays completely stock until the freemkv command is sent — see [Command reference](#command-reference)
-below for exactly what each capability rides on the wire.
+Takes one stock (OEM) image and produces one freemkv image. It **auto-detects the chipset**
+(MediaTek MT1959 or MT1939) from the image, then applies **every capability that drive supports
+and reports each one individually** — it is never all-or-nothing. A capability whose signature
+isn't found on that particular image is reported and skipped; the rest still apply. Each
+capability comes back as one of four states:
+
+| Report | Meaning |
+|---|---|
+| **applied** | the patch was added on this run |
+| **already set** | the feature is already present (e.g. re-running on freemkv firmware) — a safe no-op |
+| **n/a** | out of scope for this drive (e.g. Raw Read on a DVD-only drive) |
+| **skipped** | in scope, but the signature wasn't found on this image (nothing is written) |
+
+Running `create` on freemkv firmware again is **idempotent**: every capability reports *already
+set* and the output is byte-identical to the input. `--audit` (also `create --audit`) re-derives
+the exact expected patch bytes and confirms each applied capability actually landed at its hook
+site — an automated correctness check, no drive required. The drive stays completely stock until
+the freemkv command is sent — see [Command reference](#command-reference) below.
 
 | Capability | What it does | Status |
 |---|---|---|
@@ -34,8 +50,11 @@ below for exactly what each capability rides on the wire.
 | Raw Read | Approves the host certificate so the drive drops AACS drive↔host authentication. The drive then releases the Volume ID (and the other AACS-gated values) to a normal `READ DISC STRUCTURE`, and because no AKE handshake ran there's no bus key, so reads come back exactly as they sit on the disc — bus encryption is off for free (content stays AACS-at-rest encrypted; the host applies title keys) | ready |
 | Diagnostic Dump | Reads 64-byte windows of firmware RAM | ready (diagnostic use) |
 
-These map 1:1 to the sub-functions in the [command reference](#command-reference) below. Every
-capability is live in shipped freemkv firmware.
+These map 1:1 to the sub-functions in the [command reference](#command-reference) below. Which
+capabilities apply to a given image depends on the chipset and generation, so `create` reports
+them per image rather than assuming. Every build is **statically verified** (integrity re-signs,
+structural audit passes); on-drive hardware validation is the one remaining step for newer
+drive families.
 
 ### verify
 
@@ -56,12 +75,16 @@ before writing, and reads back every write to confirm it took.
 ### info
 
 ```bash
-freemkv-flash info <device>
+freemkv-flash info <device>        # identify a live drive
+freemkv-flash info <image.bin>     # classify a firmware file
 ```
 
-Identifies the drive before you touch anything: reports the drive's **vendor**, **product**,
-and **firmware revision** (from the drive's own SCSI `INQUIRY` data), plus what it can tell
-about the drive's command table. Read-only and safe to run on any supported drive.
+`info` works on **either a live drive or a firmware file** — it auto-detects which. On a
+**device** it reports the drive's **vendor**, **product**, and **firmware revision** (from the
+drive's own SCSI `INQUIRY` data). On a **file** it classifies the image: chipset (MT1959 /
+MT1939), vendor/model/revision, media capability (BD / UHD / DVD), whether the tool can flash it,
+and whether its integrity tables are valid. Both use the **same detection**, which is exactly
+what the flasher's file↔drive safety check compares. Read-only and safe.
 
 ### dump
 
@@ -75,12 +98,31 @@ anything.
 ### flash
 
 ```bash
-freemkv-flash flash <device> -i <image.bin>
+# dry-run (default — plans the write, changes nothing):
+freemkv-flash flash --input <image.bin> <device>
+
+# actually write it:
+freemkv-flash flash --input <image.bin> <device> \
+    --execute --i-understand-risk --backup <backup.tar>
 ```
 
-Writes an image to the drive. It backs up the current firmware automatically first, writes the
-new image, then reads it back to verify the write. `flash` is newer and less tested than `info`
-and `dump` — always keep your own separate dump as well.
+Writes an image to the drive. **It is dry-run by default** — without `--execute` it only prints
+the plan and writes nothing. A real write requires `--execute` and `--i-understand-risk`, and
+takes a **mandatory pre-flash backup** first (`--backup`), then reads the image back to verify.
+Before flashing it runs the same file↔drive check as `info`, refusing an image whose chipset
+family doesn't match the connected drive.
+
+Executable writes are supported today for **MediaTek MT1959**; other families are catalogued and
+can be planned (dry-run) but are gated off real writes until validated on hardware. `flash` is
+newer and less battle-tested than `info`/`dump` — always keep your own separate dump as well.
+
+:::caution[Crossflash is experimental]
+`--allow-crossflash` waives the drive-*model* match (but **never** the chipset-family match, and
+never the backup/risk gates) to flash one MT1959 drive's firmware onto a different MT1959 drive.
+It is **experimental and not hardware-validated**, warns on capability mismatches (e.g. UHD vs
+non-UHD), and can brick an incompatible drive. Same-chipset only; different chipsets are always
+refused.
+:::
 
 ## How do I tell what drive I have?
 
@@ -201,9 +243,10 @@ guarantee is the point of the design.
 
 freemkv firmware is **not tied to any one OEM image**. Every firmware address a patch needs is
 located by **signature at build time** — nothing is hardcoded — so the same builder works across
-all MediaTek **MT1959** OEM images. Once the patches are applied, the image's integrity table is
-**re-signed with CMAC using the known key** so the drive accepts it, and the **DE
-(downgrade-enable) byte is always set** on every build.
+MediaTek **MT1959** and **MT1939** OEM images, auto-detecting the chipset and applying the
+capabilities that drive supports (reported per image). Once the patches are applied, the image's
+integrity table is **re-signed with CMAC using the known key** so the drive accepts it, and the
+**DE (downgrade-enable) byte is always set** on every build.
 
 **Downgrade-enable — flash over any existing version.** By default a drive refuses to accept an
 older firmware than the one it's running (anti-rollback). freemkv sets the DE byte
