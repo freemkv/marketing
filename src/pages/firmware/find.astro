@@ -308,16 +308,35 @@ import '../../styles/site.css';
           function openRevList() {
             if (!curModel) return;
             revOptions.innerHTML = '';
+            // Group revisions by brand (LG revs, then HP BWxx, …) — the same
+            // model ships under multiple brands, so a brand header disambiguates.
+            var byBrand = {};
+            var brandOrder = [];
             curModel.versions.forEach(function (v, i) {
-              var li = document.createElement('li');
-              li.className = 'picker-option' + (i === curRevIdx ? ' is-active' : '');
-              li.setAttribute('role', 'option');
-              li.textContent = v.rev;
-              li.addEventListener('mousedown', function (e) {
-                e.preventDefault();
-                chooseRev(i);
+              var b = v.brand || curModel.brand || '';
+              if (!byBrand[b]) { byBrand[b] = []; brandOrder.push(b); }
+              byBrand[b].push({ v: v, i: i });
+            });
+            var showHeaders = brandOrder.length > 1;
+            brandOrder.forEach(function (b) {
+              if (showHeaders && b) {
+                var lab = document.createElement('li');
+                lab.className = 'picker-group-label';
+                lab.setAttribute('role', 'presentation');
+                lab.textContent = b;
+                revOptions.appendChild(lab);
+              }
+              byBrand[b].forEach(function (e) {
+                var li = document.createElement('li');
+                li.className = 'picker-option' + (e.i === curRevIdx ? ' is-active' : '');
+                li.setAttribute('role', 'option');
+                li.textContent = e.v.rev;
+                li.addEventListener('mousedown', function (ev) {
+                  ev.preventDefault();
+                  chooseRev(e.i);
+                });
+                revOptions.appendChild(li);
               });
-              revOptions.appendChild(li);
             });
             revOptions.hidden = false;
             revInput.setAttribute('aria-expanded', 'true');
@@ -380,15 +399,20 @@ import '../../styles/site.css';
             if (v.media) facts += '<span class="drive-fact">' + v.media + '</span>';
             if (v.variant) facts += '<span class="drive-fact drive-fact-variant" title="Region/SKU code">' + v.variant + '</span>';
             var factsHtml = facts ? '<div class="drive-facts">' + facts + '</div>' : '';
-            var capsHtml = (v.caps && v.caps.length)
-              ? '<p class="drive-caps"><span class="drive-caps-label">Unlocks</span>' +
-                v.caps.map(function (c) { return '<span class="drive-cap">' + c + '</span>'; }).join('') +
-                '</p>'
+            // All 7 freemkv features (same set as /firmware/modify/), tinted per
+            // drive: green when this firmware supports it, muted/red when not.
+            var capsHtml = (v.features && v.features.length)
+              ? '<div class="drive-caps"><span class="drive-caps-label">Features</span>' +
+                v.features.map(function (f) {
+                  return '<span class="drive-cap ' + (f.ok ? 'drive-cap-on' : 'drive-cap-off') +
+                    '">' + f.name + '</span>';
+                }).join('') +
+                '</div>'
               : '';
 
             detail.innerHTML =
               '<div class="drive-detail-head">' +
-              '<h3 class="card-title drive-title">' + d.brand + ' ' + d.model + '</h3>' +
+              '<h3 class="card-title drive-title">' + (v.brand || d.brand) + ' ' + d.model + '</h3>' +
               '<span class="drive-rev">rev ' + v.rev + '</span>' +
               '</div>' +
               factsHtml +

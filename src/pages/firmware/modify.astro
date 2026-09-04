@@ -64,8 +64,10 @@ const fwCapabilities = [
   { name: 'Identity', detail: 'Answers the "are you freemkv?" ping', status: 'ready' },
   { name: 'Speed', detail: 'Settable read-speed ceiling — lifts the riplock cap for full-rate ripping', status: 'ready' },
   { name: 'Region-free', detail: 'Every DVD reads as region-free (DVD-only)', status: 'ready' },
-  { name: 'Raw Read', detail: 'Approves the host cert so the drive drops AACS drive↔host auth — it releases the Volume ID to a normal READ DISC STRUCTURE and, with no bus key, returns sectors unencrypted on the bus (content stays AACS-encrypted at rest; the host applies title keys)', status: 'ready' },
+  { name: 'Raw Read', detail: 'Drops the AACS drive↔host auth so the drive releases the Volume ID and returns sectors unencrypted on the bus — the host applies the title keys', status: 'ready' },
   { name: 'Diagnostic Dump', detail: '64-byte firmware RAM windows', status: 'ready' },
+  { name: 'Downgrade Enable', detail: 'Sets the downgrade-enable (DE) byte, so freemkv installs over any existing firmware, OEM or 3rd party.', status: 'ready' },
+  { name: 'Stays Stock', detail: 'The drive stays 100% stock until freemkv commands are enabled, and can be disabled again on the fly.', status: 'ready' },
 ];
 import '../../styles/site.css';
 ---
@@ -183,28 +185,6 @@ import '../../styles/site.css';
             ))}
           </div>
 
-          <div class="note-row">
-            <div class="cap-note">
-              <span class="cap-dot cap-dot-ready" aria-hidden="true"></span>
-              <div class="cap-body">
-                <span class="cap-name">Downgrade Enable</span>
-                <span class="cap-detail">
-                  Sets the downgrade-enable (DE) byte, so freemkv installs over
-                  any existing firmware, OEM or 3rd party.
-                </span>
-              </div>
-            </div>
-            <div class="cap-note">
-              <span class="cap-dot cap-dot-ready" aria-hidden="true"></span>
-              <div class="cap-body">
-                <span class="cap-name">Stays Stock</span>
-                <span class="cap-detail">
-                  The drive stays 100% stock until freemkv commands are enabled,
-                  and can be disabled again on the fly.
-                </span>
-              </div>
-            </div>
-          </div>
 
           <div class="grid dl-grid">
             {platforms.map((p) => (
@@ -214,7 +194,7 @@ import '../../styles/site.css';
                   {p.builds.map((b) => (
                     <>
                       <a
-                        class="btn btn-primary dl-btn"
+                        class="btn btn-secondary dl-btn"
                         href={`${firmwareRepo}/releases/latest/download/${assetFor('fw', b)}`}
                         download
                       >
