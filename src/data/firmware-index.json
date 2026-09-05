@@ -386,6 +386,46 @@
     ]
    },
    {
+    "rev": "1.04",
+    "file": "MT1939/BE16NU50_1.04_3d628625.bin",
+    "sha256": "3d6286253da6e18c5c2674e6fec75c332fa057a75ed8fd076849c8b22ce9b8a5",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD/UHD",
+    "variant": "N006300",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
     "rev": "INTM",
     "file": "MT1939/BE16NU50_INTM_215488b5.bin",
     "sha256": "215488b5ac20fc3ed7fe33ff5679a13a839f0729cc85d0b8bcf0fd3e4c749b23",
@@ -528,6 +568,46 @@
     "chipset": "MT1939",
     "media": "BD",
     "variant": "N002000",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "1.03",
+    "file": "MT1939/BH14NS50_1.03_4f9ac355.bin",
+    "sha256": "4f9ac3555f29dfb15ffe9bc65389a00341c5e5e973890bac3319fd64baea88fc",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD",
+    "variant": "N005400",
     "features": [
      {
       "name": "Identity",
@@ -814,6 +894,86 @@
     ]
    },
    {
+    "rev": "1.04",
+    "file": "MT1939/BH16NS40_1.04_bc4e6126.bin",
+    "sha256": "bc4e6126b880475d58c21e8639ea81f33facc3d4c8284bf6a739d8e8f6c75921",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD/UHD",
+    "variant": "N002701",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "1.05",
+    "file": "MT1939/BH16NS40_1.05_5b6e9d85.bin",
+    "sha256": "5b6e9d854c0e4a77c75986aa286cb10cbb2323dbcdf044569ed1839b144db464",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD/UHD",
+    "variant": "N005600",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
     "rev": "INTM",
     "file": "MT1939/BH16NS40_INTM_c3a18eed.bin",
     "sha256": "c3a18eed17251d1508964647e833ffdfe01b13c28dff9a717dfac6336e7c70e6",
@@ -916,6 +1076,46 @@
     "chipset": "MT1939",
     "media": "BD/UHD",
     "variant": "N002000",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "1.03",
+    "file": "MT1939/BH16NS50_1.03_1b99561b.bin",
+    "sha256": "1b99561b17ea6dcd76c263335e1a0ae77782028caf7cba726b4eb5b9b986f09f",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD/UHD",
+    "variant": "N005400",
     "features": [
      {
       "name": "Identity",
@@ -1073,6 +1273,86 @@
       "ok": true
      }
     ]
+   },
+   {
+    "rev": "1.04",
+    "file": "MT1939/BH16NS55_1.04_394e6f8d.bin",
+    "sha256": "394e6f8d6319b79fed26fb296a435e4d047c382bf8434cc870f89c6913fd27d7",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD/UHD",
+    "variant": "N002701",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "1.05",
+    "file": "MT1939/BH16NS55_1.05_530d194f.bin",
+    "sha256": "530d194f7f92bbc764b20e2a7092e6eff2330616405534eb88ba650ba48778de",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD/UHD",
+    "variant": "N005400",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
    }
   ]
  },
@@ -1168,6 +1448,86 @@
   "model": "BH16NS60",
   "ready": true,
   "versions": [
+   {
+    "rev": "1.00",
+    "file": "MT1939/BH16NS60_1.00_b96b5abc.bin",
+    "sha256": "b96b5abc6b27327c6f837e99d4860bfb91bfcb61297595541454186f02e3652c",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD/UHD",
+    "variant": "N005500",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "1.02",
+    "file": "MT1939/BH16NS60_1.02_4d070ee2.bin",
+    "sha256": "4d070ee2630f03793ddce81f35f8779d3bcc1484a89dee7e1db19ba2adc0dbb4",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD/UHD",
+    "variant": "N007600",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
    {
     "rev": "INTM",
     "file": "MT1939/BH16NS60_INTM_1baed51d.bin",
@@ -1343,6 +1703,86 @@
     ]
    },
    {
+    "rev": "1.02",
+    "file": "MT1959/BP50NB40_1.02_a344e289.bin",
+    "sha256": "a344e289e0b1f34bd1a5ae66f0498df9f1a485ad1416f93592e40db2fb5409c7",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1959",
+    "media": "BD/UHD",
+    "variant": "N008700",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "1.03",
+    "file": "MT1959/BP50NB40_1.03_7823c0d7.bin",
+    "sha256": "7823c0d7c396c2a8bb6b77e8674034f10afb7cc4aa34d0e22272f1900e70a1b6",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1959",
+    "media": "BD/UHD",
+    "variant": "N009800",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
     "rev": "INTM",
     "file": "MT1959/BP50NB40_INTM_92bb22b2.bin",
     "sha256": "92bb22b2c8999bbcde4e02d785b711063cb414f40bdbe16fac862643b298610d",
@@ -1428,6 +1868,86 @@
       "ok": true
      }
     ]
+   },
+   {
+    "rev": "1.02",
+    "file": "MT1959/BP55EB40_1.02_e64c4ca5.bin",
+    "sha256": "e64c4ca5244594d0b7943cbedf71a9cced2ae7c3d9b98624aa84d7e3130bac8a",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1959",
+    "media": "BD",
+    "variant": "N008801",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "1.03",
+    "file": "MT1959/BP55EB40_1.03_044077a4.bin",
+    "sha256": "044077a4688d6076b6de7e9b00502ec5f778d89888c4071d7957c3bde13af73a",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1959",
+    "media": "BD",
+    "variant": "N009800",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
    }
   ]
  },
@@ -1445,6 +1965,46 @@
     "chipset": "MT1959",
     "media": "BD/UHD",
     "variant": "N008200",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "1.01",
+    "file": "MT1959/BP60NB10_1.01_fb9174aa.bin",
+    "sha256": "fb9174aa26153911120a92d95beb8cf598f1f860344af2ccf67e98a99f4ca049",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1959",
+    "media": "BD/UHD",
+    "variant": "N008801",
     "features": [
      {
       "name": "Identity",
@@ -1644,6 +2204,166 @@
     ]
    },
    {
+    "rev": "1.03",
+    "file": "MT1959/BU40N_1.03_106156b4.bin",
+    "sha256": "106156b4024d1bed76026f35d1d10a0f35793ea9aeb15991431ed2a770775c77",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1959",
+    "media": "BD/UHD",
+    "variant": "N001000",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "1.04",
+    "file": "MT1959/BU40N_1.04_e973da48.bin",
+    "sha256": "e973da48de143b57350f0ab97feda437d7dab6b28c8ecf32c0e16e354eefcca7",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1959",
+    "media": "BD/UHD",
+    "variant": "N003500",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "BN11",
+    "file": "MT1959/BU40N_BN11_5c01c1fd.bin",
+    "sha256": "5c01c1fda59f3db130bd14aa64fe97d4010376798716b16792dbffd59c488a95",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1959",
+    "media": "BD/UHD",
+    "variant": "0000300",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "BN12",
+    "file": "MT1959/BU40N_BN12_c4d995f0.bin",
+    "sha256": "c4d995f031fe757d9823f7410f81c88ce7ba26e14b77e766792bff2e53a8b90f",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1959",
+    "media": "BD/UHD",
+    "variant": "0001001",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
     "rev": "BU10",
     "file": "MT1959/BU40N_BU10_58203b53.bin",
     "sha256": "58203b539de096786cde232ee3b0ef3fe824b20d7768a96b30f6a96bdac77bfb",
@@ -1652,6 +2372,46 @@
     "chipset": "MT1959",
     "media": "BD/UHD",
     "variant": "O077703",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "BU12",
+    "file": "MT1959/BU40N_BU12_920a89f9.bin",
+    "sha256": "920a89f98b69b144290cb37dc37a7019c8ee37cf577457f0941a43395dfa7801",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1959",
+    "media": "BD/UHD",
+    "variant": "O001001",
     "features": [
      {
       "name": "Identity",
@@ -1804,6 +2564,46 @@
     ]
    },
    {
+    "rev": "FR07",
+    "file": "MT1959/BU40N_FR07_4af842c0.bin",
+    "sha256": "4af842c0acf4a9ff42b5554d6d1d320b245ab4973b174a8b7ccf1f941f7ab715",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1959",
+    "media": "BD/UHD",
+    "variant": "J000202",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
     "rev": "INTM",
     "file": "MT1959/BU40N_INTM_29ad3026.bin",
     "sha256": "29ad302647148e270c15a5a4542aa4796ee9ba25ea9fbf9f2be9465c01c139a7",
@@ -1812,6 +2612,46 @@
     "chipset": "MT1959",
     "media": "BD/UHD",
     "variant": "N081800",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "U100",
+    "file": "MT1959/BU40N_U100_8c90e968.bin",
+    "sha256": "8c90e968f3d3c68838168df47265b23b6d5ceba8c03fef5d32629f35c68acbea",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1959",
+    "media": "BD/UHD",
+    "variant": "3001801",
     "features": [
      {
       "name": "Identity",
@@ -1986,6 +2826,46 @@
     "chipset": "MT1939",
     "media": "BD/UHD",
     "variant": "W001501",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "A204",
+    "file": "MT1939/BW-16D1H_A204_223e7e38.bin",
+    "sha256": "223e7e38b85f0d27464de596d373464cb7bf77ca825b81f2351abaf8c6cefba1",
+    "modify": "flawless",
+    "brand": "ASUS",
+    "chipset": "MT1939",
+    "media": "BD/UHD",
+    "variant": "W002001",
     "features": [
      {
       "name": "Identity",
@@ -2232,6 +3112,46 @@
     ]
    },
    {
+    "rev": "1.03",
+    "file": "MT1939/CH12NS40_1.03_72b0e5e0.bin",
+    "sha256": "72b0e5e024ab40b6f7f6ca0c3b27153ee7893412730819a7f5b0d26c55447f18",
+    "modify": "partial",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD",
+    "variant": "N001800",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": false
+     },
+     {
+      "name": "Region-free",
+      "ok": false
+     },
+     {
+      "name": "Raw Read",
+      "ok": false
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
     "rev": "INTM",
     "file": "MT1939/CH12NS40_INTM_fc98fda6.bin",
     "sha256": "fc98fda6431f71ebc29a3fadf572fcd09c58cc4b5bed1bf918dbc29b3616777e",
@@ -2287,6 +3207,46 @@
     "chipset": "MT1939",
     "media": "BD",
     "variant": "N000200",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": false
+     },
+     {
+      "name": "Region-free",
+      "ok": false
+     },
+     {
+      "name": "Raw Read",
+      "ok": false
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "1.03",
+    "file": "MT1939/UH12NS40_1.03_a784d3b8.bin",
+    "sha256": "a784d3b8cc015de45f27f36800a98c9157168a08acbe6d3a6bf001a635e1a16e",
+    "modify": "partial",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD",
+    "variant": "N001800",
     "features": [
      {
       "name": "Identity",
@@ -2484,6 +3444,86 @@
       "ok": true
      }
     ]
+   },
+   {
+    "rev": "1.04",
+    "file": "MT1939/WH14NS40_1.04_164e2475.bin",
+    "sha256": "164e2475aea287ec5759ee07eb285697b52923ead1288f24358a70fc7ed3ec32",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD/UHD",
+    "variant": "N002201",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "1.05",
+    "file": "MT1939/WH14NS40_1.05_de6c3f26.bin",
+    "sha256": "de6c3f26359bedb5d465b76f41b70989bf9a0869a088643c7c0371b66620e3de",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD/UHD",
+    "variant": "N003900",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
    }
   ]
  },
@@ -2581,6 +3621,46 @@
     "chipset": "MT1939",
     "media": "BD",
     "variant": "N001600",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "1.05",
+    "file": "MT1939/WH16NS40_1.05_36d65e3d.bin",
+    "sha256": "36d65e3d0c3cd223116b3865e3f0f06b247a0ee842d3c7ddf576e620b590da6a",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD",
+    "variant": "N003900",
     "features": [
      {
       "name": "Identity",
@@ -2787,6 +3867,46 @@
     ]
    },
    {
+    "rev": "1.02",
+    "file": "MT1939/WH16NS60_1.02_3ebfe345.bin",
+    "sha256": "3ebfe3455911e5e881017edb26207734e3f6d679602db071f0b300bcccf5db6f",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1939",
+    "media": "BD/UHD",
+    "variant": "N006100",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
     "rev": "1.03",
     "file": "MT1939/WH16NS60_1.03_3d901142.bin",
     "sha256": "3d90114273377220988f7cbd0da2ecad01d4e61a1b1089921fdee3fba2f62af9",
@@ -2842,6 +3962,46 @@
     "chipset": "MT1959",
     "media": "BD/UHD",
     "variant": "N008200",
+    "features": [
+     {
+      "name": "Identity",
+      "ok": true
+     },
+     {
+      "name": "Speed",
+      "ok": true
+     },
+     {
+      "name": "Region-free",
+      "ok": true
+     },
+     {
+      "name": "Raw Read",
+      "ok": true
+     },
+     {
+      "name": "Diagnostic Dump",
+      "ok": true
+     },
+     {
+      "name": "Downgrade Enable",
+      "ok": true
+     },
+     {
+      "name": "Stays Stock",
+      "ok": true
+     }
+    ]
+   },
+   {
+    "rev": "1.03",
+    "file": "MT1959/WP50NB40_1.03_dc24229f.bin",
+    "sha256": "dc24229fe4c94f1c341d0cfe21b416b4ebb0449dfe5bd991bae70d7d4ce28a73",
+    "modify": "flawless",
+    "brand": "LG",
+    "chipset": "MT1959",
+    "media": "BD/UHD",
+    "variant": "N009800",
     "features": [
      {
       "name": "Identity",
