@@ -103,6 +103,7 @@ const cliPlatforms = [
   {
     name: 'macOS',
     os: 'macos',
+    brew: true,
     builds: [
       { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon', file: 'freemkv-aarch64-macos' },
       { key: 'macos-x64', arch: 'x86_64', label: 'Intel', file: 'freemkv-x86_64-macos' },
@@ -137,6 +138,7 @@ const autoripPlatforms = [
   {
     name: 'macOS',
     os: 'macos',
+    brew: true,
     builds: [
       { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon', file: 'autorip-aarch64-macos' },
     ],
@@ -373,18 +375,22 @@ import '../styles/site.css';
               <article class="card" data-os={p.os} data-platform-card>
                 <h3 class="card-title">{p.name}</h3>
                 <div class="dl-list">
-                  {p.builds.map((b) => (
-                    <a
-                      class="btn btn-primary dl-btn"
-                      data-key={b.key}
-                      data-asset={b.file}
-                      href={`${cliRepo}/releases/latest/download/${b.file}`}
-                      download
-                    >
-                      <span class="dl-main">Download <span class="dl-arch">{b.arch}</span></span>
-                      <span class="dl-sub">{b.label}</span>
-                    </a>
-                  ))}
+                  {p.brew ? (
+                    <p class="dl-brew-see">Install with Homebrew — see below ↓</p>
+                  ) : (
+                    p.builds.map((b) => (
+                      <a
+                        class="btn btn-primary dl-btn"
+                        data-key={b.key}
+                        data-asset={b.file}
+                        href={`${cliRepo}/releases/latest/download/${b.file}`}
+                        download
+                      >
+                        <span class="dl-main">Download <span class="dl-arch">{b.arch}</span></span>
+                        <span class="dl-sub">{b.label}</span>
+                      </a>
+                    ))
+                  )}
                 </div>
               </article>
             ))}
@@ -439,22 +445,31 @@ import '../styles/site.css';
               <article class="card" data-os={p.os} data-platform-card>
                 <h3 class="card-title">{p.name}</h3>
                 <div class="dl-list">
-                  {p.builds.map((b) => (
-                    <a
-                      class="btn btn-primary dl-btn"
-                      data-key={b.key}
-                      data-asset={b.file}
-                      href={`${autoripRepo}/releases/latest/download/${b.file}`}
-                      download
-                    >
-                      <span class="dl-main">Download <span class="dl-arch">{b.arch}</span></span>
-                      <span class="dl-sub">{b.label}</span>
-                    </a>
-                  ))}
+                  {p.brew ? (
+                    <p class="dl-brew-see">Install with Homebrew — see below ↓</p>
+                  ) : (
+                    p.builds.map((b) => (
+                      <a
+                        class="btn btn-primary dl-btn"
+                        data-key={b.key}
+                        data-asset={b.file}
+                        href={`${autoripRepo}/releases/latest/download/${b.file}`}
+                        download
+                      >
+                        <span class="dl-main">Download <span class="dl-arch">{b.arch}</span></span>
+                        <span class="dl-sub">{b.label}</span>
+                      </a>
+                    ))
+                  )}
                 </div>
               </article>
             ))}
           </div>
+          <p class="dl-note dl-brew">
+            <strong>macOS — easiest:</strong> Homebrew installs autorip on PATH and
+            skips the macOS security prompt entirely.
+            <code class="dl-cmd">brew install freemkv/tap/autorip</code>
+          </p>
           <p class="block-note">
             Runs as a daemon with a web UI on port 8080.
             <a href="/docs/autorip/#binary">Setup, keys and drive permissions →</a>
