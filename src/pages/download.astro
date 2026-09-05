@@ -654,20 +654,30 @@ import '../styles/site.css';
           var known = assetsByTag[tag];
           document.querySelectorAll('a[data-asset]').forEach(function (a) {
             var asset = a.getAttribute('data-asset');
+            // autorip ships from its OWN repo on its OWN release cadence. The
+            // version picker and `known` asset list come from freemkv/freemkv
+            // and say nothing about autorip, so judging autorip buttons against
+            // them marked every one unavailable and printed "Not released for
+            // this version." Always point autorip at its own latest release,
+            // unconditionally available.
+            if (asset.indexOf('autorip') === 0) {
+              markUnavailable(a, false);
+              a.href = autoripRepo + '/releases/latest/download/' + asset;
+              return;
+            }
             // Only judge when the release's real asset list is known; with no
             // data (API down, cache miss) leave the link alone rather than
             // disabling a download that probably works.
             if (known && !known[asset]) { markUnavailable(a, true); return; }
             markUnavailable(a, false);
-            // Two repos only. The desktop app and the CLI are the SAME binary in
-            // the SAME repo (freemkv), so every non-autorip asset — .dmg, .zip,
-            // bare binary, .exe — resolves against cliRepo. (There is no longer
-            // a "freemkv-gui-*" asset family; that naming was retired when the
-            // GUI and CLI merged into one binary. `guiRepo === cliRepo`.)
-            var repo = asset.indexOf('autorip') === 0 ? autoripRepo : cliRepo;
+            // The desktop app and the CLI are the SAME binary in the SAME repo
+            // (freemkv), so every freemkv asset — .dmg, .zip, bare binary, .exe
+            // — resolves against cliRepo. (There is no longer a "freemkv-gui-*"
+            // asset family; that naming was retired when the GUI and CLI merged
+            // into one binary. `guiRepo === cliRepo`.)
             a.href = tag === 'latest'
-              ? repo + '/releases/latest/download/' + asset
-              : repo + '/releases/download/' + tag + '/' + asset;
+              ? cliRepo + '/releases/latest/download/' + asset
+              : cliRepo + '/releases/download/' + tag + '/' + asset;
           });
           var all = document.querySelector('[data-all-releases]');
           if (all) {
