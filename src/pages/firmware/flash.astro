@@ -190,30 +190,31 @@ import '../../styles/site.css';
               <article class="card" data-os={p.os}>
                 <h3 class="card-title">{p.name}</h3>
                 <div class="dl-list">
-                  {p.builds.map((b) => (
-                    <>
-                      <a
-                        class="btn btn-primary dl-btn"
-                        href={`${firmwareRepo}/releases/latest/download/${assetFor('flash', b)}`}
-                        download
-                      >
-                        <span class="dl-main">Download <span class="dl-arch">{b.arch}</span> · CLI</span>
-                        <span class="dl-sub">{b.label} — terminal</span>
-                      </a>
-                      {p.gui === 'download' && (
+                  {p.gui === 'brew' ? (
+                    <p class="dl-brew-see">Install with Homebrew — see below ↓</p>
+                  ) : (
+                    p.builds.map((b) => (
+                      <>
                         <a
                           class="btn btn-primary dl-btn"
-                          href={`${firmwareRepo}/releases/latest/download/${assetFor('flash-gui', b)}`}
+                          href={`${firmwareRepo}/releases/latest/download/${assetFor('flash', b)}`}
                           download
                         >
-                          <span class="dl-main">Download <span class="dl-arch">{b.arch}</span> · GUI</span>
-                          <span class="dl-sub">{b.label} — app</span>
+                          <span class="dl-main">Download <span class="dl-arch">{b.arch}</span> · CLI</span>
+                          <span class="dl-sub">{b.label} — terminal</span>
                         </a>
-                      )}
-                    </>
-                  ))}
-                  {p.gui === 'brew' && (
-                    <p class="dl-brew-see">GUI app — install with Homebrew — see below ↓</p>
+                        {p.gui === 'download' && (
+                          <a
+                            class="btn btn-primary dl-btn"
+                            href={`${firmwareRepo}/releases/latest/download/${assetFor('flash-gui', b)}`}
+                            download
+                          >
+                            <span class="dl-main">Download <span class="dl-arch">{b.arch}</span> · GUI</span>
+                            <span class="dl-sub">{b.label} — app</span>
+                          </a>
+                        )}
+                      </>
+                    ))
                   )}
                 </div>
               </article>
