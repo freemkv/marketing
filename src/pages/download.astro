@@ -82,7 +82,7 @@ const guiPlatforms = [
   {
     name: 'macOS',
     os: 'macos',
-    gui: 'download',
+    gui: 'brew',
     builds: [
       { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon', file: 'freemkv-aarch64-macos.dmg' },
       { key: 'macos-x64', arch: 'x86_64', label: 'Intel', file: 'freemkv-x86_64-macos.dmg' },
@@ -312,10 +312,7 @@ import '../styles/site.css';
                   </div>
                 ) : p.gui === 'brew' ? (
                   <div class="dl-list">
-                    <div class="dl-brew">
-                      <span class="dl-sub">Install with Homebrew — it just opens, nothing to click through:</span>
-                      <code class="dl-cmd">brew install --cask freemkv/tap/freemkv-app</code>
-                    </div>
+                    <p class="dl-brew-see">Install with Homebrew — see below ↓</p>
                   </div>
                 ) : (
                   <div class="dl-list">
