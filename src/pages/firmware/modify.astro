@@ -213,16 +213,15 @@ import '../../styles/site.css';
                       )}
                     </>
                   ))}
-                  {p.gui === 'brew' && (
-                    <div class="dl-brew">
-                      <span class="dl-sub">GUI app — install with Homebrew (flash + modify):</span>
-                      <code class="dl-cmd">brew install --cask freemkv/tap/{guiCask}</code>
-                    </div>
-                  )}
                 </div>
               </article>
             ))}
           </div>
+          <p class="dl-note dl-brew">
+            <strong>macOS — easiest:</strong> Homebrew installs the GUI app (flash + modify) and
+            skips the security prompt entirely.
+            <code class="dl-cmd">brew install --cask freemkv/tap/{guiCask}</code>
+          </p>
           <p class="dl-note">
             <a href={firmwareReleases}>All releases on GitHub →</a>
             <a href={firmwareRepo}>View on GitHub →</a>
