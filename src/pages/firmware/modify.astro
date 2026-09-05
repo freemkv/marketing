@@ -18,15 +18,15 @@ const firmwareReleases = `${firmwareRepo}/releases`;
 // Asset names MUST match what the freemkv-firmware release workflow attaches
 // (release.yml): `freemkv-<tool>-<os>-<arch>.<ext>` — tar.gz on Linux/macOS,
 // zip on Windows.
-// GUI distribution per platform, matching the rest of freemkv:
-//   windows -> direct download of the (unsigned) .exe zip
-//   macos   -> Homebrew cask (ad-hoc signed .app in a .dmg; the cask strips
-//              quarantine) — a browser download would be Gatekeeper-blocked
-//   linux   -> no GUI at all (we only ship a Linux CLI, like every freemkv app)
-// The CLI is a direct download on all three.
-// One cask ships BOTH firmware GUIs (freemkv-flash-gui + freemkv-fw-gui) — they
-// live in the same repo and are versioned together.
-const guiCask = 'freemkv-firmware';
+// Distribution per platform, matching the rest of freemkv (CLI + GUI, download.astro):
+//   windows -> direct download of the (unsigned) .exe zip (CLI + GUI)
+//   macos   -> Homebrew only, no direct download: `freemkv-fw` formula for the
+//              CLI and the `freemkv-fw-gui` cask for the app (ad-hoc signed
+//              .app shipped in a .zip; the cask strips quarantine). No .dmg — a
+//              browser download would be Gatekeeper-blocked; Homebrew is not.
+//   linux   -> CLI only (we only ship a Linux CLI, like every freemkv app)
+// flash and modify are TWO separate apps, each its own formula + cask, versioned
+// together in freemkv-firmware.
 const platforms = [
   {
     name: 'Windows',
@@ -222,9 +222,10 @@ import '../../styles/site.css';
             ))}
           </div>
           <p class="dl-note dl-brew">
-            <strong>macOS — easiest:</strong> Homebrew installs the GUI app (flash + modify) and
-            skips the security prompt entirely.
-            <code class="dl-cmd">brew install --cask freemkv/tap/{guiCask}</code>
+            <strong>macOS — easiest:</strong> Homebrew installs the app and the
+            command line, and skips the macOS security prompt entirely.
+            <code class="dl-cmd">brew install --cask freemkv/tap/freemkv-fw-gui</code>
+            <code class="dl-cmd">brew install freemkv/tap/freemkv-fw</code>
           </p>
           <p class="dl-note">
             <a href={firmwareReleases}>All releases on GitHub →</a>
