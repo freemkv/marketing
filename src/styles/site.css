@@ -313,3 +313,5 @@ body.page-modify .terminal-body { margin: 0; padding: 1.25rem; overflow-x: auto;
 body.page-modify .terminal-body code { background: none; color: inherit; padding: 0; }
 @media (max-width: 640px) { body.page-modify .nav-inner { justify-content: center; } body.page-modify .footer-inner { justify-content: center; text-align: center; } }
 @media (prefers-reduced-motion: reduce) { body.page-modify * { scroll-behavior: auto; transition: none !important; } }
+.hero-stat { margin-top: 0.9rem; font-size: 0.95rem; color: var(--muted); }
+.hero-stat strong { color: var(--fg, inherit); font-weight: 700; }
