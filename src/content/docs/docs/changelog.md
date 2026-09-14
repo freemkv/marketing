@@ -13,6 +13,20 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases).
 
+## 1.7.1
+
+<small>2026-09-14</small>
+
+**Fixes**
+
+- **LibreDrive unlocking restored.** A regression in 1.7.0 stopped some drives
+  from unlocking — those that report a specific model name our catalogue lists
+  more generically (for example the LG BU40N). 1.7.1 matches them correctly
+  again, so LibreDrive-based Blu-ray and UHD ripping works on these drives as it
+  did before.
+
+_This release aligns all components to 1.7.1._
+
 ## 1.7.0
 
 <small>2026-09-06</small>
