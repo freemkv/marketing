@@ -648,8 +648,8 @@
   "versions": [
    {
     "rev": "1.00",
-    "file": "MT1939/BH14NS58_1.00_53d2cdc3.bin",
-    "sha256": "53d2cdc32a2ae99864ec8fc4ea98a3a5218220aea990481f560112adaa871624",
+    "file": "MT1939/BH14NS58_1.00_aaeea1ba.bin",
+    "sha256": "aaeea1ba97d05fae0b4de1ff1b84076f8ba897cb15b45a398f9bc4c25fe1738b",
     "modify": "flawless",
     "brand": "LG",
     "chipset": "MT1939",
@@ -815,8 +815,8 @@
    },
    {
     "rev": "1.02",
-    "file": "MT1939/BH16NS40_1.02_acbe782e.bin",
-    "sha256": "acbe782ebc3c4850a24f852b8dc2ec42059f6b131e29d96157b09505628c415b",
+    "file": "MT1939/BH16NS40_1.02_beb8330e.bin",
+    "sha256": "beb8330e79d08824a62d5eb2b91a144ebb34c9acba8d393d8b32f2b2ae3196de",
     "modify": "flawless",
     "brand": "LG",
     "chipset": "MT1939",
@@ -855,13 +855,13 @@
    },
    {
     "rev": "1.03",
-    "file": "MT1939/BH16NS40_1.03_b093a736.bin",
-    "sha256": "b093a73656e58ee2a4367b5d92324fd7da3889f632a22b2f1be8802607cd3de4",
+    "file": "MT1939/BH16NS40_1.03_614b41f6.bin",
+    "sha256": "614b41f61837f84a46b73fe4da28ff9db13bf45fe291f2728a5197c67857446e",
     "modify": "partial",
     "brand": "LG",
     "chipset": "MT1939",
     "media": "BD/UHD",
-    "variant": "N0026C0",
+    "variant": "N0013A0",
     "features": [
      {
       "name": "Identity",
@@ -1196,8 +1196,8 @@
    },
    {
     "rev": "1.02",
-    "file": "MT1939/BH16NS55_1.02_bdfd6f29.bin",
-    "sha256": "bdfd6f290ba8172d4c46d8c822013255043f4ad30deb8604608fa0397bddb648",
+    "file": "MT1939/BH16NS55_1.02_64cff02c.bin",
+    "sha256": "64cff02c3db347a2100284a406687a5a911463d65808db5c5c811a4cefc4fe57",
     "modify": "flawless",
     "brand": "LG",
     "chipset": "MT1939",
@@ -2038,13 +2038,13 @@
    },
    {
     "rev": "1.02",
-    "file": "MT1959/BP60NB10_1.02_1227f133.bin",
-    "sha256": "1227f133eb1c5315d955bb9d9cfcaf84381772a1edfef56b39ad3439b92ca4c0",
+    "file": "MT1959/BP60NB10_1.02_084dcf93.bin",
+    "sha256": "084dcf93b9a7989d0926a19a033383fe672d66acb778ef605f9d3c8183bd4b46",
     "modify": "flawless",
     "brand": "LG",
     "chipset": "MT1959",
     "media": "BD/UHD",
-    "variant": "NM00300",
+    "variant": "N009800",
     "features": [
      {
       "name": "Identity",
@@ -2085,8 +2085,8 @@
   "versions": [
    {
     "rev": "1.00",
-    "file": "MT1959/BU40N_1.00_221ad35b.bin",
-    "sha256": "221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4",
+    "file": "MT1959/BU40N_1.00_79e8df06.bin",
+    "sha256": "79e8df06c776ed40523a5b530d1559e561fbefb71a9e981d301a92b7a6b5c964",
     "modify": "flawless",
     "brand": "LG",
     "chipset": "MT1959",
@@ -2165,13 +2165,13 @@
    },
    {
     "rev": "1.02",
-    "file": "MT1959/BU40N_1.02_1bbeb535.bin",
-    "sha256": "1bbeb5351dc0d69feaeefdac9ada7f3f48eed0ca4e2f879d9266679cec133396",
+    "file": "MT1959/BU40N_1.02_97bee5c5.bin",
+    "sha256": "97bee5c51fbeb7980c35539bdf44e5d2c1628908721815fcee4ea2b9f22e9263",
     "modify": "flawless",
     "brand": "LG",
     "chipset": "MT1959",
     "media": "BD/UHD",
-    "variant": "N080201",
+    "variant": "N080100",
     "features": [
      {
       "name": "Identity",
@@ -2685,13 +2685,13 @@
    },
    {
     "rev": "U101",
-    "file": "MT1959/BU40N_U101_5f9abd3f.bin",
-    "sha256": "5f9abd3f7169b1d6525c47c5f406c1ddb13fca5b9f93fc646a1a924f13da9779",
+    "file": "MT1959/BU40N_U101_0378599a.bin",
+    "sha256": "0378599a409de593b23474d4d763a63aae0b26bae1d01a4df6c755a7b4a10e30",
     "modify": "flawless",
     "brand": "LG",
     "chipset": "MT1959",
     "media": "BD/UHD",
-    "variant": "M080201",
+    "variant": "M000201",
     "features": [
      {
       "name": "Identity",
@@ -2732,13 +2732,13 @@
   "versions": [
    {
     "rev": "1.00",
-    "file": "MT1959/BU50N_1.00_20425a8a.bin",
-    "sha256": "20425a8ade6bb5d24bbd76fb5d5d67e744cd49e24783be87e6a89d30dfcace95",
+    "file": "MT1959/BU50N_1.00_6b4fa7bd.bin",
+    "sha256": "6b4fa7bd47c0b2578b256bb792b034a385de32264c454eaf5f6950a4d75c2c0d",
     "modify": "flawless",
     "brand": "LG",
     "chipset": "MT1959",
     "media": "BD/UHD",
-    "variant": "N080100",
+    "variant": "N000100",
     "features": [
      {
       "name": "Identity",
@@ -2946,8 +2946,8 @@
    },
    {
     "rev": "3.02",
-    "file": "MT1939/BW-16D1HT_3.02_784e017f.bin",
-    "sha256": "784e017fbacd2250fc37ee442869db82ccc8d637d78126b570ba33c0256d1715",
+    "file": "MT1939/BW-16D1HT_3.02_83ea24bb.bin",
+    "sha256": "83ea24bb07b8a7a451bba1856d1db18b7f54b1823b9d148e213f25daf2e0a1d2",
     "modify": "flawless",
     "brand": "ASUS",
     "chipset": "MT1939",
@@ -3741,8 +3741,8 @@
    },
    {
     "rev": "1.V5",
-    "file": "MT1939/WH16NS58_1.V5_e2406018.bin",
-    "sha256": "e24060184915a9860a84ea7d0ad23fee478e6eb31af86da589f5723c8e29a1cd",
+    "file": "MT1939/WH16NS58_1.V5_873a8c96.bin",
+    "sha256": "873a8c96ddae57a4cb271b30865a75fdb36e46ac7fb9b1b0169b307b74975fe7",
     "modify": "partial",
     "brand": "LG",
     "chipset": "MT1939",
@@ -3828,13 +3828,13 @@
    },
    {
     "rev": "1.01",
-    "file": "MT1939/WH16NS60_1.01_aea98763.bin",
-    "sha256": "aea98763cad71e8cfbd8d32963a63adf429e889bd13b749e7c4a792cc5b076a2",
+    "file": "MT1939/WH16NS60_1.01_b0476f44.bin",
+    "sha256": "b0476f44509acc7d97c0aa08a9cda4d9acf59624963b455a67f0abae5a017bf0",
     "modify": "flawless",
     "brand": "LG",
     "chipset": "MT1939",
     "media": "BD/UHD",
-    "variant": "N015100",
+    "variant": "N005100",
     "features": [
      {
       "name": "Identity",
@@ -3908,13 +3908,13 @@
    },
    {
     "rev": "1.03",
-    "file": "MT1939/WH16NS60_1.03_3d901142.bin",
-    "sha256": "3d90114273377220988f7cbd0da2ecad01d4e61a1b1089921fdee3fba2f62af9",
+    "file": "MT1939/WH16NS60_1.03_c2279417.bin",
+    "sha256": "c2279417184935a7bb8f714f16f052f01915e6ecceb5457943f5998e9af91800",
     "modify": "flawless",
     "brand": "LG",
     "chipset": "MT1939",
     "media": "BD/UHD",
-    "variant": "NM07600",
+    "variant": "N007600",
     "features": [
      {
       "name": "Identity",
