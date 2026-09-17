@@ -33,7 +33,7 @@ capability comes back as one of four states:
 |---|---|
 | **applied** | the patch was added on this run |
 | **already set** | the feature is already present (e.g. re-running on freemkv firmware) — a safe no-op |
-| **n/a** | out of scope for this drive (e.g. Raw Read on a DVD-only drive) |
+| **n/a** | out of scope for this drive (e.g. UHD on a DVD-only drive) |
 | **skipped** | in scope, but the signature wasn't found on this image (nothing is written) |
 
 Running `create` on freemkv firmware again is **idempotent**: every capability reports *already
@@ -46,15 +46,21 @@ the freemkv command is sent — see [Command reference](#command-reference) belo
 |---|---|---|
 | Identity | Answers the "are you freemkv?" ping | ready |
 | Speed | Sets the read-speed / riplock ceiling — a settable cap, not just on/off | ready |
-| Region-free | Every DVD reads as region-free (DVD-only) | ready |
-| Raw Read | Approves the host certificate so the drive drops AACS drive↔host authentication. The drive then releases the Volume ID (and the other AACS-gated values) to a normal `READ DISC STRUCTURE`, and because no AKE handshake ran there's no bus key, so reads come back exactly as they sit on the disc — bus encryption is off for free (content stays AACS-at-rest encrypted; the host applies title keys) | ready |
+| Region | Region-free (RPC-1, no ~5-change cap), or force a specific DVD region (1–8) or Blu-ray region (A/B/C) | ready |
+| UHD | Enables Ultra HD Blu-ray (AACS 2.0) support on the drive | ready |
+| Blu-ray (BD) | Blu-ray (AACS 1.0) capability control | ready |
+| Revocation (HRL) | Skip the host-certificate revocation check, so a revoked-but-genuine certificate still works (non-destructive) | ready |
+| AKE bypass | Skips the drive↔host authentication handshake entirely — the drive acts pre-authenticated | ready |
+| Bus decrypt | Removes in-transit (bus) encryption so sectors read back decrypted; the host applies the title keys | ready |
 | Diagnostic Dump | Reads 64-byte windows of firmware RAM | ready (diagnostic use) |
 
-These map 1:1 to the sub-functions in the [command reference](#command-reference) below. Which
-capabilities apply to a given image depends on the chipset and generation, so `create` reports
-them per image rather than assuming. Every build is **statically verified** (integrity re-signs,
-structural audit passes); on-drive hardware validation is the one remaining step for newer
-drive families.
+These map to the **features** in the [command reference](#command-reference) below, each an
+independent setting. Which capabilities apply to a given image depends on the chipset and
+generation, so `create` reports them per image rather than assuming — a DVD-only drive has no UHD
+or BD gate, for example. Every feature ships at OEM, so the drive stays byte-for-byte stock until
+a feature is deliberately armed; settings live in RAM and revert on power-off unless **saved** to
+flash. Every build is **statically verified** (integrity re-signs, structural audit passes);
+on-drive hardware validation is the one remaining step for newer drive families.
 
 ### verify
 
@@ -169,14 +175,26 @@ The full discriminator is the 4-byte prefix **`3C 0E C0 DE`**: standard opcode +
 every optical drive already answers, and the drive stays **100% OEM** until that exact prefix
 shows up.
 
-`freemkv-fw create` wires these sub-functions into the firmware image it builds, and
+`freemkv-fw create` wires these features into the firmware image it builds, and
 `freemkv-fw verify /dev/…` sends the **Identity** command to test a live drive.
+
+### Grammar: `verb [feature] [state]`
+
+The command surface is a small set of **verbs** operating on a flat namespace of **features**,
+each holding a **state**. A verb (`SET`, `GET`, `RESET`, `SAVE`, `IDENTITY`, `DUMPALL`) says what
+to do; a feature (Speed, Region, UHD, …) says which subsystem; a state says how to set it. Every
+feature has an **OEM** state — the firmware does not touch that subsystem, so a drive left at OEM
+is byte-behaviour-identical to stock. Settings live in **RAM** and are lost on power-off unless
+you **SAVE** them to flash; on boot the firmware restores the saved config, or falls back to OEM
+if nothing was saved. **RESET** reloads that state — either back to the last saved config
+(`--to flash`) or all the way to OEM (`--to oem`). Features are **orthogonal**: the familiar
+"modes" are just combinations (see [Composing features](#composing-features) below).
 
 ### CDB layout
 
 ```
-byte:  0     1     2  3     4       5        6   7   8       9
-       0x3C  0x0E  C0 DE    <subfn> <state>  <alloc_len 24-bit BE>  <ctrl>
+byte:  0     1     2  3     4      5          6        7   8       9
+       0x3C  0x0E  C0 DE    <verb> <feature>  <state>  <alloc_len 16-bit BE>  <ctrl>
 ```
 
 | Field | Bytes | Offset | Meaning |
@@ -184,60 +202,131 @@ byte:  0     1     2  3     4       5        6   7   8       9
 | Opcode | 1 | `cdb[0]` | `0x3C` — `READ BUFFER`, the command freemkv hijacks |
 | Knock mode | 1 | `cdb[1]` | `0x0E` — an OEM-unused `READ BUFFER` mode |
 | Knock | 2 | `cdb[2..4]` | `C0 DE`; a defence-in-depth signature behind the mode byte |
-| Sub-function | 1 | `cdb[4]` | selects the command (see table below) |
-| State | 1 | `cdb[5]` | toggle state — `00` = OEM behavior, `01` = patched/enabled. Two exceptions: for **Speed** (`0x02`) this byte **is** the cap value, and for the **Diagnostic Dump** (`0x09`) it carries the top byte of the 32-bit address |
-| Alloc length | 3 | `cdb[6..8]` | 24-bit big-endian allocation length — the native `READ BUFFER` position, so the transport sizes the transfer correctly |
+| Verb | 1 | `cdb[4]` | selects the operation — `SET` / `GET` / `RESET` / `SAVE` / `IDENTITY` / `DUMPALL` (see verb table) |
+| Feature | 1 | `cdb[5]` | which feature to act on, for `SET` / `GET` (else `00`; see feature table) |
+| State | 1 | `cdb[6]` | the state to write, for `SET`; for `RESET` the mode byte (`00` = to saved flash, `FF` = to OEM); else `00` |
+| Alloc length | 2 | `cdb[7..9]` | 16-bit big-endian allocation length — sizes the data-in transfer for data-returning verbs |
 | Control | 1 | `cdb[9]` | `0x00` |
 
 `build_cdb()` (the host-side helper) assembles exactly this 10-byte frame. Without the `3C 0E
 C0 DE` prefix, every byte is interpreted by the OEM's normal `READ BUFFER` handler — nothing
-about a bare `READ BUFFER` command changes.
+about a bare `READ BUFFER` command changes. **DUMPALL** is the one exception to the field layout:
+it carries a 32-bit RAM address big-endian in `cdb[5..9]` (no feature / state / alloc-length).
 
-### Sub-function table
+### Verb table (`cdb[4]`)
 
-| CDB prefix | Command | Sub-function | Status |
+| CDB prefix | Verb | Value | Meaning | Status |
+|---|---|---|---|---|
+| `3C 0E C0 DE 01` | Identity | `0x01` | Status / ping — returns the `freemkv` magic, version, and current feature-state table | ready |
+| `3C 0E C0 DE 02 <feat> <state>` | Set | `0x02` | Set one feature to a state (RAM only) | ready |
+| `3C 0E C0 DE 03 <feat>` | Get | `0x03` | Read one feature's current state back in the data-in | ready |
+| `3C 0E C0 DE 04 00 <mode>` | Reset | `0x04` | Reload the live state — `cdb[6]` mode `00` = to saved flash config, `FF` = to OEM (RAM only, never writes flash) | ready |
+| `3C 0E C0 DE 0B` | Save | `0x0B` | Persist the current (live) feature-state table to flash — the **only** writer | ready |
+| `3C 0E C0 DE 09 <addr32>` | DumpAll | `0x09` | Diagnostic 64-byte RAM peek at a 32-bit address | ready (diagnostic use) |
+
+### Feature table (`cdb[5]`, for `SET` / `GET`)
+
+Each feature is an independent state byte in the firmware's flag table. Every feature reserves
+one universal code — `FF` = **OEM** (do exactly what the stock drive does) — and defines its own
+values on top. Two shapes result: **toggles** (`FF` OEM / `00` / `01`) and **valued** features
+(Speed and Region, which take a range).
+
+| Feature | Value | States | Status |
 |---|---|---|---|
-| `3C 0E C0 DE 01` | Identity | `0x01` | ready |
-| `3C 0E C0 DE 02 <cap>` | Speed | `0x02` | ready |
-| `3C 0E C0 DE 03 01/00` | Region-free | `0x03` | ready |
-| `3C 0E C0 DE 04 01/00` | Raw Read | `0x04` | ready |
-| `3C 0E C0 DE 05`–`08` | *(reserved)* | `0x05`–`0x08` | reserved (future capabilities) |
-| `3C 0E C0 DE 09 <addr32>` | Diagnostic Dump | `0x09` | ready (diagnostic use) |
+| Speed | `0x01` | `FF` = OEM ramp · `00` = off = max / uncapped · `01`–`FE` = explicit speed cap | ready |
+| Region | `0x02` | `FF` = OEM region logic · `00` = locked (nothing plays) · `01`–`08` = force DVD region 1–8 · `0A`/`0B`/`0C` = force BD region A/B/C · `0F` = region-free | ready |
+| UHD | `0x03` | `FF` = OEM · `00` = No, refuse UHD discs · `01` = Yes, accept UHD discs | ready |
+| BD | `0x04` | `FF` = OEM · `00` = No, refuse BD discs · `01` = Yes, accept BD discs | ready |
+| HRL | `0x05` | `FF` = OEM enforce · `00` = off, skip the revocation lookup (accept revoked, non-destructive) · `01` = on, enforce | ready |
+| AKE | `0x06` | `FF` = OEM real handshake · `00` = off, bypass the handshake (pre-authenticated) · `01` = on, require the handshake | ready |
+| Bus | `0x07` | `FF` = OEM · `00` = off, bus encryption off (content returned de-bussed) · `01` = on, bus encryption enforced | ready |
 
-**Toggle polarity is uniform:** state `00` = OEM behavior, state `01` = patched/enabled. This
-holds for every toggle (`0x03`, `0x04`), with two documented exceptions — **Speed**
-(`0x02`), where the state byte **is** the read-speed cap value, and the **Diagnostic Dump**
-(`0x09`), where `cdb[5..9]` carry a 32-bit address. With any toggle set to `00` (or Speed set to
-`00` = OEM), the drive behaves byte-identically to stock OEM firmware — that OEM-compatibility
-guarantee is the point of the design.
+**State conventions.** Every feature reserves **OEM** (`0xFF`) — the firmware jumps to the stock
+drive code, so that subsystem behaves exactly as shipped. Beyond that each feature has its own
+value domain. For the **toggle** features the two poles differ in meaning:
 
-#### What each command does
+- **UHD / BD** answer "does this drive accept this disc type?" — `00` = **No** (refuse), `01` =
+  **Yes** (accept), `FF` = **OEM**.
+- **HRL / AKE / Bus** are unlock switches where `00` is the **unlock** direction — `00` = **off**
+  (skip revocation / bypass AKE / bus-encryption off), `01` = **on** (enforce), `FF` = **OEM**.
 
-- **Identity (`0x01`, read-only).** Returns the ASCII `freemkv` magic plus a 1-byte firmware
-  version. Send it first, and only treat a drive as freemkv-flashed if it answers with the magic.
-  Changes nothing.
-- **Speed (`0x02`, settable cap).** Sets the read-speed / riplock ceiling. The **state byte is
-  the cap value** — this is a settable cap, not a simple on/off: `00` = OEM (the stock speed
-  ramp), `01`–`FF` set the ceiling to that value, and `FF` = max / uncapped. Use it to lift the
-  playback-speed riplock so discs read back at the drive's full rate for ripping.
-- **Region-free (`0x03`, toggle).** State `01` makes every DVD read as region-free (RPC-free),
-  regardless of the disc's region code or the drive's region setting; state `00` = OEM.
-  **DVD-only** — it does not affect Blu-ray or UHD, which aren't RPC-region-locked.
-- **Raw Read (`0x04`, toggle).** State `01` approves the host certificate, so the drive stops
-  enforcing AACS drive↔host authentication; state `00` = OEM. One unlock, two consequences: the
-  drive **releases the Volume ID** (and the other AACS-gated values) to a normal `READ DISC
-  STRUCTURE` request, and because no AKE handshake ever ran there is **no bus key**, so `READ(10)`
-  returns sectors exactly as they sit on the disc — **bus encryption is off for free**. This only
-  removes the drive's transport / access-control policing; sectors are still AACS-encrypted at
-  rest and the host applies the title keys. VID release and bus-encryption-off are not separate
-  toggles — they both follow from this one command.
-- **Sub-functions `0x05`–`0x08` — reserved.** Held reserved for future capabilities and wire-ABI
-  stability; not advertised as capabilities today. These slots will not be reused or renumbered.
-- **Diagnostic Dump (`0x09`, read-only).** Returns a fixed 64-byte window read from the 32-bit
-  address packed big-endian across `cdb[5..9]` (`cdb[5]` = address bits 31:24 … `cdb[8]` =
-  address bits 7:0). The host iterates in 64-byte steps to dump any RAM region. This is a
-  read-only diagnostic tool (used by the `fw09_dump` helper script), not a drive-facing
-  capability toggle.
+The **valued** features carry a range: **Speed** (`00` = max/uncapped, `01`–`FE` = a specific
+speed cap) and **Region** (`00` = locked, `01`–`08` = DVD 1–8, `0A`–`0C` = BD A/B/C, `0F` =
+region-free). A freshly flashed, never-saved drive boots with every feature at **OEM**, so it is
+byte-identical to stock; boot otherwise restores whatever config was last **saved**. That
+OEM-compatibility guarantee is the point of the design.
+
+#### Default unlock profile
+
+The `freemkv-unlock` host tool applies this profile for a normal rip — the common "just unlock
+everything" combination. The firmware supports **any** mix of feature values; this is simply the
+default the tool arms:
+
+| Feature | Setting | State |
+|---|---|---|
+| Speed | max (uncapped) | `0x00` |
+| Region | region-free | `0x0F` |
+| UHD | yes (accept) | `0x01` |
+| BD | yes (accept) | `0x01` |
+| HRL | off (skip revocation) | `0x00` |
+| AKE | off (bypass handshake) | `0x00` |
+| Bus | off (de-bussed) | `0x00` |
+
+#### What each verb and feature does
+
+- **Identity (`0x01`, read-only).** Returns the ASCII `freemkv` magic, a firmware version byte,
+  and the current feature-state table. Send it first, and only treat a drive as freemkv-flashed
+  if it answers with the magic. Changes nothing.
+- **Set (`0x02`) / Get (`0x03`).** `SET` writes `cdb[6]` (state) into the feature named in
+  `cdb[5]`; `GET` reads that feature's current state back as a 1-byte data-in. Both act on exactly
+  one feature, and `SET` touches **RAM only** — the change is lost on power-off unless you `SAVE`.
+- **Reset (`0x04`).** Reloads the live RAM state without reflashing — `--to flash` (`cdb[6]` =
+  `00`) restores the last **saved** config, `--to oem` (`cdb[6]` = `FF`) returns every feature to
+  OEM. Neither writes flash. "Reset to OEM and keep it" is `RESET --to oem` **then** `SAVE`.
+- **Save (`0x0B`).** Persists the current live feature-state table to flash — the only command
+  that writes flash. Saved settings survive a power-cycle and are restored on the next boot; a
+  drive that has never saved boots stock (OEM).
+- **Speed.** Read-speed / riplock ceiling. `FF` (OEM) = the OEM speed ramp; `00` (off) = speed
+  control off, so the drive reads at max / uncapped; `01`–`FE` set an explicit speed cap. Use max
+  to lift the playback-speed riplock so discs read back at the drive's full rate for ripping.
+- **Region.** RPC control across DVD **and** Blu-ray. `FF` (OEM) keeps the drive's own region
+  logic; `00` locks the drive (nothing plays); `01`–`08` pin the drive to DVD region 1–8;
+  `0A` / `0B` / `0C` pin it to BD region A / B / C; `0F` makes it region-free (RPC-1, with none of
+  retail's ~5-change limit).
+- **UHD.** Ultra HD Blu-ray (AACS 2.0) capability gate — "does this drive accept UHD discs?"
+  `FF` (OEM) = as shipped; `01` (Yes) accepts and engages 4K UHD discs; `00` (No) refuses them.
+  (In scope only on UHD-capable hardware.)
+- **BD.** Blu-ray (AACS 1.0) capability gate — "does this drive accept BD discs?" `FF` (OEM) = as
+  shipped; `01` (Yes) accepts BD discs; `00` (No) force-refuses them.
+- **HRL.** Host-certificate revocation handling on the cert path. `FF` (OEM) = enforce; `00` (off)
+  is the unlock direction — it skips the revocation lookup so a revoked-but-genuine certificate is
+  accepted (non-destructive, reversible); `01` (on) enforces the check.
+- **AKE.** Drive↔host authentication handshake. `FF` (OEM) = the real handshake; `00` (off) is the
+  unlock direction — it bypasses the handshake entirely so the drive acts pre-authenticated;
+  `01` (on) requires the handshake. Bypassing AKE also releases the Volume ID (and the other
+  AACS-gated values) to a normal `READ DISC STRUCTURE` request, since the gate no longer refuses
+  to emit them.
+- **Bus.** In-transit AACS bus encryption. `FF` (OEM) = as shipped; `00` (off) is the unlock
+  direction — sectors are returned de-bussed, so `READ(10)` comes back exactly as it sits on the
+  disc (content is still AACS-encrypted at rest, so the host applies the title keys); `01` (on)
+  enforces bus encryption. With AKE bypassed there is no bus key anyway, so bus encryption is off
+  for free.
+- **DumpAll (`0x09`, read-only).** Returns a fixed 64-byte window read from the 32-bit address
+  packed big-endian across `cdb[5..9]` (`cdb[5]` = address bits 31:24 … `cdb[8]` = address bits
+  7:0). The host iterates in 64-byte steps to dump any RAM region. This is a read-only diagnostic
+  tool (used by the `fw09_dump` helper script), not a drive-facing capability toggle.
+
+#### Composing features
+
+Features are orthogonal, so the familiar "modes" are just combinations of independent settings:
+
+- **OEM-style rip (real authentication).** `UHD = yes` + `HRL = off (skip)` + `Bus = off` — the
+  drive still runs the genuine AKE handshake, but a revoked host certificate is accepted and the
+  content reads back de-bussed.
+- **Full bypass.** `AKE = off (bypass)` + `Bus = off` (+ `UHD = yes` for a UHD disc) — the drive
+  skips the handshake entirely and returns de-bussed sectors.
+- **Quality-of-life only.** `Speed = max` and/or `Region = region-free`, with every AACS-path
+  feature left at OEM — a faster, region-free drive that is otherwise 100% stock.
 
 ### How the firmware is built
 
@@ -258,70 +347,92 @@ nothing is written.
 
 ### Response conventions
 
-Responses are **not** uniform — read each command's response by its own rule:
+Responses are **not** uniform — read each verb's response by its own rule:
 
-- **Identity (`0x01`)** returns the ASCII `freemkv` magic followed by a 1-byte version. This is
-  the command to use to confirm you're talking to freemkv-flashed firmware.
-- **Diagnostic Dump (`0x09`)** returns exactly **64 raw bytes** from the requested address.
-- **Toggles (`0x02`, `0x03`, `0x04`)** return a 1-byte status (`01` = ok, `00` = fail). Once
-  **Raw Read (`0x04`)** is on, read the released Volume ID with a normal `READ DISC STRUCTURE`
-  request — it does not come back in the toggle's own response.
+- **Identity (`0x01`)** returns the ASCII `freemkv` magic, a 1-byte version, and the current
+  feature-state table. This is the command to use to confirm you're talking to freemkv-flashed
+  firmware.
+- **Get (`0x03`)** returns the named feature's current state as a single byte.
+- **Set (`0x02`) / Reset (`0x04`) / Save (`0x0B`)** return a 1-byte status (`01` = ok, `00` =
+  fail); `Reset` also echoes its mode byte. After a `SET` that drops authentication (**AKE**) or
+  bus encryption (**Bus**), read the released Volume ID with a normal `READ DISC STRUCTURE`
+  request — it does not come back in the command's own response.
+- **DumpAll (`0x09`)** returns exactly **64 raw bytes** from the requested address.
 
 ### Safety
 
 :::note[Reversible by design]
-**Identity (`0x01`) and the Diagnostic Dump (`0x09`) are read-only and safe** — they report
+**Identity (`0x01`), Get (`0x03`) and DumpAll (`0x09`) are read-only and safe** — they report
 a value and change no drive state. Start with `0x01` to confirm the drive is freemkv-flashed.
 
-The runtime commands (`0x02`, `0x03`, `0x04`) are **reversible**: state `01` enables the
-patched behavior (for Speed, any cap value enables it), and sending the command again with state
-`00` reverts to byte-identical OEM behavior. Nothing they change is meant to be permanent, and
-nothing requires reflashing.
+`SET` is **reversible**: write `OEM` (`FF`) back to a feature, or send `RESET --to oem` to return
+every feature to OEM at once, and the drive is byte-identical to stock again — no reflash
+required. `SET` and `RESET` touch RAM only; nothing is written to flash until you `SAVE`, so a
+power-cycle reverts to the last saved config (OEM if you never saved). Every feature change is
+non-destructive.
 :::
 
 ### Examples (`sg_raw` on Linux)
 
 The `sg3-utils` package provides `sg_raw`, which sends a raw CDB and prints the bytes read
 back. Pass the 10-byte `READ BUFFER` CDB and use `-r <n>` to request enough bytes for the
-response; keep the `cdb[6..9]` allocation length consistent with `-r`. Replace `/dev/sg0` with
-your drive.
+response; keep the `cdb[7..9]` allocation length consistent with `-r`. The `SET` frame is
+`… 02 <feature> <state>`; `GET` is `… 03 <feature>`. Replace `/dev/sg0` with your drive.
 
 Identity probe — expect the response to lead with `freemkv`:
 
 ```bash
-sg_raw -r 96 /dev/sg0 3C 0E C0 DE 01 00 00 00 60 00   # Identity → "freemkv" + version
+sg_raw -r 96 /dev/sg0 3C 0E C0 DE 01 00 00 00 60 00   # Identity → "freemkv" + version + state table
 ```
 
-Speed — set the read-speed ceiling to max / uncapped (`FF`), or back to OEM (`00`):
+Speed — unlock to max, or write OEM (`FF`) to hand the subsystem back to the stock ramp:
 
 ```bash
-sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 FF 00 00 00 00    # Speed → uncapped
-sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 00 00 00 00 00    # Speed → OEM ramp
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 01 00 00 00 00    # SET Speed → max / uncapped
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 01 FF 00 00 00    # SET Speed → OEM ramp
 ```
 
-Region-free on:
+Region — go region-free, or pin a specific DVD / BD region:
 
 ```bash
-sg_raw -r 1 /dev/sg0 3C 0E C0 DE 03 01 00 00 00 00    # Region-free → on
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 02 0F 00 00 00    # SET Region → region-free (RPC-1)
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 02 02 00 00 00    # SET Region → force DVD region 2
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 02 0B 00 00 00    # SET Region → force BD region B
 ```
 
-Raw Read on — approve the host cert; the drive then releases the Volume ID to a normal `READ
-DISC STRUCTURE` and returns sectors unencrypted on the bus:
+UHD — accept Ultra HD Blu-ray (AACS 2.0) discs on the drive:
 
 ```bash
-sg_raw -r 1 /dev/sg0 3C 0E C0 DE 04 01 00 00 00 00    # Raw Read → on
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 03 01 00 00 00    # SET UHD → yes (accept)
 ```
 
-Diagnostic Dump at an address of your choice (`0xAABBCCDD` shown as a placeholder) — expect
-64 raw bytes:
+An OEM-style rip keeps the real handshake but skips revocation and drops bus encryption;
+a full bypass skips the handshake entirely. For HRL / AKE / Bus, `00` is the unlock direction:
+
+```bash
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 05 00 00 00 00    # SET HRL → off (skip revocation check)
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 07 00 00 00 00    # SET Bus → off (sectors de-bussed)
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 06 00 00 00 00    # SET AKE → off (bypass the handshake)
+```
+
+Read a feature's current state back, persist the live settings, or reload the state:
+
+```bash
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 03 01 00 00 01 00    # GET Speed → 1-byte state
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 0B 00 00 00 01 00    # SAVE → persist live settings to flash
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 04 00 00 00 01 00    # RESET --to flash → reload saved config
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 04 00 FF 00 01 00    # RESET --to oem → every feature back to OEM
+```
+
+DumpAll at an address of your choice (`0xAABBCCDD` shown as a placeholder) — expect 64 raw bytes:
 
 ```bash
 sg_raw -r 64 /dev/sg0 3C 0E C0 DE 09 AA BB CC DD 00   # dump → 64 bytes at 0xAABBCCDD
 ```
 
-The allocation length lives in `cdb[6..8]` big-endian (three bytes, e.g. `00 00 60` = 96 bytes
-for Identity), with `cdb[9]` the control byte. For the Diagnostic Dump the address instead
-occupies `cdb[5..9]`.
+The allocation length lives in `cdb[7..9]` big-endian (two bytes, e.g. `00 60` = 96 bytes for
+Identity), with `cdb[9]` the control byte. For `DumpAll` the 32-bit address instead occupies
+`cdb[5..9]`.
 
 ## See also
 
