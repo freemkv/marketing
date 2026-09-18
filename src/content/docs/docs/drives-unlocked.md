@@ -34,7 +34,7 @@ If you own an LG, ASUS, or HP Blu-ray drive from roughly **2012-2020**, it's ver
 ## Firmwares Supported:
 
 - **[FreeMKV](/docs/firmware-tools/)**
-- **MK**
+- **MK** (Partial)
 - **OmniDrive** (untested)
 
 ## How do I tell what I have?

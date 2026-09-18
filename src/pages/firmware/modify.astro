@@ -14,6 +14,10 @@ const github = 'https://github.com/freemkv';
 const firmwareRepo = 'https://github.com/freemkv/freemkv-firmware';
 const firmwareReleases = `${firmwareRepo}/releases`;
 
+// Current freemkv firmware release line (freemkv-firmware Cargo.toml). Single
+// source for the version string shown in the demo output below.
+const FW_VERSION = '0.8.2';
+
 // Prebuilt binaries, grouped by OS into columns (matching the Download page).
 // Asset names MUST match what the freemkv-firmware release workflow attaches
 // (release.yml): `freemkv-<tool>-<os>-<arch>.<ext>` — tar.gz on Linux/macOS,
@@ -62,12 +66,14 @@ const assetFor = (tool, b) => `freemkv-${tool}-${b.slug}.${b.ext}`;
 // in sync with src/content/docs/docs/firmware-tools.md.
 const fwCapabilities = [
   { name: 'Identity', detail: 'Answers the "are you freemkv?" ping', status: 'ready' },
-  { name: 'Speed', detail: 'Settable read-speed ceiling — lifts the riplock cap for full-rate ripping', status: 'ready' },
-  { name: 'Region-free', detail: 'Every DVD reads as region-free (DVD-only)', status: 'ready' },
-  { name: 'Raw Read', detail: 'Drops the AACS drive↔host auth so the drive releases the Volume ID and returns sectors unencrypted on the bus — the host applies the title keys', status: 'ready' },
+  { name: 'Speed', detail: 'Settable read-speed / riplock ceiling — lift the cap for full-rate ripping', status: 'ready' },
+  { name: 'Region', detail: 'Region-free (RPC-1) across DVD and Blu-ray, or force a specific region', status: 'ready' },
+  { name: 'UHD', detail: 'Ultra HD Blu-ray (AACS 2.0) capability gate', status: 'ready' },
+  { name: 'Blu-ray (BD)', detail: 'Blu-ray (AACS 1.0) capability gate', status: 'ready' },
+  { name: 'Revocation (HRL)', detail: 'Skip the host-certificate revocation check (non-destructive)', status: 'ready' },
+  { name: 'AKE bypass', detail: 'Skip the drive↔host authentication handshake — the drive acts pre-authenticated', status: 'ready' },
+  { name: 'Bus decrypt', detail: 'Remove in-transit (bus) encryption so sectors read back de-bussed; the host applies the title keys', status: 'ready' },
   { name: 'Diagnostic Dump', detail: '64-byte firmware RAM windows', status: 'ready' },
-  { name: 'Downgrade Enable', detail: 'Sets the downgrade-enable (DE) byte, so freemkv installs over any existing firmware, OEM or 3rd party.', status: 'ready' },
-  { name: 'Stays Stock', detail: 'The drive stays 100% stock until freemkv commands are enabled, and can be disabled again on the fly.', status: 'ready' },
 ];
 import '../../styles/site.css';
 ---
@@ -157,13 +163,16 @@ import '../../styles/site.css';
             <pre class="terminal-body"><code><span class="c"># One input, one output — freemkv-fw auto-detects the model</span>
 <span class="p">$</span> freemkv-fw create BU40N_1.00.bin BU40N_1.00.freemkv.bin
 
-<span class="c">freemkv-fw 0.4.0 — detected LG BU40N · base 1.00</span>
+<span class="c">freemkv-fw {FW_VERSION} — detected LG BU40N · base 1.00</span>
 
   Identity ................. <span class="ok">added</span>
   Speed .................... <span class="ok">added</span>
-  Region-free .............. <span class="ok">added</span>
-  Raw Read ................. <span class="ok">added</span>
-  Diagnostic Dump .......... <span class="ok">added</span>
+  Region ................... <span class="ok">added</span>
+  UHD ...................... <span class="ok">added</span>
+  BD ....................... <span class="ok">added</span>
+  HRL ...................... <span class="ok">added</span>
+  AKE ...................... <span class="ok">added</span>
+  Bus ...................... <span class="ok">added</span>
 
 <span class="c">Downgrade-enable (DE) byte ... set (flashes over any version)</span>
 <span class="c">Re-signing integrity table ... ok</span>

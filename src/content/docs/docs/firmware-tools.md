@@ -3,6 +3,10 @@ title: Firmware tools
 description: freemkv-fw and freemkv-flash — the two CLI tools for building and installing freemkv firmware — plus the full command ABI the resulting firmware answers to on the wire.
 ---
 
+:::note
+Accurate as of freemkv firmware **0.8.2+**.
+:::
+
 freemkv firmware turns a supported optical drive into a faster, unlocked drive. Two small
 command-line tools do the work: **freemkv-fw** builds and checks firmware images, and
 **freemkv-flash** writes them to a drive. Both are also documented on the public
@@ -146,20 +150,6 @@ firmware revision:
 
 Once you have vendor + model + firmware revision, check it against the base images in the
 firmware index (see the [Firmware → Find](/firmware/) page) before building.
-
-## Supported firmwares
-
-freemkv-flash's `create`/`verify` tooling targets **freemkv** firmware, but the flasher itself
-is generic and can also identify drives running other unlock firmwares:
-
-| Firmware | Support |
-|---|---|
-| **[FreeMKV](#command-reference)** | Fully supported — freemkv builds, verifies, and identifies it |
-| **MK** | Partial |
-| **OmniDrive** | Untested |
-
-See [Unlocked drives](/docs/drives-unlocked/) for which physical drive families these firmwares
-target.
 
 ## Command reference
 
