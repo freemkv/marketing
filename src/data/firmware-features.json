@@ -1,5 +1,5 @@
 {
- "note": "Per-firmware feature availability over the full 118-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from `freemkv-fw create --base --json`; per-feature `ok` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (101 images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, 17 images). Regenerate with scripts/regen-firmware-lineage.py \u2014 do not hand-edit.",
+ "note": "Per-firmware feature availability over the full 118-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from `freemkv-fw create --base --json`; per-feature `ok` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (101 images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, 17 images). Regenerate with scripts/publish-firmware.py \u2014 do not hand-edit.",
  "flags": [
   "Speed",
   "Region",
