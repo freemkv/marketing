@@ -66,8 +66,10 @@ independent setting. Which capabilities apply to a given image depends on the ch
 generation, so `create` reports them per image rather than assuming — a DVD-only drive has no UHD
 or BD gate, for example. Every feature ships at OEM, so the drive stays byte-for-byte stock until
 a feature is deliberately armed; settings live in RAM and revert on power-off unless **saved** to
-flash. Every build is **statically verified** (integrity re-signs, structural audit passes);
-on-drive hardware validation is the one remaining step for newer drive families.
+flash. Every build is **statically verified** (integrity re-signs, structural audit passes); the
+levers are structurally verified across the corpus. The **LG BU40N** is additionally
+**confirmed on live hardware**; on-drive validation of the other drive families is the one
+remaining step.
 
 ### verify
 

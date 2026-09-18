@@ -1,5 +1,5 @@
 {
- "note": "Per-firmware feature availability derived from `freemkv-fw create --base --json`. Counts are a live snapshot of the strict build and change as the engine AACS finders generalize \u2014 regenerate, do not hand-edit.",
+ "note": "Per-firmware feature availability over the full 118-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from `freemkv-fw create --base --json`; per-feature `ok` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (101 images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, 17 images). Regenerate with scripts/regen-firmware-lineage.py \u2014 do not hand-edit.",
  "flags": [
   "Speed",
   "Region",
@@ -10,20 +10,20 @@
   "Bus"
  ],
  "counts": {
-  "total": 114,
+  "total": 118,
   "base_only": 0,
-  "feature_bearing": 114,
+  "feature_bearing": 118,
   "hardware_verified": 20,
-  "build_verified": 94
+  "build_verified": 98
  },
  "per_flag": {
-  "Speed": 97,
-  "Region-free": 114,
-  "UHD": 97,
-  "BD": 97,
-  "HRL Bypass": 114,
-  "AKE Bypass": 114,
-  "Bus Decrypt": 114
+  "Speed": 101,
+  "Region-free": 118,
+  "UHD": 101,
+  "BD": 101,
+  "HRL Bypass": 118,
+  "AKE Bypass": 118,
+  "Bus Decrypt": 118
  },
  "images": [
   {
@@ -86,11 +86,12 @@
     "speed_gate": 101090,
     "region_emitter": 1329766,
     "ake_gate": 1485066,
-    "uhd_stub_va": 66800,
+    "uhd_stub_va": 0,
     "bd_stub_va": 99168,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BC-12B1ST_3.01_8961b80b.bin"
+   "r2_key": "MT1939/BC-12B1ST_3.01_8961b80b.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "ae0c03138570c73d0ba8ed6d7d5e9798ee54e6c22fcb4c815a86eea3301180f6",
@@ -152,11 +153,79 @@
     "speed_gate": 101090,
     "region_emitter": 1329858,
     "ake_gate": 1485158,
-    "uhd_stub_va": 66800,
+    "uhd_stub_va": 0,
     "bd_stub_va": 99168,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BC-12B1ST_3.11_ae0c0313.bin"
+   "r2_key": "MT1939/BC-12B1ST_3.11_ae0c0313.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "ae0c03138570c73d0ba8ed6d7d5e9798ee54e6c22fcb4c815a86eea3301180f6",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1939_BC-12B1ST_ae0c03138570c73d.bin",
+   "engine": "MT1939",
+   "brand": "ASUS",
+   "vendor": "ASUS",
+   "model": "BC-12B1ST",
+   "rev": "3.11",
+   "media": "BD",
+   "variant": "W001300",
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 98396,
+    "boot_stub_va": 98968,
+    "boot_init_site": 1550596,
+    "de_off": 2015318,
+    "speed_gate": 101090,
+    "region_emitter": 1329858,
+    "ake_gate": 1485158,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 99168,
+    "hrl_sites": 1
+   },
+   "r2_key": "MT1939/BC-12B1ST_3.11_ae0c0313.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "dd03cdae194de03a710b5f6e88dfedf421fd20667a3cc9ec58e828bd769ab2ed",
@@ -218,11 +287,12 @@
     "speed_gate": 101090,
     "region_emitter": 1330286,
     "ake_gate": 1485478,
-    "uhd_stub_va": 66768,
+    "uhd_stub_va": 0,
     "bd_stub_va": 99140,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BC-12D2HT_3.00_dd03cdae.bin"
+   "r2_key": "MT1939/BC-12D2HT_3.00_dd03cdae.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "93ea068da225140d9628c105d88d13088982c61024bf6cca03e0fe456d53a721",
@@ -284,11 +354,12 @@
     "speed_gate": 101090,
     "region_emitter": 1329766,
     "ake_gate": 1485066,
-    "uhd_stub_va": 66800,
+    "uhd_stub_va": 0,
     "bd_stub_va": 99168,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BC-12D2HT_3.01_93ea068d.bin"
+   "r2_key": "MT1939/BC-12D2HT_3.01_93ea068d.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "9f5bc003674065d4b5108ba45033c418cd38be4e46e5d218dc82409260c2f05c",
@@ -350,11 +421,79 @@
     "speed_gate": 101090,
     "region_emitter": 1329858,
     "ake_gate": 1485158,
-    "uhd_stub_va": 66800,
+    "uhd_stub_va": 0,
     "bd_stub_va": 99168,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BC-12D2HT_3.11_9f5bc003.bin"
+   "r2_key": "MT1939/BC-12D2HT_3.11_9f5bc003.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "9f5bc003674065d4b5108ba45033c418cd38be4e46e5d218dc82409260c2f05c",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1939_BC-12D2HT_9f5bc003674065d4.bin",
+   "engine": "MT1939",
+   "brand": "ASUS",
+   "vendor": "ASUS",
+   "model": "BC-12D2HT",
+   "rev": "3.11",
+   "media": "BD/UHD",
+   "variant": "W001300",
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 98396,
+    "boot_stub_va": 98968,
+    "boot_init_site": 1550596,
+    "de_off": 2015318,
+    "speed_gate": 101090,
+    "region_emitter": 1329858,
+    "ake_gate": 1485158,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 99168,
+    "hrl_sites": 1
+   },
+   "r2_key": "MT1939/BC-12D2HT_3.11_9f5bc003.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "01c6a76a4d16c0c6b9aafa60ececccd331b73ac1a7f8b899b3f05e558c92c07c",
@@ -420,7 +559,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BE14NU40_1.00_01c6a76a.bin"
+   "r2_key": "MT1939/BE14NU40_1.00_01c6a76a.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "7ff91816c192f4c0ba492b507c8119fafb71df7a25118d0e456682bb34e2e567",
@@ -486,7 +626,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BE14NU40_1.01_7ff91816.bin"
+   "r2_key": "MT1939/BE14NU40_1.01_7ff91816.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "9c46e6972b7950004e9746256c97b79e8e681faad1a4174b542477ad6ff5257e",
@@ -548,11 +689,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167672,
     "ake_gate": 1284406,
-    "uhd_stub_va": 1405688,
-    "bd_stub_va": 1405740,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1405720,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BE16NU50_1.01_9c46e697.bin"
+   "r2_key": "MT1939/BE16NU50_1.01_9c46e697.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "d286c5a7ea4a4d0779fec709fd30ed6a9ad5e20fd760364edf93e570678ba9e4",
@@ -614,11 +756,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167672,
     "ake_gate": 1284406,
-    "uhd_stub_va": 1405688,
-    "bd_stub_va": 1405740,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1405720,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BE16NU50_1.01_d286c5a7.bin"
+   "r2_key": "MT1939/BE16NU50_1.01_d286c5a7.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "2b3ea41f87764ccc497059c9e362657df545fb169d6eeb2e78ccfbd7fafee533",
@@ -680,11 +823,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167360,
     "ake_gate": 1284210,
-    "uhd_stub_va": 1405520,
-    "bd_stub_va": 1405572,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1405552,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BE16NU50_1.02_2b3ea41f.bin"
+   "r2_key": "MT1939/BE16NU50_1.02_2b3ea41f.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "3d6286253da6e18c5c2674e6fec75c332fa057a75ed8fd076849c8b22ce9b8a5",
@@ -746,11 +890,12 @@
     "speed_gate": 101122,
     "region_emitter": 1168256,
     "ake_gate": 1285114,
-    "uhd_stub_va": 66828,
-    "bd_stub_va": 66868,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 99192,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BE16NU50_1.04_3d628625.bin"
+   "r2_key": "MT1939/BE16NU50_1.04_3d628625.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "215488b5ac20fc3ed7fe33ff5679a13a839f0729cc85d0b8bcf0fd3e4c749b23",
@@ -812,11 +957,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167416,
     "ake_gate": 1284266,
-    "uhd_stub_va": 1405592,
-    "bd_stub_va": 1405644,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1405624,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BE16NU50_INTM_215488b5.bin"
+   "r2_key": "MT1939/BE16NU50_INTM_215488b5.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "d8ab861b6fefa847223a1a95b53241c9838953ac298ff068d9243fc31587df87",
@@ -882,7 +1028,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH14NS40_1.00_d8ab861b.bin"
+   "r2_key": "MT1939/BH14NS40_1.00_d8ab861b.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "007ac6bfe4ea432c7d8e5b4bd1142a636abe452516e3cc36f67e4e13520fe40d",
@@ -948,7 +1095,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH14NS40_1.01_007ac6bf.bin"
+   "r2_key": "MT1939/BH14NS40_1.01_007ac6bf.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "4ef56002dd392733d15378e4535115f24ba891d3266a7c87420df14df0a7089d",
@@ -1010,11 +1158,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166780,
     "ake_gate": 1283630,
-    "uhd_stub_va": 1404908,
-    "bd_stub_va": 1404960,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404940,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH14NS50_1.01_4ef56002.bin"
+   "r2_key": "MT1939/BH14NS50_1.01_4ef56002.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "4f9ac3555f29dfb15ffe9bc65389a00341c5e5e973890bac3319fd64baea88fc",
@@ -1076,11 +1225,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167644,
     "ake_gate": 1284502,
-    "uhd_stub_va": 66828,
-    "bd_stub_va": 66868,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 99192,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH14NS50_1.03_4f9ac355.bin"
+   "r2_key": "MT1939/BH14NS50_1.03_4f9ac355.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "53d2cdc32a2ae99864ec8fc4ea98a3a5218220aea990481f560112adaa871624",
@@ -1142,11 +1292,12 @@
     "speed_gate": 101122,
     "region_emitter": 1168278,
     "ake_gate": 1285142,
-    "uhd_stub_va": 1407292,
-    "bd_stub_va": 1407344,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1407324,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH14NS58_1.00_53d2cdc3.bin"
+   "r2_key": "MT1939/BH14NS58_1.00_53d2cdc3.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "aaeea1ba97d05fae0b4de1ff1b84076f8ba897cb15b45a398f9bc4c25fe1738b",
@@ -1208,11 +1359,12 @@
     "speed_gate": 101122,
     "region_emitter": 1168278,
     "ake_gate": 1285142,
-    "uhd_stub_va": 1407292,
-    "bd_stub_va": 1407344,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1407324,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH14NS58_1.00_aaeea1ba.bin"
+   "r2_key": "MT1939/BH14NS58_1.00_aaeea1ba.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "eb0e2e7275448919aa72bec63ed0cd24ca360fcb0a8347601e85c2750f0d173a",
@@ -1274,11 +1426,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167998,
     "ake_gate": 1284986,
-    "uhd_stub_va": 1407212,
-    "bd_stub_va": 1407264,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1407244,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH14NS58_1.01_eb0e2e72.bin"
+   "r2_key": "MT1939/BH14NS58_1.01_eb0e2e72.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "ab21af6945e901c56b9f29755433cf4785e9cdc106bb123d943aea0e90d04d9e",
@@ -1344,7 +1497,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS40_1.00_ab21af69.bin"
+   "r2_key": "MT1939/BH16NS40_1.00_ab21af69.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "208a80d0d30c1841ad0bd33d49be032dfe2110c7f50ba6298ec51851c69035b6",
@@ -1410,7 +1564,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS40_1.01_208a80d0.bin"
+   "r2_key": "MT1939/BH16NS40_1.01_208a80d0.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "8f5bf9536115fd6aece78d1ff6b6a7e51e3fc0d927f2ae8fd64d6121401a5dea",
@@ -1476,7 +1631,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS40_1.02_8f5bf953.bin"
+   "r2_key": "MT1939/BH16NS40_1.02_8f5bf953.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "acbe782ebc3c4850a24f852b8dc2ec42059f6b131e29d96157b09505628c415b",
@@ -1538,11 +1694,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166960,
     "ake_gate": 1283694,
-    "uhd_stub_va": 1404940,
-    "bd_stub_va": 1404992,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404972,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS40_1.02_acbe782e.bin"
+   "r2_key": "MT1939/BH16NS40_1.02_acbe782e.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "beb8330e79d08824a62d5eb2b91a144ebb34c9acba8d393d8b32f2b2ae3196de",
@@ -1604,11 +1761,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166960,
     "ake_gate": 1283694,
-    "uhd_stub_va": 1404940,
-    "bd_stub_va": 1404992,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404972,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS40_1.02_beb8330e.bin"
+   "r2_key": "MT1939/BH16NS40_1.02_beb8330e.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "614b41f61837f84a46b73fe4da28ff9db13bf45fe291f2728a5197c67857446e",
@@ -1674,7 +1832,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS40_1.03_614b41f6.bin"
+   "r2_key": "MT1939/BH16NS40_1.03_614b41f6.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "a5bb75b8dbec1684e596f473aa53905f9f723b2b2f9c448550cb523145f90dd3",
@@ -1736,11 +1895,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166640,
     "ake_gate": 1283490,
-    "uhd_stub_va": 1404764,
-    "bd_stub_va": 1404816,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404796,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS40_1.03_a5bb75b8.bin"
+   "r2_key": "MT1939/BH16NS40_1.03_a5bb75b8.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "b093a73656e58ee2a4367b5d92324fd7da3889f632a22b2f1be8802607cd3de4",
@@ -1806,7 +1966,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS40_1.03_b093a736.bin"
+   "r2_key": "MT1939/BH16NS40_1.03_b093a736.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "bc4e6126b880475d58c21e8639ea81f33facc3d4c8284bf6a739d8e8f6c75921",
@@ -1868,11 +2029,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166768,
     "ake_gate": 1283618,
-    "uhd_stub_va": 1404908,
-    "bd_stub_va": 1404960,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404940,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS40_1.04_bc4e6126.bin"
+   "r2_key": "MT1939/BH16NS40_1.04_bc4e6126.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "5b6e9d854c0e4a77c75986aa286cb10cbb2323dbcdf044569ed1839b144db464",
@@ -1934,11 +2096,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167536,
     "ake_gate": 1284394,
-    "uhd_stub_va": 66828,
-    "bd_stub_va": 66868,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 99192,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS40_1.05_5b6e9d85.bin"
+   "r2_key": "MT1939/BH16NS40_1.05_5b6e9d85.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "c3a18eed17251d1508964647e833ffdfe01b13c28dff9a717dfac6336e7c70e6",
@@ -2000,11 +2163,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167372,
     "ake_gate": 1284222,
-    "uhd_stub_va": 1405508,
-    "bd_stub_va": 1405560,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1405540,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS40_INTM_c3a18eed.bin"
+   "r2_key": "MT1939/BH16NS40_INTM_c3a18eed.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "43c484dccc37ccb36183e970c5a4f28e90d6ccb530c0efd3bd8f96943ba7dfe3",
@@ -2070,7 +2234,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS48_1.02_43c484dc.bin"
+   "r2_key": "MT1939/BH16NS48_1.02_43c484dc.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "b7a368da0fcbe905e45a09c6523bdd6f80557ce455272238c73868aa4ae4bd41",
@@ -2132,11 +2297,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166640,
     "ake_gate": 1283490,
-    "uhd_stub_va": 1404764,
-    "bd_stub_va": 1404816,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404796,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS50_1.01_b7a368da.bin"
+   "r2_key": "MT1939/BH16NS50_1.01_b7a368da.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "1b99561b17ea6dcd76c263335e1a0ae77782028caf7cba726b4eb5b9b986f09f",
@@ -2198,11 +2364,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167508,
     "ake_gate": 1284366,
-    "uhd_stub_va": 66828,
-    "bd_stub_va": 66868,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 99192,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS50_1.03_1b99561b.bin"
+   "r2_key": "MT1939/BH16NS50_1.03_1b99561b.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "ce732330b3cabca5f6b0cbcf1b6fc1abd4117d6fd047fe4f9330b6b25337b521",
@@ -2264,11 +2431,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166912,
     "ake_gate": 1283646,
-    "uhd_stub_va": 1404892,
-    "bd_stub_va": 1404944,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404924,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS55_1.01_ce732330.bin"
+   "r2_key": "MT1939/BH16NS55_1.01_ce732330.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "64cff02c3db347a2100284a406687a5a911463d65808db5c5c811a4cefc4fe57",
@@ -2330,11 +2498,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166960,
     "ake_gate": 1283694,
-    "uhd_stub_va": 1404940,
-    "bd_stub_va": 1404992,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404972,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS55_1.02_64cff02c.bin"
+   "r2_key": "MT1939/BH16NS55_1.02_64cff02c.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "bdfd6f290ba8172d4c46d8c822013255043f4ad30deb8604608fa0397bddb648",
@@ -2396,11 +2565,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166960,
     "ake_gate": 1283694,
-    "uhd_stub_va": 1404940,
-    "bd_stub_va": 1404992,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404972,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS55_1.02_bdfd6f29.bin"
+   "r2_key": "MT1939/BH16NS55_1.02_bdfd6f29.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "0bfdd3009ed1bc246f81aae50cfd9a5e4919c5295263e488c2a900500fe48728",
@@ -2462,11 +2632,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166640,
     "ake_gate": 1283490,
-    "uhd_stub_va": 1404764,
-    "bd_stub_va": 1404816,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404796,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS55_1.03_0bfdd300.bin"
+   "r2_key": "MT1939/BH16NS55_1.03_0bfdd300.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "394e6f8d6319b79fed26fb296a435e4d047c382bf8434cc870f89c6913fd27d7",
@@ -2528,11 +2699,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166768,
     "ake_gate": 1283618,
-    "uhd_stub_va": 1404908,
-    "bd_stub_va": 1404960,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404940,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS55_1.04_394e6f8d.bin"
+   "r2_key": "MT1939/BH16NS55_1.04_394e6f8d.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "530d194f7f92bbc764b20e2a7092e6eff2330616405534eb88ba650ba48778de",
@@ -2594,11 +2766,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167508,
     "ake_gate": 1284366,
-    "uhd_stub_va": 66828,
-    "bd_stub_va": 66868,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 99192,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS55_1.05_530d194f.bin"
+   "r2_key": "MT1939/BH16NS55_1.05_530d194f.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "6d9fdb2bd658165a073e6144c8938057e08d8cba7ca108274b120dd30c55328f",
@@ -2660,11 +2833,12 @@
     "speed_gate": 101122,
     "region_emitter": 1168126,
     "ake_gate": 1284990,
-    "uhd_stub_va": 1407140,
-    "bd_stub_va": 1407192,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1407172,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS58_1.00_6d9fdb2b.bin"
+   "r2_key": "MT1939/BH16NS58_1.00_6d9fdb2b.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "ccc97e4f92e47b6fc1fab1e9baa1860020c7f104efa9ffb649321a173523adfb",
@@ -2726,11 +2900,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167862,
     "ake_gate": 1284850,
-    "uhd_stub_va": 1407076,
-    "bd_stub_va": 1407128,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1407108,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS58_1.01_ccc97e4f.bin"
+   "r2_key": "MT1939/BH16NS58_1.01_ccc97e4f.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "4f4e63cd5988f68f5729af21fe4033d0da2eeeec8f7576772f0f3a197f8eda21",
@@ -2792,11 +2967,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167982,
     "ake_gate": 1284970,
-    "uhd_stub_va": 1407204,
-    "bd_stub_va": 1407256,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1407236,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH16NS58_1.02_4f4e63cd.bin"
+   "r2_key": "MT1939/BH16NS58_1.02_4f4e63cd.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "b96b5abc6b27327c6f837e99d4860bfb91bfcb61297595541454186f02e3652c",
@@ -2859,10 +3035,11 @@
     "region_emitter": 1147896,
     "ake_gate": 1266420,
     "uhd_stub_va": 1389276,
-    "bd_stub_va": 1389328,
+    "bd_stub_va": 1389332,
     "hrl_sites": 3
    },
-   "r2_key": "MT1939/BH16NS60_1.00_b96b5abc.bin"
+   "r2_key": "MT1939/BH16NS60_1.00_b96b5abc.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "4d070ee2630f03793ddce81f35f8779d3bcc1484a89dee7e1db19ba2adc0dbb4",
@@ -2925,10 +3102,11 @@
     "region_emitter": 1148868,
     "ake_gate": 1267392,
     "uhd_stub_va": 111464,
-    "bd_stub_va": 111504,
+    "bd_stub_va": 66864,
     "hrl_sites": 3
    },
-   "r2_key": "MT1939/BH16NS60_1.02_4d070ee2.bin"
+   "r2_key": "MT1939/BH16NS60_1.02_4d070ee2.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "1baed51d34e05db345798e3820a38ae2c6598cad38d20522e476e803d1f46562",
@@ -2991,10 +3169,11 @@
     "region_emitter": 1150502,
     "ake_gate": 1269156,
     "uhd_stub_va": 1393180,
-    "bd_stub_va": 1393232,
+    "bd_stub_va": 1393236,
     "hrl_sites": 3
    },
-   "r2_key": "MT1939/BH16NS60_INTM_1baed51d.bin"
+   "r2_key": "MT1939/BH16NS60_INTM_1baed51d.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "0b2cdb82ff520589d4c750fae726571798901bf41e433de0a7164f7d74927d5f",
@@ -3060,7 +3239,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BH40N_B7C6_0b2cdb82.bin"
+   "r2_key": "MT1939/BH40N_B7C6_0b2cdb82.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "c88a69013d557b9c4cf1a4d603c314585f51a258b9747c345184e866eef36306",
@@ -3122,11 +3302,12 @@
     "speed_gate": 101282,
     "region_emitter": 1170734,
     "ake_gate": 1287254,
-    "uhd_stub_va": 1406604,
-    "bd_stub_va": 1406656,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1406636,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BP50NB40_1.00_c88a6901.bin"
+   "r2_key": "MT1939/BP50NB40_1.00_c88a6901.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "e9d8bcddf85aab6627c90623efcb7a39ee97681a68b729ef58fea391bc99b33a",
@@ -3188,11 +3369,12 @@
     "speed_gate": 101122,
     "region_emitter": 1165442,
     "ake_gate": 1282278,
-    "uhd_stub_va": 1404092,
-    "bd_stub_va": 1404144,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404124,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BW-16D1H_A203_e9d8bcdd.bin"
+   "r2_key": "MT1939/BW-16D1H_A203_e9d8bcdd.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "223e7e38b85f0d27464de596d373464cb7bf77ca825b81f2351abaf8c6cefba1",
@@ -3254,11 +3436,12 @@
     "speed_gate": 101122,
     "region_emitter": 1165558,
     "ake_gate": 1282394,
-    "uhd_stub_va": 1404220,
-    "bd_stub_va": 1404272,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404252,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BW-16D1H_A204_223e7e38.bin"
+   "r2_key": "MT1939/BW-16D1H_A204_223e7e38.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "2e243a167739d4e46ad7095db7cb5452c2980579a0cb359208945a0bbe0f3f29",
@@ -3320,11 +3503,12 @@
     "speed_gate": 101122,
     "region_emitter": 1165570,
     "ake_gate": 1282278,
-    "uhd_stub_va": 1404012,
-    "bd_stub_va": 1404064,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404044,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BW-16D1HT_3.01_2e243a16.bin"
+   "r2_key": "MT1939/BW-16D1HT_3.01_2e243a16.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "40118f8171daf03e62e89055c14f7680bcfa5108df71acf1a79bd2c326bd14f2",
@@ -3386,11 +3570,12 @@
     "speed_gate": 101122,
     "region_emitter": 1165570,
     "ake_gate": 1282278,
-    "uhd_stub_va": 1404012,
-    "bd_stub_va": 1404064,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404044,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BW-16D1HT_3.01_40118f81.bin"
+   "r2_key": "MT1939/BW-16D1HT_3.01_40118f81.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "784e017fbacd2250fc37ee442869db82ccc8d637d78126b570ba33c0256d1715",
@@ -3452,11 +3637,12 @@
     "speed_gate": 101122,
     "region_emitter": 1165574,
     "ake_gate": 1282282,
-    "uhd_stub_va": 1404020,
-    "bd_stub_va": 1404072,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404052,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BW-16D1HT_3.02_784e017f.bin"
+   "r2_key": "MT1939/BW-16D1HT_3.02_784e017f.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "83ea24bb07b8a7a451bba1856d1db18b7f54b1823b9d148e213f25daf2e0a1d2",
@@ -3518,11 +3704,12 @@
     "speed_gate": 101122,
     "region_emitter": 1165574,
     "ake_gate": 1282282,
-    "uhd_stub_va": 1404020,
-    "bd_stub_va": 1404072,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404052,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BW-16D1HT_3.02_83ea24bb.bin"
+   "r2_key": "MT1939/BW-16D1HT_3.02_83ea24bb.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "1d57260bf091dc89b6ab5b3e2cc7aa1b843d89227a3a4811e6244eaba353b764",
@@ -3584,11 +3771,12 @@
     "speed_gate": 101122,
     "region_emitter": 1165318,
     "ake_gate": 1282154,
-    "uhd_stub_va": 1403964,
-    "bd_stub_va": 1404016,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1403996,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BW-16D1HT_3.03_1d57260b.bin"
+   "r2_key": "MT1939/BW-16D1HT_3.03_1d57260b.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "37a32bfd708b86c825877364d7e52c943d0a856ec3e5457953b61b7fa1c9a23f",
@@ -3650,11 +3838,79 @@
     "speed_gate": 101122,
     "region_emitter": 1165438,
     "ake_gate": 1282274,
-    "uhd_stub_va": 1404100,
-    "bd_stub_va": 1404152,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404132,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/BW-16D1HT_3.10_37a32bfd.bin"
+   "r2_key": "MT1939/BW-16D1HT_3.10_37a32bfd.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "37a32bfd708b86c825877364d7e52c943d0a856ec3e5457953b61b7fa1c9a23f",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1939_BW-16D1HT_37a32bfd708b86c8.bin",
+   "engine": "MT1939",
+   "brand": "ASUS",
+   "vendor": "ASUS",
+   "model": "BW-16D1HT",
+   "rev": "3.10",
+   "media": "BD/UHD",
+   "variant": "W002601",
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1403172,
+    "boot_stub_va": 1403744,
+    "boot_init_site": 1310830,
+    "de_off": 2015318,
+    "speed_gate": 101122,
+    "region_emitter": 1165438,
+    "ake_gate": 1282274,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404132,
+    "hrl_sites": 1
+   },
+   "r2_key": "MT1939/BW-16D1HT_3.10_37a32bfd.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "731bcf7aa48dacbcb5729f97576cf24b90d7a795a330c2ab8a801c57eb738f0e",
@@ -3716,11 +3972,12 @@
     "speed_gate": 101090,
     "region_emitter": 1335444,
     "ake_gate": 1491070,
-    "uhd_stub_va": 66800,
+    "uhd_stub_va": 0,
     "bd_stub_va": 99168,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/CH12NS40_1.01_731bcf7a.bin"
+   "r2_key": "MT1939/CH12NS40_1.01_731bcf7a.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "fc98fda6431f71ebc29a3fadf572fcd09c58cc4b5bed1bf918dbc29b3616777e",
@@ -3782,11 +4039,12 @@
     "speed_gate": 101090,
     "region_emitter": 1335500,
     "ake_gate": 1491126,
-    "uhd_stub_va": 66808,
+    "uhd_stub_va": 0,
     "bd_stub_va": 99184,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/CH12NS40_INTM_fc98fda6.bin"
+   "r2_key": "MT1939/CH12NS40_INTM_fc98fda6.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "fbe641e5e808e8127c0196e28bc8a10ba9d8ae61bd8645affff9f259b4a6b25c",
@@ -3848,11 +4106,12 @@
     "speed_gate": 101090,
     "region_emitter": 1334948,
     "ake_gate": 1490574,
-    "uhd_stub_va": 66800,
+    "uhd_stub_va": 0,
     "bd_stub_va": 99168,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/UH12NS40_1.01_fbe641e5.bin"
+   "r2_key": "MT1939/UH12NS40_1.01_fbe641e5.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "8489a3a5b34ea7ee6046fec6db02be825dee1205646c10ed7d11d4809c45deeb",
@@ -3918,7 +4177,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH14NS40_1.00_8489a3a5.bin"
+   "r2_key": "MT1939/WH14NS40_1.00_8489a3a5.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "fc3013be680340b6a413a7aa8773cc0bdd2bd1144d3ceb2002983bacfeff8442",
@@ -3984,7 +4244,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH14NS40_1.01_fc3013be.bin"
+   "r2_key": "MT1939/WH14NS40_1.01_fc3013be.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "40eb760e23f100d55e86e9c061c73428d4087ef712294e4dbfcefa3093837a1a",
@@ -4050,7 +4311,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH14NS40_1.02_40eb760e.bin"
+   "r2_key": "MT1939/WH14NS40_1.02_40eb760e.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "648a16d024eea31ef4901f3ac2180cbfffeda1161d70f9096335d8a6097445bc",
@@ -4112,11 +4374,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167112,
     "ake_gate": 1283846,
-    "uhd_stub_va": 1405092,
-    "bd_stub_va": 1405144,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1405124,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH14NS40_1.02_648a16d0.bin"
+   "r2_key": "MT1939/WH14NS40_1.02_648a16d0.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "de13d8d0fd56ffa16ef6bcffcab946e3839cefd85975d8e925dfbb4e8e881f72",
@@ -4178,11 +4441,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166780,
     "ake_gate": 1283630,
-    "uhd_stub_va": 1404908,
-    "bd_stub_va": 1404960,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404940,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH14NS40_1.03_de13d8d0.bin"
+   "r2_key": "MT1939/WH14NS40_1.03_de13d8d0.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "f6a5a578f9b5347f6371a7ef1195ab84b1bea4d80b58c97efa23c8ddf0d6f6e9",
@@ -4248,7 +4512,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH14NS40_1.03_f6a5a578.bin"
+   "r2_key": "MT1939/WH14NS40_1.03_f6a5a578.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "164e2475aea287ec5759ee07eb285697b52923ead1288f24358a70fc7ed3ec32",
@@ -4310,11 +4575,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166908,
     "ake_gate": 1283758,
-    "uhd_stub_va": 1405044,
-    "bd_stub_va": 1405096,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1405076,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH14NS40_1.04_164e2475.bin"
+   "r2_key": "MT1939/WH14NS40_1.04_164e2475.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "de6c3f26359bedb5d465b76f41b70989bf9a0869a088643c7c0371b66620e3de",
@@ -4376,11 +4642,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167672,
     "ake_gate": 1284530,
-    "uhd_stub_va": 66828,
-    "bd_stub_va": 66868,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 99192,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH14NS40_1.05_de6c3f26.bin"
+   "r2_key": "MT1939/WH14NS40_1.05_de6c3f26.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "eee6563f68a414eb1dbc9048ab0820d01003320b080988437f762ca23d727e56",
@@ -4446,7 +4713,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH16NS40_1.01_eee6563f.bin"
+   "r2_key": "MT1939/WH16NS40_1.01_eee6563f.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "7f26c559774b87a8da10c42d5ce72b8f1af3aa369d14d64f7d880d2b20b0327a",
@@ -4512,7 +4780,8 @@
     "bd_stub_va": 0,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH16NS40_1.02_7f26c559.bin"
+   "r2_key": "MT1939/WH16NS40_1.02_7f26c559.bin",
+   "lineage": "MT1939-classic"
   },
   {
    "sha256": "87790f053877e3e1bdd22969d70a7b1b6ed36624bb474bfcdee6526ac6e227c0",
@@ -4574,11 +4843,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166960,
     "ake_gate": 1283694,
-    "uhd_stub_va": 1404940,
-    "bd_stub_va": 1404992,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404972,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH16NS40_1.02_87790f05.bin"
+   "r2_key": "MT1939/WH16NS40_1.02_87790f05.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "3e3b227e1338b5bc601ad6b2ce02fd1d375b7ea6179b055412ea0702ce54615c",
@@ -4640,11 +4910,12 @@
     "speed_gate": 101122,
     "region_emitter": 1166640,
     "ake_gate": 1283490,
-    "uhd_stub_va": 1404764,
-    "bd_stub_va": 1404816,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404796,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH16NS40_1.03_3e3b227e.bin"
+   "r2_key": "MT1939/WH16NS40_1.03_3e3b227e.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "36d65e3d0c3cd223116b3865e3f0f06b247a0ee842d3c7ddf576e620b590da6a",
@@ -4706,11 +4977,12 @@
     "speed_gate": 101122,
     "region_emitter": 1167536,
     "ake_gate": 1284394,
-    "uhd_stub_va": 66828,
-    "bd_stub_va": 66868,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 99192,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH16NS40_1.05_36d65e3d.bin"
+   "r2_key": "MT1939/WH16NS40_1.05_36d65e3d.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "4041c0f122a902288ca8439888f68f7760616a0a37c366b825d6497b51157e46",
@@ -4772,11 +5044,12 @@
     "speed_gate": 101122,
     "region_emitter": 1168748,
     "ake_gate": 1285888,
-    "uhd_stub_va": 1416340,
-    "bd_stub_va": 1416392,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1416372,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH16NS58_1.V1_4041c0f1.bin"
+   "r2_key": "MT1939/WH16NS58_1.V1_4041c0f1.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "873a8c96ddae57a4cb271b30865a75fdb36e46ac7fb9b1b0169b307b74975fe7",
@@ -4838,11 +5111,12 @@
     "speed_gate": 101122,
     "region_emitter": 1169600,
     "ake_gate": 1286740,
-    "uhd_stub_va": 1417196,
-    "bd_stub_va": 1417248,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1417228,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH16NS58_1.V5_873a8c96.bin"
+   "r2_key": "MT1939/WH16NS58_1.V5_873a8c96.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "e24060184915a9860a84ea7d0ad23fee478e6eb31af86da589f5723c8e29a1cd",
@@ -4904,11 +5178,79 @@
     "speed_gate": 101122,
     "region_emitter": 1169600,
     "ake_gate": 1286740,
-    "uhd_stub_va": 1417196,
-    "bd_stub_va": 1417248,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1417228,
     "hrl_sites": 1
    },
-   "r2_key": "MT1939/WH16NS58_1.V5_e2406018.bin"
+   "r2_key": "MT1939/WH16NS58_1.V5_e2406018.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "e24060184915a9860a84ea7d0ad23fee478e6eb31af86da589f5723c8e29a1cd",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1939_WH16NS58_e24060184915a986.bin",
+   "engine": "MT1939",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "WH16NS58",
+   "rev": "1.V5",
+   "media": "BD/UHD",
+   "variant": "N004900",
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1416268,
+    "boot_stub_va": 1416840,
+    "boot_init_site": 1324220,
+    "de_off": 2015318,
+    "speed_gate": 101122,
+    "region_emitter": 1169600,
+    "ake_gate": 1286740,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1417228,
+    "hrl_sites": 1
+   },
+   "r2_key": "MT1939/WH16NS58_1.V5_e2406018.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "5e2ec51fb3559623e555aadf280c96268fee6da0acfa7b4000c0d4564e7da073",
@@ -4971,10 +5313,11 @@
     "region_emitter": 1148104,
     "ake_gate": 1266512,
     "uhd_stub_va": 1389352,
-    "bd_stub_va": 1389404,
+    "bd_stub_va": 1389408,
     "hrl_sites": 3
    },
-   "r2_key": "MT1939/WH16NS60_1.00_5e2ec51f.bin"
+   "r2_key": "MT1939/WH16NS60_1.00_5e2ec51f.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "d133893209392b74cb0c3c1225cc4c0e8b1d927f1f671261ecc82525405e47e0",
@@ -5037,10 +5380,11 @@
     "region_emitter": 1148104,
     "ake_gate": 1266512,
     "uhd_stub_va": 1389352,
-    "bd_stub_va": 1389404,
+    "bd_stub_va": 1389408,
     "hrl_sites": 3
    },
-   "r2_key": "MT1939/WH16NS60_1.00_d1338932.bin"
+   "r2_key": "MT1939/WH16NS60_1.00_d1338932.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "aea98763cad71e8cfbd8d32963a63adf429e889bd13b749e7c4a792cc5b076a2",
@@ -5103,10 +5447,11 @@
     "region_emitter": 1147896,
     "ake_gate": 1266420,
     "uhd_stub_va": 1389276,
-    "bd_stub_va": 1389328,
+    "bd_stub_va": 1389332,
     "hrl_sites": 3
    },
-   "r2_key": "MT1939/WH16NS60_1.01_aea98763.bin"
+   "r2_key": "MT1939/WH16NS60_1.01_aea98763.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "b0476f44509acc7d97c0aa08a9cda4d9acf59624963b455a67f0abae5a017bf0",
@@ -5169,10 +5514,11 @@
     "region_emitter": 1147896,
     "ake_gate": 1266420,
     "uhd_stub_va": 1389276,
-    "bd_stub_va": 1389328,
+    "bd_stub_va": 1389332,
     "hrl_sites": 3
    },
-   "r2_key": "MT1939/WH16NS60_1.01_b0476f44.bin"
+   "r2_key": "MT1939/WH16NS60_1.01_b0476f44.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "3ebfe3455911e5e881017edb26207734e3f6d679602db071f0b300bcccf5db6f",
@@ -5235,10 +5581,11 @@
     "region_emitter": 1147960,
     "ake_gate": 1266484,
     "uhd_stub_va": 1389356,
-    "bd_stub_va": 1389408,
+    "bd_stub_va": 1389412,
     "hrl_sites": 3
    },
-   "r2_key": "MT1939/WH16NS60_1.02_3ebfe345.bin"
+   "r2_key": "MT1939/WH16NS60_1.02_3ebfe345.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "3d90114273377220988f7cbd0da2ecad01d4e61a1b1089921fdee3fba2f62af9",
@@ -5301,10 +5648,11 @@
     "region_emitter": 1148868,
     "ake_gate": 1267392,
     "uhd_stub_va": 111464,
-    "bd_stub_va": 111504,
+    "bd_stub_va": 66864,
     "hrl_sites": 3
    },
-   "r2_key": "MT1939/WH16NS60_1.03_3d901142.bin"
+   "r2_key": "MT1939/WH16NS60_1.03_3d901142.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "c2279417184935a7bb8f714f16f052f01915e6ecceb5457943f5998e9af91800",
@@ -5367,10 +5715,11 @@
     "region_emitter": 1148868,
     "ake_gate": 1267392,
     "uhd_stub_va": 111464,
-    "bd_stub_va": 111504,
+    "bd_stub_va": 66864,
     "hrl_sites": 3
    },
-   "r2_key": "MT1939/WH16NS60_1.03_c2279417.bin"
+   "r2_key": "MT1939/WH16NS60_1.03_c2279417.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "961acab180c9a62966c54f24f3b5fa7e335941057c15613a876f4fceca010b70",
@@ -5432,11 +5781,12 @@
     "speed_gate": 113586,
     "region_emitter": 1145026,
     "ake_gate": 1261658,
-    "uhd_stub_va": 1382020,
-    "bd_stub_va": 1382072,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1382052,
     "hrl_sites": 1
    },
-   "r2_key": "MT1959/BP50NB40_1.01_961acab1.bin"
+   "r2_key": "MT1959/BP50NB40_1.01_961acab1.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "a344e289e0b1f34bd1a5ae66f0498df9f1a485ad1416f93592e40db2fb5409c7",
@@ -5498,11 +5848,12 @@
     "speed_gate": 113586,
     "region_emitter": 1145498,
     "ake_gate": 1262122,
-    "uhd_stub_va": 1382492,
-    "bd_stub_va": 1382544,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1382524,
     "hrl_sites": 1
    },
-   "r2_key": "MT1959/BP50NB40_1.02_a344e289.bin"
+   "r2_key": "MT1959/BP50NB40_1.02_a344e289.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "92bb22b2c8999bbcde4e02d785b711063cb414f40bdbe16fac862643b298610d",
@@ -5564,11 +5915,12 @@
     "speed_gate": 113586,
     "region_emitter": 1145518,
     "ake_gate": 1262142,
-    "uhd_stub_va": 1382516,
-    "bd_stub_va": 1382568,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1382548,
     "hrl_sites": 1
    },
-   "r2_key": "MT1959/BP50NB40_INTM_92bb22b2.bin"
+   "r2_key": "MT1959/BP50NB40_INTM_92bb22b2.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "e60a4ce02a588d15faa2a89f1d97d80c22dd2306cf62f0219515a6e9ca5ddff9",
@@ -5630,11 +5982,12 @@
     "speed_gate": 113586,
     "region_emitter": 1145026,
     "ake_gate": 1261658,
-    "uhd_stub_va": 1382020,
-    "bd_stub_va": 1382072,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1382052,
     "hrl_sites": 1
    },
-   "r2_key": "MT1959/BP55EB40_1.01_e60a4ce0.bin"
+   "r2_key": "MT1959/BP55EB40_1.01_e60a4ce0.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "e64c4ca5244594d0b7943cbedf71a9cced2ae7c3d9b98624aa84d7e3130bac8a",
@@ -5696,11 +6049,12 @@
     "speed_gate": 113586,
     "region_emitter": 1145522,
     "ake_gate": 1262146,
-    "uhd_stub_va": 1382516,
-    "bd_stub_va": 1382568,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1382548,
     "hrl_sites": 1
    },
-   "r2_key": "MT1959/BP55EB40_1.02_e64c4ca5.bin"
+   "r2_key": "MT1959/BP55EB40_1.02_e64c4ca5.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "f60b037fb29edecff5d0d8476cc5dcfd5acf96b2b985c1d841c2b5a1a41f7da8",
@@ -5763,10 +6117,11 @@
     "region_emitter": 1153252,
     "ake_gate": 1271684,
     "uhd_stub_va": 1393652,
-    "bd_stub_va": 1393704,
+    "bd_stub_va": 1393708,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BP60NB10_1.00_f60b037f.bin"
+   "r2_key": "MT1959/BP60NB10_1.00_f60b037f.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "fb9174aa26153911120a92d95beb8cf598f1f860344af2ccf67e98a99f4ca049",
@@ -5829,10 +6184,11 @@
     "region_emitter": 1153580,
     "ake_gate": 1272004,
     "uhd_stub_va": 1393956,
-    "bd_stub_va": 1394008,
+    "bd_stub_va": 1394012,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BP60NB10_1.01_fb9174aa.bin"
+   "r2_key": "MT1959/BP60NB10_1.01_fb9174aa.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "084dcf93b9a7989d0926a19a033383fe672d66acb778ef605f9d3c8183bd4b46",
@@ -5895,10 +6251,11 @@
     "region_emitter": 1154180,
     "ake_gate": 1272604,
     "uhd_stub_va": 111480,
-    "bd_stub_va": 111520,
+    "bd_stub_va": 66876,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BP60NB10_1.02_084dcf93.bin"
+   "r2_key": "MT1959/BP60NB10_1.02_084dcf93.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "1227f133eb1c5315d955bb9d9cfcaf84381772a1edfef56b39ad3439b92ca4c0",
@@ -5961,10 +6318,11 @@
     "region_emitter": 1154192,
     "ake_gate": 1272616,
     "uhd_stub_va": 111480,
-    "bd_stub_va": 111520,
+    "bd_stub_va": 66876,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BP60NB10_1.02_1227f133.bin"
+   "r2_key": "MT1959/BP60NB10_1.02_1227f133.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4",
@@ -6027,10 +6385,11 @@
     "region_emitter": 1153168,
     "ake_gate": 1271188,
     "uhd_stub_va": 1391884,
-    "bd_stub_va": 1391936,
+    "bd_stub_va": 1391940,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_1.00_221ad35b.bin"
+   "r2_key": "MT1959/BU40N_1.00_221ad35b.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "103b9da94c91212df6313b150d3cf7e10c6b891a4ab65c49773e891a05f96a2e",
@@ -6093,10 +6452,11 @@
     "region_emitter": 1151978,
     "ake_gate": 1270324,
     "uhd_stub_va": 1391788,
-    "bd_stub_va": 1391840,
+    "bd_stub_va": 1391844,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_1.01_103b9da9.bin"
+   "r2_key": "MT1959/BU40N_1.01_103b9da9.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "afd2d99b6e2a0a1f585918fa466dc736094f085586049e452e49c54122e53300",
@@ -6159,10 +6519,11 @@
     "region_emitter": 1152410,
     "ake_gate": 1270756,
     "uhd_stub_va": 1392220,
-    "bd_stub_va": 1392292,
+    "bd_stub_va": 1392276,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_1.01_afd2d99b.bin"
+   "r2_key": "MT1959/BU40N_1.01_afd2d99b.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "1bbeb5351dc0d69feaeefdac9ada7f3f48eed0ca4e2f879d9266679cec133396",
@@ -6225,10 +6586,11 @@
     "region_emitter": 1153180,
     "ake_gate": 1271696,
     "uhd_stub_va": 1393056,
-    "bd_stub_va": 1393108,
+    "bd_stub_va": 1393112,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_1.02_1bbeb535.bin"
+   "r2_key": "MT1959/BU40N_1.02_1bbeb535.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "97bee5c51fbeb7980c35539bdf44e5d2c1628908721815fcee4ea2b9f22e9263",
@@ -6291,10 +6653,11 @@
     "region_emitter": 1153152,
     "ake_gate": 1271668,
     "uhd_stub_va": 1393024,
-    "bd_stub_va": 1393076,
+    "bd_stub_va": 1393080,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_1.02_97bee5c5.bin"
+   "r2_key": "MT1959/BU40N_1.02_97bee5c5.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "c86dbfed95a6c52c474a34e2d71dff786c909ddf14a1735b63f01b4b999a0441",
@@ -6357,10 +6720,11 @@
     "region_emitter": 1153180,
     "ake_gate": 1271696,
     "uhd_stub_va": 1393056,
-    "bd_stub_va": 1393108,
+    "bd_stub_va": 1393112,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_1.02_c86dbfed.bin"
+   "r2_key": "MT1959/BU40N_1.02_c86dbfed.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "106156b4024d1bed76026f35d1d10a0f35793ea9aeb15991431ed2a770775c77",
@@ -6423,10 +6787,11 @@
     "region_emitter": 1153668,
     "ake_gate": 1272184,
     "uhd_stub_va": 1393552,
-    "bd_stub_va": 1393604,
+    "bd_stub_va": 1393608,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_1.03_106156b4.bin"
+   "r2_key": "MT1959/BU40N_1.03_106156b4.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "5c01c1fda59f3db130bd14aa64fe97d4010376798716b16792dbffd59c488a95",
@@ -6489,10 +6854,11 @@
     "region_emitter": 1147186,
     "ake_gate": 1265732,
     "uhd_stub_va": 1387532,
-    "bd_stub_va": 1387584,
+    "bd_stub_va": 1387588,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_BN11_5c01c1fd.bin"
+   "r2_key": "MT1959/BU40N_BN11_5c01c1fd.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "c4d995f031fe757d9823f7410f81c88ce7ba26e14b77e766792bff2e53a8b90f",
@@ -6555,10 +6921,11 @@
     "region_emitter": 1147638,
     "ake_gate": 1266184,
     "uhd_stub_va": 1387996,
-    "bd_stub_va": 1388048,
+    "bd_stub_va": 1388052,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_BN12_c4d995f0.bin"
+   "r2_key": "MT1959/BU40N_BN12_c4d995f0.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "14d86e9949d93126d6ec7eaa11eeaba512569f51a8ecfce9d707cb0cec6b5e24",
@@ -6621,10 +6988,11 @@
     "region_emitter": 1154142,
     "ake_gate": 1272644,
     "uhd_stub_va": 1394972,
-    "bd_stub_va": 1395024,
+    "bd_stub_va": 1395028,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_BU10_14d86e99.bin"
+   "r2_key": "MT1959/BU40N_BU10_14d86e99.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "58203b539de096786cde232ee3b0ef3fe824b20d7768a96b30f6a96bdac77bfb",
@@ -6687,10 +7055,11 @@
     "region_emitter": 1154142,
     "ake_gate": 1272644,
     "uhd_stub_va": 1394972,
-    "bd_stub_va": 1395024,
+    "bd_stub_va": 1395028,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_BU10_58203b53.bin"
+   "r2_key": "MT1959/BU40N_BU10_58203b53.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "920a89f98b69b144290cb37dc37a7019c8ee37cf577457f0941a43395dfa7801",
@@ -6753,10 +7122,11 @@
     "region_emitter": 1154478,
     "ake_gate": 1273060,
     "uhd_stub_va": 1395472,
-    "bd_stub_va": 1395524,
+    "bd_stub_va": 1395528,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_BU12_920a89f9.bin"
+   "r2_key": "MT1959/BU40N_BU12_920a89f9.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "3b9dd9b4c9bd295b1b4cd9d94ce592522588e95a5569f529306b962b337d0e4b",
@@ -6819,10 +7189,11 @@
     "region_emitter": 1152698,
     "ake_gate": 1270744,
     "uhd_stub_va": 1392888,
-    "bd_stub_va": 1392940,
+    "bd_stub_va": 1392944,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_BW41_3b9dd9b4.bin"
+   "r2_key": "MT1959/BU40N_BW41_3b9dd9b4.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "c68cd76b6ca94c077ee7c1fd4ab4ebee06056683158f2259302fd687069e5dca",
@@ -6885,10 +7256,11 @@
     "region_emitter": 1152698,
     "ake_gate": 1270744,
     "uhd_stub_va": 1392888,
-    "bd_stub_va": 1392940,
+    "bd_stub_va": 1392944,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_BW42_c68cd76b.bin"
+   "r2_key": "MT1959/BU40N_BW42_c68cd76b.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "78f75561d474d09a4b3bd31ce346395600e2ed5d23431f6bfa02a500ccaee7d4",
@@ -6950,11 +7322,12 @@
     "speed_gate": 113442,
     "region_emitter": 1144902,
     "ake_gate": 1261878,
-    "uhd_stub_va": 1381700,
-    "bd_stub_va": 1381752,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1381732,
     "hrl_sites": 1
    },
-   "r2_key": "MT1959/BU40N_CB04_78f75561.bin"
+   "r2_key": "MT1959/BU40N_CB04_78f75561.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "4af842c0acf4a9ff42b5554d6d1d320b245ab4973b174a8b7ccf1f941f7ab715",
@@ -7017,10 +7390,11 @@
     "region_emitter": 1153074,
     "ake_gate": 1271632,
     "uhd_stub_va": 1393260,
-    "bd_stub_va": 1393312,
+    "bd_stub_va": 1393316,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_FR07_4af842c0.bin"
+   "r2_key": "MT1959/BU40N_FR07_4af842c0.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "29ad302647148e270c15a5a4542aa4796ee9ba25ea9fbf9f2be9465c01c139a7",
@@ -7083,10 +7457,11 @@
     "region_emitter": 1156250,
     "ake_gate": 1274844,
     "uhd_stub_va": 1397352,
-    "bd_stub_va": 1397404,
+    "bd_stub_va": 1397408,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_INTM_29ad3026.bin"
+   "r2_key": "MT1959/BU40N_INTM_29ad3026.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "8c90e968f3d3c68838168df47265b23b6d5ceba8c03fef5d32629f35c68acbea",
@@ -7149,10 +7524,11 @@
     "region_emitter": 1145534,
     "ake_gate": 1263844,
     "uhd_stub_va": 1384744,
-    "bd_stub_va": 1384816,
+    "bd_stub_va": 1384800,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_U100_8c90e968.bin"
+   "r2_key": "MT1959/BU40N_U100_8c90e968.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "0378599a409de593b23474d4d763a63aae0b26bae1d01a4df6c755a7b4a10e30",
@@ -7215,10 +7591,11 @@
     "region_emitter": 1154114,
     "ake_gate": 1272732,
     "uhd_stub_va": 1395128,
-    "bd_stub_va": 1395180,
+    "bd_stub_va": 1395184,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_U101_0378599a.bin"
+   "r2_key": "MT1959/BU40N_U101_0378599a.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "5f9abd3f7169b1d6525c47c5f406c1ddb13fca5b9f93fc646a1a924f13da9779",
@@ -7281,10 +7658,11 @@
     "region_emitter": 1154114,
     "ake_gate": 1272732,
     "uhd_stub_va": 1395128,
-    "bd_stub_va": 1395180,
+    "bd_stub_va": 1395184,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU40N_U101_5f9abd3f.bin"
+   "r2_key": "MT1959/BU40N_U101_5f9abd3f.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "20425a8ade6bb5d24bbd76fb5d5d67e744cd49e24783be87e6a89d30dfcace95",
@@ -7347,10 +7725,11 @@
     "region_emitter": 1153152,
     "ake_gate": 1271668,
     "uhd_stub_va": 1393024,
-    "bd_stub_va": 1393076,
+    "bd_stub_va": 1393080,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU50N_1.00_20425a8a.bin"
+   "r2_key": "MT1959/BU50N_1.00_20425a8a.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "6b4fa7bd47c0b2578b256bb792b034a385de32264c454eaf5f6950a4d75c2c0d",
@@ -7413,10 +7792,11 @@
     "region_emitter": 1153152,
     "ake_gate": 1271668,
     "uhd_stub_va": 1393024,
-    "bd_stub_va": 1393076,
+    "bd_stub_va": 1393080,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU50N_1.00_6b4fa7bd.bin"
+   "r2_key": "MT1959/BU50N_1.00_6b4fa7bd.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "d1e4d3d704c6f2f8ea200d64ff39e3a1a564769dfa66798039015c615536cf4b",
@@ -7479,10 +7859,11 @@
     "region_emitter": 1152330,
     "ake_gate": 1270288,
     "uhd_stub_va": 1392336,
-    "bd_stub_va": 1392388,
+    "bd_stub_va": 1392392,
     "hrl_sites": 3
    },
-   "r2_key": "MT1959/BU50N_BW51_d1e4d3d7.bin"
+   "r2_key": "MT1959/BU50N_BW51_d1e4d3d7.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "bea3a823370a985afe37ce6a6aad4b67ef7af15307f622aaac1f76bc7a1dbb5c",
@@ -7544,11 +7925,12 @@
     "speed_gate": 113586,
     "region_emitter": 1145026,
     "ake_gate": 1261658,
-    "uhd_stub_va": 1382020,
-    "bd_stub_va": 1382072,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1382052,
     "hrl_sites": 1
    },
-   "r2_key": "MT1959/WP50NB40_1.01_bea3a823.bin"
+   "r2_key": "MT1959/WP50NB40_1.01_bea3a823.bin",
+   "lineage": "MT1959-lineage"
   }
  ]
 }
