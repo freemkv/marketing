@@ -184,13 +184,20 @@ import '../../styles/site.css';
             </p>
           </div>
 
-          <div class="grid dl-grid">
+          <div class="grid dl-grid dl-stack">
             {platforms.map((p) => (
               <article class="card" data-os={p.os}>
                 <h3 class="card-title">{p.name}</h3>
                 <div class="dl-list">
                   {p.gui === 'brew' ? (
-                    <p class="dl-brew-see">Install with Homebrew — see below ↓</p>
+                    <>
+                      <code class="dl-brew-cmd">brew install --cask freemkv/tap/freemkv-flash-gui</code>
+                      <code class="dl-brew-cmd">brew install freemkv/tap/freemkv-flash</code>
+                      <p class="dl-mac-help">
+                        Homebrew installs the app and the command line, and skips
+                        the macOS security prompt entirely.
+                      </p>
+                    </>
                   ) : (
                     p.builds.map((b) => (
                       <>
@@ -219,12 +226,6 @@ import '../../styles/site.css';
               </article>
             ))}
           </div>
-          <p class="dl-note dl-brew">
-            <strong>macOS — easiest:</strong> Homebrew installs the app and the
-            command line, and skips the macOS security prompt entirely.
-            <code class="dl-cmd">brew install --cask freemkv/tap/freemkv-flash-gui</code>
-            <code class="dl-cmd">brew install freemkv/tap/freemkv-flash</code>
-          </p>
           <p class="dl-note">
             <a href={firmwareReleases}>All releases on GitHub →</a>
             <a href={firmwareRepo}>View on GitHub →</a>

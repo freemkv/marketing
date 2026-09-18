@@ -111,6 +111,15 @@ a[data-unavailable] { display: none !important; }
 .dl-note { text-align: center; color: var(--muted); font-size: 0.9rem; margin: 2rem auto 0; max-width: 60ch; }
 .dl-note a { margin-left: 0.4rem; font-weight: 600; }
 .dl-note-sub { margin-top: 0.5rem; font-size: 0.85rem; }
+/* One-OS-per-row download layout: full-width cards stacked vertically, each
+   card fully self-contained (the macOS card shows its Homebrew command inline
+   instead of pointing at a block below). Shared by /download/, /firmware/modify/
+   and /firmware/flash/. The !important overrides the per-page `.grid` column
+   rule (body.page-… .grid), which has higher specificity. */
+.dl-stack { grid-template-columns: 1fr !important; max-width: 600px; margin-left: auto; margin-right: auto; }
+.dl-stack .dl-brew-cmd { margin-top: 0.6rem; }
+.dl-stack .dl-brew-cmd + .dl-brew-cmd { margin-top: 0.4rem; }
+.dl-mac-help { margin: 0.75rem 0 0; color: var(--muted); font-size: 0.85rem; line-height: 1.5; }
 .dl-toolbar { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.75rem 1.25rem; margin: 0 auto 2rem; max-width: var(--maxw); }
 .dl-detected-banner { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--teal-tint); border: 1px solid #99f6e4; color: var(--teal-darker); border-radius: 999px; padding: 0.4rem 0.9rem; font-size: 0.88rem; font-weight: 600; }
 .dl-detected-eyebrow { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: var(--teal); color: #fff; border-radius: 5px; padding: 0.12rem 0.45rem; }

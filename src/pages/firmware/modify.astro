@@ -4,6 +4,7 @@
 // (`verify`). Carries the download link for the freemkv-fw binary, reusing
 // the release-asset button pattern from src/pages/download.astro.
 import FirmwareNavDropdown from '../../components/FirmwareNavDropdown.astro';
+import FirmwareVersion from '../../components/FirmwareVersion.astro';
 
 const title = 'freemkv-fw — modify firmware for freemkv';
 const description =
@@ -13,10 +14,6 @@ const docs = '/docs/overview/';
 const github = 'https://github.com/freemkv';
 const firmwareRepo = 'https://github.com/freemkv/freemkv-firmware';
 const firmwareReleases = `${firmwareRepo}/releases`;
-
-// Current freemkv firmware release line (freemkv-firmware Cargo.toml). Single
-// source for the version string shown in the demo output below.
-const FW_VERSION = '0.8.2';
 
 // Prebuilt binaries, grouped by OS into columns (matching the Download page).
 // Asset names MUST match what the freemkv-firmware release workflow attaches
@@ -163,7 +160,7 @@ import '../../styles/site.css';
             <pre class="terminal-body"><code><span class="c"># One input, one output — freemkv-fw auto-detects the model</span>
 <span class="p">$</span> freemkv-fw create BU40N_1.00.bin BU40N_1.00.freemkv.bin
 
-<span class="c">freemkv-fw {FW_VERSION} — detected LG BU40N · base 1.00</span>
+<span class="c">freemkv-fw <FirmwareVersion /> — detected LG BU40N · base 1.00</span>
 
   Identity ................. <span class="ok">added</span>
   Speed .................... <span class="ok">added</span>
@@ -195,13 +192,20 @@ import '../../styles/site.css';
           </div>
 
 
-          <div class="grid dl-grid">
+          <div class="grid dl-grid dl-stack">
             {platforms.map((p) => (
               <article class="card" data-os={p.os}>
                 <h3 class="card-title">{p.name}</h3>
                 <div class="dl-list">
                   {p.gui === 'brew' ? (
-                    <p class="dl-brew-see">Install with Homebrew — see below ↓</p>
+                    <>
+                      <code class="dl-brew-cmd">brew install --cask freemkv/tap/freemkv-fw-gui</code>
+                      <code class="dl-brew-cmd">brew install freemkv/tap/freemkv-fw</code>
+                      <p class="dl-mac-help">
+                        Homebrew installs the app and the command line, and skips
+                        the macOS security prompt entirely.
+                      </p>
+                    </>
                   ) : (
                     p.builds.map((b) => (
                       <>
@@ -230,12 +234,6 @@ import '../../styles/site.css';
               </article>
             ))}
           </div>
-          <p class="dl-note dl-brew">
-            <strong>macOS — easiest:</strong> Homebrew installs the app and the
-            command line, and skips the macOS security prompt entirely.
-            <code class="dl-cmd">brew install --cask freemkv/tap/freemkv-fw-gui</code>
-            <code class="dl-cmd">brew install freemkv/tap/freemkv-fw</code>
-          </p>
           <p class="dl-note">
             <a href={firmwareReleases}>All releases on GitHub →</a>
             <a href={firmwareRepo}>View on GitHub →</a>

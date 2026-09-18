@@ -3,9 +3,12 @@ title: Firmware tools
 description: freemkv-fw and freemkv-flash — the two CLI tools for building and installing freemkv firmware — plus the full command ABI the resulting firmware answers to on the wire.
 ---
 
-:::note
-Accurate as of freemkv firmware **0.8.2+**.
-:::
+import { Aside } from '@astrojs/starlight/components';
+import FirmwareVersion from '../../../components/FirmwareVersion.astro';
+
+<Aside type="note">
+Accurate as of freemkv firmware **<FirmwareVersion />+**.
+</Aside>
 
 freemkv firmware turns a supported optical drive into a faster, unlocked drive. Two small
 command-line tools do the work: **freemkv-fw** builds and checks firmware images, and

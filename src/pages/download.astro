@@ -298,7 +298,7 @@ import '../styles/site.css';
             </label>
           </div>
 
-          <div class="grid grid-gui">
+          <div class="grid grid-gui dl-stack">
             {guiPlatforms.map((p) => (
               <article class={p.gui === 'soon' ? 'card card-soon' : 'card'} data-os={p.gui === 'soon' ? undefined : p.os} data-platform-card>
                 <h3 class="card-title">{p.name}</h3>
@@ -314,7 +314,11 @@ import '../styles/site.css';
                   </div>
                 ) : p.gui === 'brew' ? (
                   <div class="dl-list">
-                    <p class="dl-brew-see">Install with Homebrew — see below ↓</p>
+                    <code class="dl-brew-cmd">brew install --cask freemkv/tap/freemkv-app</code>
+                    <p class="dl-mac-help">
+                      Homebrew installs the app and skips the macOS security
+                      prompt entirely.
+                    </p>
                   </div>
                 ) : (
                   <div class="dl-list">
@@ -335,11 +339,6 @@ import '../styles/site.css';
               </article>
             ))}
           </div>
-          <p class="dl-note dl-brew">
-            <strong>macOS — easiest:</strong> Homebrew installs the app and skips the
-            macOS security prompt entirely.
-            <code class="dl-cmd">brew install --cask freemkv/tap/freemkv-app</code>
-          </p>
           <p class="dl-note">
             First launch blocked? It isn't signed yet — <a href="/docs/platforms-windows/">how to allow it</a>.
             <a href={`${guiRepo}/releases`}>All desktop releases on GitHub →</a>
@@ -370,13 +369,19 @@ import '../styles/site.css';
             </label>
           </div>
 
-          <div class="grid">
+          <div class="grid dl-stack">
             {cliPlatforms.map((p) => (
               <article class="card" data-os={p.os} data-platform-card>
                 <h3 class="card-title">{p.name}</h3>
                 <div class="dl-list">
                   {p.brew ? (
-                    <p class="dl-brew-see">Install with Homebrew — see below ↓</p>
+                    <>
+                      <code class="dl-brew-cmd">brew install freemkv/tap/freemkv</code>
+                      <p class="dl-mac-help">
+                        Homebrew installs it on PATH and skips the macOS security
+                        prompt entirely.
+                      </p>
+                    </>
                   ) : (
                     p.builds.map((b) => (
                       <a
@@ -395,11 +400,6 @@ import '../styles/site.css';
               </article>
             ))}
           </div>
-          <p class="dl-note dl-brew">
-            <strong>macOS or Linux — easiest:</strong> Homebrew installs it on PATH and
-            skips the macOS security prompt entirely.
-            <code class="dl-cmd">brew install freemkv/tap/freemkv</code>
-          </p>
           <p class="dl-note">
             Each binary has a matching <code>.sha256</code> checksum on the release page.
             Prefer archives or another version?
@@ -433,13 +433,19 @@ import '../styles/site.css';
           </div>
 
           <!-- Bare binary (primary): columns by OS, matching the CLI -->
-          <div class="grid">
+          <div class="grid dl-stack">
             {autoripPlatforms.map((p) => (
               <article class="card" data-os={p.os} data-platform-card>
                 <h3 class="card-title">{p.name}</h3>
                 <div class="dl-list">
                   {p.brew ? (
-                    <p class="dl-brew-see">Install with Homebrew — see below ↓</p>
+                    <>
+                      <code class="dl-brew-cmd">brew install freemkv/tap/autorip</code>
+                      <p class="dl-mac-help">
+                        Homebrew installs autorip on PATH and skips the macOS
+                        security prompt entirely.
+                      </p>
+                    </>
                   ) : (
                     p.builds.map((b) => (
                       <a
@@ -458,11 +464,6 @@ import '../styles/site.css';
               </article>
             ))}
           </div>
-          <p class="dl-note dl-brew">
-            <strong>macOS — easiest:</strong> Homebrew installs autorip on PATH and
-            skips the macOS security prompt entirely.
-            <code class="dl-cmd">brew install freemkv/tap/autorip</code>
-          </p>
           <p class="block-note">
             Runs as a daemon with a web UI on port 8080.
             <a href="/docs/autorip/#binary">Setup, keys and drive permissions →</a>
