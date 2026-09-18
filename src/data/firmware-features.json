@@ -1,5 +1,5 @@
 {
- "note": "Per-firmware feature availability over the full 118-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from `freemkv-fw create --base --json`; per-feature `ok` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (101 images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, 17 images). Regenerate with scripts/publish-firmware.py \u2014 do not hand-edit.",
+ "note": "Per-firmware feature availability over the full 122-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from `freemkv-fw create --base --json`; per-feature `ok` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (105 images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, 17 images). Regenerate with scripts/publish-firmware.py \u2014 do not hand-edit.",
  "flags": [
   "Speed",
   "Region",
@@ -10,20 +10,20 @@
   "Bus"
  ],
  "counts": {
-  "total": 118,
+  "total": 122,
   "base_only": 0,
-  "feature_bearing": 118,
-  "hardware_verified": 20,
-  "build_verified": 98
+  "feature_bearing": 122,
+  "hardware_verified": 21,
+  "build_verified": 101
  },
  "per_flag": {
-  "Speed": 101,
-  "Region-free": 118,
-  "UHD": 101,
-  "BD": 101,
-  "HRL Bypass": 118,
-  "AKE Bypass": 118,
-  "Bus Decrypt": 118
+  "Speed": 105,
+  "Region-free": 122,
+  "UHD": 105,
+  "BD": 105,
+  "HRL Bypass": 122,
+  "AKE Bypass": 122,
+  "Bus Decrypt": 122
  },
  "images": [
   {
@@ -5856,6 +5856,73 @@
    "lineage": "MT1959-lineage"
   },
   {
+   "sha256": "7823c0d7c396c2a8bb6b77e8674034f10afb7cc4aa34d0e22272f1900e70a1b6",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BP50NB40_7823c0d7c396c2a8.bin",
+   "engine": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BP50NB40",
+   "rev": "1.03",
+   "media": "BD/UHD",
+   "variant": "N009800",
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 110752,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1289998,
+    "de_off": 2015318,
+    "speed_gate": 113586,
+    "region_emitter": 1146090,
+    "ake_gate": 1262714,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 66872,
+    "hrl_sites": 1
+   },
+   "r2_key": "MT1959/BP50NB40_1.03_7823c0d7.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
    "sha256": "92bb22b2c8999bbcde4e02d785b711063cb414f40bdbe16fac862643b298610d",
    "bytes": 2097152,
    "src": "/tmp/corpus_dw/MT1959_BP50NB40-NB50_92bb22b2c8999bbc.bin",
@@ -6054,6 +6121,73 @@
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BP55EB40_1.02_e64c4ca5.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "044077a4688d6076b6de7e9b00502ec5f778d89888c4071d7957c3bde13af73a",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BP55EB40_044077a4688d6076.bin",
+   "engine": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BP55EB40",
+   "rev": "1.03",
+   "media": "BD",
+   "variant": "N009800",
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 110752,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1289998,
+    "de_off": 2015318,
+    "speed_gate": 113586,
+    "region_emitter": 1146090,
+    "ake_gate": 1262714,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 66872,
+    "hrl_sites": 1
+   },
+   "r2_key": "MT1959/BP55EB40_1.03_044077a4.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -6791,6 +6925,73 @@
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_1.03_106156b4.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "e973da48de143b57350f0ab97feda437d7dab6b28c8ecf32c0e16e354eefcca7",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BU40N_e973da48de143b57.bin",
+   "engine": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BU40N",
+   "rev": "1.04",
+   "media": "BD/UHD",
+   "variant": "N003500",
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "hardware-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 110752,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1301236,
+    "de_off": 2015318,
+    "speed_gate": 113442,
+    "region_emitter": 1154292,
+    "ake_gate": 1272816,
+    "uhd_stub_va": 111480,
+    "bd_stub_va": 66876,
+    "hrl_sites": 3
+   },
+   "r2_key": "MT1959/BU40N_1.04_e973da48.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -7930,6 +8131,73 @@
     "hrl_sites": 1
    },
    "r2_key": "MT1959/WP50NB40_1.01_bea3a823.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "dc24229fe4c94f1c341d0cfe21b416b4ebb0449dfe5bd991bae70d7d4ce28a73",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_WP50NB40_dc24229fe4c94f1c.bin",
+   "engine": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "WP50NB40",
+   "rev": "1.03",
+   "media": "BD/UHD",
+   "variant": "N009800",
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 110752,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1289998,
+    "de_off": 2015318,
+    "speed_gate": 113586,
+    "region_emitter": 1146090,
+    "ake_gate": 1262714,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 66872,
+    "hrl_sites": 1
+   },
+   "r2_key": "MT1959/WP50NB40_1.03_dc24229f.bin",
    "lineage": "MT1959-lineage"
   }
  ]
