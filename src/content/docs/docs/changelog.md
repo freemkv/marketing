@@ -13,6 +13,33 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases).
 
+## 1.7.4
+
+<small>2026-09-21</small>
+
+**Fixes**
+
+- **Correct main title on BD-J / Java-menu Blu-rays.** Some discs that drive
+  their menu with BD-J (a Java menu) were having the wrong title picked. 1.7.4
+  walks the disc's menu, adds a chapter-completeness failsafe, and breaks ties by
+  stream richness, so autorip and the CLI pick the real main feature — keeping
+  the Dolby Vision layer and all subtitle tracks instead of a lesser sibling.
+- **PGS subtitle "Timestamps are unset" muxing error fixed.** Blu-ray (PGS)
+  subtitles now carry a proper per-block duration, so muxing no longer fails with
+  ffmpeg's "Timestamps are unset" error.
+- **Clearer "no key in keydb" messaging.** A missing key now tells you whether
+  the disc simply isn't in the database or is listed but still needs a VID to be
+  usable, and the lookup now shows the disc hash so a report can be matched up.
+
+**New / Maintenance**
+
+- More resilient keydb downloading: a slow-but-progressing download is no longer
+  killed by an absolute deadline (rolling-idle timeout).
+- Security and quality hardening: OpenSSF Scorecard, REUSE compliance, and
+  provenance-ready CI across the components.
+
+_This release aligns all components to 1.7.4._
+
 ## 1.7.3
 
 <small>2026-09-19</small>
