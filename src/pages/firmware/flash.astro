@@ -4,6 +4,7 @@
 // verifies after. Carries the download link for the freemkv-flash binary,
 // reusing the release-asset button pattern from src/pages/download.astro.
 import FirmwareNavDropdown from '../../components/FirmwareNavDropdown.astro';
+import FirmwareDownloadToolbar from '../../components/FirmwareDownloadToolbar.astro';
 
 const title = 'freemkv-flash — flash your drive';
 const description =
@@ -119,6 +120,12 @@ import '../../styles/site.css';
             <span class="hero-badge-dot" aria-hidden="true"></span>
             <span>Beta</span>
           </div>
+          <div class="hero-version">
+            <span class="hero-version-dot" aria-hidden="true"></span>
+            <span class="hero-version-label">Latest release</span>
+            <span class="hero-version-num" data-latest-version>v0.8.3</span>
+          </div>
+          <div class="hero-version-date" data-latest-date>September 19, 2026</div>
           <p class="hero-lead">
             A generic optical-drive flasher and dumper.
             <strong>Not freemkv-specific.</strong> It flashes and dumps any
@@ -184,9 +191,13 @@ import '../../styles/site.css';
             </p>
           </div>
 
+          <!-- Version picker + detected-platform banner (JS-enhanced); also
+               drives the hero "Latest release" badge above. -->
+          <FirmwareDownloadToolbar repo={firmwareRepo} />
+
           <div class="grid dl-grid dl-stack">
             {platforms.map((p) => (
-              <article class="card" data-os={p.os}>
+              <article class="card" data-os={p.os} data-platform-card>
                 <h3 class="card-title">{p.name}</h3>
                 <div class="dl-list">
                   {p.gui === 'brew' ? (
@@ -203,6 +214,8 @@ import '../../styles/site.css';
                       <>
                         <a
                           class="btn btn-primary dl-btn"
+                          data-key={b.slug}
+                          data-asset={assetFor('flash', b)}
                           href={`${firmwareRepo}/releases/latest/download/${assetFor('flash', b)}`}
                           download
                         >
@@ -212,6 +225,8 @@ import '../../styles/site.css';
                         {p.gui === 'download' && (
                           <a
                             class="btn btn-primary dl-btn"
+                            data-key={b.slug}
+                            data-asset={assetFor('flash-gui', b)}
                             href={`${firmwareRepo}/releases/latest/download/${assetFor('flash-gui', b)}`}
                             download
                           >
@@ -227,7 +242,7 @@ import '../../styles/site.css';
             ))}
           </div>
           <p class="dl-note">
-            <a href={firmwareReleases}>All releases on GitHub →</a>
+            <a href={firmwareReleases} data-all-releases>All releases on GitHub →</a>
             <a href={firmwareRepo}>View on GitHub →</a>
           </p>
         </div>

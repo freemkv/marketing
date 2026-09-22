@@ -1,0 +1,235 @@
+---
+// Shared version-picker toolbar for the firmware tool pages (modify.astro,
+// flash.astro) — the same "Detected platform" + "Version" picker pattern as
+// src/pages/download.astro, backed by ONE GitHub Releases API call against
+// freemkv/freemkv-firmware.
+//
+// The same fetch also drives the hero "Latest release" badge at the top of
+// the page: any element anywhere on the page with [data-latest-version] /
+// [data-latest-date] gets filled in, same as download.astro's hero badge.
+// So a page only needs to render the badge markup + this toolbar once; the
+// next freemkv-firmware release updates the badge, the dropdown, and every
+// download button with no site-code change required.
+interface Props {
+  repo?: string;
+}
+const { repo = 'https://github.com/freemkv/freemkv-firmware' } = Astro.props;
+---
+
+<div class="dl-toolbar" data-dl-toolbar>
+  <div class="dl-detected-banner" data-detected-banner hidden>
+    <span class="dl-detected-eyebrow">Detected</span>
+    <span data-detected-label>your platform</span>
+  </div>
+  <label class="dl-version-pick" hidden data-version-pick>
+    <span class="dl-version-label">Version</span>
+    <select data-version-select aria-label="Choose release version">
+      <option value="latest">Latest</option>
+    </select>
+  </label>
+</div>
+
+<script define:vars={{ repo }}>
+  (function () {
+    // ---- 1. OS / arch detection (same approach as download.astro) -------
+    // Returns a key matching this page's data-key values, e.g. "macos-arm64"
+    // or "windows-x86_64" — the firmware pages name arches "x86_64", not
+    // "x64" like download.astro, so the key format matches THIS page's cards.
+    function detect() {
+      var uad = navigator.userAgentData || null;
+      var ua = (navigator.userAgent || '') + ' ' + (navigator.platform || '');
+      var os = '';
+      if (uad && uad.platform) {
+        var p = uad.platform.toLowerCase();
+        if (/win/.test(p)) os = 'windows';
+        else if (/mac/.test(p)) os = 'macos';
+        else if (/linux|android|chrome os/.test(p)) os = 'linux';
+      }
+      if (!os) {
+        os = /Win/i.test(ua) ? 'windows'
+          : /Mac|iPhone|iPad/i.test(ua) ? 'macos'
+          : /Linux|Android/i.test(ua) ? 'linux' : '';
+      }
+      if (!os) return null;
+
+      var arch = '';
+      var archHint = (uad && uad.architecture ? uad.architecture : '').toLowerCase();
+      if (archHint) {
+        arch = /arm|aarch/.test(archHint) ? 'arm64' : 'x86_64';
+      } else if (/aarch64|arm64/i.test(ua)) {
+        arch = 'arm64';
+      } else if (os === 'macos') {
+        // navigator.platform "MacIntel" is reported by both; default to
+        // Apple Silicon (the common case for new downloads).
+        arch = 'arm64';
+      } else {
+        arch = 'x86_64';
+      }
+      if (os === 'windows') arch = 'x86_64'; // only a Windows x86_64 build exists
+      return os + '-' + arch;
+    }
+
+    var detectedKey = detect();
+    var detectedOs = detectedKey ? detectedKey.split('-')[0] : '';
+
+    if (detectedOs) {
+      document.querySelectorAll('.card[data-os="' + detectedOs + '"]').forEach(function (c) {
+        c.classList.add('is-detected');
+      });
+    }
+    if (detectedKey) {
+      document.querySelectorAll('[data-key="' + detectedKey + '"]').forEach(function (b) {
+        b.classList.add('is-match');
+      });
+      var pretty = {
+        'macos-arm64': 'macOS · Apple Silicon', 'macos-x86_64': 'macOS · Intel',
+        'linux-x86_64': 'Linux · x86_64', 'linux-arm64': 'Linux · aarch64',
+        'windows-x86_64': 'Windows · x86_64',
+      };
+      if (pretty[detectedKey]) {
+        document.querySelectorAll('[data-detected-banner]').forEach(function (banner) {
+          var label = banner.querySelector('[data-detected-label]');
+          if (label) {
+            label.textContent = pretty[detectedKey];
+            banner.hidden = false;
+          }
+        });
+      }
+    }
+
+    // ---- 2. Version picker (GitHub Releases API + localStorage) ---------
+    var CACHE_KEY = 'freemkv-fw-releases-v1';
+    var TTL_MS = 6 * 60 * 60 * 1000; // 6h, well under the 60/hr unauthenticated limit
+    var API = repo.replace('https://github.com/', 'https://api.github.com/repos/') + '/releases?per_page=30';
+
+    // tag -> Set of asset names actually attached to that release, so a
+    // button can be disabled instead of 404ing for older releases.
+    var assetsByTag = Object.create(null);
+
+    function markUnavailable(a, unavailable) {
+      if (unavailable) {
+        a.setAttribute('data-unavailable', '');
+        a.removeAttribute('href');
+      } else {
+        a.removeAttribute('data-unavailable');
+      }
+    }
+
+    // A card whose every button is hidden must say so rather than render as
+    // an empty box.
+    function syncEmptyCards() {
+      document.querySelectorAll('[data-platform-card]').forEach(function (card) {
+        var links = card.querySelectorAll('a[data-asset]');
+        if (!links.length) return;
+        var hidden = card.querySelectorAll('a[data-asset][data-unavailable]').length;
+        var empty = hidden === links.length;
+        card.toggleAttribute('data-card-empty', empty);
+        var note = card.querySelector('[data-none-note]');
+        if (!note && empty) {
+          note = document.createElement('p');
+          note.className = 'dl-none';
+          note.setAttribute('data-none-note', '');
+          note.textContent = 'Not released for this version.';
+          card.appendChild(note);
+        }
+        if (note) note.hidden = !empty;
+      });
+    }
+
+    function applyVersion(tag) {
+      var known = assetsByTag[tag];
+      document.querySelectorAll('a[data-asset]').forEach(function (a) {
+        var asset = a.getAttribute('data-asset');
+        // Only judge when the release's real asset list is known; with no
+        // data (API down, cache miss) leave the link alone rather than
+        // disabling a download that probably works.
+        if (known && !known[asset]) { markUnavailable(a, true); return; }
+        markUnavailable(a, false);
+        a.href = tag === 'latest'
+          ? repo + '/releases/latest/download/' + asset
+          : repo + '/releases/download/' + tag + '/' + asset;
+      });
+      var all = document.querySelector('[data-all-releases]');
+      if (all) {
+        all.href = tag === 'latest' ? repo + '/releases' : repo + '/releases/tag/' + tag;
+      }
+      syncEmptyCards();
+    }
+
+    // Format an ISO date (release tag date) as e.g. "July 1, 2026".
+    function fmtDate(iso) {
+      if (!iso) return '';
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return '';
+      return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function populate(tags, latestDate) {
+      if (!tags || !tags.length) return;
+      // The baked static badge is already the latest known release, so this
+      // only verifies/updates it. Rewrite only when it genuinely differs, to
+      // avoid a version/date "flash" on load when the static is correct.
+      document.querySelectorAll('[data-latest-version]').forEach(function (el) {
+        if (el.textContent !== tags[0]) el.textContent = tags[0];
+      });
+      if (latestDate) {
+        document.querySelectorAll('[data-latest-date]').forEach(function (el) {
+          if (el.textContent !== latestDate) el.textContent = latestDate;
+        });
+      }
+      document.querySelectorAll('[data-version-pick]').forEach(function (pick) {
+        var sel = pick.querySelector('[data-version-select]');
+        if (!sel) return;
+        tags.forEach(function (t) {
+          var o = document.createElement('option');
+          o.value = t; o.textContent = t;
+          sel.appendChild(o);
+        });
+        sel.addEventListener('change', function () { applyVersion(sel.value); });
+        pick.hidden = false;
+      });
+      // Judge the CURRENT selection now that the asset lists are known —
+      // otherwise the default "latest" view keeps whatever the static HTML
+      // shipped, and a retired asset stays clickable until the dropdown changes.
+      var first = document.querySelector('[data-version-select]');
+      applyVersion(first && first.value ? first.value : 'latest');
+    }
+
+    function readCache() {
+      try {
+        var raw = localStorage.getItem(CACHE_KEY);
+        if (!raw) return null;
+        var obj = JSON.parse(raw);
+        if (!obj || (Date.now() - obj.t) > TTL_MS) return null;
+        return obj;
+      } catch (e) { return null; }
+    }
+
+    // Always fetch fresh so the badge reflects the TRUE latest release; the
+    // cache is only an offline/rate-limit fallback.
+    var cached = readCache();
+    fetch(API, { headers: { Accept: 'application/vnd.github+json' } })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (rels) {
+        var list = (rels || []).filter(function (r) { return !r.draft; });
+        var tags = list.map(function (r) { return r.tag_name; });
+        list.forEach(function (r) {
+          var set = Object.create(null);
+          (r.assets || []).forEach(function (as) { set[as.name] = true; });
+          assetsByTag[r.tag_name] = set;
+        });
+        if (tags.length) assetsByTag.latest = assetsByTag[tags[0]];
+        if (!tags.length) { if (cached) populate(cached.tags, cached.date); return; }
+        var latestDate = fmtDate(list[0].published_at || list[0].created_at);
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), tags: tags, date: latestDate }));
+        } catch (e) { /* private mode / quota, non-fatal */ }
+        populate(tags, latestDate);
+      })
+      .catch(function () {
+        // API failed (rate-limit, offline). Fall back to the cached list if
+        // present; otherwise the static badge + date + latest/download links stand.
+        if (cached) populate(cached.tags, cached.date);
+      });
+  })();
+</script>

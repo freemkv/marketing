@@ -5,6 +5,7 @@
 // the release-asset button pattern from src/pages/download.astro.
 import FirmwareNavDropdown from '../../components/FirmwareNavDropdown.astro';
 import FirmwareVersion from '../../components/FirmwareVersion.astro';
+import FirmwareDownloadToolbar from '../../components/FirmwareDownloadToolbar.astro';
 
 const title = 'freemkv-fw — modify firmware for freemkv';
 const description =
@@ -135,6 +136,12 @@ import '../../styles/site.css';
       <section class="hero">
         <div class="hero-inner">
           <h1 class="hero-title">freemkv-fw</h1>
+          <div class="hero-version">
+            <span class="hero-version-dot" aria-hidden="true"></span>
+            <span class="hero-version-label">Latest release</span>
+            <span class="hero-version-num" data-latest-version>v0.8.3</span>
+          </div>
+          <div class="hero-version-date" data-latest-date>September 19, 2026</div>
           <p class="hero-lead">
             <strong>freemkv-fw</strong> turns any stock MediaTek image into
             freemkv firmware, re-signed so the drive accepts it.
@@ -188,9 +195,13 @@ import '../../styles/site.css';
           </div>
 
 
+          <!-- Version picker + detected-platform banner (JS-enhanced); also
+               drives the hero "Latest release" badge above. -->
+          <FirmwareDownloadToolbar repo={firmwareRepo} />
+
           <div class="grid dl-grid dl-stack">
             {platforms.map((p) => (
-              <article class="card" data-os={p.os}>
+              <article class="card" data-os={p.os} data-platform-card>
                 <h3 class="card-title">{p.name}</h3>
                 <div class="dl-list">
                   {p.gui === 'brew' ? (
@@ -207,6 +218,8 @@ import '../../styles/site.css';
                       <>
                         <a
                           class="btn btn-primary dl-btn"
+                          data-key={b.slug}
+                          data-asset={assetFor('fw', b)}
                           href={`${firmwareRepo}/releases/latest/download/${assetFor('fw', b)}`}
                           download
                         >
@@ -216,6 +229,8 @@ import '../../styles/site.css';
                         {p.gui === 'download' && (
                           <a
                             class="btn btn-primary dl-btn"
+                            data-key={b.slug}
+                            data-asset={assetFor('fw-gui', b)}
                             href={`${firmwareRepo}/releases/latest/download/${assetFor('fw-gui', b)}`}
                             download
                           >
@@ -231,7 +246,7 @@ import '../../styles/site.css';
             ))}
           </div>
           <p class="dl-note">
-            <a href={firmwareReleases}>All releases on GitHub →</a>
+            <a href={firmwareReleases} data-all-releases>All releases on GitHub →</a>
             <a href={firmwareRepo}>View on GitHub →</a>
           </p>
 
