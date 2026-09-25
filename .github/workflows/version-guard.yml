@@ -1,0 +1,67 @@
+name: version-guard
+
+# Refuses to merge a site change that advertises a version freemkv hasn't
+# actually released. The specific bug this catches: pushing "v1.7.6" into
+# the download hero (or a `## 1.7.6` changelog heading) before
+# `freemkv/freemkv/releases/latest` has that tag — so visitors see a
+# version the download links can't yet resolve.
+#
+# The site's "latest" download URLs use GitHub's stable
+# `releases/latest/download/<asset>` form and self-correct; but the
+# HERO NUMBER and the CHANGELOG HEADING are static text — those are what
+# this guard checks. Fails on PR/push if the highest version referenced
+# in either is ahead of `freemkv/freemkv`'s latest published release.
+#
+# Owned by the release-orchestrate flow: it advances main on the freemkv
+# repo THEN pushes the site's `release: vX.Y.Z` commit that updates both
+# spots in one shot. This guard is what makes the ordering an enforced
+# invariant, not a convention.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  version-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Site version must not lead freemkv's latest release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # freemkv/freemkv's most-recent release tag (strips leading `v`).
+          released=$(gh api repos/freemkv/freemkv/releases/latest --jq '.tag_name' | sed 's/^v//')
+          echo "freemkv/freemkv latest release: $released"
+
+          # Highest version referenced in the download hero (`data-latest-version` span).
+          hero=$(sed -n 's|.*data-latest-version>v\([0-9][0-9.]*\)<.*|\1|p' src/pages/download.astro | head -1)
+          echo "download hero version:          ${hero:-<none>}"
+
+          # Highest `## X.Y.Z` heading in the site changelog. Firmware headings
+          # (`## Firmware X.Y.Z`) version independently and are excluded.
+          latest_cl=$(grep -Eo '^## [0-9]+\.[0-9]+\.[0-9]+' src/content/docs/docs/changelog.md \
+            | sed 's/^## //' | sort -V | tail -1)
+          echo "changelog latest entry:         ${latest_cl:-<none>}"
+
+          fail=0
+          # Semver-aware comparison via `sort -V`. If the largest version
+          # (site vs released) is NOT the released one, the site is ahead.
+          check_ahead() {
+            local name=$1 v=$2
+            [ -z "$v" ] && return 0
+            local top
+            top=$(printf '%s\n%s\n' "$v" "$released" | sort -V | tail -1)
+            if [ "$top" != "$released" ]; then
+              echo "::error file=$3::$name is $v but freemkv/freemkv latest is $released — the site is advertising a version that hasn't shipped yet. Wait for release-orchestrate to advance freemkv/freemkv main, then push the site update."
+              fail=1
+            fi
+          }
+          check_ahead "download hero" "$hero"      "src/pages/download.astro"
+          check_ahead "changelog"     "$latest_cl" "src/content/docs/docs/changelog.md"
+          exit $fail

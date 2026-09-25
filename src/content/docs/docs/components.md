@@ -25,7 +25,7 @@ Source on [GitHub](https://github.com/freemkv/freemkv-engine) — consumed by gi
 
 ## freemkv
 
-The user-facing front end, for Windows, macOS, and Linux. One binary with two faces: the command line, where every operation is a `scheme://` stream URL (rip a disc to MKV, copy a disc to an ISO, remux an existing image, inspect a disc, or refresh the key database), and — on Windows and macOS — a native desktop app, opened with `freemkv gui`.
+The user-facing front end, for Windows, macOS, and Linux. One binary with two faces: the command line, where every operation is a `scheme://` stream URL (rip a disc to MKV, copy a disc to an ISO, remux an existing image, inspect a disc, or refresh the key database), and — on Windows, macOS and Linux (BETA) — a native desktop app, opened with `freemkv gui`.
 
 See the [CLI reference](/docs/cli/). Get a binary from the [Download](/download/) page.
 

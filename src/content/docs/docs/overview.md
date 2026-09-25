@@ -54,7 +54,7 @@ disc://` to list titles with durations.
 
 Available for Windows, macOS, and Linux. See the **[CLI reference](/docs/cli/)**.
 
-**freemkv desktop app**: the same binary, opened as a window instead of run as a command — pick titles and tracks, choose an output format, and watch live progress. Available on macOS today, with a native Windows app in development; Linux stays CLI-only. See the **[macOS](/docs/platforms-macos/)** page.
+**freemkv desktop app**: the same binary, opened as a window instead of run as a command — pick titles and tracks, choose an output format, and watch live progress. Available on macOS and Windows today, and on Linux in BETA (GTK4 + libadwaita, distributed via Flathub + AppImage). See the **[macOS](/docs/platforms-macos/)**, **[Windows](/docs/platforms-windows/)** or **[Linux](/docs/platforms-linux/)** pages.
 
 **autorip**: a service (Windows, macOS, Linux) that watches your optical drives, runs the full pipeline on disc insert, and exposes a web UI. Insert a disc, get an MKV, repeat. See the **[autorip service](/docs/autorip/)**.
 
