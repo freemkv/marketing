@@ -132,6 +132,8 @@ a[data-unavailable] { display: none !important; }
 .card-soon:hover { transform: none; }
 .dl-soon-badge { display: inline-block; align-self: center; padding: 0.35rem 0.8rem; border-radius: 999px; background: var(--teal-tint); color: var(--teal-darker); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; }
 .dl-soon-note { margin: 0.7rem 0 0; font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+/* Beta pill next to a card title — same convention as the firmware-flash "Beta" hero badge. */
+.dl-beta-badge { display: inline-block; margin-left: 0.55rem; padding: 0.15rem 0.55rem; border-radius: 999px; background: var(--teal-tint); color: var(--teal-darker); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; vertical-align: middle; }
 .card.is-detected { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15); }
 .dl-btn.is-match { box-shadow: 0 0 0 2px var(--teal-darker), 0 6px 18px -8px rgba(13, 148, 136, 0.7); }
 .dl-autorip-bin { max-width: 720px; margin: 2.5rem auto 0; text-align: center; }

@@ -13,6 +13,36 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases).
 
+## 1.7.6
+
+<small>2026-09-25</small>
+
+**Added**
+
+- **Linux desktop app (BETA).** freemkv now ships a native GTK4 + libadwaita
+  GUI on Linux, alongside the existing macOS (AppKit) and Windows shells —
+  the same product on all three, driven by the same core. Distributed as a
+  Flatpak (submission to Flathub as `org.freemkv.FreeMKV` is in flight)
+  and as a portable AppImage published by the packaging workflow. The
+  window, hamburger menu, notifications and settings are wired up; the
+  main-content panels (source picker, title list, output/progress/log)
+  are being ported one at a time from the macOS shell. The Linux CLI is
+  production-quality and remains the recommended path for anyone who
+  needs to rip today.
+- **Rip-finished desktop notification.** When a rip completes, the app fires
+  a native notification on the OS notification centre — toast on Windows,
+  Notification Center on macOS, XDG Desktop Portal + in-window AdwToast on
+  Linux. Off from Settings if you don't want it.
+
+**Changed**
+
+- The menu bar on macOS and Windows is now one shared decision instead of
+  two hand-built copies — adding or renaming a menu row is a one-line edit
+  that reaches both shells. Not a visible change; it's the mechanism that
+  makes "one bug fix, all three OSes" a promise rather than a hope.
+
+_This release aligns all components to 1.7.6._
+
 ## 1.7.5
 
 <small>2026-09-23</small>
