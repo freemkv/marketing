@@ -54,8 +54,8 @@ the freemkv command is sent — see [Command reference](#command-reference) belo
 | Identity | Answers the "are you freemkv?" ping | ready |
 | Speed | Sets the read-speed / riplock ceiling — a settable cap, not just on/off | ready |
 | Region | Region-free (RPC-1, no ~5-change cap), or force a specific DVD region (1–8) or Blu-ray region (A/B/C) | ready |
-| UHD | Enables Ultra HD Blu-ray (AACS 2.0) support on the drive | ready |
-| Blu-ray (BD) | Blu-ray (AACS 1.0) capability control | ready |
+| Unrestricted (was UHD) | One flag for all AACS media acceptance — BD, UHD, and the auth-cell state-band gate. Same wire discriminant as the old `Uhd` name | ready |
+| Blu-ray (BD) | **Deprecated as of 0.9.2** — its NV slot still round-trips but has no runtime effect; use Unrestricted | deprecated |
 | Revocation (HRL) | Skip the host-certificate revocation check, so a revoked-but-genuine certificate still works (non-destructive) | ready |
 | AKE bypass | Skips the drive↔host authentication handshake entirely — the drive acts pre-authenticated | ready |
 | Bus decrypt | Removes in-transit (bus) encryption so sectors read back decrypted; the host applies the title keys | ready |
@@ -63,8 +63,8 @@ the freemkv command is sent — see [Command reference](#command-reference) belo
 
 These map to the **features** in the [command reference](#command-reference) below, each an
 independent setting. Which capabilities apply to a given image depends on the chipset and
-generation, so `create` reports them per image rather than assuming — a DVD-only drive has no UHD
-or BD gate, for example. Every feature ships at OEM, so the drive stays byte-for-byte stock until
+generation, so `create` reports them per image rather than assuming — a DVD-only drive has no Unrestricted
+gate, for example. Every feature ships at OEM, so the drive stays byte-for-byte stock until
 a feature is deliberately armed; settings live in RAM and revert on power-off unless **saved** to
 flash. Every build is **statically verified** (integrity re-signs, structural audit passes); the
 levers are structurally verified across the corpus. The **LG BU40N** is additionally
@@ -177,7 +177,7 @@ shows up.
 
 The command surface is a small set of **verbs** operating on a flat namespace of **features**,
 each holding a **state**. A verb (`SET`, `GET`, `RESET`, `SAVE`, `IDENTITY`, `DUMPALL`) says what
-to do; a feature (Speed, Region, UHD, …) says which subsystem; a state says how to set it. Every
+to do; a feature (Speed, Region, Unrestricted, …) says which subsystem; a state says how to set it. Every
 feature has an **OEM** state — the firmware does not touch that subsystem, so a drive left at OEM
 is byte-behaviour-identical to stock. Settings live in **RAM** and are lost on power-off unless
 you **SAVE** them to flash; on boot the firmware restores the saved config, or falls back to OEM
@@ -230,20 +230,44 @@ values on top. Two shapes result: **toggles** (`FF` OEM / `00` / `01`) and **val
 |---|---|---|---|
 | Speed | `0x01` | `FF` = OEM ramp · `00` = off = max / uncapped · `01`–`FE` = explicit speed cap | ready |
 | Region | `0x02` | `FF` = OEM region logic · `00` = locked (nothing plays) · `01`–`08` = force DVD region 1–8 · `0A`/`0B`/`0C` = force BD region A/B/C · `0F` = region-free | ready |
-| UHD | `0x03` | `FF` = OEM · `00` = No, refuse UHD discs · `01` = Yes, accept UHD discs | ready |
-| BD | `0x04` | `FF` = OEM · `00` = No, refuse BD discs · `01` = Yes, accept BD discs | ready |
+| Unrestricted | `0x03` | `FF` (`STATE_PASSTHROUGH`) = replay OEM · `00` (`STATE_OFF`) = replay OEM, drive refuses non-`0xC*` states · `01` (`STATE_ON`) = widen, accept BD + UHD + the extended auth-cell nibble set | ready |
+| BD | `0x04` | **Deprecated (0.9.2).** `FF` = OEM · `00`/`01` still round-trip via SET/GET but have no runtime effect — use Unrestricted | deprecated |
 | HRL | `0x05` | `FF` = OEM enforce · `00` = off, skip the revocation lookup (accept revoked, non-destructive) · `01` = on, enforce | ready |
 | AKE | `0x06` | `FF` = OEM real handshake · `00` = off, bypass the handshake (pre-authenticated) · `01` = on, require the handshake | ready |
 | Bus | `0x07` | `FF` = OEM · `00` = off, bus encryption off (content returned de-bussed) · `01` = on, bus encryption enforced | ready |
+
+<Aside type="note" title="Feature::Uhd renamed to Feature::Unrestricted (0.9.2)">
+`0x03` kept its **numeric discriminant** — the wire byte is unchanged, and existing hosts built
+against the old `Uhd` name keep interoperating without any change. Only the name changed, to
+document what the flag actually controls as of 0.9.2: one lever for all AACS media acceptance
+(BD, UHD, *and* the auth-cell state-band gate below) rather than just the UHD arm. `Feature::Bd`
+(`0x04`) is preserved for backward compatibility — `SET`/`GET` still round-trip through its own NV
+slot — but is marked deprecated and has no runtime effect; new hosts should drive `Unrestricted`
+instead.
+</Aside>
 
 **State conventions.** Every feature reserves **OEM** (`0xFF`) — the firmware jumps to the stock
 drive code, so that subsystem behaves exactly as shipped. Beyond that each feature has its own
 value domain. For the **toggle** features the two poles differ in meaning:
 
-- **UHD / BD** answer "does this drive accept this disc type?" — `00` = **No** (refuse), `01` =
-  **Yes** (accept), `FF` = **OEM**.
+- **Unrestricted** (and, historically, **BD**, now deprecated) answers "does this drive accept
+  this disc type?" — `00` (`STATE_OFF`) = **No** (refuse — replays OEM), `01` (`STATE_ON`) =
+  **Yes** (widen — accept), `FF` (`STATE_PASSTHROUGH`) = **OEM** (replay OEM, byte-identical to an
+  unmodified drive). `00` and `FF` both replay OEM behavior; only `01` arms the widen.
 - **HRL / AKE / Bus** are unlock switches where `00` is the **unlock** direction — `00` = **off**
   (skip revocation / bypass AKE / bus-encryption off), `01` = **on** (enforce), `FF` = **OEM**.
+
+<Aside type="note" title="Auth-cell state-band widen (new in 0.9.2)">
+On BU40N 1.00, arming `Unrestricted` also hooks the OEM auth-cell gate at `0x00136826`
+(`cmp (state>>4),#0xC; bne <6F/02>`) and widens the accepted top-nibble set, so discs whose
+classifier lands the state byte outside the usual `0xC*` band (observed: `0xE8` on a triple-layer
+UHD) are no longer silently refused with `0x30/0x02 Incompatible medium installed`. It shares the
+same lever and the same tri-state semantics as the BD/UHD acceptance gate — there's no separate
+CDB feature code for it. `CreateReport` exposes `auth_cell_site` / `auth_cell_stub_va`, which read
+zero on hardware where the anchor shape doesn't exist (e.g. MT1939 classic). A freshly flashed
+drive with virgin NV boots with `Unrestricted = STATE_ON` — the widen is armed out of the box,
+unlike every other feature, which boots at OEM until explicitly saved.
+</Aside>
 
 The **valued** features carry a range: **Speed** (`00` = max/uncapped, `01`–`FE` = a specific
 speed cap) and **Region** (`00` = locked, `01`–`08` = DVD 1–8, `0A`–`0C` = BD A/B/C, `0F` =
@@ -261,11 +285,13 @@ default the tool arms:
 |---|---|---|
 | Speed | max (uncapped) | `0x00` |
 | Region | region-free | `0x0F` |
-| UHD | yes (accept) | `0x01` |
-| BD | yes (accept) | `0x01` |
+| Unrestricted | yes (widen — accept BD + UHD) | `0x01` |
 | HRL | off (skip revocation) | `0x00` |
 | AKE | off (bypass handshake) | `0x00` |
 | Bus | off (de-bussed) | `0x00` |
+
+`BD` (`0x04`) is deprecated as of 0.9.2 and no longer part of this profile — `Unrestricted` covers
+both BD and UHD acceptance.
 
 #### What each verb and feature does
 
@@ -288,11 +314,18 @@ default the tool arms:
   logic; `00` locks the drive (nothing plays); `01`–`08` pin the drive to DVD region 1–8;
   `0A` / `0B` / `0C` pin it to BD region A / B / C; `0F` makes it region-free (RPC-1, with none of
   retail's ~5-change limit).
-- **UHD.** Ultra HD Blu-ray (AACS 2.0) capability gate — "does this drive accept UHD discs?"
-  `FF` (OEM) = as shipped; `01` (Yes) accepts and engages 4K UHD discs; `00` (No) refuses them.
-  (In scope only on UHD-capable hardware.)
-- **BD.** Blu-ray (AACS 1.0) capability gate — "does this drive accept BD discs?" `FF` (OEM) = as
-  shipped; `01` (Yes) accepts BD discs; `00` (No) force-refuses them.
+- **Unrestricted** (`0x03`, renamed from `Uhd` in 0.9.2 — same wire byte). One AACS media-acceptance
+  gate for BD (AACS 1.0), UHD (AACS 2.0), and, on hardware where the anchor exists, the auth-cell
+  state-band gate at `0x00136826`. `FF` (`STATE_PASSTHROUGH`) and `00` (`STATE_OFF`) both replay
+  OEM behavior (refuse non-`0xC*` states); `01` (`STATE_ON`, "widen") accepts BD, UHD, and the
+  extended top-nibble set. (In scope only on UHD/BD-capable hardware; the auth-cell hook is
+  additionally gated on BU40N 1.00's anchor shape — `auth_cell_stub_va` reads `0` where it doesn't
+  apply.) A fresh flash with virgin NV boots with this feature **already at `STATE_ON`** — widen
+  is the baked-in default.
+- **BD** (`0x04`, **deprecated since 0.9.2**). The old Blu-ray-only (AACS 1.0) capability gate.
+  `SET`/`GET` still round-trip through its own NV slot for legacy hosts, but the value has **no
+  runtime effect** — the drive's BD acceptance is driven entirely by `Unrestricted` now. New hosts
+  should not arm this feature; use `Unrestricted` instead.
 - **HRL.** Host-certificate revocation handling on the cert path. `FF` (OEM) = enforce; `00` (off)
   is the unlock direction — it skips the revocation lookup so a revoked-but-genuine certificate is
   accepted (non-destructive, reversible); `01` (on) enforces the check.
@@ -315,11 +348,11 @@ default the tool arms:
 
 Features are orthogonal, so the familiar "modes" are just combinations of independent settings:
 
-- **OEM-style rip (real authentication).** `UHD = yes` + `HRL = off (skip)` + `Bus = off` — the
-  drive still runs the genuine AKE handshake, but a revoked host certificate is accepted and the
-  content reads back de-bussed.
-- **Full bypass.** `AKE = off (bypass)` + `Bus = off` (+ `UHD = yes` for a UHD disc) — the drive
-  skips the handshake entirely and returns de-bussed sectors.
+- **OEM-style rip (real authentication).** `Unrestricted = yes` + `HRL = off (skip)` +
+  `Bus = off` — the drive still runs the genuine AKE handshake, but a revoked host certificate is
+  accepted and the content reads back de-bussed.
+- **Full bypass.** `AKE = off (bypass)` + `Bus = off` (+ `Unrestricted = yes` for a UHD disc) — the
+  drive skips the handshake entirely and returns de-bussed sectors.
 - **Quality-of-life only.** `Speed = max` and/or `Region = region-free`, with every AACS-path
   feature left at OEM — a faster, region-free drive that is otherwise 100% stock.
 
@@ -395,10 +428,11 @@ sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 02 02 00 00 00    # SET Region → force DVD
 sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 02 0B 00 00 00    # SET Region → force BD region B
 ```
 
-UHD — accept Ultra HD Blu-ray (AACS 2.0) discs on the drive:
+Unrestricted — widen: accept Blu-ray and Ultra HD Blu-ray (AACS 1.0 / 2.0) discs, plus the
+extended auth-cell state-band on hardware where that hook exists:
 
 ```bash
-sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 03 01 00 00 00    # SET UHD → yes (accept)
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 02 03 01 00 00 00    # SET Unrestricted → widen (STATE_ON)
 ```
 
 An OEM-style rip keeps the real handshake but skips revocation and drops bus encryption;
