@@ -26,6 +26,28 @@ In the **desktop app** (macOS today), the log panel shows the same detail as `--
 
 For where files (config, keys, logs, staging, output) live, see your platform page: [Windows](/docs/platforms-windows/), [macOS](/docs/platforms-macos/), or [Linux](/docs/platforms-linux/).
 
+## Sharing a profile (--share)
+
+`freemkv info <source> --share` (short form `-s`) captures a **shareable diagnostic profile** — written as a zip and also printed as a base64 blob you can paste straight into a GitHub issue or an email. It's the single command to run when we ask you to "send us the profile" for a drive-support or wrong-title bug report.
+
+What it captures is **context-aware by source**:
+
+- **A physical drive with a disc loaded** (`freemkv info disc:///dev/sgN --share`): captures **both** the drive profile **and** the disc structure.
+- **A physical drive with no media** (`freemkv info disc:// --share`): the **drive profile only** — the historical behavior.
+- **An image or folder** (`freemkv info iso://Disc.iso --share`, `freemkv info dir://… --share`): the **disc structure only**, since there is no drive.
+
+**The drive profile** is the inquiry / feature / read-buffer captures for the drive — the data behind the community drive-compatibility database, so we can add or verify support for your drive.
+
+**The disc structure is metadata only.** It contains the BDMV playlists (`.mpls`), clip info (`.clpi`), `index.bdmv` / `MovieObject.bdmv`, BD-J objects, and META XML, plus DVD `VIDEO_TS` IFOs — and a `selection.json` showing freemkv's own title ranking. It carries **no audio/video essence and no AACS keys**, so it is safe to share. That's exactly what lets us reproduce a wrong-title / disc-selection bug (like issue #45) without needing the whole disc — typically only a few hundred KB.
+
+**Sending it** — paste the base64 blob into your issue or email, or attach / email the zip.
+
+**Redacting and submitting** — add `--mask` to redact drive serials. On a **release build in an interactive terminal**, freemkv then offers a `[Y/n]` prompt (default **yes**) to open the GitHub issue for you. **Nothing is sent unless you confirm** at that prompt.
+
+:::note[`--share` is its own command]
+`--share` does not combine with the info listing flags (for example `--full`); pairing them exits 1. See the [CLI reference](/docs/cli/) for the exact accepted flag set.
+:::
+
 ## macOS: "app is damaged" / can't open
 
 freemkv isn't notarized yet, so macOS Gatekeeper blocks anything you download until you allow it once.
