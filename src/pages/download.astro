@@ -88,22 +88,6 @@ const guiPlatforms = [
       { key: 'macos-x64', arch: 'x86_64', label: 'Intel', file: 'freemkv-x86_64-macos.dmg' },
     ],
   },
-  // Linux GUI (GTK4 + libadwaita) — first release in freemkv 1.7.6 (issue #56).
-  // Marked BETA to match the presentation of the firmware-flash tool: the
-  // window, menus, notifications and settings are wired up; the main-content
-  // panels (source picker, title list, output, progress/log) are being ported
-  // one at a time from the macOS shell. Flatpak install is preferred once
-  // the Flathub submission lands (auto-updating + sandboxed); until then, the
-  // build artifacts (Flatpak bundle + AppImage) are published by the
-  // packaging workflows, and the production-quality CLI below is the
-  // recommended path for Linux users who need to rip today.
-  {
-    name: 'Linux',
-    os: 'linux',
-    gui: 'flathub',
-    beta: true,
-    flatpakId: 'org.freemkv.FreeMKV',
-  },
 ];
 
 // CLI binaries, all OSes. `key` is "<os>-<arch>" used by the detector.
@@ -284,7 +268,7 @@ import '../styles/site.css';
           <div class="hero-version">
             <span class="hero-version-dot" aria-hidden="true"></span>
             <span class="hero-version-label">Latest release</span>
-            <span class="hero-version-num" data-latest-version>v1.7.6</span>
+            <span class="hero-version-num" data-latest-version>v1.7.5</span>
           </div>
           <div class="hero-version-date" data-latest-date>September 23, 2026</div>
           <p class="hero-foot">Free &amp; open source · Windows, macOS &amp; Linux · Intel &amp; ARM</p>
@@ -317,10 +301,7 @@ import '../styles/site.css';
           <div class="grid grid-gui dl-stack">
             {guiPlatforms.map((p) => (
               <article class={p.gui === 'soon' ? 'card card-soon' : 'card'} data-os={p.gui === 'soon' ? undefined : p.os} data-platform-card>
-                <h3 class="card-title">
-                  {p.name}
-                  {p.beta && <span class="dl-beta-badge" aria-label="Beta release">Beta</span>}
-                </h3>
+                <h3 class="card-title">{p.name}</h3>
                 {p.gui === 'soon' ? (
                   <div class="dl-list">
                     <span class="dl-soon-badge">In development</span>
@@ -337,23 +318,6 @@ import '../styles/site.css';
                     <p class="dl-mac-help">
                       Homebrew installs the app and skips the macOS security
                       prompt entirely.
-                    </p>
-                  </div>
-                ) : p.gui === 'flathub' ? (
-                  <div class="dl-list">
-                    <code class="dl-brew-cmd">flatpak install flathub {p.flatpakId}</code>
-                    <p class="dl-mac-help">
-                      Flathub install is sandboxed and auto-updates. Flatpak
-                      bundle + portable AppImage are also published by the
-                      packaging workflows — grab the latest from{' '}
-                      <a href={`${guiRepo}/releases`}>GitHub releases</a>.
-                    </p>
-                    <p class="dl-mac-help">
-                      Rip UI still landing — window, menus, notifications and
-                      settings are wired up; source picker + title list + progress
-                      panes are being ported one at a time from the macOS shell.
-                      The <a href="#cli">Linux CLI</a> below is production-quality
-                      today.
                     </p>
                   </div>
                 ) : (
