@@ -64,16 +64,13 @@ const assetFor = (tool, b) => `freemkv-${tool}-${b.slug}.${b.ext}`;
 // in sync with src/content/docs/docs/firmware-tools.mdx.
 //
 // 0.9.2: Feature::Uhd renamed to Feature::Unrestricted (same wire discriminant,
-// 0x03) — one flag now controls BD + UHD acceptance plus the auth-cell
-// state-band widen. Feature::Bd (0x04) is deprecated: its NV slot still
-// round-trips but has no runtime effect, so it's shown greyed-out here rather
-// than removed outright (legacy hosts can still see it).
+// 0x03) — one flag controls BD + UHD acceptance plus the auth-cell state-band
+// widen. The deprecated Feature::Bd (0x04) has no runtime effect and is not listed.
 const fwCapabilities = [
   { name: 'Identity', detail: 'Answers the "are you freemkv?" ping', status: 'ready' },
   { name: 'Speed', detail: 'Settable read-speed / riplock ceiling — lift the cap for full-rate ripping', status: 'ready' },
   { name: 'Region', detail: 'Region-free (RPC-1) across DVD and Blu-ray, or force a specific region', status: 'ready' },
   { name: 'Unrestricted', detail: 'One flag for BD + UHD (AACS 1.0/2.0) acceptance and the auth-cell state-band widen', status: 'ready' },
-  { name: 'Blu-ray (BD)', detail: 'Deprecated since 0.9.2 — no runtime effect; use Unrestricted', status: 'deprecated' },
   { name: 'Revocation (HRL)', detail: 'Skip the host-certificate revocation check (non-destructive)', status: 'ready' },
   { name: 'AKE bypass', detail: 'Skip the drive↔host authentication handshake — the drive acts pre-authenticated', status: 'ready' },
   { name: 'Bus decrypt', detail: 'Remove in-transit (bus) encryption so sectors read back de-bussed; the host applies the title keys', status: 'ready' },
