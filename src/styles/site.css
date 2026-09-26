@@ -207,6 +207,7 @@ a[data-unavailable] { display: none !important; }
 .step-desc { color: var(--muted); font-size: 0.88rem; }
 .steps-compact { margin-bottom: 2rem; max-width: 780px; }
 .notice { max-width: 640px; margin: 0 auto; background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--radius); padding: 1.5rem 1.75rem; text-align: center; }
+body.page-flash .notice { margin-bottom: clamp(2rem, 5vw, 3rem); }
 .notice-title { font-size: 1.2rem; font-weight: 700; margin: 0 0 0.5rem; color: #92400e; }
 .notice p { margin: 0; color: var(--slate); font-size: 0.95rem; }
 .notice code { background: #fef3c7; color: #92400e; }
