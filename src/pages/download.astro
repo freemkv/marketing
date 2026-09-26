@@ -95,6 +95,8 @@ const guiPlatforms = [
     os: 'linux',
     gui: 'download',
     builds: [
+      { key: 'linux-x64', arch: 'x86_64', label: '.deb · Ubuntu 24.04 / Linux Mint 22', file: 'freemkv-amd64.deb' },
+      { key: 'linux-x64', arch: 'x86_64', label: 'Flatpak · direct download', file: 'freemkv-x86_64.flatpak' },
       { key: 'linux-x64', arch: 'x86_64', label: 'AppImage · Ubuntu 24.04+ / Fedora 40+', file: 'freemkv-x86_64-linux.AppImage' },
     ],
   },
@@ -290,7 +292,7 @@ import '../styles/site.css';
         <div class="section-inner">
           <h2 class="section-title">freemkv</h2>
           <p class="section-lead">
-            The desktop app, for Windows and macOS: open a disc or an image, tick the
+            The desktop app, for Windows, macOS and Linux (beta): open a disc or an image, tick the
             titles and tracks you want, press Rip.
           </p>
 
@@ -350,6 +352,7 @@ import '../styles/site.css';
             ))}
           </div>
           <p class="dl-note">
+            Linux: <a href="/docs/platforms-linux/">installation instructions for .deb, Flatpak and AppImage</a>.
             First launch blocked? It isn't signed yet — <a href="/docs/platforms-windows/">how to allow it</a>.
             <a href={`${guiRepo}/releases`}>All desktop releases on GitHub →</a>
           </p>
