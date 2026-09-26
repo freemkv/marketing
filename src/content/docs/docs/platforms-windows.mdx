@@ -9,6 +9,11 @@ freemkv provides a native desktop app and a command-line interface on Windows. B
 
 <AppShowcase os="windows" />
 
+## Requirements
+
+- 64-bit Windows on an x86_64 (Intel or AMD) PC. There is no native ARM64 build; the x86_64 build runs under emulation on ARM Windows.
+- An optical drive. See [OEM (stock) drives](/docs/drives-oem/) and [Unlocked drives](/docs/drives-unlocked/) for drive support.
+
 ## Install
 
 ### Desktop app
@@ -26,34 +31,47 @@ Download `freemkv-x86_64-windows.exe`. In File Explorer, open its folder, right-
 .\freemkv-x86_64-windows.exe info disc://
 ```
 
-The `.\` tells PowerShell to use the file in the current folder. You can rename it to `freemkv.exe` for shorter commands. Running it with `gui` opens the desktop interface.
+The `.\` tells PowerShell to use the file in the current folder. You can rename it to `freemkv.exe` for shorter commands. Running it with `gui` opens the desktop interface. See the [CLI reference](/docs/cli/) for ripping commands and options.
 
-See the [CLI reference](/docs/cli/) for ripping commands and options.
+### Verify the download
+
+The `.zip` and the standalone `.exe` on [GitHub Releases](https://github.com/freemkv/freemkv/releases) each have a matching `.sha256` file. Compare the hash of your download with the line for the same file name:
+
+```powershell
+(Get-FileHash .\freemkv-x86_64-windows.zip -Algorithm SHA256).Hash.ToLower()
+Get-Content .\freemkv-x86_64-windows.zip.sha256
+```
 
 ## First launch
 
-The Windows downloads are currently unsigned. SmartScreen may show **Windows protected your PC** for either the desktop app or CLI.
+The Windows downloads are currently unsigned. SmartScreen may show **Windows protected your PC** for either the desktop app or CLI. For a download you obtained from the official release page and trust:
 
-For a download you obtained from the official release page and trust, choose **More info → Run anyway** if Windows offers that option. Managed computers may require an administrator's approval. See [Microsoft's explanation of SmartScreen](https://learn.microsoft.com/en-us/windows/apps/package-and-deploy/smartscreen-reputation).
+1. Open `freemkv-gui.exe` or run the CLI.
+2. In the SmartScreen prompt, choose **More info**.
+3. Choose **Run anyway** if Windows offers it. Managed computers may require an administrator's approval.
 
-If antivirus software quarantines the file, review its detection details and verify the download source. An unsigned-file warning and a malware detection are different; do not assume every alert is a false positive.
+If antivirus software quarantines the file, review its detection details and verify the download source. An unsigned-file warning and a malware detection are different; do not assume every alert is a false positive. See [Microsoft's explanation of SmartScreen](https://learn.microsoft.com/en-us/windows/apps/package-and-deploy/smartscreen-reputation).
 
 ## Update or remove
 
-Close freemkv, download the new release and replace the extracted desktop files or standalone CLI. There is no installer to run. Settings are stored separately from the program.
+| Installation | Update | Remove |
+|---|---|---|
+| Desktop app `.zip` | Close freemkv, then replace the extracted `freemkv-gui.exe` with the one from the new release | Delete the extracted folder |
+| Standalone CLI | Replace the `.exe` with the new release | Delete the `.exe` |
 
-To remove freemkv, delete its program files. Keep or remove your settings and ripped movies separately.
+There is no installer to run. Settings and ripped movies are separate from program files, so updating or removing freemkv leaves them in place.
 
 ## File locations
 
 | What | Location |
 |---|---|
 | Desktop settings | `%APPDATA%\freemkv\gui-settings.json` |
-| Finished movies | The output location you choose before ripping |
+| Desktop diagnostic log | `log.txt` in the same folder, written only when the app's log level is **Verbose** or debug messages are on |
+| Finished movies | The output location you choose before ripping; the desktop app suggests your `Videos` folder |
 | AACS keys | See [Decryption Keys](/docs/decryption-keys/) |
 | CLI diagnostic log | Off by default; `--log-level 3` writes `log.txt` in the current folder |
 
-To capture a log at a specific path:
+To capture a CLI log at a specific path:
 
 ```powershell
 .\freemkv-x86_64-windows.exe info disc:// --log-level 3 --log-file "$env:USERPROFILE\Desktop\freemkv-log.txt"
@@ -77,9 +95,15 @@ Leave the terminal open and visit `http://localhost:8080`. See [autorip Service]
 
 ## Troubleshooting
 
+- **Windows protected your PC:** review [First launch](#first-launch).
 - **A black window flashes and closes:** you opened the CLI by double-clicking it. Use a terminal, or open `freemkv-gui.exe` for the desktop app.
 - **PowerShell says the command is not recognized:** check the filename, current folder and leading `.\`.
 - **No drive is available:** check the connection, close other disc software and review [Drive access](#drive-access).
 - **A movie is missing:** check the output location selected for that rip.
 
-For key setup, see [Decryption Keys](/docs/decryption-keys/). For logs and shared fixes, see [Troubleshooting](/docs/troubleshooting/).
+## See also
+
+- [Decryption Keys](/docs/decryption-keys/) for key setup
+- [Troubleshooting](/docs/troubleshooting/) for logs and shared fixes
+- [CLI reference](/docs/cli/) for ripping commands and options
+- [autorip Service](/docs/autorip/) for automatic ripping
