@@ -11,6 +11,7 @@ const download = '/download/';
 const github = 'https://github.com/freemkv';
 const docs = '/docs/overview/';
 import FirmwareNavDropdown from '../components/FirmwareNavDropdown.astro';
+import AppShowcase from '../components/AppShowcase.astro';
 import '../styles/site.css';
 ---
 
@@ -180,25 +181,10 @@ import '../styles/site.css';
             Open the desktop app, pick the titles and tracks you want, choose a
             format, and press <strong>Rip</strong> — the same engine, in a window.
           </p>
-          <!-- The Windows app on its titles page with an image open, which is what
-               the copy above promises. Captured on a clean Windows Server 2022
-               desktop at 1920x1080, window sized to 1700x980 and cropped to the
-               window itself, so there is no wallpaper or capture padding to fight
-               `.shot img`'s own border.
-               The disc is a SYNTHETIC image built for this shot — a feature plus
-               three extras, authored from generated video — so no commercial title
-               appears on the page. -->
-          <figure class="shot">
-            <img
-              src="/freemkv-gui-windows.png"
-              alt="The freemkv desktop app on Windows with a disc image open — per-title and per-track selection with chapters and durations, output format, and a live log"
-              width="1180"
-              loading="lazy"
-            />
-            <figcaption class="shot-caption">
-              The freemkv desktop app on Windows. See also the <a href="/docs/platforms-macos/">macOS guide</a>.
-            </figcaption>
-          </figure>
+          <!-- One screenshot per OS, crossfading in a fixed 16:10 stage (no layout
+               shift). Slides live in src/components/AppShowcase.astro. The Windows
+               disc is SYNTHETIC; the macOS/Ubuntu shots are dark-mode app windows. -->
+          <AppShowcase />
 
           <p class="showcase-sub">
             Prefer a command line? The <em>same</em> binary composes a <em>source</em> and a <em>destination</em> URL — no rigid subcommands. Read from a disc,
