@@ -125,6 +125,7 @@ const cliPlatforms = [
     name: 'Linux',
     os: 'linux',
     builds: [
+      { key: 'linux-x64', arch: 'x86_64', label: '.deb · Ubuntu 24.04 / Linux Mint 22', file: 'freemkv-amd64.deb' },
       { key: 'linux-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'freemkv-x86_64-linux' },
       { key: 'linux-arm64', arch: 'ARM64', label: 'aarch64', file: 'freemkv-aarch64-linux' },
     ],
@@ -357,7 +358,6 @@ import '../styles/site.css';
             ))}
           </div>
           <p class="dl-note">
-            Linux: <a href="/docs/platforms-linux/">installation instructions for .deb, Flatpak and AppImage</a>.
             <a href={`${guiRepo}/releases`}>All desktop releases on GitHub →</a>
           </p>
         </div>
