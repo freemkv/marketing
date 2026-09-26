@@ -1,46 +1,84 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" role="img" aria-label="How freemkv's components fit together: freemkv-keysources supplies keys to libfreemkv (recovery, sector retry, AACS/CSS decrypt, MKV mux), which is composed by the freemkv CLI and the autorip service; bdemu is a test fixture.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" role="img" aria-labelledby="arch-title arch-desc">
+  <title id="arch-title">How freemkv's components fit together</title>
+  <desc id="arch-desc">Layered diagram. Top: the front ends freemkv (desktop app and command line) and autorip (auto-ripping web service). Both use freemkv-engine (recovery and the rip loop), freemkv-keysources (keydb.cfg and key service) and freemkv-i18n (locale strings), and call libfreemkv directly. freemkv-engine uses freemkv-keysources and libfreemkv. freemkv-keysources supplies keys to libfreemkv (drive access, disc scan, AACS/CSS decryption, demux and mux). libfreemkv depends on freemkv-unlock (drive unlock) at the base. bdemu, a dashed test fixture, emulates a drive and builds on libfreemkv and freemkv-unlock. Arrows point from a crate to what it depends on.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/>
     </marker>
+    <marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
   </defs>
 
-  <!-- keysources (keys source) -->
-  <rect x="24" y="150" width="150" height="74" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
-  <text x="99" y="182" text-anchor="middle" font-size="14" font-weight="600" fill="#0f172a">freemkv-keysources</text>
-  <text x="99" y="202" text-anchor="middle" font-size="12" fill="#475569">key sources</text>
+  <!-- light card so the diagram reads on both light and dark site themes -->
+  <rect x="1" y="1" width="798" height="558" rx="14" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
 
-  <!-- keys arrow -->
-  <line x1="176" y1="187" x2="262" y2="187" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow)"/>
-  <text x="219" y="178" text-anchor="middle" font-size="11" fill="#0f766e" font-style="italic">keys</text>
+  <!-- ===== Layer 1: front ends ===== -->
+  <rect x="150" y="24" width="210" height="64" rx="10" fill="#ecfeff" stroke="#0e7490" stroke-width="1.5"/>
+  <text x="255" y="52" text-anchor="middle" font-size="15" font-weight="600" fill="#0f172a">freemkv</text>
+  <text x="255" y="72" text-anchor="middle" font-size="12" fill="#475569">desktop app and command line</text>
 
-  <!-- libfreemkv (engine) -->
-  <rect x="264" y="128" width="320" height="118" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="2.5"/>
-  <text x="424" y="158" text-anchor="middle" font-size="17" font-weight="700" fill="#134e4a">libfreemkv</text>
-  <text x="424" y="182" text-anchor="middle" font-size="12.5" fill="#0f766e">the engine</text>
-  <text x="424" y="206" text-anchor="middle" font-size="12.5" fill="#334155">recovery · sector retry</text>
-  <text x="424" y="226" text-anchor="middle" font-size="12.5" fill="#334155">AACS / CSS decrypt · MKV mux</text>
+  <rect x="440" y="24" width="210" height="64" rx="10" fill="#ecfeff" stroke="#0e7490" stroke-width="1.5"/>
+  <text x="545" y="52" text-anchor="middle" font-size="15" font-weight="600" fill="#0f172a">autorip</text>
+  <text x="545" y="72" text-anchor="middle" font-size="12" fill="#475569">auto-ripping web service</text>
 
-  <!-- composed-by split -->
-  <line x1="424" y1="246" x2="424" y2="286" stroke="#0f766e" stroke-width="2"/>
-  <text x="436" y="270" font-size="11" fill="#0f766e" font-style="italic">composed by</text>
-  <line x1="244" y1="286" x2="604" y2="286" stroke="#0f766e" stroke-width="2"/>
-  <line x1="244" y1="286" x2="244" y2="318" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="604" y1="286" x2="604" y2="318" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- front ends join a shared "use" bus -->
+  <line x1="255" y1="88" x2="255" y2="118" stroke="#0f766e" stroke-width="2"/>
+  <line x1="545" y1="88" x2="545" y2="118" stroke="#0f766e" stroke-width="2"/>
+  <line x1="40" y1="118" x2="635" y2="118" stroke="#0f766e" stroke-width="2"/>
+  <text x="400" y="110" text-anchor="middle" font-size="11" fill="#0f766e" font-style="italic">both use</text>
 
-  <!-- freemkv CLI -->
-  <rect x="150" y="320" width="188" height="64" rx="10" fill="#ecfeff" stroke="#0e7490" stroke-width="1.5"/>
-  <text x="244" y="348" text-anchor="middle" font-size="14.5" font-weight="600" fill="#0f172a">freemkv</text>
-  <text x="244" y="368" text-anchor="middle" font-size="12" fill="#475569">command-line tool</text>
+  <!-- bus drops -->
+  <line x1="170" y1="118" x2="170" y2="158" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="410" y1="118" x2="410" y2="158" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="635" y1="118" x2="635" y2="158" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- front ends also call libfreemkv directly -->
+  <line x1="40" y1="118" x2="40" y2="306" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow)"/>
 
-  <!-- autorip service -->
-  <rect x="510" y="320" width="188" height="64" rx="10" fill="#ecfeff" stroke="#0e7490" stroke-width="1.5"/>
-  <text x="604" y="348" text-anchor="middle" font-size="14.5" font-weight="600" fill="#0f172a">autorip</text>
-  <text x="604" y="368" text-anchor="middle" font-size="12" fill="#475569">web service</text>
+  <!-- ===== Layer 2: shared services ===== -->
+  <rect x="70" y="160" width="200" height="74" rx="10" fill="#f0fdfa" stroke="#0f766e" stroke-width="2"/>
+  <text x="170" y="190" text-anchor="middle" font-size="14.5" font-weight="700" fill="#134e4a">freemkv-engine</text>
+  <text x="170" y="210" text-anchor="middle" font-size="12" fill="#334155">recovery · rip loop</text>
 
-  <!-- bdemu test fixture -->
-  <rect x="624" y="150" width="112" height="74" rx="10" fill="#fafafa" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5 4"/>
-  <text x="680" y="182" text-anchor="middle" font-size="13.5" font-weight="600" fill="#334155">bdemu</text>
-  <text x="680" y="201" text-anchor="middle" font-size="11" fill="#64748b">test fixture</text>
-  <line x1="624" y1="187" x2="586" y2="187" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <rect x="310" y="160" width="200" height="74" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="410" y="190" text-anchor="middle" font-size="14" font-weight="600" fill="#0f172a">freemkv-keysources</text>
+  <text x="410" y="210" text-anchor="middle" font-size="12" fill="#475569">keydb.cfg · key service</text>
+
+  <rect x="550" y="160" width="170" height="74" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="635" y="190" text-anchor="middle" font-size="14" font-weight="600" fill="#0f172a">freemkv-i18n</text>
+  <text x="635" y="210" text-anchor="middle" font-size="12" fill="#475569">locale strings</text>
+
+  <!-- engine uses keysources -->
+  <line x1="270" y1="197" x2="308" y2="197" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- layer 2 down to libfreemkv -->
+  <line x1="170" y1="234" x2="170" y2="306" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="410" y1="234" x2="410" y2="306" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="420" y="274" font-size="11" fill="#0f766e" font-style="italic">keys</text>
+
+  <!-- ===== Layer 3: libfreemkv ===== -->
+  <rect x="24" y="308" width="500" height="100" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="2.5"/>
+  <text x="274" y="338" text-anchor="middle" font-size="17" font-weight="700" fill="#134e4a">libfreemkv</text>
+  <text x="274" y="362" text-anchor="middle" font-size="12.5" fill="#334155">drive access (SCSI) · disc scan · stream labels</text>
+  <text x="274" y="384" text-anchor="middle" font-size="12.5" fill="#334155">AACS / CSS decrypt · demux / mux (MKV, MP4, M2TS)</text>
+
+  <!-- libfreemkv depends on freemkv-unlock -->
+  <line x1="274" y1="408" x2="274" y2="456" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ===== Layer 4: freemkv-unlock ===== -->
+  <rect x="134" y="458" width="280" height="64" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="274" y="486" text-anchor="middle" font-size="14" font-weight="600" fill="#0f172a">freemkv-unlock</text>
+  <text x="274" y="506" text-anchor="middle" font-size="12" fill="#475569">drive-level unlock</text>
+
+  <!-- ===== bdemu test fixture ===== -->
+  <rect x="600" y="370" width="170" height="80" rx="10" fill="#fafafa" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="685" y="400" text-anchor="middle" font-size="14" font-weight="600" fill="#334155">bdemu</text>
+  <text x="685" y="419" text-anchor="middle" font-size="11.5" fill="#64748b">test fixture</text>
+  <text x="685" y="436" text-anchor="middle" font-size="11.5" fill="#64748b">emulated drive</text>
+  <line x1="600" y1="388" x2="527" y2="388" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrow-muted)"/>
+  <path d="M640,450 L640,490 L417,490" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrow-muted)"/>
+
+  <!-- legend -->
+  <line x1="600" y1="528" x2="636" y2="528" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="644" y="532" font-size="11" fill="#475569">depends on / uses</text>
 </svg>
