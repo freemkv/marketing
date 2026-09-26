@@ -13,6 +13,28 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases).
 
+## 1.7.7
+
+<small>2026-09-26</small>
+
+### Fixed
+
+- Forced PGS subtitles now disappear when their display period ends, instead of remaining until the next subtitle.
+- Preserve PGS clear-event timestamps when remuxing, addressing the reproduced issue in #52. A fresh rip is needed to confirm the fix on affected discs.
+- Improve audio frame handling and preserve opening audio and MKV timing metadata.
+- Keep the Linux desktop interface responsive while opening and scanning sources.
+
+### Linux packages
+
+- Add a native `.deb` containing the desktop app and CLI for Ubuntu 24.04 and Linux Mint 22.
+- Publish direct `.flatpak` downloads on GitHub Releases, independently of Flathub acceptance.
+- Add installation instructions and download links for both formats.
+
+### Quality and maintenance
+
+- Expand subtitle regression tests and add FFmpeg checks for subtitle clearing, audio/video content and timing.
+- Add media known-answer tests and Linux/macOS/Windows output comparisons.
+
 ## 1.7.6
 
 <small>2026-09-26</small>
