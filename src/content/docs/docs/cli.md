@@ -16,7 +16,7 @@ freemkv <subcommand> [args]              # info, update-keys, version, help
 
 A bare invocation prints usage and exits `2`.
 
-On **Windows, macOS and Linux** the same binary also opens as a desktop app — run `freemkv gui`, or open the `.app` on macOS (see [macOS](/docs/platforms-macos/)) — if you'd rather pick titles in a window than pass flags. The Linux desktop shell is in BETA (window + menus + notifications + settings; the source picker and title/progress panes are being ported one at a time from the macOS shell).
+On **Windows, macOS and Linux** the same binary also opens as a desktop app — run `freemkv gui`, or open the `.app` on macOS (see [macOS](/docs/platforms-macos/)) — if you'd rather pick titles in a window than pass flags.
 
 ## Stream URLs
 

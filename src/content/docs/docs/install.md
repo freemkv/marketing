@@ -5,7 +5,7 @@ description: Get freemkv — the command line, the desktop app, or the autorip s
 
 There are two programs: **freemkv** — one binary that is both a **command-line tool** and a **native desktop app** — and the **autorip service** (a hands-off web app). Both are a single download with no runtime or dependencies. Grab a prebuilt binary, or build from source.
 
-`freemkv` picks its face from how you start it: run `freemkv <args>` for the CLI, or open the app (macOS + Windows today; Linux in BETA) for a window. It's the same binary either way — the desktop app just adds a UI over the same engine.
+`freemkv` picks its face from how you start it: run `freemkv <args>` for the CLI, or open the app (macOS, Windows and Linux) for a window. It's the same binary either way — the desktop app just adds a UI over the same engine.
 
 For per-OS setup (where files live, how to reach the optical drive, and platform quirks), see your **[platform page](/docs/platforms-macos/)** (macOS, Windows, Linux).
 
@@ -15,7 +15,7 @@ Go to the **[Download](/download/)** page; it detects your OS and hands you the 
 
 - **[macOS](/docs/platforms-macos/)**: the **desktop app** as a `.dmg` (drag to Applications, open, rip), or a standalone **CLI binary** for scripts and `brew`.
 - **[Windows](/docs/platforms-windows/)**: the **desktop app** as a `.zip` containing `freemkv-gui.exe`, or the standalone **CLI** `freemkv.exe`.
-- **[Linux](/docs/platforms-linux/)**: the **CLI** binary (`chmod +x` and run; drive access via the `cdrom` group) — production-quality. The **desktop app** is in BETA, distributed as a portable AppImage (Ubuntu 24.04+ / Fedora 40+ or newer); a Flathub listing (`org.freemkv.FreeMKV`) is on the way.
+- **[Linux](/docs/platforms-linux/)**: the **CLI** binary (`chmod +x` and run; drive access via the `cdrom` group) — production-quality. The **desktop app** is distributed as a portable AppImage (Ubuntu 24.04+ / Fedora 40+ or newer); a Flathub listing (`org.freemkv.FreeMKV`) is on the way.
 
 Every build has a matching `.sha256` checksum on its releases page — [freemkv](https://github.com/freemkv/freemkv/releases) for the CLI, [autorip](https://github.com/freemkv/autorip/releases) for the service.
 
