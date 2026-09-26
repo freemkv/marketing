@@ -34,6 +34,27 @@ const cards = [
     desc: 'Write it to the drive with freemkv-flash.',
   },
 ];
+// "Everything a UHD drive tool does" parity grid. Every entry is backed by
+// what freemkv-firmware v0.9.2 actually ships (freemkv-fw levers/features,
+// freemkv-flash backup/verify/restore) — never add a capability the tools lack.
+// Keep the feature wording in step with modify.astro's fwCapabilities.
+import firmwareIndex from '../../data/firmware-index.json';
+const hostedModels = firmwareIndex.filter((d) => d.ready).length;
+
+const parity = [
+  { name: 'Back up & restore', detail: 'Every flash starts with a backup of the drive; dump everything readable any time and restore from the backup.' },
+  { name: 'Verified flashing', detail: 'The image’s integrity signature is checked before writing; afterwards the drive is read back and re-identified.' },
+  { name: 'Downgrade any version', detail: 'Flash any firmware version over any existing one.' },
+  { name: 'UHD & Blu-ray unlock', detail: 'Unrestricted opens the drive to read every disc type, including Ultra HD Blu-ray.' },
+  { name: 'Region-free', detail: 'RPC-1 across DVD and Blu-ray, or force a specific region.' },
+  { name: 'Full rip speed', detail: 'Lift the read-speed / riplock ceiling, or set your own cap.' },
+  { name: 'Encryption handshake bypass', detail: 'Content reads back decrypted; the host applies the title keys.' },
+  { name: 'Revocation-list skip', detail: 'A revoked-but-genuine host certificate still works (non-destructive).' },
+  { name: 'Hosted base images', detail: `Stock OEM firmware for ${hostedModels} drive models, ready to find and download.` },
+  { name: 'Stock until switched on', detail: 'Every feature ships at OEM; the drive behaves exactly as stock until you arm one.' },
+  { name: 'Windows, macOS & Linux', detail: 'Command-line tools on all three; desktop apps on Windows and macOS.' },
+  { name: 'Free & open source', detail: 'MIT-licensed. No license key, no subscription, no disc quota.' },
+];
 import '../../styles/site.css';
 ---
 
@@ -117,6 +138,26 @@ import '../../styles/site.css';
               </a>
             ))}
           </div>
+        </div>
+      </section>
+
+      <!-- ============ CAPABILITIES ============ -->
+      <section class="block block-alt">
+        <div class="section-inner">
+          <h2 class="section-title">Everything a UHD drive tool does — free and open source</h2>
+          <p class="section-lead">Downgrade, unlock and flash your drive with free, MIT-licensed tools.</p>
+          <div class="grid cap-grid">
+            {parity.map((c) => (
+              <div class="cap-item" data-status="ready">
+                <span class="cap-dot cap-dot-ready" aria-hidden="true"></span>
+                <div class="cap-body">
+                  <span class="cap-name">{c.name}</span>
+                  <span class="cap-detail">{c.detail}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p class="block-note">Flashing supports MediaTek MT1939 and MT1959 drives; Pioneer drives can be backed up today. See <a href="/firmware/flash/">Flash</a> before writing to a drive.</p>
         </div>
       </section>
     </main>
