@@ -348,12 +348,16 @@ import '../styles/site.css';
                     ))}
                   </div>
                 )}
+                {p.os === 'windows' && p.gui === 'download' && (
+                  <p class="dl-soon-note">
+                    Windows may flag this unsigned download — <a href="/docs/platforms-windows/">first-run help</a>.
+                  </p>
+                )}
               </article>
             ))}
           </div>
           <p class="dl-note">
             Linux: <a href="/docs/platforms-linux/">installation instructions for .deb, Flatpak and AppImage</a>.
-            First launch blocked? It isn't signed yet — <a href="/docs/platforms-windows/">how to allow it</a>.
             <a href={`${guiRepo}/releases`}>All desktop releases on GitHub →</a>
           </p>
         </div>
@@ -410,6 +414,11 @@ import '../styles/site.css';
                     ))
                   )}
                 </div>
+                {p.os === 'windows' && (
+                  <p class="dl-soon-note">
+                    Windows may flag this unsigned download — <a href="/docs/platforms-windows/">first-run help</a>.
+                  </p>
+                )}
               </article>
             ))}
           </div>
