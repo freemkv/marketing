@@ -22,7 +22,7 @@ freemkv <source> <dest> --log-level 3 --log-file freemkv-debug.log
 
 In autorip, enable the Debug toggle in the web UI (or `POST /api/debug`), reproduce the problem, then collect the container logs.
 
-In the **desktop app** (macOS today), the log panel shows the same detail as `--log-level 3` as the rip runs — no flags to set. Use the copy button on the panel to grab it for a bug report.
+In the **desktop app** (macOS, Windows, and Linux), the log panel shows the same detail as `--log-level 3` as the rip runs — no flags to set. Use the copy button on the panel to grab it for a bug report.
 
 For where files (config, keys, logs, staging, output) live, see your platform page: [Windows](/docs/platforms-windows/), [macOS](/docs/platforms-macos/), or [Linux](/docs/platforms-linux/).
 
@@ -42,7 +42,7 @@ What it captures is **context-aware by source**:
 
 **Sending it** — paste the base64 blob into your issue or email, or attach / email the zip.
 
-**Redacting and submitting** — add `--mask` to redact drive serials. On a **release build in an interactive terminal**, freemkv then offers a `[Y/n]` prompt (default **yes**) to open the GitHub issue for you. **Nothing is sent unless you confirm** at that prompt.
+**Redacting and submitting** — add `--mask` to redact drive serials. On an **official release build in an interactive terminal**, freemkv then offers a `[y/N]` prompt (default **no**) to submit the profile as a GitHub issue for you. **Nothing is sent unless you type `y`**; otherwise freemkv prints the issue text for you to file yourself.
 
 :::note[`--share` is its own command]
 `--share` does not combine with the info listing flags (for example `--full`); pairing them exits 1. See the [CLI reference](/docs/cli/) for the exact accepted flag set.
