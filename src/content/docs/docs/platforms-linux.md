@@ -3,7 +3,7 @@ title: Linux
 description: Running freemkv and autorip on Linux. File locations, /dev/sg* SCSI generic access, and the autorip Docker model.
 ---
 
-freemkv provides a native GTK4 desktop app (beta) and a command-line interface on Linux. Choose a package below from the **[Download page](/download/)**. The desktop packages include both interfaces; the standalone CLI does not need GTK.
+freemkv provides a native GTK4 desktop app and a command-line interface on Linux. Choose a package below from the **[Download page](/download/)**. The desktop packages include both interfaces; the standalone CLI does not need GTK.
 
 ## Native .deb package
 
