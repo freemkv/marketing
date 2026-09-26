@@ -88,6 +88,16 @@ const guiPlatforms = [
       { key: 'macos-x64', arch: 'x86_64', label: 'Intel', file: 'freemkv-x86_64-macos.dmg' },
     ],
   },
+  // Linux desktop app (BETA): AppImage from release.yml `linux-appimage`.
+  // Flathub listing to follow; until then the AppImage is the GUI download.
+  {
+    name: 'Linux (BETA)',
+    os: 'linux',
+    gui: 'download',
+    builds: [
+      { key: 'linux-x64', arch: 'x86_64', label: 'AppImage · Ubuntu 24.04+ / Fedora 40+', file: 'freemkv-x86_64-linux.AppImage' },
+    ],
+  },
 ];
 
 // CLI binaries, all OSes. `key` is "<os>-<arch>" used by the detector.
