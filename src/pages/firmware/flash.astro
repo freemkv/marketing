@@ -165,7 +165,7 @@ import '../../styles/site.css';
             <pre class="terminal-body"><code><span class="c"># 1. Identify the drive first — any MTK optical drive</span>
 <span class="p">$</span> freemkv-flash info &lt;dev&gt;
 
-<span class="c"># 2. Always dump before touching anything — full image + read-surface map</span>
+<span class="c"># 2. Always back up before touching anything — full image + read-surface map</span>
 <span class="p">$</span> freemkv-flash dump &lt;dev&gt;
 
 <span class="c"># 3. Flash — backs up automatically, writes, then reads back to verify</span>
@@ -173,20 +173,14 @@ import '../../styles/site.css';
           </div>
 
           <div class="notice">
-            <h2 class="notice-title">Beta: <code>info</code> and <code>dump</code> are the safe, recommended commands</h2>
+            <h2 class="notice-title">Beta: Info and Backup are safe on any drive</h2>
             <p>
-              We have run every <code>freemkv-flash</code> command — including
-              <code>flash</code> — on the LG BU40N with no problems.
+              Info and Backup only read from the drive, so they are safe to run on any drive.
               <br />
-              <code>info</code> and <code>dump</code> are read-only and safe to
-              run on any supported drive today.
+              Flash has been tested on a range of MediaTek drives and works, but use it at
+              your own risk: we are not responsible for any drive bricked by this software.
               <br />
-              Caution using <code>flash</code> on anything other than a BU40N: it
-              can permanently brick a drive if interrupted or given the wrong
-              image.
-              <br />
-              It backs up before writing and reads back after, but always keep
-              your own dump too.
+              Pioneer flashing is still very experimental.
             </p>
           </div>
 
