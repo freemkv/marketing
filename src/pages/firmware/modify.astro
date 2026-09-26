@@ -71,7 +71,6 @@ const assetFor = (tool, b) => `freemkv-${tool}-${b.slug}.${b.ext}`;
 // levers are consolidated into one Feature::Encryption (0x06); wire id 0x07 is
 // retired (was Bus, proved inert).
 const fwCapabilities = [
-  { name: 'Identity', detail: 'Answers the "are you freemkv?" ping', status: 'ready' },
   { name: 'Speed', detail: 'Settable read-speed / riplock ceiling — lift the cap for full-rate ripping', status: 'ready' },
   { name: 'Region', detail: 'Region-free (RPC-1) across DVD and Blu-ray, or force a specific region', status: 'ready' },
   { name: 'Unrestricted', detail: 'Opens the drive to read every disc type, including Blu-ray and Ultra HD Blu-ray (AACS 1.0/2.0)', status: 'ready' },
