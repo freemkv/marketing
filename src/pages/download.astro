@@ -1,4 +1,5 @@
 ---
+import { graph, websiteNode, orgNode, appNode, webPageNode, breadcrumbNode, ID } from '../lib/jsonld.mjs';
 // Standalone styled Download page for freemkv.org.
 // Owns the "/download" route directly (NOT part of the Starlight docs
 // collection) so it shares the landing page's visual language with full
@@ -188,53 +189,7 @@ import '../styles/site.css';
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://freemkv.org/freemkv-icon.svg" />
-    <script
-      type="application/ld+json"
-      set:html={JSON.stringify({
-        '@context': 'https://schema.org',
-        '@graph': [
-          {
-            '@type': 'WebPage',
-            '@id': 'https://freemkv.org/download/#webpage',
-            url: 'https://freemkv.org/download/',
-            name: title,
-            description,
-            inLanguage: 'en',
-            isPartOf: { '@id': 'https://freemkv.org/#website' },
-            about: { '@id': 'https://freemkv.org/#app' },
-            primaryImageOfPage: 'https://freemkv.org/freemkv-icon.svg',
-          },
-          {
-            '@type': 'WebSite',
-            '@id': 'https://freemkv.org/#website',
-            url: 'https://freemkv.org/',
-            name: 'freemkv',
-            publisher: { '@id': 'https://freemkv.org/#org' },
-          },
-          {
-            '@type': 'Organization',
-            '@id': 'https://freemkv.org/#org',
-            name: 'freemkv',
-            url: 'https://freemkv.org/',
-            logo: 'https://freemkv.org/freemkv-icon.svg',
-            sameAs: ['https://github.com/freemkv'],
-          },
-          {
-            '@type': 'SoftwareApplication',
-            '@id': 'https://freemkv.org/#app',
-            name: 'freemkv',
-            applicationCategory: 'MultimediaApplication',
-            operatingSystem: 'Windows, macOS, Linux',
-            url: 'https://freemkv.org/',
-            downloadUrl: 'https://freemkv.org/download/',
-            license: 'https://opensource.org/licenses/MIT',
-            isAccessibleForFree: true,
-            author: { '@id': 'https://freemkv.org/#org' },
-            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-          },
-        ],
-      })}
-    />
+    <script type="application/ld+json" set:html={graph(webPageNode({ path: '/download/', name: title, description, about: ID.app }), breadcrumbNode('/download/', [['freemkv', '/'], ['Download', '/download/']]), websiteNode(), orgNode(), appNode())} />
   </head>
   <body class="page-download">
     <!-- ============ STICKY NAV ============ -->

@@ -1,5 +1,5 @@
 # freemkv — https://freemkv.org
-# All crawlers welcome.
+# All crawlers welcome, including AI/LLM crawlers.
 User-agent: *
 Allow: /
 
@@ -7,6 +7,7 @@ Allow: /
 Sitemap: https://freemkv.org/sitemap-index.xml
 
 # LLM-readable documentation (https://llmstxt.org):
-#   /llms.txt        — index
+#   /llms.txt        — index of every page, with one-line descriptions
+#   /llms-full.txt   — complete docs as one Markdown file
 #   /llms-small.txt  — abridged docs as one file
-#   /llms-full.txt   — complete docs as one file
+#   /docs/<page>.md  — any single docs page as clean Markdown

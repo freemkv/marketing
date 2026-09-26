@@ -1,7 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import starlightLlmsTxt from 'starlight-llms-txt';
+import { graph, websiteNode, orgNode, appNode } from './src/lib/jsonld.mjs';
 
 export default defineConfig({
   site: 'https://freemkv.org',
@@ -53,46 +53,12 @@ export default defineConfig({
         { tag: 'meta', attrs: { name: 'twitter:card', content: 'summary' } },
         // Site-wide JSON-LD structured data — emitted into every docs page's
         // <head> so search engines and agents get the WebSite + Organization +
-        // SoftwareApplication graph on any entry point. The custom landing page
-        // (src/pages/index.astro) injects the same graph itself.
+        // SoftwareApplication graph on any entry point. Nodes come from
+        // src/lib/jsonld.mjs, shared with the standalone pages under src/pages/.
         {
           tag: 'script',
           attrs: { type: 'application/ld+json' },
-          content: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@graph': [
-              {
-                '@type': 'WebSite',
-                '@id': 'https://freemkv.org/#website',
-                url: 'https://freemkv.org/',
-                name: 'freemkv',
-                description:
-                  'MIT Rust toolchain that rips and muxes DVD, Blu-ray, and 4K UHD to MKV with AACS/CSS decryption and multi-pass bad-sector recovery.',
-                publisher: { '@id': 'https://freemkv.org/#org' },
-              },
-              {
-                '@type': 'Organization',
-                '@id': 'https://freemkv.org/#org',
-                name: 'freemkv',
-                url: 'https://freemkv.org/',
-                logo: 'https://freemkv.org/freemkv-icon.svg',
-                sameAs: ['https://github.com/freemkv'],
-              },
-              {
-                '@type': 'SoftwareApplication',
-                '@id': 'https://freemkv.org/#app',
-                name: 'freemkv',
-                applicationCategory: 'MultimediaApplication',
-                operatingSystem: 'Linux, macOS, Windows',
-                url: 'https://freemkv.org/',
-                downloadUrl: 'https://freemkv.org/download/',
-                license: 'https://opensource.org/licenses/MIT',
-                isAccessibleForFree: true,
-                author: { '@id': 'https://freemkv.org/#org' },
-                offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-              },
-            ],
-          }),
+          content: graph(websiteNode(), orgNode(), appNode()),
         },
         // Default to the light theme on first visit (clean, neutral) — the
         // theme toggle still works and persists the user's choice thereafter.
@@ -110,15 +76,9 @@ export default defineConfig({
         Head: './src/components/Head.astro',
         SocialIcons: './src/components/SocialIcons.astro',
       },
-      // Generates /llms.txt (curated index) and /llms-full.txt (entire docs as one
-      // Markdown file) so an agent can ingest the whole site in a single fetch.
-      plugins: [
-        starlightLlmsTxt({
-          projectName: 'freemkv',
-          description:
-            'MIT Rust toolchain that recovers 100% of readable data from optical discs (DVD / Blu-ray / 4K UHD) and muxes to MKV, automatically, with bad-sector recovery (multi-pass sweep + targeted patch). DVDs (CSS) work out of the box; Blu-ray (AACS 1.0) and 4K UHD (AACS 2.0/2.1) require user-supplied AACS keys.',
-        }),
-      ],
+      // LLM-facing endpoints are plain Astro routes built from the docs
+      // collection (no plugin): /llms.txt, /llms-full.txt, /llms-small.txt, and
+      // /docs/<slug>.md — see src/pages/llms*.txt.ts and src/pages/[...slug].md.ts.
       // Custom SocialIcons override renders the Discord logo + live star count
       // + a GitHub octocat. The default social icons are disabled so the
       // header isn't doubled up with a redundant far-left GitHub octocat.

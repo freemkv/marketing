@@ -1,30 +1,70 @@
 ---
 // Custom Head override: render Starlight's default <head> (title, description,
-// canonical, OG, the global SoftwareApplication graph from astro.config), then
-// add a per-page TechArticle JSON-LD so every docs page carries structured data
-// specific to that page — not just the site-wide app graph.
+// canonical, OG, the global WebSite/Organization/SoftwareApplication graph from
+// astro.config), then add page-specific machine-readable data for every docs
+// page:
+//   - a TechArticle + BreadcrumbList JSON-LD graph for that page, and
+//   - <link rel="alternate" type="text/markdown"> pointing at the page's clean
+//     Markdown source (served by src/pages/[...slug].md.ts at /docs/<slug>.md).
+// Non-docs routes Starlight renders (the 404 page) get neither, plus noindex.
 import Default from '@astrojs/starlight/components/Head.astro';
 
 const route = Astro.locals.starlightRoute;
 const site = 'https://freemkv.org';
-const url = new URL(Astro.url.pathname, site).href;
-const title = route?.entry?.data?.title ?? 'freemkv';
-const description = route?.entry?.data?.description ?? '';
+const entryId: string = route?.entry?.id ?? '';
+const isDoc = entryId.startsWith('docs/');
 
-const article = {
-  '@context': 'https://schema.org',
-  '@type': 'TechArticle',
-  '@id': `${url}#article`,
-  headline: title,
-  name: title,
-  description,
-  url,
-  inLanguage: 'en',
-  isPartOf: { '@id': 'https://freemkv.org/#website' },
-  about: { '@id': 'https://freemkv.org/#app' },
-  publisher: { '@id': 'https://freemkv.org/#org' },
-};
+const url = new URL(Astro.url.pathname, site).href;
+const title: string = route?.entry?.data?.title ?? 'freemkv';
+const description: string = route?.entry?.data?.description ?? '';
+// Only emitted when Starlight actually knows a date (frontmatter `lastUpdated`
+// or the `lastUpdated` config) — never guessed.
+const lastUpdated: Date | undefined = route?.lastUpdated;
+const markdownUrl = `${site}/${entryId}.md`;
+
+const graph = isDoc
+  ? {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'TechArticle',
+          '@id': `${url}#article`,
+          headline: title,
+          name: title,
+          ...(description ? { description } : {}),
+          url,
+          mainEntityOfPage: url,
+          inLanguage: 'en',
+          ...(lastUpdated ? { dateModified: lastUpdated.toISOString() } : {}),
+          isPartOf: { '@id': `${site}/#website` },
+          about: { '@id': `${site}/#app` },
+          author: { '@id': `${site}/#org` },
+          publisher: { '@id': `${site}/#org` },
+          encoding: {
+            '@type': 'MediaObject',
+            encodingFormat: 'text/markdown',
+            contentUrl: markdownUrl,
+          },
+          breadcrumb: { '@id': `${url}#breadcrumb` },
+        },
+        {
+          '@type': 'BreadcrumbList',
+          '@id': `${url}#breadcrumb`,
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'freemkv', item: `${site}/` },
+            { '@type': 'ListItem', position: 2, name: 'Docs', item: `${site}/docs/overview/` },
+            // The docs landing page is itself the "Docs" crumb.
+            ...(entryId === 'docs/overview'
+              ? []
+              : [{ '@type': 'ListItem', position: 3, name: title, item: url }]),
+          ],
+        },
+      ],
+    }
+  : null;
 ---
 
 <Default><slot /></Default>
-<script type="application/ld+json" set:html={JSON.stringify(article)} />
+{!isDoc && <meta name="robots" content="noindex" />}
+{isDoc && <link rel="alternate" type="text/markdown" href={markdownUrl} title={`${title} (Markdown)`} />}
+{graph && <script type="application/ld+json" set:html={JSON.stringify(graph)} />}

@@ -1,4 +1,5 @@
 ---
+import { graph, websiteNode, orgNode, webPageNode, breadcrumbNode, firmwareToolNode, ID } from '../../lib/jsonld.mjs';
 // "Flash" — /firmware/flash/. freemkv-flash: a generic MT19xx optical-drive
 // flasher/dumper — not freemkv-specific — that backs up before writing and
 // verifies after. Carries the download link for the freemkv-flash binary,
@@ -74,6 +75,7 @@ import '../../styles/site.css';
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://freemkv.org/freemkv-icon.svg" />
+    <script type="application/ld+json" set:html={graph(webPageNode({ path: '/firmware/flash/', name: title, description, about: ID.flash }), breadcrumbNode('/firmware/flash/', [['freemkv', '/'], ['Firmware', '/firmware/'], ['Flash', '/firmware/flash/']]), firmwareToolNode({ id: ID.flash, name: 'freemkv-flash', description, url: 'https://freemkv.org/firmware/flash/' }), websiteNode(), orgNode())} />
   </head>
   <body class="page-flash">
     <!-- ============ STICKY NAV ============ -->
