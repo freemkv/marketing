@@ -1,123 +1,108 @@
 ---
 title: macOS
-description: freemkv on macOS — the native desktop app and the CLI, both from one binary. Install, drive access, and file locations.
+description: Install and update freemkv on macOS, find your settings and output, and troubleshoot optical-drive access.
 ---
 
-On macOS, `freemkv` is **one binary with two faces**: a native desktop app and
-the command line. Both run the same engine — the app just opens a window.
+freemkv provides a native desktop app and a command-line interface on macOS. Both use the same ripping engine. Choose **Apple Silicon** or **Intel** for your Mac on the **[Download page](/download/)**.
 
-## Install with Homebrew (easiest)
+## Install
 
-```sh
-brew install freemkv/tap/freemkv             # command line
-brew install --cask freemkv/tap/freemkv-app  # desktop app
-```
+### Desktop app
 
-This is the path with no friction, and it is the one to use if you just want
-the app working. Homebrew fetches with `curl`, which never marks a file as
-quarantined, so the security prompt described below never appears. Everything
-else on this page still applies.
-
-## "Apple could not verify freemkv" on first launch
-
-freemkv is not notarized by Apple yet, so **anything you download in a browser**
-— the app *and* the plain CLI binary — is blocked the first time you open it.
-The dialog says macOS "could not verify" it is free of malware, and offers only
-a **Done** button.
-
-This is not a broken download. Re-downloading will not help. Allow it once:
-
-1. Open the app (or run the binary). It refuses — click **Done**.
-2. Open **System Settings → Privacy & Security** and scroll down. There is now
-   a line naming freemkv with an **Open Anyway** button.
-3. Click **Open Anyway** and confirm.
-
-That is a one-time step per download. Afterwards it opens like any other app.
-
-For the CLI you can skip the trip through System Settings by clearing the
-quarantine flag directly:
+With Homebrew:
 
 ```bash
-xattr -d com.apple.quarantine ./freemkv
+brew install --cask freemkv/tap/freemkv-app
 ```
 
-:::note
-Older guides — including earlier versions of this page — say to right-click the
-app and choose **Open**. **macOS 15 Sequoia removed that shortcut.** The blocked
-dialog no longer offers anything but **Done**, so Open Anyway in System Settings
-is the only route on current macOS.
-:::
+Or download the matching `.dmg` from [GitHub Releases](https://github.com/freemkv/freemkv/releases), open it and drag `freemkv.app` into **Applications**.
 
-Installing with Homebrew, or fetching with `curl`, avoids all of this: neither
-sets the quarantine flag that triggers the check.
+Open freemkv, select a disc, image or folder, choose the titles and tracks, select an output location and press **Rip**. You can also drag a supported media file onto the window.
 
-## The desktop app
+![The freemkv desktop app on macOS with a disc image loaded.](/freemkv-gui-macos.png)
 
-`brew install --cask freemkv/tap/freemkv-app` (above) is the recommended way to
-get the app — the cask strips the quarantine flag after install, so it opens
-immediately with nothing to click through.
+### Command line
 
-If you'd rather have Apple's own Gatekeeper prompt than trust this tap, the
-**`.dmg`** (Apple Silicon or Intel) is still on the
-**[All desktop releases](https://github.com/freemkv/freemkv/releases)** page linked from
-[Download](/download/). Open it and drag **`freemkv.app`** out — to
-Applications, or just your Downloads folder; anywhere works, there's no install
-step. Double-click it, then pick a disc or a disc image, tick the titles and
-tracks you want, choose a format, and press **Rip**.
+With Homebrew:
 
-![The freemkv desktop app on macOS with a disc image loaded — per-title and per-track selection, output format, and a live log.](/freemkv-gui-macos.png)
+```bash
+brew install freemkv/tap/freemkv
+freemkv --version
+```
 
-*The freemkv desktop app on macOS.*
+For a standalone download, use `freemkv-aarch64-macos` on Apple Silicon or `freemkv-x86_64-macos` on Intel. For example:
 
-- **Open a source** with the file picker, or **drag an `.iso` / `.mkv` /
-  `.m2ts` / `.mp4`** straight onto the window.
-- **Per-title and per-track selection** with tri-state rollup, an output-format
-  picker that follows the source, live progress (engine speed + ETA), and a
-  copyable log.
-- **First launch** is blocked by macOS until you allow it once — see
-  [above](#apple-could-not-verify-freemkv-on-first-launch).
+```bash
+chmod +x freemkv-aarch64-macos
+./freemkv-aarch64-macos --version
+```
 
-## The command line
-
-The very same binary is the full `freemkv` CLI. If you installed the app, the
-executable lives inside it:
+The desktop app also contains the CLI:
 
 ```bash
 /Applications/freemkv.app/Contents/MacOS/freemkv --version
 ```
 
-Or download the standalone **CLI binary** for macOS (Apple Silicon or Intel)
-from the [Download](/download/) page — handy for scripts, `brew`, or CI:
+Running `freemkv gui` opens the desktop interface. See the [CLI reference](/docs/cli/) for ripping commands and options.
+
+<a id="apple-could-not-verify-freemkv-on-first-launch"></a>
+
+## First launch
+
+A browser download may prompt macOS to verify the app or CLI. If macOS cannot verify the developer or notarization, and you trust the official download:
+
+1. Try opening the app or running the binary, then dismiss the prompt.
+2. Open **System Settings → Privacy & Security**.
+3. Choose **Open Anyway** for freemkv and confirm.
+
+This creates an exception for that app. Different warnings, such as a damaged file or detected malware, need separate investigation. See [Apple's first-launch guidance](https://support.apple.com/en-us/102445).
+
+## Update or remove
+
+For Homebrew installations:
 
 ```bash
-mv freemkv-*-macos freemkv && chmod +x freemkv
-./freemkv iso://Disc.iso mkv://Movie.mkv
+brew update
+brew upgrade --cask freemkv/tap/freemkv-app
+brew upgrade freemkv/tap/freemkv
 ```
 
-A binary downloaded in a browser is blocked on first run, exactly like the app
-— allow it once in **System Settings → Privacy & Security**, or run
-`xattr -d com.apple.quarantine ./freemkv`. Fetching with `curl` or Homebrew
-avoids it entirely. Each binary has a matching `.sha256` checksum on the
-release page.
+Run the upgrade command for the app or CLI you installed. For direct downloads, close freemkv and replace the app or standalone binary with the new release.
 
-From a terminal, `freemkv gui` opens the desktop window; any other invocation is
-the CLI. See the **[CLI reference](/docs/cli/)** for the full command grammar.
+Use `brew uninstall --cask freemkv/tap/freemkv-app` or `brew uninstall freemkv/tap/freemkv` to remove a Homebrew installation. For direct downloads, delete the app or binary. Settings and ripped movies are separate.
 
 ## File locations
 
-| What | Path |
+| What | Location |
 |---|---|
-| AACS keys | see **[Decryption Keys](/docs/decryption-keys/)** |
-| Diagnostic log | off by default (see below) |
+| Desktop settings | `~/Library/Application Support/freemkv/gui-settings.json` |
+| Finished movies | The output location you choose before ripping |
+| AACS keys | See [Decryption Keys](/docs/decryption-keys/) |
+| CLI diagnostic log | Off by default; `--log-level 3` writes `log.txt` in the current folder |
 
-The CLI keeps the terminal clean and never writes a log unless asked. Run with `--log-level 3` to write `./log.txt` in the current directory, or `--log-file PATH` to choose the destination.
+To capture a log at a specific path:
 
-## Device / drive access
+```bash
+freemkv info disc:// --log-level 3 --log-file "$HOME/Desktop/freemkv-log.txt"
+```
 
-freemkv obtains **exclusive** access to the optical drive through IOKit. To do so it unmounts the disc first, so the drive is freed for direct reads while ripping. Optical drives appear as `/dev/diskN` devices.
+Use the path to your downloaded binary if you did not install it with Homebrew.
 
-## Known quirks / troubleshooting
+## Drive access
 
-- Nothing here is **notarized** yet, so a browser download is blocked on first launch — see [above](#apple-could-not-verify-freemkv-on-first-launch) for the one-time fix, or install with Homebrew and skip it.
-- If the disc is mounted by the Finder, freemkv unmounts it to take exclusive access; that's expected.
-- For capturing logs and other common fixes, see [Troubleshooting](/docs/troubleshooting/).
+freemkv uses IOKit to obtain exclusive access to the optical drive. It unmounts the disc before direct reads, so the disc disappearing from Finder while ripping is expected. Devices appear as `/dev/diskN`.
+
+Close other software using the disc. If access fails, reconnect the drive and try again.
+
+## autorip
+
+For automatic ripping through a browser, see [autorip Service](/docs/autorip/). The prebuilt macOS autorip binary is available for Apple Silicon; Intel users can build it from source.
+
+## Troubleshooting
+
+- **macOS blocks the app or CLI:** review [First launch](#first-launch).
+- **The disc disappears from Finder:** freemkv unmounts it to take exclusive drive access.
+- **No drive is available:** check the connection and close other disc software.
+- **A movie is missing:** check the output location selected for that rip.
+
+For key setup, see [Decryption Keys](/docs/decryption-keys/). For logs and shared fixes, see [Troubleshooting](/docs/troubleshooting/).

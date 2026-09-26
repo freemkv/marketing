@@ -1,11 +1,13 @@
 ---
 title: Linux
-description: Running freemkv and autorip on Linux. File locations, /dev/sg* SCSI generic access, and the autorip Docker model.
+description: Install and update freemkv on Linux, find your settings and output, and troubleshoot optical-drive access.
 ---
 
 freemkv provides a native GTK4 desktop app and a command-line interface on Linux. Choose a package below from the **[Download page](/download/)**. The desktop packages include both interfaces; the standalone CLI does not need GTK.
 
-## Native .deb package
+## Install
+
+### Native .deb package
 
 For **x86_64 Ubuntu 24.04 and Linux Mint 22**, download `freemkv-amd64.deb`, then install it from your download directory:
 
@@ -16,9 +18,7 @@ freemkv --version
 
 Open **freemkv** from your application menu, or run `freemkv gui`. APT installs the required desktop libraries. This package uses normal host drive permissions and has no application sandbox. Compatibility with other Debian-based distributions has not been validated.
 
-To update, download the new `.deb` and repeat the installation command. There is no freemkv APT repository yet. To remove it, run `sudo apt remove freemkv`.
-
-## Direct Flatpak bundle
+### Direct Flatpak bundle
 
 The **x86_64** Flatpak is available directly from GitHub Releases; a freemkv Flathub listing is not required. Install Flatpak using your distribution's package manager, then add Flathub for the GNOME runtime:
 
@@ -39,9 +39,9 @@ The app also appears in your application menu. To use its CLI:
 flatpak run --command=freemkv org.freemkv.FreeMKV --version
 ```
 
-The bundle grants access to host files and devices for ripping. Host device permissions still apply. Updates to freemkv are manual: download the new bundle and install it with the same command. `flatpak update` updates installed runtimes but does not fetch new freemkv bundles from GitHub. Remove the app with `flatpak uninstall --user org.freemkv.FreeMKV`.
+The bundle grants access to host files and devices for ripping. Host device permissions still apply.
 
-## Portable AppImage
+### Portable AppImage
 
 For **x86_64 Ubuntu 24.04+ or Fedora 40+**, download `freemkv-x86_64-linux.AppImage`:
 
@@ -50,9 +50,9 @@ chmod +x freemkv-x86_64-linux.AppImage
 ./freemkv-x86_64-linux.AppImage
 ```
 
-Keep the file wherever you prefer. To update, replace it with the new release. If your system cannot mount an AppImage, try `./freemkv-x86_64-linux.AppImage --appimage-extract-and-run`.
+Keep the file wherever you prefer.
 
-## Standalone CLI
+### Command line
 
 Download the binary matching your CPU. For x86_64:
 
@@ -61,40 +61,65 @@ chmod +x freemkv-x86_64-linux
 ./freemkv-x86_64-linux --version
 ```
 
-For ARM64, use `freemkv-aarch64-linux` instead. These are static CLI binaries without the desktop interface. Replace the downloaded file to update.
+For ARM64, use `freemkv-aarch64-linux` instead. These are static CLI binaries without the desktop interface. See the [CLI reference](/docs/cli/) for ripping commands and options.
 
 Snap Store and Flathub app listings are not currently available. The downloads above work independently of those submissions.
 
-For autorip, use its Linux binary as a service or its Docker image. See [autorip Service](/docs/autorip/) for setup and a Compose example.
+## First launch
+
+For `.deb` or Flatpak, open freemkv from the application menu. For AppImage, run the downloaded file after making it executable. Open a disc, image or folder, select the titles and tracks, choose an output location and press **Rip**.
+
+If your system cannot mount an AppImage, try:
+
+```bash
+./freemkv-x86_64-linux.AppImage --appimage-extract-and-run
+```
+
+## Update or remove
+
+| Installation | Update | Remove |
+|---|---|---|
+| `.deb` | Download the new package and repeat `sudo apt install ./freemkv-amd64.deb` | `sudo apt remove freemkv` |
+| Flatpak bundle | Download the new bundle and repeat `flatpak install --user ./freemkv-x86_64.flatpak` | `flatpak uninstall --user org.freemkv.FreeMKV` |
+| AppImage or standalone CLI | Close freemkv and replace the downloaded file | Delete the downloaded file |
+
+There is no freemkv APT repository yet. Direct Flatpak bundles also require manual app updates; `flatpak update` updates installed runtimes but does not fetch new freemkv bundles from GitHub. Settings and ripped movies are separate from program files.
 
 ## File locations
 
-### freemkv CLI
-
-| What | Path |
+| What | Location |
 |---|---|
-| AACS keys | see **[Decryption Keys](/docs/decryption-keys/)** |
-| Diagnostic log | off by default (see below) |
+| Native desktop settings | `$XDG_DATA_HOME/freemkv/gui-settings.json`, normally `~/.local/share/freemkv/gui-settings.json` |
+| Flatpak desktop settings | `~/.var/app/org.freemkv.FreeMKV/data/freemkv/gui-settings.json` |
+| Finished movies | The output location you choose before ripping |
+| AACS keys | See [Decryption Keys](/docs/decryption-keys/) |
+| CLI diagnostic log | Off by default; `--log-level 3` writes `log.txt` in the current folder |
 
-The CLI keeps the terminal clean and never writes a log unless asked. Run with `--log-level 3` to write `./log.txt` in the current directory, or `--log-file PATH` to choose the destination.
+To capture a log at a specific path:
 
-### autorip (Docker)
+```bash
+freemkv info disc:// --log-level 3 --log-file "$HOME/freemkv-log.txt"
+```
 
-autorip stores its state inside the container at well-known mount points, which you bind-mount to the host:
+Use the path to your downloaded binary, or the Flatpak CLI command above, if you did not install the `.deb`.
 
-| What | Path (in container) |
-|---|---|
-| Config (settings, keys, logs) | `/config` |
-| Staging | `/staging` |
+## Drive access
 
-Bind these to host directories so settings and the AACS key database persist across container restarts.
+Both interfaces use **SCSI generic** devices at `/dev/sg*`. Installing a package does not grant host device permissions. If access is denied, check the device owner, group and session ACLs. On systems where the drive belongs to `cdrom`, membership in that group may be required; sign out and back in after changing groups.
 
-## Device / drive access
+Close other software using the disc and check the drive connection before retrying.
 
-- Both the desktop app and CLI reach optical drives through **SCSI generic** at `/dev/sg*`. Installing a package does not grant host device permissions. If access is denied, check the device owner, group and session ACLs. On systems where the drive belongs to `cdrom`, membership in that group may be required; sign out and back in after changing groups.
-- The autorip container requires `privileged: true` and a `/dev:/dev` bind mount for optical drive access. Without `privileged`, the container starts but enumerates zero drives and the UI reports "No drives detected."
+## autorip
 
-## Known quirks / troubleshooting
+For automatic ripping through a browser, use autorip's Linux binary or Docker image. See [autorip Service](/docs/autorip/) for setup, data locations and a Compose example.
 
-- If a rip can't see the drive in the container, confirm both `privileged: true` and the `/dev:/dev` mount are present.
-- For capturing logs and other common fixes, see [Troubleshooting](/docs/troubleshooting/).
+The Docker configuration needs access to the optical devices. The supplied example uses `privileged: true` and a `/dev:/dev` bind mount; keep its persistent configuration and output mounts when updating the container.
+
+## Troubleshooting
+
+- **Permission denied when opening the program:** make the standalone binary or AppImage executable with `chmod +x`.
+- **AppImage cannot mount:** try the extraction command under [First launch](#first-launch).
+- **No drive is available:** check the connection and review [Drive access](#drive-access). For Docker, also check the device configuration.
+- **A movie is missing:** check the output location selected for that rip.
+
+For key setup, see [Decryption Keys](/docs/decryption-keys/). For logs and shared fixes, see [Troubleshooting](/docs/troubleshooting/).
