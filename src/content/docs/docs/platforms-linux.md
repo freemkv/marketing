@@ -5,7 +5,8 @@ description: Running freemkv and autorip on Linux. File locations, /dev/sg* SCSI
 
 On Linux both tools run natively as single static binaries. The `autorip` service can *also* run as a Docker container (the common choice for an always-on home server or NAS), but it's the same binary either way.
 
-freemkv on Linux has both a CLI (the recommended path for anyone who needs to rip today) and a native GTK4 + libadwaita **desktop app in BETA**. The desktop app opens with `freemkv gui` (same binary, same engine) — window, hamburger menu, notifications and settings are wired up; the source picker + title tree + progress panes are being ported one at a time from the macOS shell. Distributed as a Flatpak (Flathub submission `org.freemkv.FreeMKV` in flight) and as a portable AppImage from the packaging workflow. `autorip`'s web UI is still the fully point-and-click option today.
+<!-- FLATHUB-TODO: when the Flathub listing is live, update this to name Flathub as the primary install path. -->
+freemkv on Linux has both a CLI and a native GTK4 + libadwaita **desktop app in BETA**, at feature parity with the macOS and Windows apps — source picker (drive, file, folder), title/track tree, format and output, progress, log, settings. It opens with `freemkv gui` (same binary, same engine). Today it's distributed as a portable **AppImage** from the [Download](/download/) page (`chmod +x` and run; needs Ubuntu 24.04+ / Fedora 40+ or newer); a **Flathub** listing (`org.freemkv.FreeMKV`) is on the way. The CLI remains a single static binary that runs on any distro.
 
 ## Install / how to run
 

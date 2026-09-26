@@ -15,7 +15,7 @@ Go to the **[Download](/download/)** page; it detects your OS and hands you the 
 
 - **[macOS](/docs/platforms-macos/)**: the **desktop app** as a `.dmg` (drag to Applications, open, rip), or a standalone **CLI binary** for scripts and `brew`.
 - **[Windows](/docs/platforms-windows/)**: the **desktop app** as a `.zip` containing `freemkv-gui.exe`, or the standalone **CLI** `freemkv.exe`.
-- **[Linux](/docs/platforms-linux/)**: the **CLI** binary (`chmod +x` and run; drive access via the `cdrom` group) — production-quality. The **desktop app** is in BETA, distributed as a Flatpak on Flathub (`org.freemkv.FreeMKV`) and as a portable AppImage.
+- **[Linux](/docs/platforms-linux/)**: the **CLI** binary (`chmod +x` and run; drive access via the `cdrom` group) — production-quality. The **desktop app** is in BETA, distributed as a portable AppImage (Ubuntu 24.04+ / Fedora 40+ or newer); a Flathub listing (`org.freemkv.FreeMKV`) is on the way.
 
 Every build has a matching `.sha256` checksum on its releases page — [freemkv](https://github.com/freemkv/freemkv/releases) for the CLI, [autorip](https://github.com/freemkv/autorip/releases) for the service.
 
