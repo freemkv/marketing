@@ -104,15 +104,13 @@ import '../../styles/site.css';
           </p>
           <p class="hero-stat">
             <strong>{hostedTotal}</strong> OEM firmwares available
-            {hostedByChip.length > 0 && (
-              <span class="hero-stat-chips">
-                {' — '}
-                {hostedByChip.map(([chip, n], i) => (
-                  <>{i > 0 ? ' · ' : ''}<strong>{n}</strong> {chip}</>
-                ))}
-              </span>
-            )}
           </p>
+          <div class="hero-stat-pills">
+            {hostedByChip.map(([chip, n]) => (
+              <span class="stat-pill"><strong>{n}</strong> {chip}</span>
+            ))}
+            <span class="stat-pill stat-pill-soon">Coming soon · Pioneer</span>
+          </div>
         </div>
       </section>
 
