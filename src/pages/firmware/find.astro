@@ -1,4 +1,5 @@
 ---
+import { graph, websiteNode, orgNode, webPageNode, breadcrumbNode } from '../../lib/jsonld.mjs';
 // "Find your drive" — /firmware/find/.
 // Typeable search over the drive index in src/data/firmware-index.json using a
 // compact custom combobox (capped, scrollable, field-width list — no native
@@ -57,6 +58,7 @@ import '../../styles/site.css';
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://freemkv.org/freemkv-icon.svg" />
+    <script type="application/ld+json" set:html={graph(webPageNode({ path: '/firmware/find/', name: title, description }), breadcrumbNode('/firmware/find/', [['freemkv', '/'], ['Firmware', '/firmware/'], ['Find', '/firmware/find/']]), websiteNode(), orgNode())} />
   </head>
   <body class="page-find">
     <!-- ============ STICKY NAV ============ -->
