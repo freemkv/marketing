@@ -25,11 +25,11 @@ mv autorip-* autorip && chmod +x autorip
 ./autorip serve          # then open http://localhost:8080
 ```
 
-One static binary, no container, no runtime. Drive access uses the `cdrom` group or a udev rule (no `--privileged`); point `AUTORIP_DIR`, `OUTPUT_DIR`, and `STAGING_DIR` at local paths.
+One static binary, no container, no runtime. Drive access uses the `cdrom` group or a udev rule (no `--privileged`); point `AUTORIP_DIR` at a local path. The output and staging paths are set afterwards in the web UI's **Settings** page (stored in `settings.json`); `OUTPUT_DIR` / `STAGING_DIR` environment variables are ignored.
 
 DVDs work out of the box. Blu-ray and 4K UHD need [decryption keys](/docs/decryption-keys/).
 
-**On macOS, autorip ships for Apple Silicon only.** The Intel target was dropped from the release matrix over a linker issue in a C dependency, so there is no `autorip-x86_64-macos` asset. On an Intel Mac, build from source or run the Docker image. A macOS binary downloaded in a browser is also blocked on first run — see [the macOS page](/docs/platforms-macos/#apple-could-not-verify-freemkv-on-first-launch).
+**On macOS, autorip ships for Apple Silicon only.** The Intel target was dropped from the release matrix over a linker issue in a C dependency, so there is no `autorip-x86_64-macos` asset. On an Intel Mac, build from source or run the Docker image. A macOS binary downloaded in a browser is also blocked on first run — see [the macOS page](/docs/platforms-macos/#first-launch).
 
 ### Docker
 
@@ -43,6 +43,7 @@ services:
     container_name: autorip
     restart: unless-stopped
     privileged: true                    # REQUIRED for optical SCSI drive access
+    stop_grace_period: 75s              # let a rip drain on stop (default 10s is too short)
     environment:
       - AUTORIP_DIR=/config             # where settings.json + logs live
       - PORT=8080                       # web bind port (set at start, not at runtime)
@@ -56,7 +57,7 @@ services:
     ports:
       - 8080:8080
     healthcheck:
-      test: ["CMD", "curl", "--fail", "--silent", "--max-time", "4", "http://127.0.0.1:8080/api/state"]
+      test: ["CMD", "/usr/local/bin/autorip", "--healthcheck"]
       interval: 30s
       timeout: 5s
       start_period: 20s
@@ -68,6 +69,8 @@ docker compose up -d
 ```
 
 Then open `http://<host>:8080`.
+
+`stop_grace_period: 75s` gives a rip time to cancel and drain on a restart or redeploy; Docker's default 10 seconds is too short for a drive mid-recovery, which can take up to about a minute.
 
 :::caution[privileged is mandatory]
 Without `privileged: true`, the container starts fine but detects **zero** optical drives,
@@ -128,14 +131,16 @@ All settings are editable in the **Settings** page of the web UI and stored in `
 | `output_format` | `mkv` | Output container: `mkv`, `m2ts`, `iso`, or `network` (stream to `network_target`). |
 | `network_target` | _(empty)_ | Network output target `host:port` (for streaming output). |
 | `keep_iso` | `false` | Keep the intermediate ISO in the library after muxing. |
+| `iso_dir` | _(empty)_ | Where a kept ISO (or a whole-disc `output_format = "iso"` rip) is filed. A relative path resolves under `output_dir`; an absolute path targets another disk. Empty files the ISO beside the muxed title. |
 
 ### Disc handling
 
 | Setting | Default | Meaning |
 |---|---|---|
-| `on_insert` | `scan` | What to do on disc insert: `nothing`, `scan`, or `rip`. |
+| `on_insert` | `scan` | What to do on disc insert: `nothing`, `scan`, `rip`, or `resume` (prefer resuming an existing partial rip). |
 | `auto_eject` | `true` | Eject the disc automatically after a rip completes. |
 | `main_feature` | `true` | Rip only the longest (main feature) title. |
+| `tv_auto` | `true` | On a detected TV disc, rip every episode and file it as `Show (Year)/Season NN/` with no operator step. `false` holds TV discs for review instead. |
 | `min_length_secs` | `600` | Ignore titles shorter than this many seconds. |
 
 ### Recovery tuning
@@ -166,7 +171,7 @@ All settings are editable in the **Settings** page of the web UI and stored in `
 | Setting | Default | Meaning |
 |---|---|---|
 | `tmdb_api_key` | _(empty)_ | TMDB API key for title lookup / matching. |
-| `webhook_urls` | _(empty)_ | URLs that receive a JSON POST on rip / move events. |
+| `webhook_urls` | _(empty)_ | Webhooks that receive a JSON POST on pipeline events. Each entry has a `url` and `post_rip` / `post_mux` / `post_move` flags (all `true` by default) choosing which stages it fires on. |
 | `log_retention_days` | `30` | How long to keep per-device `.log` files. |
 
 ## Recovery
@@ -189,6 +194,8 @@ After retries are exhausted, autorip evaluates `abort_on_lost_secs` against **ma
 
 - `abort_on_lost_secs = 0`: perfect rip required; abort if any main-movie data is still unreadable.
 - `abort_on_lost_secs = N`: finish the MKV as long as no more than `N` seconds of main-movie video are missing.
+
+With `output_format = "iso"` (a whole-disc image), `abort_on_lost_secs` is ignored and treated as `0`: a whole-disc backup always requires a perfect rip. The tolerance applies only to muxed MKV / M2TS output.
 
 :::note
 `abort_on_lost_secs = 0` means **require a perfect rip**, not "never abort". In multipass mode the rip exits early the moment there are zero unreadable bytes, and aborts after retries are exhausted if any main-movie loss remains. Set e.g. `30` to tolerate up to 30 seconds of loss before giving up.
@@ -224,7 +231,7 @@ autorip exposes an HTTP API on the same port as the UI. JSON errors use `{"ok": 
 | Method | Path | Description |
 |---|---|---|
 | `GET` | `/api/state` | Snapshot of every drive's rip state, plus move/verify state. |
-| `GET` | `/api/version` | Running version, e.g. `{"version":"1.6.0"}`. |
+| `GET` | `/api/version` | Running version, e.g. `{"version":"1.7.7"}`. |
 | `GET` | `/api/system` | System info: mux/move queues and the output file list. |
 | `GET` | `/events` | Server-Sent Events stream of live state pushes. |
 
@@ -241,9 +248,18 @@ autorip exposes an HTTP API on the same port as the UI. JSON errors use `{"ok": 
 |---|---|---|---|
 | `POST` | `/api/scan/{device}` | - | Scan the disc (no rip). |
 | `POST` | `/api/rip/{device}` | `?resume=yes\|no` (optional) | Start a rip. See [Resume](#resume) below. |
-| `POST` | `/api/verify/{device}` | - | Read-only disc health check (non-destructive). |
 | `POST` | `/api/stop/{device}` | - | Stop the active rip; **preserves** staging for resume (404 if device unknown). |
 | `POST` | `/api/eject/{device}` | - | Eject the disc (409 if a rip/scan is in progress). |
+| `POST` | `/api/accept-loss/{device}` | - | Accept the recorded main-movie loss on a rip that aborted on loss, and deliver it as-is. See [Accepted loss](#accepted-loss). |
+
+### Error queues
+
+| Method | Path | Description |
+|---|---|---|
+| `POST` | `/api/mux-errors/clear?path=...` | Clear one failed-mux entry. |
+| `POST` | `/api/mux-errors/clear-all` | Clear every failed-mux entry. |
+| `POST` | `/api/move-errors/clear?path=...` | Clear one failed-move entry. |
+| `POST` | `/api/move-errors/clear-all` | Clear every failed-move entry. |
 
 ### Keys
 
@@ -275,7 +291,7 @@ Toggle debug logging and watch the mux stage:
 curl -s -X POST http://<host>:8080/api/debug -d '{"enabled":true}'
 
 # stream mux-stage output from the container
-docker logs autorip --tail=500 -f | grep '\[mux\]'
+docker logs autorip --tail=500 -f | grep -i mux
 ```
 
 ## Resume
@@ -290,7 +306,7 @@ Stopping a rip with `/api/stop/{device}` **preserves** staging, so a stopped rip
 
 ## Output and notifications
 
-Finished files land in `output_dir`, optionally split into `movie_dir` / `tv_dir`. Set `webhook_urls` to have autorip POST a JSON event to external systems (a media server, a chat webhook) when a rip or move completes.
+Finished files land in `output_dir`, optionally split into `movie_dir` / `tv_dir`. Set `webhook_urls` to have autorip POST a JSON event to external systems (a media server, a chat webhook) when a rip, mux, or move completes.
 
 When a rip finishes, autorip sends a `rip_complete` payload:
 
@@ -311,6 +327,8 @@ When a rip finishes, autorip sends a `rip_complete` payload:
   "lost_video_secs": 0.0
 }
 ```
+
+When the MKV has been produced from the staged ISO, a `mux_complete` payload with the same fields as `rip_complete` (`"event": "mux_complete"`).
 
 When the file is moved to its final destination, a smaller `move_complete` payload:
 
