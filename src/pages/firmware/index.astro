@@ -34,7 +34,7 @@ const cards = [
     desc: 'Write it to the drive with freemkv-flash.',
   },
 ];
-// "Everything a UHD drive tool does" parity grid. Every entry is backed by
+// "Everything other tools do" parity grid. Every entry is backed by
 // what freemkv-firmware v0.9.2 actually ships (freemkv-fw levers/features,
 // freemkv-flash backup/verify/restore) — never add a capability the tools lack.
 // Keep the feature wording in step with modify.astro's fwCapabilities.
@@ -144,7 +144,7 @@ import '../../styles/site.css';
       <!-- ============ CAPABILITIES ============ -->
       <section class="block block-alt">
         <div class="section-inner">
-          <h2 class="section-title">Everything a UHD drive tool does — free and open source</h2>
+          <h2 class="section-title">Everything other tools do — free and open source</h2>
           <p class="section-lead">Downgrade, unlock and flash your drive with free, MIT-licensed tools.</p>
           <div class="grid cap-grid">
             {parity.map((c) => (
