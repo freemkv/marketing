@@ -112,3 +112,37 @@
     margin-bottom: 0.15rem;
   }
 }
+
+/* Docs layout on wide screens. Starlight caps the article at 45rem and, when
+   the "On this page" TOC is shown, splits all leftover width between a gutter
+   before the article and an oversized TOC column — so on big monitors the
+   article sits narrow and adrift, far from the sidebar. Instead: widen the
+   column so tables and code blocks can use it, pin it directly beside the left
+   sidebar, and let the TOC column take whatever remains. Only ≥72rem (the
+   breakpoint where Starlight shows the TOC column); mobile/tablet unchanged. */
+@media (min-width: 72rem) {
+  :root[data-has-sidebar] {
+    --sl-content-width: 64rem;
+    --sl-content-margin-inline: 0 auto;
+  }
+  :root[data-has-sidebar][data-has-toc] .main-pane {
+    --sl-content-margin-inline: 0 auto;
+    width: min(
+      calc(100% - var(--sl-sidebar-width)),
+      calc(var(--sl-content-width) + 2 * var(--sl-content-pad-x))
+    );
+  }
+  :root[data-has-sidebar][data-has-toc] .right-sidebar-container {
+    width: auto;
+    flex: 1 0 var(--sl-sidebar-width);
+  }
+  /* Keep the header search box aligned with the (no longer centred) column. */
+  :root[data-has-sidebar] .header {
+    --__main-column-fr: 0rem;
+  }
+  /* Prose keeps a comfortable measure (~95 characters); tables, code and
+     asides still get the full column. */
+  :root[data-has-sidebar] .sl-markdown-content :is(p, ul, ol, dl, blockquote, h1, h2, h3, h4, h5, h6) {
+    max-width: 52rem;
+  }
+}
