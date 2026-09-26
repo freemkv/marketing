@@ -6,7 +6,8 @@ description: How the sweep/patch two-pass design, the mapfile, and the mux pipel
 This page explains how freemkv extracts everything a drive can read from a disc: the
 two-pass sweep-and-patch design, the mapfile that drives it, and the mux pipeline that turns
 recovered sectors into a playable container. Since 1.6.0 the recovery engine lives in
-[freemkv-engine](/docs/components/) (`freemkv_engine::recovery`) — it moved out of
+[freemkv-engine](/docs/components/) (`sweep`, `patch`, `copy` and `Mapfile`, exported at the
+crate root of `freemkv_engine`) — it moved out of
 libfreemkv, which keeps the sector-read and SCSI layer underneath it — and is shared by both
 the [CLI](/docs/cli/) and [autorip](/docs/autorip/).
 
@@ -45,12 +46,12 @@ the **mapfile** for the patch pass to work on.
 
 Targeted retries over only the ranges the sweep couldn't read:
 
-- Walks bad ranges in **reverse** (highest address first, end-to-start within each
-  range). The sweep jumps *forward* over damage, so good data tends to sit at the *tail*
-  of an unread range; reading backward hits that good data first and converges on the true
-  bad-block boundary.
-- Reads in **32-sector batches**, falling back to single-sector reads inside any batch that
-  comes back partly dead, so a bad spot costs granularity only where it actually is.
+- Walks bad ranges **largest first** (ties go to the lowest address), not in disc order.
+  Big ranges are usually sweep-jump over-marks that read straight back, so attacking them
+  first recovers the bulk of the disc early instead of grinding on small fragments.
+- Reads in **32-sector batches**. A batch that fails is left bad rather than re-read sector
+  by sector (per-sector grinding proved worse, and could stall on a dead front); the bisect
+  handler below then salvages any readable islands inside it.
 - Runs a **chain of recovery handlers** over each still-bad section, in breadth-first tiers.
   Each handler is one idea — probe the middle of the range (bisect), jump past a long dead
   run, sweep backwards, sweep forwards — and each gets a hard wall-clock deadline, so no
@@ -115,12 +116,13 @@ Once the map is clean (or an [accepted-loss threshold](/docs/autorip/#accepted-l
 freemkv **muxes**: it decrypts the captured data (see [Decryption Keys](/docs/decryption-keys/))
 and writes the titles to the output container.
 
-Muxing runs through a three-stage threaded pipeline so reading/decrypting, demultiplexing,
-and codec parsing all overlap:
+Muxing runs through a three-stage pipeline so reading/decrypting, demultiplexing, and codec
+parsing all overlap. The first two stages run on their own threads; the third runs on the
+caller's thread:
 
-1. **Prefetch + decrypt**: a producer reads sectors ahead of demand and decrypts them.
-2. **Demux**: a dedicated thread splits the transport/program stream into PES frames.
-3. **Parse**: codec parsers turn PES frames into the elementary streams the container needs.
+1. **Prefetch + decrypt** (own thread): a producer reads sectors ahead of demand and decrypts them.
+2. **Demux** (own thread): splits the transport/program stream into PES frames.
+3. **Parse** (caller's thread): codec parsers turn PES frames into the elementary streams the container needs.
 
 This keeps the drive (or ISO read) saturated instead of stalling between stages. The
 library entry point is `build_iso_pipeline`; see the [library overview](/docs/libfreemkv/) for

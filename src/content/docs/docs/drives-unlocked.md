@@ -29,7 +29,7 @@ If you own an LG, ASUS, or HP Blu-ray drive from roughly **2012-2020**, it's ver
 
 ### Work in Progress
 
-**Pioneer** drives (the BDR-… series, built on a different chipset) are **not supported yet**; support is actively being worked on. This also covers Pioneer drives sold under other badges, such as the **ASUS BW-16D1X-U** (a rebadged Pioneer). Any unsupported drive falls back to the **[stock-drive AACS workflow](/docs/drives-oem/)**.
+**Pioneer** drives (the BDR-… series, built on a different Renesas chipset) have **early, experimental** unlock support since 1.7.0. It is unvalidated, so don't count on it working yet; hardening it is actively being worked on. This also covers Pioneer drives sold under other badges, such as the **ASUS BW-16D1X-U** (a rebadged Pioneer). Any unsupported drive falls back to the **[stock-drive AACS workflow](/docs/drives-oem/)**.
 
 ## Firmwares Supported:
 

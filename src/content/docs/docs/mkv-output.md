@@ -21,7 +21,7 @@ Matroska track name field), built from the disc's own playlist and authoring dat
 **Audio tracks** are labeled with the name you'd recognize, plus channel layout
 where known:
 
-- `Dolby TrueHD 7.1`, `Dolby Atmos`, `Dolby Digital Plus 5.1`, `Dolby Digital 5.1`
+- `Dolby TrueHD 7.1`, `Dolby TrueHD Atmos 7.1` (or `Dolby Atmos` when the disc's own authoring data names it), `Dolby Digital Plus 5.1`, `Dolby Digital 5.1`
 - `DTS-HD Master Audio 7.1`, `DTS:X`, `DTS-HD High Resolution`, `DTS 5.1`
 - `LPCM 2.0`
 
