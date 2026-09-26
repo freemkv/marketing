@@ -3,47 +3,52 @@ title: macOS
 description: Install and update freemkv on macOS, find your settings and output, and troubleshoot optical-drive access.
 ---
 
-freemkv provides a native desktop app and a command-line interface on macOS. Both use the same ripping engine. Choose **Apple Silicon** or **Intel** for your Mac on the **[Download page](/download/)**.
+freemkv comes in two builds for macOS. **Install one or the other**; both are the `freemkv` command. Choose **Apple Silicon** or **Intel** for your Mac on the **[Download page](/download/)**.
+
+- **freemkv** (the app): a native desktop app plus every CLI command.
+- **freemkv CLI**: the command line only, as a single binary.
 
 ## Install
 
-### Desktop app
+### App
 
-With Homebrew:
+With Homebrew, which also puts `freemkv` on your PATH:
 
 ```bash
-brew install --cask freemkv/tap/freemkv-app
+brew install --cask freemkv/tap/freemkv
 ```
 
-Or download the matching `.dmg` from [GitHub Releases](https://github.com/freemkv/freemkv/releases), open it and drag `freemkv.app` into **Applications**.
+Or download the matching `.dmg` from the [Download page](/download/), open it and drag `freemkv.app` into **Applications**.
 
 Open freemkv, select a disc, image or folder, choose the titles and tracks, select an output location and press **Rip**. You can also drag a supported media file onto the window.
 
 ![The freemkv desktop app on macOS with a disc image loaded.](/freemkv-gui-macos.png)
 
-### Command line
-
-With Homebrew:
-
-```bash
-brew install freemkv/tap/freemkv
-freemkv --version
-```
-
-For a standalone download, use `freemkv-aarch64-macos` on Apple Silicon or `freemkv-x86_64-macos` on Intel. For example:
-
-```bash
-chmod +x freemkv-aarch64-macos
-./freemkv-aarch64-macos --version
-```
-
-The desktop app also contains the CLI:
+The app includes the full CLI. With the cask, run `freemkv disc:// mkv://Movie.mkv` in any terminal; a bare `freemkv` opens the window. With a `.dmg` install, the executable is inside the app:
 
 ```bash
 /Applications/freemkv.app/Contents/MacOS/freemkv --version
 ```
 
-Running `freemkv gui` opens the desktop interface. See the [CLI reference](/docs/cli/) for ripping commands and options.
+### Command line only
+
+With Homebrew:
+
+```bash
+brew install freemkv/tap/freemkv-cli
+freemkv --version
+```
+
+The `freemkv` cask and `freemkv-cli` formula both provide `freemkv`, so uninstall one before installing the other.
+
+For a standalone download, use `freemkv-cli-aarch64-macos` on Apple Silicon or `freemkv-cli-x86_64-macos` on Intel. For example:
+
+```bash
+chmod +x freemkv-cli-aarch64-macos
+./freemkv-cli-aarch64-macos --version
+```
+
+A bare `freemkv` prints usage. See the [CLI reference](/docs/cli/) for ripping commands and options.
 
 <a id="apple-could-not-verify-freemkv-on-first-launch"></a>
 
@@ -63,13 +68,13 @@ For Homebrew installations:
 
 ```bash
 brew update
-brew upgrade --cask freemkv/tap/freemkv-app
-brew upgrade freemkv/tap/freemkv
+brew upgrade --cask freemkv/tap/freemkv
+brew upgrade freemkv/tap/freemkv-cli
 ```
 
 Run the upgrade command for the app or CLI you installed. For direct downloads, close freemkv and replace the app or standalone binary with the new release.
 
-Use `brew uninstall --cask freemkv/tap/freemkv-app` or `brew uninstall freemkv/tap/freemkv` to remove a Homebrew installation. For direct downloads, delete the app or binary. Settings and ripped movies are separate.
+Use `brew uninstall --cask freemkv/tap/freemkv` or `brew uninstall freemkv/tap/freemkv-cli` to remove a Homebrew installation. For direct downloads, delete the app or binary. Settings and ripped movies are separate.
 
 ## File locations
 

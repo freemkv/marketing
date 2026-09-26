@@ -19,115 +19,82 @@
 //      rate limit (60 req/hr/IP). If the API fails, the picker stays on
 //      "latest" and a link to the GitHub releases page is shown.
 //
-// Asset names below MUST match what the release workflows attach. These
-// are the PLAIN runnable-binary assets (download → chmod +x → run),
-// documented in each repo's INSTALL.md:
-//   CLI (freemkv):  freemkv-<arch>-<os>[.exe]
-//   autorip:        autorip-<arch>-<os>[.exe]
+// Asset names below MUST match what the release workflows attach.
+// freemkv ships as two builds of one program; install one OR the other:
+//   app (freemkv):     window + every CLI command
+//   CLI (freemkv-cli): command line only, no desktop dependencies
+//   autorip:           autorip-<arch>-<os>[.exe]
 const title = 'Download freemkv: Windows, macOS & Linux';
 const description =
-  'Download prebuilt freemkv and autorip binaries for Windows, macOS, and Linux (Intel & ARM). Free & open source. Or build from source.';
+  'Download the freemkv app or the freemkv CLI for Windows, macOS, and Linux (Intel & ARM), plus autorip. Free & open source. Or build from source.';
 
 const docs = '/docs/overview/';
 const github = 'https://github.com/freemkv';
 const cliRepo = 'https://github.com/freemkv/freemkv';
-// The desktop app and the CLI are now ONE binary in the `freemkv` repo — the
-// .dmg ships the same `freemkv` that powers the command line.
+// App and CLI are both built from the `freemkv` repo.
 const guiRepo = cliRepo;
 const autoripRepo = 'https://github.com/freemkv/autorip';
 const allReleases = `${cliRepo}/releases`;
 
-// ── Desktop app ────────────────────────────────────────────────────────────
-// Each platform ships the windowed image; the CLI is a separate download.
-//   macOS   → .dmg per architecture, containing freemkv.app   (release.yml `build`)
-//             — NOT offered as a direct download button here; see `gui: 'brew'`
-//             below and the guiPlatforms rendering.
-//   Windows → .zip containing freemkv-gui.exe                 (release.yml `build-windows`)
-//             — direct download; unsigned .exe is fine on Windows.
-//
-// ONE SWITCH: `windowsAppShipping`. The Windows card is a structural peer of
-// macOS either way (same grid, same card markup, real asset names below); this
-// flag only decides whether it renders download buttons or an "in development"
-// note.
-//
-// It was false for as long as the Windows .zip carried `freemkv.exe`, the
-// CONSOLE image: extracting and double-clicking that opens a console, prints
-// usage and closes, and a "Download the Windows app" button that does this is
-// worse than a card admitting the app is not ready. The desktop image is a
-// separate bin target, `freemkv-gui`, because it carries
-// `#![windows_subsystem = "windows"]` and a PE subsystem is fixed at link time
-// — it cannot be a runtime branch inside freemkv.exe.
-//
-// The .zip now carries `freemkv-gui.exe` alone, and release.yml fails the build
-// if the console binary appears there instead, so this cannot silently regress.
-const windowsAppShipping = true;
-
-// macOS GUI distribution, matching the rest of freemkv (see flash.astro /
-// modify.astro): the .dmg is ad-hoc-signed, not notarized, so a browser
-// download of it is Gatekeeper-blocked on first launch. Homebrew's cask
-// strips the quarantine attribute after install, so it is the ONLY GUI
-// download path offered here — no direct ".dmg download" button. (The .dmg
-// itself still exists as a release asset for people who want Apple's
-// Gatekeeper prompt instead of trusting this tap; it's reachable from "All
-// desktop releases on GitHub" below, just not a primary button.)
-const guiPlatforms = [
+// Card data for the app and CLI sections. `key` ("<os>-<arch>") marks the
+// button the detector highlights; `secondary` renders an outline button;
+// `brew` is a Homebrew command shown above the buttons.
+const appPlatforms = [
   {
     name: 'Windows',
     os: 'windows',
-    gui: windowsAppShipping ? 'download' : 'soon',
     builds: [
-      { key: 'windows-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'freemkv-x86_64-windows.zip' },
+      { key: 'windows-x64', main: 'Installer', arch: 'x86_64', label: 'Adds freemkv to PATH · Start menu shortcut', file: 'freemkv-x86_64-windows-setup.exe' },
+      { main: 'Portable', arch: '.zip', label: 'freemkv.exe + freemkv.com, no install', file: 'freemkv-x86_64-windows.zip', secondary: true },
     ],
   },
   {
     name: 'macOS',
     os: 'macos',
-    gui: 'brew',
+    brew: 'brew install --cask freemkv/tap/freemkv',
+    note: 'Homebrew also puts freemkv on PATH and skips the macOS security prompt.',
     builds: [
-      { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon', file: 'freemkv-aarch64-macos.dmg' },
-      { key: 'macos-x64', arch: 'x86_64', label: 'Intel', file: 'freemkv-x86_64-macos.dmg' },
+      { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon · .dmg', file: 'freemkv-aarch64-macos.dmg' },
+      { key: 'macos-x64', arch: 'x86_64', label: 'Intel · .dmg', file: 'freemkv-x86_64-macos.dmg' },
     ],
   },
-  // Linux desktop packages.
-  // Flathub listing to follow; until then the AppImage is the GUI download.
   {
     name: 'Linux',
     os: 'linux',
-    gui: 'download',
     builds: [
-      { key: 'linux-x64', arch: 'x86_64', label: '.deb · Ubuntu 24.04 / Linux Mint 22', file: 'freemkv-amd64.deb' },
-      { key: 'linux-x64', arch: 'x86_64', label: 'Flatpak · direct download', file: 'freemkv-x86_64.flatpak' },
-      { key: 'linux-x64', arch: 'x86_64', label: 'AppImage · Ubuntu 24.04+ / Fedora 40+', file: 'freemkv-x86_64-linux.AppImage' },
+      { key: 'linux-x64', arch: '.deb', label: 'Ubuntu 24.04+ / Linux Mint 22 · package freemkv', file: 'freemkv-amd64.deb' },
+      { arch: 'AppImage', label: 'Portable · Ubuntu 24.04+ / Fedora 40+', file: 'freemkv-x86_64-linux.AppImage', secondary: true },
+      { arch: 'Flatpak', label: 'flatpak install --user ./freemkv-x86_64-linux.flatpak', file: 'freemkv-x86_64-linux.flatpak', secondary: true },
     ],
+    note: 'Flathub listing (org.freemkv.FreeMKV) coming.',
   },
 ];
 
-// CLI binaries, all OSes. `key` is "<os>-<arch>" used by the detector.
-// `file` is the plain runnable-binary asset name (matches release.yml).
 const cliPlatforms = [
   {
     name: 'Windows',
     os: 'windows',
     builds: [
-      { key: 'windows-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'freemkv-x86_64-windows.exe' },
+      { key: 'windows-x64', arch: 'x86_64', label: 'Console .exe · rename to freemkv.exe', file: 'freemkv-cli-x86_64-windows.exe' },
     ],
   },
   {
     name: 'macOS',
     os: 'macos',
-    brew: true,
+    brew: 'brew install freemkv/tap/freemkv-cli',
+    note: 'Homebrew puts freemkv on PATH and skips the macOS security prompt.',
     builds: [
-      { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon', file: 'freemkv-aarch64-macos' },
-      { key: 'macos-x64', arch: 'x86_64', label: 'Intel', file: 'freemkv-x86_64-macos' },
+      { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon', file: 'freemkv-cli-aarch64-macos' },
+      { key: 'macos-x64', arch: 'x86_64', label: 'Intel', file: 'freemkv-cli-x86_64-macos' },
     ],
   },
   {
     name: 'Linux',
     os: 'linux',
     builds: [
-      { key: 'linux-x64', arch: 'x86_64', label: '.deb · Ubuntu 24.04 / Linux Mint 22', file: 'freemkv-amd64.deb' },
-      { key: 'linux-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'freemkv-x86_64-linux' },
-      { key: 'linux-arm64', arch: 'ARM64', label: 'aarch64', file: 'freemkv-aarch64-linux' },
+      { key: 'linux-x64', arch: '.deb', label: 'Ubuntu 24.04 / Linux Mint 22 · package freemkv-cli', file: 'freemkv-cli-amd64.deb' },
+      { arch: 'x86_64', label: 'Static binary · any distro', file: 'freemkv-cli-x86_64-linux', secondary: true },
+      { key: 'linux-arm64', arch: 'ARM64', label: 'Static binary · aarch64', file: 'freemkv-cli-aarch64-linux', secondary: true },
     ],
   },
 ];
@@ -166,6 +133,7 @@ const autoripPlatforms = [
   },
 ];
 
+import DownloadCards from '../components/DownloadCards.astro';
 import FirmwareNavDropdown from '../components/FirmwareNavDropdown.astro';
 import '../styles/site.css';
 ---
@@ -288,13 +256,15 @@ import '../styles/site.css';
         </div>
       </section>
 
-      <!-- ============ DESKTOP GUI ============ -->
+      <!-- ============ APP ============ -->
       <section class="downloads" id="gui">
         <div class="section-inner">
           <h2 class="section-title">freemkv</h2>
           <p class="section-lead">
-            The desktop app, for Windows, macOS and Linux: open a disc or an image, tick the
-            titles and tracks you want, press Rip.
+            The app, for Windows, macOS and Linux: open a disc or an image, tick the
+            titles and tracks you want, press Rip. It includes every CLI command too, so
+            <code>freemkv disc:// mkv://Movie.mkv</code> works in a terminal and a
+            bare <code>freemkv</code> opens the window.
           </p>
 
           <!-- Version picker + detected-platform banner (JS-enhanced) -->
@@ -311,65 +281,22 @@ import '../styles/site.css';
             </label>
           </div>
 
-          <div class="grid grid-gui dl-stack">
-            {guiPlatforms.map((p) => (
-              <article class={p.gui === 'soon' ? 'card card-soon' : 'card'} data-os={p.gui === 'soon' ? undefined : p.os} data-platform-card>
-                <h3 class="card-title">{p.name}</h3>
-                {p.gui === 'soon' ? (
-                  <div class="dl-list">
-                    <span class="dl-soon-badge">In development</span>
-                    <p class="dl-soon-note">
-                      The Windows desktop app is being built now. The
-                      <a href="#cli">Windows CLI</a> below is the same program and
-                      works today — see the
-                      <a href="/docs/platforms-windows/">Windows guide</a>.
-                    </p>
-                  </div>
-                ) : p.gui === 'brew' ? (
-                  <div class="dl-list">
-                    <code class="dl-brew-cmd">brew install --cask freemkv/tap/freemkv-app</code>
-                    <p class="dl-mac-help">
-                      Homebrew installs the app and skips the macOS security
-                      prompt entirely.
-                    </p>
-                  </div>
-                ) : (
-                  <div class="dl-list">
-                    {p.builds.map((b) => (
-                      <a
-                        class="btn btn-primary dl-btn"
-                        data-key={b.key}
-                        data-asset={b.file}
-                        href={`${guiRepo}/releases/latest/download/${b.file}`}
-                        download
-                      >
-                        <span class="dl-main">Download <span class="dl-arch">{b.arch}</span></span>
-                        <span class="dl-sub">{b.label}</span>
-                      </a>
-                    ))}
-                  </div>
-                )}
-                {p.os === 'windows' && p.gui === 'download' && (
-                  <p class="dl-soon-note">
-                    Windows may flag this unsigned download — <a href="/docs/platforms-windows/">first-run help</a>.
-                  </p>
-                )}
-              </article>
-            ))}
-          </div>
+          <DownloadCards platforms={appPlatforms} repo={guiRepo} />
           <p class="dl-note">
-            <a href={`${guiRepo}/releases`}>All desktop releases on GitHub →</a>
+            Install the app <strong>or</strong> the CLI, not both: they are the same
+            <code>freemkv</code> command and each replaces the other.
+            <a href="/docs/platforms-macos/#apple-could-not-verify-freemkv-on-first-launch">macOS first-run help →</a>
           </p>
         </div>
       </section>
 
-      <!-- ============ CLI DOWNLOADS ============ -->
+      <!-- ============ CLI ============ -->
       <section class="downloads" id="cli">
         <div class="section-inner">
           <h2 class="section-title">freemkv CLI</h2>
           <p class="section-lead">
-            One static binary, no runtime, no container. Windows, macOS, &amp; Linux
-            (Intel &amp; ARM). Download and run.
+            Command line only, with no desktop dependencies: for servers, scripts
+            and SSH sessions. Windows, macOS &amp; Linux (Intel &amp; ARM).
           </p>
 
           <!-- Version picker + detected-platform banner (JS-enhanced) -->
@@ -386,45 +313,10 @@ import '../styles/site.css';
             </label>
           </div>
 
-          <div class="grid dl-stack">
-            {cliPlatforms.map((p) => (
-              <article class="card" data-os={p.os} data-platform-card>
-                <h3 class="card-title">{p.name}</h3>
-                <div class="dl-list">
-                  {p.brew ? (
-                    <>
-                      <code class="dl-brew-cmd">brew install freemkv/tap/freemkv</code>
-                      <p class="dl-mac-help">
-                        Homebrew installs it on PATH and skips the macOS security
-                        prompt entirely.
-                      </p>
-                    </>
-                  ) : (
-                    p.builds.map((b) => (
-                      <a
-                        class="btn btn-primary dl-btn"
-                        data-key={b.key}
-                        data-asset={b.file}
-                        href={`${cliRepo}/releases/latest/download/${b.file}`}
-                        download
-                      >
-                        <span class="dl-main">Download <span class="dl-arch">{b.arch}</span></span>
-                        <span class="dl-sub">{b.label}</span>
-                      </a>
-                    ))
-                  )}
-                </div>
-                {p.os === 'windows' && (
-                  <p class="dl-soon-note">
-                    Windows may flag this unsigned download — <a href="/docs/platforms-windows/">first-run help</a>.
-                  </p>
-                )}
-              </article>
-            ))}
-          </div>
+          <DownloadCards platforms={cliPlatforms} repo={cliRepo} />
           <p class="dl-note">
-            Each binary has a matching <code>.sha256</code> checksum on the release page.
-            Prefer archives or another version?
+            Every asset has a matching <code>.sha256</code> checksum on the release page.
+            Prefer another version?
             <a href={allReleases} data-all-releases>All releases on GitHub →</a>
           </p>
         </div>
@@ -528,7 +420,8 @@ import '../styles/site.css';
             <pre class="terminal-body"><code><span class="c"># Clone and build the workspace</span>
 <span class="p">$</span> git clone https://github.com/freemkv/freemkv.git
 <span class="p">$</span> cd freemkv
-<span class="p">$</span> cargo build --release
+<span class="p">$</span> cargo build --release                  <span class="c"># CLI</span>
+<span class="p">$</span> cargo build --release --features gui   <span class="c"># app</span>
 
 <span class="c"># Binary at target/release/freemkv</span>
 <span class="p">$</span> ./target/release/freemkv --version</code></pre>

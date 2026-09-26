@@ -14,9 +14,7 @@ freemkv <source-url> <dest-url> [flags]
 freemkv <subcommand> [args]              # info, update-keys, version, help
 ```
 
-A bare invocation prints usage and exits `2`.
-
-On **Windows, macOS and Linux** the same binary also opens as a desktop app — run `freemkv gui`, or open the `.app` on macOS (see [macOS](/docs/platforms-macos/)) — if you'd rather pick titles in a window than pass flags. The Linux desktop shell is in BETA (window + menus + notifications + settings; the source picker and title/progress panes are being ported one at a time from the macOS shell).
+Every command here works the same in both builds of freemkv: the **app** and the command-line-only **CLI** (see [Install](/docs/install/)). A bare `freemkv` differs: the CLI prints usage and exits `2`; the app opens its window (on Linux only when a display is available, otherwise it prints usage too).
 
 ## Stream URLs
 
@@ -295,7 +293,7 @@ freemkv info iso://Disc.iso
 | `-f, --full` | List every title (default: the first five, with a "+N more" footer). |
 | `-b, --basic` | Title rows only — omit the per-stream (video/audio/subtitle) detail. |
 | `-v, --verbose` | Add technical detail — the drive, device, and disc region; the AACS generation (1.0 / 2.0 / 2.1) and MKB version; the disc hash and Volume ID; the resolved keys (Volume Unique Key and each CPS unit key); and per-stream PIDs (video, audio, **and subtitles**) with audio sample rates. Off by default to keep the listing scannable — turn it on when debugging a mux or AACS issue. |
-| `--share` | Capture a shareable drive+disc profile for bug reports — see [Sharing a profile](/docs/troubleshooting/#sharing-a-profile---share). |
+| `--share` | Capture a shareable drive+disc profile for bug reports — see [Sharing a profile](/docs/troubleshooting/#sharing-a-profile-share). |
 
 :::caution[`--share` does not combine with the listing flags]
 `--share` is its own command: it captures the drive profile instead of listing

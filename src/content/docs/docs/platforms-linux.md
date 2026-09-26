@@ -3,11 +3,16 @@ title: Linux
 description: Install and update freemkv on Linux, find your settings and output, and troubleshoot optical-drive access.
 ---
 
-freemkv provides a native GTK4 desktop app and a command-line interface on Linux. Choose a package below from the **[Download page](/download/)**. The desktop packages include both interfaces; the standalone CLI does not need GTK.
+freemkv comes in two builds for Linux. **Install one or the other**; both are the `freemkv` command. Choose a download from the **[Download page](/download/)**.
+
+- **freemkv** (the app): a native GTK4 desktop app plus every CLI command. `.deb`, Flatpak or AppImage.
+- **freemkv CLI**: the command line only, without GTK. `.deb` or static binaries.
+
+With the app, a bare `freemkv` opens the window. With no display (for example over SSH, where neither `DISPLAY` nor `WAYLAND_DISPLAY` is set) it prints usage instead, like the CLI.
 
 ## Install
 
-### Native .deb package
+### App .deb package
 
 For **x86_64 Ubuntu 24.04 and Linux Mint 22**, download `freemkv-amd64.deb`, then install it from your download directory:
 
@@ -16,7 +21,7 @@ sudo apt install ./freemkv-amd64.deb
 freemkv --version
 ```
 
-Open **freemkv** from your application menu, or run `freemkv gui`. APT installs the required desktop libraries. This package uses normal host drive permissions and has no application sandbox. Compatibility with other Debian-based distributions has not been validated.
+Open **freemkv** from your application menu, or run `freemkv`. APT installs the required desktop libraries. This package uses normal host drive permissions and has no application sandbox. Compatibility with other Debian-based distributions has not been validated.
 
 ### Direct Flatpak bundle
 
@@ -26,10 +31,10 @@ The **x86_64** Flatpak is available directly from GitHub Releases; a freemkv Fla
 flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 ```
 
-Download `freemkv-x86_64.flatpak`, then run:
+Download `freemkv-x86_64-linux.flatpak`, then run:
 
 ```bash
-flatpak install --user ./freemkv-x86_64.flatpak
+flatpak install --user ./freemkv-x86_64-linux.flatpak
 flatpak run org.freemkv.FreeMKV
 ```
 
@@ -52,16 +57,25 @@ chmod +x freemkv-x86_64-linux.AppImage
 
 Keep the file wherever you prefer.
 
-### Command line
+### Command line only
 
-Download the binary matching your CPU. For x86_64:
+On x86_64 Ubuntu or Linux Mint, install the `freemkv-cli` package:
 
 ```bash
-chmod +x freemkv-x86_64-linux
-./freemkv-x86_64-linux --version
+sudo apt install ./freemkv-cli-amd64.deb
+freemkv --version
 ```
 
-For ARM64, use `freemkv-aarch64-linux` instead. These are static CLI binaries without the desktop interface. See the [CLI reference](/docs/cli/) for ripping commands and options.
+The `freemkv` and `freemkv-cli` packages both install `/usr/bin/freemkv` and replace each other, so installing one removes the other.
+
+On any distro, download the static binary matching your CPU. For x86_64:
+
+```bash
+chmod +x freemkv-cli-x86_64-linux
+./freemkv-cli-x86_64-linux --version
+```
+
+For ARM64, use `freemkv-cli-aarch64-linux` instead. These have no desktop interface; a bare `freemkv` prints usage. See the [CLI reference](/docs/cli/) for ripping commands and options.
 
 Snap Store and Flathub app listings are not currently available. The downloads above work independently of those submissions.
 
@@ -79,8 +93,8 @@ If your system cannot mount an AppImage, try:
 
 | Installation | Update | Remove |
 |---|---|---|
-| `.deb` | Download the new package and repeat `sudo apt install ./freemkv-amd64.deb` | `sudo apt remove freemkv` |
-| Flatpak bundle | Download the new bundle and repeat `flatpak install --user ./freemkv-x86_64.flatpak` | `flatpak uninstall --user org.freemkv.FreeMKV` |
+| `.deb` | Download the new package and repeat `sudo apt install ./freemkv-amd64.deb` (or `./freemkv-cli-amd64.deb`) | `sudo apt remove freemkv` (or `freemkv-cli`) |
+| Flatpak bundle | Download the new bundle and repeat `flatpak install --user ./freemkv-x86_64-linux.flatpak` | `flatpak uninstall --user org.freemkv.FreeMKV` |
 | AppImage or standalone CLI | Close freemkv and replace the downloaded file | Delete the downloaded file |
 
 There is no freemkv APT repository yet. Direct Flatpak bundles also require manual app updates; `flatpak update` updates installed runtimes but does not fetch new freemkv bundles from GitHub. Settings and ripped movies are separate from program files.

@@ -1,23 +1,30 @@
 ---
 title: Install
-description: Get freemkv — the command line, the desktop app, or the autorip service. A prebuilt binary or build from source.
+description: Get freemkv — the app or the CLI — or the autorip service. Prebuilt downloads or build from source.
 ---
 
-There are two programs: **freemkv** — one binary that is both a **command-line tool** and a **native desktop app** — and the **autorip service** (a hands-off web app). Both are a single download with no runtime or dependencies. Grab a prebuilt binary, or build from source.
+There are two programs: **freemkv**, for ripping and converting discs, and the **autorip service** (a hands-off web app).
 
-`freemkv` picks its face from how you start it: run `freemkv <args>` for the CLI, or open the app (macOS + Windows today; Linux in BETA) for a window. It's the same binary either way — the desktop app just adds a UI over the same engine.
+freemkv comes in two builds of the same program. **Install one or the other**, not both; each replaces the other:
+
+- **freemkv** (the app): the desktop window *plus* every CLI command. `freemkv disc:// mkv://Movie.mkv` works in a terminal; a bare `freemkv` opens the window.
+- **freemkv CLI**: the command line only, with no desktop dependencies. For servers, scripts and SSH sessions. A bare `freemkv` prints usage.
+
+Either way the command is `freemkv` and the CLI behaves identically.
 
 For per-OS setup (where files live, how to reach the optical drive, and platform quirks), see your **[platform page](/docs/platforms-macos/)** (macOS, Windows, Linux).
 
-## Prebuilt binaries
+## Prebuilt downloads
 
-Go to the **[Download](/download/)** page; it detects your OS and hands you the right build. Download and run it — one self-contained file, no dependencies. The exact steps differ per OS, so follow your platform page:
+Go to the **[Download](/download/)** page; it detects your OS and highlights the right build.
 
-- **[macOS](/docs/platforms-macos/)**: the **desktop app** as a `.dmg` (drag to Applications, open, rip), or a standalone **CLI binary** for scripts and `brew`.
-- **[Windows](/docs/platforms-windows/)**: the **desktop app** as a `.zip` containing `freemkv-gui.exe`, or the standalone **CLI** `freemkv.exe`.
-- **[Linux](/docs/platforms-linux/)**: the **CLI** binary (`chmod +x` and run; drive access via the `cdrom` group) — production-quality. The **desktop app** is in BETA, distributed as a portable AppImage (Ubuntu 24.04+ / Fedora 40+ or newer); a Flathub listing (`org.freemkv.FreeMKV`) is on the way.
+| OS | freemkv (app) | freemkv CLI |
+|---|---|---|
+| **[Windows](/docs/platforms-windows/)** | `freemkv-x86_64-windows-setup.exe` installer (adds `freemkv` to PATH), or the portable `freemkv-x86_64-windows.zip` | `freemkv-cli-x86_64-windows.exe` |
+| **[macOS](/docs/platforms-macos/)** | `brew install --cask freemkv/tap/freemkv`, or the `.dmg` (Apple Silicon / Intel) | `brew install freemkv/tap/freemkv-cli`, or the bare binary (Apple Silicon / Intel) |
+| **[Linux](/docs/platforms-linux/)** | `freemkv-amd64.deb` (package `freemkv`), `freemkv-x86_64-linux.AppImage` or `freemkv-x86_64-linux.flatpak`; Flathub listing on the way | `freemkv-cli-amd64.deb` (package `freemkv-cli`), or a static binary for x86_64 / aarch64 |
 
-Every build has a matching `.sha256` checksum on its releases page — [freemkv](https://github.com/freemkv/freemkv/releases) for the CLI, [autorip](https://github.com/freemkv/autorip/releases) for the service.
+Every asset has a matching `.sha256` checksum on its releases page: [freemkv](https://github.com/freemkv/freemkv/releases) or [autorip](https://github.com/freemkv/autorip/releases).
 
 ## autorip
 
@@ -32,13 +39,14 @@ For the Docker image, a full `docker-compose.yml`, a systemd unit, drive permiss
 
 ## Build from source
 
-Pure Rust: clone and build with Cargo. The CLI and autorip live in separate repos, so build each one on its own:
+Pure Rust: clone and build with Cargo. freemkv and autorip live in separate repos, so build each one on its own:
 
 ```bash
-# freemkv CLI
+# freemkv
 git clone https://github.com/freemkv/freemkv
 cd freemkv
-cargo build --release
+cargo build --release                  # CLI
+cargo build --release --features gui   # app (Linux needs GTK4 4.10+ and libadwaita 1.4+)
 # binary at target/release/freemkv
 
 # autorip service
