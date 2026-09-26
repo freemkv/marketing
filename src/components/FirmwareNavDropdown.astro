@@ -1,15 +1,13 @@
 ---
 // Shared "Firmware" nav dropdown used by the marketing/tool pages that own
 // their own <header> markup (index.astro, download.astro, and the
-// src/pages/firmware/* pages). Exposes the four firmware routes:
-// landing, Find, Modify, Flash. Hover/focus reveals the menu; a click
-// toggles it open for touch and keyboard activation (Escape closes it).
+// src/pages/firmware/* pages). "Firmware" itself links to the overview;
+// hover/focus reveals Find, Modify, Flash (Escape closes it).
 interface Props {
   active?: 'landing' | 'find' | 'modify' | 'flash' | null;
 }
 const { active = null } = Astro.props;
-const items: Array<{ href: string; label: string; key: 'landing' | 'find' | 'modify' | 'flash' }> = [
-  { href: '/firmware/', label: 'Overview', key: 'landing' },
+const items: Array<{ href: string; label: string; key: 'find' | 'modify' | 'flash' }> = [
   { href: '/firmware/find/', label: 'Find', key: 'find' },
   { href: '/firmware/modify/', label: 'Modify', key: 'modify' },
   { href: '/firmware/flash/', label: 'Flash', key: 'flash' },
@@ -17,8 +15,8 @@ const items: Array<{ href: string; label: string; key: 'landing' | 'find' | 'mod
 ---
 
 <div class="nav-dropdown" data-nav-dropdown>
-  <button
-    type="button"
+  <a
+    href="/firmware/"
     class="nav-dropdown-trigger"
     aria-haspopup="true"
     aria-expanded="false"
@@ -28,7 +26,7 @@ const items: Array<{ href: string; label: string; key: 'landing' | 'find' | 'mod
     <svg class="nav-dropdown-caret" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"
       ><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06z" clip-rule="evenodd"
       ></path></svg>
-  </button>
+  </a>
   <div class="nav-dropdown-menu" role="menu">
     {items.map((it) => (
       <a href={it.href} role="menuitem" aria-current={active === it.key ? 'page' : undefined}>{it.label}</a>
@@ -38,35 +36,22 @@ const items: Array<{ href: string; label: string; key: 'landing' | 'find' | 'mod
 
 <script>
   document.querySelectorAll('[data-nav-dropdown]').forEach((wrap) => {
-    const btn = wrap.querySelector('.nav-dropdown-trigger');
-    const menu = wrap.querySelector('.nav-dropdown-menu');
-    if (!btn || !menu) return;
-
-    function close() {
-      wrap.classList.remove('open');
-      btn.setAttribute('aria-expanded', 'false');
-    }
-    function open() {
-      wrap.classList.add('open');
-      btn.setAttribute('aria-expanded', 'true');
-    }
-
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (wrap.classList.contains('open')) close();
-      else open();
-    });
-    document.addEventListener('click', (e) => {
-      if (!wrap.contains(e.target)) close();
+    const link = wrap.querySelector('.nav-dropdown-trigger');
+    if (!link) return;
+    const sync = () => link.setAttribute('aria-expanded', String(wrap.matches(':hover, :focus-within') && !wrap.classList.contains('dismissed')));
+    wrap.addEventListener('mouseenter', sync);
+    wrap.addEventListener('mouseleave', () => { wrap.classList.remove('dismissed'); sync(); });
+    wrap.addEventListener('focusin', sync);
+    wrap.addEventListener('focusout', (e) => {
+      if (!wrap.contains(e.relatedTarget)) wrap.classList.remove('dismissed');
+      requestAnimationFrame(sync);
     });
     wrap.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        close();
-        btn.focus();
+        wrap.classList.add('dismissed');
+        link.focus();
+        sync();
       }
-    });
-    wrap.addEventListener('focusout', (e) => {
-      if (!wrap.contains(e.relatedTarget)) close();
     });
   });
 </script>
@@ -83,14 +68,14 @@ const items: Array<{ href: string; label: string; key: 'landing' | 'find' | 'mod
     font-weight: 550;
     font-size: 0.95rem;
     color: var(--slate);
+    text-decoration: none;
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
   }
   .nav-dropdown-trigger:hover,
-  .nav-dropdown:hover .nav-dropdown-trigger,
-  .nav-dropdown.open .nav-dropdown-trigger {
+  .nav-dropdown:hover .nav-dropdown-trigger {
     color: var(--teal-dark);
   }
   .nav-dropdown-trigger[aria-current='page'] {
@@ -102,9 +87,8 @@ const items: Array<{ href: string; label: string; key: 'landing' | 'find' | 'mod
     height: 0.85em;
     transition: transform 0.15s ease;
   }
-  .nav-dropdown:hover .nav-dropdown-caret,
-  .nav-dropdown:focus-within .nav-dropdown-caret,
-  .nav-dropdown.open .nav-dropdown-caret {
+  .nav-dropdown:hover:not(.dismissed) .nav-dropdown-caret,
+  .nav-dropdown:focus-within:not(.dismissed) .nav-dropdown-caret {
     transform: rotate(180deg);
   }
   .nav-dropdown-menu {
@@ -137,9 +121,8 @@ const items: Array<{ href: string; label: string; key: 'landing' | 'find' | 'mod
     top: -0.7rem;
     height: 0.7rem;
   }
-  .nav-dropdown:hover .nav-dropdown-menu,
-  .nav-dropdown:focus-within .nav-dropdown-menu,
-  .nav-dropdown.open .nav-dropdown-menu {
+  .nav-dropdown:hover:not(.dismissed) .nav-dropdown-menu,
+  .nav-dropdown:focus-within:not(.dismissed) .nav-dropdown-menu {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
