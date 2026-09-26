@@ -13,6 +13,33 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases).
 
+## 1.7.6
+
+<small>2026-09-26</small>
+
+**Added**
+
+- **Linux desktop app (BETA).** freemkv now has a native GTK4 + libadwaita
+  desktop app on Linux, with the same features as the macOS and Windows apps:
+  pick a drive, file or folder, tick titles and tracks, choose a format, press
+  Rip. Same core on all three, so a fix lands everywhere at once. A Flatpak
+  (`org.freemkv.FreeMKV`) and an AppImage are on the way; Flathub submission
+  follows this release.
+- **Rip-finished notification** on macOS, Windows and Linux. Click it to open
+  the output folder. Turn it off in Settings if you don't want it (default: on).
+
+**Fixed**
+
+- `freemkv info` accepts `--log-level`, and `--log-file` without a path no
+  longer eats the next option.
+- No more false "MP4 can't hold MPEG-2" warning after switching discs.
+- The log pane stays fast during long rips on macOS and Windows.
+- On Linux the default output folder is your real Videos folder, even if it
+  was moved or has a translated name.
+- `info --share` explains why the disc structure could not be captured.
+
+_This release aligns all components to 1.7.6._
+
 ## 1.7.5
 
 <small>2026-09-23</small>
