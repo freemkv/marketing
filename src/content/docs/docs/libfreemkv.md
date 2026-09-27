@@ -12,7 +12,7 @@ embedding it; the [download page](/download/) covers the ready-to-run tools.
 The sweep/patch strategy, the ddrescue mapfile, damage classification and the multipass
 loop are **no longer part of libfreemkv**. They live in the
 [`freemkv-engine`](/docs/components/) crate as
-`freemkv_engine::recovery::{copy, sweep, patch}`. libfreemkv keeps the raw single-shot
+`freemkv_engine::{copy, sweep, patch}` (re-exported at the crate root). libfreemkv keeps the raw single-shot
 sector read and the SCSI-fact translation the strategy is built on.
 :::
 
@@ -28,7 +28,7 @@ published crate and its generated docs can lag the latest source.
 
 ```toml
 [dependencies]
-libfreemkv = "1.6.0"
+libfreemkv = { git = "https://github.com/freemkv/libfreemkv", tag = "v1.7.7" }
 ```
 
 ## Design principles
@@ -158,8 +158,8 @@ through this pipeline.
 ## AACS and CSS key model
 
 - **CSS (DVD)** is built in, with no external key file needed. On a CSS-enforcing drive,
-  `unlock_css_reads` issues the classic bus-auth handshake purely to unlock scrambled-sector
-  reads; no player keys are compiled in and none are used. CSS descrambling is keyless:
+  freemkv issues the classic bus-auth handshake internally (via freemkv-unlock) purely to
+  unlock scrambled-sector reads; no player keys are compiled in and none are used. CSS descrambling is keyless:
   the title key is recovered directly from the scrambled stream, so no device or player
   key is ever needed.
 - **AACS (Blu-ray / 4K UHD)**: no key material is compiled in; keys come through a

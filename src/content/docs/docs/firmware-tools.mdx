@@ -28,11 +28,14 @@ file or a live drive is already freemkv.
 freemkv-fw create <input.bin> [output.freemkv.bin]     # default output: <input-stem>.freemkv.bin
 freemkv-fw create <input.bin> --json                   # machine-readable per-capability report
 freemkv-fw create <input.bin> --audit                  # verify every applied patch actually landed
+freemkv-fw create <input.bin> --in-place               # rewrite the input image instead of writing a new file
+freemkv-fw create <input.bin> --base                   # strict base build: all-or-nothing, refuses without a full freemkv base
 ```
 
 Takes one stock (OEM) image and produces one freemkv image. It **auto-detects the chipset**
 (MediaTek MT1959 or MT1939) from the image, then applies **every capability that drive supports
-and reports each one individually** — it is never all-or-nothing. A capability whose signature
+and reports each one individually** — by default it is never all-or-nothing (`--base` is the
+strict exception, used by the publish pipeline). A capability whose signature
 isn't found on that particular image is reported and skipped; the rest still apply. Each
 capability comes back as one of four states:
 
@@ -62,8 +65,8 @@ the freemkv command is sent — see [Command reference](#command-reference) belo
 These map to the **features** in the [command reference](#command-reference) below, each an
 independent setting. Which capabilities apply to a given image depends on the chipset and
 generation, so `create` reports them per image rather than assuming — a DVD-only drive has no Unrestricted
-gate, for example. Every feature ships at OEM, so the drive stays byte-for-byte stock until
-a feature is deliberately armed; settings live in RAM and revert on power-off unless **saved** to
+gate, for example. Every feature except `Unrestricted` (armed by default) ships at OEM, and
+the rest stay stock until deliberately armed; settings live in RAM and revert on power-off unless **saved** to
 flash. Every build is **statically verified** (integrity re-signs, structural audit passes); the
 levers are structurally verified across the corpus.
 
@@ -75,13 +78,36 @@ freemkv-fw verify <file-or-device>
 
 Answers one question two ways. Point it at a **file** to check the firmware image's own
 internal integrity. Point it at a **live drive** (e.g. `/dev/sg0`) to send the Identity command
-over SCSI and report what the drive itself says back.
+over SCSI and report what the drive itself says back. For a file, `--family <mt1959|mt1939>`
+forces the chipset instead of auto-detecting it.
+
+### info
+
+```bash
+freemkv-fw info <device>                                        # print the drive's freemkv identity
+freemkv-fw info <device> --dump <addr> --len <len> --out <file>  # read an explicit memory range (hex)
+freemkv-fw info <device> --full --out <prefix>                  # capture the whole decrypted image
+```
+
+Probes a live freemkv drive. With no flags it prints the drive's freemkv identity; `--dump`
+reads a memory range, and `--full` captures every readable flash and RAM region, one
+`<prefix>-<address>.bin` file per region. Read-only.
+
+### sign
+
+```bash
+freemkv-fw sign <image.bin> [-o <out.bin>] [--in-place]    # default output: <stem>.signed.bin
+```
+
+Recomputes and writes back the digest of every active integrity region in an image, after
+you have edited it by hand. `--family` forces the chipset, as for `verify`.
 
 ## freemkv-flash
 
 `freemkv-flash` is a generic MediaTek (MT19xx) optical-drive flasher and dumper. It isn't
 specific to freemkv — it can read and write any compatible firmware image. It always backs up
-before writing, and reads back every write to confirm it took.
+before writing, and reads back every write to confirm it took. `dump` also works on Pioneer and
+Renesas drives, as a backup only: `flash` never writes to those.
 
 ### info
 
@@ -100,7 +126,7 @@ what the flasher's file↔drive safety check compares. Read-only and safe.
 ### dump
 
 ```bash
-freemkv-flash dump <device>
+freemkv-flash dump <device> [-o backup.tar]     # default output: <product>_<revision>.dump.tar
 ```
 
 Reads the drive's current firmware to a file. Always dump and keep a backup before flashing
@@ -120,6 +146,9 @@ freemkv-flash flash --input <image.bin> <device> \
 Writes an image to the drive. **It is dry-run by default** — without `--execute` it only prints
 the plan and writes nothing. A real write requires `--execute` and `--i-understand-risk`, and
 takes a **mandatory pre-flash backup** first (`--backup`), then reads the image back to verify.
+The only way around the backup is `--rescue-no-dump`, for rescuing a drive that can no longer be
+read. (`--mode main|full` is accepted but has no effect on MT1959: the full image is always
+written.)
 Before flashing it runs the same file↔drive check as `info`, refusing an image whose chipset
 family doesn't match the connected drive.
 
@@ -176,9 +205,10 @@ each holding a **state**. A verb (`SET`, `GET`, `RESET`, `SAVE`, `IDENTITY`, `DU
 to do; a feature (Speed, Region, Unrestricted, …) says which subsystem; a state says how to set it. Every
 feature has an **OEM** state — the firmware does not touch that subsystem, so a drive left at OEM
 is byte-behaviour-identical to stock. Settings live in **RAM** and are lost on power-off unless
-you **SAVE** them to flash; on boot the firmware restores the saved config, or falls back to OEM
-if nothing was saved. **RESET** reloads that state — either back to the last saved config
-(`--to flash`) or all the way to OEM (`--to oem`). Features are **orthogonal**: the familiar
+you **SAVE** them to flash; on boot the firmware restores the saved config, or falls back to the
+baked defaults (`Unrestricted` armed, everything else OEM) if nothing was saved. **RESET** reloads
+that state — back to the last saved config (`--to flash`), to the baked defaults (mode `01`), or all
+the way to OEM (`--to oem`, which also blanks the saved config). Features are **orthogonal**: the familiar
 "modes" are just combinations (see [Composing features](#composing-features) below).
 
 ### CDB layout
@@ -195,7 +225,7 @@ byte:  0     1     2  3     4      5          6        7   8       9
 | Knock | 2 | `cdb[2..4]` | `C0 DE`; a defence-in-depth signature behind the mode byte |
 | Verb | 1 | `cdb[4]` | selects the operation — `SET` / `GET` / `RESET` / `SAVE` / `IDENTITY` / `DUMPALL` (see verb table) |
 | Feature | 1 | `cdb[5]` | which feature to act on, for `SET` / `GET` (else `00`; see feature table) |
-| State | 1 | `cdb[6]` | the state to write, for `SET`; for `RESET` the mode byte (`00` = to saved flash, `FF` = to OEM); else `00` |
+| State | 1 | `cdb[6]` | the state to write, for `SET`; for `RESET` the mode byte (`00` = to saved flash, `01` = to baked defaults, `FF` = to OEM); else `00` |
 | Alloc length | 2 | `cdb[7..9]` | 16-bit big-endian allocation length — sizes the data-in transfer for data-returning verbs |
 | Control | 1 | `cdb[9]` | `0x00` |
 
@@ -211,8 +241,8 @@ it carries a 32-bit RAM address big-endian in `cdb[5..9]` (no feature / state / 
 | `3C 0E C0 DE 01` | Identity | `0x01` | Status / ping — returns the `freemkv` magic, version, and current feature-state table | ready |
 | `3C 0E C0 DE 02 <feat> <state>` | Set | `0x02` | Set one feature to a state (RAM only) | ready |
 | `3C 0E C0 DE 03 <feat>` | Get | `0x03` | Read one feature's current state back in the data-in | ready |
-| `3C 0E C0 DE 04 00 <mode>` | Reset | `0x04` | Reload the live state — `cdb[6]` mode `00` = to saved flash config, `FF` = to OEM (RAM only, never writes flash) | ready |
-| `3C 0E C0 DE 0B` | Save | `0x0B` | Persist the current (live) feature-state table to flash — the **only** writer | ready |
+| `3C 0E C0 DE 04 00 <mode>` | Reset | `0x04` | Reload the live state — `cdb[6]` mode `00` = to saved flash config (RAM only), `01` = to the baked defaults a never-saved drive boots to (RAM only), `FF` = to true OEM (RAM **and** blanks the saved flash config) | ready |
+| `3C 0E C0 DE 0B` | Save | `0x0B` | Persist the current (live) feature-state table to flash | ready |
 | `3C 0E C0 DE 09 <addr32>` | DumpAll | `0x09` | Diagnostic 64-byte RAM peek at a 32-bit address | ready (diagnostic use) |
 
 ### Feature table (`cdb[5]`, for `SET` / `GET`)
@@ -241,8 +271,8 @@ slot — but is marked deprecated and has no runtime effect; new hosts should dr
 instead.
 </Aside>
 
-<Aside type="note" title="AKE and Bus consolidated into Encryption (0.9.2)">
-The pre-0.9.2 model exposed two separate levers — `AKE` (`0x06`) and `Bus` (`0x07`). In 0.9.2
+<Aside type="note" title="AKE and Bus consolidated into Encryption (0.9.0)">
+The pre-0.9.0 model exposed two separate levers — `AKE` (`0x06`) and `Bus` (`0x07`). Since 0.9.0
 they are **one feature, `Encryption` (`0x06`)**: hardware on the BU40N/MT1959 proved that toggling
 the handshake alone de-busses content reads, so the two were never independent datapath levers.
 `FF` = OEM real handshake; `00` = off (null/bypass — the drive acts pre-authenticated, performs no
@@ -276,8 +306,8 @@ unlike every other feature, which boots at OEM until explicitly saved.
 
 The **valued** features carry a range: **Speed** (`00` = max/uncapped, `01`–`FE` = a specific
 speed cap) and **Region** (`00` = locked, `01`–`08` = DVD 1–8, `0A`–`0C` = BD A/B/C, `0F` =
-region-free). A freshly flashed, never-saved drive boots with every feature at **OEM**, so it is
-byte-identical to stock; boot otherwise restores whatever config was last **saved**. That
+region-free). A freshly flashed, never-saved drive boots with every feature at **OEM** except
+`Unrestricted` (see above); boot otherwise restores whatever config was last **saved**. That
 OEM-compatibility guarantee is the point of the design.
 
 #### Default unlock profile
@@ -306,11 +336,13 @@ both BD and UHD acceptance.
   `cdb[5]`; `GET` reads that feature's current state back as a 1-byte data-in. Both act on exactly
   one feature, and `SET` touches **RAM only** — the change is lost on power-off unless you `SAVE`.
 - **Reset (`0x04`).** Reloads the live RAM state without reflashing — `--to flash` (`cdb[6]` =
-  `00`) restores the last **saved** config, `--to oem` (`cdb[6]` = `FF`) returns every feature to
-  OEM. Neither writes flash. "Reset to OEM and keep it" is `RESET --to oem` **then** `SAVE`.
-- **Save (`0x0B`).** Persists the current live feature-state table to flash — the only command
-  that writes flash. Saved settings survive a power-cycle and are restored on the next boot; a
-  drive that has never saved boots stock (OEM).
+  `00`) restores the last **saved** config and `cdb[6]` = `01` restores the baked defaults; both
+  are RAM only. `--to oem` (`cdb[6]` = `FF`) returns every feature to OEM **and** blanks the saved
+  flash config in one step, so no `SAVE` is needed — the drive is left exactly like a never-saved
+  one.
+- **Save (`0x0B`).** Persists the current live feature-state table to flash (the only other
+  command that writes flash is `RESET --to oem`). Saved settings survive a power-cycle and are
+  restored on the next boot; a drive that has never saved boots to the baked defaults.
 - **Speed.** Read-speed / riplock ceiling. `FF` (OEM) = the OEM speed ramp; `00` (off) = speed
   control off, so the drive reads at max / uncapped; `01`–`FE` set an explicit speed cap. Use max
   to lift the playback-speed riplock so discs read back at the drive's full rate for ripping.
@@ -333,7 +365,7 @@ both BD and UHD acceptance.
 - **HRL.** Host-certificate revocation handling on the cert path. `FF` (OEM) = enforce; `00` (off)
   is the unlock direction — it skips the revocation lookup so a revoked-but-genuine certificate is
   accepted (non-destructive, reversible); `01` (on) enforces the check.
-- **Encryption** (`0x06`, consolidated from `AKE` + `Bus` in 0.9.2). Content encryption / the
+- **Encryption** (`0x06`, consolidated from `AKE` + `Bus` in 0.9.0). Content encryption / the
   drive↔host AKE handshake, now a single feature — hardware proved that toggling the handshake
   alone de-busses content reads, so the two are one lever. `FF` (OEM) = the real handshake;
   `00` (off) is the unlock direction — the drive acts pre-authenticated, performs no handshake, and
@@ -397,8 +429,10 @@ a value and change no drive state. Start with `0x01` to confirm the drive is fre
 
 `SET` is **reversible**: write `OEM` (`FF`) back to a feature, or send `RESET --to oem` to return
 every feature to OEM at once, and the drive is byte-identical to stock again — no reflash
-required. `SET` and `RESET` touch RAM only; nothing is written to flash until you `SAVE`, so a
-power-cycle reverts to the last saved config (OEM if you never saved). Every feature change is
+required. `SET` and `RESET` touch RAM only, except `RESET --to oem`, which also blanks the saved
+config; otherwise nothing is written to flash until you `SAVE`, so a power-cycle reverts to the
+last saved config (the baked defaults, `Unrestricted` armed and everything else OEM, if you never
+saved). Every feature change is
 non-destructive.
 :::
 
@@ -452,7 +486,8 @@ Read a feature's current state back, persist the live settings, or reload the st
 sg_raw -r 1 /dev/sg0 3C 0E C0 DE 03 01 00 00 01 00    # GET Speed → 1-byte state
 sg_raw -r 1 /dev/sg0 3C 0E C0 DE 0B 00 00 00 01 00    # SAVE → persist live settings to flash
 sg_raw -r 1 /dev/sg0 3C 0E C0 DE 04 00 00 00 01 00    # RESET --to flash → reload saved config
-sg_raw -r 1 /dev/sg0 3C 0E C0 DE 04 00 FF 00 01 00    # RESET --to oem → every feature back to OEM
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 04 00 01 00 01 00    # RESET mode 01 → reload the baked defaults
+sg_raw -r 1 /dev/sg0 3C 0E C0 DE 04 00 FF 00 01 00    # RESET --to oem → every feature to OEM, saved config blanked
 ```
 
 DumpAll at an address of your choice (`0xAABBCCDD` shown as a placeholder) — expect 64 raw bytes:

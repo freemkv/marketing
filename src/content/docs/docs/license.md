@@ -3,8 +3,8 @@ title: License
 description: freemkv and all its components are licensed under the MIT License from 1.3.1 onwards.
 ---
 
-The entire freemkv toolchain (the freemkv CLI, libfreemkv, autorip, bdemu,
-freemkv-keysources, freemkv-unlock, and freemkv-i18n) is licensed under the
+The entire freemkv toolchain (the freemkv CLI, libfreemkv, freemkv-engine, autorip,
+bdemu, freemkv-keysources, freemkv-unlock, and freemkv-i18n) is licensed under the
 [MIT License](https://github.com/freemkv/freemkv/blob/main/LICENSE), from
 version 1.3.1 onwards.
 

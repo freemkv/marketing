@@ -1,6 +1,7 @@
 // Shared helpers that turn a docs collection entry into clean, self-contained
 // Markdown for machine readers (/docs/<slug>.md and /llms.txt). Build-time only.
 import firmwareVersionSrc from '../components/FirmwareVersion.astro?raw';
+import { appShots } from '../data/app-screenshots';
 
 export const SITE = 'https://freemkv.org';
 
@@ -27,11 +28,16 @@ const firmwareFallback =
  * nothing outside the site. Flatten the ones the docs use into plain Markdown:
  *   <Aside type="x" title="T">…</Aside>  ->  "> **X: T**" blockquote
  *   <FirmwareVersion />                  ->  the version the static page shows
+ *   <AppShowcase os="x" />               ->  a Markdown image of that screenshot
  * (Asides are dropped entirely in the abridged corpus.)
  */
 function mdxToMarkdown(body: string, drop = false): string {
   let out = body.replace(/^(import|export)\s[^\n]*\n/gm, '');
   out = out.replace(/<FirmwareVersion\s*\/>/g, firmwareFallback);
+  out = out.replace(/<AppShowcase\s+os=["']([^"']+)["']\s*\/>/g, (_m, os: string) => {
+    const s = appShots.find((a) => a.os === os);
+    return s ? `![${s.alt} (${s.label})](${s.src})` : '';
+  });
   out = out.replace(
     /<Aside([^>]*)>([\s\S]*?)<\/Aside>/g,
     (_m, attrs: string, inner: string) => {

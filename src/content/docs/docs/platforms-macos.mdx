@@ -3,10 +3,20 @@ title: macOS
 description: Install and update freemkv on macOS, find your settings and output, and troubleshoot optical-drive access.
 ---
 
-freemkv comes in two builds for macOS. **Install one or the other**; both are the `freemkv` command. Choose **Apple Silicon** or **Intel** for your Mac on the **[Download page](/download/)**.
+import AppShowcase from '../../../components/AppShowcase.astro';
+
+freemkv comes in two builds for macOS. **Install one or the other**; both are the `freemkv` command and use the same ripping engine. Choose **Apple Silicon** or **Intel** for your Mac on the **[Download page](/download/)**.
 
 - **freemkv** (the app): a native desktop app plus every CLI command.
 - **freemkv CLI**: the command line only, as a single binary.
+
+<AppShowcase os="macos" />
+
+## Requirements
+
+- macOS 11 or later.
+- An Apple Silicon (`aarch64`) or Intel (`x86_64`) Mac. Each has its own download.
+- An optical drive. See [OEM (stock) drives](/docs/drives-oem/) and [Unlocked drives](/docs/drives-unlocked/) for drive support.
 
 ## Install
 
@@ -18,11 +28,9 @@ With Homebrew, which also puts `freemkv` on your PATH:
 brew install --cask freemkv/tap/freemkv
 ```
 
-Or download the matching `.dmg` from the [Download page](/download/), open it and drag `freemkv.app` into **Applications**.
+Or download the matching `.dmg` (`freemkv-aarch64-macos.dmg` or `freemkv-x86_64-macos.dmg`), open it and drag `freemkv.app` into **Applications**.
 
 Open freemkv, select a disc, image or folder, choose the titles and tracks, select an output location and press **Rip**. You can also drag a supported media file onto the window.
-
-![The freemkv desktop app on macOS with a disc image loaded.](/freemkv-gui-macos.png)
 
 The app includes the full CLI. With the cask, run `freemkv disc:// mkv://Movie.mkv` in any terminal; a bare `freemkv` opens the window. With a `.dmg` install, the executable is inside the app:
 
@@ -50,6 +58,15 @@ chmod +x freemkv-cli-aarch64-macos
 
 A bare `freemkv` prints usage. See the [CLI reference](/docs/cli/) for ripping commands and options.
 
+### Verify the download
+
+Each `.dmg` and standalone CLI binary on [GitHub Releases](https://github.com/freemkv/freemkv/releases) has a matching `.sha256` file. Compare the hash of your download with the line for the same file name:
+
+```bash
+shasum -a 256 freemkv-aarch64-macos.dmg
+cat freemkv-aarch64-macos.dmg.sha256
+```
+
 <a id="apple-could-not-verify-freemkv-on-first-launch"></a>
 
 ## First launch
@@ -64,28 +81,25 @@ This creates an exception for that app. Different warnings, such as a damaged fi
 
 ## Update or remove
 
-For Homebrew installations:
+| Installation | Update | Remove |
+|---|---|---|
+| Homebrew app | `brew update`, then `brew upgrade --cask freemkv/tap/freemkv` | `brew uninstall --cask freemkv/tap/freemkv` |
+| Homebrew CLI | `brew update`, then `brew upgrade freemkv/tap/freemkv-cli` | `brew uninstall freemkv/tap/freemkv-cli` |
+| `.dmg` or standalone CLI | Close freemkv and replace the app or binary with the new release | Delete the app or binary |
 
-```bash
-brew update
-brew upgrade --cask freemkv/tap/freemkv
-brew upgrade freemkv/tap/freemkv-cli
-```
-
-Run the upgrade command for the app or CLI you installed. For direct downloads, close freemkv and replace the app or standalone binary with the new release.
-
-Use `brew uninstall --cask freemkv/tap/freemkv` or `brew uninstall freemkv/tap/freemkv-cli` to remove a Homebrew installation. For direct downloads, delete the app or binary. Settings and ripped movies are separate.
+Settings and ripped movies are separate from program files, so updating or removing freemkv leaves them in place.
 
 ## File locations
 
 | What | Location |
 |---|---|
 | Desktop settings | `~/Library/Application Support/freemkv/gui-settings.json` |
-| Finished movies | The output location you choose before ripping |
+| Desktop diagnostic log | `log.txt` in the same folder, written only when the app's log level is **Verbose** or debug messages are on |
+| Finished movies | The output location you choose before ripping; the desktop app suggests `~/Movies` |
 | AACS keys | See [Decryption Keys](/docs/decryption-keys/) |
 | CLI diagnostic log | Off by default; `--log-level 3` writes `log.txt` in the current folder |
 
-To capture a log at a specific path:
+To capture a CLI log at a specific path:
 
 ```bash
 freemkv info disc:// --log-level 3 --log-file "$HOME/Desktop/freemkv-log.txt"
@@ -107,7 +121,12 @@ For automatic ripping through a browser, see [autorip Service](/docs/autorip/). 
 
 - **macOS blocks the app or CLI:** review [First launch](#first-launch).
 - **The disc disappears from Finder:** freemkv unmounts it to take exclusive drive access.
-- **No drive is available:** check the connection and close other disc software.
+- **No drive is available:** check the connection, close other disc software and review [Drive access](#drive-access).
 - **A movie is missing:** check the output location selected for that rip.
 
-For key setup, see [Decryption Keys](/docs/decryption-keys/). For logs and shared fixes, see [Troubleshooting](/docs/troubleshooting/).
+## See also
+
+- [Decryption Keys](/docs/decryption-keys/) for key setup
+- [Troubleshooting](/docs/troubleshooting/) for logs and shared fixes
+- [CLI reference](/docs/cli/) for ripping commands and options
+- [autorip Service](/docs/autorip/) for automatic ripping

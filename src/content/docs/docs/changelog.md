@@ -60,7 +60,46 @@ For the full technical detail behind a release, see the per-component notes:
   was moved or has a translated name.
 - `info --share` explains why the disc structure could not be captured.
 
+**Autorip**
+
+- Re-inserting a disc after an interrupted rip (crash, power loss, eject) picks up where it left
+  off instead of restarting from title 1.
+- The UI shows how much staging space the selected titles will need before the rip starts, and
+  a resume no longer fails the space check by ignoring what is already staged.
+- Key-service failures get their own messages: an outage, a definitive "no key for this disc",
+  over quota and unlicensed are told apart, and only the outcomes where retrying can help are
+  retried. The tracker link in the AACS-failure message is clickable.
+
 _This release aligns all components to 1.7.6._
+
+## Firmware 0.9.2
+
+<small>2026-09-25</small>
+
+`freemkv-firmware` versions independently of the rest of the stack — see the
+[Firmware tools](/docs/firmware-tools/) reference for the full command ABI.
+
+**Changed**
+
+- **`Feature::Uhd` renamed to `Feature::Unrestricted`.** Same numeric discriminant (`0x03`) — the
+  wire byte is unchanged, so existing hosts keep interoperating. The new name documents the
+  intended semantic: one flag now controls all AACS media acceptance — BD, UHD, and the auth-cell
+  state-band gate below. `Feature::Bd` (`0x04`) is now **deprecated**: `SET`/`GET` still round-trip
+  through its own NV slot, but it has no runtime effect.
+
+**Added**
+
+- **New lever: the auth-cell state-band widen at `0x00136826`.** Wired through `Unrestricted` on
+  BU40N 1.00 (`cmp (state>>4),#0xC; bne <6F/02>`), widening the accepted top-nibble set when armed.
+  `STATE_ON` (`0x01`) widens; `STATE_OFF` (`0x00`) and `STATE_PASSTHROUGH` (`0xFF`) both replay OEM.
+  A freshly flashed drive with virgin NV boots with `Unrestricted = STATE_ON` — the widen is on by
+  default.
+
+**Fixed**
+
+- Silent `0x30/0x02 Incompatible medium installed` refusal on a specific triple-layer UHD whose
+  disc classifier lands its state byte on `0xE8` instead of the usual `0xC*` band that the OEM gate
+  accepted.
 
 ## 1.7.5
 
@@ -87,35 +126,6 @@ _This release aligns all components to 1.7.6._
   sampled unit unwrapped, and the key resolved normally.
 
 _This release aligns all components to 1.7.5._
-
-## Firmware 0.9.2
-
-<small>2026-09-24</small>
-
-`freemkv-firmware` versions independently of the rest of the stack — see the
-[Firmware tools](/docs/firmware-tools/) reference for the full command ABI.
-
-**Changed**
-
-- **`Feature::Uhd` renamed to `Feature::Unrestricted`.** Same numeric discriminant (`0x03`) — the
-  wire byte is unchanged, so existing hosts keep interoperating. The new name documents the
-  intended semantic: one flag now controls all AACS media acceptance — BD, UHD, and the auth-cell
-  state-band gate below. `Feature::Bd` (`0x04`) is now **deprecated**: `SET`/`GET` still round-trip
-  through its own NV slot, but it has no runtime effect.
-
-**Added**
-
-- **New lever: the auth-cell state-band widen at `0x00136826`.** Wired through `Unrestricted` on
-  BU40N 1.00 (`cmp (state>>4),#0xC; bne <6F/02>`), widening the accepted top-nibble set when armed.
-  `STATE_ON` (`0x01`) widens; `STATE_OFF` (`0x00`) and `STATE_PASSTHROUGH` (`0xFF`) both replay OEM.
-  A freshly flashed drive with virgin NV boots with `Unrestricted = STATE_ON` — the widen is on by
-  default.
-
-**Fixed**
-
-- Silent `0x30/0x02 Incompatible medium installed` refusal on a specific triple-layer UHD whose
-  disc classifier lands its state byte on `0xE8` instead of the usual `0xC*` band that the OEM gate
-  accepted.
 
 ## 1.7.4
 

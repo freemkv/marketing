@@ -298,7 +298,7 @@ freemkv info iso://Disc.iso
 :::caution[`--share` does not combine with the listing flags]
 `--share` is its own command: it captures the drive profile instead of listing
 titles, so the flags that shape a listing do not apply to it. It accepts
-`--mask`, `-q`, `-v`, `--log-file` and `-h`, and nothing else.
+`--mask`, `-q`, `-v` (or `-vv` / `-vvv`), `--log-level`, `--log-file` and `-h`, and nothing else.
 
 Anything else is rejected rather than ignored, so a mistake is visible:
 
@@ -306,13 +306,13 @@ Anything else is rejected rather than ignored, so a mistake is visible:
 freemkv info disc:// --share --full     # exits 1: Unknown option: --full
 ```
 
-`--log-level` is refused here for the same reason — use `--log-file`.
 :::
 
-:::note[`info` on an image reads only `--full`]
-`freemkv info iso://Disc.iso` supports `--full`. The other listing flags are
-accepted but have no effect on an image, because they select what to read from
-a *drive*.
+:::note[`info` on an image]
+`freemkv info iso://Disc.iso` supports `--full`, `--basic` and `--verbose` as on a
+drive, including per-stream detail and PIDs. Only the drive-specific details
+(drive, device, region, resolved AACS keys) are missing, since there is no drive
+to query.
 :::
 
 ### Converting a file to MKV (no drive needed)
@@ -330,7 +330,7 @@ freemkv iso://Disc.iso -t 1 mkv://Movie.mkv     # convert an ISO's main title to
 | `-a, --audio SPEC` | Audio streams to keep: `all` (default), `none`, or a comma-separated language list (names or ISO codes). Video is always kept. |
 | `-s, --subtitles SPEC` | Subtitle streams to keep: `all` (default), `none`, or a comma-separated language list. |
 
-`-t` / `-a` / `-s` apply **only to a `disc://` or `iso://` source** — those are the
+`-t` / `-a` / `-s` apply **only to a `disc://`, `iso://` or `dir://` source** — those are the
 sources freemkv scans into a title list. Pairing them with a stream/file source
 (`m2ts://`, `mp4://`, `mkv://`, `network://`, `stdio://`) is rejected before the rip
 starts, so of the two examples above only the `iso://` one takes them.
@@ -348,7 +348,7 @@ Language tags match by identity: `English`, `en`, and `eng` all select the same 
 
 ### update-keys — refresh the AACS key database
 
-Downloads, verifies, and installs an AACS keydb (`.txt` / `.zip` / `.gz`). `--url` is required. Both `http://` and `https://` URLs are supported.
+Downloads, verifies, and installs an AACS keydb (`.txt` / `.zip` / `.gz`). `-u` / `--url` is required. Both `http://` and `https://` URLs are supported.
 
 ```bash
 freemkv update-keys --url https://example.org/keydb_eng.zip
@@ -393,10 +393,10 @@ Global (any command):
 | Flag | Description |
 |---|---|
 | `--language CODE` | UI language — freemkv is fully localized in **29**: `ca` `cs` `da` `de` `el` `en` `es` `es-419` `fi` `fr` `hu` `id` `it` `ja` `ko` `nl` `no` `pl` `pt` `pt-br` `ro` `ru` `sk` `sv` `tr` `uk` `vi` `zh-hans` `zh-hant` (alias `--lang`). |
-| `--log-level N` | Enable a diagnostic **log file**: 1 = warn … 4 = trace (the terminal stays clean). For bug reports use `--log-level 3`. Not accepted on the `info … --share` route, which has its own flag set. |
+| `--log-level N` | Enable a diagnostic **log file**: 1 = warn … 4 = trace (the terminal stays clean). For bug reports use `--log-level 3`. |
 | `--log-file PATH` | Where to write the log (default `./log.txt`). |
 | `-q, --quiet` | Suppress stdout. |
-| `--force` | On a `dir://` destination, extract into a folder that is not empty (otherwise E9026 stops the run). |
+| `--force` | On a `dir://`, `demux://`, `video://`, `audio://` or `sub://` destination, write into a folder that is not empty (otherwise E9026 stops the run). |
 | `RUST_LOG` | Power-user filter; enables file logging and wins over `--log-level`. |
 
 Keys are never written to logs. One Ctrl-C halts a rip cleanly (tray unlocked, mapfile preserved); a second forces exit `130`. On a multi-title rip (`-t all` / multiple `-t N`), Ctrl-C is a **full stop** of the whole rip, not just the title in progress.
@@ -406,6 +406,6 @@ Keys are never written to logs. One Ctrl-C halts a rip cleanly (tray unlocked, m
 | Code | Meaning |
 |---|---|
 | `0` | Success. |
-| `1` | Failed (rip / mux / scan error, bad flag, missing key). |
-| `2` | No subcommand or URL (usage printed). |
+| `1` | Failed (rip / mux / scan error, bad flag, missing key, or a missing or malformed URL). |
+| `2` | No arguments at all, or `help` with an unknown topic (usage printed). |
 | `130` | Second Ctrl-C. |

@@ -99,7 +99,7 @@ start of a new stream section.
 | Member | JSON type | Req | Semantics / reference |
 |---|---|---|---|
 | `codec` | string | MUST | Registered codec id (Appendix B), e.g. `"mpeg2video"`, `"hevc"`. |
-| `width`,`height` | integer | MUST | Coded luma dimensions in pixels. |
+| `width`, `height` | integer | MUST | Coded luma dimensions in pixels. |
 | `dar` | `[int,int]` | SHOULD | Display aspect ratio as `[num,den]`. |
 | `frame_rate` | `[int,int]` | SHOULD | Nominal rate as exact rational `[num,den]` (e.g. `[24000,1001]`). |
 | `scan` | string | MUST | `"progressive"`<br>`"interlaced"`<br>`"mbaff"` _(reserved; emitted only by codecs that signal MBAFF — disc/MPEG-2 video resolves to progressive/interlaced)_ |
