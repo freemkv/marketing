@@ -1,24 +1,51 @@
 ---
 // Desktop-app screenshots in a labelled frame. No `os` prop: the homepage
-// slideshow of every shot. With `os`: that one shot as a thumbnail that opens
-// full size in a <dialog> (the platform docs pages).
-import { appShots } from '../data/app-screenshots';
+// slideshow of each OS's featured shot. With `os`: every shot for that OS as a
+// row of thumbnails; each opens full size in one <dialog> lightbox with
+// previous/next buttons and arrow keys (the platform docs pages).
+import { appShots, featuredShots, shotsFor } from '../data/app-screenshots';
 
 interface Props { os?: string }
 const { os } = Astro.props;
-const one = os ? appShots.find((s) => s.os === os) : undefined;
-if (os && !one) throw new Error(`AppShowcase: no screenshot for os="${os}"`);
-const slides = one ? [one] : appShots;
+const gallery = os ? shotsFor(os) : [];
+if (os && !gallery.length) throw new Error(`AppShowcase: no screenshot for os="${os}"`);
+const slides = featuredShots;
+const oses = [...new Set(appShots.map((s) => s.os))];
+if (slides.length !== oses.length || new Set(slides.map((s) => s.os)).size !== oses.length)
+  throw new Error('AppShowcase: mark exactly one `featured` shot per OS in app-screenshots.ts');
+const first = gallery[0];
 ---
 
-{one ? (
-  <figure class="shot shot--thumb not-content" data-lightbox>
-    <button type="button" class="stage thumb" style={`aspect-ratio: ${one.w} / ${one.h}`} aria-haspopup="dialog">
-      <img src={one.src} alt={one.alt} width={one.w} height={one.h} loading="lazy" decoding="async" />
-      <span class="os-label">{one.label}</span>
-    </button>
-    <dialog class="lightbox" aria-label={`${one.label} screenshot, full size`}>
-      <img src={one.src} alt={one.alt} width={one.w} height={one.h} loading="lazy" decoding="async" />
+{os ? (
+  <figure class:list={['shot', 'shot--gallery', 'not-content', { 'shot--single': gallery.length === 1 }]} data-lightbox>
+    <ul class="thumbs" role="list">
+      {gallery.map((s, i) => (
+        <li>
+          <button
+            type="button"
+            class="stage thumb"
+            style={gallery.length === 1 ? `aspect-ratio: ${s.w} / ${s.h}` : undefined}
+            aria-haspopup="dialog"
+            data-src={s.src}
+            data-alt={s.alt}
+            data-w={s.w}
+            data-h={s.h}
+          >
+            <img src={s.src} alt={s.alt} width={s.w} height={s.h} loading="lazy" decoding="async" />
+            <span class="os-label">{s.label}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+    <dialog class="lightbox" aria-label={`${first.label} screenshots, full size`}>
+      <img src={first.src} alt={first.alt} width={first.w} height={first.h} loading="lazy" decoding="async" data-full />
+      {gallery.length > 1 && (
+        <>
+          <button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous screenshot" data-step="-1">‹</button>
+          <button type="button" class="lightbox-nav lightbox-next" aria-label="Next screenshot" data-step="1">›</button>
+          <span class="lightbox-count" aria-live="polite" data-count>1 / {gallery.length}</span>
+        </>
+      )}
       <button type="button" class="lightbox-close" aria-label="Close">×</button>
     </dialog>
   </figure>
@@ -95,7 +122,18 @@ const slides = one ? [one] : appShots;
   .dot-btn[aria-current='true'] { background: var(--muted, #64748b); }
   .dot-btn:focus-visible, .thumb:focus-visible { outline: 2px solid var(--teal, #0d9488); outline-offset: 2px; }
 
-  .shot--thumb { max-width: 480px; margin: 1.5rem 0; }
+  .shot--gallery { margin: 1.5rem 0; }
+  .thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .thumbs li { margin: 0; padding: 0; }
+  .shot--single { max-width: 480px; }
+  .shot--single .thumbs { grid-template-columns: 1fr; }
   .thumb { cursor: zoom-in; box-shadow: 0 16px 40px -24px rgba(15, 23, 42, 0.55); }
   .lightbox {
     position: fixed;
@@ -134,6 +172,34 @@ const slides = one ? [one] : appShots;
     line-height: 1;
     cursor: pointer;
   }
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: 1px solid #334155;
+    background: rgba(15, 23, 42, 0.85);
+    color: #fff;
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .lightbox-prev { left: 0.75rem; }
+  .lightbox-next { right: 0.75rem; }
+  .lightbox-count {
+    position: absolute;
+    left: 50%;
+    bottom: 0.75rem;
+    transform: translateX(-50%);
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.8);
+    color: #fff;
+    font: 600 0.75rem/1.4 var(--font, system-ui, sans-serif);
+  }
+  .lightbox-nav:focus-visible, .lightbox-close:focus-visible { outline: 2px solid var(--teal, #0d9488); outline-offset: 2px; }
   @media (prefers-reduced-motion: no-preference) {
     .lightbox[open] { animation: lb-in 0.18s ease-out; }
     @keyframes lb-in { from { opacity: 0; transform: scale(0.97); } }
@@ -146,13 +212,32 @@ const slides = one ? [one] : appShots;
 <script is:inline>
   (() => {
     document.querySelectorAll('[data-lightbox]').forEach((fig) => {
-      const thumb = fig.querySelector('.thumb');
+      const thumbs = [...fig.querySelectorAll('.thumb')];
       const dlg = fig.querySelector('dialog');
-      if (!thumb || !dlg || !dlg.showModal) return;
-      thumb.addEventListener('click', () => dlg.showModal());
+      if (!thumbs.length || !dlg || !dlg.showModal) return;
+      const full = dlg.querySelector('[data-full]');
+      const count = dlg.querySelector('[data-count]');
+      let cur = 0;
+      const show = (n) => {
+        cur = (n + thumbs.length) % thumbs.length;
+        const t = thumbs[cur].dataset;
+        full.src = t.src;
+        full.alt = t.alt;
+        full.width = Number(t.w);
+        full.height = Number(t.h);
+        if (count) count.textContent = `${cur + 1} / ${thumbs.length}`;
+      };
+      thumbs.forEach((t, i) => t.addEventListener('click', () => { show(i); dlg.showModal(); }));
+      dlg.querySelectorAll('[data-step]').forEach((b) =>
+        b.addEventListener('click', () => show(cur + Number(b.dataset.step))));
+      dlg.addEventListener('keydown', (e) => {
+        if (thumbs.length < 2) return;
+        if (e.key === 'ArrowLeft') { e.preventDefault(); show(cur - 1); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); show(cur + 1); }
+      });
       dlg.querySelector('.lightbox-close').addEventListener('click', () => dlg.close());
       dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
-      dlg.addEventListener('close', () => thumb.focus({ preventScroll: true }));
+      dlg.addEventListener('close', () => thumbs[cur].focus({ preventScroll: true }));
     });
 
     const root = document.querySelector('[data-carousel]');
