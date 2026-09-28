@@ -408,4 +408,5 @@ Keys are never written to logs. One Ctrl-C halts a rip cleanly (tray unlocked, m
 | `0` | Success. |
 | `1` | Failed (rip / mux / scan error, bad flag, missing key, or a missing or malformed URL). |
 | `2` | No arguments at all, or `help` with an unknown topic (usage printed). |
+| `3` | **`disc:// → iso://` or `disc:// → null://` only:** the copy is kept and usable, but short some sectors — re-run with `--multipass` to try to recover more (it resumes from the mapfile, so this is safe even right after a `--multipass` run). No other command returns this code. |
 | `130` | Second Ctrl-C. |

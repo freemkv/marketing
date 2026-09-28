@@ -120,7 +120,7 @@ Re-run with `--log-level 3` (writes `./log.txt`) and attach the log if you open 
 
 freemkv is built to recover damaged discs, but behavior depends on the mode:
 
-- **Single-pass** (CLI direct disc → MKV, or autorip `max_retries = 0`): no retries; a read error fails the rip.
+- **Single-pass** (CLI direct disc → MKV, or autorip `max_retries = 0`): no retries. For a per-title mux (MKV/M2TS/etc.) a read error fails the rip; for a whole-disc `iso://` or `null://` copy the image is kept and reported as damaged instead (CLI exit code `3` — see [Exit codes](/docs/cli/#exit-codes)).
 - **Multipass** (CLI `--multipass`, or autorip `max_retries ≥ 1`): the sweep records bad ranges and skips ahead; patch passes then re-read only those ranges from the disc. Use this mode for any disc you suspect is scratched. See [How recovery works](/docs/how-recovery-works/).
 
 Tips:
