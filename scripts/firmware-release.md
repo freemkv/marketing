@@ -27,8 +27,8 @@ Create a draft GitHub release containing the staging archive named exactly
 `firmware-assets.tar.gz`. Dispatch the Pages workflow from the isolated release
 branch with `firmware_release` set to that draft tag. It downloads the asset,
 validates its archive members and hashes, uploads to `freemkv-firmware`, verifies
-public GET contents, then builds and deploys Pages project `freemkv` to production.
-After that workflow succeeds, fast-forward/merge the reviewed release into main;
+public GET contents, then builds and deploys Pages project `freemkv` on that branch (QA is a preview).
+After QA verification succeeds, fast-forward/merge the reviewed release into main;
 the resulting ordinary deployment uses the same published catalogs.
 
 The workflow requires `CLOUDFLARE_ACCOUNT_ID` for the FreeMKV account and
@@ -49,7 +49,7 @@ Example release commands after preparing and committing the isolated branch:
 
 ```
 gh release create firmware-catalog-YYYYMMDD /tmp/firmware-assets.tar.gz --repo freemkv/marketing --draft --title 'Firmware catalog YYYY-MM-DD' --notes 'Staged firmware publication assets'
-gh workflow run pages.yml --repo freemkv/marketing --ref firmware-finder-release -f firmware_release=firmware-catalog-YYYYMMDD
+gh workflow run pages.yml --repo freemkv/marketing --ref qa -f firmware_release=firmware-catalog-YYYYMMDD
 gh run list --repo freemkv/marketing --workflow pages.yml
 ```
 

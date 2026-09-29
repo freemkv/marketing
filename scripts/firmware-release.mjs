@@ -134,9 +134,11 @@ export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Pr
     const raw=await fs.readFile(path.join(directory,'payloads',o.key));
     if (raw.length!==o.bytes || hash(raw)!==o.sha256) throw new Error('Payload hash/size mismatch');
   }
+  // Manifest keys are URL-ready paths produced by segment(). Pinned Wrangler
+  // decodes their percent escapes on PUT; public URLs use them exactly once.
   async function publicMatches(o) {
     try {
-      const response=await fetcher(`${PUBLIC_BASE}/${o.key.split('/').map(encodeURIComponent).join('/')}`, {headers:{'User-Agent':'curl/8.7.1'},signal:AbortSignal.timeout(60000)});
+      const response=await fetcher(`${PUBLIC_BASE}/${o.key}`, {headers:{'User-Agent':'curl/8.7.1'},signal:AbortSignal.timeout(60000)});
       if (!response.ok) { await response.body?.cancel(); return false; }
       const raw=Buffer.from(await response.arrayBuffer());
       return raw.length===o.bytes && hash(raw)===o.sha256;

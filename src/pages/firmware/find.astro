@@ -420,7 +420,7 @@ import '../../styles/site.css';
             if (isHosted) {
               var dlName = v.file.split('/').pop();
               bodyHtml =
-                '<a class="btn btn-primary dl-btn drive-fw-btn" href="' + firmwareBaseUrl + '/' + v.file.split('/').map(encodeURIComponent).join('/') + '" download>' +
+                '<a class="btn btn-primary dl-btn drive-fw-btn" href="' + firmwareBaseUrl + '/' + v.file + '" download>' +
                 '<span class="dl-main">Download</span>' +
                 '</a>' + (!canModify
                   ? ''

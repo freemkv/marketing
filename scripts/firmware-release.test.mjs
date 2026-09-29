@@ -61,10 +61,10 @@ test('uploads at most four objects together and retries public visibility',async
  };
  assert.equal(await publish(d,upload,fetcher,async()=>{}),6);assert.equal(uploads,6);assert.equal(max,4);
 });
-test('public URL preserves literal percent characters in stored object keys',async t=>{
+test('public URL uses prepared percent-encoded path exactly once',async t=>{
  const {d,b,o}=await fixture(t),key='pioneer/M/SAT%208A10/1.01EU/fw.tar';
  const item={...o,key};await fs.mkdir(path.dirname(path.join(d,'payloads',key)),{recursive:true});await fs.writeFile(path.join(d,'payloads',key),b);
  await fs.writeFile(path.join(d,'publish-manifest.json'),JSON.stringify({format:'freemkv-firmware-publish-v1',objects:[item]}));
  await fs.writeFile(path.join(d,'pioneer-firmware-index.json'),JSON.stringify([{model:'M',versions:[{file:key,sha256:item.sha256,bytes:item.bytes}]}]));
- let called=false;assert.equal(await publish(d,async()=>assert.fail('already hosted'),async url=>{called=true;assert.ok(url.endsWith('/pioneer/M/SAT%25208A10/1.01EU/fw.tar'));return new Response(b);}),1);assert.ok(called);
+ let called=false;assert.equal(await publish(d,async()=>assert.fail('already hosted'),async url=>{called=true;assert.ok(url.endsWith('/pioneer/M/SAT%208A10/1.01EU/fw.tar'));return new Response(b);}),1);assert.ok(called);
 });
