@@ -3,13 +3,17 @@ import { graph, websiteNode, orgNode, webPageNode, breadcrumbNode } from '../../
 // "Find your drive" — /firmware/find/.
 // Typeable search over the drive index in src/data/firmware-index.json using a
 // compact custom combobox (capped, scrollable, field-width list — no native
-// datalist balloon). Search matches on MODEL NAME only; brand and chip are
-// never shown in the picker. Selecting a model reveals a versions dropdown,
+// datalist balloon). Search matches drive models and Pioneer firmware IDs.
+// Selecting a model reveals a versions dropdown,
 // then a short detail card with either a download button (for a hosted base)
 // or a disabled "Unavailable" button plus a "donate it on Discord" call to
 // action (for a base we don't host yet — crowdsources the missing firmware).
 import FirmwareNavDropdown from '../../components/FirmwareNavDropdown.astro';
-import firmwareIndex from '../../data/firmware-index.json';
+import mediatekIndex from '../../data/firmware-index.json';
+import pioneerIndex from '../../data/pioneer-firmware-index.json';
+const firmwareIndex = [...mediatekIndex, ...pioneerIndex]
+  .map((model) => ({ ...model, versions: model.versions.filter((version) => Boolean(version.file)) }))
+  .filter((model) => model.versions.length > 0);
 
 const title = 'Find your drive firmware — freemkv';
 const description =
@@ -20,15 +24,10 @@ const github = 'https://github.com/freemkv';
 const firmwareRepo = 'https://github.com/freemkv/freemkv-firmware';
 const firmwareBaseUrl = 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 
-// OEM base images hosted on R2 (verified HTTP 200, sha matches the index). Any
-// model/revision NOT in this set shows the "ask on Discord" line, not a dead link.
-// Machine-written by scripts/publish-firmware.py from the 118-image OEM corpus.
-const HOSTED = new Set(['BC-12B1ST:3.01', 'BC-12B1ST:3.11', 'BC-12D2HT:3.00', 'BC-12D2HT:3.01', 'BC-12D2HT:3.11', 'BE14NU40:1.00', 'BE14NU40:1.01', 'BE16NU50:1.01', 'BE16NU50:1.02', 'BE16NU50:1.04', 'BE16NU50:INTM', 'BH14NS40:1.00', 'BH14NS40:1.01', 'BH14NS50:1.01', 'BH14NS50:1.03', 'BH14NS58:1.00', 'BH14NS58:1.01', 'BH16NS40:1.00', 'BH16NS40:1.01', 'BH16NS40:1.02', 'BH16NS40:1.03', 'BH16NS40:1.04', 'BH16NS40:1.05', 'BH16NS40:INTM', 'BH16NS48:1.02', 'BH16NS50:1.01', 'BH16NS50:1.03', 'BH16NS55:1.01', 'BH16NS55:1.02', 'BH16NS55:1.03', 'BH16NS55:1.04', 'BH16NS55:1.05', 'BH16NS58:1.00', 'BH16NS58:1.01', 'BH16NS58:1.02', 'BH16NS60:1.00', 'BH16NS60:1.02', 'BH16NS60:INTM', 'BH40N:B7C6', 'BP50NB40:1.00', 'BP50NB40:1.01', 'BP50NB40:1.02', 'BP50NB40:1.03', 'BP50NB40:INTM', 'BP55EB40:1.01', 'BP55EB40:1.02', 'BP55EB40:1.03', 'BP60NB10:1.00', 'BP60NB10:1.01', 'BP60NB10:1.02', 'BU40N:1.00', 'BU40N:1.01', 'BU40N:1.02', 'BU40N:1.03', 'BU40N:1.04', 'BU40N:BN11', 'BU40N:BN12', 'BU40N:BU10', 'BU40N:BU12', 'BU40N:BW41', 'BU40N:BW42', 'BU40N:CB04', 'BU40N:FR07', 'BU40N:INTM', 'BU40N:U100', 'BU40N:U101', 'BU50N:1.00', 'BU50N:BW51', 'BW-16D1H:A203', 'BW-16D1H:A204', 'BW-16D1HT:3.01', 'BW-16D1HT:3.02', 'BW-16D1HT:3.03', 'BW-16D1HT:3.10', 'CH12NS40:1.01', 'CH12NS40:INTM', 'UH12NS40:1.01', 'WH14NS40:1.00', 'WH14NS40:1.01', 'WH14NS40:1.02', 'WH14NS40:1.03', 'WH14NS40:1.04', 'WH14NS40:1.05', 'WH16NS40:1.01', 'WH16NS40:1.02', 'WH16NS40:1.03', 'WH16NS40:1.05', 'WH16NS58:1.V1', 'WH16NS58:1.V5', 'WH16NS60:1.00', 'WH16NS60:1.01', 'WH16NS60:1.02', 'WH16NS60:1.03', 'WP50NB40:1.01', 'WP50NB40:1.03']);
-const hostedList = [...HOSTED];
 // Hero summary, computed from the index so the numbers never drift: how many
 // OEM base firmwares we host, broken down by chipset (largest first).
 const hostedVersions = firmwareIndex.flatMap((m) =>
-  m.versions.filter((v) => HOSTED.has(`${m.model}:${v.rev}`))
+  m.versions.filter((v) => Boolean(v.file))
 );
 const hostedTotal = hostedVersions.length;
 const hostedByChip = Object.entries(
@@ -102,7 +101,7 @@ import '../../styles/site.css';
         <div class="hero-inner">
           <h1 class="hero-title">Find your drive</h1>
           <p class="hero-lead">
-            Type your drive's model number to find its firmware base image.
+            Type your drive's model number to find its firmware.
           </p>
           <p class="hero-stat">
             <strong>{hostedTotal}</strong> OEM firmwares available
@@ -111,7 +110,6 @@ import '../../styles/site.css';
             {hostedByChip.map(([chip, n]) => (
               <span class="stat-pill"><strong>{n}</strong> {chip}</span>
             ))}
-            <span class="stat-pill stat-pill-soon">Coming soon · Pioneer</span>
           </div>
         </div>
       </section>
@@ -161,7 +159,7 @@ import '../../styles/site.css';
 
           <div class="picker-detail" id="drive-detail"></div>
 
-          <p class="block-note">
+          <p class="block-note" id="modify-feature-note">
             Firmware features are structurally validated and self-verifying; the
             levers are structurally verified across the corpus.
           </p>
@@ -170,15 +168,15 @@ import '../../styles/site.css';
             Don't see your drive listed, or want to help us add one? Drop by <a href="https://discord.gg/yu7xMGTyek">Discord</a>.
           </p>
 
-          <div class="next-step">
-            <a class="next-step-link" href="/firmware/modify/">
-              Next: modify it <span aria-hidden="true">→</span>
+          <div class="next-step" id="modify-next-step" hidden>
+            <a class="next-step-link" id="firmware-next-link" href="/firmware/flash/">
+              Next: flash it <span aria-hidden="true">→</span>
             </a>
           </div>
         </div>
       </section>
 
-      <script define:vars={{ firmwareIndex, hostedList, firmwareBaseUrl }}>
+      <script define:vars={{ firmwareIndex, firmwareBaseUrl }}>
         (function () {
           var searchInput = document.getElementById('drive-search');
           var optionsList = document.getElementById('drive-options');
@@ -187,9 +185,6 @@ import '../../styles/site.css';
           var revOptions = document.getElementById('rev-options');
           var detail = document.getElementById('drive-detail');
           if (!searchInput || !optionsList || !revInput || !revOptions || !detail) return;
-
-          var hosted = {};
-          hostedList.forEach(function (k) { hosted[k] = true; });
 
           var filtered = [];
           var activeIdx = -1;
@@ -205,7 +200,7 @@ import '../../styles/site.css';
           function hostedCount(d) {
             var n = 0;
             d.versions.forEach(function (v) {
-              if (hosted[d.model + ':' + v.rev]) n++;
+              if (v.file) n++;
             });
             return n;
           }
@@ -216,12 +211,22 @@ import '../../styles/site.css';
             return firmwareIndex.find(function (d) { return d.model.toLowerCase() === needle; }) || null;
           }
 
-          // Substring match on MODEL NAME only — no brand, no chip.
+          function versionLabel(v) {
+            return v.packageType === 'pioneer-installer'
+              ? v.rev + ' · ' + v.hardware + (v.variant ? ' · ' + v.variant : '')
+              : v.rev + (v.variant ? ' · ' + v.variant : '');
+          }
+
+          // Include the embedded Pioneer model so either name on the drive or
+          // in its firmware envelope finds the same public listing.
           function filterModels(q) {
             var needle = (q || '').trim().toLowerCase();
             if (!needle) return firmwareIndex.slice();
             return firmwareIndex.filter(function (d) {
-              return d.model.toLowerCase().indexOf(needle) !== -1;
+              return d.model.toLowerCase().indexOf(needle) !== -1 ||
+                d.versions.some(function (v) {
+                  return v.embeddedModel && v.embeddedModel.toLowerCase().indexOf(needle) !== -1;
+                });
             });
           }
 
@@ -309,7 +314,7 @@ import '../../styles/site.css';
           function selectModel(d) {
             curModel = d;
             curRevIdx = 0;
-            revInput.value = d.versions.length ? d.versions[0].rev : '';
+            revInput.value = d.versions.length ? versionLabel(d.versions[0]) : '';
             revRow.classList.remove('is-hidden');
             closeRevList();
             render();
@@ -319,6 +324,8 @@ import '../../styles/site.css';
           // detail card — used whenever the model input no longer names a model.
           function resetSelection() {
             curModel = null;
+            document.getElementById('modify-next-step').hidden = true;
+            document.getElementById('modify-feature-note').hidden = true;
             revRow.classList.add('is-hidden');
             closeRevList();
             revInput.value = '';
@@ -358,7 +365,7 @@ import '../../styles/site.css';
                 var li = document.createElement('li');
                 li.className = 'picker-option' + (e.i === curRevIdx ? ' is-active' : '');
                 li.setAttribute('role', 'option');
-                li.textContent = e.v.rev;
+                li.textContent = versionLabel(e.v);
                 li.addEventListener('mousedown', function (ev) {
                   ev.preventDefault();
                   chooseRev(e.i);
@@ -384,7 +391,7 @@ import '../../styles/site.css';
 
           function chooseRev(i) {
             curRevIdx = i;
-            revInput.value = curModel.versions[i].rev;
+            revInput.value = versionLabel(curModel.versions[i]);
             closeRevList();
             render();
           }
@@ -400,32 +407,46 @@ import '../../styles/site.css';
 
             var v = d.versions[curRevIdx] || d.versions[0];
             var key = d.model + ':' + v.rev;
-            var isHosted = !!hosted[key];
+            var isPioneer = v.packageType === 'pioneer-installer';
+            var isHosted = !!v.file;
+            var canModify = v.modifiable === true;
+            document.getElementById('modify-next-step').hidden = false;
+            var nextLink = document.getElementById('firmware-next-link');
+            nextLink.href = canModify ? '/firmware/modify/' : '/firmware/flash/';
+            nextLink.textContent = canModify ? 'Next: modify it →' : 'Next: flash it →';
+            document.getElementById('modify-feature-note').hidden = !canModify;
 
             var bodyHtml;
             if (isHosted) {
               var dlName = v.file.split('/').pop();
               bodyHtml =
-                '<a class="btn btn-primary dl-btn drive-fw-btn" href="' + firmwareBaseUrl + '/' + v.file + '" download>' +
+                '<a class="btn btn-primary dl-btn drive-fw-btn" href="' + firmwareBaseUrl + '/' + v.file.split('/').map(encodeURIComponent).join('/') + '" download>' +
                 '<span class="dl-main">Download</span>' +
-                '</a>' +
-                '<div class="drive-fw-hint">' +
-                '<span class="drive-fw-hint-label">Then build it:</span>' +
-                '<code class="drive-fw-cmd">freemkv-fw create ' + dlName + ' my-drive.freemkv.bin</code>' +
-                '</div>';
+                '</a>' + (!canModify
+                  ? ''
+                  : '<div class="drive-fw-hint">' +
+                    '<span class="drive-fw-hint-label">Then build it:</span>' +
+                    '<code class="drive-fw-cmd">freemkv-fw create ' + dlName + ' my-drive.freemkv.bin</code>' +
+                    '</div>');
             } else {
               bodyHtml =
                 '<span class="btn drive-fw-btn drive-fw-btn-disabled" aria-disabled="true">Unavailable</span>' +
-                '<p class="drive-fw-hint drive-fw-note">Have this firmware? ' +
-                '<a class="drive-fw-link" href="https://discord.gg/yu7xMGTyek">Donate it on Discord →</a></p>';
+                (isPioneer
+                  ? '<p class="drive-fw-hint drive-fw-note">Installer package is not hosted yet.</p>'
+                  : '<p class="drive-fw-hint drive-fw-note">Have this firmware? ' +
+                    '<a class="drive-fw-link" href="https://discord.gg/yu7xMGTyek">Donate it on Discord →</a></p>');
             }
 
             // Tool-derived facts (from freemkv-fw create --json) — only what's
             // useful: chipset, media, region/SKU variant, and the unlocks.
             var facts = '';
             if (v.chipset) facts += '<span class="drive-fact">' + v.chipset + '</span>';
+            if (isPioneer) facts += '<span class="drive-fact">' + v.hardware + '</span>';
+            if (isPioneer && v.embeddedModel && v.embeddedModel !== d.model) {
+              facts += '<span class="drive-fact">Firmware ID: ' + v.embeddedModel + '</span>';
+            }
             if (v.media) facts += '<span class="drive-fact">' + v.media + '</span>';
-            if (v.variant) facts += '<span class="drive-fact drive-fact-variant" title="Region/SKU code">' + v.variant + '</span>';
+            if (v.variant && !isPioneer) facts += '<span class="drive-fact drive-fact-variant" title="Region/SKU code">' + v.variant + '</span>';
             // Confidence tier: BU40N is proven on real hardware; every other
             // build is strict-build + KAT verified but not yet flashed & tested.
             if (v.confidence === 'hardware-verified') {
@@ -440,7 +461,9 @@ import '../../styles/site.css';
             // base capabilities only, never the 7 unlock flags. Everything else
             // shows the 7 real firmware flags, tinted per drive.
             var capsHtml;
-            if (v.baseOnly) {
+            if (!canModify) {
+              capsHtml = '';
+            } else if (v.baseOnly) {
               capsHtml =
                 '<div class="drive-caps drive-caps-base">' +
                 '<span class="drive-caps-label">Features</span>' +

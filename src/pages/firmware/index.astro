@@ -39,7 +39,8 @@ const cards = [
 // freemkv-flash backup/verify/restore) — never add a capability the tools lack.
 // Keep the feature wording in step with modify.astro's fwCapabilities.
 import firmwareIndex from '../../data/firmware-index.json';
-const hostedModels = firmwareIndex.filter((d) => d.ready).length;
+import pioneerIndex from '../../data/pioneer-firmware-index.json';
+const hostedModels = [...firmwareIndex, ...pioneerIndex].filter((d) => d.ready).length;
 
 const parity = [
   { name: 'Back up & restore', detail: 'Every flash starts with a backup of the drive; dump everything readable any time and restore from the backup.' },
