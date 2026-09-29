@@ -9,7 +9,9 @@ import { graph, websiteNode, orgNode, webPageNode, breadcrumbNode } from '../../
 // or a disabled "Unavailable" button plus a "donate it on Discord" call to
 // action (for a base we don't host yet — crowdsources the missing firmware).
 import FirmwareNavDropdown from '../../components/FirmwareNavDropdown.astro';
-import firmwareIndex from '../../data/firmware-index.json';
+import mediatekIndex from '../../data/firmware-index.json';
+import pioneerIndex from '../../data/pioneer-firmware-index.json';
+const firmwareIndex = [...mediatekIndex, ...pioneerIndex];
 
 const title = 'Find your drive firmware — freemkv';
 const description =
@@ -28,7 +30,7 @@ const hostedList = [...HOSTED];
 // Hero summary, computed from the index so the numbers never drift: how many
 // OEM base firmwares we host, broken down by chipset (largest first).
 const hostedVersions = firmwareIndex.flatMap((m) =>
-  m.versions.filter((v) => HOSTED.has(`${m.model}:${v.rev}`))
+  m.versions.filter((v) => v.packageType === 'pioneer-installer' ? Boolean(v.file) : HOSTED.has(`${m.model}:${v.rev}`))
 );
 const hostedTotal = hostedVersions.length;
 const hostedByChip = Object.entries(
@@ -111,7 +113,7 @@ import '../../styles/site.css';
             {hostedByChip.map(([chip, n]) => (
               <span class="stat-pill"><strong>{n}</strong> {chip}</span>
             ))}
-            <span class="stat-pill stat-pill-soon">Coming soon · Pioneer</span>
+            {!pioneerIndex.some((m) => m.ready) && <span class="stat-pill stat-pill-soon">Coming soon · Pioneer</span>}
           </div>
         </div>
       </section>
@@ -205,7 +207,7 @@ import '../../styles/site.css';
           function hostedCount(d) {
             var n = 0;
             d.versions.forEach(function (v) {
-              if (hosted[d.model + ':' + v.rev]) n++;
+              if (v.packageType === 'pioneer-installer' ? v.file : hosted[d.model + ':' + v.rev]) n++;
             });
             return n;
           }
@@ -214,6 +216,12 @@ import '../../styles/site.css';
             var needle = (name || '').trim().toLowerCase();
             if (!needle) return null;
             return firmwareIndex.find(function (d) { return d.model.toLowerCase() === needle; }) || null;
+          }
+
+          function versionLabel(v) {
+            return v.packageType === 'pioneer-installer'
+              ? v.rev + ' · ' + v.hardware + (v.variant ? ' · ' + v.variant : '')
+              : v.rev;
           }
 
           // Substring match on MODEL NAME only — no brand, no chip.
@@ -309,7 +317,7 @@ import '../../styles/site.css';
           function selectModel(d) {
             curModel = d;
             curRevIdx = 0;
-            revInput.value = d.versions.length ? d.versions[0].rev : '';
+            revInput.value = d.versions.length ? versionLabel(d.versions[0]) : '';
             revRow.classList.remove('is-hidden');
             closeRevList();
             render();
@@ -358,7 +366,7 @@ import '../../styles/site.css';
                 var li = document.createElement('li');
                 li.className = 'picker-option' + (e.i === curRevIdx ? ' is-active' : '');
                 li.setAttribute('role', 'option');
-                li.textContent = e.v.rev;
+                li.textContent = versionLabel(e.v);
                 li.addEventListener('mousedown', function (ev) {
                   ev.preventDefault();
                   chooseRev(e.i);
@@ -384,7 +392,7 @@ import '../../styles/site.css';
 
           function chooseRev(i) {
             curRevIdx = i;
-            revInput.value = curModel.versions[i].rev;
+            revInput.value = versionLabel(curModel.versions[i]);
             closeRevList();
             render();
           }
@@ -400,7 +408,8 @@ import '../../styles/site.css';
 
             var v = d.versions[curRevIdx] || d.versions[0];
             var key = d.model + ':' + v.rev;
-            var isHosted = !!hosted[key];
+            var isPioneer = v.packageType === 'pioneer-installer';
+            var isHosted = isPioneer ? !!v.file : !!hosted[key];
 
             var bodyHtml;
             if (isHosted) {
@@ -408,24 +417,34 @@ import '../../styles/site.css';
               bodyHtml =
                 '<a class="btn btn-primary dl-btn drive-fw-btn" href="' + firmwareBaseUrl + '/' + v.file + '" download>' +
                 '<span class="dl-main">Download</span>' +
-                '</a>' +
-                '<div class="drive-fw-hint">' +
-                '<span class="drive-fw-hint-label">Then build it:</span>' +
-                '<code class="drive-fw-cmd">freemkv-fw create ' + dlName + ' my-drive.freemkv.bin</code>' +
-                '</div>';
+                '</a>' + (isPioneer
+                  ? '<div class="drive-fw-hint">' + (v.kernelRev
+                    ? 'Kernel ' + v.kernelRev + ' + Normal ' + v.rev + ' · ' +
+                      (v.selection === 'carried-forward' ? 'Kernel carried forward from an earlier release' : 'same-source OEM pair')
+                    : 'Normal ' + v.rev + ' only · no Kernel in this package') + '</div>'
+                  : '<div class="drive-fw-hint">' +
+                    '<span class="drive-fw-hint-label">Then build it:</span>' +
+                    '<code class="drive-fw-cmd">freemkv-fw create ' + dlName + ' my-drive.freemkv.bin</code>' +
+                    '</div>');
             } else {
               bodyHtml =
                 '<span class="btn drive-fw-btn drive-fw-btn-disabled" aria-disabled="true">Unavailable</span>' +
-                '<p class="drive-fw-hint drive-fw-note">Have this firmware? ' +
-                '<a class="drive-fw-link" href="https://discord.gg/yu7xMGTyek">Donate it on Discord →</a></p>';
+                (isPioneer
+                  ? '<p class="drive-fw-hint drive-fw-note">Installer package is not hosted yet.</p>'
+                  : '<p class="drive-fw-hint drive-fw-note">Have this firmware? ' +
+                    '<a class="drive-fw-link" href="https://discord.gg/yu7xMGTyek">Donate it on Discord →</a></p>');
             }
 
             // Tool-derived facts (from freemkv-fw create --json) — only what's
             // useful: chipset, media, region/SKU variant, and the unlocks.
             var facts = '';
             if (v.chipset) facts += '<span class="drive-fact">' + v.chipset + '</span>';
+            if (isPioneer) facts += '<span class="drive-fact">' + v.hardware + '</span>';
+            if (isPioneer && v.embeddedModel && v.embeddedModel !== d.model) {
+              facts += '<span class="drive-fact">Firmware ID: ' + v.embeddedModel + '</span>';
+            }
             if (v.media) facts += '<span class="drive-fact">' + v.media + '</span>';
-            if (v.variant) facts += '<span class="drive-fact drive-fact-variant" title="Region/SKU code">' + v.variant + '</span>';
+            if (v.variant) facts += '<span class="drive-fact drive-fact-variant" title="' + (isPioneer ? 'Package SHA-256 prefix' : 'Region/SKU code') + '">' + v.variant + '</span>';
             // Confidence tier: BU40N is proven on real hardware; every other
             // build is strict-build + KAT verified but not yet flashed & tested.
             if (v.confidence === 'hardware-verified') {
