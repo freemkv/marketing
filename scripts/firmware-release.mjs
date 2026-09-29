@@ -1,6 +1,6 @@
 // Prepare locally; publish only in an explicitly requested release workflow.
 import { createHash } from 'node:crypto';
-import { promises as fs, createReadStream } from 'node:fs';
+import { promises as fs, createReadStream, realpathSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn, spawnSync } from 'node:child_process';
@@ -183,4 +183,4 @@ async function main() {
   }
   throw new Error('Usage: firmware-release.mjs prepare EXTRACTOR STAGE [MEDIA_MAPPING.json] | extract ARCHIVE STAGE | publish STAGE');
 }
-if(process.argv[1] && path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) main().catch(e=>{console.error(e.message);process.exitCode=1;});
+if(process.argv[1] && realpathSync(process.argv[1])===realpathSync(fileURLToPath(import.meta.url))) main().catch(e=>{console.error(e.message);process.exitCode=1;});

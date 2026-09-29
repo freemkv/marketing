@@ -68,3 +68,9 @@ test('public URL uses prepared percent-encoded path exactly once',async t=>{
  await fs.writeFile(path.join(d,'pioneer-firmware-index.json'),JSON.stringify([{model:'M',versions:[{file:key,sha256:item.sha256,bytes:item.bytes}]}]));
  let called=false;assert.equal(await publish(d,async()=>assert.fail('already hosted'),async url=>{called=true;assert.ok(url.endsWith('/pioneer/M/SAT%208A10/1.01EU/fw.tar'));return new Response(b);}),1);assert.ok(called);
 });
+test('CLI runs when invoked through a symbolic-link path',async t=>{
+ const d=await fs.mkdtemp(path.join(os.tmpdir(),'firmware-cli-'));t.after(()=>fs.rm(d,{recursive:true,force:true}));
+ const link=path.join(d,'release.mjs');await fs.symlink(new URL('./firmware-release.mjs',import.meta.url),link);
+ const result=spawnSync(process.execPath,[link],{encoding:'utf8'});
+ assert.equal(result.status,1);assert.match(result.stderr,/Usage: firmware-release/);
+});
