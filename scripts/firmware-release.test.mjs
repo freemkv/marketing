@@ -74,3 +74,10 @@ test('CLI runs when invoked through a symbolic-link path',async t=>{
  const result=spawnSync(process.execPath,[link],{encoding:'utf8'});
  assert.equal(result.status,1);assert.match(result.stderr,/Usage: firmware-release/);
 });
+
+// A future stale draft release must not reintroduce known-corrupt payloads.
+test('withdrawn Normal hashes cannot re-enter a prepared or published catalog', async () => {
+  const {rejectWithdrawn}=await import('./firmware-release.mjs');
+  assert.throws(()=>rejectWithdrawn([{versions:[{normalSha256:'a'.repeat(64)}]}],[{normalSha256:'a'.repeat(64)}]),/withdrawn/);
+  assert.doesNotThrow(()=>rejectWithdrawn([{versions:[{normalSha256:'b'.repeat(64)}]}],[{normalSha256:'a'.repeat(64)}]));
+});

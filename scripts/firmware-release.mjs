@@ -30,12 +30,22 @@ export function validateManifest(m) {
   }
   return m;
 }
+export function rejectWithdrawn(catalog, withdrawals) {
+  const rejected = new Set(withdrawals.map(row => row.normalSha256));
+  for (const model of catalog) for (const version of model.versions ?? []) {
+    if (rejected.has(version.normalSha256)) throw new Error('Catalog contains withdrawn truncated firmware');
+  }
+}
+async function checkWithdrawals(catalog) {
+  rejectWithdrawn(catalog, await json(path.join(SITE,'scripts/firmware-withdrawals.json')));
+}
 export async function prepare(extractor, destination, mediaMapping) {
   extractor = path.resolve(extractor); destination = path.resolve(destination);
   await fs.mkdir(destination); // Fail if an old staging directory exists.
   const catalogFile = path.join(destination, 'pioneer-firmware-index.json');
   run('cargo', ['run','--quiet','--release','--features','internal-tools','--bin','pioneer-finder-index','--',path.join(extractor,'hoard/installers/pioneer'),'--output',catalogFile], {cwd:extractor});
   const catalog = await json(catalogFile);
+  await checkWithdrawals(catalog);
   const index = await json(path.join(extractor,'hoard/installers/pioneer/INDEX.json'));
   const sources = new Map();
   for (const row of index.packages) {
@@ -111,6 +121,7 @@ export async function extract(archive, directory) {
 export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Promise(resolve=>setTimeout(resolve,ms))) {
   const manifest=validateManifest(await json(path.join(directory,'publish-manifest.json')));
   const pioneer=await json(path.join(directory,'pioneer-firmware-index.json'));
+  await checkWithdrawals(pioneer);
   const mediatek=await json(path.join(directory,'firmware-index.json'));
   if (!Array.isArray(pioneer) || !pioneer.length || !Array.isArray(mediatek)) throw new Error('Invalid staged catalogs');
   const objects=new Map(manifest.objects.map(o=>[o.key,o]));
