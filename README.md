@@ -1,7 +1,7 @@
 # freemkv.org
 
 Source for the [freemkv.org](https://freemkv.org) website — an Astro + Starlight site
-(landing splash + docs), deployed to GitHub Pages.
+(landing splash + docs), deployed to Cloudflare Pages.
 
 ## Local development
 
@@ -13,6 +13,11 @@ npm run preview   # preview the built site
 ```
 
 ## Firmware finder data
+
+Release packages with `npm run firmware:prepare -- /path/to/firmware-extractor /tmp/firmware-assets`.
+The [release workflow](scripts/firmware-release.md) uploads and verifies firmware before deploying QA, then main.
+Counts, download links, modification features, and the next step come from the generated indexes.
+Only downloadable versions appear in the finder.
 
 `src/data/firmware-index.json` is the existing MediaTek catalog. Its generator is
 `../freemkv-private/scripts/publish-firmware.py`; that script now targets this
@@ -29,10 +34,11 @@ The importer reads only active rows from the packager's
 `hoard/installers/pioneer/INDEX.json`; stale tar files are ignored. Each active
 installer tar contains one Normal envelope and may contain one Kernel envelope.
 The tar has no manifest. The importer verifies the tar hash, member inventory,
-envelope headers and hashes against the local `INDEX.json` sidecar. That index
-also records the source download, public and embedded models, hardware, and
-Kernel selection. Source-contained, carried-forward, and Normal-only packages
-are indexed with their actual component inventory shown in the finder.
+envelope headers and hashes against the local `INDEX.json` sidecar. That local
+index also records source downloads and selection evidence; source paths and
+source package hashes are omitted from the public website JSON. Source-contained,
+carried-forward, and Normal-only packages are shown with their actual component
+inventory.
 Entries remain unhosted until a JSON map of the package SHA-256 to an already
 published R2 object key is supplied with `--published map.json`. Example:
 
@@ -47,6 +53,11 @@ The current index uses the packager's source-backed public model. Its embedded
 model is preserved separately. Composite source labels stay composite until a
 verified retail alias map can split them; matching hardware alone does not
 establish compatibility.
+
+Pioneer `rev` is the advertised release label (for example `1.01EU`), while
+`embeddedRev` is the envelope's revision (`1.01`). The finder displays every
+release emitted by the extractor without hash-only filtering. Regional labels
+remain distinct even when the downloadable tars have identical bytes.
 
 ## Structure
 

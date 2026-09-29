@@ -11,6 +11,14 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      firmware_release:
+        description: 'Draft release tag containing firmware-assets.tar.gz (empty: site only)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
 
 # One deploy at a time; cancel a superseded in-progress run.
 concurrency:
@@ -19,7 +27,11 @@ concurrency:
 
 jobs:
   deploy:
+    # GitHub requires push access to read unpublished draft release assets.
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v6
@@ -28,10 +40,28 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
       - run: npm ci
+      - name: Download staged firmware release
+        if: inputs.firmware_release != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.firmware_release }}
+        run: gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern firmware-assets.tar.gz --dir "$RUNNER_TEMP/firmware-download"
+      - name: Validate staged archive
+        if: inputs.firmware_release != ''
+        run: node scripts/firmware-release.mjs extract "$RUNNER_TEMP/firmware-download/firmware-assets.tar.gz" "$RUNNER_TEMP/firmware-stage"
+      - name: Install pinned firmware uploader
+        if: inputs.firmware_release != ''
+        run: npm install --no-save --package-lock=false wrangler@4.143.0
+      - name: Upload and verify firmware before exposing download links
+        if: inputs.firmware_release != ''
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: node scripts/firmware-release.mjs publish "$RUNNER_TEMP/firmware-stage"
       - run: npm run build   # astro build -> dist/
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=freemkv --branch=main
+          command: pages deploy dist --project-name=freemkv --branch=${{ github.ref_name }}
