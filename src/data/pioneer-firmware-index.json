@@ -10810,32 +10810,6 @@
       },
       {
         "brand": "PIONEER",
-        "bytes": 1836544,
-        "chipset": "Pioneer",
-        "components": [
-          "main"
-        ],
-        "destination": "ID43",
-        "embeddedModel": "BDR-206",
-        "embeddedRev": "1.04",
-        "file": "pioneer/BDR-S06/SAT%201030/1.04EU/c83acc0281d669b63ecb55ca611de021d96f1221c374ad000b44731ce061587e.tar",
-        "generatedDate": "10/09/17",
-        "hardware": "SAT 1030",
-        "kernelRev": null,
-        "kernelSha256": null,
-        "kernelVersion": "ID43",
-        "kernelVersion2": "0001",
-        "model": "BDR-S06",
-        "modifiable": false,
-        "normalSha256": "c7655b9b4db452231834aeb994f47eb8794b1a33c8bd5f2f5a0fea50475ab7be",
-        "packageType": "pioneer-installer",
-        "rev": "1.04EU",
-        "selection": "normal-only",
-        "sha256": "c83acc0281d669b63ecb55ca611de021d96f1221c374ad000b44731ce061587e",
-        "variant": "c83acc02"
-      },
-      {
-        "brand": "PIONEER",
         "bytes": 2370560,
         "chipset": "Pioneer",
         "components": [
@@ -10891,31 +10865,6 @@
     "model": "BDR-S06J",
     "ready": true,
     "versions": [
-      {
-        "brand": "PIONEER",
-        "bytes": 1836544,
-        "chipset": "Pioneer",
-        "components": [
-          "main"
-        ],
-        "destination": "ID43",
-        "embeddedModel": "BDR-206",
-        "embeddedRev": "1.04",
-        "file": "pioneer/BDR-S06J/SAT%201030/1.04/c83acc0281d669b63ecb55ca611de021d96f1221c374ad000b44731ce061587e.tar",
-        "generatedDate": "10/09/17",
-        "hardware": "SAT 1030",
-        "kernelRev": null,
-        "kernelSha256": null,
-        "kernelVersion": "ID43",
-        "kernelVersion2": "0001",
-        "model": "BDR-S06J",
-        "modifiable": false,
-        "normalSha256": "c7655b9b4db452231834aeb994f47eb8794b1a33c8bd5f2f5a0fea50475ab7be",
-        "packageType": "pioneer-installer",
-        "rev": "1.04",
-        "selection": "normal-only",
-        "sha256": "c83acc0281d669b63ecb55ca611de021d96f1221c374ad000b44731ce061587e"
-      },
       {
         "brand": "PIONEER",
         "bytes": 2370560,
@@ -17558,32 +17507,6 @@
         "selection": "normal-only",
         "sha256": "88892b3d0a121b561de038b4d7f6f05699cdd9ec6d52678906f61e9d3d3e413c",
         "variant": "88892b3d"
-      },
-      {
-        "brand": "PIONEER",
-        "bytes": 2098688,
-        "chipset": "Pioneer",
-        "components": [
-          "main"
-        ],
-        "destination": "GENERAL",
-        "embeddedModel": "BDR-XD04",
-        "embeddedRev": "1.30",
-        "file": "pioneer/BDR-XD04/SAT%208130/1.30EU/e3b51c104bb87d8b1db88a2ab001fc47396ff7701e9ca6b0fd22d89ca342e29b.tar",
-        "generatedDate": "12/09/05",
-        "hardware": "SAT 8130",
-        "kernelRev": null,
-        "kernelSha256": null,
-        "kernelVersion": "GENERAL",
-        "kernelVersion2": "0000",
-        "model": "BDR-XD04",
-        "modifiable": false,
-        "normalSha256": "903a8ac9082fa3c9397556090fd3fc8c1d61016b60ff42831a567eccf8f0c623",
-        "packageType": "pioneer-installer",
-        "rev": "1.30EU",
-        "selection": "normal-only",
-        "sha256": "e3b51c104bb87d8b1db88a2ab001fc47396ff7701e9ca6b0fd22d89ca342e29b",
-        "variant": "e3b51c10"
       }
     ]
   },
