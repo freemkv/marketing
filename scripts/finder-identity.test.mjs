@@ -23,3 +23,7 @@ test('choosing an ID search selects its matching revision instead of first revis
  const model={model:'BDR-213EBK',versions:[{rev:'1.04EU',kernelVersion:'ID44',hardware:'SAT 9401'},{rev:'1.03EU',kernelVersion:'ID43',hardware:'SAT 9401'}]};
  const f=finder([model]);assert.equal(f.matchingVersionIndex(model,'213 ID43'),1);assert.equal(f.matchingVersionIndex(model,'BDR-213EBK'),0);
 });
+test('restored retail names remain searchable with old separators and brand',()=>{
+ const f=finder([{brand:'TDK',model:'DVD-RW DVD-2X',versions:[{}]},{brand:'Memorex',model:'True 8X 8X8',versions:[{}]}]);
+ assert.equal(f.filterModels('DVD-RW_DVD-2X')[0].brand,'TDK');assert.equal(f.filterModels('True_8X_8X8')[0].brand,'Memorex');assert.equal(f.filterModels('memorex true')[0].model,'True 8X 8X8');
+});

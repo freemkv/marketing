@@ -226,8 +226,9 @@ import '../../styles/site.css';
           }
 
           function variantMatches(d, v, query) {
-            var terms = (query || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
-            var text = [d.model, v.embeddedModel, v.kernelVersion, v.destination, v.hardware].filter(Boolean).join(' ').toLowerCase();
+            var normalize = function (text) { return String(text || '').toLowerCase().replace(/[_-]+/g, ' '); };
+            var terms = normalize(query).trim().split(/\s+/).filter(Boolean);
+            var text = normalize([d.brand, d.model, v.brand, v.embeddedModel, v.kernelVersion, v.destination, v.hardware].filter(Boolean).join(' '));
             return terms.every(function (term) { return text.indexOf(term) !== -1; });
           }
 

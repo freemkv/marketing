@@ -18,7 +18,9 @@ function run(cmd, args, options = {}) {
   if (r.error || r.status !== 0) throw new Error(`${cmd} failed: ${r.error ?? r.status}`);
 }
 const segment = s => encodeURIComponent(s).replace(/[!'()*]/g, c => `%${c.charCodeAt(0).toString(16).toUpperCase()}`);
-const identity = (m, h, r, sha) => JSON.stringify([m,h,r,sha]);
+// Publication model names can expand source notation. The already validated
+// bytes are located by hardware/release/full hash, independently of display name.
+const identity = (_model, h, r, sha) => JSON.stringify([h,r,sha]);
 export function validateManifest(m) {
   if (m.format !== 'freemkv-firmware-publish-v1' || !Array.isArray(m.objects) || !m.objects.length) throw new Error('Invalid publish manifest');
   const seen = new Set();

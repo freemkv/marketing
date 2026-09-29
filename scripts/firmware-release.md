@@ -59,3 +59,4 @@ manifest's complete SHA-256 and size are skipped, allowing safe workflow reruns.
 After upload, public verification retries four times for transient visibility
 failures; any persistent failure prevents deployment. The workflow timeout is
 30 minutes.
+Publication naming keeps source paths and embedded identities unchanged. It expands complete model lists and explicit OEM suffix notation, restores product-prefix separators, and uses identical Normal payloads within the same source label as evidence for synthetic images. Model-specific branches were removed from the installer. Hash-bound SOURCE_PROVENANCE.json receipts capture the two legacy DVR source-label ambiguities; a versioned receipt copy is internal/pioneer-source-provenance.json. These receipts are private research metadata and never enter public installer tars.
