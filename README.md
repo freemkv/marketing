@@ -64,7 +64,7 @@ remain distinct even when the downloadable tars have identical bytes.
 - `src/pages/index.astro` — landing splash (hero + Download CTA + feature cards);
   a standalone page outside the Starlight docs collection
 - `src/content/docs/docs/*.md` — documentation pages (Overview, Install, Components,
-  autorip, AACS, Decryption Keys, License, and more)
+  freemkv-library, AACS, Decryption Keys, License, and more)
 - `astro.config.mjs` — site config: title, logo, theme, and the docs sidebar
 - `src/assets/` — logo/icon SVGs used in the UI
 - `public/` — static files served at the site root: `CNAME` (freemkv.org),

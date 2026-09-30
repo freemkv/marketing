@@ -9,7 +9,7 @@ recovered sectors into a playable container. Since 1.6.0 the recovery engine liv
 [freemkv-engine](/docs/components/) (`sweep`, `patch`, `copy` and `Mapfile`, exported at the
 crate root of `freemkv_engine`) — it moved out of
 libfreemkv, which keeps the sector-read and SCSI layer underneath it — and is shared by both
-the [CLI](/docs/cli/) and [autorip](/docs/autorip/).
+the [CLI](/docs/cli/) and [freemkv-library](/docs/library/).
 
 ## The principle
 
@@ -24,7 +24,7 @@ return.
 ## Sweep, then patch
 
 Recovery runs as a forward **sweep** followed by one or more targeted **patch** passes. In
-the CLI this is `--multipass`; in autorip it's multipass mode (`max_retries ≥ 1`).
+the CLI this is `--multipass`; in freemkv-library it's multipass mode (`max_retries ≥ 1`).
 
 ### Pass 1: sweep
 
@@ -107,12 +107,12 @@ Each region of the disc carries a status:
 
 Because the mapfile is persisted continuously, recovery is **resumable**: an interrupted
 sweep or a later patch run picks up exactly where it left off, and the patch pass knows
-precisely which ranges still need work. This powers [autorip's resume](/docs/autorip/#resume)
+precisely which ranges still need work. This powers [freemkv-library's resume](/docs/library/#resume)
 and the CLI's auto-resuming `disc:// iso://` copy.
 
 ## Mux
 
-Once the map is clean (or an [accepted-loss threshold](/docs/autorip/#accepted-loss) is reached),
+Once the map is clean (or an [accepted-loss threshold](/docs/library/#accepted-loss) is reached),
 freemkv **muxes**: it decrypts the captured data (see [Decryption Keys](/docs/decryption-keys/))
 and writes the titles to the output container.
 
@@ -146,7 +146,7 @@ freemkv iso://Disc.iso mkv://Movie.mkv
 
 See the [CLI reference](/docs/cli/) for full options.
 
-## Running it from autorip
+## Running it from freemkv-library
 
-[autorip](/docs/autorip/) performs the entire flow automatically on disc insert, with a
+[freemkv-library](/docs/library/) performs the entire flow automatically on disc insert, with a
 configurable retry count and accepted-loss threshold, with no commands to type.

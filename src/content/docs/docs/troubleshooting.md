@@ -1,9 +1,9 @@
 ---
 title: Troubleshooting
-description: Fixes for the most common freemkv and autorip problems. No drives detected, missing decryption keys, bad sectors, interrupted rips, and capturing a debug log.
+description: Fixes for the most common freemkv and freemkv-library problems. No drives detected, missing decryption keys, bad sectors, interrupted rips, and capturing a debug log.
 ---
 
-Fixes for the problems reported most often with freemkv and autorip. Find your symptom below; if none match, capture a debug log (next) and open an issue.
+Fixes for the problems reported most often with freemkv and freemkv-library. Find your symptom below; if none match, capture a debug log (next) and open an issue.
 
 Hit a specific `Error: E<code> ...` line? Look it up on the [Error Codes](/docs/error-codes/) page — every code is listed with its message, cause, and next steps.
 
@@ -20,7 +20,7 @@ freemkv <source> <dest> --log-level 3              # writes ./log.txt
 freemkv <source> <dest> --log-level 3 --log-file freemkv-debug.log
 ```
 
-In autorip, enable the Debug toggle in the web UI (or `POST /api/debug`), reproduce the problem, then collect the container logs.
+In freemkv-library, enable the Debug toggle in the web UI (or `POST /api/debug`), reproduce the problem, then collect the container logs.
 
 In the **desktop app** (macOS, Windows, and Linux), the log panel shows the same detail as `--log-level 3` as the rip runs — no flags to set. Use the copy button on the panel to grab it for a bug report.
 
@@ -67,13 +67,13 @@ xattr -d com.apple.quarantine ./freemkv
 
 See [macOS](/docs/platforms-macos/) for the full walkthrough.
 
-## No drives detected in autorip
+## No drives detected in freemkv-library
 
 The container is missing `privileged: true`. Without it the container starts normally but enumerates zero drives, and the UI shows "No drives detected" with no other error.
 
 ```yaml
 services:
-  autorip:
+  freemkv-library:
     # required for optical SCSI access
     privileged: true
     volumes:
@@ -81,7 +81,7 @@ services:
       - /dev:/dev
 ```
 
-Confirm both `privileged: true` and the `/dev:/dev` bind mount are present, then restart the container. See [Deploy](/docs/autorip/#deploy).
+Confirm both `privileged: true` and the `/dev:/dev` bind mount are present, then restart the container. See [Deploy](/docs/library/#deploy).
 
 ## No drive found on the CLI
 
@@ -104,7 +104,7 @@ You tried to read an AACS-encrypted disc (Blu-ray or 4K UHD) and no key source h
 - **A local key database** (`keydb.cfg`): download or refresh it with `freemkv update-keys --url <keydb-url>`, or point `--keydb PATH` at one you already have.
 - **An online key service:** configure it with `--key-url URL`.
 
-**[Decryption Keys](/docs/decryption-keys/)** covers both options for the CLI and for autorip.
+**[Decryption Keys](/docs/decryption-keys/)** covers both options for the CLI and for freemkv-library.
 
 ## Drive rejected the disc's security credentials
 
@@ -120,13 +120,13 @@ Re-run with `--log-level 3` (writes `./log.txt`) and attach the log if you open 
 
 freemkv is built to recover damaged discs, but behavior depends on the mode:
 
-- **Single-pass** (CLI direct disc → MKV, or autorip `max_retries = 0`): no retries. For a per-title mux (MKV/M2TS/etc.) a read error fails the rip; for a whole-disc `iso://` or `null://` copy the image is kept and reported as damaged instead (CLI exit code `3` — see [Exit codes](/docs/cli/#exit-codes)).
-- **Multipass** (CLI `--multipass`, or autorip `max_retries ≥ 1`): the sweep records bad ranges and skips ahead; patch passes then re-read only those ranges from the disc. Use this mode for any disc you suspect is scratched. See [How recovery works](/docs/how-recovery-works/).
+- **Single-pass** (CLI direct disc → MKV, or freemkv-library `max_retries = 0`): no retries. For a per-title mux (MKV/M2TS/etc.) a read error fails the rip; for a whole-disc `iso://` or `null://` copy the image is kept and reported as damaged instead (CLI exit code `3` — see [Exit codes](/docs/cli/#exit-codes)).
+- **Multipass** (CLI `--multipass`, or freemkv-library `max_retries ≥ 1`): the sweep records bad ranges and skips ahead; patch passes then re-read only those ranges from the disc. Use this mode for any disc you suspect is scratched. See [How recovery works](/docs/how-recovery-works/).
 
 Tips:
 
-- Use multipass mode (CLI `--multipass`, or autorip `max_retries ≥ 1`) to retry bad ranges — freemkv reports good / recovered / unrecoverable sectors as it goes.
-- In autorip, set `abort_on_lost_secs` above `0` to tolerate a bounded amount of main-movie loss rather than failing on a disc that can't be read perfectly.
+- Use multipass mode (CLI `--multipass`, or freemkv-library `max_retries ≥ 1`) to retry bad ranges — freemkv reports good / recovered / unrecoverable sectors as it goes.
+- In freemkv-library, set `abort_on_lost_secs` above `0` to tolerate a bounded amount of main-movie loss rather than failing on a disc that can't be read perfectly.
 
 :::caution[Don't keep retrying a dying disc]
 Repeatedly hammering the same bad sectors can push a drive into a fast-fail state where it stops attempting recovery entirely. If recovery stalls, let the drive cool down or eject and reload before trying again; don't launch pass after pass back-to-back.
@@ -135,7 +135,7 @@ Repeatedly hammering the same bad sectors can push a drive into a fast-fail stat
 ## An interrupted rip
 
 - **CLI:** Ctrl-C halts cleanly and preserves the mapfile. Re-running the same `disc:// iso://` command resumes. A mux interrupted mid-write is not finalized (freemkv exits non-zero), so you never get a truncated MKV that looks complete.
-- **autorip:** `/api/stop/{device}` preserves staging; the rip resumes on the next disc insert or container restart. See [Resume](/docs/autorip/#resume).
+- **freemkv-library:** `/api/stop/{device}` preserves staging; the rip resumes on the next disc insert or container restart. See [Resume](/docs/library/#resume).
 
 ## Raw or multipass flag rejected
 
@@ -161,6 +161,6 @@ freemkv version
 ```
 
 ```bash
-# autorip
+# freemkv-library
 curl -s http://<host>:8080/api/version
 ```

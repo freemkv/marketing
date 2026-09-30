@@ -1,46 +1,30 @@
 ---
-title: autorip Service
-description: Deploy and configure the autorip service. Web UI, HTTP API, recovery tuning, and resume.
+title: freemkv-library
+description: Deploy and configure freemkv-library, the freemkv web server. Automatic ripping, the Library tab, HTTP API, recovery tuning, and resume.
 ---
 
-autorip is a rip service: insert a disc, and it rips automatically to MKV. A browser-based UI shows live progress, settings, and history, with nothing to type. This page covers deploying autorip and tuning it; for the manual command-line workflow, see the [CLI reference](/docs/cli/).
+freemkv-library is the freemkv web server and replaces autorip: insert a disc, and it rips the main movie automatically to MKV. A browser-based UI shows live progress, settings, and history, with nothing to type, and a Library tab manages the MKVs and ISOs you already have. This page covers deploying freemkv-library and tuning it; for the manual command-line workflow, see the [CLI reference](/docs/cli/). It always rips the main movie only; for other titles use the CLI or the desktop app.
 
-On disc insert, autorip runs the full pipeline automatically: a tolerant sweep, targeted patch retries on bad ranges, decrypt, and mux to MKV. Multiple drives rip in parallel, each with independent state.
+On disc insert, freemkv-library runs the full pipeline automatically: a tolerant sweep, targeted patch retries on bad ranges, decrypt, and mux to MKV. Multiple drives rip in parallel, each with independent state.
 
-autorip runs on Windows, macOS, or Linux, on a host with an optical drive (a home server or NAS works well). Run it as a single binary, or (on Linux) via Docker. The configuration and API reference below apply to every platform. The container and udev rip-on-insert trigger are Linux-only; on macOS and Windows the daemon polls for inserted discs.
+freemkv-library runs on a host with an optical drive (a home server or NAS works well) and ships as a Docker image. The configuration and API reference below apply to every platform.
 
-![autorip ripping a disc, showing the matched title, poster, and live per-pass progress](/autorip-ripper.png)
+![freemkv-library ripping a disc, showing the matched title, poster, and live per-pass progress](/autorip-ripper.png)
 
-*The autorip dashboard during an active rip: matched title and metadata up top, with live per-pass progress, ETA, and throughput below.*
+*The freemkv-library dashboard during an active rip: matched title and metadata up top, with live per-pass progress, ETA, and throughput below.*
 
 ## Deploy
 
-### Binary
-
-Get the autorip binary from the [Download](/download/) page, then run the service:
-
-```bash
-# rename to `autorip`, make it executable, and start the service
-mv autorip-* autorip && chmod +x autorip
-./autorip serve          # then open http://localhost:8080
-```
-
-One static binary, no container, no runtime. Drive access uses the `cdrom` group or a udev rule (no `--privileged`); point `AUTORIP_DIR` at a local path. The output and staging paths are set afterwards in the web UI's **Settings** page (stored in `settings.json`); `OUTPUT_DIR` / `STAGING_DIR` environment variables are ignored.
-
-DVDs work out of the box. Blu-ray and 4K UHD need [decryption keys](/docs/decryption-keys/).
-
-**On macOS, autorip ships for Apple Silicon only.** The Intel target was dropped from the release matrix over a linker issue in a C dependency, so there is no `autorip-x86_64-macos` asset. On an Intel Mac, build from source or run the Docker image. A macOS binary downloaded in a browser is also blocked on first run — see [the macOS page](/docs/platforms-macos/#first-launch).
-
 ### Docker
 
-Published to GHCR as `ghcr.io/freemkv/autorip` (`:latest` and `:vX.Y.Z`). Drop this compose file on a host with an optical drive and bring it up:
+Published to GHCR as `ghcr.io/freemkv/freemkv-library` (`:latest` and `:vX.Y.Z`); the same image is also still published as `ghcr.io/freemkv/autorip`, so existing installs keep pulling. Drop this compose file on a host with an optical drive and bring it up:
 
 ```yaml
 # docker-compose.yml
 services:
-  autorip:
-    image: ghcr.io/freemkv/autorip:latest
-    container_name: autorip
+  freemkv-library:
+    image: ghcr.io/freemkv/freemkv-library:latest
+    container_name: freemkv-library
     restart: unless-stopped
     privileged: true                    # REQUIRED for optical SCSI drive access
     stop_grace_period: 75s              # let a rip drain on stop (default 10s is too short)
@@ -57,7 +41,7 @@ services:
     ports:
       - 8080:8080
     healthcheck:
-      test: ["CMD", "/usr/local/bin/autorip", "--healthcheck"]
+      test: ["CMD", "/usr/local/bin/freemkv", "server", "--healthcheck"]
       interval: 30s
       timeout: 5s
       start_period: 20s
@@ -78,11 +62,15 @@ and the UI reports "No drives detected" with no other error. This is the single 
 setup mistake. See [Troubleshooting](/docs/troubleshooting/).
 :::
 
+### Upgrading from autorip
+
+Pull the new image. freemkv-library reads autorip's `/config/settings.json` unchanged and keeps the `AUTORIP_*` environment variable names, so an existing install can point at the same `./config` directory. The image also still answers to the `autorip` command. From 1.8.0 there are no native binary downloads and no Homebrew formula; freemkv-library ships only as this Docker image.
+
 ### Mount reference
 
 | Mount | Purpose |
 |---|---|
-| `/dev:/dev` | Live host device tree; lets autorip enumerate optical drives and survive USB re-enumeration. |
+| `/dev:/dev` | Live host device tree; lets freemkv-library enumerate optical drives and survive USB re-enumeration. |
 | `/config` | Persistent home for `settings.json`, per-device logs, and (by default) the keys directory. |
 | `/output` | Where finished MKV/M2TS files land. |
 | `/staging` | Intermediate ISO + mapfile during a multipass rip. |
@@ -90,7 +78,7 @@ setup mistake. See [Troubleshooting](/docs/troubleshooting/).
 
 ### Decryption keys
 
-DVDs need none; Blu-ray and 4K UHD need keys. See **[Decryption Keys](/docs/decryption-keys/)** for the options (a local file or an online service). autorip's key settings live in [Configuration → Keys](#keys) below.
+DVDs need none; Blu-ray and 4K UHD need keys. See **[Decryption Keys](/docs/decryption-keys/)** for the options (a local file or an online service). freemkv-library's key settings live in [Configuration → Keys](#keys) below.
 
 For Docker, bind-mount a host directory to `/root/.config/freemkv` so keys persist across restarts:
 
@@ -109,7 +97,7 @@ These are read at container start and cannot be changed at runtime:
 | `AUTORIP_DIR` | `/config` | Where `settings.json` and logs are stored. |
 | `AUTORIP_LOG_LEVEL` | `autorip=info,libfreemkv=warn,freemkv=warn` | `tracing` filter for log verbosity. |
 | `RIP_USER` | `autorip` | Unix user the container creates and runs the daemon as. |
-| `NFS_HOST` | _(unset)_ | If set with the two below, autorip mounts an NFS share inside the container at startup. |
+| `NFS_HOST` | _(unset)_ | If set with the two below, freemkv-library mounts an NFS share inside the container at startup. |
 | `NFS_EXPORT` | _(unset)_ | Export path on the NFS server (e.g. `/mnt/pool/media`). |
 | `NFS_MOUNTPOINT` | _(unset)_ | Where to mount the share inside the container; point `output_dir` here. |
 | `NFS_OPTS` | _(sensible default)_ | Optional override for NFS mount options. |
@@ -176,7 +164,7 @@ All settings are editable in the **Settings** page of the web UI and stored in `
 
 ## Recovery
 
-autorip wraps the same recovery engine as the [freemkv CLI](/docs/cli/); see [How recovery works](/docs/how-recovery-works/) for the full sweep-and-patch model. The `max_retries` setting selects between two modes.
+freemkv-library wraps the same recovery engine as the [freemkv CLI](/docs/cli/); see [How recovery works](/docs/how-recovery-works/) for the full sweep-and-patch model. The `max_retries` setting selects between two modes.
 
 ### Pass modes
 
@@ -190,7 +178,7 @@ Multipass exits the retry loop early as soon as there are no unreadable bytes le
 
 ### Accepted loss
 
-After retries are exhausted, autorip evaluates `abort_on_lost_secs` against **main-movie** loss only (menus and trailers are excluded):
+After retries are exhausted, freemkv-library evaluates `abort_on_lost_secs` against **main-movie** loss only (menus and trailers are excluded):
 
 - `abort_on_lost_secs = 0`: perfect rip required; abort if any main-movie data is still unreadable.
 - `abort_on_lost_secs = N`: finish the MKV as long as no more than `N` seconds of main-movie video are missing.
@@ -216,15 +204,19 @@ The dashboard at `http://<host>:8080` shows each drive's current state and live 
 - Review held rips (when title matching needs confirmation) and pick the correct title, optionally via a TMDB search.
 - Inspect per-device logs and the system debug log.
 
-![autorip idle, showing per-drive controls and the device log](/autorip-controls.png)
+![freemkv-library idle, showing per-drive controls and the device log](/autorip-controls.png)
 
 *Per-drive controls (Resume, Rip, Verify, Eject) with the live device log expanded below.*
 
 State updates stream to the browser over Server-Sent Events (`/events`).
 
+## Library
+
+The **Library** tab lists your MKVs and ISOs side by side, shows which freemkv version muxed each MKV, and can remux an out-of-date title from its ISO. It also audits the library.
+
 ## API reference
 
-autorip exposes an HTTP API on the same port as the UI. JSON errors use `{"ok": false, "error": "..."}`; simple successes return `{"ok": true}`. `{device}` is a drive identifier from `/api/state`.
+freemkv-library exposes an HTTP API on the same port as the UI. JSON errors use `{"ok": false, "error": "..."}`; simple successes return `{"ok": true}`. `{device}` is a drive identifier from `/api/state`.
 
 ### State and info
 
@@ -291,12 +283,12 @@ Toggle debug logging and watch the mux stage:
 curl -s -X POST http://<host>:8080/api/debug -d '{"enabled":true}'
 
 # stream mux-stage output from the container
-docker logs autorip --tail=500 -f | grep -i mux
+docker logs freemkv-library --tail=500 -f | grep -i mux
 ```
 
 ## Resume
 
-autorip's recovery work survives interruptions.
+freemkv-library's recovery work survives interruptions.
 
 - **Default** (`POST /api/rip/{device}`, no param): starts a fresh sweep — the mapfile is recreated and the ISO truncated. It does not delete an existing staging directory, but it does not resume one either; a disc already marked `.completed` is skipped rather than re-ripped.
 - **`?resume=yes`**: require an existing resumable staging directory. If the sweep is incomplete, it continues the partial sweep, re-reading only the not-yet-recovered ranges from the disc; if the mapfile is already fully recovered, it re-muxes the staged ISO without any disc reads. If no resumable state exists, the request still returns `200` and the rip ends in an error state (there is no synchronous `404`).
@@ -306,9 +298,9 @@ Stopping a rip with `/api/stop/{device}` **preserves** staging, so a stopped rip
 
 ## Output and notifications
 
-Finished files land in `output_dir`, optionally split into `movie_dir` / `tv_dir`. Set `webhook_urls` to have autorip POST a JSON event to external systems (a media server, a chat webhook) when a rip, mux, or move completes.
+Finished files land in `output_dir`, optionally split into `movie_dir` / `tv_dir`. Set `webhook_urls` to have freemkv-library POST a JSON event to external systems (a media server, a chat webhook) when a rip, mux, or move completes.
 
-When a rip finishes, autorip sends a `rip_complete` payload:
+When a rip finishes, freemkv-library sends a `rip_complete` payload:
 
 ```json
 {

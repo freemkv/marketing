@@ -161,9 +161,9 @@ Both interfaces use **SCSI generic** devices at `/dev/sg*`. Installing a package
 
 Close other software using the disc and check the drive connection before retrying.
 
-## autorip
+## freemkv-library
 
-For automatic ripping through a browser, use autorip's Linux binary or Docker image. See [autorip Service](/docs/autorip/) for setup, data locations and a Compose example.
+For automatic ripping through a browser, use the freemkv-library Docker image. See [freemkv-library](/docs/library/) for setup, data locations and a Compose example.
 
 The Docker configuration needs access to the optical devices. The supplied example uses `privileged: true` and a `/dev:/dev` bind mount; keep its persistent configuration and output mounts when updating the container.
 
@@ -179,4 +179,4 @@ The Docker configuration needs access to the optical devices. The supplied examp
 - [Decryption Keys](/docs/decryption-keys/) for key setup
 - [Troubleshooting](/docs/troubleshooting/) for logs and shared fixes
 - [CLI reference](/docs/cli/) for ripping commands and options
-- [autorip Service](/docs/autorip/) for automatic ripping
+- [freemkv-library](/docs/library/) for automatic ripping

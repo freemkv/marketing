@@ -24,17 +24,16 @@ import { graph, websiteNode, orgNode, appNode, webPageNode, breadcrumbNode, ID }
 // freemkv ships as two builds of one program; install one OR the other:
 //   app (freemkv):     window + every CLI command
 //   CLI (freemkv-cli): command line only, no desktop dependencies
-//   autorip:           autorip-<arch>-<os>[.exe]
+//   freemkv-library:   Docker image only (no binary assets)
 const title = 'Download freemkv: Windows, macOS & Linux';
 const description =
-  'Download the freemkv app or the freemkv CLI for Windows, macOS, and Linux (Intel & ARM), plus autorip. Free & open source. Or build from source.';
+  'Download the freemkv app or the freemkv CLI for Windows, macOS, and Linux (Intel & ARM), plus freemkv-library (Docker). Free & open source. Or build from source.';
 
 const docs = '/docs/overview/';
 const github = 'https://github.com/freemkv';
 const cliRepo = 'https://github.com/freemkv/freemkv';
 // App and CLI are both built from the `freemkv` repo.
 const guiRepo = cliRepo;
-const autoripRepo = 'https://github.com/freemkv/autorip';
 const allReleases = `${cliRepo}/releases`;
 
 // Card data for the app and CLI sections. `key` ("<os>-<arch>") marks the
@@ -101,40 +100,6 @@ const cliPlatforms = [
       { key: 'linux-x64', arch: '.deb', label: 'Ubuntu 24.04 / Linux Mint 22 · package freemkv-cli', file: 'freemkv-cli-amd64.deb' },
       { arch: 'x86_64', label: 'Static binary · any distro', file: 'freemkv-cli-x86_64-linux', secondary: true },
       { key: 'linux-arm64', arch: 'ARM64', label: 'Static binary · aarch64', file: 'freemkv-cli-aarch64-linux', secondary: true },
-    ],
-  },
-];
-
-// autorip binaries: Windows, macOS, Linux (the Docker image is Linux).
-// Grouped by OS into columns, matching the CLI layout above.
-//
-// NOTE: there is intentionally NO macOS Intel entry. autorip's release matrix
-// dropped `x86_64-apple-darwin` (a pre-existing macOS-runner linker issue in a C
-// dependency), so `autorip-x86_64-macos` is never attached to a release and a
-// button for it 404s. Do not re-add it here without first re-adding the target
-// to autorip's release workflow.
-const autoripPlatforms = [
-  {
-    name: 'Windows',
-    os: 'windows',
-    builds: [
-      { key: 'windows-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'autorip-x86_64-windows.zip' },
-    ],
-  },
-  {
-    name: 'macOS',
-    os: 'macos',
-    brew: true,
-    builds: [
-      { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon', file: 'autorip-aarch64-macos' },
-    ],
-  },
-  {
-    name: 'Linux',
-    os: 'linux',
-    builds: [
-      { key: 'linux-x64', arch: 'x86_64', label: 'Intel / AMD 64-bit', file: 'autorip-x86_64-linux' },
-      { key: 'linux-arm64', arch: 'ARM64', label: 'aarch64', file: 'autorip-aarch64-linux' },
     ],
   },
 ];
@@ -278,72 +243,24 @@ import '../styles/site.css';
         </div>
       </section>
 
-      <!-- ============ AUTORIP ============ -->
-      <section class="block block-alt" id="autorip">
+      <!-- ============ FREEMKV-LIBRARY ============ -->
+      <section class="block block-alt" id="library">
+        <span id="autorip"></span>
         <div class="section-inner">
-          <h2 class="section-title">autorip</h2>
+          <h2 class="section-title">freemkv-library</h2>
           <p class="section-lead">
-            A web service for hands-off ripping: insert a disc and it rips automatically to
-            MKV. Runs on <strong>Windows, macOS, and Linux</strong> as a single binary (below);
-            the Docker image is Linux. Linux is the most-tested target.
+            The freemkv web server, for hands-off ripping: insert a disc and it rips the main
+            movie automatically to MKV. A Library tab lists your MKVs and ISOs side by side,
+            shows which freemkv version made each MKV, and remuxes out-of-date titles from
+            their ISO. Replaces autorip. Ships as a <strong>Docker image</strong>; the download
+            buttons above never include the server.
           </p>
 
-          <!-- Version picker + detected-platform banner (JS-enhanced) -->
-          <div class="dl-toolbar" data-dl-toolbar>
-            <div class="dl-detected-banner" data-detected-banner hidden>
-              <span class="dl-detected-eyebrow">Detected</span>
-              <span data-detected-label>your platform</span>
-            </div>
-            <label class="dl-version-pick" hidden data-version-pick>
-              <span class="dl-version-label">Version</span>
-              <select data-version-select aria-label="Choose release version">
-                <option value="latest">Latest</option>
-              </select>
-            </label>
-          </div>
-
-          <!-- Bare binary (primary): columns by OS, matching the CLI -->
-          <div class="grid dl-stack">
-            {autoripPlatforms.map((p) => (
-              <article class="card" data-os={p.os} data-platform-card>
-                <h3 class="card-title">{p.name}</h3>
-                <div class="dl-list">
-                  {p.brew ? (
-                    <>
-                      <code class="dl-brew-cmd">brew install freemkv/tap/autorip</code>
-                      <p class="dl-mac-help">
-                        Homebrew installs autorip on PATH and skips the macOS
-                        security prompt entirely.
-                      </p>
-                    </>
-                  ) : (
-                    p.builds.map((b) => (
-                      <a
-                        class="btn btn-primary dl-btn"
-                        data-key={b.key}
-                        data-asset={b.file}
-                        href={`${autoripRepo}/releases/latest/download/${b.file}`}
-                        download
-                      >
-                        <span class="dl-main">Download <span class="dl-arch">{b.arch}</span></span>
-                        <span class="dl-sub">{b.label}</span>
-                      </a>
-                    ))
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
-          <p class="block-note">
-            Runs as a daemon with a web UI on port 8080. <a href="/docs/autorip/#binary">Setup, keys and drive permissions →</a>
-          </p>
-
-          <!-- Docker (secondary) -->
-          <div class="dl-autorip-bin">
-            <h3 class="dl-bin-title">Or run via Docker</h3>
+          <div class="dl-library-bin">
+            <h3 class="dl-bin-title">Run via Docker</h3>
             <p class="dl-bin-lead">
-              Prefer a container? The image is on GHCR. <code>--privileged</code> is required
-              for optical SCSI access.
+              The image is on GHCR (<code>:latest</code> and <code>:vX.Y.Z</code>).
+              <code>--privileged</code> is required for optical SCSI access.
             </p>
             <div class="terminal">
               <div class="terminal-bar" aria-hidden="true">
@@ -354,9 +271,16 @@ import '../styles/site.css';
 <span class="p">$</span> docker run --privileged -v /dev:/dev \
       -v ./keys:/root/.config/freemkv \
       -p 8080:8080 \
-      ghcr.io/freemkv/autorip:latest</code></pre>
+      ghcr.io/freemkv/freemkv-library:latest</code></pre>
             </div>
           </div>
+          <p class="block-note">
+            Upgrading from autorip? Pull the new image: your <code>/config/settings.json</code>
+            and <code>AUTORIP_*</code> variables work unchanged, and the same image is still
+            published as <code>ghcr.io/freemkv/autorip</code>. It rips the main movie only; for
+            other titles use the CLI or the desktop app.
+            <a href="/docs/library/#deploy">Setup, keys and drive permissions →</a>
+          </p>
         </div>
       </section>
 
@@ -400,14 +324,14 @@ import '../styles/site.css';
         <nav class="footer-links" aria-label="Footer">
           <a href={docs}>Docs</a>
           <a href={github}>GitHub</a>
-          <a href="https://github.com/freemkv/autorip/pkgs/container/autorip">GHCR (autorip)</a>
+          <a href="https://github.com/orgs/freemkv/packages/container/package/freemkv-library">GHCR (freemkv-library)</a>
           <a href="https://github.com/freemkv/freemkv/blob/main/LICENSE">License (MIT)</a>
         </nav>
       </div>
       <p class="footer-copy">MIT · Recover 100% of readable data from any optical disc.</p>
     </footer>
 
-    <script is:inline define:vars={{ cliRepo, autoripRepo, allReleases }}>
+    <script is:inline define:vars={{ cliRepo, allReleases }}>
       // Progressive enhancement only. With JS disabled, every link is a
       // plain `releases/latest/download/<asset>` URL and still works.
       (function () {
@@ -468,7 +392,7 @@ import '../styles/site.css';
             'windows-x64': 'Windows · x86_64',
           };
           if (pretty[detectedKey]) {
-            // Light up every toolbar's banner (CLI + autorip).
+            // Light up every toolbar's banner.
             document.querySelectorAll('[data-detected-banner]').forEach(function (banner) {
               var label = banner.querySelector('[data-detected-label]');
               if (label) {
@@ -533,17 +457,6 @@ import '../styles/site.css';
           var known = assetsByTag[tag];
           document.querySelectorAll('a[data-asset]').forEach(function (a) {
             var asset = a.getAttribute('data-asset');
-            // autorip ships from its OWN repo on its OWN release cadence. The
-            // version picker and `known` asset list come from freemkv/freemkv
-            // and say nothing about autorip, so judging autorip buttons against
-            // them marked every one unavailable and printed "Not released for
-            // this version." Always point autorip at its own latest release,
-            // unconditionally available.
-            if (asset.indexOf('autorip') === 0) {
-              markUnavailable(a, false);
-              a.href = autoripRepo + '/releases/latest/download/' + asset;
-              return;
-            }
             // Only judge when the release's real asset list is known; with no
             // data (API down, cache miss) leave the link alone rather than
             // disabling a download that probably works.
@@ -587,7 +500,7 @@ import '../styles/site.css';
               if (el.textContent !== latestDate) el.textContent = latestDate;
             });
           }
-          // Populate every toolbar's picker (CLI + autorip). Each select
+          // Populate every toolbar's picker. Each select
           // drives the same global applyVersion, so changing either one
           // rewrites all asset links across both sections.
           document.querySelectorAll('[data-version-pick]').forEach(function (pick) {

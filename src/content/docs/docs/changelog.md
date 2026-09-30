@@ -1,17 +1,28 @@
 ---
 title: Changelog
-description: What's new in freemkv — the command line, the desktop app, and autorip — newest first.
+description: What's new in freemkv — the command line, the desktop app, and freemkv-library — newest first.
 ---
 
 <a href="/docs/changelog/rss.xml" aria-label="Subscribe via RSS" title="Subscribe via RSS" style="display:inline-flex;align-items:center"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#f26522" aria-hidden="true"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20A2.18 2.18 0 0 1 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 4.95a10.61 10.61 0 0 1 10.61 10.61h-2.83A7.78 7.78 0 0 0 4 12.22V9.39Z"/></svg></a>
 
 What's new across freemkv — the command line, the desktop app, and the
-autorip service — newest first. Every release ships all three together under
+freemkv-library server (autorip before 1.8.0) — newest first. Every release ships all three together under
 one version number.
 
 For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
-[autorip releases](https://github.com/freemkv/autorip/releases).
+[autorip releases](https://github.com/freemkv/autorip/releases) (before 1.8.0).
+
+## 1.8.0 (unreleased)
+
+### freemkv-library replaces autorip
+
+- The autorip service is now **freemkv-library**, the freemkv web server. This is a rebrand: behaviour and settings are unchanged, so an existing install just pulls the new image.
+- The image is `ghcr.io/freemkv/freemkv-library` (`:latest` and `:vX.Y.Z`). The same image is still published as `ghcr.io/freemkv/autorip`, and it still answers to the `autorip` command.
+- It reads your existing `/config/settings.json` unchanged, and the `AUTORIP_*` environment variable names are unchanged.
+- New web UI.
+- New **Library** tab: lists your MKVs and ISOs side by side, shows which freemkv version muxed each MKV, remuxes out-of-date titles from their ISO, and audits the library.
+- freemkv-library ships only as a Docker image; there are no native binary downloads or Homebrew formula for it.
 
 ## 1.7.7
 

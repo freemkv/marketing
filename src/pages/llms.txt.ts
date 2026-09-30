@@ -18,7 +18,7 @@ const SUMMARY =
   'MIT Rust toolchain that recovers 100% of readable data from optical discs (DVD / Blu-ray / 4K UHD) and muxes to MKV, automatically, with bad-sector recovery (multi-pass sweep + targeted patch). DVDs (CSS) work out of the box; Blu-ray (AACS 1.0) and 4K UHD (AACS 2.0/2.1) require user-supplied AACS keys.';
 
 const CONTEXT = [
-  'freemkv is free and open source (MIT). It ships as a desktop app (`freemkv`), a command-line build (`freemkv-cli`), and a headless ripping service (`autorip`), for Windows, macOS, and Linux. The core is the `libfreemkv` Rust library.',
+  'freemkv is free and open source (MIT). It ships as a desktop app (`freemkv`), a command-line build (`freemkv-cli`), and a headless ripping server (`freemkv-library`, a Docker image, formerly `autorip`), for Windows, macOS, and Linux. The core is the `libfreemkv` Rust library.',
   'Every docs page is available as clean Markdown by appending `.md` to its path (for example https://freemkv.org/docs/cli.md); the links below point at those Markdown renditions. The HTML page is the same path with a trailing slash.',
 ].join('\n\n');
 
@@ -39,7 +39,7 @@ export const GET: APIRoute = async () => {
     `## Website\n\n` +
       [
         `- [freemkv home](${SITE}/): what freemkv is and the composable \`freemkv <source> <dest>\` pipeline`,
-        `- [Download](${SITE}/download/): the freemkv app, the freemkv CLI, and autorip for Windows, macOS, and Linux (Intel & ARM)`,
+        `- [Download](${SITE}/download/): the freemkv app and CLI for Windows, macOS, and Linux (Intel & ARM), and the freemkv-library Docker image`,
         `- [Firmware](${SITE}/firmware/): find, modify, and flash optical-drive firmware for freemkv`,
         `- [Find your drive firmware](${SITE}/firmware/find/): search a drive model to find its OEM firmware base image`,
         `- [freemkv-fw (modify)](${SITE}/firmware/modify/): turn a MediaTek drive firmware image into freemkv firmware and verify it`,

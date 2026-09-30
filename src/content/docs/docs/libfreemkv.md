@@ -5,7 +5,7 @@ description: The core Rust library behind freemkv. Disc scanning, sector reading
 
 libfreemkv is the engine the whole toolchain composes: disc scanning, sector reading,
 AACS/CSS decryption, and MKV muxing. The [CLI](/docs/cli/) and
-[autorip](/docs/autorip/) are thin front ends over it. This page maps the library for developers
+[freemkv-library](/docs/library/) are thin front ends over it. This page maps the library for developers
 embedding it; the [download page](/download/) covers the ready-to-run tools.
 
 :::note[Recovery moved out in 1.6.0]
@@ -152,7 +152,7 @@ See **[How recovery works](/docs/how-recovery-works/)** for the algorithm these 
 3. **Pipelined PES stream**: applies codec parsers and exposes the `PesStream` interface to
    the caller.
 
-All file-backed mux paths (CLI ISO/M2TS remux, autorip's multipass and resume mux) flow
+All file-backed mux paths (CLI ISO/M2TS remux, freemkv-library's multipass and resume mux) flow
 through this pipeline.
 
 ## AACS and CSS key model
