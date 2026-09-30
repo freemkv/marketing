@@ -211,22 +211,34 @@ import '../../styles/site.css';
             return firmwareIndex.find(function (d) { return d.model.toLowerCase() === needle; }) || null;
           }
 
+          function escapeText(text) {
+            return String(text).replace(/[&<>"']/g, function (c) {
+              return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+            });
+          }
+
           function versionLabel(v) {
             return v.packageType === 'pioneer-installer'
-              ? v.rev + ' · ' + v.hardware + (v.variant ? ' · ' + v.variant : '')
+              ? v.rev + (v.kernelVersion ? ' / ' + v.kernelVersion : '') + ' · ' + v.hardware +
+                (v.destination && v.destination !== v.kernelVersion ? ' · ' + v.destination : '') +
+                (v.variant ? ' · ' + v.variant : '')
               : v.rev + (v.variant ? ' · ' + v.variant : '');
           }
 
-          // Include the embedded Pioneer model so either name on the drive or
-          // in its firmware envelope finds the same public listing.
+          function variantMatches(d, v, query) {
+            var normalize = function (text) { return String(text || '').toLowerCase().replace(/[_-]+/g, ' '); };
+            var terms = normalize(query).trim().split(/\s+/).filter(Boolean);
+            var text = normalize([d.brand, d.model, v.brand, v.embeddedModel, v.kernelVersion, v.destination, v.hardware].filter(Boolean).join(' '));
+            return terms.every(function (term) { return text.indexOf(term) !== -1; });
+          }
+
+          function matchingVersionIndex(d, query) {
+            return Math.max(0, d.versions.findIndex(function (v) { return variantMatches(d, v, query); }));
+          }
+
           function filterModels(q) {
-            var needle = (q || '').trim().toLowerCase();
-            if (!needle) return firmwareIndex.slice();
             return firmwareIndex.filter(function (d) {
-              return d.model.toLowerCase().indexOf(needle) !== -1 ||
-                d.versions.some(function (v) {
-                  return v.embeddedModel && v.embeddedModel.toLowerCase().indexOf(needle) !== -1;
-                });
+              return d.versions.some(function (v) { return variantMatches(d, v, q); });
             });
           }
 
@@ -303,18 +315,19 @@ import '../../styles/site.css';
           }
 
           function choose(d) {
+            var query = searchInput.value;
             searchInput.value = d.model;
             closeList();
-            selectModel(d);
+            selectModel(d, query);
           }
 
           // Reveal + populate the revision combobox for a model, defaulting to
           // its first version. Reserves its space when hidden (visibility toggle
           // via .is-hidden) so revealing it never shifts the page.
-          function selectModel(d) {
+          function selectModel(d, query) {
             curModel = d;
-            curRevIdx = 0;
-            revInput.value = d.versions.length ? versionLabel(d.versions[0]) : '';
+            curRevIdx = matchingVersionIndex(d, query);
+            revInput.value = d.versions.length ? versionLabel(d.versions[curRevIdx]) : '';
             revRow.classList.remove('is-hidden');
             closeRevList();
             render();
@@ -442,8 +455,17 @@ import '../../styles/site.css';
             var facts = '';
             if (v.chipset) facts += '<span class="drive-fact">' + v.chipset + '</span>';
             if (isPioneer) facts += '<span class="drive-fact">' + v.hardware + '</span>';
+            if (isPioneer && Array.isArray(v.components) && v.components.length &&
+                v.components.every(function (role) { return role === 'kernel' || role === 'main'; })) {
+              var contents = [];
+              if (v.components.includes('kernel')) contents.push('Kernel');
+              if (v.components.includes('main')) contents.push('Normal');
+              facts += '<span class="drive-fact">' + contents.join(' + ') + '</span>';
+            }
+            if (isPioneer && v.kernelVersion) facts += '<span class="drive-fact">' + escapeText(v.kernelVersion) + '</span>';
+            if (isPioneer && v.destination && v.destination !== v.kernelVersion) facts += '<span class="drive-fact">Destination: ' + escapeText(v.destination) + '</span>';
             if (isPioneer && v.embeddedModel && v.embeddedModel !== d.model) {
-              facts += '<span class="drive-fact">Firmware ID: ' + v.embeddedModel + '</span>';
+              facts += '<span class="drive-fact">Firmware model: ' + v.embeddedModel + '</span>';
             }
             if (v.media) facts += '<span class="drive-fact">' + v.media + '</span>';
             if (v.variant && !isPioneer) facts += '<span class="drive-fact drive-fact-variant" title="Region/SKU code">' + v.variant + '</span>';
