@@ -455,6 +455,13 @@ import '../../styles/site.css';
             var facts = '';
             if (v.chipset) facts += '<span class="drive-fact">' + v.chipset + '</span>';
             if (isPioneer) facts += '<span class="drive-fact">' + v.hardware + '</span>';
+            if (isPioneer && Array.isArray(v.components) && v.components.length &&
+                v.components.every(function (role) { return role === 'kernel' || role === 'main'; })) {
+              var contents = [];
+              if (v.components.includes('kernel')) contents.push('Kernel');
+              if (v.components.includes('main')) contents.push('Normal');
+              facts += '<span class="drive-fact">' + contents.join(' + ') + '</span>';
+            }
             if (isPioneer && v.kernelVersion) facts += '<span class="drive-fact">' + escapeText(v.kernelVersion) + '</span>';
             if (isPioneer && v.destination && v.destination !== v.kernelVersion) facts += '<span class="drive-fact">Destination: ' + escapeText(v.destination) + '</span>';
             if (isPioneer && v.embeddedModel && v.embeddedModel !== d.model) {

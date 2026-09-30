@@ -11,9 +11,9 @@ class Element {
   querySelectorAll(){return this.children.filter(x=>x.className?.split(' ').includes('picker-option'));}
   scrollIntoView(){} focus(){}
 }
-function finder(modifiable=false){
+function finder(modifiable=false,components){
  const elements=new Map();const document={getElementById(id){if(!elements.has(id))elements.set(id,new Element());return elements.get(id);},createElement(){return new Element();},addEventListener(){}};
- const firmwareIndex=[{model:'BDR-UD04',brand:'Pioneer',versions:['1.14EU','1.14US'].map(rev=>({rev,hardware:'SAT 8A10',chipset:'Pioneer',packageType:'pioneer-installer',modifiable,features:[{name:'Must be hidden',ok:true}],file:`pioneer/${rev}/firmware.tar`}))},{model:'BU40N',brand:'LG',versions:[{rev:'1.00',modifiable:true,features:[{name:'Region-free',ok:true}],file:'MT1959/BU40N.bin'}]}];
+ const firmwareIndex=[{model:'BDR-UD04',brand:'Pioneer',versions:['1.14EU','1.14US'].map(rev=>({rev,hardware:'SAT 8A10',chipset:'Pioneer',packageType:'pioneer-installer',modifiable,components,features:[{name:'Must be hidden',ok:true}],file:`pioneer/${rev}/firmware.tar`}))},{model:'BU40N',brand:'LG',versions:[{rev:'1.00',modifiable:true,features:[{name:'Region-free',ok:true}],file:'MT1959/BU40N.bin'}]}];
  vm.runInNewContext(code,{document,firmwareIndex,firmwareBaseUrl:'https://example.test'});
  function select(query){const input=document.getElementById('drive-search');input.value=query;input.handlers.input();const options=document.getElementById('drive-options').querySelectorAll();assert.equal(options.length,1);options[0].handlers.mousedown({preventDefault(){}});}
  return {document,select};
@@ -34,4 +34,12 @@ test('MediaTek keeps features and modify next step',()=>{
 test('next step follows index capability rather than chipset name',()=>{
  const {document,select}=finder(true);select('UD04');
  assert.equal(document.getElementById('firmware-next-link').href,'/firmware/modify/');
+});
+test('Pioneer card describes the actual package roles without guessing unknown contents',()=>{
+ for(const [components,label] of [[['main'],'Normal'],[['kernel'],'Kernel'],[['main','kernel'],'Kernel + Normal'],[undefined,null],[[],null],[['main','unknown'],null]]){
+  const {document,select}=finder(false,components);select('UD04');
+  const detail=document.getElementById('drive-detail').innerHTML;
+  if(label) assert.ok(detail.includes(`<span class="drive-fact">${label}</span>`));
+  else assert.doesNotMatch(detail,/<span class="drive-fact">(?:Kernel|Normal)/);
+ }
 });
