@@ -7,7 +7,7 @@ import AppShowcase from '../../../components/AppShowcase.astro';
 
 freemkv comes in two builds for Linux. **Install one or the other**; both are the `freemkv` command and use the same ripping engine. Choose a download from the **[Download page](/download/)**.
 
-- **freemkv** (the app): a native GTK4 desktop app plus every CLI command. `.deb`, Flatpak or AppImage.
+- **freemkv** (the app): a native GTK4 desktop app plus every CLI command. `.deb`, Flatpak (FlatPark or a direct bundle) or AppImage.
 - **freemkv CLI**: the command line only, without GTK. `.deb` or static binaries.
 
 With the app, a bare `freemkv` opens the window. With no display (for example over SSH, where neither `DISPLAY` nor `WAYLAND_DISPLAY` is set) it prints usage instead, like the CLI.
@@ -36,6 +36,18 @@ freemkv --version
 ```
 
 Open **freemkv** from your application menu, or run `freemkv`. APT installs the required desktop libraries. This package uses normal host drive permissions and has no application sandbox. Compatibility with other Debian-based distributions has not been validated.
+
+#### Flatpak from FlatPark
+
+[FlatPark](https://flatpark.org/apps/org.freemkv.FreeMKV) packages the official `.deb` from each GitHub release as an **x86_64** Flatpak, so `flatpak update` picks up new freemkv releases. Add the FlatPark remote once, then install:
+
+```bash
+flatpak remote-add --if-not-exists flatpark https://dl.flatpark.org/flatpark.flatpakrepo
+flatpak install flatpark org.freemkv.FreeMKV
+flatpak run org.freemkv.FreeMKV
+```
+
+Arguments after the app ID go to the CLI, for example `flatpak run org.freemkv.FreeMKV info disc://`. The app can access devices, the network (for key downloads), and your Videos and Downloads folders; to rip elsewhere in your home folder, run `flatpak override --user --filesystem=home org.freemkv.FreeMKV`. For problems specific to the FlatPark package, open an issue on [FlatPark](https://github.com/flatpark/flatpark).
 
 #### Direct Flatpak bundle
 
@@ -119,16 +131,17 @@ If your system cannot mount an AppImage, try:
 | Installation | Update | Remove |
 |---|---|---|
 | `.deb` | Download the new package and repeat `sudo apt install ./freemkv-amd64.deb` (or `./freemkv-cli-amd64.deb`) | `sudo apt remove freemkv` (or `freemkv-cli`) |
+| FlatPark | `flatpak update` | `flatpak uninstall org.freemkv.FreeMKV` |
 | Flatpak bundle | Download the new bundle and repeat `flatpak install --user ./freemkv-x86_64-linux.flatpak` | `flatpak uninstall --user org.freemkv.FreeMKV` |
 | AppImage or standalone CLI | Close freemkv and replace the downloaded file | Delete the downloaded file |
 
-There is no freemkv APT repository yet. Direct Flatpak bundles also require manual app updates; `flatpak update` updates installed runtimes but does not fetch new freemkv bundles from GitHub. Settings and ripped movies are separate from program files, so updating or removing freemkv leaves them in place.
+There is no freemkv APT repository yet. Direct Flatpak bundles (unlike FlatPark) require manual app updates; `flatpak update` updates installed runtimes but does not fetch new freemkv bundles from GitHub. Settings and ripped movies are separate from program files, so updating or removing freemkv leaves them in place.
 
 ## File locations
 
 | What | Location |
 |---|---|
-| Desktop settings | `$XDG_DATA_HOME/freemkv/gui-settings.json`, normally `~/.local/share/freemkv/gui-settings.json`; for the Flatpak, `~/.var/app/org.freemkv.FreeMKV/data/freemkv/gui-settings.json` |
+| Desktop settings | `$XDG_DATA_HOME/freemkv/gui-settings.json`, normally `~/.local/share/freemkv/gui-settings.json`; for either Flatpak, `~/.var/app/org.freemkv.FreeMKV/data/freemkv/gui-settings.json` |
 | Desktop diagnostic log | `log.txt` in the same folder, written only when the app's log level is **Verbose** or debug messages are on |
 | Finished movies | The output location you choose before ripping; the desktop app suggests your XDG Videos folder |
 | AACS keys | See [Decryption Keys](/docs/decryption-keys/) |

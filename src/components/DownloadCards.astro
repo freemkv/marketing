@@ -15,6 +15,7 @@ interface Platform {
   os: string;
   builds: Build[];
   brew?: string;
+  commands?: string[];
   note?: string;
 }
 interface Props {
@@ -42,6 +43,7 @@ const { platforms, repo } = Astro.props;
             <span class="dl-sub">{b.label}</span>
           </a>
         ))}
+        {p.commands?.map((c) => <code class="dl-brew-cmd">{c}</code>)}
         {p.note && <p class="dl-mac-help">{p.note}</p>}
       </div>
       {p.os === 'windows' && (

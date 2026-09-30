@@ -39,7 +39,8 @@ const allReleases = `${cliRepo}/releases`;
 
 // Card data for the app and CLI sections. `key` ("<os>-<arch>") marks the
 // button the detector highlights; `secondary` renders an outline button;
-// `brew` is a Homebrew command shown above the buttons.
+// `brew` is a Homebrew command shown above the buttons; `commands` are shell
+// commands shown below them.
 const appPlatforms = [
   {
     name: 'Windows',
@@ -67,7 +68,11 @@ const appPlatforms = [
       { arch: 'AppImage', label: 'Portable · Ubuntu 24.04+ / Fedora 40+', file: 'freemkv-x86_64-linux.AppImage', secondary: true },
       { arch: 'Flatpak', label: 'flatpak install --user ./freemkv-x86_64-linux.flatpak', file: 'freemkv-x86_64-linux.flatpak', secondary: true },
     ],
-    note: 'Flathub listing (org.freemkv.FreeMKV) coming.',
+    commands: [
+      'flatpak remote-add --if-not-exists flatpark https://dl.flatpark.org/flatpark.flatpakrepo',
+      'flatpak install flatpark org.freemkv.FreeMKV',
+    ],
+    note: 'Or install the Flatpak from FlatPark (commands above) and get updates through flatpak update. Flathub listing (org.freemkv.FreeMKV) coming.',
   },
 ];
 
