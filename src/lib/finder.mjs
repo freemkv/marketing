@@ -321,6 +321,7 @@ export function hostedSummary(data) {
 
 // Alias kinds shown as drive model names, best first. File/release names are
 // search terms only.
+const MEDIA_PREFIX = /^(?:BD-?RE|BD-?RW|BD-?ROM|BD-?R|DVD-?RW|DVD-?RAM|DVD-?ROM|BDDVDRW|CDDVDW|DVDRW)\s+(?=\S)/i;
 const NAME_RANK = { legacy: 0, retail: 1, inquiry: 2, 'release-note': 3, oem: 4 };
 const OEM_NAMES = { ASUS: 'ASUS', BUFFALO: 'Buffalo', HP: 'HP', TDK: 'TDK', TEAC: 'TEAC', MEMOREX: 'Memorex', MEDION: 'Medion', SONYDT: 'Sony' };
 
@@ -442,7 +443,10 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
   for (const a of data.aliases) {
     const ks = a.targets.filter(k => idIdx.has(k));
     for (const k of ks) terms.get(k).push(a.display);
-    if (a.kind in NAME_RANK) addName(a.display, NAME_RANK[a.kind], ks);
+    // Drive-reported names lead with the media type ("BDRE BU40N" on HP
+    // units); the model is what follows.
+    const display = a.kind === 'inquiry' ? String(a.display).replace(MEDIA_PREFIX, '') : a.display;
+    if (a.kind in NAME_RANK) addName(display, NAME_RANK[a.kind], ks);
   }
   // Every identity needs at least one listed name.
   const named = new Set([...names.values()].flatMap(r => [...r.keys]));
