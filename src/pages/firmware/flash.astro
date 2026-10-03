@@ -164,14 +164,17 @@ import '../../styles/site.css';
               <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
               <span class="terminal-title">freemkv-flash</span>
             </div>
-            <pre class="terminal-body"><code><span class="c"># 1. Identify the drive first — any MTK optical drive</span>
+            <pre class="terminal-body"><code><span class="c"># 1. Identify the drive first — MediaTek or Pioneer, read-only</span>
 <span class="p">$</span> freemkv-flash info &lt;dev&gt;
 
-<span class="c"># 2. Always back up before touching anything — full image + read-surface map</span>
-<span class="p">$</span> freemkv-flash dump &lt;dev&gt;
+<span class="c"># 2. Back up before touching anything — image, per-unit regions and map in one .tar</span>
+<span class="p">$</span> freemkv-flash dump &lt;dev&gt; -o backup.tar
 
-<span class="c"># 3. Flash — backs up automatically, writes, then reads back to verify</span>
-<span class="p">$</span> freemkv-flash flash &lt;dev&gt; -i BU40N_1.00.freemkv.bin</code></pre>
+<span class="c"># 3. Eject any disc, then flash. Without --execute it only prints the plan</span>
+<span class="p">$</span> freemkv-flash flash &lt;dev&gt; -i BU40N_1.00.freemkv.bin
+<span class="c"># Happy with the plan? Flash for real (irreversible); it reads back to verify</span>
+<span class="p">$</span> freemkv-flash flash &lt;dev&gt; -i BU40N_1.00.freemkv.bin \
+      --backup backup.tar --execute --i-understand-risk</code></pre>
           </div>
 
           <div class="notice">
