@@ -8,7 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "firmware:prepare": "node scripts/firmware-release.mjs prepare",
-    "test:firmware": "node --test scripts/firmware-*.test.mjs"
+    "test:firmware": "node --test scripts/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

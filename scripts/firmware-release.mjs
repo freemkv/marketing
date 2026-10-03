@@ -18,76 +18,101 @@ function run(cmd, args, options = {}) {
   const r = spawnSync(cmd, args, { stdio: 'inherit', ...options });
   if (r.error || r.status !== 0) throw new Error(`${cmd} failed: ${r.error ?? r.status}`);
 }
-const segment = s => encodeURIComponent(s).replace(/[!'()*]/g, c => `%${c.charCodeAt(0).toString(16).toUpperCase()}`);
-// Publication model names can expand source notation. The already validated
-// bytes are located by hardware/release/full hash, independently of display name.
-const identity = (_model, h, r, sha) => JSON.stringify([h,r,sha]);
+const V1 = 'freemkv-firmware-publish-v1', V2 = 'freemkv-firmware-publish-v2';
+const FAMILIES = ['pioneer', 'mediatek', 'renesas', 'unknown'];
+const CONTENT_TYPES = { tar: 'application/x-tar', bin: 'application/octet-stream' };
+// v2 keys are content-addressed: fw/<family>/<sha256>.<tar|bin>, one object per package.
+export const V2_KEY = /^fw\/([a-z]+)\/([a-f0-9]{64})\.(tar|bin)$/;
+export function safeFilename(name) {
+  return typeof name === 'string' && /^[A-Za-z0-9][A-Za-z0-9._+-]{0,199}$/.test(name) && !name.includes('..');
+}
+function v1Object(o) {
+  return safePath(o.key) && ((o.key.startsWith('pioneer/') && o.key.endsWith('.tar')) || /^(MT1939|MT1959)\/[A-Za-z0-9._%-]+\.bin$/.test(o.key));
+}
+function v2Object(o) {
+  const m = typeof o.key === 'string' && o.key.match(V2_KEY);
+  return Boolean(m) && FAMILIES.includes(m[1]) && m[2] === o.sha256 && safeFilename(o.filename) &&
+    (o.content_type === undefined || o.content_type === CONTENT_TYPES[m[3]]) && (o.family === undefined || o.family === m[1]);
+}
 export function validateManifest(m) {
-  if (m.format !== 'freemkv-firmware-publish-v1' || !Array.isArray(m.objects) || !m.objects.length) throw new Error('Invalid publish manifest');
-  const seen = new Set();
+  if (![V1, V2].includes(m?.format) || !Array.isArray(m.objects) || !m.objects.length) throw new Error('Invalid publish manifest');
+  const seen = new Set(), shas = new Set();
   for (const o of m.objects) {
-    if (!safePath(o.key) || !((o.key.startsWith('pioneer/') && o.key.endsWith('.tar')) || /^(MT1939|MT1959)\/[A-Za-z0-9._%-]+\.bin$/.test(o.key)) || !/^[a-f0-9]{64}$/.test(o.sha256) || !Number.isSafeInteger(o.bytes) || o.bytes <= 0 || o.bytes > 64*1024*1024 || seen.has(o.key)) throw new Error('Invalid or duplicate object');
-    seen.add(o.key);
+    if (!(m.format === V1 ? v1Object(o) : v2Object(o)) || !/^[a-f0-9]{64}$/.test(o.sha256) || !Number.isSafeInteger(o.bytes) || o.bytes <= 0 || o.bytes > 64*1024*1024 || seen.has(o.key)) throw new Error('Invalid or duplicate object');
+    if (m.format === V2 && shas.has(o.sha256)) throw new Error('Invalid or duplicate object');
+    seen.add(o.key); shas.add(o.sha256);
   }
   return m;
 }
+export const contentType = key => key.endsWith('.tar') ? CONTENT_TYPES.tar : CONTENT_TYPES.bin;
+// Every package listed in a v2 finder catalogue, with its revision context.
+export function catalogPackages(catalog) {
+  if (catalog?.format !== 'freemkv-finder-catalog' || catalog.version !== 2 || !Array.isArray(catalog.identities)) throw new Error('Invalid finder catalog');
+  return catalog.identities.flatMap(i => (i.revisions ?? []).flatMap(r => r.packages ?? []));
+}
 export function rejectWithdrawn(catalog, withdrawals) {
   const rejected = new Set(withdrawals.map(row => row.normalSha256));
-  for (const model of catalog) for (const version of model.versions ?? []) {
-    if (rejected.has(version.normalSha256)) throw new Error('Catalog contains withdrawn truncated firmware');
-  }
+  const versions = Array.isArray(catalog)
+    ? catalog.flatMap(model => (model.versions ?? []).map(v => v.normalSha256))
+    : catalogPackages(catalog).map(p => p.normal_sha256);
+  if (versions.some(sha => sha && rejected.has(sha))) throw new Error('Catalog contains withdrawn truncated firmware');
 }
 async function checkWithdrawals(catalog) {
   rejectWithdrawn(catalog, await json(path.join(SITE,'scripts/firmware-withdrawals.json')));
 }
-export async function prepare(extractor, destination, mediaMapping) {
-  extractor = path.resolve(extractor); destination = path.resolve(destination);
-  await fs.mkdir(destination); // Fail if an old staging directory exists.
-  const catalogFile = path.join(destination, 'pioneer-firmware-index.json');
-  run('cargo', ['run','--quiet','--release','--features','internal-tools','--bin','pioneer-finder-index','--',path.join(extractor,'hoard/installers/pioneer'),'--output',catalogFile], {cwd:extractor});
-  const catalog = await json(catalogFile);
-  await checkWithdrawals(catalog);
-  const index = await json(path.join(extractor,'hoard/installers/pioneer/INDEX.json'));
-  const sources = new Map();
-  for (const row of index.packages) {
-    if (!row.advertised_version || !safePath(row.path)) throw new Error('Unsafe or outdated installer index');
-    sources.set(identity(row.public_model ?? row.model,row.hardware,row.advertised_version,row.sha256), row);
+/**
+ * Cross-check a v2 stage before any external write: every catalogue package is
+ * exactly one manifest object (key, sha, size, filename), every object is used,
+ * no withdrawn Normal hash is listed, and every legacy key resolves to a
+ * published object with the same bytes (or is explicitly left on its old key).
+ */
+export function checkStageV2(manifest, catalog, legacy) {
+  const objects = new Map(manifest.objects.map(o => [o.key, o]));
+  const used = new Set();
+  for (const p of catalogPackages(catalog)) {
+    const o = objects.get(p.key);
+    if (!o || o.sha256 !== p.sha256 || o.bytes !== p.bytes || o.filename !== p.filename) throw new Error('Catalog/object mismatch');
+    used.add(p.key);
   }
-  const objects = new Map();
-  for (const model of catalog) {
-    for (const v of model.versions) {
-      const row = sources.get(identity(model.model,v.hardware,v.rev,v.sha256));
-      if (!row) throw new Error('Catalog release missing from source index');
-      const key = `pioneer/${segment(model.model)}/${segment(v.hardware)}/${segment(v.rev)}/${v.sha256}.tar`;
-      const raw = await fs.readFile(path.join(extractor,'hoard',row.path));
-      if (hash(raw) !== v.sha256 || raw.length !== v.bytes) throw new Error('Source changed after validation');
-      const output = path.join(destination,'payloads',key);
-      await fs.mkdir(path.dirname(output),{recursive:true});
-      await fs.writeFile(output,raw);
-      objects.set(key,{key,sha256:v.sha256,bytes:raw.length});
-      v.file = key;
-    }
-    model.ready = model.versions.some(v => Boolean(v.file));
+  if (used.size !== objects.size) throw new Error('Unreferenced object');
+  if (legacy?.format !== 'freemkv-firmware-legacy-keys' || !Array.isArray(legacy.keys)) throw new Error('Invalid legacy keys');
+  for (const row of legacy.keys) {
+    if (!safePath(row.key) || !/^[a-f0-9]{64}$/.test(row.sha256)) throw new Error('Invalid legacy key');
+    if (row.new_key == null) { if (!['missing-bytes', 'missing-package'].includes(row.status)) throw new Error('Unresolved legacy key'); continue; }
+    const o = objects.get(row.new_key);
+    if (!o || o.sha256 !== row.sha256) throw new Error(`Legacy key does not resolve: ${row.key}`);
   }
-  if (mediaMapping) {
-    for (const entry of await json(mediaMapping)) {
-      const {key,sha256,bytes}=entry;
-      validateManifest({format:'freemkv-firmware-publish-v1',objects:[{key,sha256,bytes}]});
-      if (!/^(MT1939|MT1959)\//.test(key)) throw new Error('Media mapping must contain MediaTek objects');
-      const raw=await fs.readFile(entry.path);
-      if(raw.length!==bytes || hash(raw)!==sha256) throw new Error('MediaTek source hash/size mismatch');
-      const output=path.join(destination,'payloads',key);
-      await fs.mkdir(path.dirname(output),{recursive:true});await fs.writeFile(output,raw);
-      objects.set(key,{key,sha256,bytes});
-    }
-  }
-  await fs.writeFile(catalogFile, JSON.stringify(catalog,null,2)+'\n');
-  await fs.copyFile(path.join(SITE,'src/data/firmware-index.json'),path.join(destination,'firmware-index.json'));
-  await fs.writeFile(path.join(destination,'publish-manifest.json'),JSON.stringify(validateManifest({format:'freemkv-firmware-publish-v1',objects:[...objects.values()]}),null,2)+'\n');
-  // ustar deliberately excludes PAX records, links and platform metadata.
-  run('tar',['--format=ustar','-czf',`${destination}.tar.gz`,'-C',destination,'publish-manifest.json','pioneer-firmware-index.json','firmware-index.json','payloads'],{env:{...process.env,COPYFILE_DISABLE:'1'}});
-  console.log(`Prepared ${objects.size} objects: ${destination}.tar.gz`);
 }
+export function fwextCommand(extractor, env = process.env) {
+  return env.FWEXT ? [env.FWEXT, []] : ['cargo', ['run', '--quiet', '--release', '--bin', 'fwext', '--']];
+}
+// v2: `fwext publish-catalog` validates every package and writes the stage
+// (finder-catalog.json, publish-manifest.json v2, legacy-keys.json, payloads/fw/...).
+export async function prepare(extractor, destination, hoard) {
+  extractor = path.resolve(extractor); destination = path.resolve(destination);
+  hoard = path.resolve(hoard ?? path.join(extractor, 'hoard'));
+  try { await fs.access(destination); throw new Error(`${destination} already exists`); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  const [cmd, prefix] = fwextCommand(extractor);
+  run(cmd, [...prefix, 'publish-catalog', '--hoard', hoard, '--out', destination,
+    '--legacy-pioneer', path.join(SITE, 'src/data/pioneer-firmware-index.json'),
+    '--legacy-mediatek', path.join(SITE, 'src/data/firmware-index.json'),
+    '--withdrawals', path.join(SITE, 'scripts/firmware-withdrawals.json')], { cwd: extractor });
+  await fs.copyFile(path.join(SITE, 'src/data/firmware-index.json'), path.join(destination, 'firmware-index.json'));
+  const manifest = validateManifest(await json(path.join(destination, 'publish-manifest.json')));
+  if (manifest.format !== V2) throw new Error('fwext produced an unexpected manifest format');
+  const catalog = await json(path.join(destination, 'finder-catalog.json'));
+  await checkWithdrawals(catalog);
+  checkStageV2(manifest, catalog, await json(path.join(destination, 'legacy-keys.json')));
+  for (const o of manifest.objects) {
+    const raw = await fs.readFile(path.join(destination, 'payloads', o.key));
+    if (raw.length !== o.bytes || hash(raw) !== o.sha256) throw new Error('Payload hash/size mismatch');
+  }
+  // ustar deliberately excludes PAX records, links and platform metadata.
+  run('tar',['--format=ustar','-czf',`${destination}.tar.gz`,'-C',destination,...V2_MEMBERS,'payloads'],{env:{...process.env,COPYFILE_DISABLE:'1'}});
+  console.log(`Prepared ${manifest.objects.length} objects: ${destination}.tar.gz`);
+}
+const V1_MEMBERS = ['publish-manifest.json','pioneer-firmware-index.json','firmware-index.json'];
+const V2_MEMBERS = ['publish-manifest.json','finder-catalog.json','legacy-keys.json','firmware-index.json'];
 // Strict streaming ustar extraction: no links, PAX, devices, traversal or overwrites.
 export async function extract(archive, directory) {
   await fs.mkdir(directory); const seen = new Set();
@@ -110,7 +135,7 @@ export async function extract(archive, directory) {
         const size=parseInt(sizeText,8), checksum=[...h].reduce((s,b,i)=>s+(i>=148&&i<156?32:b),0);
         const type=h[156];
         if (checksum!==parseInt(checksumText,8) || !safePath(name) || seen.has(name) || ![0,48,53].includes(type) || size>64*1024*1024) throw new Error('Unsafe tar member');
-        if (!(name==='payloads' || name.startsWith('payloads/pioneer/') || ['publish-manifest.json','pioneer-firmware-index.json','firmware-index.json'].includes(name) || name==='payloads/pioneer' || name==='payloads/MT1939' || name==='payloads/MT1959' || /^payloads\/(MT1939|MT1959)\/[A-Za-z0-9._%-]+\.bin$/.test(name))) throw new Error('Unexpected tar member');
+        if (!(name==='payloads' || name.startsWith('payloads/pioneer/') || [...V1_MEMBERS,...V2_MEMBERS].includes(name) || name==='payloads/pioneer' || name==='payloads/MT1939' || name==='payloads/MT1959' || /^payloads\/(MT1939|MT1959)\/[A-Za-z0-9._%-]+\.bin$/.test(name) || name==='payloads/fw' || /^payloads\/fw\/[a-z]+$/.test(name) || V2_KEY.test(name.slice('payloads/'.length)))) throw new Error('Unexpected tar member');
         seen.add(name); const target=path.join(directory,name);
         if (type===53) { if(size) throw new Error('Directory data'); await fs.mkdir(target,{recursive:true}); }
         else { await fs.mkdir(path.dirname(target),{recursive:true}); handle=await fs.open(target,'wx'); remaining=size; padding=(512-size%512)%512; if(!remaining){await handle.close();handle=null;} }
@@ -121,28 +146,36 @@ export async function extract(archive, directory) {
 }
 export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Promise(resolve=>setTimeout(resolve,ms))) {
   const manifest=validateManifest(await json(path.join(directory,'publish-manifest.json')));
-  const pioneer=await json(path.join(directory,'pioneer-firmware-index.json'));
-  await checkWithdrawals(pioneer);
-  const mediatek=await json(path.join(directory,'firmware-index.json'));
-  if (!Array.isArray(pioneer) || !pioneer.length || !Array.isArray(mediatek)) throw new Error('Invalid staged catalogs');
   const objects=new Map(manifest.objects.map(o=>[o.key,o]));
-  const used=new Set();
-  for (const m of pioneer) {
-    if (typeof m.model !== 'string' || !Array.isArray(m.versions) || !m.versions.length) throw new Error('Invalid catalog model');
-    for (const v of m.versions) {
-    const o=objects.get(v.file);
-    if (!o || o.sha256!==v.sha256 || o.bytes!==v.bytes) throw new Error('Catalog/object mismatch');
-    used.add(v.file);
+  const mediatek=await json(path.join(directory,'firmware-index.json'));
+  if (!Array.isArray(mediatek)) throw new Error('Invalid staged catalogs');
+  if (manifest.format===V2) {
+    const catalog=await json(path.join(directory,'finder-catalog.json'));
+    await checkWithdrawals(catalog);
+    checkStageV2(manifest,catalog,await json(path.join(directory,'legacy-keys.json')));
+  } else {
+    // v1 staged archives (pre content-addressing) remain publishable.
+    const pioneer=await json(path.join(directory,'pioneer-firmware-index.json'));
+    await checkWithdrawals(pioneer);
+    if (!Array.isArray(pioneer) || !pioneer.length) throw new Error('Invalid staged catalogs');
+    const used=new Set();
+    for (const m of pioneer) {
+      if (typeof m.model !== 'string' || !Array.isArray(m.versions) || !m.versions.length) throw new Error('Invalid catalog model');
+      for (const v of m.versions) {
+        const o=objects.get(v.file);
+        if (!o || o.sha256!==v.sha256 || o.bytes!==v.bytes) throw new Error('Catalog/object mismatch');
+        used.add(v.file);
+      }
     }
-  }
-  for (const m of mediatek) for (const v of m.versions ?? []) {
-    const o=objects.get(v.file);
-    if (o) {
-      if (o.sha256!==v.sha256 || (v.bytes != null && o.bytes!==v.bytes)) throw new Error('MediaTek catalog/object mismatch');
-      used.add(v.file);
+    for (const m of mediatek) for (const v of m.versions ?? []) {
+      const o=objects.get(v.file);
+      if (o) {
+        if (o.sha256!==v.sha256 || (v.bytes != null && o.bytes!==v.bytes)) throw new Error('MediaTek catalog/object mismatch');
+        used.add(v.file);
+      }
     }
+    if (used.size!==objects.size) throw new Error('Unreferenced object');
   }
-  if (used.size!==objects.size) throw new Error('Unreferenced object');
   // Validate everything before the first external write.
   for (const o of objects.values()) {
     const raw=await fs.readFile(path.join(directory,'payloads',o.key));
@@ -188,13 +221,15 @@ async function main() {
   if(command==='publish' && a) {
     if(!process.env.CLOUDFLARE_ACCOUNT_ID || !process.env.CLOUDFLARE_API_TOKEN) throw new Error('Explicit Cloudflare account and token required');
     await publish(a,(o,file)=>new Promise((resolve,reject)=>{
-      const child=spawn(path.join(SITE,'node_modules/.bin/wrangler'),['r2','object','put',`freemkv-firmware/${o.key}`,'--file',file,'--content-type',o.key.endsWith('.tar')?'application/x-tar':'application/octet-stream','--remote'],{stdio:'inherit',env:process.env});
+      const child=spawn(path.join(SITE,'node_modules/.bin/wrangler'),['r2','object','put',`freemkv-firmware/${o.key}`,'--file',file,'--content-type',contentType(o.key),'--remote'],{stdio:'inherit',env:process.env});
       child.on('error',reject);child.on('exit',(code,signal)=>code===0?resolve():reject(new Error(`Wrangler upload failed: ${code ?? signal}`)));
     }),firmwareObjectFetcher());
     // Only expose links to the build after every public object verifies.
-    for(const file of ['pioneer-firmware-index.json','firmware-index.json']) await fs.copyFile(path.join(a,file),path.join(SITE,'src/data',file));
+    const manifest=await json(path.join(a,'publish-manifest.json'));
+    const files=manifest.format===V2?['finder-catalog.json','legacy-keys.json','firmware-index.json']:['pioneer-firmware-index.json','firmware-index.json'];
+    for(const file of files) await fs.copyFile(path.join(a,file),path.join(SITE,'src/data',file));
     return;
   }
-  throw new Error('Usage: firmware-release.mjs prepare EXTRACTOR STAGE [MEDIA_MAPPING.json] | extract ARCHIVE STAGE | publish STAGE');
+  throw new Error('Usage: firmware-release.mjs prepare EXTRACTOR STAGE [V3_HOARD] | extract ARCHIVE STAGE | publish STAGE');
 }
 if(process.argv[1] && realpathSync(process.argv[1])===realpathSync(fileURLToPath(import.meta.url))) main().catch(e=>{console.error(e.message);process.exitCode=1;});

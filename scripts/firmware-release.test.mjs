@@ -81,3 +81,80 @@ test('withdrawn Normal hashes cannot re-enter a prepared or published catalog', 
   assert.throws(()=>rejectWithdrawn([{versions:[{normalSha256:'a'.repeat(64)}]}],[{normalSha256:'a'.repeat(64)}]),/withdrawn/);
   assert.doesNotThrow(()=>rejectWithdrawn([{versions:[{normalSha256:'b'.repeat(64)}]}],[{normalSha256:'a'.repeat(64)}]));
 });
+
+// ---- manifest v2: content-addressed fw/<family>/<sha256>.<ext> ----
+const {checkStageV2,rejectWithdrawn,prepare,V2_KEY}=await import('./firmware-release.mjs');
+async function stageV2(t,{withdrawn=false}={}) {
+ const d=await fs.mkdtemp(path.join(os.tmpdir(),'firmware-v2-'));t.after(()=>fs.rm(d,{recursive:true,force:true}));
+ const tarBytes=Buffer.from('pioneer package'),binBytes=Buffer.from('mediatek image');
+ const t1=sha(tarBytes),b1=sha(binBytes);
+ const objects=[{key:`fw/pioneer/${t1}.tar`,sha256:t1,bytes:tarBytes.length,filename:`BDR-S13U_1.02_9201_ID43_${t1.slice(0,8)}.tar`,family:'pioneer',content_type:'application/x-tar'},
+  {key:`fw/mediatek/${b1}.bin`,sha256:b1,bytes:binBytes.length,filename:`BU40N_1.00_${b1.slice(0,8)}.bin`,family:'mediatek',content_type:'application/octet-stream'}];
+ const normal=withdrawn?'c7655b9b4db452231834aeb994f47eb8794b1a33c8bd5f2f5a0fea50475ab7be':'9'.repeat(64);
+ const catalog={format:'freemkv-finder-catalog',version:2,aliases:[],withdrawn:[],identities:[
+  {key:'pioneer:9201:ID43',family:'pioneer',hardware:'9201',destination:'ID43',revisions:[{revision:'1.02',packages:[{...objects[0],normal_sha256:normal}]}],other_candidates:[]},
+  {key:'mediatek:BU40N:GENERAL',family:'mediatek',hardware:'BU40N',destination:'GENERAL',revisions:[{revision:'1.00',packages:[objects[1]]}],other_candidates:[]}]};
+ const legacy={format:'freemkv-firmware-legacy-keys',version:1,keys:[{key:`pioneer/BDR-S13U/SAT%209201/1.02EU/${t1}.tar`,sha256:t1,new_key:objects[0].key,status:'published'},
+  {key:'MT1939/OLD.bin','sha256':'7'.repeat(64),new_key:null,status:'missing-bytes'}]};
+ for(const [o,b] of [[objects[0],tarBytes],[objects[1],binBytes]]){await fs.mkdir(path.dirname(path.join(d,'payloads',o.key)),{recursive:true});await fs.writeFile(path.join(d,'payloads',o.key),b);}
+ await fs.writeFile(path.join(d,'publish-manifest.json'),JSON.stringify({format:'freemkv-firmware-publish-v2',objects}));
+ await fs.writeFile(path.join(d,'finder-catalog.json'),JSON.stringify(catalog));
+ await fs.writeFile(path.join(d,'legacy-keys.json'),JSON.stringify(legacy));
+ await fs.writeFile(path.join(d,'firmware-index.json'),'[]');
+ return {d,objects,catalog,legacy,bytes:new Map([[objects[0].key,tarBytes],[objects[1].key,binBytes]])};
+}
+test('v2 manifest accepts only content-addressed keys matching their hash, once per package',()=>{
+ const h='a'.repeat(64),o={key:`fw/pioneer/${h}.tar`,sha256:h,bytes:1,filename:'M_1.00_aaaaaaaa.tar',content_type:'application/x-tar'};
+ const v=objects=>validateManifest({format:'freemkv-firmware-publish-v2',objects});
+ assert.doesNotThrow(()=>v([o]));
+ assert.ok(V2_KEY.test(o.key));
+ for(const bad of [{...o,key:`fw/pioneer/${'b'.repeat(64)}.tar`},{...o,key:`fw/evil/${h}.tar`},{...o,key:`pioneer/${h}.tar`},{...o,key:`fw/pioneer/${h}.exe`},
+   {...o,filename:'../x.tar'},{...o,filename:'a"b.tar'},{...o,content_type:'text/html'},{...o,family:'mediatek'},{...o,bytes:0}]) assert.throws(()=>v([bad]),JSON.stringify(bad));
+ assert.throws(()=>v([o,{...o,key:`fw/mediatek/${h}.bin`,content_type:'application/octet-stream'}]),/duplicate/);
+});
+test('v2 stage cross-checks catalogue packages, objects and legacy keys',async t=>{
+ const {objects,catalog,legacy}=await stageV2(t);const manifest={format:'freemkv-firmware-publish-v2',objects};
+ assert.doesNotThrow(()=>checkStageV2(manifest,catalog,legacy));
+ const c2=structuredClone(catalog);c2.identities[0].revisions[0].packages[0].filename='other.tar';
+ assert.throws(()=>checkStageV2(manifest,c2,legacy),/mismatch/);
+ const c3=structuredClone(catalog);c3.identities.pop();assert.throws(()=>checkStageV2(manifest,c3,legacy),/Unreferenced/);
+ const l2=structuredClone(legacy);l2.keys[0].new_key=objects[1].key;assert.throws(()=>checkStageV2(manifest,catalog,l2),/does not resolve/);
+ const l3=structuredClone(legacy);l3.keys[1].status='published';assert.throws(()=>checkStageV2(manifest,catalog,l3),/Unresolved/);
+ assert.throws(()=>rejectWithdrawn({...catalog,identities:[{...catalog.identities[0],revisions:[{revision:'1',packages:[{normal_sha256:'a'.repeat(64)}]}]}]},[{normalSha256:'a'.repeat(64)}]),/withdrawn/);
+});
+test('v2 publish uploads each content-addressed object once and verifies bytes',async t=>{
+ const {d,objects,bytes}=await stageV2(t);const uploaded=[];const live=new Set();
+ const fetcher=async url=>{const key=url.split('.r2.dev/')[1];return live.has(key)?new Response(bytes.get(key)):new Response('',{status:404});};
+ assert.equal(await publish(d,async o=>{uploaded.push(o.key);live.add(o.key);},fetcher,async()=>{}),2);
+ assert.deepEqual(uploaded.sort(),objects.map(o=>o.key).sort());
+ uploaded.length=0;assert.equal(await publish(d,async o=>uploaded.push(o.key),fetcher),2);assert.deepEqual(uploaded,[]);
+});
+test('v2 publish refuses withdrawn Normal hashes and corrupt payloads before any upload',async t=>{
+ const w=await stageV2(t,{withdrawn:true});await assert.rejects(publish(w.d,async()=>assert.fail('upload'),async()=>assert.fail('fetch')),/withdrawn/);
+ const c=await stageV2(t);await fs.writeFile(path.join(c.d,'payloads',c.objects[0].key),'bad');
+ await assert.rejects(publish(c.d,async()=>assert.fail('upload'),async()=>new Response('')),/hash/);
+});
+test('v2 archive roundtrip through strict extraction',async t=>{
+ const {d}=await stageV2(t);const archive=d+'.tgz',out=d+'-out';t.after(()=>fs.rm(archive,{force:true}));t.after(()=>fs.rm(out,{recursive:true,force:true}));
+ assert.equal(spawnSync('tar',['--format=ustar','-czf',archive,'-C',d,'publish-manifest.json','finder-catalog.json','legacy-keys.json','firmware-index.json','payloads'],{env:{...process.env,COPYFILE_DISABLE:'1'}}).status,0);
+ await extract(archive,out);
+ assert.deepEqual(await fs.readFile(path.join(out,'finder-catalog.json')),await fs.readFile(path.join(d,'finder-catalog.json')));
+ await fs.rm(out,{recursive:true});await fs.writeFile(path.join(d,'payloads/fw/pioneer/notahash.tar'),'x');
+ assert.equal(spawnSync('tar',['--format=ustar','-czf',archive,'-C',d,'payloads'],{env:{...process.env,COPYFILE_DISABLE:'1'}}).status,0);
+ await assert.rejects(extract(archive,out),/Unexpected/);
+});
+test('prepare runs fwext publish-catalog against the v3 hoard and packs a validated stage',async t=>{
+ const {d:template}=await stageV2(t);const root=await fs.mkdtemp(path.join(os.tmpdir(),'firmware-prepare-'));t.after(()=>fs.rm(root,{recursive:true,force:true}));
+ const fake=path.join(root,'fwext');const log=path.join(root,'args.json');
+ await fs.writeFile(fake,`#!/usr/bin/env node
+const fs=require('fs');const a=process.argv.slice(2);fs.writeFileSync(${JSON.stringify(log)},JSON.stringify(a));
+const out=a[a.indexOf('--out')+1];fs.cpSync(${JSON.stringify(template)},out,{recursive:true});fs.rmSync(out+'/firmware-index.json');
+`);await fs.chmod(fake,0o755);
+ await fs.mkdir(path.join(root,'extractor'));const stage=path.join(root,'stage');const previous=process.env.FWEXT;process.env.FWEXT=fake;t.after(()=>{if(previous===undefined)delete process.env.FWEXT;else process.env.FWEXT=previous;});
+ await prepare(path.join(root,'extractor'),stage,path.join(root,'hoard.v3'));
+ const args=JSON.parse(await fs.readFile(log,'utf8'));
+ assert.deepEqual(args.slice(0,5),['publish-catalog','--hoard',path.join(root,'hoard.v3'),'--out',stage]);
+ for(const flag of ['--legacy-pioneer','--legacy-mediatek','--withdrawals']) assert.ok(args.includes(flag));
+ await fs.access(stage+'.tar.gz');await fs.access(path.join(stage,'firmware-index.json'));
+ await assert.rejects(prepare(path.join(root,'extractor'),stage,path.join(root,'hoard.v3')),/already exists/);
+});
