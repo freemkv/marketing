@@ -6501,14 +6501,6 @@
       "status": "published"
     },
     {
-      "basis": "projection",
-      "key": "pioneer/BDR-UD04/SAT%208A10/1.14/3adcf33237bd2501b4e2f60f9ee0ccc1d8606c026c38fb87d38aadde296d7f84.tar",
-      "model": "BDR-UD04",
-      "new_key": "fw/pioneer/3adcf33237bd2501b4e2f60f9ee0ccc1d8606c026c38fb87d38aadde296d7f84.tar",
-      "sha256": "3adcf33237bd2501b4e2f60f9ee0ccc1d8606c026c38fb87d38aadde296d7f84",
-      "status": "published"
-    },
-    {
       "basis": "projection+site",
       "key": "pioneer/BDR-US01/SAT%201050/1.01EUJ/f9e75e8e7dd661c6e1a419c03f592aa3957b341ebd82626f10b2b6760dd9a852.tar",
       "model": "BDR-US01",
