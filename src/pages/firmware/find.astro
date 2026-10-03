@@ -51,7 +51,8 @@ import '../../styles/site.css';
     <meta name="twitter:image" content="https://freemkv.org/freemkv-icon.svg" />
     <script type="application/ld+json" set:html={graph(webPageNode({ path: '/firmware/find/', name: title, description }), breadcrumbNode('/firmware/find/', [['freemkv', '/'], ['Firmware', '/firmware/'], ['Find', '/firmware/find/']]), websiteNode(), orgNode())} />
     <style is:global>
-      .fx-src { margin: 0.6rem 0 0; font-size: 0.85rem; color: var(--slate); }
+      .fx-view { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; }
+      .fx-viewing { color: var(--muted); font-size: 0.9rem; }
       .fx-file { margin: 0.4rem 0 0; font-size: 0.8rem; color: var(--muted); overflow-wrap: anywhere; }
       .fx-h { margin: 1.3rem 0 0.4rem; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal-dark); }
       .fx-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; font-size: 0.92rem; }
@@ -200,6 +201,9 @@ import '../../styles/site.css';
           var revOptions = document.getElementById('rev-options');
           var detail = document.getElementById('drive-detail');
           if (!searchInput || !optionsList || !revInput || !revOptions || !detail) return;
+          // Versions are picked from the card's list; the revision dropdown is gone.
+          revRow.hidden = true;
+          revRow.style.display = 'none';
 
           var models = finder.models, versions = finder.versions, identities = finder.identities, packages = finder.packages;
           var BADGE = { proven: 'Proven', likely: 'Likely', untested: 'Untested' };
@@ -308,7 +312,6 @@ import '../../styles/site.css';
             curModel = d;
             curRevIdx = revIdx != null ? revIdx : matchingVersionIndex(d, query);
             revInput.value = d.v[curRevIdx][1];
-            revRow.classList.remove('is-hidden');
             closeRevList();
             render();
           }
@@ -432,10 +435,11 @@ import '../../styles/site.css';
 
             var list = '';
             var rows = '';
-            if (ident.v.length > 1) {
-              list = '<h4 class="fx-h">Versions</h4><ul class="fx-list">' + ident.v.map(function (vi) {
-                var v = versions[vi];
-                return '<li><span class="fx-rev-num">' + escapeText(v.r) + '</span>' + download(packages[v.p[0]], 'Download', 'fx-dl') + '</li>';
+            if (d.v.length > 1) {
+              list = '<h4 class="fx-h">Versions</h4><ul class="fx-list">' + d.v.map(function (row, n) {
+                return '<li><span class="fx-rev-num">' + escapeText(row[1]) + '</span>' +
+                  (n === curRevIdx ? '<span class="fx-viewing">Viewing</span>'
+                    : '<button type="button" class="fx-dl fx-view" data-view="' + n + '">View</button>') + '</li>';
               }).join('') + '</ul>';
             }
             ident.v.forEach(function (vi) {
@@ -494,6 +498,8 @@ import '../../styles/site.css';
           detail.addEventListener('click', function (e) {
             var b = e.target.closest('[data-xf]');
             if (b) showIdentity(Number(b.dataset.xf));
+            var v = e.target.closest('[data-view]');
+            if (v) { curRevIdx = Number(v.dataset.view); render(); detail.scrollIntoView({ block: 'nearest' }); }
           });
 
           searchInput.addEventListener('input', function () {

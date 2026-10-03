@@ -15867,38 +15867,6 @@
       ]
     },
     {
-      "display": "E1020473",
-      "displays": [
-        "E1020473"
-      ],
-      "kind": "oem",
-      "name": "E1020473",
-      "targets": [
-        {
-          "destination": "ID19",
-          "family": "pioneer",
-          "hardware": "8510",
-          "held": true
-        }
-      ]
-    },
-    {
-      "display": "Fujitsu E1020473",
-      "displays": [
-        "Fujitsu E1020473"
-      ],
-      "kind": "oem",
-      "name": "FUJITSUE1020473",
-      "targets": [
-        {
-          "destination": "ID19",
-          "family": "pioneer",
-          "hardware": "8510",
-          "held": true
-        }
-      ]
-    },
-    {
       "display": "PP-100",
       "displays": [
         "PP-100",
