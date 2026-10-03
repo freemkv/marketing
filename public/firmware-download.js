@@ -15,7 +15,7 @@ if (sitekey) {
   }
   let busy = false;
   document.addEventListener('click', async event => {
-    const button = event.target.closest('[data-firmware-download]');
+    const button = event.target.closest('[data-firmware-package]');
     if (!button) return;
     event.preventDefault();
     if (busy) return;
@@ -34,14 +34,14 @@ if (sitekey) {
           'timeout-callback': () => reject(new Error('Verification timed out. Click Download to try again.')),
         });
       });
-      const file = button.dataset.firmwareDownload;
+      const pkg = button.dataset.firmwarePackage;
       const response = await fetch('/api/firmware-download', {method: 'POST',
-        headers: {'Content-Type': 'application/json'}, body: JSON.stringify({file, token})});
+        headers: {'Content-Type': 'application/json'}, body: JSON.stringify({package: pkg, token})});
       if (!response.ok) throw new Error(await response.text());
       const blob = await response.blob();
       const objectUrl = URL.createObjectURL(blob);
       const link = document.createElement('a'); link.href = objectUrl;
-      link.download = decodeURIComponent(file.split('/').pop());
+      link.download = button.dataset.filename || `${pkg}.bin`;
       document.body.appendChild(link); link.click(); link.remove();
       setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
       status.textContent = 'Download ready.';

@@ -3,11 +3,16 @@
 Prepared locally, **not enabled or deployed**. Existing public downloads remain
 unchanged unless `PUBLIC_FIRMWARE_TURNSTILE_SITEKEY` is set at build time.
 
-The Finder keeps its existing search and Download button. When enabled, clicking
-Download runs a managed Turnstile challenge, posts its token and the selected
-catalogue file to `/api/firmware-download`, and saves the returned bytes. The
-Pages Function validates the token server-side (including hostname and action),
-checks the exact catalogue allowlist, then streams the private R2 object. Plain
+When enabled, clicking Download in the Finder runs a managed Turnstile
+challenge, posts `{package: <sha256>, token}` to `/api/firmware-download`, and
+saves the returned bytes. The Pages Function validates the token server-side
+(including hostname and action), resolves the package hash through the exact
+catalogue allowlist (sha256 -> R2 key + catalogue filename), applies the daily
+per-IP limit, then streams the private R2 object with
+`Content-Disposition` set to the catalogue filename. Old clients posting
+`{file: <legacy key>}` still work: legacy `pioneer/...` and `MT1939/...` keys
+resolve through the v1 site indexes and `src/data/legacy-keys.json` to the
+same sha256, and only to the bytes they were published with. Plain
 GET/direct links to this endpoint receive 405; missing or failed tokens get 403.
 There is no public fallback on validation failure and no privileged browser key.
 
@@ -18,6 +23,21 @@ redistribute it. Origin and CORS alone do not authenticate a user. Turnstile
 reduces automation; it is not a login or a download quota. Configure a Cloudflare
 WAF rate limit on the POST endpoint if quotas/abuse controls are desired; those
 account/plan settings have not been inspected or changed.
+
+## Daily download limit
+
+Each IP may make 10 successful downloads per UTC day. Cloudflare Free WAF rules
+cannot express a one-day window, so the Pages Function enforces it with the KV
+binding `FIRMWARE_RATELIMIT` (bound on the Pages project for production and
+preview). Key: `dl:<CF-Connecting-IP>:<YYYY-MM-DD UTC>`, integer counter,
+`expirationTtl` 90000 s. Only requests that passed Turnstile and the allowlist
+and found an object are counted; failed challenges and unknown packages cost
+nothing. Over the limit the function returns 429 `Download limit reached.` with
+`Retry-After` = seconds until the next UTC midnight; the Finder shows that text
+in the download status. If the binding is missing (or KV errors), the limit
+fails open and logs once; Turnstile and the allowlist are still enforced. KV is
+eventually consistent, so simultaneous requests from one IP can slightly exceed
+the limit; it is a soft quota, not a security boundary.
 
 ## Configuration and order
 
@@ -61,7 +81,7 @@ to direct-link Finder code would require deliberately reopening public R2.
 - Current protected flow does not offer HTTP Range/resume. Retry makes a fresh
   challenge/download. This is appropriate for the present small firmware files.
 
-Tests: `node --test scripts/firmware-*.test.mjs`; build normal and protected mode
+Tests: `node --test scripts/*.test.mjs`; build normal and protected mode
 with `PUBLIC_FIRMWARE_TURNSTILE_SITEKEY=1x00000000000000000000AA npm run build`.
 That site key is Cloudflare's test key, only for local/QA test builds.
 
