@@ -11,10 +11,10 @@ class Element {
   querySelectorAll(){return this.children.filter(x=>x.className?.split(' ').includes('picker-option'));}
   scrollIntoView(){} focus(){}
 }
-function finder(modifiable=false,components){
+function finder(modifiable=false,components,protectedDownloads=false){
  const elements=new Map();const document={getElementById(id){if(!elements.has(id))elements.set(id,new Element());return elements.get(id);},createElement(){return new Element();},addEventListener(){}};
  const firmwareIndex=[{model:'BDR-UD04',brand:'Pioneer',versions:['1.14EU','1.14US'].map(rev=>({rev,hardware:'SAT 8A10',chipset:'Pioneer',packageType:'pioneer-installer',modifiable,components,features:[{name:'Must be hidden',ok:true}],file:`pioneer/${rev}/firmware.tar`}))},{model:'BU40N',brand:'LG',versions:[{rev:'1.00',modifiable:true,features:[{name:'Region-free',ok:true}],file:'MT1959/BU40N.bin'}]}];
- vm.runInNewContext(code,{document,firmwareIndex,firmwareBaseUrl:'https://example.test'});
+ vm.runInNewContext(code,{document,firmwareIndex,firmwareBaseUrl:'https://example.test',protectedDownloads});
  function select(query){const input=document.getElementById('drive-search');input.value=query;input.handlers.input();const options=document.getElementById('drive-options').querySelectorAll();assert.equal(options.length,1);options[0].handlers.mousedown({preventDefault(){}});}
  return {document,select};
 }
@@ -30,6 +30,12 @@ test('MediaTek keeps features and modify next step',()=>{
  const {document,select}=finder();select('BU40N');
  assert.match(document.getElementById('drive-detail').innerHTML,/Region-free/);
  assert.equal(document.getElementById('firmware-next-link').href,'/firmware/modify/');
+});
+test('protected downloads keep Download while removing direct bucket anchors',()=>{
+ const {document,select}=finder(false,['kernel','main'],true); select('UD04');
+ const detail=document.getElementById('drive-detail').innerHTML;
+ assert.match(detail,/data-firmware-download="pioneer\/1.14EU\/firmware.tar"/);
+ assert.match(detail,/>Download</); assert.doesNotMatch(detail,/https:\/\/example.test/);
 });
 test('next step follows index capability rather than chipset name',()=>{
  const {document,select}=finder(true);select('UD04');

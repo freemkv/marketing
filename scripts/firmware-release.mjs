@@ -1,10 +1,11 @@
 // Prepare locally; publish only in an explicitly requested release workflow.
 import { createHash } from 'node:crypto';
-import { promises as fs, createReadStream } from 'node:fs';
+import { promises as fs, createReadStream, realpathSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn, spawnSync } from 'node:child_process';
 import { createGunzip } from 'node:zlib';
+import { firmwareObjectFetcher } from './firmware-object-fetch.mjs';
 
 const PUBLIC_BASE = 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -18,7 +19,9 @@ function run(cmd, args, options = {}) {
   if (r.error || r.status !== 0) throw new Error(`${cmd} failed: ${r.error ?? r.status}`);
 }
 const segment = s => encodeURIComponent(s).replace(/[!'()*]/g, c => `%${c.charCodeAt(0).toString(16).toUpperCase()}`);
-const identity = (m, h, r, sha) => JSON.stringify([m,h,r,sha]);
+// Publication model names can expand source notation. The already validated
+// bytes are located by hardware/release/full hash, independently of display name.
+const identity = (_model, h, r, sha) => JSON.stringify([h,r,sha]);
 export function validateManifest(m) {
   if (m.format !== 'freemkv-firmware-publish-v1' || !Array.isArray(m.objects) || !m.objects.length) throw new Error('Invalid publish manifest');
   const seen = new Set();
@@ -28,12 +31,22 @@ export function validateManifest(m) {
   }
   return m;
 }
+export function rejectWithdrawn(catalog, withdrawals) {
+  const rejected = new Set(withdrawals.map(row => row.normalSha256));
+  for (const model of catalog) for (const version of model.versions ?? []) {
+    if (rejected.has(version.normalSha256)) throw new Error('Catalog contains withdrawn truncated firmware');
+  }
+}
+async function checkWithdrawals(catalog) {
+  rejectWithdrawn(catalog, await json(path.join(SITE,'scripts/firmware-withdrawals.json')));
+}
 export async function prepare(extractor, destination, mediaMapping) {
   extractor = path.resolve(extractor); destination = path.resolve(destination);
   await fs.mkdir(destination); // Fail if an old staging directory exists.
   const catalogFile = path.join(destination, 'pioneer-firmware-index.json');
   run('cargo', ['run','--quiet','--release','--features','internal-tools','--bin','pioneer-finder-index','--',path.join(extractor,'hoard/installers/pioneer'),'--output',catalogFile], {cwd:extractor});
   const catalog = await json(catalogFile);
+  await checkWithdrawals(catalog);
   const index = await json(path.join(extractor,'hoard/installers/pioneer/INDEX.json'));
   const sources = new Map();
   for (const row of index.packages) {
@@ -109,6 +122,7 @@ export async function extract(archive, directory) {
 export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Promise(resolve=>setTimeout(resolve,ms))) {
   const manifest=validateManifest(await json(path.join(directory,'publish-manifest.json')));
   const pioneer=await json(path.join(directory,'pioneer-firmware-index.json'));
+  await checkWithdrawals(pioneer);
   const mediatek=await json(path.join(directory,'firmware-index.json'));
   if (!Array.isArray(pioneer) || !pioneer.length || !Array.isArray(mediatek)) throw new Error('Invalid staged catalogs');
   const objects=new Map(manifest.objects.map(o=>[o.key,o]));
@@ -156,7 +170,7 @@ export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Pr
             if (attempt) await pause(1000*2**(attempt-1));
             if (await publicMatches(o)) { verified=true; break; }
           }
-          if (!verified) throw new Error(`Public verification failed: ${o.key}`);
+          if (!verified) throw new Error(`Firmware verification failed: ${o.key}`);
         }
         completed++;
         if(completed%25===0 || completed===pending.length) console.log(`Verified ${completed}/${pending.length} firmware objects`);
@@ -176,11 +190,11 @@ async function main() {
     await publish(a,(o,file)=>new Promise((resolve,reject)=>{
       const child=spawn(path.join(SITE,'node_modules/.bin/wrangler'),['r2','object','put',`freemkv-firmware/${o.key}`,'--file',file,'--content-type',o.key.endsWith('.tar')?'application/x-tar':'application/octet-stream','--remote'],{stdio:'inherit',env:process.env});
       child.on('error',reject);child.on('exit',(code,signal)=>code===0?resolve():reject(new Error(`Wrangler upload failed: ${code ?? signal}`)));
-    }));
+    }),firmwareObjectFetcher());
     // Only expose links to the build after every public object verifies.
     for(const file of ['pioneer-firmware-index.json','firmware-index.json']) await fs.copyFile(path.join(a,file),path.join(SITE,'src/data',file));
     return;
   }
   throw new Error('Usage: firmware-release.mjs prepare EXTRACTOR STAGE [MEDIA_MAPPING.json] | extract ARCHIVE STAGE | publish STAGE');
 }
-if(process.argv[1] && path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) main().catch(e=>{console.error(e.message);process.exitCode=1;});
+if(process.argv[1] && realpathSync(process.argv[1])===realpathSync(fileURLToPath(import.meta.url))) main().catch(e=>{console.error(e.message);process.exitCode=1;});

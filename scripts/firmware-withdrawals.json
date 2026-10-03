@@ -1,0 +1,27 @@
+[
+  {
+    "key": "pioneer/BDR-S06/SAT%201030/1.04EU/c83acc0281d669b63ecb55ca611de021d96f1221c374ad000b44731ce061587e.tar",
+    "normalSha256": "c7655b9b4db452231834aeb994f47eb8794b1a33c8bd5f2f5a0fea50475ab7be",
+    "reason": "Truncated source ZIP envelope: incomplete deflate stream and invalid CRC"
+  },
+  {
+    "key": "pioneer/BDR-S06J/SAT%201030/1.04/c83acc0281d669b63ecb55ca611de021d96f1221c374ad000b44731ce061587e.tar",
+    "normalSha256": "c7655b9b4db452231834aeb994f47eb8794b1a33c8bd5f2f5a0fea50475ab7be",
+    "reason": "Truncated source ZIP envelope: incomplete deflate stream and invalid CRC"
+  },
+  {
+    "key": "pioneer/BDR-XD04/SAT%208130/1.30EU/e3b51c104bb87d8b1db88a2ab001fc47396ff7701e9ca6b0fd22d89ca342e29b.tar",
+    "normalSha256": "903a8ac9082fa3c9397556090fd3fc8c1d61016b60ff42831a567eccf8f0c623",
+    "reason": "Truncated source ZIP envelope: incomplete deflate stream and invalid CRC"
+  },
+  {
+    "key": "pioneer/BDR-S06J/SAT%201030/1.04/dabad12b0cf5d1838770921e2682717b489b2b589f100ec2c5b37d2064324e5b.tar",
+    "normalSha256": "c7655b9b4db452231834aeb994f47eb8794b1a33c8bd5f2f5a0fea50475ab7be",
+    "reason": "Truncated source ZIP envelope: incomplete deflate stream and invalid CRC"
+  },
+  {
+    "key": "pioneer/BDR-S06J/SAT%201030/1.04EU/dabad12b0cf5d1838770921e2682717b489b2b589f100ec2c5b37d2064324e5b.tar",
+    "normalSha256": "c7655b9b4db452231834aeb994f47eb8794b1a33c8bd5f2f5a0fea50475ab7be",
+    "reason": "Truncated source ZIP envelope: incomplete deflate stream and invalid CRC"
+  }
+]

@@ -23,6 +23,9 @@ const docs = '/docs/overview/';
 const github = 'https://github.com/freemkv';
 const firmwareRepo = 'https://github.com/freemkv/freemkv-firmware';
 const firmwareBaseUrl = 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
+// Enable after configuring the Pages R2 binding and Turnstile secret in QA.
+const firmwareDownloadSitekey = import.meta.env.PUBLIC_FIRMWARE_TURNSTILE_SITEKEY || '';
+const protectedDownloads = Boolean(firmwareDownloadSitekey);
 
 // Hero summary, computed from the index so the numbers never drift: how many
 // OEM base firmwares we host, broken down by chipset (largest first).
@@ -176,7 +179,9 @@ import '../../styles/site.css';
         </div>
       </section>
 
-      <script define:vars={{ firmwareIndex, firmwareBaseUrl }}>
+      {protectedDownloads && <div id="firmware-download-config" data-sitekey={firmwareDownloadSitekey} hidden />}
+      {protectedDownloads && <script is:inline type="module" src="/firmware-download.js"></script>}
+      <script define:vars={{ firmwareIndex, firmwareBaseUrl, protectedDownloads }}>
         (function () {
           var searchInput = document.getElementById('drive-search');
           var optionsList = document.getElementById('drive-options');
@@ -433,7 +438,10 @@ import '../../styles/site.css';
             if (isHosted) {
               var dlName = v.file.split('/').pop();
               bodyHtml =
-                '<a class="btn btn-primary dl-btn drive-fw-btn" href="' + firmwareBaseUrl + '/' + v.file + '" download>' +
+                '<a class="btn btn-primary dl-btn drive-fw-btn" ' +
+                (protectedDownloads
+                  ? 'href="/firmware/find/" data-firmware-download="' + escapeText(v.file) + '"'
+                  : 'href="' + firmwareBaseUrl + '/' + v.file + '" download') + '>' +
                 '<span class="dl-main">Download</span>' +
                 '</a>' + (!canModify
                   ? ''

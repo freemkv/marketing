@@ -50,9 +50,10 @@ The site lists a package as downloadable only when that map provides its key.
 This is an inventory/hosting state, not a hardware flash-test claim. The
 importer does not upload or deploy anything.
 The current index uses the packager's source-backed public model. Its embedded
-model is preserved separately. Composite source labels stay composite until a
-verified retail alias map can split them; matching hardware alone does not
-establish compatibility.
+model is preserved separately. Explicit combined source labels are expanded into separate public models.
+Generic family folders use the exact model named in an OEM updater filename
+when available; original source references remain in the local hoard. Ambiguous
+labels stay unchanged, and matching hardware alone does not establish compatibility.
 
 Pioneer `rev` is the advertised release label (for example `1.01EU`), while
 `embeddedRev` is the envelope's revision (`1.01`). The finder displays every
