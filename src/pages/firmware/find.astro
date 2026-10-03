@@ -22,10 +22,11 @@ const description =
 const docs = '/docs/overview/';
 const github = 'https://github.com/freemkv';
 const firmwareRepo = 'https://github.com/freemkv/freemkv-firmware';
-const firmwareBaseUrl = 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 // Enable after configuring the Pages R2 binding and Turnstile secret in QA.
 const firmwareDownloadSitekey = import.meta.env.PUBLIC_FIRMWARE_TURNSTILE_SITEKEY || '';
 const protectedDownloads = Boolean(firmwareDownloadSitekey);
+// Protected builds must not ship the public bucket origin at all.
+const firmwareBaseUrl = protectedDownloads ? '' : 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 
 import '../../styles/site.css';
 ---
@@ -187,7 +188,7 @@ import '../../styles/site.css';
       <!-- ============ FINDER ============ -->
       <section class="block">
         <div class="section-inner">
-          <div class="fx" id="finder" data-base-url={firmwareBaseUrl} data-protected={protectedDownloads ? '1' : ''}>
+          <div class="fx" id="finder" data-base-url={firmwareBaseUrl || undefined} data-protected={protectedDownloads ? '1' : ''}>
             <div class="fx-tabs" role="tablist" aria-label="What do you want to do?">
               <button type="button" role="tab" id="tab-firmware" aria-controls="fx-panel" aria-selected="true" data-mode="firmware" class="fx-tab is-active">Find my firmware</button>
               <button type="button" role="tab" id="tab-crossflash" aria-controls="fx-panel" aria-selected="false" data-mode="crossflash" class="fx-tab" tabindex="-1">Find a cross-flash</button>
