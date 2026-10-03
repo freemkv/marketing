@@ -1,5 +1,5 @@
 ---
-title: Pioneer Optical-Drive Firmware
+title: Pioneer Firmware
 description: A technical reference for the Renesas H8SX generation of Pioneer Blu-ray writer firmware - its processor and software stack, the two-component image model, the distribution envelope, the drive's command surfaces, the boot-time validation contract and the generation-marker mechanism.
 ---
 

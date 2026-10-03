@@ -1,5 +1,5 @@
 ---
-title: How AACS Works (1.0 / 2.0 / 2.1)
+title: AACS
 description: AACS is an encryption scheme, not a disc format. A reference for how it is applied across Blu-ray (AACS 1.0), 4K UHD (AACS 2.0 or 2.1, the forensic FMTS layer), and HD-DVD. The shared key hierarchy, the on-disc structures, and what is confirmed versus still under investigation.
 ---
 

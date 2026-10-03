@@ -1,5 +1,5 @@
 ---
-title: The HD DVD Format (and its AACS layer)
+title: HD DVD
 description: A reference for the HD DVD-Video disc format — the UDF filesystem, the HVDVD_TS and ADV_OBJ trees, the EVO program stream, and the AACS content protection applied on top. The on-disc structures, and what is confirmed versus still uncertain.
 ---
 
