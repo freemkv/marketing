@@ -33,12 +33,12 @@
       ]
     },
     {
-      "display": "BC-12B1ST b",
+      "display": "BC-12B1ST",
       "displays": [
-        "BC-12B1ST b"
+        "BC-12B1ST"
       ],
       "kind": "inquiry",
-      "name": "BC12B1STB",
+      "name": "BC12B1ST",
       "targets": [
         {
           "destination": "ASUS",
@@ -4338,38 +4338,6 @@
           "destination": "ID32",
           "family": "pioneer",
           "hardware": "9330",
-          "held": true
-        }
-      ]
-    },
-    {
-      "display": "BDRE BU40N",
-      "displays": [
-        "BDRE BU40N"
-      ],
-      "kind": "inquiry",
-      "name": "BDREBU40N",
-      "targets": [
-        {
-          "destination": "HP",
-          "family": "mediatek",
-          "hardware": "hp HLDS BDRE BU40N MT1959 BU5/BU3",
-          "held": true
-        }
-      ]
-    },
-    {
-      "display": "BDRE BU50N",
-      "displays": [
-        "BDRE BU50N"
-      ],
-      "kind": "inquiry",
-      "name": "BDREBU50N",
-      "targets": [
-        {
-          "destination": "HP",
-          "family": "mediatek",
-          "hardware": "hp HLDS BDRE BU50N MT1959 BU51/BU3",
           "held": true
         }
       ]
@@ -11867,6 +11835,12 @@
           "family": "mediatek",
           "hardware": "HL-DT-ST BU40N MT1959 BU5/BU3",
           "held": true
+        },
+        {
+          "destination": "HP",
+          "family": "mediatek",
+          "hardware": "hp HLDS BDRE BU40N MT1959 BU5/BU3",
+          "held": true
         }
       ]
     },
@@ -11882,6 +11856,12 @@
           "destination": "GENERAL",
           "family": "mediatek",
           "hardware": "HL-DT-ST BU50N MT1959 BU51/BU3",
+          "held": true
+        },
+        {
+          "destination": "HP",
+          "family": "mediatek",
+          "hardware": "hp HLDS BDRE BU50N MT1959 BU51/BU3",
           "held": true
         }
       ]
@@ -12633,7 +12613,8 @@
     {
       "display": "DVR-104",
       "displays": [
-        "DVR-104"
+        "DVR-104",
+        "DVR104"
       ],
       "kind": "filename",
       "name": "DVR104",
@@ -12642,6 +12623,18 @@
           "destination": "GENERAL",
           "family": "pioneer",
           "hardware": "ATA 0003",
+          "held": true
+        },
+        {
+          "destination": "SONY",
+          "family": "pioneer",
+          "hardware": "ATA 0003",
+          "held": true
+        },
+        {
+          "destination": "SONY",
+          "family": "pioneer",
+          "hardware": "ATA 0004",
           "held": true
         }
       ]
@@ -12658,6 +12651,18 @@
           "destination": "GENERAL",
           "family": "pioneer",
           "hardware": "ATA 0003",
+          "held": true
+        },
+        {
+          "destination": "SONY",
+          "family": "pioneer",
+          "hardware": "ATA 0003",
+          "held": true
+        },
+        {
+          "destination": "SONY",
+          "family": "pioneer",
+          "hardware": "ATA 0004",
           "held": true
         }
       ]
@@ -38040,6 +38045,89 @@
       ]
     },
     {
+      "destination": "SONY",
+      "embedded_models": [
+        "DVR-104"
+      ],
+      "family": "pioneer",
+      "hardware": "ATA 0003",
+      "key": "pioneer:ATA 0003:SONY",
+      "other_candidates": [],
+      "platforms": [
+        "ata"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.30"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1050112,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0003:SONY:1.30:normal",
+                  "member": "components/R4101103.130.enc",
+                  "revision": "1.30",
+                  "role": "normal",
+                  "sha256": "11150886feed43d6f50aea1aa8a090f836a1c9957646485ca2b4514aa5bad4ad"
+                }
+              ],
+              "embedded_model": "DVR-104",
+              "filename": "DVR-104_1.30_ATA_0003_SONY_39b7585b.tar",
+              "generated_date": "02/05/31",
+              "kernel_revision": null,
+              "kernel_selection_reason": "no-kernel-for-hardware",
+              "kernel_sha256": null,
+              "key": "fw/pioneer/39b7585bed934e6669a9a22351cde598e944a9aa3a414897fc5cb3a016815926.tar",
+              "modifiable": false,
+              "normal_sha256": "11150886feed43d6f50aea1aa8a090f836a1c9957646485ca2b4514aa5bad4ad",
+              "packageType": "pioneer-installer",
+              "revision": "1.30",
+              "selection": "normal-only",
+              "sha256": "39b7585bed934e6669a9a22351cde598e944a9aa3a414897fc5cb3a016815926"
+            }
+          ],
+          "revision": "1.30"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.40"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1050112,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0003:SONY:1.40:normal",
+                  "member": "components/R4101103.140.enc",
+                  "revision": "1.40",
+                  "role": "normal",
+                  "sha256": "7661e6cf3990b43aaab6f888e474960eaa45e54b53c0ea34377e0b2d7c0f1635"
+                }
+              ],
+              "embedded_model": "DVR-104",
+              "filename": "DVR-104_1.40_ATA_0003_SONY_612953e6.tar",
+              "generated_date": "02/12/12",
+              "kernel_revision": null,
+              "kernel_selection_reason": "no-kernel-for-hardware",
+              "kernel_sha256": null,
+              "key": "fw/pioneer/612953e6bbf7a605e5074dbdf4d503a7b18eb15a7aaea258920ca3ca5d43f3c4.tar",
+              "modifiable": false,
+              "normal_sha256": "7661e6cf3990b43aaab6f888e474960eaa45e54b53c0ea34377e0b2d7c0f1635",
+              "packageType": "pioneer-installer",
+              "revision": "1.40",
+              "selection": "normal-only",
+              "sha256": "612953e6bbf7a605e5074dbdf4d503a7b18eb15a7aaea258920ca3ca5d43f3c4"
+            }
+          ],
+          "revision": "1.40"
+        }
+      ]
+    },
+    {
       "destination": "TDK",
       "embedded_models": [
         "DVDRW0200E"
@@ -38314,6 +38402,62 @@
             }
           ],
           "revision": "1.33"
+        }
+      ]
+    },
+    {
+      "destination": "SONY",
+      "embedded_models": [
+        "DVR-104"
+      ],
+      "family": "pioneer",
+      "hardware": "ATA 0004",
+      "key": "pioneer:ATA 0004:SONY",
+      "other_candidates": [],
+      "platforms": [
+        "ata"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "4.20"
+              ],
+              "brand": "PIONEER",
+              "bytes": 2099200,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0004:SONY:4.20:kernel",
+                  "member": "components/R5101004.420.enc",
+                  "revision": "4.20",
+                  "role": "kernel",
+                  "sha256": "b556a4e6f6ebf3a7d4673a0640741969a3b34eb75857341bfb5796b2540e493c"
+                },
+                {
+                  "identity_key": "pioneer:ATA 0004:SONY:4.20:normal",
+                  "member": "components/R5101104.420.enc",
+                  "revision": "4.20",
+                  "role": "normal",
+                  "sha256": "b5ce96584fd753cc55eebbb11f3bf0cfc016cc281da1d0028c7a0c3882d18470"
+                }
+              ],
+              "embedded_model": "DVR-104",
+              "filename": "DVR-104_4.20_ATA_0004_SONY_ef0e66f5.tar",
+              "generated_date": "03/05/26",
+              "kernel_revision": "4.20",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "b556a4e6f6ebf3a7d4673a0640741969a3b34eb75857341bfb5796b2540e493c",
+              "key": "fw/pioneer/ef0e66f5cca5f11eb1527583bb90ce28454f9b75da063692e4351871d2c9b5f0.tar",
+              "modifiable": false,
+              "normal_sha256": "b5ce96584fd753cc55eebbb11f3bf0cfc016cc281da1d0028c7a0c3882d18470",
+              "packageType": "pioneer-installer",
+              "revision": "4.20",
+              "selection": "source-contained",
+              "sha256": "ef0e66f5cca5f11eb1527583bb90ce28454f9b75da063692e4351871d2c9b5f0"
+            }
+          ],
+          "revision": "4.20"
         }
       ]
     },

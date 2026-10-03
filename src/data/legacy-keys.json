@@ -9885,6 +9885,14 @@
       "status": "published"
     },
     {
+      "basis": "projection",
+      "key": "pioneer/DVR-104/ATA%200003/1.30/39b7585bed934e6669a9a22351cde598e944a9aa3a414897fc5cb3a016815926.tar",
+      "model": "DVR-104",
+      "new_key": "fw/pioneer/39b7585bed934e6669a9a22351cde598e944a9aa3a414897fc5cb3a016815926.tar",
+      "sha256": "39b7585bed934e6669a9a22351cde598e944a9aa3a414897fc5cb3a016815926",
+      "status": "published"
+    },
+    {
       "basis": "projection+site",
       "key": "pioneer/DVR-104/ATA%200003/1.30/b8fff5fec8571324c575b416839e76e5ec250490f05db2c91b6a9ffb290cce4a.tar",
       "model": "DVR-104",
@@ -11770,6 +11778,22 @@
       "model": "DVR-S806",
       "new_key": "fw/pioneer/0633402310e5f41e57904a91a3156b7b53fdc129dfacd17c3828305937e89163.tar",
       "sha256": "0633402310e5f41e57904a91a3156b7b53fdc129dfacd17c3828305937e89163",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/DVR104/ATA%200003/1.40/612953e6bbf7a605e5074dbdf4d503a7b18eb15a7aaea258920ca3ca5d43f3c4.tar",
+      "model": "DVR104",
+      "new_key": "fw/pioneer/612953e6bbf7a605e5074dbdf4d503a7b18eb15a7aaea258920ca3ca5d43f3c4.tar",
+      "sha256": "612953e6bbf7a605e5074dbdf4d503a7b18eb15a7aaea258920ca3ca5d43f3c4",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/DVR104/ATA%200004/4.20/ef0e66f5cca5f11eb1527583bb90ce28454f9b75da063692e4351871d2c9b5f0.tar",
+      "model": "DVR104",
+      "new_key": "fw/pioneer/ef0e66f5cca5f11eb1527583bb90ce28454f9b75da063692e4351871d2c9b5f0.tar",
+      "sha256": "ef0e66f5cca5f11eb1527583bb90ce28454f9b75da063692e4351871d2c9b5f0",
       "status": "published"
     },
     {
