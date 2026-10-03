@@ -167,8 +167,8 @@ import '../../styles/site.css';
             <pre class="terminal-body"><code><span class="c"># 1. Identify the drive first — MediaTek or Pioneer, read-only</span>
 <span class="p">$</span> freemkv-flash info &lt;dev&gt;
 
-<span class="c"># 2. Back up before touching anything — image, per-unit regions and map in one .tar</span>
-<span class="p">$</span> freemkv-flash dump &lt;dev&gt; -o backup.tar
+<span class="c"># 2. Back up before touching anything — saves the drive's firmware to a .tar</span>
+<span class="p">$</span> freemkv-flash backup &lt;dev&gt; -o backup.tar
 
 <span class="c"># 3. Eject any disc, then flash. Without --execute it only prints the plan</span>
 <span class="p">$</span> freemkv-flash flash &lt;dev&gt; -i BU40N_1.00.freemkv.bin
