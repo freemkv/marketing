@@ -1,19 +1,19 @@
 ---
 import { graph, websiteNode, orgNode, webPageNode, breadcrumbNode } from '../../lib/jsonld.mjs';
 // "Find your drive" — /firmware/find/.
-// Typeable search over the drive index in src/data/firmware-index.json using a
-// compact custom combobox (capped, scrollable, field-width list — no native
-// datalist balloon). Search matches drive models and Pioneer firmware IDs.
-// Selecting a model reveals a versions dropdown,
-// then a short detail card with either a download button (for a hosted base)
-// or a disabled "Unavailable" button plus a "donate it on Discord" call to
-// action (for a base we don't host yet — crowdsources the missing firmware).
+// Two modes on one page: "Find my firmware" (name/pasted drive string ->
+// identity -> revisions) and "Find a cross-flash" (same hardware, other IDs).
+// All data work lives in src/lib/finder.mjs (tested); rendering in
+// src/lib/finder-view.mjs. The catalogue is prebuilt here at build time and
+// embedded as JSON so the browser only hydrates and indexes it.
 import FirmwareNavDropdown from '../../components/FirmwareNavDropdown.astro';
 import mediatekIndex from '../../data/firmware-index.json';
 import pioneerIndex from '../../data/pioneer-firmware-index.json';
-const firmwareIndex = [...mediatekIndex, ...pioneerIndex]
-  .map((model) => ({ ...model, versions: model.versions.filter((version) => Boolean(version.file)) }))
-  .filter((model) => model.versions.length > 0);
+import finderCatalog from '../../data/finder-catalog.json';
+import { buildFinderData, clientData, hostedSummary } from '../../lib/finder.mjs';
+const finderData = buildFinderData({ catalog: finderCatalog, mediatek: mediatekIndex, pioneer: pioneerIndex });
+const finderJson = JSON.stringify(clientData(finderData)).replace(/</g, '\\u003c');
+const { total: hostedTotal, byChip: hostedByChip } = hostedSummary(finderData);
 
 const title = 'Find your drive firmware — freemkv';
 const description =
@@ -22,20 +22,12 @@ const description =
 const docs = '/docs/overview/';
 const github = 'https://github.com/freemkv';
 const firmwareRepo = 'https://github.com/freemkv/freemkv-firmware';
-const firmwareBaseUrl = 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
+// Enable after configuring the Pages R2 binding and Turnstile secret in QA.
+const firmwareDownloadSitekey = import.meta.env.PUBLIC_FIRMWARE_TURNSTILE_SITEKEY || '';
+const protectedDownloads = Boolean(firmwareDownloadSitekey);
+// Protected builds must not ship the public bucket origin at all.
+const firmwareBaseUrl = protectedDownloads ? '' : 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 
-// Hero summary, computed from the index so the numbers never drift: how many
-// OEM base firmwares we host, broken down by chipset (largest first).
-const hostedVersions = firmwareIndex.flatMap((m) =>
-  m.versions.filter((v) => Boolean(v.file))
-);
-const hostedTotal = hostedVersions.length;
-const hostedByChip = Object.entries(
-  hostedVersions.reduce((acc, v) => {
-    acc[v.chipset] = (acc[v.chipset] || 0) + 1;
-    return acc;
-  }, {})
-).sort((a, b) => b[1] - a[1]);
 import '../../styles/site.css';
 ---
 
@@ -58,6 +50,85 @@ import '../../styles/site.css';
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://freemkv.org/freemkv-icon.svg" />
     <script type="application/ld+json" set:html={graph(webPageNode({ path: '/firmware/find/', name: title, description }), breadcrumbNode('/firmware/find/', [['freemkv', '/'], ['Firmware', '/firmware/'], ['Find', '/firmware/find/']]), websiteNode(), orgNode())} />
+    <style is:global>
+      .fx { max-width: 720px; margin: 0 auto; }
+      .fx-tabs { display: flex; gap: 0.25rem; padding: 0.25rem; margin: 0 auto 1.25rem; width: fit-content; max-width: 100%; border: 1.5px solid var(--line); border-radius: 12px; background: var(--bg-soft); }
+      .fx-tab { font: inherit; font-weight: 650; font-size: 0.95rem; color: var(--slate); background: transparent; border: 0; border-radius: 9px; padding: 0.55rem 1rem; cursor: pointer; }
+      .fx-tab.is-active { background: #fff; color: var(--teal-darker); box-shadow: 0 2px 8px -4px rgba(15, 23, 42, 0.3); }
+      .fx-tab:focus-visible, .fx-result:focus-visible, .fx-suggest:focus-visible, .fx-link:focus-visible, .gloss:focus-visible { outline: 3px solid rgba(13, 148, 136, 0.45); outline-offset: 2px; }
+      .fx-direction { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem; margin: 0 0 0.9rem; font-size: 0.92rem; color: var(--slate); }
+      .fx-direction[hidden] { display: none; }
+      .fx-seg { display: inline-flex; gap: 0.9rem; flex-wrap: wrap; }
+      .fx-seg label { display: inline-flex; gap: 0.35rem; align-items: center; cursor: pointer; }
+      .fx-help { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.85rem; }
+      .fx-help code, .fx-howto code, .fx-empty code { font-size: 0.82em; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 5px; padding: 0.05rem 0.3rem; overflow-wrap: anywhere; }
+      .fx-status { min-height: 1.2em; margin: 0.6rem 0 0; font-size: 0.85rem; color: var(--muted); }
+      .fx-group { margin-top: 0.9rem; }
+      .fx-group-title { margin: 0 0 0.35rem; font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--teal-dark); }
+      .fx-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+      .fx-result { width: 100%; text-align: left; font: inherit; display: grid; grid-template-columns: 1fr auto; gap: 0.1rem 0.75rem; padding: 0.6rem 0.85rem; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; cursor: pointer; }
+      .fx-result:hover { border-color: var(--teal); background: var(--teal-tint); }
+      .fx-result-name { font-weight: 650; color: var(--ink); overflow-wrap: anywhere; }
+      .fx-result-count { font-size: 0.78rem; color: var(--muted); align-self: center; }
+      .fx-why { grid-column: 1 / -1; font-size: 0.82rem; color: var(--slate); }
+      .fx-empty { padding: 0.9rem 1rem; border: 1.5px dashed var(--line); border-radius: 10px; color: var(--slate); font-size: 0.92rem; }
+      .fx-empty p { margin: 0.3rem 0; }
+      .fx-suggest, .fx-link { font: inherit; color: var(--teal-dark); background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
+      .fx-detail { max-width: 720px; }
+      .fx-detail:focus { outline: none; }
+      .fx-h { margin: 1.4rem 0 0.5rem; font-size: 1rem; }
+      .fx-lead, .fx-aka { color: var(--slate); font-size: 0.92rem; margin: 0.4rem 0; }
+      .fx-muted { color: var(--muted); font-size: 0.88rem; margin: 0.3rem 0; }
+      .fx-sub { margin: 0.7rem 0 0.2rem; font-weight: 650; font-size: 0.88rem; }
+      .fx-checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.35rem; font-size: 0.92rem; }
+      .fx-checklist li { display: flex; gap: 0.5rem; align-items: baseline; flex-wrap: wrap; }
+      .fx-check { display: inline-grid; place-items: center; width: 1.3rem; height: 1.3rem; border-radius: 999px; font-weight: 800; font-size: 0.8rem; flex: none; }
+      .fx-check-ok { background: #ecfdf3; color: #067647; }
+      .fx-check-bad { background: #fef3f2; color: #b42318; }
+      .fx-check-ask { background: var(--bg-soft); color: var(--slate); border: 1px solid var(--line); }
+      .fx-term { font-size: 0.75rem; color: var(--muted); }
+      .fx-warn { padding: 0.65rem 0.85rem; border-radius: 10px; background: #fffaeb; border: 1px solid #fedf89; color: #93370d; font-size: 0.9rem; }
+      .fx-recommend { margin: 1rem 0 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem 0.9rem; align-items: center; }
+      .fx-file { font-size: 0.82rem; color: var(--muted); overflow-wrap: anywhere; }
+      .fx-provenance { font-size: 0.85rem; color: var(--slate); margin: 0.6rem 0; }
+      .fx-timeline { list-style: none; padding: 0; margin: 0; border-left: 2px solid var(--line); }
+      .fx-rev { position: relative; padding: 0.35rem 0 0.35rem 1rem; font-size: 0.92rem; display: flex; flex-wrap: wrap; gap: 0.3rem 0.6rem; align-items: baseline; }
+      .fx-rev::before { content: ""; position: absolute; left: -6px; top: 0.75rem; width: 10px; height: 10px; border-radius: 999px; background: var(--teal); }
+      .fx-rev-missing::before { background: #fff; border: 2px solid var(--muted); width: 6px; height: 6px; }
+      .fx-rev-num { font-weight: 700; font-family: var(--mono); }
+      .fx-missing { color: var(--muted); font-size: 0.85rem; }
+      .fx-tag { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--teal-darker); background: var(--teal-tint); border-radius: 5px; padding: 0.05rem 0.4rem; }
+      .fx-tag-yours { color: var(--slate); background: var(--bg-soft); }
+      .fx-rev-dl { font-size: 0.85rem; font-weight: 600; }
+      .fx-details { margin-top: 1rem; font-size: 0.85rem; }
+      .fx-details summary { cursor: pointer; color: var(--slate); font-weight: 600; }
+      .fx-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; display: block; overflow-x: auto; }
+      .fx-table th, .fx-table td { text-align: left; padding: 0.3rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+      .fx-sha { font-size: 0.75rem; overflow-wrap: anywhere; word-break: break-all; }
+      .fx-convert { margin-top: 1.4rem; padding-top: 0.6rem; border-top: 1px solid var(--line); }
+      .fx-convert-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.3rem; font-size: 0.9rem; }
+      .fx-badge { display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.03em; border-radius: 999px; padding: 0.12rem 0.55rem; }
+      .fx-badge-proven { background: #ecfdf3; color: #067647; border: 1px solid #abefc6; }
+      .fx-badge-likely { background: #eff8ff; color: #175cd3; border: 1px solid #b2ddff; }
+      .fx-badge-untested { background: #fffaeb; color: #93370d; border: 1px solid #fedf89; }
+      .fx-xf-card { border: 1.5px solid var(--line); border-radius: 12px; padding: 0.9rem 1rem; margin: 0.6rem 0; font-size: 0.92rem; }
+      .fx-xf-title { margin: 0; font-size: 1rem; }
+      .fx-xf-card ul, .fx-xf-card ol { margin: 0.2rem 0; padding-left: 1.2rem; }
+      .fx-evidence li { color: var(--slate); }
+      .fx-howto { margin-top: 1rem; padding: 0.75rem 0.9rem; background: var(--bg-soft); border-radius: 10px; font-size: 0.88rem; color: var(--slate); }
+      .fx-howto-title { margin: 0 0 0.3rem; font-weight: 700; color: var(--ink); }
+      .fx-howto ul { margin: 0; padding-left: 1.1rem; }
+      .fx-browse-wrap { margin-top: 1.5rem; font-size: 0.92rem; }
+      .fx-browse-wrap > summary { cursor: pointer; font-weight: 650; color: var(--teal-dark); }
+      .fx-browse details { margin: 0.3rem 0 0.3rem 0.9rem; }
+      .fx-browse summary { cursor: pointer; }
+      .fx-browse-hw { list-style: none; margin: 0.2rem 0 0.4rem 1rem; padding: 0; columns: 2 14rem; }
+      .fx-count { color: var(--muted); font-size: 0.8rem; }
+      .gloss { border-bottom: 1px dotted currentColor; cursor: help; position: relative; }
+      .gloss-tip { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+      .gloss:hover .gloss-tip, .gloss:focus .gloss-tip { left: 0; top: calc(100% + 0.35rem); z-index: 40; width: min(18rem, 70vw); height: auto; overflow: visible; clip-path: none; white-space: normal; padding: 0.5rem 0.65rem; border-radius: 8px; background: var(--ink); color: #fff; font-size: 0.78rem; font-weight: 500; line-height: 1.4; text-transform: none; letter-spacing: 0; pointer-events: none; }
+      @media (max-width: 560px) { .fx-tab { padding: 0.5rem 0.7rem; font-size: 0.88rem; } .fx-result { grid-template-columns: 1fr; } }
+    </style>
   </head>
   <body class="page-find">
     <!-- ============ STICKY NAV ============ -->
@@ -101,7 +172,7 @@ import '../../styles/site.css';
         <div class="hero-inner">
           <h1 class="hero-title">Find your drive</h1>
           <p class="hero-lead">
-            Type your drive's model number to find its firmware.
+            Find the exact firmware for your drive, or see which other editions it can become.
           </p>
           <p class="hero-stat">
             <strong>{hostedTotal}</strong> OEM firmwares available
@@ -114,52 +185,56 @@ import '../../styles/site.css';
         </div>
       </section>
 
-      <!-- ============ SEARCH ============ -->
+      <!-- ============ FINDER ============ -->
       <section class="block">
         <div class="section-inner">
-          <div class="picker">
-            <div class="picker-row">
-              <label class="picker-label" for="drive-search">Drive model</label>
-              <div class="combo" data-combo>
+          <div class="fx" id="finder" data-base-url={firmwareBaseUrl || undefined} data-protected={protectedDownloads ? '1' : ''}>
+            <div class="fx-tabs" role="tablist" aria-label="What do you want to do?">
+              <button type="button" role="tab" id="tab-firmware" aria-controls="fx-panel" aria-selected="true" data-mode="firmware" class="fx-tab is-active">Find my firmware</button>
+              <button type="button" role="tab" id="tab-crossflash" aria-controls="fx-panel" aria-selected="false" data-mode="crossflash" class="fx-tab" tabindex="-1">Find a cross-flash</button>
+            </div>
+            <div id="fx-panel" role="tabpanel" aria-labelledby="tab-firmware">
+              <div class="fx-direction" id="fx-direction" hidden>
+                <span class="fx-direction-label" id="fx-direction-label">I’m entering</span>
+                <div role="radiogroup" aria-labelledby="fx-direction-label" class="fx-seg">
+                  <label><input type="radio" name="fx-direction" value="from" checked /> my drive</label>
+                  <label><input type="radio" name="fx-direction" value="to" /> the edition I want</label>
+                </div>
+              </div>
+              <div class="picker-row">
+                <label class="picker-label" for="drive-search" id="fx-search-label">Your drive</label>
                 <input
                   class="picker-input"
                   id="drive-search"
-                  type="text"
-                  role="combobox"
-                  aria-expanded="false"
-                  aria-controls="drive-options"
-                  aria-autocomplete="list"
-                  placeholder="e.g. BU40N"
+                  type="search"
+                  aria-describedby="fx-search-help"
+                  aria-controls="fx-results"
+                  placeholder="e.g. BDR-S13U, BU40N, 8510 ID19"
                   autocomplete="off"
                   spellcheck="false"
                 />
-                <ul class="picker-options" id="drive-options" role="listbox" aria-label="Drive models" hidden></ul>
+                <p class="fx-help" id="fx-search-help">
+                  Type the model, or paste what your computer or MakeMKV shows for the drive
+                  (for example <code>PIONEER BD-RW BDR-UD02D 1.01</code> or <code>Drive platform: Pioneer RS8410</code> / <code>Firmware version: ID84</code>).
+                  Hardware plus ID (<code>8510 ID19</code>) and chipsets (<code>MT1959</code>) work too.
+                </p>
               </div>
-            </div>
-            <div class="picker-row rev-row is-hidden" id="rev-row">
-              <label class="picker-label" for="drive-rev">Firmware revision</label>
-              <div class="combo" data-combo>
-                <input
-                  class="picker-input"
-                  id="drive-rev"
-                  type="text"
-                  role="combobox"
-                  aria-expanded="false"
-                  aria-controls="rev-options"
-                  aria-autocomplete="list"
-                  placeholder="Select revision"
-                  autocomplete="off"
-                  spellcheck="false"
-                  readonly
-                />
-                <ul class="picker-options" id="rev-options" role="listbox" aria-label="Firmware revisions" hidden></ul>
+              <p class="fx-status" id="fx-status" role="status" aria-live="polite"></p>
+              <div class="fx-results" id="fx-results"></div>
+              <div class="picker-detail fx-detail" id="drive-detail" tabindex="-1" hidden></div>
+              <div class="next-step" id="modify-next-step" hidden>
+                <a class="next-step-link" id="firmware-next-link" href="/firmware/flash/">
+                  Next: flash it <span aria-hidden="true">→</span>
+                </a>
               </div>
+              <details class="fx-browse-wrap" id="fx-browse">
+                <summary>Browse all drives by brand</summary>
+                <div id="fx-browse-body"></div>
+              </details>
             </div>
           </div>
 
-          <div class="picker-detail" id="drive-detail"></div>
-
-          <p class="block-note" id="modify-feature-note">
+          <p class="block-note" id="modify-feature-note" hidden>
             Firmware features are structurally validated and self-verifying; the
             levers are structurally verified across the corpus.
           </p>
@@ -167,411 +242,15 @@ import '../../styles/site.css';
           <p class="block-note">
             Don't see your drive listed, or want to help us add one? Drop by <a href="https://discord.gg/yu7xMGTyek">Discord</a>.
           </p>
-
-          <div class="next-step" id="modify-next-step" hidden>
-            <a class="next-step-link" id="firmware-next-link" href="/firmware/flash/">
-              Next: flash it <span aria-hidden="true">→</span>
-            </a>
-          </div>
         </div>
       </section>
 
-      <script define:vars={{ firmwareIndex, firmwareBaseUrl }}>
-        (function () {
-          var searchInput = document.getElementById('drive-search');
-          var optionsList = document.getElementById('drive-options');
-          var revRow = document.getElementById('rev-row');
-          var revInput = document.getElementById('drive-rev');
-          var revOptions = document.getElementById('rev-options');
-          var detail = document.getElementById('drive-detail');
-          if (!searchInput || !optionsList || !revInput || !revOptions || !detail) return;
-
-          var filtered = [];
-          var activeIdx = -1;
-
-          // Currently-selected model + revision index (the rev combobox mirrors
-          // the model combobox, but its options are the chosen model's versions).
-          var curModel = null;
-          var curRevIdx = 0;
-          var revActiveIdx = -1;
-
-          // Number of hosted (downloadable) revisions for a model — the
-          // basis for the Available/Unavailable split in the picker list.
-          function hostedCount(d) {
-            var n = 0;
-            d.versions.forEach(function (v) {
-              if (v.file) n++;
-            });
-            return n;
-          }
-
-          function findModel(name) {
-            var needle = (name || '').trim().toLowerCase();
-            if (!needle) return null;
-            return firmwareIndex.find(function (d) { return d.model.toLowerCase() === needle; }) || null;
-          }
-
-          function escapeText(text) {
-            return String(text).replace(/[&<>"']/g, function (c) {
-              return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-            });
-          }
-
-          function versionLabel(v) {
-            return v.packageType === 'pioneer-installer'
-              ? v.rev + (v.kernelVersion ? ' / ' + v.kernelVersion : '') + ' · ' + v.hardware +
-                (v.destination && v.destination !== v.kernelVersion ? ' · ' + v.destination : '') +
-                (v.variant ? ' · ' + v.variant : '')
-              : v.rev + (v.variant ? ' · ' + v.variant : '');
-          }
-
-          function variantMatches(d, v, query) {
-            var normalize = function (text) { return String(text || '').toLowerCase().replace(/[_-]+/g, ' '); };
-            var terms = normalize(query).trim().split(/\s+/).filter(Boolean);
-            var text = normalize([d.brand, d.model, v.brand, v.embeddedModel, v.kernelVersion, v.destination, v.hardware].filter(Boolean).join(' '));
-            return terms.every(function (term) { return text.indexOf(term) !== -1; });
-          }
-
-          function matchingVersionIndex(d, query) {
-            return Math.max(0, d.versions.findIndex(function (v) { return variantMatches(d, v, query); }));
-          }
-
-          function filterModels(q) {
-            return firmwareIndex.filter(function (d) {
-              return d.versions.some(function (v) { return variantMatches(d, v, q); });
-            });
-          }
-
-          function closeList() {
-            optionsList.hidden = true;
-            searchInput.setAttribute('aria-expanded', 'false');
-            activeIdx = -1;
-          }
-
-          function addGroupLabel(text) {
-            var li = document.createElement('li');
-            li.className = 'picker-group-label';
-            li.setAttribute('role', 'presentation');
-            li.textContent = text;
-            optionsList.appendChild(li);
-          }
-
-          function addOption(d, count) {
-            var li = document.createElement('li');
-            li.className = 'picker-option' + (count > 0 ? '' : ' picker-option-unavailable');
-            li.setAttribute('role', 'option');
-            li.textContent = count > 0 ? d.model + ' (' + count + ')' : d.model;
-            li.addEventListener('mousedown', function (e) {
-              e.preventDefault();
-              choose(d);
-            });
-            optionsList.appendChild(li);
-          }
-
-          // Split the model list into an "Available" group (>=1 hosted
-          // revision) shown first, and an "Unavailable" group (0 hosted
-          // revisions) shown after — so a model with no firmware files is
-          // obvious before it's ever selected.
-          function openList(list) {
-            optionsList.innerHTML = '';
-            if (!list.length) {
-              filtered = [];
-              var empty = document.createElement('li');
-              empty.className = 'picker-empty';
-              empty.textContent = 'No matching drive models';
-              optionsList.appendChild(empty);
-            } else {
-              var available = [];
-              var unavailable = [];
-              list.forEach(function (d) {
-                var n = hostedCount(d);
-                (n > 0 ? available : unavailable).push({ d: d, n: n });
-              });
-              filtered = available.concat(unavailable).map(function (e) { return e.d; });
-
-              if (available.length) {
-                addGroupLabel('Available');
-                available.forEach(function (e) { addOption(e.d, e.n); });
-              }
-              if (unavailable.length) {
-                addGroupLabel('Unavailable');
-                unavailable.forEach(function (e) { addOption(e.d, e.n); });
-              }
-            }
-            optionsList.hidden = false;
-            searchInput.setAttribute('aria-expanded', 'true');
-            activeIdx = -1;
-          }
-
-          function setActive(idx) {
-            var opts = optionsList.querySelectorAll('.picker-option');
-            if (!opts.length) return;
-            if (idx < 0) idx = opts.length - 1;
-            if (idx >= opts.length) idx = 0;
-            for (var i = 0; i < opts.length; i++) opts[i].classList.remove('is-active');
-            opts[idx].classList.add('is-active');
-            opts[idx].scrollIntoView({ block: 'nearest' });
-            activeIdx = idx;
-          }
-
-          function choose(d) {
-            var query = searchInput.value;
-            searchInput.value = d.model;
-            closeList();
-            selectModel(d, query);
-          }
-
-          // Reveal + populate the revision combobox for a model, defaulting to
-          // its first version. Reserves its space when hidden (visibility toggle
-          // via .is-hidden) so revealing it never shifts the page.
-          function selectModel(d, query) {
-            curModel = d;
-            curRevIdx = matchingVersionIndex(d, query);
-            revInput.value = d.versions.length ? versionLabel(d.versions[curRevIdx]) : '';
-            revRow.classList.remove('is-hidden');
-            closeRevList();
-            render();
-          }
-
-          // Hide the revision combobox (keeping its reserved space) and clear the
-          // detail card — used whenever the model input no longer names a model.
-          function resetSelection() {
-            curModel = null;
-            document.getElementById('modify-next-step').hidden = true;
-            document.getElementById('modify-feature-note').hidden = true;
-            revRow.classList.add('is-hidden');
-            closeRevList();
-            revInput.value = '';
-            detail.hidden = true;
-            detail.innerHTML = '';
-          }
-
-          function closeRevList() {
-            revOptions.hidden = true;
-            revInput.setAttribute('aria-expanded', 'false');
-            revActiveIdx = -1;
-          }
-
-          // Build + open the revision listbox — same look as the model list.
-          function openRevList() {
-            if (!curModel) return;
-            revOptions.innerHTML = '';
-            // Group revisions by brand (LG revs, then HP BWxx, …) — the same
-            // model ships under multiple brands, so a brand header disambiguates.
-            var byBrand = {};
-            var brandOrder = [];
-            curModel.versions.forEach(function (v, i) {
-              var b = v.brand || curModel.brand || '';
-              if (!byBrand[b]) { byBrand[b] = []; brandOrder.push(b); }
-              byBrand[b].push({ v: v, i: i });
-            });
-            var showHeaders = brandOrder.length > 1;
-            brandOrder.forEach(function (b) {
-              if (showHeaders && b) {
-                var lab = document.createElement('li');
-                lab.className = 'picker-group-label';
-                lab.setAttribute('role', 'presentation');
-                lab.textContent = b;
-                revOptions.appendChild(lab);
-              }
-              byBrand[b].forEach(function (e) {
-                var li = document.createElement('li');
-                li.className = 'picker-option' + (e.i === curRevIdx ? ' is-active' : '');
-                li.setAttribute('role', 'option');
-                li.textContent = versionLabel(e.v);
-                li.addEventListener('mousedown', function (ev) {
-                  ev.preventDefault();
-                  chooseRev(e.i);
-                });
-                revOptions.appendChild(li);
-              });
-            });
-            revOptions.hidden = false;
-            revInput.setAttribute('aria-expanded', 'true');
-            revActiveIdx = curRevIdx;
-          }
-
-          function setRevActive(idx) {
-            var opts = revOptions.querySelectorAll('.picker-option');
-            if (!opts.length) return;
-            if (idx < 0) idx = opts.length - 1;
-            if (idx >= opts.length) idx = 0;
-            for (var i = 0; i < opts.length; i++) opts[i].classList.remove('is-active');
-            opts[idx].classList.add('is-active');
-            opts[idx].scrollIntoView({ block: 'nearest' });
-            revActiveIdx = idx;
-          }
-
-          function chooseRev(i) {
-            curRevIdx = i;
-            revInput.value = versionLabel(curModel.versions[i]);
-            closeRevList();
-            render();
-          }
-
-          function render() {
-            var d = curModel;
-            if (!d) {
-              detail.innerHTML = '';
-              detail.hidden = true;
-              return;
-            }
-            detail.hidden = false;
-
-            var v = d.versions[curRevIdx] || d.versions[0];
-            var key = d.model + ':' + v.rev;
-            var isPioneer = v.packageType === 'pioneer-installer';
-            var isHosted = !!v.file;
-            var canModify = v.modifiable === true;
-            document.getElementById('modify-next-step').hidden = false;
-            var nextLink = document.getElementById('firmware-next-link');
-            nextLink.href = canModify ? '/firmware/modify/' : '/firmware/flash/';
-            nextLink.textContent = canModify ? 'Next: modify it →' : 'Next: flash it →';
-            document.getElementById('modify-feature-note').hidden = !canModify;
-
-            var bodyHtml;
-            if (isHosted) {
-              var dlName = v.file.split('/').pop();
-              bodyHtml =
-                '<a class="btn btn-primary dl-btn drive-fw-btn" href="' + firmwareBaseUrl + '/' + v.file + '" download>' +
-                '<span class="dl-main">Download</span>' +
-                '</a>' + (!canModify
-                  ? ''
-                  : '<div class="drive-fw-hint">' +
-                    '<span class="drive-fw-hint-label">Then build it:</span>' +
-                    '<code class="drive-fw-cmd">freemkv-fw create ' + dlName + ' my-drive.freemkv.bin</code>' +
-                    '</div>');
-            } else {
-              bodyHtml =
-                '<span class="btn drive-fw-btn drive-fw-btn-disabled" aria-disabled="true">Unavailable</span>' +
-                (isPioneer
-                  ? '<p class="drive-fw-hint drive-fw-note">Installer package is not hosted yet.</p>'
-                  : '<p class="drive-fw-hint drive-fw-note">Have this firmware? ' +
-                    '<a class="drive-fw-link" href="https://discord.gg/yu7xMGTyek">Donate it on Discord →</a></p>');
-            }
-
-            // Tool-derived facts (from freemkv-fw create --json) — only what's
-            // useful: chipset, media, region/SKU variant, and the unlocks.
-            var facts = '';
-            if (v.chipset) facts += '<span class="drive-fact">' + v.chipset + '</span>';
-            if (isPioneer) facts += '<span class="drive-fact">' + v.hardware + '</span>';
-            if (isPioneer && Array.isArray(v.components) && v.components.length &&
-                v.components.every(function (role) { return role === 'kernel' || role === 'main'; })) {
-              var contents = [];
-              if (v.components.includes('kernel')) contents.push('Kernel');
-              if (v.components.includes('main')) contents.push('Normal');
-              facts += '<span class="drive-fact">' + contents.join(' + ') + '</span>';
-            }
-            if (isPioneer && v.kernelVersion) facts += '<span class="drive-fact">' + escapeText(v.kernelVersion) + '</span>';
-            if (isPioneer && v.destination && v.destination !== v.kernelVersion) facts += '<span class="drive-fact">Destination: ' + escapeText(v.destination) + '</span>';
-            if (isPioneer && v.embeddedModel && v.embeddedModel !== d.model) {
-              facts += '<span class="drive-fact">Firmware model: ' + v.embeddedModel + '</span>';
-            }
-            if (v.media) facts += '<span class="drive-fact">' + v.media + '</span>';
-            if (v.variant && !isPioneer) facts += '<span class="drive-fact drive-fact-variant" title="Region/SKU code">' + v.variant + '</span>';
-            // Confidence tier: BU40N is proven on real hardware; every other
-            // build is strict-build + KAT verified but not yet flashed & tested.
-            if (v.confidence === 'hardware-verified') {
-              facts += '<span class="drive-fact drive-fact-verified" title="Proven on real hardware">Hardware-verified</span>';
-            } else if (v.confidence === 'build-verified') {
-              facts += '<span class="drive-fact drive-fact-buildver" title="Strict build + KAT verified; not yet flashed &amp; tested on hardware">Build-verified</span>';
-            }
-            var factsHtml = facts ? '<div class="drive-facts">' + facts + '</div>' : '';
-            // Feature advertisement. Base-only firmware (the strict build forged a
-            // real BASE but resolved no AACS feature gate — today's classic-MT1939
-            // set, whose unlocks are pending a hardware boot-bless) advertises the
-            // base capabilities only, never the 7 unlock flags. Everything else
-            // shows the 7 real firmware flags, tinted per drive.
-            var capsHtml;
-            if (!canModify) {
-              capsHtml = '';
-            } else if (v.baseOnly) {
-              capsHtml =
-                '<div class="drive-caps drive-caps-base">' +
-                '<span class="drive-caps-label">Features</span>' +
-                '<span class="drive-cap drive-cap-on">Identity</span>' +
-                '<span class="drive-cap drive-cap-on">Save / Reset</span>' +
-                '<span class="drive-cap-note">Base only — unlock flags pending hardware validation</span>' +
-                '</div>';
-            } else {
-              capsHtml = (v.features && v.features.length)
-                ? '<div class="drive-caps"><span class="drive-caps-label">Features</span>' +
-                  v.features.map(function (f) {
-                    return '<span class="drive-cap ' + (f.ok ? 'drive-cap-on' : 'drive-cap-off') +
-                      '">' + f.name + '</span>';
-                  }).join('') +
-                  '</div>'
-                : '';
-            }
-
-            detail.innerHTML =
-              '<div class="drive-detail-head">' +
-              '<h3 class="card-title drive-title">' + (v.brand || d.brand) + ' ' + d.model + '</h3>' +
-              '<span class="drive-rev">rev ' + v.rev + '</span>' +
-              '</div>' +
-              factsHtml +
-              capsHtml +
-              bodyHtml;
-          }
-
-          searchInput.addEventListener('input', function () {
-            openList(filterModels(searchInput.value));
-            var d = findModel(searchInput.value);
-            if (d) {
-              selectModel(d);
-            } else {
-              resetSelection();
-            }
-          });
-          searchInput.addEventListener('focus', function () {
-            if (optionsList.hidden) openList(filterModels(searchInput.value));
-          });
-          searchInput.addEventListener('keydown', function (e) {
-            if (e.key === 'ArrowDown') {
-              e.preventDefault();
-              if (optionsList.hidden) openList(filterModels(searchInput.value));
-              setActive(activeIdx + 1);
-            } else if (e.key === 'ArrowUp') {
-              e.preventDefault();
-              setActive(activeIdx - 1);
-            } else if (e.key === 'Enter') {
-              if (!optionsList.hidden && activeIdx >= 0 && filtered[activeIdx]) {
-                e.preventDefault();
-                choose(filtered[activeIdx]);
-              }
-            } else if (e.key === 'Escape') {
-              closeList();
-            }
-          });
-          // Revision combobox — click/focus opens the list; keyboard mirrors the
-          // model picker. It is readonly (a fixed option set), so no typeahead.
-          revInput.addEventListener('mousedown', function (e) {
-            e.preventDefault();
-            if (revOptions.hidden) { revInput.focus(); openRevList(); } else { closeRevList(); }
-          });
-          revInput.addEventListener('focus', function () {
-            if (revOptions.hidden) openRevList();
-          });
-          revInput.addEventListener('keydown', function (e) {
-            if (e.key === 'ArrowDown') {
-              e.preventDefault();
-              if (revOptions.hidden) openRevList(); else setRevActive(revActiveIdx + 1);
-            } else if (e.key === 'ArrowUp') {
-              e.preventDefault();
-              if (revOptions.hidden) openRevList(); else setRevActive(revActiveIdx - 1);
-            } else if (e.key === 'Enter') {
-              if (!revOptions.hidden && revActiveIdx >= 0) { e.preventDefault(); chooseRev(revActiveIdx); }
-            } else if (e.key === 'Escape') {
-              closeRevList();
-            }
-          });
-
-          document.addEventListener('click', function (e) {
-            if (!e.target.closest('[data-combo]')) { closeList(); closeRevList(); }
-          });
-
-          resetSelection();
-        })();
+      <script type="application/json" id="finder-data" set:html={finderJson}></script>
+      {protectedDownloads && <div id="firmware-download-config" data-sitekey={firmwareDownloadSitekey} hidden />}
+      {protectedDownloads && <script is:inline type="module" src="/firmware-download.js"></script>}
+      <script>
+        import { startFinder } from '../../lib/finder-page.mjs';
+        startFinder(document, window);
       </script>
     </main>
 

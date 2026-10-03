@@ -4,24 +4,37 @@ The existing Pages workflow accepts an optional `firmware_release` tag. A firmwa
 release uploads and publicly verifies every staged tar before building download
 links into the site. A site-only release uses the already committed catalog.
 
-Prepare from the canonical hoard (no upload):
+Prepare from the v3 identity hoard (no upload):
 
 ```
-node scripts/firmware-release.mjs prepare /path/to/firmware-extractor /tmp/firmware-assets
-node --test scripts/firmware-release.test.mjs
+node scripts/firmware-release.mjs prepare /path/to/firmware-extractor /tmp/firmware-assets /path/to/hoard.v3
+node --test scripts/*.test.mjs
 ```
 
-The staging directory must not already exist. This invokes the Rust
-`pioneer-finder-index` validator, preserves model/hardware/advertised version,
-and creates `/tmp/firmware-assets.tar.gz`. The archive has the two website
-catalogs, a publish manifest, and unchanged installer tars. Source provenance
-is not inserted into distributed firmware tars.
+The third argument defaults to `<extractor>/hoard`. `prepare` runs
+`cargo run --release --bin fwext -- publish-catalog` in the extractor (set
+`FWEXT=/path/to/fwext` to use a prebuilt binary) with the site's current
+`pioneer-firmware-index.json`, `firmware-index.json` and
+`firmware-withdrawals.json` as legacy inputs. fwext re-inspects every Pioneer
+package (envelopes, inventory, Kernel selection, provenance) and writes the
+stage; `prepare` then re-validates it (manifest v2, catalogue/object/filename
+agreement, withdrawn Normal hashes, every legacy key resolving to the same
+bytes, payload hashes) and creates `/tmp/firmware-assets.tar.gz` containing
+`publish-manifest.json` (v2), `finder-catalog.json`, `legacy-keys.json`,
+`firmware-index.json` and `payloads/fw/<family>/<sha256>.<tar|bin>`. Objects are
+content-addressed, so each package is uploaded once whatever its names.
 
-On an isolated release branch based on production main, commit the staged
-`pioneer-firmware-index.json` and `firmware-index.json` into `src/data` alongside
-the finder/publisher changes. This keeps future site builds consistent. Do not
-push main until the firmware release is ready: an ordinary main push deploys
-immediately.
+On an isolated release branch, commit the staged `finder-catalog.json`,
+`legacy-keys.json` and `firmware-index.json` into `src/data` (publish copies the
+same three after verification). Keep `pioneer-firmware-index.json`: the Finder
+hides its entries whose hash is in the v2 catalogue, and the download function
+uses it so old links keep resolving. MediaTek files without hoard bytes stay on
+their existing `MT1939/`/`MT1959/` keys (legacy status `missing-bytes`); keep
+those objects. Do not push main until the firmware release is ready: an
+ordinary main push deploys immediately.
+
+v1 staged archives (`freemkv-firmware-publish-v1`) can still be extracted and
+published.
 
 Create a draft GitHub release containing the staging archive named exactly
 `firmware-assets.tar.gz`. Dispatch the Pages workflow from the isolated release
@@ -36,14 +49,9 @@ The workflow requires `CLOUDFLARE_ACCOUNT_ID` for the FreeMKV account and
 Wrangler's default account is deliberately not used by the publish command.
 A failure in any upload or public checksum comparison aborts before Pages deploy.
 
-The MediaTek index is preserved from the website checkout; its existing public
-links must be checked separately before staging. This release tool does not
-reconstruct MediaTek firmware from an incomplete source corpus.
-
-Optional fourth argument to `prepare`: a JSON array of `{key,path,sha256,bytes}`
-for verified MediaTek objects requiring restoration. Keys must be
-`MT1939/<name>.bin` or `MT1959/<name>.bin`, and each must appear in the staged
-MediaTek catalog. Those objects receive the same upload and public verification.
+The MediaTek feature index is preserved from the website checkout and joined to
+catalogue images by sha256. MediaTek images are published from hoard bytes only
+when they are already on the site's allowlist.
 
 Example release commands after preparing and committing the isolated branch:
 
