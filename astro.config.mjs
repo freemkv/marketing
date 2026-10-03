@@ -129,6 +129,7 @@ export default defineConfig({
           items: [
             { label: 'Components', slug: 'docs/components' },
             { label: 'How AACS Works', slug: 'docs/aacs' },
+            { label: 'Pioneer firmware', slug: 'docs/pioneer-firmware' },
             { label: 'HD DVD Format', slug: 'docs/hddvd' },
             { label: 'libfreemkv (library)', slug: 'docs/libfreemkv' },
             { label: 'FVI Format', slug: 'docs/fvi-format' },
