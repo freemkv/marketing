@@ -337,6 +337,15 @@ function baseBrand(identity) {
   return /^HL-?DT-?ST$/i.test(first) ? 'LG' : titleBrand(first);
 }
 
+/** Heading a version is listed under on the card: the OEM if known, the
+ * maker for its own (GENERAL) builds, otherwise "Other editions". */
+export function versionGroup(identity) {
+  const d = destinationLabel(identity);
+  if (d && !/^ID\d+$/.test(d)) return d;
+  if (identity.family === 'pioneer' || String(identity.destination) === 'GENERAL') return baseBrand(identity);
+  return 'Other editions';
+}
+
 /** Brand shown in the card title: the OEM edition if known, else the maker. */
 export function identityBrand(identity) {
   const d = destinationLabel(identity);
@@ -411,7 +420,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
         ...(best.features?.length ? { features: best.features.map(f => ({ name: f.name, ok: f.ok })) } : {}) });
       v.push(versions.length - 1);
     }
-    return { i, out: { n: '', brand: identityBrand(i), d: destinationLabel(i), pio: i.family === 'pioneer' ? 1 : 0, chips: r0chips(i), v } };
+    return { i, out: { n: '', brand: identityBrand(i), d: destinationLabel(i), g: versionGroup(i), pio: i.family === 'pioneer' ? 1 : 0, chips: r0chips(i), v } };
   });
   function r0chips(i) { return i.revisions[0] ? chips(i, i.revisions[0].packages[0]) : []; }
 

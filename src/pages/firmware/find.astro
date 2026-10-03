@@ -53,6 +53,7 @@ import '../../styles/site.css';
     <style is:global>
       .fx-view { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; }
       .fx-viewing { color: var(--muted); font-size: 0.9rem; }
+      .fx-vgroup { margin: 0.9rem 0 0.2rem; font-size: 0.8rem; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.05em; }
       .fx-file { margin: 0.4rem 0 0; font-size: 0.8rem; color: var(--muted); overflow-wrap: anywhere; }
       .fx-h { margin: 1.3rem 0 0.4rem; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal-dark); }
       .fx-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; font-size: 0.92rem; }
@@ -436,11 +437,28 @@ import '../../styles/site.css';
             var list = '';
             var rows = '';
             if (d.v.length > 1) {
-              list = '<h4 class="fx-h">Versions</h4><ul class="fx-list">' + d.v.map(function (row, n) {
-                return '<li><span class="fx-rev-num">' + escapeText(row[1]) + '</span>' +
-                  (n === curRevIdx ? '<span class="fx-viewing">Viewing</span>'
-                    : '<button type="button" class="fx-dl fx-view" data-view="' + n + '">View</button>') + '</li>';
-              }).join('') + '</ul>';
+              // Vertical list under brand headings: maker first, then OEMs,
+              // unknown editions last; newest first within each group.
+              var groups = [], byName = {};
+              d.v.forEach(function (row, n) {
+                var g = identities[versions[row[0]].i].g || 'Other editions';
+                if (!byName[g]) { byName[g] = []; groups.push(g); }
+                byName[g].push(n);
+              });
+              var rank = function (g) { return g === 'Other editions' ? 2 : (g === ident.brand && !ident.d) || g === 'LG' || g === 'Pioneer' ? 0 : 1; };
+              groups.sort(function (a, b) { return rank(a) - rank(b) || a.localeCompare(b); });
+              var revKey = function (r) { return /^\d+\.\d+/.test(r) ? '1' + r : '0' + r; };
+              list = '<h4 class="fx-h">Versions</h4>' + groups.map(function (g) {
+                var rows = byName[g].slice().sort(function (a, b) {
+                  var ra = revKey(versions[d.v[a][0]].r), rb = revKey(versions[d.v[b][0]].r);
+                  return ra < rb ? 1 : ra > rb ? -1 : 0;
+                });
+                return '<p class="fx-vgroup">' + escapeText(g) + '</p><ul class="fx-list">' + rows.map(function (n) {
+                  return '<li><span class="fx-rev-num">' + escapeText(versions[d.v[n][0]].r) + '</span>' +
+                    (n === curRevIdx ? '<span class="fx-viewing">Viewing</span>'
+                      : '<button type="button" class="fx-dl fx-view" data-view="' + n + '">View</button>') + '</li>';
+                }).join('') + '</ul>';
+              }).join('');
             }
             ident.v.forEach(function (vi) {
               var v = versions[vi];
