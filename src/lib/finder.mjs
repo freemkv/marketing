@@ -126,6 +126,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
       const ident = identity(src.key, { family: src.family, hardware: src.hardware, destination: src.destination });
       for (const p of src.platforms ?? []) pushUnique(ident.platforms, p);
       for (const m of src.embedded_models ?? []) pushUnique(ident.embeddedModels, m);
+      if (src.crossflash_group) ident.crossflashGroup = src.crossflash_group;
       for (const r of src.revisions ?? []) {
         if (!r.packages?.length) { pushUnique(ident.missing, r.revision); continue; }
         for (const p of r.packages) {
@@ -151,6 +152,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
         key: c.key, hardware: c.hardware, destination: c.destination,
         status: c.crossflash_status || 'untested', steps: c.steps ?? [], evidence: c.evidence ?? [],
         caution: c.caution ?? null, kernelDiff: kernelDiff(c.kernel_comparisons),
+        crossflashGroup: c.crossflash_group ?? null,
       }));
     }
     for (const a of catalog.aliases ?? []) {
@@ -477,16 +479,42 @@ function statusGroup(status) {
   return status === 'proven' ? 'proven' : (status === 'likely' || status === 'reported') ? 'likely' : 'untested';
 }
 
-/** "What can my drive become?": other editions on the same hardware. */
+// MediaTek groups are platform/form-factor/loader/board, e.g. "MT1959/desktop/JBC6/board-unknown".
+const formFactor = group => String(group ?? '').split('/')[1] ?? '';
+
+/**
+ * Cross-flash rule. Pioneer: same hardware_version, any ID; different hardware
+ * never. MediaTek: same extractor crossflash_group (platform -> loader ->
+ * board), never desktop with slim; different group never. Other families: none.
+ */
+export function crossflashAllowed(from, to, candidate) {
+  if (!from || !to || from.key === to.key || from.family !== to.family) return false;
+  if (from.family === 'pioneer') return compact(from.hardware) === compact(to.hardware);
+  if (from.family === 'mediatek') {
+    const group = candidate?.crossflashGroup;
+    if (!group) return false;
+    for (const own of [from.crossflashGroup, to.crossflashGroup]) if (own && own !== group) return false;
+    const ff = formFactor(group);
+    return Boolean(ff) && ![from.crossflashGroup, to.crossflashGroup].some(g => g && formFactor(g) !== ff);
+  }
+  return false;
+}
+
+function withCaution(from, c) {
+  // MediaTek group members are OEM changes on the same board: untested unless reported.
+  return from.family === 'mediatek' ? { ...c, caution: c.caution || 'oem-change' } : c;
+}
+
+/** "What can my drive become?": other editions it may cross-flash to. */
 export function crossflashFrom(index, key) {
   const i = index.byKey.get(key);
   const groups = { proven: [], likely: [], untested: [] };
   if (!i) return groups;
   for (const c of i.candidates) {
     const other = index.byKey.get(c.key);
-    if (!other || other.key === i.key || other.family !== i.family || compact(other.hardware) !== compact(i.hardware)) continue;
+    if (!crossflashAllowed(i, other, c)) continue;
     const status = statusGroup(c.status);
-    groups[status].push(decorate(index, i, other, { ...c, status }));
+    groups[status].push(decorate(index, i, other, withCaution(i, { ...c, status })));
   }
   return groups;
 }
@@ -496,12 +524,12 @@ export function crossflashTo(index, key) {
   const target = index.byKey.get(key);
   const groups = { proven: [], likely: [], untested: [] };
   if (!target) return groups;
-  for (const source of index.byHardware.get(compact(target.hardware)) ?? []) {
-    if (source.key === target.key || source.family !== target.family) continue;
-    const c = source.candidates.find(x => x.key === target.key);
-    if (!c) continue;
+  const pool = target.family === 'pioneer' ? (index.byHardware.get(compact(target.hardware)) ?? []) : index.identities;
+  for (const source of pool) {
+    const c = source.candidates?.find(x => x.key === target.key);
+    if (!c || !crossflashAllowed(source, target, c)) continue;
     const status = statusGroup(c.status);
-    groups[status].push(decorate(index, source, target, { ...c, status, key: source.key, identity: source }));
+    groups[status].push(decorate(index, source, target, withCaution(source, { ...c, status })));
     const row = groups[status].at(-1);
     row.key = source.key; row.identity = source; row.latest = source.revisions[0]?.revision ?? null;
     row.names = soldNames(index, source.key);

@@ -34,6 +34,12 @@ const STATUS = {
   untested: { badge: 'Untested', cls: 'fx-badge-untested', lead: 'Nobody has reported this conversion. It may fail or leave the drive unusable. Only try it if you can recover the drive.' },
 };
 
+function sameRule(identity) {
+  return identity.family === 'mediatek'
+    ? 'Only drives on the same board (same chipset, loader and board; desktop and slim never mix) can cross-flash.'
+    : 'Only drives with the same hardware can cross-flash.';
+}
+
 export function editionLabel(identity) {
   return `${identity.family === 'pioneer' ? 'SAT ' : ''}${identity.hardware} · ${identity.destination}`;
 }
@@ -187,7 +193,7 @@ export function renderConvertSummary(view) {
   const g = view.crossflash;
   const total = g.proven.length + g.likely.length + g.untested.length;
   let html = `<section class="fx-convert" aria-label="Convert to another edition"><h4 class="fx-h">Convert to another edition (${gloss('crossflash', 'cross-flash')})</h4>`;
-  if (!total) return html + '<p class="fx-muted">No other editions of this hardware are in the catalogue. Only drives with the same hardware can cross-flash.</p></section>';
+  if (!total) return html + `<p class="fx-muted">No other editions are in the catalogue. ${sameRule(view.identity)}</p></section>`;
   html += '<ul class="fx-convert-list">';
   for (const status of ['proven', 'likely', 'untested']) for (const c of g[status])
     html += `<li><span class="fx-badge ${STATUS[status].cls}">${STATUS[status].badge}</span> ${esc(editionLabel(c.identity))}` +
@@ -204,9 +210,9 @@ export function renderCrossflash(identity, groups, { direction = 'from', protect
   let html = `<div class="fx-xf"><h3 class="card-title">${direction === 'from'
     ? `What can ${esc(editionLabel(identity))} become?`
     : `Which drives can become ${esc(editionLabel(identity))}?`}</h3>` +
-    '<p class="fx-lead">Only drives with the same hardware can cross-flash. Drives with different hardware are never shown here, ' +
-    `whatever their name. ${gloss('crossflash', 'Cross-flashing')} changes your drive’s ${gloss('id', 'ID')}.</p>`;
-  if (!total) return html + '<p class="fx-empty">No other editions of this hardware are in the catalogue yet.</p></div>';
+    `<p class="fx-lead">${sameRule(identity)} Other drives are never shown here, whatever their name. ` +
+    `${gloss('crossflash', 'Cross-flashing')} changes your drive’s ${gloss('id', 'ID')}.</p>`;
+  if (!total) return html + '<p class="fx-empty">No other editions it can cross-flash with are in the catalogue yet.</p></div>';
   for (const status of ['proven', 'likely', 'untested']) {
     const list = groups[status];
     if (!list.length) continue;
@@ -224,7 +230,7 @@ export function renderCrossflash(identity, groups, { direction = 'from', protect
       if (c.evidence?.length) html += '<p class="fx-sub">Evidence</p><ul class="fx-evidence">' + c.evidence.map(e =>
         `<li>${e.quote ? `“${esc(e.quote)}”` : esc(e.ref || '')}${e.source ? ' <span class="fx-muted">(' + esc(e.source) + (e.date ? ', ' + esc(e.date) : '') + ')</span>' : ''}</li>`).join('') + '</ul>';
       if (c.kernelDiff && status !== 'proven') html += `<p class="fx-muted">Measured: the two editions’ kernels differ in ${esc(c.kernelDiff.bytes)} of ${esc(c.kernelDiff.size)} bytes (${esc(c.kernelDiff.kinds.map(k => k.replace('-', ' ')).join(', '))}).</p>`;
-      if (c.caution === 'oem-change') html += '<p class="fx-warn">This also changes the brand the drive reports.</p>';
+      if (c.caution === 'oem-change') html += `<p class="fx-warn"><strong>Caution: OEM change on the same board, untested unless reported.</strong> This changes the brand edition the drive reports.</p>`;
       if (pkg) html += '<div class="fx-recommend">' +
         downloadButton(pkg, { protectedDownloads, baseUrl }, `${status === 'untested' ? 'Untested cross-flash' : 'Cross-flash'} download: ${editionLabel(target)} ${target.revisions[0].revision}`, 'btn btn-secondary dl-btn drive-fw-btn') +
         `<span class="fx-file">This is firmware for ${esc(editionLabel(target))}, not your current edition.</span></div>`;

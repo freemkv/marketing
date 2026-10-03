@@ -53,7 +53,7 @@ test('different hardware is never a candidate in either direction', () => {
   }
   const lone = crossflashFrom(ix, 'pioneer:9200:ID43');
   assert.deepEqual(keys(lone), { proven: [], likely: [], untested: [] });
-  assert.match(renderCrossflash(ix.byKey.get('pioneer:9200:ID43'), lone), /No other editions of this hardware/);
+  assert.match(renderCrossflash(ix.byKey.get('pioneer:9200:ID43'), lone), /No other editions it can cross-flash with/);
   assert.deepEqual(keys(crossflashTo(ix, 'pioneer:9200:ID43')), { proven: [], likely: [], untested: [] });
 });
 
@@ -69,4 +69,50 @@ test('firmware view summarises conversions and links to cross-flash mode; ?mode=
   assert.deepEqual(search(ix, 'Drive platform: Pioneer RS9201 Firmware version: ID43').exact[0].targets, ['pioneer:9201:ID43']);
   assert.equal(routeFromUrl(ix, '?mode=other').mode, 'firmware');
   assert.ok(SHA.s13j103);
+});
+
+// MediaTek: same extractor crossflash_group (platform -> loader -> board) only.
+function mtkCatalog() {
+  const c = catalog();
+  const G = 'MT1959/desktop/JB8/NS50', SLIM = 'MT1959/slim/JB8/NS50', OTHER = 'MT1939/desktop/JB7/board-unknown';
+  const img = (n, rev, extra = {}) => ({ sha256: n.repeat(64), bytes: 2048, key: `fw/mediatek/${n.repeat(64)}.bin`, filename: `X_${rev}_${n.repeat(8)}.bin`,
+    revision: rev, packageType: 'mediatek-image', ...extra });
+  const mtk = (hardware, destination, group, rev, n, candidates, extra = {}) => ({ key: `mediatek:${hardware}:${destination}`, family: 'mediatek', hardware, destination,
+    platforms: ['MT1959'], embedded_models: [hardware.split(' ')[1]], crossflash_group: group, revisions: [{ revision: rev, packages: [img(n, rev, extra)] }], other_candidates: candidates });
+  const cand = (hardware, destination, group, status = 'untested') => ({ key: `mediatek:${hardware}:${destination}`, hardware, destination, crossflash_group: group, crossflash_status: status, caution: 'oem-change' });
+  c.identities.push(
+    mtk('HL-DT-ST BH16NS40 NS50', 'N', G, '1.03', 'a', [cand('HL-DT-ST BH16NS40 NS50', 'W', G), cand('HL-DT-ST BU40N NS50', 'P', SLIM), cand('HL-DT-ST BH16NS40 JB7', 'N', OTHER), { key: 'mediatek:HL-DT-ST BH16NS48 NS50:N', crossflash_status: 'untested' }],
+      { provenance: 'LG BH16NS40 1.03 from the LG support site, captured 2019-04-02' }),
+    { ...mtk('HL-DT-ST BH16NS40 NS50', 'W', G, '1.02', 'b', [cand('HL-DT-ST BH16NS40 NS50', 'N', G, 'reported')]), missing_revisions: [{ revision: '1.03', evidence: [{ source: 'forum' }] }, '1.01'] },
+    mtk('HL-DT-ST BU40N NS50', 'P', SLIM, '1.00', 'c', [cand('HL-DT-ST BH16NS40 NS50', 'N', G)]),
+    mtk('HL-DT-ST BH16NS40 JB7', 'N', OTHER, '1.01', 'd', []),
+    mtk('HL-DT-ST BH16NS48 NS50', 'N', G, '1.00', 'e', []),
+  );
+  return c;
+}
+
+test('MediaTek: same crossflash group is a cautioned candidate; desktop/slim and other groups never shown', () => {
+  const ix = indexFinder(buildFinderData({ catalog: mtkCatalog() }));
+  const from = crossflashFrom(ix, 'mediatek:HL-DT-ST BH16NS40 NS50:N');
+  assert.deepEqual(keys(from), { proven: [], likely: [], untested: ['mediatek:HL-DT-ST BH16NS40 NS50:W'] });
+  assert.equal(from.untested[0].caution, 'oem-change');
+  const html = renderCrossflash(ix.byKey.get('mediatek:HL-DT-ST BH16NS40 NS50:N'), from);
+  assert.match(html, /Caution: OEM change on the same board, untested unless reported/);
+  assert.match(html, /Only drives on the same board/);
+  assert.doesNotMatch(html, /BU40N|JB7|BH16NS48/);
+  // A reported result moves the pair out of untested; reverse lookup obeys the same group rule.
+  assert.deepEqual(keys(crossflashTo(ix, 'mediatek:HL-DT-ST BH16NS40 NS50:N')), { proven: [], likely: ['mediatek:HL-DT-ST BH16NS40 NS50:W'], untested: [] });
+  assert.deepEqual(keys(crossflashFrom(ix, 'mediatek:HL-DT-ST BU40N NS50:P')), { proven: [], likely: [], untested: [] });
+  // Pioneer keeps the hardware rule.
+  assert.deepEqual(keys(crossflashFrom(ix, 'pioneer:9201:ID43')).proven, ['pioneer:9201:ID72']);
+});
+
+test('catalogue missing_revisions and per-package provenance populate the timeline and provenance line', () => {
+  const ix = indexFinder(buildFinderData({ catalog: mtkCatalog() }));
+  const w = identityView(ix, 'mediatek:HL-DT-ST BH16NS40 NS50:W');
+  assert.deepEqual(w.timeline.map(t => [t.revision, t.status]), [['1.03', 'missing'], ['1.02', 'available'], ['1.01', 'missing']]);
+  assert.match(renderIdentity(w), /1\.03<\/span> <span class="fx-missing">Known to exist/);
+  const n = identityView(ix, 'mediatek:HL-DT-ST BH16NS40 NS50:N');
+  assert.equal(n.provenance, 'LG BH16NS40 1.03 from the LG support site, captured 2019-04-02');
+  assert.match(renderIdentity(n), /Where it comes from:<\/strong> LG BH16NS40 1.03 from the LG support site/);
 });
