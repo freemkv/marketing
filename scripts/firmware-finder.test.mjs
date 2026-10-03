@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { buildFinderData, finderPageData, hostedSummary, compareRevision, destinationLabel, sourceNote } from '../src/lib/finder.mjs';
+import { buildFinderData, finderPageData, hostedSummary, compareRevision, destinationLabel } from '../src/lib/finder.mjs';
 import { catalog, mediatek, pioneer, SHA, V1_ONLY_SHA, MTK_ONLY_SHA } from './fixtures/finder-catalog.mjs';
 
 const data = () => buildFinderData({ catalog: catalog(), mediatek: mediatek() });
@@ -53,16 +53,14 @@ test('one version per revision; the kernel-bearing package is preferred and the 
   assert.deepEqual(d.identities[v.i].chips.map(c => c[0]), ['Pioneer', 'Hardware SAT 9201', 'ID ID43', 'Kernel + Normal']);
 });
 
-test('MediaTek keeps feature data from the old index; source notes are human', () => {
+test('MediaTek keeps feature data from the old index; no provenance', () => {
   const d = page();
   const v = d.versions[model(d, 'BU40N').v[0][0]];
   assert.equal(v.mod, 1);
   assert.deepEqual(v.features, [{ name: 'Region-free', ok: true }]);
   assert.ok(d.identities[v.i].chips.some(c => c[0] === 'Hardware-verified'));
-  const i = { family: 'pioneer', hardware: '8A10' };
-  assert.equal(sourceNote(i, { provenance: 'Source BDR-UD04_1.14.reconstructed.tar' }), 'Rebuilt from a drive dump');
-  assert.equal(sourceNote(i, { provenance: 'Source BDR-UD04_FW111.exe' }), 'Pioneer download BDR-UD04_FW111.exe');
-  assert.equal(sourceNote(i, { provenance: 'FirmwareHQ mirror X.exe (captured 2026-09-25)' }), 'FirmwareHQ mirror X.exe');
+  // Users get downloads, never provenance.
+  assert.ok(d.packages.every(p => !('src' in p)));
 });
 
 test('object keys ship only for public builds; v1-only Pioneer rows add no packages', () => {

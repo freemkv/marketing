@@ -10,7 +10,7 @@ import FirmwareNavDropdown from '../../components/FirmwareNavDropdown.astro';
 import mediatekIndex from '../../data/firmware-index.json';
 import pioneerIndex from '../../data/pioneer-firmware-index.json';
 import finderCatalog from '../../data/finder-catalog.json';
-import { buildFinderData, finderPageData, hostedSummary } from '../../lib/finder.mjs';
+import { buildFinderData, finderPageData, modelVersionSummary } from '../../lib/finder.mjs';
 
 const title = 'Find your drive firmware — freemkv';
 const description =
@@ -26,7 +26,7 @@ const firmwareBaseUrl = protectedDownloads ? '' : 'https://pub-10fe57a98db44568a
 
 const finderData = buildFinderData({ catalog: finderCatalog, mediatek: mediatekIndex });
 const finder = finderPageData(finderData, { legacy: [...mediatekIndex, ...pioneerIndex], keys: !protectedDownloads });
-const { total: hostedTotal, byChip: hostedByChip } = hostedSummary(finderData);
+const { total: hostedTotal, byChip: hostedByChip } = modelVersionSummary(finder);
 import '../../styles/site.css';
 ---
 
@@ -428,7 +428,7 @@ import '../../styles/site.css';
                 ? '<div class="drive-fw-hint"><span class="drive-fw-hint-label">Then build it:</span>' +
                   '<code class="drive-fw-cmd">freemkv-fw create ' + escapeText(p.f) + ' my-drive.freemkv.bin</code></div>'
                 : '') +
-              (p.src ? '<p class="fx-src"><strong>Where it comes from:</strong> ' + escapeText(p.src) + '</p>' : '');
+              '';
 
             var list = '';
             var rows = '';
@@ -444,12 +444,12 @@ import '../../styles/site.css';
                 var q = packages[pi];
                 rows += '<tr><td>' + escapeText(v.r) + '</td><td>' + escapeText(q.f) + (q.b ? ' (' + escapeText(q.b) + ')' : '') +
                   (n > 0 ? '<br>' + download(q, 'Download', 'fx-dl') : '') + '</td><td>' + escapeText(q.contents) +
-                  (q.built ? '<br>Built ' + escapeText(q.built) : '') + '</td><td>' + escapeText(q.src) +
+                  (q.built ? '<br>Built ' + escapeText(q.built) : '') +
                   '</td><td><code class="fx-sha">' + escapeText(q.s) + '</code></td></tr>';
               });
             });
             var details = '<details class="fx-details"><summary>Details</summary><table class="fx-table"><thead><tr>' +
-              '<th scope="col">Revision</th><th scope="col">File</th><th scope="col">Contents</th><th scope="col">Source</th><th scope="col">SHA-256</th>' +
+              '<th scope="col">Revision</th><th scope="col">File</th><th scope="col">Contents</th><th scope="col">SHA-256</th>' +
               '</tr></thead><tbody>' + rows + '</tbody></table></details>';
 
             // "I have X, what can I flash on it": same hardware only (built in).

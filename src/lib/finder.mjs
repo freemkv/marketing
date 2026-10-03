@@ -281,6 +281,28 @@ export function componentsLabel(components) {
 }
 
 /** Hero counts: hosted packages by chipset. */
+// What users count: unique drive model + firmware version pairs, as listed
+// in the model dropdown (a model shares firmware with others, so this is
+// larger than the number of distinct files).
+export function modelVersionSummary(page) {
+  const byChip = {};
+  let total = 0;
+  for (const model of page.models) {
+    const seen = new Set();
+    for (const [v] of model.v) {
+      const version = page.versions[v];
+      const key = version.r;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      total++;
+      const ident = page.identities[version.i];
+      const chip = ident.pio ? 'Pioneer' : (ident.chip || 'MediaTek');
+      byChip[chip] = (byChip[chip] || 0) + 1;
+    }
+  }
+  return { total, byChip: Object.entries(byChip).sort((a, b) => b[1] - a[1]) };
+}
+
 export function hostedSummary(data) {
   const byChip = {};
   let total = 0;
@@ -326,16 +348,6 @@ function hardwareLabel(identity) {
 }
 
 /** Short, human "where it comes from" line for a package. */
-export function sourceNote(identity, pkg) {
-  const p = String(pkg.provenance ?? '').trim();
-  if (!p) return '';
-  if (/reconstructed|live-derived/i.test(p)) return 'Rebuilt from a drive dump';
-  const published = p.match(/^freemkv published image\b/i);
-  if (published) return 'freemkv archive';
-  const src = p.match(/^Source\s+(.+)$/);
-  if (src) return `${baseBrand(identity)} download ${src[1]}`;
-  return p.replace(/\s*\([^)]*\)\s*$/, '');
-}
 
 function bytesLabel(n) {
   if (!Number.isFinite(n)) return '';
@@ -391,7 +403,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     for (const r of i.revisions) {
       const p = r.packages.map(pkg => {
         packages.push({ s: pkg.sha256, f: String(pkg.filename ?? '').replace(/_GENERAL(?=_)/, ''), ...(keys ? { k: pkg.file ?? pkg.key } : {}), b: bytesLabel(pkg.bytes),
-          src: sourceNote(i, pkg), built: pkg.generatedDate || '', contents: contentsLabel(pkg) });
+          built: pkg.generatedDate || '', contents: contentsLabel(pkg) });
         return packages.length - 1;
       });
       const best = r.packages[0];
