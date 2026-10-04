@@ -134,7 +134,7 @@ a[data-unavailable] { display: none !important; }
 .dl-soon-note { margin: 0.7rem 0 0; font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
 .card.is-detected { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15); }
 .dl-btn.is-match { box-shadow: 0 0 0 2px var(--teal-darker), 0 6px 18px -8px rgba(13, 148, 136, 0.7); }
-.dl-autorip-bin { max-width: 720px; margin: 2.5rem auto 0; text-align: center; }
+.dl-library-bin { max-width: 720px; margin: 2.5rem auto 0; text-align: center; }
 .dl-bin-title { font-size: 1.15rem; font-weight: 700; margin: 0 0 0.4rem; }
 .dl-bin-lead { color: var(--muted); font-size: 0.92rem; margin: 0 0 1.25rem; }
 .dl-list-row { flex-direction: row; flex-wrap: wrap; justify-content: center; }

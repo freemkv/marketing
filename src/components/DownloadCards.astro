@@ -1,0 +1,56 @@
+---
+// Per-OS download cards for the freemkv app and CLI sections of download.astro.
+// Links use `releases/latest/download/<asset>`; the page script rewrites them
+// for a picked version via `data-asset`.
+interface Build {
+  file: string;
+  arch: string;
+  label: string;
+  main?: string;
+  key?: string;
+  secondary?: boolean;
+}
+interface Platform {
+  name: string;
+  os: string;
+  builds: Build[];
+  brew?: string;
+  commands?: string[];
+  note?: string;
+}
+interface Props {
+  platforms: Platform[];
+  repo: string;
+}
+const { platforms, repo } = Astro.props;
+---
+
+<div class="grid dl-stack">
+  {platforms.map((p) => (
+    <article class="card" data-os={p.os} data-platform-card>
+      <h3 class="card-title">{p.name}</h3>
+      <div class="dl-list">
+        {p.brew && <code class="dl-brew-cmd">{p.brew}</code>}
+        {p.builds.map((b) => (
+          <a
+            class={`btn ${b.secondary ? 'btn-secondary' : 'btn-primary'} dl-btn`}
+            data-key={b.key}
+            data-asset={b.file}
+            href={`${repo}/releases/latest/download/${b.file}`}
+            download
+          >
+            <span class="dl-main">{b.main ?? 'Download'} <span class="dl-arch">{b.arch}</span></span>
+            <span class="dl-sub">{b.label}</span>
+          </a>
+        ))}
+        {p.commands?.map((c) => <code class="dl-brew-cmd">{c}</code>)}
+        {p.note && <p class="dl-mac-help">{p.note}</p>}
+      </div>
+      {p.os === 'windows' && (
+        <p class="dl-soon-note">
+          Windows may flag this unsigned download — <a href="/docs/platforms-windows/">first-run help</a>.
+        </p>
+      )}
+    </article>
+  ))}
+</div>

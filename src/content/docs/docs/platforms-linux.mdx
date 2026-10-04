@@ -5,21 +5,26 @@ description: Install and update freemkv on Linux, find your settings and output,
 
 import AppShowcase from '../../../components/AppShowcase.astro';
 
-freemkv provides a native GTK4 desktop app and a command-line interface on Linux. Both use the same ripping engine. Choose a package from the **[Download page](/download/)**.
+freemkv comes in two builds for Linux. **Install one or the other**; both are the `freemkv` command and use the same ripping engine. Choose a download from the **[Download page](/download/)**.
+
+- **freemkv** (the app): a native GTK4 desktop app plus every CLI command. `.deb`, Flatpak (FlatPark or a direct bundle) or AppImage.
+- **freemkv CLI**: the command line only, without GTK. `.deb` or static binaries.
+
+With the app, a bare `freemkv` opens the window. With no display (for example over SSH, where neither `DISPLAY` nor `WAYLAND_DISPLAY` is set) it prints usage instead, like the CLI.
 
 <AppShowcase os="ubuntu" />
 
 ## Requirements
 
-- The desktop packages are **x86_64** only and need GTK 4.10 and libadwaita 1.4 or newer: the `.deb` targets Ubuntu 24.04 and Linux Mint 22, the AppImage Ubuntu 24.04+ or Fedora 40+, and the Flatpak brings its own GNOME runtime.
-- The standalone CLI is a static binary for **x86_64** or **ARM64** with no GTK dependency.
+- The app packages are **x86_64** only and need GTK 4.10 and libadwaita 1.4 or newer: the `.deb` targets Ubuntu 24.04 and Linux Mint 22, the AppImage Ubuntu 24.04+ or Fedora 40+, and the Flatpak brings its own GNOME runtime.
+- The CLI comes as a `.deb` for x86_64 Ubuntu or Linux Mint, or as a static binary for **x86_64** or **ARM64** on any distro, with no GTK dependency.
 - An optical drive. See [OEM (stock) drives](/docs/drives-oem/) and [Unlocked drives](/docs/drives-unlocked/) for drive support.
 
 ## Install
 
-### Desktop app
+### App
 
-The desktop packages include both the desktop app and the CLI. Snap Store and Flathub listings are not currently available; the downloads below work independently of those submissions.
+The app packages include both the desktop app and the CLI. Snap Store and Flathub listings are not currently available; the downloads below work independently of those submissions.
 
 #### Native .deb package
 
@@ -30,7 +35,19 @@ sudo apt install ./freemkv-amd64.deb
 freemkv --version
 ```
 
-APT installs the required desktop libraries. This package uses normal host drive permissions and has no application sandbox. Compatibility with other Debian-based distributions has not been validated.
+Open **freemkv** from your application menu, or run `freemkv`. APT installs the required desktop libraries. This package uses normal host drive permissions and has no application sandbox. Compatibility with other Debian-based distributions has not been validated.
+
+#### Flatpak from FlatPark
+
+[FlatPark](https://flatpark.org/apps/org.freemkv.FreeMKV) packages the official `.deb` from each GitHub release as an **x86_64** Flatpak, so `flatpak update` picks up new freemkv releases. Add the FlatPark remote once, then install:
+
+```bash
+flatpak remote-add --if-not-exists flatpark https://dl.flatpark.org/flatpark.flatpakrepo
+flatpak install flatpark org.freemkv.FreeMKV
+flatpak run org.freemkv.FreeMKV
+```
+
+Arguments after the app ID go to the CLI, for example `flatpak run org.freemkv.FreeMKV info disc://`. The app can access devices, the network (for key downloads), and your Videos and Downloads folders; to rip elsewhere in your home folder, run `flatpak override --user --filesystem=home org.freemkv.FreeMKV`. For problems specific to the FlatPark package, open an issue on [FlatPark](https://github.com/flatpark/flatpark).
 
 #### Direct Flatpak bundle
 
@@ -40,11 +57,17 @@ The **x86_64** Flatpak is available directly from GitHub Releases. Install Flatp
 flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 ```
 
-Download `freemkv-x86_64.flatpak`, then run:
+Download `freemkv-x86_64-linux.flatpak`, then run:
 
 ```bash
-flatpak install --user ./freemkv-x86_64.flatpak
+flatpak install --user ./freemkv-x86_64-linux.flatpak
 flatpak run org.freemkv.FreeMKV
+```
+
+The app also appears in your application menu. To use its CLI:
+
+```bash
+flatpak run --command=freemkv org.freemkv.FreeMKV --version
 ```
 
 The bundle can access devices and your Videos and Downloads folders. Host device permissions still apply.
@@ -60,26 +83,29 @@ chmod +x freemkv-x86_64-linux.AppImage
 
 Keep the file wherever you prefer. The AppImage bundles GTK4 and libadwaita.
 
-### Command line
+### Command line only
 
-Download the standalone binary matching your CPU. For x86_64:
-
-```bash
-chmod +x freemkv-x86_64-linux
-./freemkv-x86_64-linux --version
-```
-
-For ARM64, use `freemkv-aarch64-linux` instead. These static binaries have no desktop interface. With the `.deb` installed, `freemkv` is already on your `PATH`; for the Flatpak, use:
+On x86_64 Ubuntu or Linux Mint, install the `freemkv-cli` package:
 
 ```bash
-flatpak run --command=freemkv org.freemkv.FreeMKV --version
+sudo apt install ./freemkv-cli-amd64.deb
+freemkv --version
 ```
 
-Running `freemkv gui` from a desktop package opens the desktop interface. See the [CLI reference](/docs/cli/) for ripping commands and options.
+The `freemkv` and `freemkv-cli` packages both install `/usr/bin/freemkv` and replace each other, so installing one removes the other.
+
+On any distro, download the static binary matching your CPU. For x86_64:
+
+```bash
+chmod +x freemkv-cli-x86_64-linux
+./freemkv-cli-x86_64-linux --version
+```
+
+For ARM64, use `freemkv-cli-aarch64-linux` instead. These have no desktop interface; a bare `freemkv` prints usage. See the [CLI reference](/docs/cli/) for ripping commands and options.
 
 ### Verify the download
 
-The AppImage and the standalone binaries on [GitHub Releases](https://github.com/freemkv/freemkv/releases) each have a matching `.sha256` file; the `.deb` and Flatpak bundle do not. Compare the hash of your download with the line for the same file name:
+Every package and binary on [GitHub Releases](https://github.com/freemkv/freemkv/releases) has a matching `.sha256` file. Compare the hash of your download with the line for the same file name:
 
 ```bash
 sha256sum freemkv-x86_64-linux.AppImage
@@ -104,17 +130,18 @@ If your system cannot mount an AppImage, try:
 
 | Installation | Update | Remove |
 |---|---|---|
-| `.deb` | Download the new package and repeat `sudo apt install ./freemkv-amd64.deb` | `sudo apt remove freemkv` |
-| Flatpak bundle | Download the new bundle and repeat `flatpak install --user ./freemkv-x86_64.flatpak` | `flatpak uninstall --user org.freemkv.FreeMKV` |
+| `.deb` | Download the new package and repeat `sudo apt install ./freemkv-amd64.deb` (or `./freemkv-cli-amd64.deb`) | `sudo apt remove freemkv` (or `freemkv-cli`) |
+| FlatPark | `flatpak update` | `flatpak uninstall org.freemkv.FreeMKV` |
+| Flatpak bundle | Download the new bundle and repeat `flatpak install --user ./freemkv-x86_64-linux.flatpak` | `flatpak uninstall --user org.freemkv.FreeMKV` |
 | AppImage or standalone CLI | Close freemkv and replace the downloaded file | Delete the downloaded file |
 
-There is no freemkv APT repository yet. Direct Flatpak bundles also require manual app updates; `flatpak update` updates installed runtimes but does not fetch new freemkv bundles from GitHub. Settings and ripped movies are separate from program files, so updating or removing freemkv leaves them in place.
+There is no freemkv APT repository yet. Direct Flatpak bundles (unlike FlatPark) require manual app updates; `flatpak update` updates installed runtimes but does not fetch new freemkv bundles from GitHub. Settings and ripped movies are separate from program files, so updating or removing freemkv leaves them in place.
 
 ## File locations
 
 | What | Location |
 |---|---|
-| Desktop settings | `$XDG_DATA_HOME/freemkv/gui-settings.json`, normally `~/.local/share/freemkv/gui-settings.json`; for the Flatpak, `~/.var/app/org.freemkv.FreeMKV/data/freemkv/gui-settings.json` |
+| Desktop settings | `$XDG_DATA_HOME/freemkv/gui-settings.json`, normally `~/.local/share/freemkv/gui-settings.json`; for either Flatpak, `~/.var/app/org.freemkv.FreeMKV/data/freemkv/gui-settings.json` |
 | Desktop diagnostic log | `log.txt` in the same folder, written only when the app's log level is **Verbose** or debug messages are on |
 | Finished movies | The output location you choose before ripping; the desktop app suggests your XDG Videos folder |
 | AACS keys | See [Decryption Keys](/docs/decryption-keys/) |
@@ -126,7 +153,7 @@ To capture a CLI log at a specific path:
 freemkv info disc:// --log-level 3 --log-file "$HOME/freemkv-log.txt"
 ```
 
-Use the path to your downloaded binary, or the Flatpak CLI command above, if you did not install the `.deb`.
+Use the path to your downloaded binary, or the Flatpak CLI command above, if you did not install a `.deb`.
 
 ## Drive access
 
@@ -134,9 +161,9 @@ Both interfaces use **SCSI generic** devices at `/dev/sg*`. Installing a package
 
 Close other software using the disc and check the drive connection before retrying.
 
-## autorip
+## freemkv-library
 
-For automatic ripping through a browser, use autorip's Linux binary or Docker image. See [autorip Service](/docs/autorip/) for setup, data locations and a Compose example.
+For automatic ripping through a browser, use the freemkv-library Docker image. See [freemkv-library](/docs/library/) for setup, data locations and a Compose example.
 
 The Docker configuration needs access to the optical devices. The supplied example uses `privileged: true` and a `/dev:/dev` bind mount; keep its persistent configuration and output mounts when updating the container.
 
@@ -152,4 +179,4 @@ The Docker configuration needs access to the optical devices. The supplied examp
 - [Decryption Keys](/docs/decryption-keys/) for key setup
 - [Troubleshooting](/docs/troubleshooting/) for logs and shared fixes
 - [CLI reference](/docs/cli/) for ripping commands and options
-- [autorip Service](/docs/autorip/) for automatic ripping
+- [freemkv-library](/docs/library/) for automatic ripping

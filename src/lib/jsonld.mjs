@@ -41,7 +41,7 @@ export const orgNode = () => ({
   sameAs: ['https://github.com/freemkv'],
 });
 
-/** The main freemkv application (app + CLI + autorip). */
+/** The main freemkv application (app + CLI + server). */
 export const appNode = (extra = {}) => ({
   '@type': 'SoftwareApplication',
   '@id': ID.app,

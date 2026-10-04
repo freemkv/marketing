@@ -3,7 +3,7 @@ title: Components
 description: The eight crates that make up the freemkv toolchain, what each one owns, and how they fit together.
 ---
 
-freemkv is a family of eight Rust crates. Two are front ends you run (the freemkv app and command line, and the autorip service); the rest are libraries they share, plus a drive emulator for testing. Each section below says what the piece owns, what it deliberately leaves to someone else, and where to read more.
+freemkv is a family of eight Rust crates. Two are front ends you run (the freemkv app and command line, and the freemkv-library server); the rest are libraries they share, plus a drive emulator for testing. Each section below says what the piece owns, what it deliberately leaves to someone else, and where to read more.
 
 ## freemkv
 
@@ -14,14 +14,14 @@ freemkv is a family of eight Rust crates. Two are front ends you run (the freemk
 
 See the [CLI reference](/docs/cli/). Get it from the [Download](/download/) page. Source: [freemkv/freemkv](https://github.com/freemkv/freemkv).
 
-## autorip
+## freemkv-library
 
-**A headless auto-ripping web service.** Insert a disc and it rips to MKV on its own: it detects optical drives, runs the full sweep, patch, and mux pipeline, and serves a web UI for settings, live progress, and history. Runs as a single binary, or via Docker on Linux.
+**The freemkv web server (formerly autorip).** Insert a disc and it rips to MKV on its own: it detects optical drives, runs the full sweep, patch, and mux pipeline, and serves a web UI for settings, live progress, and history, plus a Library tab for your MKVs and ISOs. Ships as a Docker image.
 
 - **Owns:** drive detection, the rip-on-insert trigger, the web UI and HTTP API, and job history.
 - **Does not:** have its own rip logic. It runs the same freemkv-engine as the desktop app and command line, so both behave identically on the same disc.
 
-See the [autorip service](/docs/autorip/). Published to GHCR at `ghcr.io/freemkv/autorip:latest`. Source: [freemkv/autorip](https://github.com/freemkv/autorip).
+See [freemkv-library](/docs/library/). Published to GHCR at `ghcr.io/freemkv/freemkv-library:latest` (also still as `ghcr.io/freemkv/autorip`). Built from the [freemkv/freemkv](https://github.com/freemkv/freemkv) repo and run as `freemkv server`.
 
 ## freemkv-engine
 
@@ -79,6 +79,6 @@ Source: [freemkv/bdemu](https://github.com/freemkv/bdemu).
 
 ## How they fit together
 
-![Layered diagram of freemkv's components. At the top, the two front ends: freemkv (desktop app and command line) and autorip (auto-ripping web service). Both use freemkv-engine (recovery and the rip loop), freemkv-keysources (keydb.cfg and key service), and freemkv-i18n (locale strings), and also call libfreemkv directly. freemkv-engine uses freemkv-keysources and libfreemkv; freemkv-keysources supplies keys to libfreemkv (drive access, disc scan, AACS/CSS decryption, mux). libfreemkv depends on freemkv-unlock (drive unlock) at the base. bdemu, a dashed test fixture beside them, emulates a drive and builds on libfreemkv and freemkv-unlock.](/architecture.svg)
+![Layered diagram of freemkv's components. At the top, the two front ends: freemkv (desktop app and command line) and freemkv-library (web server). Both use freemkv-engine (recovery and the rip loop), freemkv-keysources (keydb.cfg and key service), and freemkv-i18n (locale strings), and also call libfreemkv directly. freemkv-engine uses freemkv-keysources and libfreemkv; freemkv-keysources supplies keys to libfreemkv (drive access, disc scan, AACS/CSS decryption, mux). libfreemkv depends on freemkv-unlock (drive unlock) at the base. bdemu, a dashed test fixture beside them, emulates a drive and builds on libfreemkv and freemkv-unlock.](/architecture.svg)
 
-The front ends stay thin: freemkv and autorip handle the interface, freemkv-engine runs the rip, and libfreemkv does the disc work underneath, with freemkv-unlock preparing the drive. Keys enter from the side through freemkv-keysources, and user-facing text is added only at the top through freemkv-i18n. bdemu stands in for a real drive in tests.
+The front ends stay thin: freemkv and freemkv-library handle the interface, freemkv-engine runs the rip, and libfreemkv does the disc work underneath, with freemkv-unlock preparing the drive. Keys enter from the side through freemkv-keysources, and user-facing text is added only at the top through freemkv-i18n. bdemu stands in for a real drive in tests.

@@ -213,17 +213,18 @@ import '../styles/site.css';
           <div class="terminal terminal-compact">
             <div class="terminal-bar" aria-hidden="true">
               <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
-              <span class="terminal-title">autorip</span>
+              <span class="terminal-title">freemkv-library</span>
             </div>
-            <pre class="terminal-body"><code><span class="c"># Run the autorip binary as a daemon, then open http://&lt;host&gt;:8080</span>
-<span class="p">$</span> ./autorip</code></pre>
+            <pre class="terminal-body"><code><span class="c"># Run the freemkv-library container, then open http://&lt;host&gt;:8080</span>
+<span class="p">$</span> docker run --privileged -v /dev:/dev -p 8080:8080 \
+      ghcr.io/freemkv/freemkv-library:latest</code></pre>
           </div>
           <p class="showcase-note">
             <code>disc://</code> defaults to the main title; run <code>freemkv info disc://</code> to list every title with durations, or add <code>-t N</code> to pick one. The same <code>--multipass</code> recovery and decryption apply to whichever source and sink
             you compose.
           </p>
           <p class="showcase-note">
-            autorip runs on Windows, macOS, and Linux as a single binary (or a Linux container). <a href="/download/">Download autorip</a> · see the <a href="/docs/autorip/">autorip docs</a> for setup and <a href="/docs/decryption-keys/">decryption keys</a> for Blu-ray and 4K&nbsp;UHD.
+            freemkv-library (formerly autorip) ships as a Docker image. <a href="/download/">Get freemkv-library</a> · see the <a href="/docs/library/">freemkv-library docs</a> for setup and <a href="/docs/decryption-keys/">decryption keys</a> for Blu-ray and 4K&nbsp;UHD.
           </p>
         </div>
       </section>
@@ -251,7 +252,7 @@ import '../styles/site.css';
         <nav class="footer-links" aria-label="Footer">
           <a href={docs}>Docs</a>
           <a href={github}>GitHub</a>
-          <a href="https://github.com/freemkv/autorip/pkgs/container/autorip">GHCR (autorip)</a>
+          <a href="https://github.com/orgs/freemkv/packages/container/package/freemkv-library">GHCR (freemkv-library)</a>
           <a href="https://github.com/freemkv/freemkv/blob/main/LICENSE">License (MIT)</a>
         </nav>
       </div>

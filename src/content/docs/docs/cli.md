@@ -14,9 +14,7 @@ freemkv <source-url> <dest-url> [flags]
 freemkv <subcommand> [args]              # info, update-keys, version, help
 ```
 
-A bare invocation prints usage and exits `2`.
-
-On **Windows, macOS and Linux** the same binary also opens as a desktop app — run `freemkv gui`, or open the `.app` on macOS (see [macOS](/docs/platforms-macos/)) — if you'd rather pick titles in a window than pass flags.
+Every command here works the same in both builds of freemkv: the **app** and the command-line-only **CLI** (see [Install](/docs/install/)). A bare `freemkv` differs: the CLI prints usage and exits `2`; the app opens its window (on Linux only when a display is available, otherwise it prints usage too).
 
 ## Stream URLs
 
@@ -410,4 +408,5 @@ Keys are never written to logs. One Ctrl-C halts a rip cleanly (tray unlocked, m
 | `0` | Success. |
 | `1` | Failed (rip / mux / scan error, bad flag, missing key, or a missing or malformed URL). |
 | `2` | No arguments at all, or `help` with an unknown topic (usage printed). |
+| `3` | **`disc:// → iso://` or `disc:// → null://` only:** the copy is kept and usable, but short some sectors — re-run with `--multipass` to try to recover more (it resumes from the mapfile, so this is safe even right after a `--multipass` run). No other command returns this code. |
 | `130` | Second Ctrl-C. |

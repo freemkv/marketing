@@ -5,7 +5,10 @@ description: Install and update freemkv on macOS, find your settings and output,
 
 import AppShowcase from '../../../components/AppShowcase.astro';
 
-freemkv provides a native desktop app and a command-line interface on macOS. Both use the same ripping engine. Choose **Apple Silicon** or **Intel** for your Mac on the **[Download page](/download/)**.
+freemkv comes in two builds for macOS. **Install one or the other**; both are the `freemkv` command and use the same ripping engine. Choose **Apple Silicon** or **Intel** for your Mac on the **[Download page](/download/)**.
+
+- **freemkv** (the app): a native desktop app plus every CLI command.
+- **freemkv CLI**: the command line only, as a single binary.
 
 <AppShowcase os="macos" />
 
@@ -17,45 +20,47 @@ freemkv provides a native desktop app and a command-line interface on macOS. Bot
 
 ## Install
 
-### Desktop app
+### App
 
-With Homebrew:
+With Homebrew, which also puts `freemkv` on your PATH:
 
 ```bash
-brew install --cask freemkv/tap/freemkv-app
+brew install --cask freemkv/tap/freemkv
 ```
 
 Or download the matching `.dmg` (`freemkv-aarch64-macos.dmg` or `freemkv-x86_64-macos.dmg`), open it and drag `freemkv.app` into **Applications**.
 
 Open freemkv, select a disc, image or folder, choose the titles and tracks, select an output location and press **Rip**. You can also drag a supported media file onto the window.
 
-### Command line
-
-With Homebrew:
-
-```bash
-brew install freemkv/tap/freemkv
-freemkv --version
-```
-
-For a standalone download, use `freemkv-aarch64-macos` on Apple Silicon or `freemkv-x86_64-macos` on Intel. For example:
-
-```bash
-chmod +x freemkv-aarch64-macos
-./freemkv-aarch64-macos --version
-```
-
-The desktop app also contains the CLI:
+The app includes the full CLI. With the cask, run `freemkv disc:// mkv://Movie.mkv` in any terminal; a bare `freemkv` opens the window. With a `.dmg` install, the executable is inside the app:
 
 ```bash
 /Applications/freemkv.app/Contents/MacOS/freemkv --version
 ```
 
-Running `freemkv gui` opens the desktop interface. See the [CLI reference](/docs/cli/) for ripping commands and options.
+### Command line only
+
+With Homebrew:
+
+```bash
+brew install freemkv/tap/freemkv-cli
+freemkv --version
+```
+
+The `freemkv` cask and `freemkv-cli` formula both provide `freemkv`, so uninstall one before installing the other.
+
+For a standalone download, use `freemkv-cli-aarch64-macos` on Apple Silicon or `freemkv-cli-x86_64-macos` on Intel. For example:
+
+```bash
+chmod +x freemkv-cli-aarch64-macos
+./freemkv-cli-aarch64-macos --version
+```
+
+A bare `freemkv` prints usage. See the [CLI reference](/docs/cli/) for ripping commands and options.
 
 ### Verify the download
 
-Each `.dmg` and standalone binary on [GitHub Releases](https://github.com/freemkv/freemkv/releases) has a matching `.sha256` file. Compare the hash of your download with the line for the same file name:
+Each `.dmg` and standalone CLI binary on [GitHub Releases](https://github.com/freemkv/freemkv/releases) has a matching `.sha256` file. Compare the hash of your download with the line for the same file name:
 
 ```bash
 shasum -a 256 freemkv-aarch64-macos.dmg
@@ -78,8 +83,8 @@ This creates an exception for that app. Different warnings, such as a damaged fi
 
 | Installation | Update | Remove |
 |---|---|---|
-| Homebrew app | `brew update`, then `brew upgrade --cask freemkv/tap/freemkv-app` | `brew uninstall --cask freemkv/tap/freemkv-app` |
-| Homebrew CLI | `brew update`, then `brew upgrade freemkv/tap/freemkv` | `brew uninstall freemkv/tap/freemkv` |
+| Homebrew app | `brew update`, then `brew upgrade --cask freemkv/tap/freemkv` | `brew uninstall --cask freemkv/tap/freemkv` |
+| Homebrew CLI | `brew update`, then `brew upgrade freemkv/tap/freemkv-cli` | `brew uninstall freemkv/tap/freemkv-cli` |
 | `.dmg` or standalone CLI | Close freemkv and replace the app or binary with the new release | Delete the app or binary |
 
 Settings and ripped movies are separate from program files, so updating or removing freemkv leaves them in place.
@@ -108,9 +113,9 @@ freemkv uses IOKit to obtain exclusive access to the optical drive. It unmounts 
 
 Close other software using the disc. If access fails, reconnect the drive and try again.
 
-## autorip
+## freemkv-library
 
-For automatic ripping through a browser, see [autorip Service](/docs/autorip/). The prebuilt macOS autorip binary is available for Apple Silicon; Intel users can build it from source.
+For automatic ripping through a browser, see [freemkv-library](/docs/library/). It ships as a Docker image.
 
 ## Troubleshooting
 
@@ -124,4 +129,4 @@ For automatic ripping through a browser, see [autorip Service](/docs/autorip/). 
 - [Decryption Keys](/docs/decryption-keys/) for key setup
 - [Troubleshooting](/docs/troubleshooting/) for logs and shared fixes
 - [CLI reference](/docs/cli/) for ripping commands and options
-- [autorip Service](/docs/autorip/) for automatic ripping
+- [freemkv-library](/docs/library/) for automatic ripping

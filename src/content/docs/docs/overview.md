@@ -9,7 +9,7 @@ freemkv is a Rust toolchain for optical-disc backup. Its goal is to **recover 10
 
 "Readable" is the bound: **if a sector can be read off the disc, freemkv reads it.** Not best-effort: everything the drive can physically recover, pursued through transient errors and marginal media.
 
-If you just want to rip a disc, the **[CLI reference](/docs/cli/)** has every command, run the **[autorip service](/docs/autorip/)** and let it do it on disc insert, or open the desktop app — pick titles, press Rip.
+If you just want to rip a disc, the **[CLI reference](/docs/cli/)** has every command, run the **[freemkv-library server](/docs/library/)** and let it do it on disc insert, or open the desktop app — pick titles, press Rip.
 
 ## The recovery model
 
@@ -54,9 +54,9 @@ disc://` to list titles with durations.
 
 Available for Windows, macOS, and Linux. See the **[CLI reference](/docs/cli/)**.
 
-**freemkv desktop app**: the same binary, opened as a window instead of run as a command — pick titles and tracks, choose an output format, and watch live progress. Available on macOS, Windows and Linux (GTK4 + libadwaita, as a portable AppImage; Flathub listing on the way). See the **[macOS](/docs/platforms-macos/)**, **[Windows](/docs/platforms-windows/)** or **[Linux](/docs/platforms-linux/)** pages.
+**freemkv app**: the same program with a window — pick titles and tracks, choose an output format, and watch live progress — and every CLI command still works. Install the app *or* the command-line-only CLI, not both ([Install](/docs/install/)). Available on Windows, macOS and Linux (GTK4 + libadwaita, as a `.deb`, Flatpak or AppImage; Flathub listing on the way). See the **[macOS](/docs/platforms-macos/)**, **[Windows](/docs/platforms-windows/)** or **[Linux](/docs/platforms-linux/)** pages.
 
-**autorip**: a service (Windows, macOS, Linux) that watches your optical drives, runs the full pipeline on disc insert, and exposes a web UI. Insert a disc, get an MKV, repeat. See the **[autorip service](/docs/autorip/)**.
+**freemkv-library**: a service (Docker image) that watches your optical drives, runs the full pipeline on disc insert, and exposes a web UI with a Library tab for your MKVs and ISOs. Insert a disc, get an MKV, repeat. It replaces autorip. See **[freemkv-library](/docs/library/)**.
 
 All three compose libfreemkv, the core library that handles drive access, sector reads, AACS/CSS decryption, and MKV muxing, plus freemkv-engine, which layers recovery and the rip loop on top of it. See **[Components](/docs/components/)** for the breakdown of every crate.
 

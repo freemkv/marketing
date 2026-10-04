@@ -17,7 +17,7 @@ DVDs decrypt automatically. There are no keys to install and nothing to configur
 | 4K UHD  | AACS 2.0 / 2.1 |
 
 AACS-encrypted discs decrypt only when you supply AACS keys. No AACS keys are built in.
-Provide them one of two ways: an online key service or a local `keydb.cfg`. autorip, the
+Provide them one of two ways: an online key service or a local `keydb.cfg`. freemkv-library, the
 `freemkv` CLI, and the desktop app all support either source — the desktop app shows which
 one resolved the disc's key right in its key-state line.
 
@@ -33,8 +33,8 @@ A third-party web service looks up keys for an inserted disc on demand, so you d
 maintain a local file — and it's generally much more compatible with AACS 2.0+ discs.
 <u>Reach out on our support Discord for more access information.</u>
 
-In **autorip**, enable the online key service and set its URL under **Settings**.
-See [autorip Service](/docs/autorip/#keys).
+In **freemkv-library**, enable the online key service and set its URL under **Settings**.
+See [freemkv-library](/docs/library/#keys).
 
 In the **CLI**, point at the service with `--key-url` (and `--key-auth` if it requires a
 bearer token):
@@ -80,10 +80,10 @@ freemkv update-keys --keydb /path/to/keydb.cfg --url <KEYDB_URL>   # download to
 freemkv disc:// -t 1 mkv://Movie.mkv --keydb /path/to/keydb.cfg     # rip using it
 ```
 
-**autorip** is a long-running service rather than a portable binary, so it uses the standard
+**freemkv-library** is a long-running service rather than a portable binary, so it uses the standard
 config location `~/.config/freemkv/keydb.cfg` and can also download and refresh the file for
 you from **Settings**. For the Docker image, bind-mount a host keys directory to
-`/root/.config/freemkv` (see [autorip → Deploy](/docs/autorip/#deploy)) so it persists across
+`/root/.config/freemkv` (see [freemkv-library → Deploy](/docs/library/#deploy)) so it persists across
 restarts.
 
 ## When keys are missing
@@ -92,6 +92,6 @@ If you rip an AACS-encrypted disc with no key source configured, freemkv **fails
 and early** — a clear error message, non-zero exit, and no output file written. It never
 writes a silently-encrypted or partially-decrypted file. On a multi-title rip (`-t all` /
 multiple `-t N`), it stops after the *first* title's failure instead of repeating the
-same error for every remaining title. autorip marks the disc "Missing keys — no key
+same error for every remaining title. freemkv-library marks the disc "Missing keys — no key
 source has a key for this disc" and, when nothing is configured at all, prompts "No keys
 are available. Configure a key source in Settings." DVDs are never affected.
