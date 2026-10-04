@@ -5,7 +5,7 @@ description: A technical reference for the Renesas H8SX generation of Pioneer Bl
 
 :::caution[Work in progress]
 This is an active investigation: a current working model of how Pioneer firmware is built, packaged
-and updated, not a finished specification. It is revised as we learn more, and parts of it may be
+and updated, not a finished specification. It is revised as new findings arrive, and parts of it may be
 corrected or removed.
 :::
 
@@ -33,11 +33,11 @@ how firmware revisions are paired and constrained across models, and how a
 one-byte **generation marker** in the Kernel body governs which revisions a
 receiver will accept — the pivot on which firmware downgrade turns.
 
-The description is grounded in the binary itself: fixed offsets, opcode bytes,
-instruction addresses within the decoded images, cryptographic parameters, and
-corpus-wide structural statistics. Where drive-side behaviour has been observed
-or traced to specific firmware code it is stated as such; where the firmware's
-behaviour is inferred but not yet proven at the silicon level, it is deferred to
+The description covers fixed offsets, opcode bytes, instruction addresses within
+the decoded images, cryptographic parameters, and corpus-wide structural
+statistics. Where drive-side behaviour is established from specific firmware code
+it is stated as such; where the firmware's behaviour is inferred but not yet
+proven at the silicon level, it is deferred to
 Chapter 21 (Open Problems) rather than asserted.
 
 ---
@@ -98,23 +98,27 @@ distinct but interlocking things:
 Older DVR- and BDC-series drives predate the H8SX/SAT design and use related
 but distinct envelope layouts and checksums; these are treated separately in
 Part V. The scope here is the firmware itself, not any host software that might
-produce or consume it.
+produce or consume it. For how Pioneer drives are supported and unlocked, see
+[Unlocked drives](/docs/drives-unlocked/), [OEM (stock) drives](/docs/drives-oem/)
+and [Firmware tools](/docs/firmware-tools/); this page does not repeat them.
 
 ### 2. The H8SX processor
 
 The application processor is a **Renesas H8SX** core: a big-endian architecture
-with a variable-length instruction encoding (16-, 32-, and 64-bit instruction
-words), descended from the Hitachi H8 line. Two structural fingerprints
+with a variable-length instruction encoding (instructions are a whole number of
+16-bit units, from 2 to 10 or more bytes), descended from the Hitachi H8 line. Two structural fingerprints
 identify the ISA unambiguously in an image whose provenance is unknown:
 
 - **Return-opcode frequency.** The code regions are dense with the byte pair
   `54 70`, which is the H8 `RTS` (return from subroutine) opcode; a
   representative 64 KiB Kernel plus its Normal contains many thousands of these.
-  The SH-2 return encoding (`00 0B`) does not appear, ruling out that ISA, which
-  earlier superficial analyses had mistakenly assumed.
+  The SH-2 return encoding (`00 0B`) occurs only incidentally, as data and
+  operand bytes, at a small fraction of the `RTS` count, so it does not mark the
+  code; this rules out the SH-2 ISA, which earlier superficial analyses had
+  mistakenly assumed.
 - **Reset-vector shape.** The reset vector points into a table of `5E xx xx xx`
-  and `5A xx xx xx` words. In H8SX these are the `JSR @@aa:24` (jump to
-  subroutine, 24-bit absolute) and `JMP @@aa:24` forms — exactly the shape of a
+  and `5A xx xx xx` words. In H8SX these are the `JSR @aa:24` (jump to
+  subroutine, 24-bit absolute) and `JMP @aa:24` forms — exactly the shape of a
   dispatch/relocation table at a reset entry.
 
 Several instruction forms recur throughout this document because the firmware's
@@ -123,8 +127,8 @@ control logic is built from them, and reading the firmware means reading them:
 | Mnemonic (H8SX) | Encoding note | Role in this firmware |
 |---|---|---|
 | `RTS` | `54 70` | subroutine return; the density fingerprint |
-| `JSR @@aa:24` | `5E xx xx xx` | absolute call; dispatch tables, wrappers |
-| `JMP @@aa:24` | `5A xx xx xx` | absolute jump; entry thunks |
+| `JSR @aa:24` | `5E xx xx xx` | absolute call; dispatch tables, wrappers |
+| `JMP @aa:24` | `5A xx xx xx` | absolute jump; entry thunks |
 | `CMP.L #imm,ERn` | 32-bit immediate compare | control-word and marker checks |
 | `CMP.B #imm,RnL` | byte immediate compare | buffer-id (`FE`/`F0`/`FF`) dispatch |
 | `BSET`/`BCLR #b,@aa:16` | bit set/clear, absolute-16 | permission/state-bit management |
@@ -136,15 +140,18 @@ linear sweep is prone to false cross-references because a mis-synchronised
 decode can produce plausible but spurious instructions, so control flow must be
 followed from verified entry points rather than swept blindly.
 
-The reset configuration is a stack pointer initialised to `0x007A0036` — placing
-the initial stack near the 8 MiB mark in the runtime address view — and a reset
-entry at `0x00552696`. The primary exception vector table sits at address `0`
-and holds the stack pointer plus 63 exception program counters, most defaulting
-to a common handler at `0x00552696`. A **duplicate** vector table appears at
-`0x8000` with a stack pointer shifted by `+0x1C00`, consistent with a
-RAM-relocated second execution context; a near-copy of the boot-time code block
-`0x4000..0x8000` also appears at `0xC000` (differing in 154 byte positions in a
-representative capture — a near-mirror, not an exact one).
+The primary exception vector table sits at address `0`. Its first word,
+`0x007A0036`, is the reset vector: on H8SX the reset start address is loaded into
+the program counter, and the stack pointer is **not** loaded from the table. The
+stack pointer is set by code instead: the Kernel start loads `SP` with `0x8000`
+(`MOV.L #0x8000,ER7`). Words 1 to 42 are exception handler addresses, 24 of them
+the default handler at `0x00552696` (a `JSR @0x40B70E` followed by `JMP @0x40B77C`)
+used for unused vectors; vector 7 (NMI) is `0x00551B74`. Words 43 to 63 are
+high-entropy data, not program counters. A **duplicate** vector table appears at
+`0x8000`; within its first `0x1000` bytes it differs from the primary table only in
+word 0, which is shifted by `+0x1C00`. A near-copy of the boot-time code block
+`0x4000..0x8000` also appears at `0xC000`, differing in 154 byte positions in a
+representative capture — a near-mirror, not an exact one.
 
 ### 3. The layered software stack
 
@@ -154,17 +161,17 @@ a fixed marker string in the image:
 - **Hitachi AzHI2000/3** — the low-level microkernel: peripheral bring-up,
   exception dispatch, timers, and the basic hardware abstraction. It is marked
   by the string `AzHI2000/3 Ver. 1.0 (c)Hitachi, Ltd. 1998.` and occupies a
-  block near `0x100000` in the runtime map. This is the "kernel" in the RTOS
+  string located at `0x103018` in the runtime map. This is the "kernel" in the RTOS
   sense — not to be confused with the Pioneer **Kernel** *component* (Chapter
   5), which is a Pioneer-authored firmware unit that happens to share the word.
 - **NORTi** — a commercial real-time operating system from MiSPO Corporation,
   widely used in Japanese consumer electronics, layered above the microkernel to
-  provide task scheduling. It is marked by `jNORTi(c)MiSPO`. This string is a
+  provide task scheduling. It is marked by `jNORTi(c)MiSPO`, which lies inside the Pioneer Kernel component (`0x40B6D1` on the reference platform). This string is a
   reliable family fingerprint for Pioneer/Renesas firmware.
 - **Pioneer application code** — the drive's own optical, servo, AACS, and SCSI
   logic, plus the firmware update receiver, running as tasks above NORTi. Within
   this layer, the AACS content path identifies itself as
-  `Indigo5 AACS Kernel Driver ver.5.0.0`, and the boot path prints the banner
+  `Indigo5 AACS Kernel Driver ver.5.0.0` (at `0x40ABD0` on the reference platform), and the boot path prints the banner
   `----- Kernel Power ON -----`.
 
 The presence and fixed positions of these markers are exploited elsewhere in
@@ -181,24 +188,24 @@ addresses of application landmarks shift between models and revisions.
 
 | Range | Size | Contents |
 |---|---:|---|
-| `0x000000–0x000FFF` | 4 KiB | Primary vector table: stack pointer + 63 exception PCs (mostly `0x00552696`). |
+| `0x000000–0x000FFF` | 4 KiB | Primary vector table: reset vector (`0x007A0036`) and 42 populated exception vectors, 24 of them the default handler `0x00552696`. |
 | `0x001000–0x003FFF` | 12 KiB | Boot descriptor and peripheral I/O map. |
 | `0x004000–0x007FFF` | 16 KiB | Boot-time code/data (mirrored near `0x00C000`). |
-| `0x008000–0x00BFFF` | 16 KiB | Duplicate vector table + descriptor (RAM-relocation copy, SP shifted `+0x1C00`). |
+| `0x008000–0x00BFFF` | 16 KiB | Duplicate vector table + descriptor (first word shifted `+0x1C00`). |
 | `0x00C000–0x00FFFF` | 16 KiB | Near-copy of `0x004000` block; differs in 154 bytes in a representative capture. |
 | `0x010000–0x0FFFFF` | ~960 KiB | Sparse configuration / state tables, largely zero-padded. |
-| `0x100000–0x102FFF` | 12 KiB | Hitachi AzHI2000/3 microkernel core. |
-| `0x103000–0x10FFFF` | 52 KiB | Kernel/OS bring-up code. |
+| `0x100000–0x102FFF` | 12 KiB | Low-level microkernel code. |
+| `0x103000–0x10FFFF` | 52 KiB | Kernel/OS bring-up code; carries the Hitachi AzHI2000/3 marker string (`0x103018`). |
 | `0x110000–0x3FFFFF` | ~2.94 MiB | Servo tuning and calibration tables (per-media laser coefficients). |
 | `0x400000–0x40FFFF` | 64 KiB | **Kernel component**: startup, update receiver, low-level writers, identity reporting; carries the AACS/RTOS markers. |
 | `0x410000–…` | declared | **Normal component**: application code and data; end given by the declared size in its header (e.g. `0x5D7500` for a `0x1C7500`-byte image). |
 | `0x59BB4E` | — | Canonical identity string `PIONEER BD-RW   BDR-UD04 1.14 20/06/15`. |
 | `0x59D474–0x59D573` | 256 B | SHA-256 constant (K) schedule: all 64 FIPS-180-4 words, byte-exact big-endian. |
-| `0x5A0000–0x5B69C0` | ~92 KiB | Command-tag tables (`AS`/`AN`/`AO`/`AP`/`AQ`/`AR`/`AT`/`AU` tags), temperature-monitor markers. |
-| `0x5B69C4–0x5B6B3F` | 380 B | 95-entry address table (candidate SCSI dispatch). |
+| `0x5A0000–0x5B69C0` | ~90 KiB | Record tables: `FF FF F8 xx` markers followed by 10-byte records. |
+| `0x5B69C4–0x5B6B3F` | 380 B | 95-entry address table (candidate SCSI dispatch); all 95 entries are addresses inside the Normal image. |
 | `0x5B7000–0x5C0000` | 36 KiB | Additional dispatch and auxiliary tables. |
-| `0x5C0000–0x5D0000` | 64 KiB | Servo/OPC calibration table: dense 16-byte records with a repeating `00 00 db XX YY 00 00` skeleton — structural high entropy, not ciphertext — lying *inside* the declared Normal image. |
-| `0x5D0000–0x5FFFF7` | ~192 KiB | Dense and structured non-`FF` data beyond the declared Normal image. |
+| `0x5C0000–0x5D0000` | 64 KiB | Servo/OPC calibration table: dense 20-byte records with a repeating `00 00 db XX YY 00 00` skeleton — structural high entropy, not ciphertext — lying *inside* the declared Normal image. |
+| `0x5D7500–0x5FFFF7` | ~162 KiB | Sparse device data beyond the declared Normal image: `0x5D7500–0x5E0000` is entirely `FF`, and `0x5E0000–0x5FFFF7` is 95–98% `FF` (it holds, for example, the drive serial text at `0x5EE552` and `0x5FE552`). |
 | `0x5FFFF8–0x5FFFFF` | 8 B | Factory footer `87 65 FE DC 43 21 00 5C`. |
 
 Two landmarks in this map recur in the cryptographic discussion. The **SHA-256
@@ -256,12 +263,13 @@ remains a live dependency of the Normal after boot: a Normal cannot execute
 correctly against a Kernel whose export layout or semantics differ.
 
 The Normal's **entry address** — where the Kernel transfers control after boot
-validation — is itself generation-dependent. Across the decoded corpus, three
-entry conventions are observed: the large majority of modern Normals are entered
-at `0x412000`; a smaller group at `0x410028`; and a couple of images at
-`0x410014`. This "entry ABI" split (106 / 13 / 2 in a representative census of
-recognised images) is one of several respects in which the interface between the
-two components has drifted across generations.
+validation — is generation-dependent. The large majority of modern Normals (385 of
+435 decoded) are entered at `0x412000`, through a `JMP` at image offset `0x2000`.
+Two further entry conventions, at `0x410028` and at `0x410014`, apply to a small
+number of images but are not established; the remaining 50 Normals (SAT10xx, BDC,
+BDR-203 and similar) have no jump at image offset `0x14` or `0x28`. This "entry
+ABI" split is one of several respects in which the interface between the two
+components has drifted across generations.
 
 #### 5.3 Independent versioning
 
@@ -272,6 +280,32 @@ Normal labelled `1.14`. Equal revision numbers are therefore not a valid pairing
 criterion; the actual pairing rules are the subject of Chapter 14. Moreover, a
 great many field updates ship a **Normal only**, leaving the installed Kernel in
 place: the Kernel changes far less frequently than the application image.
+
+#### 5.4 Decoded image headers
+
+Once an envelope body is decoded (Chapter 7), each component is a flat image
+whose first bytes carry fixed-position identity fields. The same fields are what
+a running drive holds in memory at `0x400000` (Kernel) and `0x410000` (Normal).
+
+| Image | Offset | Size | Contents |
+|---|---:|---:|---|
+| Normal | `0x00` | 16 | Internal model string, beginning with the ASCII magic `PIONEER ` (e.g. `PIONEER BDR-US04`). |
+| Normal | `0x10` | 4 | Big-endian word that varies per release (§8.1). |
+| Normal | `0x14` | 4 | **Declared image length**, big-endian. Equals the decoded body length exactly; a multiple of `0x100`. |
+| Normal | `0x18` | 8 | Type tag (e.g. `GENERAL `), compared with the Kernel at boot (§13.1). |
+| Normal | `0x28` | 1 | Generation byte compared with the Kernel marker at startup on newer firmware (§13.2). |
+| Normal | `0x1000` | 4 | `COMP` directory magic (Chapter 9). |
+| Kernel | `0xFE` | 1 | Generation marker (Chapter 15). |
+| Kernel | `0x1000` | 8 | Hardware tag, ASCII `SAT xxxx` (`xxxx` is the 16-bit controller id in hex). |
+| Kernel | `0x1008` | 8 | Type tag (`GENERAL`, `IDnn`, …), space padded. |
+| Kernel | `0x1010` | 4 | Kernel Version2 value (`0000` on many drives). |
+| Kernel | `0x1020` | 4 | Big-endian balance word of the additive checksum (§8.1). |
+
+The Kernel image is exactly `0x10000` bytes. A Normal image's declared length is
+at least `0x2000`, at most `0x800000`, and must keep the image within the
+24-bit address space (`0x410000 + length ≤ 0x1000000`). The older scaled-key
+Normal (Chapter 17) has **no** declared-length field at `0x14`; its length is
+fixed by the receiver instead.
 
 ### 6. The distribution envelope
 
@@ -317,7 +351,7 @@ field's label/role, and a representative value from the UD04 Normal envelope.
 | `0xD0`  | Kernel Version | `GENERAL` | A version/identity label (an `IDxx` value on ID-keyed models). |
 | `0xF0`  | Destination | `GENERAL` | A distinct label, even when its string equals Kernel Version. |
 | `0x110` | File Type | `Normal` | `Kernel`, `Normal`, or the legacy `Plane`. |
-| `0x130` | Generated Date | `20/06/15` | `YY/MM/DD` (older DVR uses `MmmDD,YYYY`). |
+| `0x130` | Generated Date | `20/06/15` | `YY/MM/DD` (the Optiarc BC-5100S uses `MmmDD,YYYY`). |
 | `0x150` | Kernel Version2 | `0000` | A third distinct version field. |
 
 Three subtleties are important because they are routinely conflated:
@@ -337,24 +371,64 @@ Three subtleties are important because they are routinely conflated:
 #### 6.3 Header invariance across the corpus
 
 The division of the header into a stable identity region and a volatile
-validation region is visible statistically. Across a corpus of several hundred
+validation region is visible statistically. Across a corpus of 593
 distinct Normal envelopes:
 
 - all eight ASCII labels occupy identical offsets, and the first `0x60` bytes
   (the banner) are byte-identical everywhere;
-- across the full `0x200`-byte header, on the order of 289 byte positions are
-  invariant and ~310 hold the same value in at least 90% of files;
-- the `0x60–0x16F` text/identity region shows ~90.3% mean modal-byte agreement;
-- the `0x170–0x1BF` validation region shows only ~13.1% — because it carries a
+- across the full `0x200`-byte header, 257 byte positions are
+  invariant and 309 hold the same value in at least 90% of files;
+- the `0x60–0x16F` text/identity region shows ~90.5% mean modal-byte agreement;
+- the `0x170–0x1BF` validation region shows only ~11.4% — because it carries a
   per-release cryptographic proof rather than identity text;
 - the `0x1C0–0x1EF` extension region is all-zero in the large majority of files
-  (≈309/440 in one census) but is populated by some generations;
-- every sampled Normal has a distinct `0x1F0–0x1FF` filename block.
+  (436 of 593 Normals) but is populated by some generations;
+- the `0x1F0–0x1FF` filename block is distinct in almost every Normal (589 distinct
+  blocks across 593 Normals; a few filenames are shared by different files).
 
 The practical reading of these statistics is that the header is **one generic
 layout with per-release values**, not a per-model byte template: a parser or
 generator can rely on the field positions universally, but must derive — not
 assume — the validation and filename bytes.
+
+#### 6.4 Exact text layout of the header
+
+The first `0x160` bytes are a fixed-width ASCII template. Lines end in CR LF, each
+`Label : value` line has a fixed offset, and each value occupies a fixed-width
+slot: the value is left-aligned, the byte immediately after the slot width is
+`0x00`, and every other byte up to the next label is a space.
+
+| Offset | Content |
+|---:|---|
+| `0x00` | Banner `********  Copyright(c) 2000 Pioneer Corporation  ********` (57 bytes), 5 spaces, CR LF (ends at `0x3F`). |
+| `0x40` | `This is microcode file.` + 2 spaces + CR LF (ends at `0x5A`). |
+| `0x5B` | `ID : ` (ends at `0x5F`). |
+| `0x60` | ID value: the full marketing identity (e.g. `PIONEER BD-RW   BDR-S08 `), 24-byte slot `0x60..0x77`, `0x00` at `0x78`, spaces to `0x7C`. Some older headers right-align the text, leaving leading spaces. The model is the last whitespace-separated token. |
+| `0x7D` | CR LF `Revision Level : ` |
+| `0x90` | Revision, 5-byte slot, `0x00` at `0x95`, spaces to `0x9A` (e.g. `1.40 `). |
+| `0x9B` | CR LF `Hardware Version : ` |
+| `0xB0` | Hardware, 8-byte slot, `0x00` at `0xB8`, spaces to `0xBC` (`SAT 8301`). |
+| `0xBD` | CR LF `Kernel Version : ` |
+| `0xD0` | Kernel Version, 8-byte slot, `0x00` at `0xD8`, spaces to `0xDF`. |
+| `0xE0` | CR LF `Destination : ` |
+| `0xF0` | Destination, 8-byte slot, `0x00` at `0xF8`, spaces to `0x101`. |
+| `0x102` | CR LF `File Type : ` |
+| `0x110` | File Type, 8-byte slot, `0x00` at `0x118`, spaces to `0x11C` (`Normal  `, `Kernel  `). |
+| `0x11D` | CR LF `Generated Date : ` |
+| `0x130` | Date, 10-byte slot, `0x00` at `0x13A`, space at `0x13B` (`14/03/06  `). |
+| `0x13C` | CR LF `Kernel Version2 : ` |
+| `0x150` | Version2, 4-byte slot, `0x00` at `0x154`, spaces to `0x15C` (`0000`). |
+| `0x15D` | CR LF `0x1A` (DOS end-of-file byte); the text template ends at `0x15F`. |
+
+A reader locates fields by the `Label : ` text, trimming spaces and the `0x00`.
+Two further header facts: on modern **Kernel** envelopes the opaque (`0x160`), validation
+(`0x170`) and extension (`0x1C0`) regions are all zero (a Kernel envelope carries
+no signature; the exceptions are two SAT1003 BDC-202 Kernels, whose region is
+`FF`-filled, and two WX01DM (`8801`) Kernels), and the embedded filename at `0x1F0`
+is normally NUL-padded to 16 bytes (SAT1003 and some others pad with
+`00 FF FF FF`).
+On Kernel envelopes the Kernel Version and Destination slots normally repeat the
+tag that the Kernel image carries at `0x1008`.
 
 ### 7. The body codec
 
@@ -399,6 +473,18 @@ allows a *derived-key* Kernel envelope (§7.3) to carry a trailing slice of the
 keystream and have the decoder reconstruct the seed — and hence the whole key
 table — by running the generator in reverse from that slice.
 
+Precisely: the first key byte is produced *after* one step from the seed, so
+`key[0] = (seed·A + C mod 2^24) >> 16`. The key table is the byte stream read as
+consecutive **little-endian 32-bit words**, repeated cyclically over the body
+(`k = key_word[i mod (key_length / 4)]` for body word `i`). Key length is always
+a multiple of 4. To recover a seed from 16 consecutive key bytes `b0..b15`, try
+each of the 65 536 values for the low 16 bits of the state that produced `b0`
+(the high 8 bits are `b0`); the one for which the next 15 steps reproduce
+`b1..b15` identifies that state `s1`, and the seed is
+`(s1 − C) · A⁻¹ mod 2^24`. Stepping `n` places backward uses the inverse
+recurrence `s ← (s − C)·A⁻¹ mod 2^24`, which composes by the usual
+affine-power doubling.
+
 #### 7.2 The word transform
 
 The body is processed as a sequence of **little-endian 32-bit words** (note the
@@ -414,6 +500,30 @@ p = ROR32( c XOR k ,  k & 0x1F )
 that is: XOR with the key word, then **rotate right** by the number of bit
 positions given by the low five bits of the *same* key word. Encoding is the
 inverse: rotate left by `k & 0x1F`, then XOR with `k`.
+
+Three framing rules complete the transform:
+
+- **Whole words only.** The transformed span is the body truncated to a multiple
+  of 4 bytes. Any trailing 1–3 bytes after the last whole word are carried
+  verbatim and are not part of the image.
+- **XOR exceptions in the Normal.** For a Normal body the receiver skips the XOR
+  (but still applies the rotation, in the same direction) at exactly **two word
+  positions** of the decoded image. Both are byte offsets within the image,
+  distinct and multiples of 4. They are not stored in the envelope: they are
+  immediates inside the paired Kernel's decode loop, which compares the running
+  byte offset with two constants and branches over the XOR instruction
+  (`CMP.L #off1,ERn / BEQ / CMP.L #off2,ERn / BEQ`, encoded `7A 2n <imm32> 47 <disp>`
+  twice, both branches landing after the XOR). Several instruction arrangements
+  exist, including a variant (BDR-WX01DM) whose second compare reloads the same
+  offset register from the stack; exactly one such branch is present in a Kernel,
+  and the two offsets must differ. The BDR-UD04 1.14 Normal uses
+  offsets `0x16900` and `0x77300` (image length `1 864 960` = `0x1C7500`). A
+  Normal therefore cannot be decoded from its own bytes alone; the Kernel that
+  ships with it supplies the two offsets. Kernel bodies have no exceptions.
+- **Length check.** For a Normal with a declared length (Chapter 5.4), the
+  decoded length must equal the declared length exactly. An envelope whose body
+  ends early (one released BDR-XD04 file does) decodes to a shorter image and
+  fails this check.
 
 One model, **BDR-WX01DM** (specifically its Normal envelope), uses the
 mirror-image variant: the rotation runs in the *opposite* direction —
@@ -462,9 +572,21 @@ The header is uniform, but the arrangement of key table and ciphertext within
 the body differs by component and generation. Three modern layouts exist (the
 legacy DVR layouts are treated in Part V).
 
-**Normal layout.** Header `0x200`, then a key region, then the encrypted
-payload. The payload begins `0x10000` bytes after the key region. A raw
-(unsigned staging) Normal places its payload at envelope offset `0x10200`.
+**Normal layout.** Header `0x200`, then a `0x10000`-byte key table, then the
+encrypted payload (the payload begins `0x10000` bytes after the key table):
+
+```
+0x00000  header            0x200
+0x00200  key table         0x10000  (LCG key from a 24-bit seed)
+0x10200  encrypted image   declared length (+0..3 trailing bytes)
+```
+
+The envelope length is therefore `0x10200 + image length`. A second arrangement
+places the key table at `0x10200` and the payload at `0x20200`; the decoder
+chooses between the two key offsets (and the two rotation directions of §7.2) by
+trial-decoding 64 bytes at each candidate payload and keeping the one that
+begins `PIONEER `. The scaled layout of Chapter 17 divides the body into 17 equal
+units instead.
 
 **Kernel — front-key (`kernel-front`).** Total envelope `0x11200` bytes for a
 `0x10000` body. The layout is:
@@ -489,29 +611,37 @@ stored explicitly; it is *derived* from a trailing keystream slice:
 The trailer at `0x10200–0x11200` is one continuous run of the LCG keystream; the
 decoder recovers the seed by taking the trailer's final 16 bytes, inverting the
 generator (§7.1) to find the state that would have produced them, and rolling
-back to the seed. Concretely the recovery treats the trailer as the keystream at
-position `envelope_len − 0x200 − 16 + 0x1000` and reverses to the origin.
+back to the seed. Concretely, with the LCG started at the seed, the Kernel key
+table is stream bytes `0x0000..0x0FFF`, the trailer is stream bytes
+`0x11000..0x11FFF`, and the `0x10000` stream bytes between them are not stored.
+The last 16 trailer bytes are therefore stream bytes `0x11FF0..0x11FFF`, and the
+state that precedes them is `envelope_len − 0x200 − 16 + 0x1000 = 0x11FF0` steps
+after the seed; running that many steps backward from the recovered state yields
+the seed.
 
-Crucially, **the Kernel code itself records which layout it expects**. A
-derived-key Kernel body contains an adjacent instruction pair `CMP.B #FE,RnL`
-followed six bytes later by `CMP.B #F0,RnL`; a front-key body does not contain
-that adjacent pair (at most an isolated `FE`-like compare). This is not
-incidental — it is the same buffer-id dispatch (Chapter 12) that the receiver
-uses to distinguish Kernel from Normal transfers, and its presence or absence is
-a reliable, code-intrinsic discriminator of the two layouts. In a census of 121
-distinct decoded Kernel envelopes the split is **63 front-key and 58
-derived-key**, with the code-signature discriminator correctly classifying 106
-and returning "unknown" only for 15 of the oldest SAT-10xx images (with **zero
-misclassifications**).
+Crucially, **the Kernel code itself records which layout it expects**. Every
+receiver contains the buffer-id dispatch (Chapter 12) that distinguishes Kernel
+from Normal transfers, written as an adjacent instruction pair `CMP.B #FE,RnL`
+followed six bytes later by `CMP.B #F0,RnL` (encoded `Rn FE .. .. .. .. Rn F0`).
+The two generations compare on different byte registers: **R6L (`AE FE … AE F0`)
+for front-key Kernels and R5L (`AD FE … AD F0`) for derived-key Kernels**. Exactly
+one such pair, on exactly one of the two registers, is present in a decoded Kernel
+of the modern generation; the earliest receivers, which call the decoder with
+explicit staging addresses (Chapter 17), use the front-key framing. This is a
+reliable, code-intrinsic discriminator of the two layouts. In a census of 195
+distinct decoded modern Kernel envelopes the split is **88 front-key and 107
+derived-key**: the code-signature discriminator classifies 176 (all 107 derived-key
+Kernels on R5L and 69 front-key Kernels on R6L) and returns "unknown" only for
+the 19 oldest front-key images, with **zero misclassifications**.
 
 #### 7.4 Seed distribution
 
 Because the seed only selects the keystream, a given model can appear under
-several seeds across its release history. In a census of 179
-model/hardware/destination/role/layout groups with reproducible LCG tables, 64
+several seeds across its release history. In a census of 210
+model/hardware/destination/role/layout groups with reproducible LCG tables, 45
 groups used more than one seed. Two seeds dominate the corpus: seed `0x47D001`
-reproduces the key tables of 212 distinct envelopes and seed `1` reproduces
-those of 47; other seeds occur in smaller numbers. (A small number of images,
+reproduces the key tables of 278 distinct Normal envelopes and seed `1` reproduces
+those of 68 front-key Kernels; other seeds occur in smaller numbers. (A small number of images,
 including the UD04 Kernel and the SAT1003 scaled-key tables, do not reproduce
 under this default-seeded LCG at all and use distinct seeds or geometries; the
 SAT1003 family is treated in Part V.) The consequence for anyone
@@ -584,14 +714,25 @@ verifies against `Q` in the standard ECDSA manner (compute
 `u₁·G + u₂·Q` reduces to `r mod n`), where `H` is the SHA-1 digest of the signed
 range.
 
+Details that matter for an implementation: the 20-byte SHA-1 digest is read as one
+big-endian integer `H` with no truncation (it is the same width as `n`); a
+signature is `s = k⁻¹(H + r·d) mod n` with `r` the x-coordinate of `k·G` reduced
+mod `n`; verification first requires `Qx, Qy < p` and `Qy² ≡ Qx³ + a·Qx + b (mod p)`,
+and `0 < r, s < n`. A header whose point is off the curve is not a signed
+generation at all. The BDR-UD04 OEM public point is
+`Qx = 972e1cb6549e0599e69cb83a1f4718d97eb84a7b`,
+`Qy = 2f289bdef9f429a15b2bfdf883a4d46795abce57`. **Only Normal envelopes carry a
+signature**; Kernel envelopes leave the whole `0x170–0x1BF` block zero, and the
+Kernel receive path checks only the additive checksum (§8.1).
+
 The first-40/last-40 split of the validation block has a clear structural
 signature across the corpus: in a census of recognised-curve Normal envelopes,
 the **last 40 bytes** (the public point) tend to persist across revisions of the
 same embedded model — the two UD04 samples 1.11EU and 1.14 share their last 40
 bytes while differing in the first 40 — whereas the **first 40 bytes** (the
 signature) change every release. The first 40 bytes are always two nonzero
-sub-`p` 20-byte values, consistent with signature scalars; across 286 distinct
-sampled pairs every one satisfied that shape, and across the recognised-curve
+sub-`p` 20-byte values, consistent with signature scalars; across the 402 distinct
+Normal envelopes that verify, every one satisfied that shape, and across the recognised-curve
 population every envelope verified with its last 40 bytes as the public point.
 
 #### 8.3 Signed-range selection
@@ -600,12 +741,14 @@ The SHA-1 digest `H` covers the envelope from a start offset to EOF, and **the
 start offset depends on the envelope layout**:
 
 - envelopes are signed either over `0x200..EOF` (header excluded, key table plus
-  ciphertext included) or over `0x10200..EOF` (ciphertext only);
-- the choice tracks the Kernel layout distinction of §7.3: a **front-key**
-  arrangement signs from `0x200` (key table plus ciphertext), whereas a
-  **derived-key** arrangement signs from `0x10200` (ciphertext only);
-- in a corpus split, 228 envelopes used the `0x200` form and 58 used the
-  `0x10200` form; the UD04 1.11EU and 1.14 Normals both use the `0x200` form.
+  ciphertext included) or over `0x10200..EOF` (the key table, which then sits at `0x10200`, plus ciphertext);
+- the choice tracks the layout of the **paired Kernel** (§7.3), because the
+  receiver in that Kernel performs the check: a Normal shipped with a
+  **front-key** Kernel is signed from `0x200` (key table plus ciphertext), whereas
+  one shipped with a **derived-key** Kernel is signed from `0x10200` (the key
+  table at `0x10200` plus ciphertext);
+- in a corpus split, 295 Normals verify over the `0x200` form and 107 over the
+  `0x10200` form, the 107 being exactly the Normals whose key table sits at `0x10200`; the UD04 1.11EU and 1.14 Normals both use the `0x200` form.
 
 The signed range is therefore not a free parameter: it is determined by the same
 generational layout choice that determines key placement, and the two must agree
@@ -615,7 +758,7 @@ for verification to succeed.
 
 The digest and signature verification are not purely software. The Kernel
 supplies the header's 80-byte validation block, and specifically the public
-point, into a **hardware validation engine** mapped at `0xFF3FF000`, and does so
+point, into a **hardware validation engine** whose registers lie in the `0xFF3FFxxx` range, and does so
 *before* decoding the body. The Kernel loads the five standard SHA-1 initial
 words (the FIPS-180-1 `H0..H4` constants) into that engine — establishing SHA-1
 as the digest stage — and checks a hardware status result. The 80-byte block is
@@ -623,6 +766,16 @@ validated against the encrypted body via this engine; the changing 40 bytes are
 not simply the body's SHA-1, and the engine's exact trust policy (whether it
 accepts the supplied public point as-is or checks it against a stored value) is
 one of the central open problems of Chapter 21.
+
+In the traced BDR-S13 1.05 receiver the signature check is a separate routine
+(`0x4050C6`) that drives a hardware elliptic-curve engine at `0xA00000`. It is
+reached **only** from the Normal commit arm (`0x404B96`), is given the validation
+block at staging `+0x170` and the body at staging `+0x200` (the Normal staging
+base is `0xA10200`, so the block is passed as `0xA10370` and the body as
+`0xA10400`), and verifies envelope bytes `[0x200, end)`. A non-zero result sets
+error code `0x0B` and aborts the transfer (`0x404D1E`). The check is made once, at
+flash time; the boot path does not repeat it. The Kernel receive arm contains no
+signature call.
 
 The independent presence of the SHA-256 K schedule at `0x59D474` (Chapter 4)
 indicates a SHA-256 implementation elsewhere in the image; it is distinct from
@@ -645,6 +798,20 @@ validation block happens to be zero**:
 - **Modern ECDSA.** As in §8.2; e.g. SAT1030 and SAT1050 samples verify on the
   modern curve even though their SAT-generation siblings do not.
 
+The receiver's policy is identifiable from the Kernel's own code, which sets how
+a Normal envelope must be authenticated:
+
+| Policy | What the Normal must satisfy | Kernel code signature |
+|---|---|---|
+| Unsigned | `0x170–0x1BF` all zero | One fixed instruction run (staging `0x10200`, then the decoder arguments) immediately before the decoder call; no validator call. |
+| Scaled checksum only | Length and 16:1 key geometry (Ch. 17); decoded image begins `PIONEER ` and sums to zero | Decoder call with explicit staging addresses and a length comparison. |
+| ECDSA from `0x200` | Signature valid over `0x200..EOF` (key table plus ciphertext) | Front-key Kernel layout (§7.3); validator called with the validation block pointer before decoding. |
+| ECDSA from `0x10200` | Signature valid over `0x10200..EOF` (key table at `0x10200` plus ciphertext) | Derived-key Kernel layout (§7.3). |
+
+For the signed policies the validator receives pointers to the validation block and
+the body (`mov.l #0xA10400,er0 / mov.l #0xA10370,er2 / jsr`); an unsigned receiver
+never makes that call.
+
 The generalisation "a zero validation block means unsigned" is therefore false
 in the strong sense: it is only unsigned if the *receiver* implements the
 unsigned path. This is why signed and unsigned generations coexist in the same
@@ -661,21 +828,37 @@ fixed image offset:
 0x1004  directory entries          (start,end) address pairs, through 0x1100
 ```
 
-Each directory entry is a pair of runtime addresses `(start, end)` locating a
-zlib stream elsewhere in the image; the stream is stored as a 4-byte prefix
-followed by the compressed data, and it expands to occupy `[start, end)` at its
-intended absolute address. Observed stream counts are **six** (the common case)
-or **nine**. In one corpus survey, 167 supported distinct envelopes carried a
-`COMP` directory (150 with six streams, 17 with nine).
+The directory is a list of big-endian 32-bit **runtime addresses** read from
+`0x1004` up to the `0xFFFFFFFF` terminator (or `0x1100`), taken in `(start, end)`
+pairs: an even number of words, at most 32 (16 streams). Addresses are absolute
+in the drive's address space, so an address maps to an image offset by
+subtracting the image's load address (the Normal loads at `0x410000`; the unique
+base for which every stream validates is the load address). For a stream at image
+offset `o = start − base`:
 
-The consequence is that the decoded envelope body is the **compressed update
-payload after outer decoding**, not the fully expanded runtime image: the
-receiver (or boot path) expands each stream to its target address so that code
-and data land where the runtime map (Chapter 4) expects them. A modification
-confined to the last expanded stream can be recompressed and re-placed, adjusting
-the directory's end address and the image's declared length, while leaving the
-preceding streams untouched — but any such change still has to satisfy the
-size-alignment and checksum rules of Chapter 8.
+| Image offset | Size | Field |
+|---:|---:|---|
+| `o` | 4 | Expanded length, big-endian (non-zero, at most 64 MiB). |
+| `o + 4` | `end − start` | A zlib stream (first byte `0x78`); its compressed length is exactly `end − start`, and inflating it yields exactly the stated expanded length. |
+
+Observed stream counts are **six** (the common case) or **nine**. Of 343 distinct
+decoded Normals carrying a `COMP` directory, 314 have six streams and 29 have nine.
+
+The streams stay compressed inside the Normal: the decoded body of an envelope
+(with the Kernel's XOR exceptions applied, §7.2) is byte-for-byte the image found
+in drive memory at `0x410000` for the declared length (the BDR-UD04 1.14 Normal is `1 864 960` bytes in both), so the compressed
+streams are present in the running image as stored. The directory entry itself
+carries only the two addresses and the length prefix; no other directory field
+names the destination of the expanded bytes.
+
+A modification confined to the **last** stream can be recompressed and re-placed
+without moving earlier streams, provided: everything after the old compressed end
+is `0xFF` fill; the old end address appears nowhere else in the image except the
+directory entry; the new end address is `base + o + (compressed length)`; the
+image is padded with `0xFF` to a multiple of `0x100`; and the declared length at
+image `+0x14` and the directory's final end address are rewritten. Earlier
+streams, their addresses and their expansions must stay unchanged. Any such
+change still has to satisfy the size-alignment and checksum rules of Chapter 8.
 
 ---
 
@@ -693,15 +876,43 @@ The standard SCSI `INQUIRY` returns the product identification, for the
 reference platform:
 
 ```
-PIONEER BD-RW  BDR-UD04         revision 1.14   date 20/06/15
+PIONEER BD-RW   BDR-UD04        revision 1.14   date 20/06/15
 ```
 
-One subtlety matters for anything that reconstructs an envelope header: the
-**INQUIRY spacing can differ from the envelope's model field**. The live drive
-reports `PIONEER BD-RW  BDR-UD04 ` (two interior spaces plus a trailing space)
-where the envelope model field at `0x60` reads `PIONEER BD-RW   BDR-UD04` (three
-interior spaces). The correct spacing for a given envelope is recoverable from an
-identity literal inside the firmware image, not from INQUIRY alone.
+The spacing between the media class and the model is the same in INQUIRY and in
+the envelope's model field at `0x60`: `PIONEER BD-RW   BDR-UD04` has three interior
+spaces in both, as in the firmware identity literal. The number of spaces varies by
+model and is recoverable for a given envelope from the identity literal inside the
+firmware image.
+
+The INQUIRY CDB is `12 00 00 00 60 00` (96-byte allocation). Fields:
+
+| Bytes | Field | Notes |
+|---:|---|---|
+| `[8..15]` | Vendor | `PIONEER ` |
+| `[16..31]` | Product | 16 bytes, e.g. `BD-RW   BDR-S09 `; media class, a run of spaces, then the model, space padded. |
+| `[32..35]` | Revision | Four ASCII characters (`1.34`). After a successful update-mode entry the first three read `000` (§12.3). |
+| `[36..42]` | Vendor specific | Begins with the firmware date text (e.g. ` 16/04/`). |
+
+A usable identity response is at least 36 bytes long (a GOOD status with a short or
+empty data phase is not an identity), has bytes `[8..35]` in the printable ASCII
+range `0x20–0x7E`, and a product field that is not all spaces; a drive can return
+control bytes in the revision field, which then cannot be trusted as a revision.
+
+The firmware image carries the same identity as one literal,
+`<vendor> <media><1–8 spaces><model> <revision> <YY/MM/DD>`, at most 24 characters
+before the revision (e.g. `PIONEER BD-RW   BDR-UD04 1.14 20/06/15`); the number of
+spaces between media and model varies by model and is how an envelope's own
+spacing is recovered. A Normal image also embeds its build date as an ASCII
+literal, either `YY/MM/DD` or, on Optiarc images, `MmmDD,YYYY` (three-letter month, two-digit
+day, comma, four-digit year), which is unique in the image when present.
+
+Standard MMC identity is also available and is optional on a given drive:
+`GET CONFIGURATION` for feature `0x010C` (`46 02 01 0C 00 00 00 01 00 00`) returns a
+descriptor whose bytes `[4..15]` are the 12-character firmware creation date
+`CCYYMMDDHHMI`, and feature `0x0108` (`46 02 01 08 …`) returns the serial number
+text after its 4-byte feature header. A drive that lacks either feature answers
+CHECK CONDITION, which means "absent", not a fault.
 
 #### 10.2 The vendor identity block (READ BUFFER 02/F1)
 
@@ -721,12 +932,49 @@ The 48-byte block is structured as follows:
 | `[40..43]` | Kernel version | four chars |
 
 The four characters after `SAT ` are the platform code — `8A10` for BDR-UD04,
-`9201` for BDR-S13, `8F01` for BDR-212U, `8600`/`8601` for BDR-209M variants,
+`9201` for BDR-S13U, `8F01` for BDR-212U / BDR-S12U, `8600`/`8601` for BDR-209M variants,
 and so on. Bytes `[0x20..0x27]` of this `F1` response additionally serve as an
 **update-mode status window**: eight ASCII spaces there signify that update mode
 is already active (Chapter 12). The separate "entry succeeded" indication — the
 ASCII `000` at bytes `[0x20..0x23]` — is reported on the standard `INQUIRY`
 response, not on this block (§12.3).
+
+The first 12 bytes of the block, `[0..11]`, are the drive's serial number text.
+This identity read is also the platform discriminator: a Pioneer/Renesas
+controller answers it with GOOD status and 48 bytes whose hardware field
+`[16..23]` is printable ASCII and starts with `SAT ` (H8SX/SAT generation), `ATA `
+or `SCSI` (older families); bytes `[16..18]` = `SAT` alone identify the Renesas
+platform. A controller of another family is inferred to refuse the command with CHECK
+CONDITION (ILLEGAL REQUEST, ASC `0x20`). Firmware-image operations require the `SAT ` form.
+The hardware field equals the Kernel image's `0x1000` tag (§5.4), and the four hex
+digits after `SAT ` are the controller id used throughout (key table, pairing).
+
+A second vendor read, `READ BUFFER` mode `02`, buffer id `F4`, 256 bytes
+(`3C 02 F4 00 00 00 00 01 00 00`), is inferred to return a firmware/drive-flags
+window on SAT-platform drives. No receiver handler for it has been identified and
+its layout is not established; it may be empty or refused depending on drive state.
+
+Known SAT controller ids and the models they appear under (marketing names are
+those of the vetted same-silicon pairs in §14.6; the descriptor is the internal
+model string of §12.2):
+
+| SAT id | Models | Descriptor |
+|---|---|---|
+| `8231`, `8232` | BDR-XD05 | `PIONEER BDR-XD05` |
+| `8301` | BDR-208 | `PIONEER  BDR-208` |
+| `8510`, `8511` | BDR-UD03 | `PIONEER BDR-US03` |
+| `8590` | BDR-US03 | `PIONEER BDR-US03` |
+| `8600`, `8601` | BDR-209 (v1, v2) | `PIONEER  BDR-209` |
+| `8800`, `8801` | BDR-211 (v1, v2) | `PIONEER  BDR-211` |
+| `8A10` | BDR-UD04 | `PIONEER BDR-US04` |
+| `8B30` | BDR-XD06J-UHD | `PIONEER BDR-XS06` |
+| `8D30`, `8D31` | BDR-XD07, BDR-XD07U | `PIONEER BDR-BDS7` |
+| `8E20`, `8E21` | BDR-XS07, BDR-XS07U | `PIONEER BDR-BDS7` |
+| `8F00`, `8F01` | BDR-212, BDR-212U / BDR-S12U (also BDR-S12JX) | `PIONEER BDR-212T` |
+| `9000`, `9001` | BDR-X12, BDR-X12U | `PIONEER BDR-X12T` |
+| `9200`, `9201` | BDR-213M; BDR-213U / BDR-S13U / BDR-S13JX | `PIONEER BDR-213T` |
+| `9330`, `9331` | BDR-XD08 / XD08B / AD08 (`9330`); BDR-XD08U (`9331`) | — |
+| `9400`, `9401` | BDR-X13, BDR-X13U | `PIONEER BDR-213T` |
 
 In Kernel mode the drive assembles this response from fixed sources: it copies
 16 bytes from `0x401000` to response offset `0x10`, eight blank bytes from a
@@ -744,8 +992,7 @@ anywhere in the running image — a point developed in §10.4.
 
 #### 10.3 The identity field taxonomy
 
-Six identity concepts must be tracked separately; conflating any two of them
-produces incorrect compatibility conclusions:
+Six identity concepts are distinct:
 
 1. **INQUIRY product** — what the host OS sees (`PIONEER BD-RW BDR-UD04`).
 2. **Envelope model** — the `0x60` header field of a firmware component.
@@ -757,10 +1004,10 @@ produces incorrect compatibility conclusions:
 6. **Kernel Version2** (`0x150`), a third version field.
 
 The `ID`-style numbers (`ID43`, `ID60`, `ID81`, …) are variant labels, **not** a
-release ordering and **not** by themselves a compatibility proof. A displayed
-firmware name that differs from another drive's is not, on its own, evidence of
-cross-flashing; and a recognition-table display name must never be presented as
-an extracted envelope model without independent corroboration.
+release ordering and **not** by themselves a compatibility proof. One product or
+descriptor string can map to several controller ids with different control words
+(§12.2), so a control word is selected by the controller id (the `SAT` value),
+not by the model string.
 
 #### 10.4 Non-recoverability of Kernel release labels
 
@@ -787,10 +1034,23 @@ label — which lives in the header — is never persisted with the image.
 
 Beyond standard MMC, the firmware answers a small set of vendor commands on the
 `READ BUFFER` (`3C`) and `WRITE BUFFER` (`3B`) opcodes. All are 10-byte CDBs
-carrying, after the opcode, a mode nibble, a buffer-id byte, a 24-bit big-endian
+carrying, after the opcode, a mode, a buffer-id byte, a 24-bit big-endian
 offset, a 24-bit big-endian length, and a control byte. This chapter covers the
 raw-memory surface and its permission logic; Chapter 12 covers the update
 protocol.
+
+| CDB byte | `READ BUFFER` (`3C`, data-in) | `WRITE BUFFER` (`3B`, data-out) |
+|---:|---|---|
+| 0 | `3C` | `3B` |
+| 1 | Mode in the low 5 bits (`01`, `02`, …) | Mode in the low 5 bits (`01`, `02`, `04`, `05`, `07`) |
+| 2 | Buffer id (`B0`, `F1`, `F2`, `F4`, …) | Buffer id (`41`, `F0`, `F2`, `F3`, `FE`, `FF`) |
+| 3–5 | Offset, 24-bit big-endian | Offset, 24-bit big-endian |
+| 6–8 | Allocation length, 24-bit big-endian | Parameter-list length, 24-bit big-endian |
+| 9 | `00` | `00` |
+
+The 24-bit offset and length bound any single transfer; a component larger than
+`0x1000000` bytes cannot be addressed. The OEM memory reads put the length in CDB
+byte 8 alone (below `0xFF`; `0xA4` is the length that works across generations).
 
 #### 11.1 The vendor memory read and its address gate
 
@@ -819,10 +1079,26 @@ memory map — including the firmware-image regions at `0x400000` (Kernel) and
    with sense `key=0x5 ASC=0x24 ASCQ=0x00` (ILLEGAL REQUEST / INVALID FIELD IN
    CDB). After the enable command (§11.2) the identical CDB returns GOOD.
 
-Individual reads are bounded: newer receivers cap a single `B0` read at 4096
-bytes, and a conservative fallback of 164 bytes (`length = 0xA4`) is safe across
-generations. The high address ceiling is `0x880300`: reads at or above that
+Individual reads are bounded on the oldest receiver generation (for example SAT1005), which caps a single `B0` read at 4096 bytes; newer read helpers split long requests internally and apply no length cap. A length of 164 bytes (`0xA4`) works across all generations. The high address ceiling is `0x880300`: reads at or above that
 offset are rejected outright, and a transfer that would cross it is clipped.
+
+Whether the gate applies is detected with a one-byte read inside the gated range,
+`3C 02 B0 40 00 00 00 00 01 00` (offset `0x400000`, length 1):
+
+| Result | Meaning |
+|---|---|
+| GOOD, one byte | Receiver is ungated (older generations); no enable is needed. |
+| CHECK CONDITION `05/24/00` | Gated; the enable of §11.2 is required, then the read is retried. |
+| Any other sense (e.g. `05/20/00` unsupported opcode), a transport failure, or a short response | Not the gate; the enable does not apply. |
+
+The two standard probe windows are `3C 02 B0 00 00 04 00 00 A4 00` (low window,
+offset `0x000004`, 164 bytes, readable without the enable on drives that expose
+it) and `3C 02 B0 50 00 00 00 00 A4 00` (high window, offset `0x500000`, 164
+bytes, refused with `05/24/00` until the enable). A drive can fall out of the
+extended-read state in the middle of a long read (for example after a read error);
+the enable is idempotent, so re-issuing it restores the state before the read is
+retried. Two reads of the same span return identical bytes on a stable drive; a
+difference between passes marks the span as unreliable.
 
 #### 11.2 The extended-read enable ("knock")
 
@@ -835,9 +1111,9 @@ full memory map — is a zero-length `WRITE BUFFER` mode `02`, buffer id `41`
 ```
 
 It is **idempotent** — issuing it twice on an already-enabled drive leaves the
-drive enabled — and its effect **persists until power cycle** (a bus replug
-resets it; the effect of a software reset on the same bus has not been
-characterised). The `0xA5AAAA` field is the offset position of the CDB.
+drive enabled — and its effect **persists until a full firmware startup clears
+it** (§11.3; whether startup clears it on the UD04 is not established, and a bus
+reset or software reset is not established to rerun startup). The `0xA5AAAA` field is the offset position of the CDB.
 
 Two state bits in a receiver RAM byte govern this, and their interaction is the
 important part:
@@ -848,7 +1124,8 @@ important part:
   succeeding again** until the drive is power-cycled. This is the anti-tamper
   latch.
 
-In newer receivers the `41` handler behaves as follows (code-backed):
+In receivers dated 2022-12 onward (for example SAT9401 1.03 and later, SAT8F01
+1.04) the `41` handler behaves as follows (code-backed):
 
 - **A correct enable** — offset exactly `A5AAAA`, and the low 16 bits of the
   transfer length zero — succeeds *only if the lockout bit 5 is clear*, and then
@@ -861,10 +1138,14 @@ The consequence is a one-way trap. Once a bad enable has tripped the lockout, th
 receiver is latched: **a subsequent, correctly formed enable no longer clears bit
 5 and no longer grants permission** — the `41` handler now refuses because bit 5
 is set. Nothing in the command path resets that latch. It is cleared only by a
-full firmware startup (§11.3) — in practice, a power cycle or bus replug. So a
-single malformed `3B 02 41 …` attempt can lock a drive out of extended-read mode for
-the rest of that power session, and no amount of correct enables will recover it
-until the drive is rebooted.
+full firmware startup (§11.3). So a single malformed `3B 02 41 …` attempt can lock
+such a drive out of extended-read mode until it restarts, and no amount of correct
+enables will recover it before then.
+
+Earlier receivers have a simpler form with no lockout. The UD04 1.14 handler, and
+the SAT9401 1.01 and 1.02 handlers, compare only the low 16 bits of the offset with
+`0xAAAA`: a match sets bit 1 and any other value clears it. There is no check on the
+high offset byte `A5` or on the length, and no bit 5.
 
 #### 11.3 The permission/lockout state and its reset
 
@@ -917,10 +1198,10 @@ The `02/B0` window exposes a **post-boot runtime view** of drive memory: SRAM
 and stack, the Kernel and Normal code, calibration and configuration tables,
 and, in a distinct high region, a live AACS/BD disc-content buffer. It does
 **not** expose the persistent firmware store in a form suitable for a
-byte-restorable backup. A symmetric `READ BUFFER 3C 04 FF` query — the read-side
-mirror of the flash-write CDB (Chapter 12) — is refused with sense `05/24/00` at
-every offset, i.e. the flash chip is not memory-mapped into the `02/B0` address
-space, and the distribution-envelope banner (`Copyright(c) 2000 Pioneer`) never
+byte-restorable backup. No read-side mirror of the flash-write CDB (Chapter 12) is known: a
+`READ BUFFER 3C 04 FF` query is inferred to be refused with sense `05/24/00`, i.e.
+the flash chip is inferred not to be memory-mapped into the `02/B0` address space,
+and the distribution-envelope banner (`Copyright(c) 2000 Pioneer`) never
 appears anywhere in a runtime capture. The memory-read surface is thus an inspection
 interface, categorically distinct from both the persistent store and the update
 protocol.
@@ -935,6 +1216,39 @@ so a capture obtained this way is a runtime reconstruction of the images, not a
 proven byte-for-byte copy of what is stored in flash. The gap between those two —
 a runtime image versus a guaranteed-restorable flash backup — is one of the open
 problems of Chapter 21.
+
+#### 11.5 Capturing the running images
+
+The Kernel and Normal in drive memory can be read back as the decoded images of
+§5.4 and then re-wrapped as envelopes:
+
+- The Kernel is the `0x10000` bytes at `0x400000`. Its hardware field at image
+  `+0x1000` must equal bytes `[16..23]` of the `F1` identity block.
+- The Normal begins at `0x410000`; its first 8 bytes read `PIONEER ` and its
+  length is the big-endian word at `+0x14` (read 24 bytes first). The length is
+  valid if it is at least `0x2000`, a multiple of `0x100`, at most `0x800000`, and
+  keeps the image below `0x1000000`. For a scaled-key Normal the length comes from
+  the Kernel's receiver geometry (Chapter 17) instead.
+- Both images sum to zero as big-endian words (§8.1).
+- A re-wrapped envelope needs a header identity, a key seed and, for signed
+  generations, a signature. None of these exists in drive memory (§10.4, §11.4):
+  the seed and signature of an OEM envelope cannot be recovered from the running
+  image, and a signature produced under any other key is not the OEM signature.
+
+#### 11.6 Opening the drive for raw content reads
+
+On SAT-platform drives the same gate opening that enables the `02/B0` window is the
+"open" state in which the drive stops encrypting the bus: a GOOD `3C 02 B0 00 00 04
+00 00 A4 00` read, or the enable (§11.2) followed by a GOOD high-window read, marks
+the drive open. In that state the drive returns clear disc content and answers the
+AACS Volume ID query without any host certificate or key exchange. The Volume ID
+is read with the standard `READ DISC STRUCTURE` (`AD 01 00 00 00 00 00 80 00 24 00
+00`: Blu-ray, format `0x80`, AGID 0, 36 bytes); the response is a 4-byte header, the
+16-byte Volume ID at `[4..19]`, and a 16-byte MAC at `[20..35]` that is not
+checkable without a key exchange. An all-zero Volume ID, a short response or CHECK
+CONDITION means no Volume ID is available (the drive is not open, or no medium is
+present). A transport failure that carries no sense data means the bus has dropped
+out; a refusal always carries sense (for example ILLEGAL REQUEST).
 
 ### 12. The firmware update protocol
 
@@ -987,22 +1301,68 @@ values include:
 | UD04 `GENERAL` | `0xFD236642` |
 | BDR-S09 | `0xCE1F2B98` |
 | BDR-209D (FW120–FW151) | `0xB7E4F43E` |
-| BDR-213T | `0xB60AC2CC` |
+| BDR-213T (`ID43`) | `0xCCC20AB6` |
 
 The receiver validates the control word against a firmware immediate. In the
-UD04 Kernel the comparison is a `CMP.L` against the byte-order form
-`0x426623FD` of `0xFD236642`, at the control-validator around `0x44BBC8`,
+running UD04 Normal, the `04/FF` handler makes the comparison: a `CMP.L` against the
+byte-order form `0x426623FD` of `0xFD236642`, at the control-validator around
+`0x44BBC8`,
 preceded by a length comparison against `0x100`. Notably an **alternate word is
 also accepted**: a prior comparison `CMP.L #0x9A782361,ER0` at `0x44BBB4` (the
 on-wire form of `0x6123789A`) branches directly to the same state-setting
 continuation, so at least two distinct control words reach the accepted path.
-Both accepted words converge on the same continuation, which passes a `1` through
-carry into two bits (6 and 7) of a RAM state byte at `0x0144`; a later Kernel
+Both accepted words converge on the same continuation, which calls Kernel routines
+(through the Normal's slot imports) that pass a `1` through carry into two bits (6
+and 7) of a RAM state byte at `0x0144`; Kernel startup diverts to the update service
+path when bit 7 is set; a later Kernel
 predicate returns "true" only for bit6=1 and bit7=0.
 
 The control word is model-specific, so the same wire bytes that clear the UD04
 comparison would not clear another model's; the receiver's acceptance is bound to
 its own baked immediate.
+
+The 16-byte string and the word that accompany a given drive follow a table keyed
+by **controller id** (the `SAT` value) and then by the **destination tag** of the
+firmware (`GENERAL`, an `IDnn` code, or, on older DVD-era drives, an OEM name such
+as `ACER`, `APPLE`, `ASUS`, `DELL`, `HP`, `SONY`, `TOSHIBA`):
+
+- the 16-byte string is a per-controller descriptor (42 distinct descriptors exist
+  across 860 controller ids). Several marketing names share one descriptor, and the
+  descriptor can differ from the marketing model (BDR-S09 uses
+  `PIONEER  BDR-209`, with two spaces);
+- the 32-bit word is the entry for the destination tag; a tag with no entry takes
+  the controller's **fallback word**, which is `0x6123789A` on 780 controller ids
+  (the alternate word accepted by the BDR-UD04 receiver, above) and absent (`0`)
+  on the 80 oldest;
+- the wire word is the 32-bit value in little-endian order at offset `0x10`.
+
+Examples (word for the stated tag; controller ids as in §10.2):
+
+| SAT id | Tag | Word |
+|---|---|---|
+| `8A10` | `GENERAL` | `0xFD236642` |
+| `8A10` | `ID19` | `0x25ED9753` |
+| `8600` | `GENERAL` | `0xB025BEB8` |
+| `8600` | `ID43` | `0xCE1F2B98` |
+| `8600` | `ID61` | `0xB7E4F43E` |
+| `8301` | `GENERAL` | `0x688BF58E` |
+| `8301` | `ID43` | `0x490A87AA` |
+| `8800`, `8801` | `GENERAL` | `0xF2125032` |
+| `8F00`, `8F01` | `GENERAL` | `0xCCEBD625` |
+| `8F01` | `ID43` | `0xEE9A5CDB` |
+| `9201` | `ID43` | `0xCCC20AB6` |
+| `8D30`, `8D31` | `GENERAL` | `0xDD53014A` |
+| `8E20`, `8E21` | `GENERAL` | `0x88710AE7` |
+| `8231`, `8232` | `GENERAL` | `0xCAC89138` |
+| `9401` | `ID43` | `0x98C07527` |
+| `8510`, `8511` | `GENERAL` | `0x87A62C65` |
+
+The BDR-UD04 Kernel+Normal update (linear Kernel schedule, §12.4) carries the
+fallback word `0x6123789A` in both control buffers. The Kernel+Normal updaters of
+the BDR-208 to BDR-213 families instead carry a word that equals one tag entry of
+the table (for example `0x66E133E6` = BDR-208 `ID81`, `0x20B42DB4` = BDR-208
+`ID60`, `0x82FB6A59` = BDR-209 `ID81`, `0x0014D2B2` = BDR-212 `ID81`), so the word
+in use is a property of the update, not of the envelope bytes.
 
 #### 12.3 Entry precondition and completion polling
 
@@ -1021,6 +1381,30 @@ receiver may also cycle power state via `START STOP UNIT` variants
 identity/verification pass additionally uses `READ BUFFER` variants `02/F1`,
 `01/F2`, `02/F2`, and `02/A0`.
 
+The sequence, its timing and its states:
+
+| Step | Command / state | Timing and condition |
+|---|---|---|
+| Precondition | Tray closed and empty (TEST UNIT READY returns NOT READY `02/3A/xx`; ASCQ `02` means tray open, any other means closed with no medium) | Reprogramming with a medium loaded or the tray open can leave the drive wedged mid-program. |
+| Entry | `3B 04 FF 00 00 00 00 01 00 00` + 256-byte control buffer | The drive then settles for about 1 s. |
+| Entry check | `INQUIRY` `12 00 00 00 60 00` | Bytes `[0x20..0x22]` must read ASCII `000`; otherwise no transfer is started. |
+| Transfer | `3B 07 FE …` (Kernel) then `3B 07 F0 …` (Normal), chunks of at most `0x8000` | No delay between chunks; the receiver stages each chunk synchronously. Any non-GOOD status on a transfer write aborts the sequence (no retry of a write). |
+| Kernel settle | After the final `07/FE` chunk, before any `07/F0` data | The drive programs its Kernel and restarts its Kernel startup at this point; the OEM updaters wait about 2 s here. |
+| Finish | `3B 05 FF 00 00 00 00 01 00 00` + the same 256-byte control buffer | The drive programs the Normal after the command completes, so the host polls for completion (OEM updaters poll at 1 s intervals; they wait about 2 s only after a non-zero finish result). |
+| Completion | `GET EVENT STATUS NOTIFICATION` `4A 00 00 00 10 00 00 00 08 00` (media class, 8 bytes) interleaved with `TEST UNIT READY` `00 00 00 00 00 00` | The drive answers CHECK CONDITION until programming and restart finish; GOOD to TEST UNIT READY means it is ready again. |
+
+Sense semantics during this sequence: `UNIT ATTENTION` (key `6`) clears itself and
+a *read* may be repeated once, but a data-out write is never repeated (re-sending a
+chunk could re-trigger the program step); `RECOVERED ERROR` (key `1`) and the
+no-medium state (key `2`, ASC `3A`) are benign on identity reads; `05/24/00`
+(INVALID FIELD IN CDB) on a vendor read is the address gate (§11.1).
+
+A transfer or finish that fails after a successful entry can leave the drive
+holding a partial firmware, restorable by writing a complete component set again.
+When the Kernel is intact but the Normal fails the boot gates, the Kernel keeps its
+update receiver running instead of starting the Normal (§13.2), so the drive can
+still be re-flashed.
+
 #### 12.4 Transfer schedules
 
 Because a Kernel envelope is `0x11200` bytes and each transfer chunk is capped at
@@ -1035,19 +1419,39 @@ exist across the family.
 07/FE  offset 0x10000  length 0x1200
 ```
 
-**Four-stage generated-block schedule** (derived-key generations): the Kernel is
-preceded by a `0x1200`-byte `07/F0` prefix, then a generated 512-byte block via
-`07/FE`, then `07/FE` body writes of `0x8000`, `0x8000`, and `0x1000` bytes. The
-choice of schedule **correlates with the
-Kernel envelope layout** — front-key ↔ three-write, derived-key ↔ generated
-block — which is the same distinction the Kernel encodes in its `CMP.B #FE/#F0`
-instruction pair (§7.3). A transitional three-slice variant appears in some of
-the oldest updaters.
+The CDBs are `3B 07 FE 00 00 00 00 80 00 00`, `3B 07 FE 00 80 00 00 80 00 00` and
+`3B 07 FE 01 00 00 00 12 00 00`; the offset is the source offset, with no gap.
+
+**Five-write generated-block schedule** (derived-key generations; the updaters of
+the BDR-208, -209, -211, -212 and -213 families and the models built on the same
+silicon, all with `0x11200`-byte Kernel envelopes). With `K` the Kernel envelope:
+
+| Step | CDB | Length | Data |
+|---:|---|---:|---|
+| 1 | `3B 07 F0 00 00 00 00 12 00 00` | `0x1200` | `K[0x0000..0x1200)` (header and first `0x1000` bytes) |
+| 2 | `3B 07 FE 00 00 00 00 02 00 00` | `0x200` | 512 generated bytes (below) |
+| 3 | `3B 07 FE 00 12 00 00 80 00 00` | `0x8000` | `K[0x0200..0x8200)` |
+| 4 | `3B 07 FE 00 92 00 00 80 00 00` | `0x8000` | `K[0x8200..0x10200)` |
+| 5 | `3B 07 FE 01 12 00 00 10 00 00` | `0x1000` | `K[0x10200..0x11200)` (trailer) |
+
+The CDB offsets `0x1200`, `0x9200` and `0x11200` of steps 3–5 are staging offsets
+equal to the source offset plus `0x1000`, leaving the first `0x200` staging bytes to
+step 2. The 512 generated bytes are produced by the C-runtime linear congruential
+generator on a 32-bit state, `state ← state·214013 + 2531011 (mod 2^32)`, emitting
+`(state >> 16) & 0xFF` per byte, seeded from the host's millisecond tick counter;
+the block is not derived from the envelope. The Normal then follows as `07/F0`
+chunks (the BDR-212 1.05 Normal is `0x1D7600` bytes) and the sequence ends with
+`05/FF`.
+
+The choice of schedule **correlates with the Kernel envelope layout** —
+front-key ↔ three-write, derived-key ↔ generated block — which is the same
+distinction the Kernel encodes in its `CMP.B #FE/#F0` register choice (§7.3). A
+transitional three-slice variant appears in some of the oldest updaters.
 
 The Normal transfer is a straightforward loop of `07/F0` chunks of at most
 `0x8000` bytes over the declared image length; for a `0x1D7000`-byte Normal
 envelope this is 58 full `0x8000` chunks plus one `0x7000`-byte final chunk (59
-transfers total). A short delay (~100 ms) follows each successful chunk.
+transfers total). There is no per-chunk delay; the only pause in the transfer is the Kernel settle of §12.3, between the last `07/FE` chunk and the first `07/F0` chunk.
 
 #### 12.5 Receiver dispatch
 
@@ -1059,7 +1463,7 @@ incoming `WRITE BUFFER`. The three ids map to three processing phases:
 - **`FF` → control (phase 2)**
 
 This is the same `FE`/`F0` distinction visible as the adjacent `CMP.B` pair in
-derived-key Kernel bodies (§7.3). In a traced SAT8301 receiver, `F0`, `FE`, and
+Kernel bodies (§7.3). In a traced SAT8301 receiver, `F0`, `FE`, and
 `FF` reach processing phases 1, 0, and 2 respectively; the phase-2 handling
 includes a model-marker comparison that classifies plain-looking versus
 scrambled payloads and, on mismatch, selects signature validation rather than an
@@ -1100,6 +1504,21 @@ for UD04) applies the acceptance checks:
 4. it **optionally compares the entire decoded image against current flash**;
 5. it invokes the relocated writer.
 
+These steps run inside the command that delivers the final `07/FE` chunk. Once
+exactly `0x11200` bytes have accumulated, the receiver decodes the image, checks the
+zero sum and compares against the current Kernel; it then masks interrupts, copies
+the Kernel writer (`0x400A60..0x400B0C`) to RAM at `0x2800`, and erases and programs
+the 64 KiB in `0x100`-byte pieces. The writer ends with a jump to the Kernel start
+at `0x400100`, which reloads the stack pointer, re-runs the boot gates and restarts.
+Bits 6 and 7 of the state byte at `0x0144` survive that restart (the start code
+clears only bit 4), so update state persists and the host continues with `07/F0`
+without re-entering `04/FF`.
+
+The `F0` (Normal) chunk arm only stages the chunk and checks capacity, so it needs no
+pacing. The `FF` (finish) arm decodes and checks the signature and checksum
+synchronously, then copies the Normal writer to RAM at `0x2800` and sets `0x014D`
+to 1; the Kernel main loop programs the Normal after the command completes.
+
 The Kernel branch of the payload classifier inspects image offset `+0x1000` for
 its signature/identity; it does **not** inspect the envelope's release fields.
 This arm therefore contains no release/date/filename preservation step — the
@@ -1129,6 +1548,27 @@ exactly `0x10000` bytes. The image thus starts *after* the envelope header and
 key table, neither of which enters the write loop — which is the mechanism behind
 the non-persistence of the release label (§10.4).
 
+#### 12.9 The vendor kernel-mode handshake (`F3` / `F2`)
+
+Updaters that install an older or foreign image on a newer drive first perform a
+challenge/response with the drive, before the `04/FF` entry. It uses the
+ANSI-C linear congruential generator `state ← state·0x41C64E6D + 0x3039 (mod 2^32)`,
+whose per-step output byte is `(state >> 16) & 0xFF`:
+
+| Step | Command | Data |
+|---:|---|---|
+| 1. Arm | `3B 01 F3 00 00 00 00 00 00 00` | none (zero length) |
+| 2. Challenge | `3C 01 F2 00 00 00 00 04 00 00` | in: `0x400` bytes; the first 4 are the signature |
+| 3. Seed | — | find the 16-bit seed `v` (`0..0xFFFF`, lowest first) whose first four generator output bytes equal the signature |
+| 4. Response | `3B 01 F2 00 00 00 00 01 00 00` | out: `0x100` bytes, all equal to `~b`, where `b` is the output byte of generator step `0x401` from seed `v` (`0x400` steps discarded, the next one used, then bit-inverted) |
+
+All four commands use mode `01` and are sent as strict writes (any non-GOOD status
+aborts). A challenge shorter than four bytes, or one that no 16-bit seed
+reproduces, aborts the handshake. This is a different mechanism from the `04/FF`
+entry and its control word (§12.2): the handshake is a challenge/response, the
+control word a constant. Whether completing the handshake clears the incoming
+generation-marker check of §15.2 is not established (Chapter 21).
+
 ---
 
 ## Part IV — Boot, compatibility, and versioning
@@ -1153,7 +1593,8 @@ Three checks run in sequence in the UD04 Kernel startup at `0x4001C0` onward:
    mismatch likewise diverts to `0x400258`. This is a **tag-equality** test, not
    a revision-ordering test.
 3. **Capacity (`0x400222..0x40024C`).** The Normal's declared length at
-   `0x410014` is loaded, an address ceiling of `0x5DFFFF` or `0x7CFFFF` is
+   `0x410014` is loaded, an address ceiling of `0x5DFFFF` or `0x7CFFFF` (other generations use
+   other ceilings, for example `0x5E7FFF` in S13 1.05) is
    selected from another routine's result, the Normal base is subtracted, and
    the length is checked against that capacity. This path is **conditional**: a
    test of RAM `0x0144` bit 5 at `0x400214` skips the capacity check entirely
@@ -1177,6 +1618,14 @@ and entering a processing loop that waits on RAM `0x014D` and invokes RAM
 Kernels (UD04 1.00, S09 SAT8600 ID43 1.54) do **not** contain this marker
 equality block between their type and size checks.
 
+The mismatch branch is a soft failure, not a brick: the jump to `0x4057DE` never
+reaches the Normal's entry call (`JSR 0x4049CA`) but keeps the Kernel's update
+receiver running, so a Kernel and Normal whose marker bytes disagree leave a drive
+that does not boot its application yet still accepts a new update. The
+consequence for any change of the marker is that the Kernel and Normal bytes must
+agree afterwards; a Normal-only or Kernel-only write across the generation
+boundary can leave this state.
+
 #### 13.3 The runtime import contract
 
 Passing the boot gates is necessary but not sufficient for a Normal to run: it
@@ -1185,8 +1634,7 @@ imports Kernel service slots `0x400A00..0x400A5C` through a fixed run of wrapper
 calls. A census of decoded Normal images finds three distinct import target sets
 across generations; among co-shipped pairs with recognised import/export runs,
 all show complete slot coverage. This import surface, together with the
-generation-dependent Normal entry address (`0x412000` / `0x410028` / `0x410014`,
-§5.2), constitutes an interface contract between the two components that is
+generation-dependent Normal entry address (§5.2), constitutes an interface contract between the two components that is
 independent of, and additional to, the header-identity gates.
 
 ### 14. Pairing and cross-model compatibility
@@ -1199,9 +1647,9 @@ corpus evidence for the pairing rules.
 
 Across the corpus of unambiguous co-shipped pairs, the following identity fields
 match within a pair: hardware (`SAT`), embedded model / full identity, file type,
-Destination, and Kernel Version2. In a census of 170 unambiguous distinct
-co-shipped pairs, **all 170** matched on hardware, embedded model/full identity,
-type, Destination, and Version2; **169** also shared the advertised release
+Destination, and Kernel Version2. In a census of 253 unambiguous distinct
+co-shipped pairs, **all 253** matched on hardware, embedded model/full identity,
+type, Destination, and Version2; **252** also shared the advertised release
 revision, the sole exception being the Kernel-1.00/Normal-1.14 UD04 pair where
 the Kernel legitimately lags. Equal metadata is thus a *necessary observed
 pattern* within a genuine pair — but it is not a *sufficient* rule for declaring
@@ -1233,20 +1681,19 @@ models. Two facts stand out:
   A single decoded Kernel body hash appears under several *public* model names —
   for instance one body appears under BDR-208, BDR-208M, and BDR-208XJ — but no
   decoded Kernel body spans two distinct *embedded* header models. In a census of
-  89 distinct decoded Kernel bodies across 66 catalogue model labels, 23 body
-  hashes occurred under multiple labels, always within one embedded
-  model/hardware line. Marketing-name equality is therefore not a licence to
+  140 distinct decoded Kernel bodies across 89 catalogue model labels, 30 body
+  hashes occurred under multiple labels, and none spans two embedded models. Marketing-name equality is therefore not a licence to
   interchange; embedded identity and type are what matter.
 - **Near-identical bodies differ only in data, not code.** Pairs of decoded
   Kernels from different models can exceed 95% byte identity while differing by
-  fewer than 32 bytes. In a study of 120 such cross-model pairs across 12
-  hardware labels, 114 differed only in three places: the boot-type ASCII at
-  image `0x1008`, the checksum-compensation word at `0x1020`, and the 24-byte
-  commercial identity string; three further pairs additionally changed one
-  executable immediate at `0x40B8FC` (`0x3700` versus `0x36E0`, purpose
-  unresolved). This is strong evidence of **shared executable implementations
-  parameterised by model/type data** — the same code, stamped with different
-  identity and its compensating checksum.
+  fewer than 64 bytes. All 291 such near pairs differ only in the boot-type ASCII at
+  image `0x1008`, the checksum-compensation word at `0x1020` (with the adjacent
+  bytes `0x1021..0x1023`), and the 24-byte commercial identity string. This is strong
+  evidence of **shared executable implementations parameterised by model/type
+  data** — the same code, stamped with different identity and its compensating
+  checksum. (The one executable immediate that differs between near-identical
+  bodies of a single model is at `0x40B8FC`: `0x3700` in BDR-208M 1.40 and `0x36E0`
+  in 1.50, purpose unresolved.)
 
 Even cross-*hardware* comparisons show this pattern: among 94 decoded bodies on
 34 hardware labels, 43 pairs exceeded 95% identity, the closest (SAT8D31/ID05 vs
@@ -1269,14 +1716,43 @@ the same summing property. The remaining obstacles are the identity/type gates
 
 Given a Normal and a pool of Kernels sharing its hardware and type, the correct
 co-shipped Kernel is recovered by a simple rule: **take the newest Kernel whose
-advertised date is not later than the Normal's date.** Across 170 known original
-pairings this rule recovers the exact original Kernel uniquely in **170/170**,
+advertised date is not later than the Normal's date.** Across 252 known original
+pairings this rule recovers the exact original Kernel uniquely in **252/252**,
 with no ties; adding Kernel-Version2 to the match key gives the same result.
-Weaker rules do worse — "newest overall" recovers only 89/170 on hardware+type,
-and type-only-with-date-cutoff yields 56 ties — establishing that **hardware is
+Weaker rules do worse — in a 170-pair sample "newest overall" recovered only 89/170
+on hardware+type, and type-only-with-date-cutoff yielded 56 ties — establishing that **hardware is
 material** to the query. This is a recovery rule for *known* pairings; it is not
 a proof of compatibility for arbitrary unseen combinations, and later-dated
 Kernels are excluded from it rather than proven incompatible.
+
+#### 14.6 Same-silicon cross-model pairs
+
+Models built on the same silicon can run each other's firmware. The pairs below are
+reported from community practice; they are empirical and cannot be derived from
+firmware bytes. Direction is native hardware → firmware it can run, and every case
+requires a complete, self-consistent foreign Kernel and Normal pair (the Kernel
+whose date is not later than the Normal's, §14.5), never a lone Normal or Kernel.
+
+| Native SAT id (model) | Runs firmware of |
+|---|---|
+| `8231`, `8232` (BDR-XD05) | `8B30` (BDR-XD06J-UHD) |
+| `8301` (BDR-208) | `8800` (BDR-211 v1); also reachable through `8600` |
+| `8510`, `8511` (BDR-UD03 v1, v2) | `8A10` (BDR-UD04) |
+| `8590` (BDR-US03) | `8591` (Asus SBC-06D2X-U) |
+| `8600` (BDR-209 v1) | `8800` (BDR-211 v1) |
+| `8601` (BDR-209 v2) | `8801` (BDR-211 v2) |
+| `8D30` (BDR-XD07) | `8D31` (BDR-XD07U) |
+| `8E20` (BDR-XS07) | `8E21` (BDR-XS07U) |
+| `8F00` (BDR-212) | `8F01` (BDR-212U / BDR-S12U) |
+| `9000` (BDR-X12) | `9001` (BDR-X12U) |
+| `9200` (BDR-213M) | `9201` (BDR-213U / BDR-S13U) |
+| `9330` (BDR-XD08) | `9331` (BDR-XD08U) |
+| `9400` (BDR-X13) | `9401` (BDR-X13U) |
+
+Nearly all pairs are a non-UHD to UHD sibling that differs only in the low nibble of
+the controller id. The reason a lone Normal is unsafe is the boot gates: a
+Normal-only downgrade or crossflash onto a retained newer Kernel can fail the
+marker equality of §13.2, and a Kernel-only write can too.
 
 ### 15. The generation marker and downgrade
 
@@ -1291,15 +1767,15 @@ establishes.
 The decoded Kernel body carries a **generation / "incoming" marker at body offset
 `0xFE`** (runtime address `0x4000FE`). Two values dominate, split cleanly by era:
 
-- **`01`** — newer Kernels. All 91 decoded `01`-marker Kernels in a corpus census
+- **`01`** — newer Kernels. All 107 decoded `01`-marker Kernels in a corpus census
   carry advertised dates from 2022-12-12 through 2024-10-09.
-- **`FF`** — older Kernels. The 78 decoded `FF`-marker Kernels carry dates from
+- **`FF`** — older Kernels. The 69 decoded `FF`-marker Kernels carry dates from
   2003-08-01 through 2022-05-31.
 
 The transition is visible *within* hardware/type lines as firmware advances: S09
 `1.54→1.55`, S11 `1.53→1.54`, XD05 ID34 `3.10→3.11`, and XD07U ID05 `1.04→1.05`
 all flip `FF→01`. A handful of other raw `0xFE`-position values occur in
-individual older or undecoded images (`00`, `0C`, `0D`, `18`, `55`); these are
+individual older images (exactly `00`, `0C`, `0D`, `18`, `55`); these are
 not established as named generation classes and should be retained as raw
 observations rather than interpreted.
 
@@ -1320,8 +1796,9 @@ receive-buffer + `0x12FE` (i.e. decoded body offset `0xFE` at the `0x1200`
 staging image base). Its ordinary predicate **returns rejection for `FF` or
 `00`, and success otherwise**; the caller at `0x404D42` branches to the error
 path `0x404D8A` on rejection. The gate therefore rejects the two specific values
-`FF` and `00` — it does **not** require exactly `01`. (A conditional exception
-involving receiver state and installed Normal length remains partly untraced.)
+`FF` and `00` — it does **not** require exactly `01`. (There is one exception: when
+the state bit tested at RAM `0x06C2` bit 0 is set and the installed Normal's length
+word at `0x410014` is `0xFFFFFFFF` — an erased Normal — `FF` and `00` are accepted.)
 
 **Site 2 — the startup equality (newer firmware).** As in §13.2, newer firmware
 compares the Normal byte at `0x410028` against the installed Kernel marker at
@@ -1338,9 +1815,8 @@ equivalent check.
 
 The four exact instruction signatures of the newer generation (startup equality,
 `FF`/`00` rejection, and the two incoming-marker lookups) co-occur: in a corpus
-scan they appear together in 91 Kernel envelopes across 26 hardware labels, **all
-91 of which carry marker `01`**, and in **none** of the 78 decoded `FF`-marker
-envelopes. This supports a genuine *generation barrier* implemented by the newer
+scan they appear together in all 107 `01`-marker Kernel envelopes across 26 hardware
+labels, and in **none** of the 69 decoded `FF`-marker envelopes. This supports a genuine *generation barrier* implemented by the newer
 receiver, not a literal release-number or Version2 mapping.
 
 #### 15.3 The downgrade transform
@@ -1365,7 +1841,13 @@ valid. The transform, applied to the target Kernel's **decoded** body, is:
 The edit makes the older Kernel acceptable to a newer receiver's Site-1 gate. The
 transform is deterministic: flipping `0xFE` and compensating `0x1020` yields a
 single well-defined patched image and, after re-encoding, a single well-defined
-envelope for a given target Kernel. The same marker/checksum operation applies
+envelope for a given target Kernel. Adding `0xFE00` to the big-endian word at
+`0x1020` changes byte `0x1022` (a carry can reach `0x1021`); for the BDR-UD04 1.00
+Kernel the edited image differs from the original at exactly `0xFE` and `0x1022`.
+The envelope's first `0x1200` bytes (header and key table) are unchanged. Because
+the Kernel receive route checks only the additive checksum (§8.1, §8.4), no
+signature has to be recomputed for this edit, and the Normal is never edited: its
+signature covers `0x410028` (envelope offset `0x10228`) and cannot be re-created. The same marker/checksum operation applies
 across an adaptation set spanning UD04, the SAT8800/8801 211M targets, S12U, and
 XD07U, with the S13/213 family using the same operation within its own multi-stage
 transaction.
@@ -1395,13 +1877,23 @@ drive ultimately runs cleanly, and whether the *original* older marker ought to
 be restored for a genuine OEM state, is a design objective rather than a settled
 mechanism (Chapter 21).
 
+A second route to the same goal exists on the drive side. Older and foreign OEM
+images can also be sent **unmodified** after the kernel-mode handshake of §12.9,
+with a control buffer built from the controller's descriptor and a word from the
+table of §12.2 (fallback `0x6123789A`). Which of the two routes a given drive needs
+depends on whether that handshake, or the control-word accepted state (bits 6 and 7
+of the state byte at `0x0144`, §12.2), also clears the incoming-marker rejection of
+Site 1 (`0x405266`, with its caller at `0x404D42`). The Site 1 exception for an erased installed Normal
+(`0x4052B2..0x4052C4`, §15.2) is the only other path that accepts `FF`; whether the
+handshake or control-word state clears the rejection is open (Chapter 21).
+
 ### 16. Release packages versus complete flash state
 
 A firmware release package is evidence for **which envelopes that release
 supplies**, not a snapshot of every region resident on a drive. Across releases
 the shipped set varies: many carry one Normal only; others carry a Normal plus a
 Kernel; a few carry two hardware-variant Normals; and older drives may carry only
-the legacy `Plane` role. In one census of 456 source-matched release bundles, 248
+the legacy `Plane` role. In one census (approximate figures) of 456 source-matched release bundles, 248
 carried exactly one Normal, 140 carried at least one Kernel, six carried two
 Normals but no Kernel, and 62 carried only the older Plane role. **Normal-only
 releases are genuine omissions** — the drive retains its installed Kernel — not
@@ -1439,8 +1931,8 @@ a **scaled** key geometry rather than the fixed `0x1000`-byte Kernel key or the
 `0x10000`-key Normal.
 
 For the scaled-key Normal the key length is **one sixteenth of the payload
-length**. The BDC-S02 1.07EU envelope is the worked example: its receiver
-requires a total Normal size of `0x1CB200`, decodes a `0x1B0000`-byte image, and
+length**. The BDC-S02 1.07EU envelope is the worked example; its receiver
+is inferred to require a total Normal size of `0x1CB200`, decodes a `0x1B0000`-byte image, and
 places the payload at envelope offset `0x1B200` (header `0x200` + key `0x1B000`),
 with `0x1B000 = 0x1B0000 / 16`. The decoder is invoked with an explicit
 image/key address pair rather than the modern fixed offsets:
@@ -1452,6 +1944,16 @@ BDC-S02 receiver (0x4037C6):  total size          = 0x1CB200
                               key base             = 0x10400
                               payload at envelope offset 0x1B200
 ```
+
+The receiver's constants satisfy fixed relations that fully determine the
+geometry: `envelope length = 0x200 + key length + image length`,
+`image length = 16 × key length` (and a multiple of `0x100`, at least `0x2000`),
+and `payload address − 0x10400 = key length`. Equivalently the body past the header
+is 17 equal units, a key unit followed by 16 image units, so `(envelope length −
+0x200)` is a multiple of 17. The Normal's two XOR exceptions (§7.2) apply, the
+decoded image begins `PIONEER ` and sums to zero as big-endian words, and the
+envelope carries no declared length, so the lengths come from the Kernel's
+constants or from the 17-unit relation.
 
 Two properties distinguish this family from the modern one. First, **validation is
 by additive checksum, not ECDSA**: the older completion arm sums the decoded
@@ -1475,7 +1977,7 @@ resides at a different base.
 The SAT100x receivers differ among themselves in validation policy: SAT1005 and
 SAT1014 accept an **unsigned** body (80 zero bytes at `0x170–0x1BF`) via an
 explicit receiver path, while SAT1030 and SAT1050 use the **modern ECDSA curve**.
-The Kernel decoder arguments for SAT1005/1014/1030/1050 select length `0x10000`,
+The Kernel decoder arguments for SAT1005/1014/1030/1050 are inferred to select length `0x10000`,
 key address `0x10400`, and payload address `0x11400` (staging base `0x10200`
 gives envelope key `0x200`, payload `0x1200`); the signed SAT1030/1050 variants
 additionally pass a validation pointer (e.g. `0xA10370`) into a validator before
@@ -1503,8 +2005,8 @@ banner and the ATA0006 identity, and satisfies a **little-endian** zero-sum
 checksum: its first little-endian word (`0x761851CA` for the sample) added to the
 wrapping little-endian sum of decoded offsets `0x1000..0x5000` yields exactly
 zero, with the `0x4..0x1000` `0xFF` padding excluded from the sum. This same
-unique geometry appears across all nine distinct 64 KiB ATA0006/0007/0008
-Kernels; all nine decode with padding, checksum, Pioneer-identity, and
+unique geometry appears across all eleven distinct 64 KiB ATA0006/0007/0008
+Kernels; all eleven decode with padding, checksum, Pioneer-identity, and
 byte-exact inverse-transform consistency.
 
 The five 1 MiB and other early ATA/SCSI Kernels do **not** match that encrypted
@@ -1518,7 +2020,7 @@ their live flash addresses are not identified.
 
 ### 19. The sparse 128 KiB legacy layout
 
-A distinct sparse layout appears in the 35 distinct 128 KiB samples of the
+A distinct sparse layout appears in roughly 35 distinct 128 KiB samples of the
 ATA0009/0010/0011/0064/0068/0070 families:
 
 ```
@@ -1531,8 +2033,8 @@ ATA0009/0010/0011/0064/0068/0070 families:
 
 The `0x8000` word is the additive inverse of the wrapping little-endian sum over
 `0x10000..0x20000`, making that region's checked sum vanish. This wrapper is
-shared by **both** Kernel and Normal roles: in a survey of 124 older ATA/SCSI
-Normal envelopes, 56 exhibited the exact erased gaps plus the zero wrapping
+shared by **both** Kernel and Normal roles: in a survey of roughly 124 older ATA/SCSI
+Normal envelopes, about 56 exhibited the exact erased gaps plus the zero wrapping
 checksum (ATA0009/0010/0011/0012/0064/0068/0070/0412/0812). Whether the final
 64 KiB is itself transformed, and whether a drive read returns those bytes, is
 not established for this family; probing for a lane/rotation/bit-permutation
@@ -1560,24 +2062,20 @@ layout is characterised.
 | ATA0009…/128 KiB sparse | Kernel/Normal | header, FF gaps, checksum `0x8000`, data `0x10000` | — | LE wrapping zero-sum | partially decoded |
 | ATA0004 / SCSI0001 (earliest DVR) | Kernel | visible identity + code from `0xC000`/`0x8000` | — | unknown | undecoded ISA |
 
-Of a broad census of ~175 distinct Kernel envelopes, roughly 121–130 decode under
-the recognised modern and scaled codecs, while ~45–49 (the ATA0004/0007/0008/
-0009/0010/0011/0064/0068/0070 and SCSI0001 groups) remain outside the proven
-codecs. Their being "undecoded" is a limit of characterisation, not evidence that
-the images are corrupt.
+Of 259 distinct Kernel envelopes, 195 decode under the modern codecs and 11 under
+the legacy little-endian codec (§18), while 53 (the ATA0004/0007/0008/
+0009/0010/0011/0064/0068/0070 and SCSI0001 groups, among others) remain outside
+the proven codecs. Their being "undecoded" is a limit of characterisation, not
+evidence that the images are corrupt.
 
 > **A note on the population counts used throughout this document.** The
-> corpus figures cited here and in Chapters 7, 14, and 15 come from several
-> snapshots of the archived firmware population taken as it grew (on the order
-> of 170, 175, and 237 distinct Kernel envelopes), and they count different
-> things — *distinct envelopes* (e.g. the 63/58 front/derived-key split),
-> *distinct decoded bodies* (e.g. 89–94, since one body ships under several
-> envelopes), and *co-shipped pairs* (e.g. 170). The marker census of §15.1
-> (91 `01` + 78 `FF` = 169 decoded Kernels) is drawn from the largest snapshot,
-> in which ~185 of 237 envelopes decode, and is therefore consistent with the
-> "121–130 decode" figure above, which is from a smaller earlier snapshot. The
-> figures are best read as orders of magnitude and proportions, not as a single
-> reconciled ledger.
+> corpus figures cited here and in Chapters 7, 14, and 15 count different
+> things — *distinct envelopes* (935 in all: 259 Kernel, 593 Normal and 83 Plane),
+> *distinct decoded bodies* (e.g. 140 Kernel bodies, since one body ships under
+> several envelopes), and *co-shipped pairs* (253). Counts of decoded Kernels
+> depend on which codecs are included: 195 under the modern codecs, 206 once the
+> legacy framing is counted. The figures are best read as proportions rather than
+> a single reconciled ledger.
 
 ---
 
@@ -1591,7 +2089,7 @@ rather than asserted. The following are the material open problems, roughly in
 order of how load-bearing they are.
 
 1. **Signature trust policy (the central question).** The Kernel supplies the
-   header's public point into the hardware validation engine at `0xFF3FF000`
+   header's public point into the hardware validation engine (registers in the `0xFF3FFxxx` range)
    before decoding, but it has **not** been established whether the engine accepts
    the supplied point as-is or checks it against a stored, trusted value. The two
    possibilities have opposite consequences: if the point is accepted as
@@ -1613,15 +2111,15 @@ order of how load-bearing they are.
    control-word validator — is not fully mapped.
 
 3. **Restorable backup and the persistent store.** The `02/B0` memory-read window exposes
-   a post-boot runtime view, not the persistent update store; the symmetric
-   `3C 04 FF` read is refused, and the envelope banner is absent from any runtime
+   a post-boot runtime view, not the persistent update store; no read-side
+   counterpart of the `04/FF` flash write is known, and the envelope banner is absent from any runtime
    capture. No verified command reads back the exact on-flash Kernel/Normal
    bytes, and no per-unit personalisation boundary has been mapped. Whether a
    captured runtime image plus a re-signed envelope constitutes a byte-restorable
    backup is therefore unproven.
 
-4. **The hardware validation engine.** The exact operation of the engine at
-   `0xFF3FF000`, its use of the SHA-1 stage (whose initial words the Kernel
+4. **The hardware validation engine.** The exact operation of the engine
+   (`0xFF3FFxxx` register range), its use of the SHA-1 stage (whose initial words the Kernel
    loads), and the generation of the 40 changing header bytes are not fully
    traced. The independent SHA-256 K schedule at `0x59D474` implies a SHA-256
    implementation whose consumer has not been tied to the update or content path.
@@ -1639,14 +2137,17 @@ order of how load-bearing they are.
    control word (e.g. `PIONEER  BDR-208` and `PIONEER BDR-212T` each with
    multiple keys). No envelope field has been shown to select which word a given
    receiver requires, so a bare pair of `.enc` files cannot unambiguously
-   determine the control word from the envelopes alone.
+   determine the control word from the envelopes alone. OEM update programs index
+   words by controller id and destination tag with a per-controller fallback
+   (§12.2), but which fields the receiver itself keys on is not proven.
 
 7. **Downgrade end state and restoration.** Whether a marker-edited older Kernel,
    once installed on a newer drive, boots cleanly as the older firmware — and
    whether the *original* older marker should be restored for a genuine OEM state
    — is not established. The old receiver's acceptance, its required control
    identity, its Kernel-only transfer/commit behaviour, and the final cold-boot
-   readback are all open.
+   readback are all open. So is whether the `F3`/`F2` handshake (§12.9) lifts the
+   incoming-marker rejection, which would make the image edit unnecessary.
 
 8. **The 236-byte control-buffer tail.** Only the 16-byte model string and the
    4-byte control word are established as meaningful in the 256-byte control
@@ -1717,7 +2218,7 @@ All CDBs are 10 bytes; 24-bit offsets and lengths are big-endian.
 | Purpose | CDB | Data |
 |---|---|---|
 | Vendor identity | `3C 02 F1 00 00 00 00 00 30 00` | in: 48 B identity block |
-| Memory read (gated) | `3C 02 B0 <off3> <len3> 00` | in: ≤4096 B (164 B safe) |
+| Memory read (gated) | `3C 02 B0 <off3> <len3> 00` | in: 164 B works on all generations (4096 B cap on the oldest receivers) |
 | Extended-read enable | `3B 02 41 A5 AA AA 00 00 00 00` | (none) |
 | Enter update mode | `3B 04 FF 00 00 00 00 01 00 00` | out: 256 B control |
 | Transfer Kernel chunk | `3B 07 FE <off3> <len3> 00` | out: raw envelope bytes |
@@ -1725,6 +2226,18 @@ All CDBs are 10 bytes; 24-bit offsets and lengths are big-endian.
 | Finish / commit | `3B 05 FF 00 00 00 00 01 00 00` | out: 256 B control |
 | Completion polling | `4A …` GES, `00 …` TUR, `12 …` INQUIRY | — |
 | Power-state cycling | `1B 00 00 00 {20,00,02} 00` | — |
+| Completion poll (exact) | `4A 00 00 00 10 00 00 00 08 00` | in: 8 B |
+| Standard INQUIRY | `12 00 00 00 60 00` | in: 96 B (update-mode check: bytes `[0x20..0x22]` = `000`) |
+| Low-window read | `3C 02 B0 00 00 04 00 00 A4 00` | in: 164 B |
+| High-window read | `3C 02 B0 50 00 00 00 00 A4 00` | in: 164 B (gated) |
+| Gate probe | `3C 02 B0 40 00 00 00 00 01 00` | in: 1 B |
+| Drive-flags window | `3C 02 F4 00 00 00 00 01 00 00` | in: 256 B (layout not established) |
+| Kernel-mode arm | `3B 01 F3 00 00 00 00 00 00 00` | (none) |
+| Kernel-mode challenge | `3C 01 F2 00 00 00 00 04 00 00` | in: 1024 B |
+| Kernel-mode response | `3B 01 F2 00 00 00 00 01 00 00` | out: 256 B |
+| Volume ID (after open) | `AD 01 00 00 00 00 00 80 00 24 00 00` | in: 36 B |
+| Firmware date feature | `46 02 01 0C 00 00 00 01 00 00` | in: feature descriptor |
+| Serial feature | `46 02 01 08 00 00 00 01 00 00` | in: feature descriptor |
 
 Refusal of a gated read before the enable: sense `key=0x5 ASC=0x24 ASCQ=0x00`
 (ILLEGAL REQUEST / INVALID FIELD IN CDB). High address ceiling for `02/B0`:
@@ -1757,7 +2270,7 @@ ECDSA signature (modern generations):
            b2c7fbc50a2e8b4b1a8a38577058ba4a005b6208)
     digest = SHA-1 over signed range (0x200..EOF front-key ; 0x10200..EOF derived)
     header layout: 0x170 r | 0x184 s | 0x198 Qx | 0x1AC Qy   (each 20 B, big-endian)
-    validation performed via hardware engine at 0xFF3FF000
+    validation performed via hardware engine (registers 0xFF3FFxxx)
 
 Sizes:
     Kernel envelope 0x11200 ; decoded Kernel body 0x10000
@@ -1769,7 +2282,7 @@ Update control buffer (256 B, data-out for 04/FF and 05/FF):
     0x10   4-B control word (LE on wire)
     0x14  236 zero bytes
   example control words:
-    UD04 GENERAL 0xFD236642 · S09 0xCE1F2B98 · 209D 0xB7E4F43E · 213T 0xB60AC2CC
+    UD04 GENERAL 0xFD236642 · S09 0xCE1F2B98 · 209D 0xB7E4F43E · 213T 0xCCC20AB6
     UD04 alternate accepted word 0x6123789A (wire CMP form 0x9A782361)
 
 Generation marker:
@@ -1785,6 +2298,18 @@ Controller flash programming:
 Runtime landmarks (UD04 SAT 8A10):
     Kernel 0x400000..0x40FFFF ; Normal 0x410000..
     identity 0x59BB4E ; SHA-256 K schedule 0x59D474 ; factory footer 0x5FFFF8
+
+Normal decode extras:
+    XOR skipped (rotate kept) at two word offsets taken from the paired Kernel's
+    CMP.L/BEQ pair ; UD04 1.14: 0x16900, 0x77300 ; envelope = 0x10200 + image
+    key table 0x10000 at envelope 0x200 (or 0x10200) ; scaled: 17 units
+
+Generated Kernel block (bounded updaters), CRT rand, 32-bit state:
+    state <- state*214013 + 2531011 ; byte = (state >> 16) & 0xFF ; 512 bytes
+
+Kernel-mode handshake LCG (F3/F2):
+    state <- state*0x41C64E6D + 0x3039 (mod 2^32) ; byte = (state >> 16) & 0xFF
+    seed 16-bit from 4 challenge bytes ; response byte = ~byte(step 0x401)
 ```
 
 ## Appendix D — Embedded filename convention
@@ -1832,3 +2357,25 @@ unique storage key by itself: two distinct BDR-XD04 1.30 files both claim
   the extended-read permission bit, opening the gated `02/B0` address range.
 - **Permission bit / lockout bit** — receiver state bits (bit 1 / bit 5)
   controlling and disabling raw high-offset reads; cleared only by full startup.
+
+## References
+
+*Further reading on the topics covered here. These sources discuss related material; they are not cited claim by claim, and not every statement in them is endorsed here.*
+
+### Specifications
+
+- Renesas, *H8SX/1663 Group Hardware Manual* (exception handling, vector table and reset): https://docs.rs-online.com/1293/0900766b80a640d0.pdf
+- NIST, *FIPS 180-4, Secure Hash Standard (SHA-1 and SHA-256)*: https://csrc.nist.gov/pubs/fips/180-4/upd1/final
+- NIST, *FIPS 180-1, Secure Hash Standard* (no longer publicly available)
+- ANSI X9.62, *Public Key Cryptography for the Financial Services Industry: The Elliptic Curve Digital Signature Algorithm (ECDSA)* (no longer publicly available)
+- IETF, *RFC 1950, ZLIB Compressed Data Format Specification*: https://www.rfc-editor.org/rfc/rfc1950
+- T10, *SCSI Primary Commands (SPC-4)* (INQUIRY, READ BUFFER, WRITE BUFFER, sense keys) and *SCSI Multimedia Commands (MMC-6)* (GET CONFIGURATION features `0x0108` and `0x010C`, READ DISC STRUCTURE format `0x80`): https://www.t10.org/
+- T10, *SCSI Additional Sense Code assignments*: https://www.t10.org/lists/asc-num.txt
+
+### Open-source implementations
+
+- GNU binutils, H8/300 and H8SX disassembler (`objdump -m h8300sx`): https://sourceware.org/git/?p=binutils-gdb.git;a=blob;f=opcodes/h8300-dis.c
+
+### Community references
+
+- MakeMKV forum, discussion of Pioneer BDR-212 variants and cross-model firmware: https://forum.makemkv.com/forum/viewtopic.php?t=33192
