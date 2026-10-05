@@ -242,14 +242,15 @@ const hasKernelAndNormal = pkg => pkg.components.includes('kernel') && pkg.compo
 
 /**
  * Cross flash: other Pioneer editions in the same hardware family (fwext
- * `family_id`) and, per edition, only the revisions that ship both Kernel and
- * Normal. MediaTek has no cross flash. Returns [{ identity, revisions }].
+ * `family_id`), with every revision. A revision is `complete` when a package
+ * ships both Kernel and Normal; without a Kernel it cannot be cross-flashed.
+ * MediaTek has no cross flash. Returns [{ identity, revisions: [{ revision, complete }] }].
  */
 export function crossflashTargets(data, identity) {
   if (identity.family !== 'pioneer' || !identity.familyId) return [];
   return data.identities
     .filter(o => o !== identity && o.family === 'pioneer' && o.familyId === identity.familyId)
-    .map(o => ({ identity: o, revisions: o.revisions.filter(r => r.packages.some(hasKernelAndNormal)) }))
+    .map(o => ({ identity: o, revisions: o.revisions.map(r => ({ revision: r.revision, complete: r.packages.some(hasKernelAndNormal) })) }))
     .filter(t => t.revisions.length);
 }
 
@@ -435,12 +436,14 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     for (const k of row.keys) if (!best.has(k)) best.set(k, row.m);
   for (const { i, out } of identities) { out.n = best.get(i.key); out.t = searchText(terms.get(i.key)); }
 
-  // Cross flash: [identity index, [version indexes]] per target edition; UHD flag per identity.
+  // Cross flash: [identity index, [version indexes], [incomplete version indexes]] per
+  // target edition; UHD flag per identity.
   for (const { i, out } of identities) {
     out.x = crossflashTargets(data, i).map(t => {
       const n = idIdx.get(t.identity.key);
-      const vs = identities[n].out.v.filter(vi => t.revisions.some(r => r.revision === versions[vi].r));
-      return [n, vs];
+      const rev = vi => t.revisions.find(r => r.revision === versions[vi].r);
+      const vs = identities[n].out.v.filter(vi => rev(vi));
+      return [n, vs, vs.filter(vi => !rev(vi).complete)];
     });
     if (i.uhd) out.u = 1;
   }

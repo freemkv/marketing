@@ -462,7 +462,7 @@ import '../../styles/site.css';
               '<th scope="col">Revision</th><th scope="col">File</th><th scope="col">Contents</th><th scope="col">SHA-256</th>' +
               '</tr></thead><tbody>' + rows + '</tbody></table></details>';
 
-            // Cross Flash: same hardware family, Kernel + Normal revisions only; same rows as Versions.
+            // Cross Flash: same hardware family; same rows as Versions. A revision without a Kernel is listed, not viewable.
             var xf = '';
             if (ident.x.length) {
               xf = '<h4 class="fx-h">Cross Flash</h4>' + ident.x.map(function (x) {
@@ -470,7 +470,8 @@ import '../../styles/site.css';
                 return '<p class="fx-vgroup">' + escapeText(t.n + (t.d ? ' (' + t.d + ')' : '')) + (t.u ? ' (UHD)' : '') + '</p><ul class="fx-list">' +
                   x[1].map(function (vi) {
                     return '<li><span class="fx-rev-num">' + escapeText(versions[vi].r) + '</span>' +
-                      '<button type="button" class="fx-dl fx-view" data-xf="' + x[0] + '" data-xv="' + vi + '">View</button></li>';
+                      (x[2].indexOf(vi) >= 0 ? '<span class="fx-viewing">Incomplete - missing kernel</span>'
+                        : '<button type="button" class="fx-dl fx-view" data-xf="' + x[0] + '" data-xv="' + vi + '">View</button>') + '</li>';
                   }).join('') + '</ul>';
               }).join('');
             }

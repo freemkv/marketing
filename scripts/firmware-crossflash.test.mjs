@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { buildFinderData, crossflashTargets, finderPageData } from '../src/lib/finder.mjs';
 import { catalog } from './fixtures/finder-catalog.mjs';
 
-// One hardware family over four SATs; only K+N revisions are cross-flash targets.
+// One hardware family over four SATs; revisions without a Kernel are listed as incomplete.
 const sha = c => c.repeat(64).slice(0, 64);
 const FAM = '748b2f82aa55aa55';
 const pkg = (s, rev, model, { kn = false, uhd = false, family = FAM } = {}) => ({
@@ -29,21 +29,26 @@ const familyCatalog = () => ({
   aliases: [],
 });
 
-test('targets: same family only, and only revisions with Kernel + Normal', () => {
+test('targets: same family only; revisions without Kernel + Normal are incomplete', () => {
   const data = buildFinderData({ catalog: familyCatalog() });
   const by = k => data.identities.find(i => i.key === k);
   const t = crossflashTargets(data, by('pioneer:8510:ID19'));
-  assert.deepEqual(t.map(x => [x.identity.key, x.revisions.map(r => r.revision)]),
-    [['pioneer:8A10:ID40', ['1.14']], ['pioneer:8591:ID22', ['1.10']]]);
+  assert.deepEqual(t.map(x => [x.identity.key, x.revisions.map(r => [r.revision, r.complete])]),
+    [['pioneer:8A10:ID40', [['1.14', true], ['1.11', false]]], ['pioneer:8591:ID22', [['1.10', true]]],
+      ['pioneer:8511:ID22', [['1.10', false]]]]);
   assert.deepEqual(crossflashTargets(data, by('pioneer:9201:ID43')), []);
 });
 
-test('page data: [identity, [versions]] rows and a UHD flag; nothing without a family', () => {
+test('page data: [identity, [versions], [incomplete]] rows and a UHD flag; nothing without a family', () => {
   const d = finderPageData(buildFinderData({ catalog: familyCatalog() }));
   const by = n => d.identities.findIndex(i => i.n === n);
+  const r = v => d.versions[v].r;
   const ud03 = d.identities[by('BDR-UD03')];
-  assert.deepEqual(ud03.x.map(([t, vs]) => [d.identities[t].n, vs.map(v => d.versions[v].r), d.identities[t].u ?? 0]),
-    [['BDR-UD04', ['1.14'], 1], ['SBC-06D2X-U', ['1.10'], 0]]);
+  assert.deepEqual(ud03.x.map(([t, vs, inc]) => [d.identities[t].n, vs.map(r), inc.map(r), d.identities[t].u ?? 0]).sort(),
+    [['BDR-UD04', ['1.14', '1.11'], ['1.11'], 1], ['SBC-06D2X-U', ['1.10'], [], 0], ['SBW-06D2X-U', ['1.10'], ['1.10'], 0]]);
+  const ud04 = d.identities[by('BDR-UD04')];
+  assert.deepEqual(ud04.x.map(([t, , inc]) => [d.identities[t].n, inc.map(r)]).sort(),
+    [['BDR-UD03', []], ['SBC-06D2X-U', []], ['SBW-06D2X-U', ['1.10']]]);
   assert.deepEqual(d.identities[by('BDR-S13U')].x, []);
 });
 
