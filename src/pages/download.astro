@@ -89,23 +89,23 @@ const appPlatforms = [
         commands: ['sudo snap install freemkv', 'sudo snap connect freemkv:optical-drive', 'sudo snap connect freemkv:optical-write'],
       },
       {
-        title: 'Flatpak',
-        hint: 'any distro · includes Ubuntu 22.04',
+        title: 'FlatPark',
+        hint: 'Flatpak repository · any distro · includes Ubuntu 22.04',
         commands: [
+          'flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo',
           'flatpak remote-add --if-not-exists flatpark https://dl.flatpark.org/flatpark.flatpakrepo',
           'flatpak install flatpark org.freemkv.FreeMKV',
         ],
-        builds: [
-          { arch: '.flatpak', label: 'Or the bundle file: flatpak install --user ./freemkv-x86_64-linux.flatpak', file: 'freemkv-x86_64-linux.flatpak', secondary: true },
-        ],
+        note: 'Updates arrive with <code>flatpak update</code>.',
       },
       {
         title: 'Download',
         builds: [
           { key: 'linux-x64', arch: '.deb', label: 'Ubuntu 24.04+ / Mint 22 / Debian 13 · x86_64', file: 'freemkv-amd64.deb' },
           { arch: 'AppImage', label: 'Portable · x86_64 · GTK 4.10+', file: 'freemkv-x86_64-linux.AppImage', secondary: true },
+          { arch: '.flatpak', label: 'Bundle file · x86_64 · any distro, no auto-updates', file: 'freemkv-x86_64-linux.flatpak', secondary: true },
         ],
-        note: 'The .deb and AppImage need GTK 4.10+. On Ubuntu 22.04 or Mint 21 use the Flatpak or Snap, or the CLI.',
+        note: 'The .deb and AppImage need GTK 4.10+; on Ubuntu 22.04 or Mint 21 use FlatPark, Snap or the .flatpak. Installing the .flatpak: <a href="/docs/platforms-linux/#direct-flatpak-bundle">Linux guide</a>.',
       },
     ],
     footnote: linuxHelp,

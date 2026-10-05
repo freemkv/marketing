@@ -67,9 +67,10 @@ Open **freemkv** from your application menu, or run `freemkv`. APT installs the 
 
 #### Flatpak from FlatPark
 
-[FlatPark](https://flatpark.org/apps/org.freemkv.FreeMKV) packages the official `.deb` from each GitHub release as an **x86_64** Flatpak, so `flatpak update` picks up new freemkv releases. Add the FlatPark remote once, then install:
+[FlatPark](https://flatpark.org/apps/org.freemkv.FreeMKV) packages the official `.deb` from each GitHub release as an **x86_64** Flatpak, so `flatpak update` picks up new freemkv releases. Add the FlatPark remote once (and Flathub, which supplies the GNOME runtime), then install:
 
 ```bash
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak remote-add --if-not-exists flatpark https://dl.flatpark.org/flatpark.flatpakrepo
 flatpak install flatpark org.freemkv.FreeMKV
 flatpak run org.freemkv.FreeMKV
