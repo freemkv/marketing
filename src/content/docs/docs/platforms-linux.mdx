@@ -16,8 +16,8 @@ With the app, a bare `freemkv` opens the window. With no display (for example ov
 
 ## Requirements
 
-- The app packages are **x86_64** only and need GTK 4.10 and libadwaita 1.4 or newer: the `.deb` targets Ubuntu 24.04 and Linux Mint 22, the AppImage Ubuntu 24.04+ or Fedora 40+, and the Flatpak brings its own GNOME runtime.
-- The CLI comes as a `.deb` for x86_64 Ubuntu or Linux Mint, or as a static binary for **x86_64** or **ARM64** on any distro, with no GTK dependency.
+- The app packages are for **x86_64** and **ARM64** (aarch64) and need GTK 4.10 and libadwaita 1.4 or newer: the `.deb` targets Ubuntu 24.04, Linux Mint 22 and Debian 13, the AppImage Ubuntu 24.04+ or Fedora 40+. The Flatpak and Snap are x86_64 and bring their own runtime.
+- The CLI comes as a `.deb` (amd64, arm64, and armhf for 32-bit Raspberry Pi OS) or as a static binary for **x86_64**, **ARM64** or **ARMv7** on any distro, with no GTK dependency.
 - An optical drive. See [OEM (stock) drives](/docs/drives-oem/) and [Unlocked drives](/docs/drives-unlocked/) for drive support.
 
 ## Install
@@ -162,7 +162,7 @@ chmod +x freemkv-cli-x86_64-linux
 ./freemkv-cli-x86_64-linux --version
 ```
 
-For ARM64, use `freemkv-cli-aarch64-linux` instead. These have no desktop interface; a bare `freemkv` prints usage. See the [CLI reference](/docs/cli/) for ripping commands and options.
+For ARM64, use `freemkv-cli-aarch64-linux`; for 32-bit Raspberry Pi OS (ARMv7), `freemkv-cli-armv7-linux`. These have no desktop interface; a bare `freemkv` prints usage. See the [CLI reference](/docs/cli/) for ripping commands and options.
 
 ### Verify the download
 

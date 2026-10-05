@@ -68,6 +68,8 @@ const appPlatforms = [
         builds: [
           { key: 'windows-x64', main: 'Installer', arch: 'x86_64', label: 'Adds freemkv to PATH · Start menu shortcut', file: 'freemkv-x86_64-windows-setup.exe' },
           { main: 'Portable', arch: '.zip', label: 'freemkv.exe + freemkv.com, no install', file: 'freemkv-x86_64-windows.zip', secondary: true },
+          { key: 'windows-arm64', main: 'Installer', arch: 'ARM64', label: 'Windows on ARM · Snapdragon / Surface', file: 'freemkv-aarch64-windows-setup.exe', secondary: true },
+          { main: 'Portable', arch: 'ARM64 .zip', label: 'Windows on ARM, no install', file: 'freemkv-aarch64-windows.zip', secondary: true },
         ],
       },
     ],
@@ -125,7 +127,9 @@ const appPlatforms = [
         title: 'Download',
         builds: [
           { key: 'linux-x64', arch: '.deb', label: 'Ubuntu 24.04+ / Mint 22 / Debian 13 · x86_64', file: 'freemkv-amd64.deb' },
+          { key: 'linux-arm64', arch: 'ARM64 .deb', label: 'Debian 13 / Ubuntu 24.04+ · aarch64', file: 'freemkv-arm64.deb', secondary: true },
           { arch: 'AppImage', label: 'Portable · x86_64 · GTK 4.10+', file: 'freemkv-x86_64-linux.AppImage', secondary: true },
+          { arch: 'ARM64 AppImage', label: 'Portable · aarch64 · GTK 4.10+', file: 'freemkv-aarch64-linux.AppImage', secondary: true },
           { arch: '.flatpak', label: 'Bundle file · x86_64 · any distro, no auto-updates', file: 'freemkv-x86_64-linux.flatpak', secondary: true },
         ],
         note: 'The .deb and AppImage need GTK 4.10+; on Ubuntu 22.04 or Mint 21 use FlatPark, Snap or the .flatpak. Installing the .flatpak: <a href="/docs/platforms-linux/#direct-flatpak-bundle">Linux guide</a>.',
@@ -149,6 +153,7 @@ const cliPlatforms = [
         title: 'Download',
         builds: [
           { key: 'windows-x64', arch: 'x86_64', label: 'Console .exe · rename to freemkv.exe', file: 'freemkv-cli-x86_64-windows.exe' },
+          { key: 'windows-arm64', arch: 'ARM64', label: 'Windows on ARM · rename to freemkv.exe', file: 'freemkv-cli-aarch64-windows.exe', secondary: true },
         ],
       },
     ],
@@ -189,8 +194,11 @@ const cliPlatforms = [
         title: 'Download',
         builds: [
           { key: 'linux-x64', arch: 'x86_64', label: 'Static binary · any distro', file: 'freemkv-cli-x86_64-linux' },
-          { key: 'linux-arm64', arch: 'ARM64', label: 'Static binary · aarch64', file: 'freemkv-cli-aarch64-linux', secondary: true },
+          { key: 'linux-arm64', arch: 'ARM64', label: 'Static binary · aarch64, Raspberry Pi OS 64-bit', file: 'freemkv-cli-aarch64-linux', secondary: true },
+          { arch: 'ARMv7', label: 'Static binary · Raspberry Pi OS 32-bit', file: 'freemkv-cli-armv7-linux', secondary: true },
           { arch: '.deb', label: 'x86_64 · package freemkv-cli', file: 'freemkv-cli-amd64.deb', secondary: true },
+          { arch: 'ARM64 .deb', label: 'aarch64 · package freemkv-cli', file: 'freemkv-cli-arm64.deb', secondary: true },
+          { arch: 'armhf .deb', label: 'Raspberry Pi OS 32-bit · package freemkv-cli', file: 'freemkv-cli-armhf.deb', secondary: true },
         ],
       },
     ],
@@ -463,7 +471,7 @@ import '../styles/site.css';
           } else {
             arch = 'x64';
           }
-          if (os === 'windows') arch = 'x64'; // only a Windows x64 build exists
+          if (os === 'windows' && arch !== 'arm64') arch = 'x64'; // UA hides Windows on ARM unless hinted
           return os + '-' + arch;
         }
 
@@ -483,7 +491,7 @@ import '../styles/site.css';
           var pretty = {
             'macos-arm64': 'macOS · Apple Silicon', 'macos-x64': 'macOS · Intel',
             'linux-x64': 'Linux · x86_64', 'linux-arm64': 'Linux · aarch64',
-            'windows-x64': 'Windows · x86_64',
+            'windows-x64': 'Windows · x86_64', 'windows-arm64': 'Windows · ARM64',
           };
           if (pretty[detectedKey]) {
             // Light up every toolbar's banner.
