@@ -1,0 +1,116 @@
+name: Arch Linux repository
+
+# Rebuilds the signed pacman repository at https://freemkv.org/arch from the
+# .pkg.tar.zst assets on the latest release of freemkv/freemkv and
+# freemkv/freemkv-firmware (scripts/arch-repo.py). The packages themselves stay
+# on GitHub: public/_redirects sends /arch/<arch>/... to the release asset.
+# Changed files are committed to dev and fast-forwarded to qa and main, then
+# the Pages deploy is started (a GITHUB_TOKEN push does not trigger pages.yml).
+#
+# Triggers: release workflows send repository_dispatch "arch-refresh"; a daily
+# run is the safety net; workflow_dispatch for manual runs.
+#
+# Requires secret APT_SIGNING_KEY (the same key signs the APT, RPM and pacman repos).
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [arch-refresh]
+  schedule:
+    - cron: '57 6 * * *'
+
+permissions:
+  contents: write   # commit the regenerated databases
+  actions: write    # start the Pages deploy
+
+concurrency:
+  group: arch
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    container: archlinux:latest
+    timeout-minutes: 20
+    outputs:
+      db: ${{ steps.publish.outputs.db }}
+    steps:
+      - name: Install pacman tools, git and gh
+        run: pacman -Syu --noconfirm --needed git github-cli python gnupg
+
+      - uses: actions/checkout@v5
+        with:
+          ref: dev
+          fetch-depth: 0
+
+      - name: Import signing key
+        env:
+          APT_SIGNING_KEY: ${{ secrets.APT_SIGNING_KEY }}
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$APT_SIGNING_KEY" | gpg --batch --import
+          echo "ARCH_KEY_ID=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr/{print $10; exit}')" >> "$GITHUB_ENV"
+
+      - name: Build the databases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/arch-repo.py
+
+      - name: Commit, fast-forward qa and main, deploy
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          if [ -n "$(git status --porcelain -- public/arch public/_redirects)" ]; then
+            git config user.name  "Matthew Jackson"
+            git config user.email "1085847+MattJackson@users.noreply.github.com"
+            git add public/arch public/_redirects
+            git commit -q -m "arch: refresh the repository databases from the latest releases"
+            for i in 1 2 3 4 5; do
+              git pull -q --rebase origin dev && git push -q origin HEAD:dev && break
+              sleep $((i * 5))
+            done
+            git fetch -q origin main qa
+            if git merge-base --is-ancestor origin/main HEAD; then
+              git push -q origin HEAD:qa HEAD:main
+              gh workflow run pages.yml --ref main -R "$GITHUB_REPOSITORY"
+            else
+              echo "::warning::main is not an ancestor of dev; pushed to dev only, the site was not redeployed"
+            fi
+          else
+            echo "databases unchanged"
+          fi
+          if [ -f public/arch/x86_64/freemkv.db ]; then
+            echo "db=$(sha256sum public/arch/x86_64/freemkv.db | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+          fi
+
+  # Install from the live repository in a clean Arch Linux container, with
+  # package and database signatures required. Waits until freemkv.org serves
+  # the database the build job produced (Pages deploy).
+  verify:
+    needs: build
+    if: needs.build.outputs.db != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container: archlinux:latest
+    steps:
+      - name: pacman -Syu freemkv-cli from https://freemkv.org/arch
+        env:
+          WANT: ${{ needs.build.outputs.db }}
+        run: |
+          set -eu
+          for i in $(seq 1 75); do
+            live=$(curl -fsSL "https://freemkv.org/arch/x86_64/freemkv.db?v=$i" | sha256sum | cut -d' ' -f1)
+            [ "$live" = "$WANT" ] && break
+            [ "$i" = 75 ] && { echo "live freemkv.db never matched the build ($live != $WANT)"; exit 1; }
+            sleep 20
+          done
+          pacman-key --init
+          curl -fsSL https://freemkv.org/arch/freemkv.asc | pacman-key --add -
+          pacman-key --lsign-key 3C77286840178C3512276AC49030E403F8320C5D
+          # shellcheck disable=SC2016 # $arch is pacman's, not the shell's
+          printf '\n[freemkv]\nSigLevel = Required\nServer = https://freemkv.org/arch/$arch\n' >> /etc/pacman.conf
+          pacman -Syu --noconfirm freemkv-cli
+          freemkv --version
+          pacman -Si freemkv
