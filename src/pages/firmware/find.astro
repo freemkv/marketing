@@ -466,12 +466,11 @@ import '../../styles/site.css';
             var xf = '';
             if (ident.x.length) {
               xf = '<h4 class="fx-h">Cross Flash</h4>' + ident.x.map(function (x) {
-                var t = identities[x[0]];
-                return '<p class="fx-vgroup">' + escapeText(t.n + (t.d ? ' (' + t.d + ')' : '')) + (t.u ? ' (UHD)' : '') + '</p><ul class="fx-list">' +
-                  x[1].map(function (vi) {
-                    return '<li><span class="fx-rev-num">' + escapeText(versions[vi].r) + '</span>' +
-                      (x[2].indexOf(vi) >= 0 ? '<span class="fx-viewing">Incomplete - missing kernel</span>'
-                        : '<button type="button" class="fx-dl fx-view" data-xf="' + x[0] + '" data-xv="' + vi + '">View</button>') + '</li>';
+                return '<p class="fx-vgroup">' + escapeText(x[0]) + (x[1] ? ' (UHD)' : '') + '</p><ul class="fx-list">' +
+                  x[2].map(function (row) {
+                    return '<li><span class="fx-rev-num">' + escapeText(versions[row[1]].r) + '</span>' +
+                      (row[2] ? '<span class="fx-viewing">Incomplete - missing kernel</span>'
+                        : '<button type="button" class="fx-dl fx-view" data-xf="' + row[0] + '" data-xv="' + row[1] + '">View</button>') + '</li>';
                   }).join('') + '</ul>';
               }).join('');
             }

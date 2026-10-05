@@ -436,16 +436,24 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     for (const k of row.keys) if (!best.has(k)) best.set(k, row.m);
   for (const { i, out } of identities) { out.n = best.get(i.key); out.t = searchText(terms.get(i.key)); }
 
-  // Cross flash: [identity index, [version indexes], [incomplete version indexes]] per
-  // target edition; UHD flag per identity.
+  // Cross flash: [name, uhd, rows] per target model name (editions sharing a name are
+  // merged), rows = [identity index, version index, incomplete] with one row per
+  // revision, newest first; a complete edition wins a shared revision.
   for (const { i, out } of identities) {
-    out.x = crossflashTargets(data, i).map(t => {
+    const byName = new Map();
+    for (const t of crossflashTargets(data, i)) {
       const n = idIdx.get(t.identity.key);
-      const rev = vi => t.revisions.find(r => r.revision === versions[vi].r);
-      const vs = identities[n].out.v.filter(vi => rev(vi));
-      return [n, vs, vs.filter(vi => !rev(vi).complete)];
-    });
-    if (i.uhd) out.u = 1;
+      const o = identities[n].out;
+      const g = byName.get(o.n) ?? byName.set(o.n, { uhd: 0, rows: new Map() }).get(o.n);
+      if (t.identity.uhd) g.uhd = 1;
+      for (const vi of o.v) {
+        const r = t.revisions.find(r => r.revision === versions[vi].r);
+        const prev = g.rows.get(versions[vi].r);
+        if (r && (!prev || (prev[2] && r.complete))) g.rows.set(versions[vi].r, [n, vi, r.complete ? 0 : 1]);
+      }
+    }
+    out.x = [...byName].map(([name, g]) => [name, g.uhd,
+      [...g.rows.values()].sort((a, b) => versions[b[1]].r.localeCompare(versions[a[1]].r, undefined, { numeric: true }))]);
   }
 
   const models = [...names.values()].sort((a, b) => a.m.localeCompare(b.m)).map(row => {

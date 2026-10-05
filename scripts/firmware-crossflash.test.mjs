@@ -39,17 +39,29 @@ test('targets: same family only; revisions without Kernel + Normal are incomplet
   assert.deepEqual(crossflashTargets(data, by('pioneer:9201:ID43')), []);
 });
 
-test('page data: [identity, [versions], [incomplete]] rows and a UHD flag; nothing without a family', () => {
+test('page data: [name, uhd, rows] per target name, one row per revision; nothing without a family', () => {
   const d = finderPageData(buildFinderData({ catalog: familyCatalog() }));
   const by = n => d.identities.findIndex(i => i.n === n);
-  const r = v => d.versions[v].r;
-  const ud03 = d.identities[by('BDR-UD03')];
-  assert.deepEqual(ud03.x.map(([t, vs, inc]) => [d.identities[t].n, vs.map(r), inc.map(r), d.identities[t].u ?? 0]).sort(),
-    [['BDR-UD04', ['1.14', '1.11'], ['1.11'], 1], ['SBC-06D2X-U', ['1.10'], [], 0], ['SBW-06D2X-U', ['1.10'], ['1.10'], 0]]);
-  const ud04 = d.identities[by('BDR-UD04')];
-  assert.deepEqual(ud04.x.map(([t, , inc]) => [d.identities[t].n, inc.map(r)]).sort(),
-    [['BDR-UD03', []], ['SBC-06D2X-U', []], ['SBW-06D2X-U', ['1.10']]]);
+  const view = i => d.identities[by(i)].x.map(([name, u, rows]) => [name, u, rows.map(([t, v, inc]) => [d.identities[t].n, d.versions[v].r, inc])]);
+  assert.deepEqual(view('BDR-UD03').sort(), [
+    ['BDR-UD04', 1, [['BDR-UD04', '1.14', 0], ['BDR-UD04', '1.11', 1]]],
+    ['SBC-06D2X-U', 0, [['SBC-06D2X-U', '1.10', 0]]],
+    ['SBW-06D2X-U', 0, [['SBW-06D2X-U', '1.10', 1]]],
+  ]);
   assert.deepEqual(d.identities[by('BDR-S13U')].x, []);
+});
+
+test('editions sharing a name merge under one heading; a complete edition wins a shared revision', () => {
+  const cat = familyCatalog();
+  cat.identities.push(ident('8A11', 'ID41', 'BDR-UD04', [
+    { revision: '1.11', packages: [pkg(sha('G'), '1.11', 'BDR-UD04', { kn: true })] },
+    { revision: '1.20', packages: [pkg(sha('H'), '1.20', 'BDR-UD04')] },
+  ]));
+  const d = finderPageData(buildFinderData({ catalog: cat }));
+  const ud03 = d.identities.find(i => i.n === 'BDR-UD03');
+  const ud04 = ud03.x.filter(([name]) => name === 'BDR-UD04');
+  assert.equal(ud04.length, 1);
+  assert.deepEqual(ud04[0][2].map(([, v, inc]) => [d.versions[v].r, inc]), [['1.20', 1], ['1.14', 0], ['1.11', 0]]);
 });
 
 test('the base fixture (no family ids) and MediaTek never produce cross-flash rows', () => {
