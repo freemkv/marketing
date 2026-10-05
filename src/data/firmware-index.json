@@ -2531,7 +2531,7 @@
         "embeddedRev": "1.02",
         "advertisedVersion": "",
         "hardware": "",
-        "file": null,
+        "file": "MT1939/BH16NS58_1.02_4f4e63cd.bin",
         "sha256": "4f4e63cd5988f68f5729af21fe4033d0da2eeeec8f7576772f0f3a197f8eda21",
         "brand": "LG",
         "chipset": "MT1939",
@@ -3580,12 +3580,12 @@
         "embeddedRev": "1.02",
         "advertisedVersion": "",
         "hardware": "",
-        "file": "MT1959/BU40N_1.02_c86dbfed.bin",
-        "sha256": "c86dbfed95a6c52c474a34e2d71dff786c909ddf14a1735b63f01b4b999a0441",
+        "file": "MT1959/BU40N_1.02_1bbeb535.bin",
+        "sha256": "1bbeb5351dc0d69feaeefdac9ada7f3f48eed0ca4e2f879d9266679cec133396",
         "brand": "LG",
         "chipset": "MT1959",
         "media": "BD/UHD",
-        "variant": "N000201",
+        "variant": "N080201",
         "confidence": "build-verified",
         "baseOnly": false,
         "advertised": "features",
@@ -3686,12 +3686,12 @@
         "embeddedRev": "1.02",
         "advertisedVersion": "",
         "hardware": "",
-        "file": "MT1959/BU40N_1.02_1bbeb535.bin",
-        "sha256": "1bbeb5351dc0d69feaeefdac9ada7f3f48eed0ca4e2f879d9266679cec133396",
+        "file": "MT1959/BU40N_1.02_c86dbfed.bin",
+        "sha256": "c86dbfed95a6c52c474a34e2d71dff786c909ddf14a1735b63f01b4b999a0441",
         "brand": "LG",
         "chipset": "MT1959",
         "media": "BD/UHD",
-        "variant": "N080201",
+        "variant": "N000201",
         "confidence": "build-verified",
         "baseOnly": false,
         "advertised": "features",
@@ -4594,12 +4594,12 @@
         "embeddedRev": "1.00",
         "advertisedVersion": "",
         "hardware": "",
-        "file": "MT1959/BU50N_1.00_6b4fa7bd.bin",
-        "sha256": "6b4fa7bd47c0b2578b256bb792b034a385de32264c454eaf5f6950a4d75c2c0d",
+        "file": "MT1959/BU50N_1.00_20425a8a.bin",
+        "sha256": "20425a8ade6bb5d24bbd76fb5d5d67e744cd49e24783be87e6a89d30dfcace95",
         "brand": "LG",
         "chipset": "MT1959",
         "media": "BD/UHD",
-        "variant": "N000100",
+        "variant": "N080100",
         "confidence": "build-verified",
         "baseOnly": false,
         "advertised": "features",
@@ -4647,12 +4647,12 @@
         "embeddedRev": "1.00",
         "advertisedVersion": "",
         "hardware": "",
-        "file": "MT1959/BU50N_1.00_20425a8a.bin",
-        "sha256": "20425a8ade6bb5d24bbd76fb5d5d67e744cd49e24783be87e6a89d30dfcace95",
+        "file": "MT1959/BU50N_1.00_6b4fa7bd.bin",
+        "sha256": "6b4fa7bd47c0b2578b256bb792b034a385de32264c454eaf5f6950a4d75c2c0d",
         "brand": "LG",
         "chipset": "MT1959",
         "media": "BD/UHD",
-        "variant": "N080100",
+        "variant": "N000100",
         "confidence": "build-verified",
         "baseOnly": false,
         "advertised": "features",
@@ -5583,59 +5583,6 @@
         "embeddedRev": "1.03",
         "advertisedVersion": "",
         "hardware": "",
-        "file": "MT1939/WH14NS40_1.03_f6a5a578.bin",
-        "sha256": "f6a5a578f9b5347f6371a7ef1195ab84b1bea4d80b58c97efa23c8ddf0d6f6e9",
-        "brand": "LG",
-        "chipset": "MT1939",
-        "media": "BD/UHD",
-        "variant": "N0009A0",
-        "confidence": "build-verified",
-        "baseOnly": false,
-        "advertised": "features",
-        "modifiable": true,
-        "features": [
-          {
-            "key": "Speed",
-            "name": "Speed",
-            "ok": false
-          },
-          {
-            "key": "Region",
-            "name": "Region-free",
-            "ok": true
-          },
-          {
-            "key": "UHD",
-            "name": "UHD",
-            "ok": false
-          },
-          {
-            "key": "BD",
-            "name": "BD",
-            "ok": false
-          },
-          {
-            "key": "HRL",
-            "name": "HRL Bypass",
-            "ok": true
-          },
-          {
-            "key": "AKE",
-            "name": "AKE Bypass",
-            "ok": true
-          },
-          {
-            "key": "Bus",
-            "name": "Bus Decrypt",
-            "ok": true
-          }
-        ]
-      },
-      {
-        "rev": "1.03",
-        "embeddedRev": "1.03",
-        "advertisedVersion": "",
-        "hardware": "",
         "file": "MT1939/WH14NS40_1.03_de13d8d0.bin",
         "sha256": "de13d8d0fd56ffa16ef6bcffcab946e3839cefd85975d8e925dfbb4e8e881f72",
         "brand": "LG",
@@ -5666,6 +5613,59 @@
             "key": "BD",
             "name": "BD",
             "ok": true
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
+        "rev": "1.03",
+        "embeddedRev": "1.03",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1939/WH14NS40_1.03_f6a5a578.bin",
+        "sha256": "f6a5a578f9b5347f6371a7ef1195ab84b1bea4d80b58c97efa23c8ddf0d6f6e9",
+        "brand": "LG",
+        "chipset": "MT1939",
+        "media": "BD/UHD",
+        "variant": "N0009A0",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": false
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": false
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": false
           },
           {
             "key": "HRL",
@@ -5802,8 +5802,8 @@
         "embeddedRev": "1.01",
         "advertisedVersion": "",
         "hardware": "",
-        "file": "MT1939/WH16NS40_1.01_eee6563f.bin",
-        "sha256": "eee6563f68a414eb1dbc9048ab0820d01003320b080988437f762ca23d727e56",
+        "file": "MT1939/WH16NS40_1.01_7af021b0.bin",
+        "sha256": "7af021b026f8aef225b2211183885be211a66c1a4d64c9dad5c84661586144c7",
         "brand": "LG",
         "chipset": "MT1939",
         "media": "BD",
@@ -5855,12 +5855,65 @@
         "embeddedRev": "1.01",
         "advertisedVersion": "",
         "hardware": "",
-        "file": "MT1939/WH16NS40_1.01_7af021b0.bin",
-        "sha256": "7af021b026f8aef225b2211183885be211a66c1a4d64c9dad5c84661586144c7",
+        "file": "MT1939/WH16NS40_1.01_eee6563f.bin",
+        "sha256": "eee6563f68a414eb1dbc9048ab0820d01003320b080988437f762ca23d727e56",
         "brand": "LG",
         "chipset": "MT1939",
         "media": "BD",
         "variant": "N0002A0",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": false
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": false
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": false
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
+        "rev": "1.02",
+        "embeddedRev": "1.02",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1939/WH16NS40_1.02_1368766f.bin",
+        "sha256": "1368766f8d384d0c86d4803d057b7aa1ca205542b9b6b0580e875aaa8bd015b3",
+        "brand": "LG",
+        "chipset": "MT1939",
+        "media": "BD",
+        "variant": "N0010A0",
         "confidence": "build-verified",
         "baseOnly": false,
         "advertised": "features",
@@ -5991,59 +6044,6 @@
             "key": "BD",
             "name": "BD",
             "ok": true
-          },
-          {
-            "key": "HRL",
-            "name": "HRL Bypass",
-            "ok": true
-          },
-          {
-            "key": "AKE",
-            "name": "AKE Bypass",
-            "ok": true
-          },
-          {
-            "key": "Bus",
-            "name": "Bus Decrypt",
-            "ok": true
-          }
-        ]
-      },
-      {
-        "rev": "1.02",
-        "embeddedRev": "1.02",
-        "advertisedVersion": "",
-        "hardware": "",
-        "file": "MT1939/WH16NS40_1.02_1368766f.bin",
-        "sha256": "1368766f8d384d0c86d4803d057b7aa1ca205542b9b6b0580e875aaa8bd015b3",
-        "brand": "LG",
-        "chipset": "MT1939",
-        "media": "BD",
-        "variant": "N0010A0",
-        "confidence": "build-verified",
-        "baseOnly": false,
-        "advertised": "features",
-        "modifiable": true,
-        "features": [
-          {
-            "key": "Speed",
-            "name": "Speed",
-            "ok": false
-          },
-          {
-            "key": "Region",
-            "name": "Region-free",
-            "ok": true
-          },
-          {
-            "key": "UHD",
-            "name": "UHD",
-            "ok": false
-          },
-          {
-            "key": "BD",
-            "name": "BD",
-            "ok": false
           },
           {
             "key": "HRL",
@@ -6333,59 +6333,6 @@
             "ok": true
           }
         ]
-      },
-      {
-        "rev": "1.V5",
-        "embeddedRev": "1.V5",
-        "advertisedVersion": "",
-        "hardware": "",
-        "file": "MT1939/WH16NS58_1.V5_e2406018.bin",
-        "sha256": "e24060184915a9860a84ea7d0ad23fee478e6eb31af86da589f5723c8e29a1cd",
-        "brand": "Sony",
-        "chipset": "MT1939",
-        "media": "BD/UHD",
-        "variant": "N004900",
-        "confidence": "build-verified",
-        "baseOnly": false,
-        "advertised": "features",
-        "modifiable": true,
-        "features": [
-          {
-            "key": "Speed",
-            "name": "Speed",
-            "ok": true
-          },
-          {
-            "key": "Region",
-            "name": "Region-free",
-            "ok": true
-          },
-          {
-            "key": "UHD",
-            "name": "UHD",
-            "ok": true
-          },
-          {
-            "key": "BD",
-            "name": "BD",
-            "ok": true
-          },
-          {
-            "key": "HRL",
-            "name": "HRL Bypass",
-            "ok": true
-          },
-          {
-            "key": "AKE",
-            "name": "AKE Bypass",
-            "ok": true
-          },
-          {
-            "key": "Bus",
-            "name": "Bus Decrypt",
-            "ok": true
-          }
-        ]
       }
     ]
   },
@@ -6505,12 +6452,12 @@
         "embeddedRev": "1.01",
         "advertisedVersion": "",
         "hardware": "",
-        "file": "MT1939/WH16NS60_1.01_b0476f44.bin",
-        "sha256": "b0476f44509acc7d97c0aa08a9cda4d9acf59624963b455a67f0abae5a017bf0",
+        "file": "MT1939/WH16NS60_1.01_aea98763.bin",
+        "sha256": "aea98763cad71e8cfbd8d32963a63adf429e889bd13b749e7c4a792cc5b076a2",
         "brand": "LG",
         "chipset": "MT1939",
         "media": "BD/UHD",
-        "variant": "N005100",
+        "variant": "N015100",
         "confidence": "build-verified",
         "baseOnly": false,
         "advertised": "features",
@@ -6558,12 +6505,12 @@
         "embeddedRev": "1.01",
         "advertisedVersion": "",
         "hardware": "",
-        "file": "MT1939/WH16NS60_1.01_aea98763.bin",
-        "sha256": "aea98763cad71e8cfbd8d32963a63adf429e889bd13b749e7c4a792cc5b076a2",
+        "file": "MT1939/WH16NS60_1.01_b0476f44.bin",
+        "sha256": "b0476f44509acc7d97c0aa08a9cda4d9acf59624963b455a67f0abae5a017bf0",
         "brand": "LG",
         "chipset": "MT1939",
         "media": "BD/UHD",
-        "variant": "N015100",
+        "variant": "N005100",
         "confidence": "build-verified",
         "baseOnly": false,
         "advertised": "features",
