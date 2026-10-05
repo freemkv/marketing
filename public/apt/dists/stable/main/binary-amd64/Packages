@@ -1,0 +1,40 @@
+Package: freemkv
+Version: 1.8.0
+Architecture: amd64
+Section: video
+Priority: optional
+Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
+Installed-Size: 15480
+Depends: libadwaita-1-0 (>= 1.4~beta), libc6 (>= 2.39), libgcc-s1 (>= 4.2), libglib2.0-0t64 (>= 2.54.0), libgtk-4-1 (>= 4.9.3), ca-certificates
+Conflicts: freemkv-cli
+Replaces: freemkv-cli
+Homepage: https://freemkv.org
+Filename: pool/main/freemkv/freemkv_1.8.0_amd64.deb
+Size: 4643218
+MD5sum: 167a8521bacbd701fcf2a20f2886184f
+SHA1: 4f4a40651beb34537ef3b1344a17aca0caa8fd3e
+SHA256: 619dc5e61601f10ffe24fcdae3b18678958fe9c8266a29e803cb2e17bfef5209
+Description: Rip DVD, Blu-ray and UHD discs without re-encoding
+ Native GTK4 desktop app and command-line interface for selecting titles,
+ audio and subtitle tracks and saving them to MKV, MP4 or M2TS.
+ Running freemkv without arguments opens the desktop app.
+
+Package: freemkv-cli
+Version: 1.8.0
+Architecture: amd64
+Section: video
+Priority: optional
+Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
+Installed-Size: 13792
+Conflicts: freemkv
+Replaces: freemkv
+Homepage: https://freemkv.org
+Filename: pool/main/freemkv-cli/freemkv-cli_1.8.0_amd64.deb
+Size: 4382572
+MD5sum: 4884af9a4e972934208f399d1390fb94
+SHA1: 6fee33bc3c1021fc5137a4839a62ed0677975a1e
+SHA256: 6cc6b79edc823a1409b458061e016195039d608e78a9aae34b991482a00ab92f
+Description: Rip DVD, Blu-ray and UHD discs without re-encoding (command line)
+ Static command-line build of freemkv for selecting titles, audio and
+ subtitle tracks and saving them to MKV, MP4 or M2TS. It has no desktop
+ interface; install the freemkv package for the desktop app.

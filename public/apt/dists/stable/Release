@@ -1,0 +1,14 @@
+Origin: freemkv
+Label: freemkv
+Suite: stable
+Codename: stable
+Date: Mon, 05 Oct 2026 02:21:37 GMT
+Architectures: amd64
+Components: main
+Description: freemkv packages (https://freemkv.org/apt)
+MD5Sum:
+ d7b687869c4c5600b6efd3949ecd7081             1661 main/binary-amd64/Packages
+ 878de7117dcb82e10db478e1e7a62ad2              802 main/binary-amd64/Packages.gz
+SHA256:
+ b986a808eb1f2082eb7931a0fa56b6682890d60a35f70a1cae9c8750c06c2f49             1661 main/binary-amd64/Packages
+ ac3cc14185200a36da222ed6e1632b99147825b612d50096a8c78390b0ef69fd              802 main/binary-amd64/Packages.gz

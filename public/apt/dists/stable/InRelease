@@ -1,0 +1,34 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Origin: freemkv
+Label: freemkv
+Suite: stable
+Codename: stable
+Date: Mon, 05 Oct 2026 02:21:37 GMT
+Architectures: amd64
+Components: main
+Description: freemkv packages (https://freemkv.org/apt)
+MD5Sum:
+ d7b687869c4c5600b6efd3949ecd7081             1661 main/binary-amd64/Packages
+ 878de7117dcb82e10db478e1e7a62ad2              802 main/binary-amd64/Packages.gz
+SHA256:
+ b986a808eb1f2082eb7931a0fa56b6682890d60a35f70a1cae9c8750c06c2f49             1661 main/binary-amd64/Packages
+ ac3cc14185200a36da222ed6e1632b99147825b612d50096a8c78390b0ef69fd              802 main/binary-amd64/Packages.gz
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAEBCgA5FiEEPHcoaEAXjDUSJ2rEkDDkA/gyDF0FAmrDMIEbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMCwzAAoJEJAw5AP4MgxdJTcP/2Jygyvlnqfxn/mr29rZ
+Qxe6hhMUa7Aqbhwkiq/q2gwmIFVffixON3H5hVVMiNoUXVmZW7PtEO4Gqdxr3C0b
+urToLxEx29IUaMAD6i/BnGb2C11DzI6TkdEqmVtMBsASEMJ7SX77QI/ePPZLRa/1
+t982JyYupElSS2wtwMaqsihSiw6JFOdURwEqwr3AuO0c93KdVjFL4kFWsrMEFlCP
+5wl/xr0tVOlyeGK/wcZBTTe8R15ywC3TPsshgA51Bnj122oHqJPkp6fBf2Fpw/Ne
+oiY9GJkOMf7ZxqgyU8dRQERuXnpA6Le7lSHp0Yvwv4Rpc4f8byR0QXWG4fAKuroH
+lu2ra3HsP1+Wl1l8AKjUExcXw5iffsUOzwZwSyQPPjsV+DiwwZt1w81QUoC5WFKL
+W6Vi7sUUcYUP4VaFlvp9ju0L46+/B5fwYaOhFVuQyAItU+Z6QD55Bh73jxfO+V3u
+1FIlv5dO6qSDk+vEAIZ4C2nsAG95lpHmlxLAye5Jt0Wb8JsfkVlYN/VM2R9enAwV
+DgDmwIrF6zfPT5jnhgZzodt4yyLffHy421sUvu2ygo0fBOrU30ciWo7Ab5tT31UP
+nf5VQIXZB77L3Bp47hcJxpx9O2j/WPZQSV0QE1Rq3WNnUqH0QZQTm4Tx01iSv8qu
+t8jxupMtWUtfrCeHQdLetKVJ
+=BxmG
+-----END PGP SIGNATURE-----

@@ -1,0 +1,125 @@
+name: APT repository
+
+# Rebuilds the signed APT index at https://freemkv.org/apt from the .deb assets
+# on the latest release of freemkv/freemkv and freemkv/freemkv-firmware
+# (scripts/apt-repo.py). The .debs themselves stay on GitHub: public/_redirects
+# sends /apt/pool/... to the release asset. Changed files are committed to dev
+# and fast-forwarded to qa and main, then the Pages deploy is started (a push
+# made with GITHUB_TOKEN does not trigger pages.yml by itself).
+#
+# Triggers: release workflows send repository_dispatch "apt-refresh"; a daily
+# run is the safety net; workflow_dispatch for manual runs.
+#
+# Requires secret APT_SIGNING_KEY (armored private key, no passphrase).
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [apt-refresh]
+  schedule:
+    - cron: '17 6 * * *'
+
+permissions:
+  contents: write   # commit the regenerated index
+  actions: write    # start the Pages deploy
+
+concurrency:
+  group: apt
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      inrelease: ${{ steps.publish.outputs.inrelease }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: dev
+          fetch-depth: 0
+
+      - name: Import signing key
+        env:
+          APT_SIGNING_KEY: ${{ secrets.APT_SIGNING_KEY }}
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$APT_SIGNING_KEY" | gpg --batch --import
+          echo "APT_KEY_ID=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr/{print $10; exit}')" >> "$GITHUB_ENV"
+
+      - name: Build the index
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/apt-repo.py
+
+      - name: Commit, fast-forward qa and main, deploy
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ -n "$(git status --porcelain -- public/apt public/_redirects)" ]; then
+            git config user.name  "Matthew Jackson"
+            git config user.email "1085847+MattJackson@users.noreply.github.com"
+            git add public/apt public/_redirects
+            git commit -q -m "apt: refresh the repository index from the latest releases"
+            for i in 1 2 3 4 5; do
+              git pull -q --rebase origin dev && git push -q origin HEAD:dev && break
+              sleep $((i * 5))
+            done
+            git fetch -q origin main qa
+            if git merge-base --is-ancestor origin/main HEAD; then
+              git push -q origin HEAD:qa HEAD:main
+              gh workflow run pages.yml --ref main -R "$GITHUB_REPOSITORY"
+            else
+              echo "::warning::main is not an ancestor of dev; pushed to dev only, the site was not redeployed"
+            fi
+          else
+            echo "index unchanged"
+          fi
+          echo "inrelease=$(sha256sum public/apt/dists/stable/InRelease | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+
+  # Install from the live repository in clean containers. Waits until
+  # freemkv.org serves the InRelease the build job produced (Pages deploy).
+  verify:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: ubuntu:24.04
+            app: true
+          - image: ubuntu:22.04
+            app: false
+          - image: debian:13
+            app: true
+    container: ${{ matrix.image }}
+    steps:
+      - name: Install freemkv from https://freemkv.org/apt
+        env:
+          WANT: ${{ needs.build.outputs.inrelease }}
+          APP: ${{ matrix.app }}
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          set -eu
+          apt-get update -qq
+          apt-get install -y -qq curl ca-certificates >/dev/null
+          for i in $(seq 1 75); do
+            live=$(curl -fsSL "https://freemkv.org/apt/dists/stable/InRelease?v=$i" | sha256sum | cut -d' ' -f1)
+            [ "$live" = "$WANT" ] && break
+            [ "$i" = 75 ] && { echo "live InRelease never matched the build ($live != $WANT)"; exit 1; }
+            sleep 20
+          done
+          install -d -m 0755 /etc/apt/keyrings
+          curl -fsSL https://freemkv.org/apt/freemkv.gpg | tee /etc/apt/keyrings/freemkv.gpg >/dev/null
+          echo "deb [signed-by=/etc/apt/keyrings/freemkv.gpg] https://freemkv.org/apt stable main" | tee /etc/apt/sources.list.d/freemkv.list
+          apt-get update
+          apt-cache policy freemkv freemkv-cli
+          apt-get install -y freemkv-cli
+          freemkv --version
+          if [ "$APP" = true ]; then
+            apt-get install -s --no-install-recommends freemkv
+          else
+            apt-get install -s freemkv || echo "freemkv (app) is not installable here, as documented"
+          fi
