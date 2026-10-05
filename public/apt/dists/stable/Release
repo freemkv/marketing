@@ -3,12 +3,20 @@ Label: freemkv
 Suite: stable
 Codename: stable
 Date: Mon, 05 Oct 2026 02:21:37 GMT
-Architectures: amd64
+Architectures: amd64 arm64 armhf
 Components: main
 Description: freemkv packages (https://freemkv.org/apt)
 MD5Sum:
  d7b687869c4c5600b6efd3949ecd7081             1661 main/binary-amd64/Packages
  878de7117dcb82e10db478e1e7a62ad2              802 main/binary-amd64/Packages.gz
+ 4afad827c509bd8c232b0d04a64a3f1e             1744 main/binary-arm64/Packages
+ 67e1f14945f3965dc9e9cdf7284f0552              835 main/binary-arm64/Packages.gz
+ 93cafdd5388a3c22b8938248c30847ce              771 main/binary-armhf/Packages
+ c7f49d610eb63206c5d5eecaf1e4e4c4              526 main/binary-armhf/Packages.gz
 SHA256:
  b986a808eb1f2082eb7931a0fa56b6682890d60a35f70a1cae9c8750c06c2f49             1661 main/binary-amd64/Packages
  ac3cc14185200a36da222ed6e1632b99147825b612d50096a8c78390b0ef69fd              802 main/binary-amd64/Packages.gz
+ e5e80c272d123a1b453bbbd0da252599d71e1c133ccb8ee6ccb509ae0c46fe85             1744 main/binary-arm64/Packages
+ dcf1ca5628491585e108ca8d23704b3de5b9368b31f1598921524dea05ea60c2              835 main/binary-arm64/Packages.gz
+ 70d2696fba4d537ba87ebe0521222cb5678c53f64fb0caea54f79b62e6ffc4b4              771 main/binary-armhf/Packages
+ f5c1325d5f584b0247db6de27dee04179fb3ddf62de54b0f4858728afceec8de              526 main/binary-armhf/Packages.gz
