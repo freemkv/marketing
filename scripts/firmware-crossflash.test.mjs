@@ -137,9 +137,9 @@ test('Pioneer family: cross-flash lists same-family drives with Kernel+Normal, m
   const uhdRow = view.familyCrossflash.find(x => x.key === 'pioneer:8A10:ID40');
   assert.equal(uhdRow.isUhd, true);
   const html = renderIdentity(view);
-  assert.match(html, /Cross flash/);
-  assert.match(html, /SAT 8A10 · ID40 — BDR-UD04/);
-  assert.match(html, /SAT 8A10 · ID40 — BDR-UD04[^]*?UHD<\/span>/);
+  assert.match(html, /Cross flash<\/h4>/);
+  assert.match(html, /SAT 8A10 · ID40[^]*?BDR-UD04/);
+  assert.match(html, /SAT 8A10 · ID40[^]*?BDR-UD04[^]*?UHD<\/span>/);
   assert.match(html, /SAT 8591 · ID59/);
   assert.doesNotMatch(html, /BDR-UD06/);
 });

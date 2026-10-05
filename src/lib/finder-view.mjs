@@ -170,7 +170,7 @@ export function renderIdentity(view, opts = {}) {
     html += `<p class="fx-warn">We don’t host firmware for this edition yet. Have it? <a href="${DISCORD_URL}">Donate it on Discord →</a></p>`;
   }
   if (view.provenance) html += `<p class="fx-provenance"><strong>Where it comes from:</strong> ${esc(view.provenance)}</p>`;
-  html += `<h4 class="fx-h">Every ${gloss('revision')} for ${esc(editionLabel(identity))}</h4><ol class="fx-timeline">` +
+  html += `<h4 class="fx-h">Every ${gloss('revision')} for ${esc(editionLabel(identity))}${identity.isUhd ? ' <span class="fx-tag">UHD</span>' : ''}</h4><ol class="fx-timeline">` +
     timeline.map(t => '<li class="fx-rev' + (t.status === 'missing' ? ' fx-rev-missing' : '') + '">' +
       `<span class="fx-rev-num">${esc(t.revision)}</span>` +
       (t.isRecommended ? ' <span class="fx-tag">newest</span>' : '') + (t.isCurrent ? ' <span class="fx-tag fx-tag-yours">yours</span>' : '') +
@@ -192,24 +192,24 @@ export function renderIdentity(view, opts = {}) {
 /**
  * Pioneer family cross-flash list: candidate drives in the same hardware
  * family that ship both Kernel and Normal (required for cross-era flashing).
- * Rendered under the Versions timeline in the same visual style.
+ * Rendered as a timeline that mirrors the Versions list visually.
  */
 export function renderFamilyCrossflash(view, opts = {}) {
   const list = view.familyCrossflash ?? [];
   if (!list.length) return '';
   const items = list.map(c => {
     const other = c.identity;
-    const label = editionLabel(other) + (other.embeddedModels[0] ? ' — ' + other.embeddedModels[0] : '');
-    const uhd = c.isUhd ? ' <span class="fx-tag">UHD</span>' : '';
     const latestRev = other.revisions[0];
     const pkg = latestRev?.packages?.find(p => (p.components ?? []).includes('kernel') && (p.components ?? []).includes('main')) ?? latestRev?.packages?.[0];
     const dl = pkg ? ' ' + downloadButton(pkg, opts, `Download ${latestRev.revision}`, 'fx-rev-dl') : '';
-    const q = new URLSearchParams({ hw: other.hardware, id: other.destination });
-    return `<li class="fx-rev"><a class="fx-xf-target" href="/firmware/find/?${esc(q.toString())}" data-key="${esc(other.key)}">${esc(label)}</a>${uhd}` +
-      (c.latest ? ` <span class="fx-rev-num">${esc(c.latest)}</span>` : '') + dl + '</li>';
+    const uhd = c.isUhd ? ' <span class="fx-tag">UHD</span>' : '';
+    return `<li class="fx-rev">` +
+      `<span class="fx-rev-num">${esc(editionLabel(other))}</span>` +
+      (other.embeddedModels[0] ? ` <span class="fx-term">${esc(other.embeddedModels[0])}</span>` : '') +
+      uhd + (c.latest ? ` <span class="fx-tag fx-tag-yours">rev ${esc(c.latest)}</span>` : '') + dl +
+      '</li>';
   }).join('');
-  return `<section class="fx-group" aria-label="Cross flash"><h4 class="fx-h">Cross flash <span class="fx-term">${gloss('crossflash', 'what is this?')}</span></h4>` +
-    `<ol class="fx-timeline">${items}</ol></section>`;
+  return `<h4 class="fx-h">Cross flash</h4><ol class="fx-timeline">${items}</ol>`;
 }
 
 /** Compact "Convert to another edition" section inside the firmware view. */
