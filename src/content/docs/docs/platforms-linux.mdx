@@ -38,6 +38,38 @@ sudo apt update && sudo apt install freemkv      # or freemkv-cli
 
 The two packages replace each other, so install one or the other. The repository is signed (key fingerprint `3C77 2868 4017 8C35 1227  6AC4 9030 E403 F832 0C5D`, also at [freemkv.asc](https://freemkv.org/apt/freemkv.asc)); the packages themselves download from [GitHub Releases](https://github.com/freemkv/freemkv/releases).
 
+### RPM repository (Fedora, RHEL, openSUSE)
+
+On Fedora, RHEL-compatible distributions and openSUSE, add the freemkv repository once; updates then arrive with your normal system updates.
+
+```bash
+# Fedora, RHEL, AlmaLinux, Rocky
+sudo curl -fsSL -o /etc/yum.repos.d/freemkv.repo https://freemkv.org/rpm/freemkv.repo
+sudo dnf install freemkv      # or freemkv-cli
+
+# openSUSE
+sudo zypper addrepo https://freemkv.org/rpm/freemkv.repo
+sudo zypper install freemkv   # or freemkv-cli
+```
+
+- `freemkv` (desktop app plus the CLI) needs GTK 4.10+ and libadwaita 1.4+: **Fedora 40+** or **openSUSE Tumbleweed**.
+- `freemkv-cli` is the command line only and installs on any of them, including RHEL/AlmaLinux/Rocky 9.
+
+The two packages conflict; to switch, use `sudo dnf swap freemkv-cli freemkv` (or the reverse). Packages and repository metadata are signed with the same key as the APT repository.
+
+### Arch Linux (pacman repository)
+
+Trust the freemkv key once, add the repository to `/etc/pacman.conf`, then install:
+
+```bash
+curl -fsSL https://freemkv.org/arch/freemkv.asc | sudo pacman-key --add -
+sudo pacman-key --lsign-key 3C77286840178C3512276AC49030E403F8320C5D
+printf '\n[freemkv]\nServer = https://freemkv.org/arch/$arch\n' | sudo tee -a /etc/pacman.conf
+sudo pacman -Syu freemkv      # or freemkv-cli
+```
+
+`pacman -Syu` then keeps freemkv up to date. `freemkv` is the desktop app plus the CLI; `freemkv-cli` the command line only (they conflict; pacman offers to swap).
+
 ### App
 
 The app packages include both the desktop app and the CLI.
