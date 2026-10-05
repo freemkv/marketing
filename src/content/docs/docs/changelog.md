@@ -13,7 +13,30 @@ For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases) ·
 [autorip releases](https://github.com/freemkv/autorip/releases) (before 1.8.0).
 
-## 1.8.0 (unreleased)
+## 1.8.0
+
+<small>2026-10-05</small>
+
+### New
+
+- **freemkv-library replaces autorip.** The ripping server is now part of freemkv, with a Library tab for remuxing and checking your movies. Existing autorip installs keep pulling the same image name and load their settings unchanged.
+- **Separate app and CLI builds on every OS.** Windows gets a per-user installer, Linux a split `.deb`, a Flatpak and a confined Snap, and Homebrew a `freemkv` cask and a `freemkv-cli` formula.
+- **DVD:** chapter names where the disc has them, the disc's region, stream labels such as commentary, and forced subtitles detected.
+- **HD DVD:** AACS-encrypted HD DVDs decrypt with a known key.
+- **UHD:** HDR10 mastering data is kept when content light level is absent; HDR10+ and Dolby Vision tracks are labelled correctly.
+
+### Changed
+
+- An ISO is decrypted unless you ask for raw, on every front end, and a stopped multi-pass recovery resumes where it stopped.
+- The app's title list shows each title's length and size in their own columns, with its chapters under a collapsed row.
+- Ripped files are named from the disc's title.
+
+### Fixed
+
+- TrueHD 7.1 and Atmos tracks are labelled correctly.
+- A DVD ripped to a folder is descrambled.
+- An encrypted Blu-ray folder rips like its ISO.
+- The server no longer loses work when a network share drops: rips and moves wait for it instead of writing to local disk.
 
 ### freemkv-library replaces autorip
 
