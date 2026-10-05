@@ -7,8 +7,8 @@ import AppShowcase from '../../../components/AppShowcase.astro';
 
 freemkv comes in two builds for Linux. **Install one or the other**; both are the `freemkv` command and use the same ripping engine. Choose a download from the **[Download page](/download/)**.
 
-- **freemkv** (the app): a native GTK4 desktop app plus every CLI command. `.deb`, Flatpak (FlatPark or a direct bundle) or AppImage.
-- **freemkv CLI**: the command line only, without GTK. `.deb` or static binaries.
+- **freemkv** (the app): a native GTK4 desktop app plus every CLI command. APT repository, `.deb`, Flatpak (FlatPark or a direct bundle) or AppImage.
+- **freemkv CLI**: the command line only, without GTK. APT repository, `.deb` or static binaries.
 
 With the app, a bare `freemkv` opens the window. With no display (for example over SSH, where neither `DISPLAY` nor `WAYLAND_DISPLAY` is set) it prints usage instead, like the CLI.
 
@@ -21,6 +21,22 @@ With the app, a bare `freemkv` opens the window. With no display (for example ov
 - An optical drive. See [OEM (stock) drives](/docs/drives-oem/) and [Unlocked drives](/docs/drives-unlocked/) for drive support.
 
 ## Install
+
+### APT repository (recommended)
+
+On Debian-based distributions, add the freemkv APT repository once and install with `apt`. Later releases then arrive with your normal `sudo apt update && sudo apt upgrade`.
+
+```bash
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://freemkv.org/apt/freemkv.gpg | sudo tee /etc/apt/keyrings/freemkv.gpg >/dev/null
+echo "deb [signed-by=/etc/apt/keyrings/freemkv.gpg] https://freemkv.org/apt stable main" | sudo tee /etc/apt/sources.list.d/freemkv.list
+sudo apt update && sudo apt install freemkv      # or freemkv-cli
+```
+
+- `freemkv` is the desktop app plus the CLI. It needs GTK 4.10+, so **Ubuntu 24.04+, Linux Mint 22+ or Debian 13+**; on older releases use the Flatpak or Snap below.
+- `freemkv-cli` is the command line only and works on any Debian or Ubuntu release.
+
+The two packages replace each other, so install one or the other. The repository is signed (key fingerprint `3C77 2868 4017 8C35 1227  6AC4 9030 E403 F832 0C5D`, also at [freemkv.asc](https://freemkv.org/apt/freemkv.asc)); the packages themselves download from [GitHub Releases](https://github.com/freemkv/freemkv/releases).
 
 ### App
 
@@ -142,12 +158,13 @@ If your system cannot mount an AppImage, try:
 
 | Installation | Update | Remove |
 |---|---|---|
-| `.deb` | Download the new package and repeat `sudo apt install ./freemkv-amd64.deb` (or `./freemkv-cli-amd64.deb`) | `sudo apt remove freemkv` (or `freemkv-cli`) |
+| APT repository | `sudo apt update && sudo apt upgrade` | `sudo apt remove freemkv` (or `freemkv-cli`); to drop the repository too, delete `/etc/apt/sources.list.d/freemkv.list` and `/etc/apt/keyrings/freemkv.gpg` |
+| `.deb` file | Download the new package and repeat `sudo apt install ./freemkv-amd64.deb` (or `./freemkv-cli-amd64.deb`) | `sudo apt remove freemkv` (or `freemkv-cli`) |
 | FlatPark | `flatpak update` | `flatpak uninstall org.freemkv.FreeMKV` |
 | Flatpak bundle | Download the new bundle and repeat `flatpak install --user ./freemkv-x86_64-linux.flatpak` | `flatpak uninstall --user org.freemkv.FreeMKV` |
 | AppImage or standalone CLI | Close freemkv and replace the downloaded file | Delete the downloaded file |
 
-There is no freemkv APT repository yet. Direct Flatpak bundles (unlike FlatPark) require manual app updates; `flatpak update` updates installed runtimes but does not fetch new freemkv bundles from GitHub. Settings and ripped movies are separate from program files, so updating or removing freemkv leaves them in place.
+A `.deb` installed from a downloaded file does not update itself; add the [APT repository](#apt-repository-recommended) to get updates through `apt upgrade`. Direct Flatpak bundles (unlike FlatPark) require manual app updates; `flatpak update` updates installed runtimes but does not fetch new freemkv bundles from GitHub. Settings and ripped movies are separate from program files, so updating or removing freemkv leaves them in place.
 
 ## File locations
 

@@ -65,7 +65,12 @@ const appPlatforms = [
       { arch: 'Flatpak', label: 'Bundle file · x86_64 · install command below', file: 'freemkv-x86_64-linux.flatpak', secondary: true },
     ],
     commands: [
-      '# Flatpak bundle you downloaded above',
+      '# APT repository (recommended; updates with apt upgrade)',
+      'sudo install -d -m 0755 /etc/apt/keyrings',
+      'curl -fsSL https://freemkv.org/apt/freemkv.gpg | sudo tee /etc/apt/keyrings/freemkv.gpg >/dev/null',
+      'echo "deb [signed-by=/etc/apt/keyrings/freemkv.gpg] https://freemkv.org/apt stable main" | sudo tee /etc/apt/sources.list.d/freemkv.list',
+      'sudo apt update && sudo apt install freemkv',
+      '# or the Flatpak bundle you downloaded above',
       'flatpak install --user ./freemkv-x86_64-linux.flatpak',
       '# or from FlatPark, with updates through flatpak update',
       'flatpak remote-add --if-not-exists flatpark https://dl.flatpark.org/flatpark.flatpakrepo',
@@ -99,6 +104,10 @@ const cliPlatforms = [
       { key: 'linux-x64', arch: '.deb', label: 'Ubuntu 24.04 / Linux Mint 22 · package freemkv-cli', file: 'freemkv-cli-amd64.deb' },
       { arch: 'x86_64', label: 'Static binary · any distro', file: 'freemkv-cli-x86_64-linux', secondary: true },
       { key: 'linux-arm64', arch: 'ARM64', label: 'Static binary · aarch64', file: 'freemkv-cli-aarch64-linux', secondary: true },
+    ],
+    commands: [
+      '# or from the APT repository: add it as in the app card above, then',
+      'sudo apt install freemkv-cli',
     ],
   },
 ];
