@@ -214,6 +214,44 @@ export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Pr
   if(failure) throw failure;
   return manifest.objects.length;
 }
+/**
+ * Delete every R2 object that is not in `keep`. Content-addressed keys would
+ * accumulate forever otherwise, and the public bucket is only ever read by our
+ * site, so superseded firmware has no reason to linger.
+ */
+export async function pruneOrphans(keep, { listPage, deleteKey, bucket = 'freemkv-firmware' } = {}) {
+  const keepSet = keep instanceof Set ? keep : new Set(keep);
+  let cursor; const orphans = [];
+  do {
+    const page = await listPage({ cursor, bucket });
+    for (const o of page.objects ?? []) if (!keepSet.has(o.key)) orphans.push(o.key);
+    cursor = page.truncated ? (page.cursor ?? page.next_cursor) : null;
+  } while (cursor);
+  for (const key of orphans) await deleteKey(key, bucket);
+  return orphans;
+}
+function cfListPage(fetcher) {
+  const account = process.env.CLOUDFLARE_ACCOUNT_ID, token = process.env.CLOUDFLARE_API_TOKEN;
+  return async ({ cursor, bucket }) => {
+    const url = new URL(`https://api.cloudflare.com/client/v4/accounts/${account}/r2/buckets/${bucket}/objects`);
+    url.searchParams.set('per_page', '1000');
+    if (cursor) url.searchParams.set('cursor', cursor);
+    const response = await fetcher(url.toString(), { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' }, signal: AbortSignal.timeout(60000) });
+    if (!response.ok) throw new Error(`Cloudflare R2 list failed: ${response.status}`);
+    const data = await response.json();
+    if (!data?.success) throw new Error(`Cloudflare R2 list rejected: ${JSON.stringify(data?.errors ?? data)}`);
+    const info = data.result_info ?? {};
+    return { objects: data.result ?? [], truncated: Boolean(info.cursor || info.is_truncated), cursor: info.cursor };
+  };
+}
+function wranglerDelete(bucket, key) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(path.join(SITE, 'node_modules/.bin/wrangler'),
+      ['r2', 'object', 'delete', `${bucket}/${key}`, '--remote'], { stdio: 'inherit', env: process.env });
+    child.on('error', reject);
+    child.on('exit', (code, signal) => code === 0 ? resolve() : reject(new Error(`Wrangler delete failed: ${code ?? signal}`)));
+  });
+}
 async function main() {
   const [command,a,b,c]=process.argv.slice(2);
   if(command==='prepare' && a && b) return prepare(a,b,c);
@@ -224,8 +262,14 @@ async function main() {
       const child=spawn(path.join(SITE,'node_modules/.bin/wrangler'),['r2','object','put',`freemkv-firmware/${o.key}`,'--file',file,'--content-type',contentType(o.key),'--remote'],{stdio:'inherit',env:process.env});
       child.on('error',reject);child.on('exit',(code,signal)=>code===0?resolve():reject(new Error(`Wrangler upload failed: ${code ?? signal}`)));
     }),firmwareObjectFetcher());
-    // Only expose links to the build after every public object verifies.
+    // Prune superseded R2 objects: the public bucket is only ever read by our
+    // site, so any key not in the fresh manifest is a dead content-addressed
+    // copy and should be deleted.
     const manifest=await json(path.join(a,'publish-manifest.json'));
+    const keep=new Set(manifest.objects.map(o=>o.key));
+    const orphans=await pruneOrphans(keep,{listPage:cfListPage(fetch),deleteKey:(key,bucket)=>wranglerDelete(bucket,key)});
+    if(orphans.length) console.log(`Deleted ${orphans.length} orphan R2 object${orphans.length===1?'':'s'}`);
+    // Only expose links to the build after every public object verifies.
     const files=manifest.format===V2?['finder-catalog.json','legacy-keys.json','firmware-index.json']:['pioneer-firmware-index.json','firmware-index.json'];
     for(const file of files) await fs.copyFile(path.join(a,file),path.join(SITE,'src/data',file));
     return;

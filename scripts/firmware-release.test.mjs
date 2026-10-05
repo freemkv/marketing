@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
-import { safePath, validateManifest, extract, publish } from './firmware-release.mjs';
+import { safePath, validateManifest, extract, publish, pruneOrphans } from './firmware-release.mjs';
 const sha=b=>createHash('sha256').update(b).digest('hex');
 test('reject unsafe paths and duplicate keys',()=>{
   for(const p of ['../x','/x','x/../y','x\\y','x//y']) assert.equal(safePath(p),false);
@@ -142,6 +142,19 @@ test('v2 archive roundtrip through strict extraction',async t=>{
  await fs.rm(out,{recursive:true});await fs.writeFile(path.join(d,'payloads/fw/pioneer/notahash.tar'),'x');
  assert.equal(spawnSync('tar',['--format=ustar','-czf',archive,'-C',d,'payloads'],{env:{...process.env,COPYFILE_DISABLE:'1'}}).status,0);
  await assert.rejects(extract(archive,out),/Unexpected/);
+});
+test('pruneOrphans deletes every R2 key not in the fresh manifest, paginating the list',async()=>{
+  const pages=[
+    {objects:[{key:'fw/pioneer/a.tar'},{key:'fw/pioneer/b.tar'}],truncated:true,cursor:'c1'},
+    {objects:[{key:'fw/mediatek/c.bin'},{key:'fw/pioneer/d.tar'}],truncated:false},
+  ];
+  const seen=[];const deleted=[];
+  const listPage=async({cursor})=>{seen.push(cursor??null);return pages[seen.length-1];};
+  const orphans=await pruneOrphans(new Set(['fw/pioneer/b.tar','fw/pioneer/d.tar']),{listPage,deleteKey:async k=>deleted.push(k)});
+  assert.deepEqual(seen,[null,'c1']);
+  assert.deepEqual(orphans.sort(),['fw/mediatek/c.bin','fw/pioneer/a.tar']);
+  assert.deepEqual(deleted.sort(),['fw/mediatek/c.bin','fw/pioneer/a.tar']);
+  assert.deepEqual(await pruneOrphans(new Set(['fw/pioneer/a.tar','fw/pioneer/b.tar']),{listPage:async()=>({objects:[{key:'fw/pioneer/a.tar'},{key:'fw/pioneer/b.tar'}],truncated:false}),deleteKey:async()=>assert.fail('no delete')}),[]);
 });
 test('prepare runs fwext publish-catalog against the v3 hoard and packs a validated stage',async t=>{
  const {d:template}=await stageV2(t);const root=await fs.mkdtemp(path.join(os.tmpdir(),'firmware-prepare-'));t.after(()=>fs.rm(root,{recursive:true,force:true}));

@@ -102,6 +102,48 @@ test('MediaTek: no crossflash is supported — every mediatek lookup returns emp
   assert.deepEqual(keys(crossflashFrom(ix, 'pioneer:9201:ID43')).proven, ['pioneer:9201:ID72']);
 });
 
+test('Pioneer family: cross-flash lists same-family drives with Kernel+Normal, marks UHD', () => {
+  // Build a UD04-like family of 4 SATs sharing one family_id. Only two carry a
+  // package with both kernel+normal; those must appear as cross-flash options.
+  const sha = c => c.repeat(64).slice(0, 64);
+  const FAM = '748b2f82';
+  const pkg = (s, rev, model, { k = false, uhd = false } = {}) => ({
+    sha256: s, bytes: 2048, key: `fw/pioneer/${s}.tar`, filename: `${model}_${rev}_${s.slice(0, 8)}.tar`,
+    revision: rev, packageType: 'pioneer-installer', brand: 'PIONEER', embedded_model: model,
+    selection: k ? 'source-contained' : 'normal-only',
+    components: k ? [{ role: 'kernel' }, { role: 'normal' }] : [{ role: 'normal' }],
+    advertised_versions: [rev + 'EU'], family_id: FAM, is_uhd: uhd,
+  });
+  const famIdent = (hw, dest, model, revs) => ({
+    key: `pioneer:${hw}:${dest}`, family: 'pioneer', hardware: hw, destination: dest,
+    platforms: ['pioneer'], embedded_models: [model], revisions: revs, other_candidates: [],
+  });
+  const c = {
+    format: 'freemkv-finder-catalog', version: 2, withdrawn: [],
+    identities: [
+      famIdent('8A10', 'ID40', 'BDR-UD04', [{ revision: '1.14', packages: [pkg(sha('A'), '1.14', 'BDR-UD04', { k: true, uhd: true })] }]),
+      famIdent('8591', 'ID59', 'BDR-UD05', [{ revision: '1.11', packages: [pkg(sha('B'), '1.11', 'BDR-UD05', { k: true })] }]),
+      // Same family, only Normal — must NOT appear (cross-era needs both).
+      famIdent('8511', 'ID51', 'BDR-UD06', [{ revision: '1.05', packages: [pkg(sha('C'), '1.05', 'BDR-UD06')] }]),
+      // Same family, source identity itself.
+      famIdent('8510', 'ID50', 'BDR-UD07', [{ revision: '1.00', packages: [pkg(sha('D'), '1.00', 'BDR-UD07', { k: true })] }]),
+    ],
+    aliases: [],
+  };
+  const ix = indexFinder(buildFinderData({ catalog: c }));
+  const view = identityView(ix, 'pioneer:8510:ID50');
+  const keys = view.familyCrossflash.map(x => x.key);
+  assert.deepEqual(keys.sort(), ['pioneer:8591:ID59', 'pioneer:8A10:ID40']);
+  const uhdRow = view.familyCrossflash.find(x => x.key === 'pioneer:8A10:ID40');
+  assert.equal(uhdRow.isUhd, true);
+  const html = renderIdentity(view);
+  assert.match(html, /Cross flash/);
+  assert.match(html, /SAT 8A10 · ID40 — BDR-UD04/);
+  assert.match(html, /SAT 8A10 · ID40 — BDR-UD04[^]*?UHD<\/span>/);
+  assert.match(html, /SAT 8591 · ID59/);
+  assert.doesNotMatch(html, /BDR-UD06/);
+});
+
 test('catalogue missing_revisions and per-package provenance populate the timeline and provenance line', () => {
   const ix = indexFinder(buildFinderData({ catalog: mtkCatalog() }));
   const w = identityView(ix, 'mediatek:HL-DT-ST BH16NS40 NS50:W');

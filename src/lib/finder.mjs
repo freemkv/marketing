@@ -96,6 +96,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
     if (!identities.has(key)) identities.set(key, {
       key, family: init.family, hardware: init.hardware, destination: init.destination || 'GENERAL',
       platforms: [], embeddedModels: [], brands: [], revisions: [], candidates: [], missing: [],
+      familyId: null, isUhd: false,
     });
     return identities.get(key);
   }
@@ -131,6 +132,10 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
         for (const p of r.packages) {
           v2Shas.add(p.sha256);
           const isPioneer = p.packageType === 'pioneer-installer';
+          if (isPioneer) {
+            if (p.family_id && !ident.familyId) ident.familyId = p.family_id;
+            if (p.is_uhd === true) ident.isUhd = true;
+          }
           addPackage(ident, r.revision, {
             sha256: p.sha256, bytes: p.bytes, key: p.key, filename: p.filename,
             packageType: p.packageType || (src.family === 'mediatek' ? 'mediatek-image' : 'image'),
@@ -141,6 +146,8 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
             provenance: typeof p.provenance === 'string' ? p.provenance : null,
             chipset: isPioneer ? 'Pioneer' : (src.platforms?.[0] ?? null),
             modifiable: isPioneer ? false : Boolean(mtkBySha.get(p.sha256)?.modifiable),
+            familyId: isPioneer ? (p.family_id ?? null) : null,
+            isUhd: isPioneer ? Boolean(p.is_uhd) : false,
             ...(isPioneer ? {} : mediatekExtras(mtkBySha.get(p.sha256))),
           });
         }
@@ -230,8 +237,11 @@ export function clientData(data) {
 /** Restore what clientData() dropped. */
 export function hydrate(data) {
   for (const a of data.aliases) { a.compact = compact(a.display); a.evidence ??= []; a.targets ??= []; }
-  for (const i of data.identities) for (const r of i.revisions) for (const p of r.packages) {
-    p.key ??= safeDecode(p.file ?? ''); p.components ??= []; p.advertisedVersions ??= [];
+  for (const i of data.identities) {
+    i.familyId ??= null; i.isUhd ??= false;
+    for (const r of i.revisions) for (const p of r.packages) {
+      p.key ??= safeDecode(p.file ?? ''); p.components ??= []; p.advertisedVersions ??= [];
+    }
   }
   return data;
 }
@@ -256,17 +266,22 @@ function packageOrder(a, b) {
 export function indexFinder(data) {
   const byKey = new Map(data.identities.map(i => [i.key, i]));
   const byHardware = new Map();
+  const byFamilyId = new Map();
   for (const i of data.identities) {
     const h = compact(i.hardware);
     if (!byHardware.has(h)) byHardware.set(h, []);
     byHardware.get(h).push(i);
+    if (i.familyId) {
+      if (!byFamilyId.has(i.familyId)) byFamilyId.set(i.familyId, []);
+      byFamilyId.get(i.familyId).push(i);
+    }
   }
   const namesByKey = new Map();
   for (const a of data.aliases) for (const k of a.targets) {
     if (!namesByKey.has(k)) namesByKey.set(k, []);
     namesByKey.get(k).push(a);
   }
-  return { ...data, byKey, byHardware, namesByKey };
+  return { ...data, byKey, byHardware, byFamilyId, namesByKey };
 }
 
 /**
@@ -507,6 +522,39 @@ export function crossflashFrom(index, key) {
   return groups;
 }
 
+/**
+ * Pioneer family cross-flash: every other identity in the same hardware family
+ * (fw::get_family fingerprint) that has at least one package with both Kernel
+ * and Normal (required for cross-era flashing). Deduplicated from `crossflashFrom`.
+ */
+function hasKernelAndNormal(identity) {
+  for (const r of identity.revisions) for (const p of r.packages) {
+    const c = p.components ?? [];
+    if (c.includes('kernel') && c.includes('main')) return true;
+  }
+  return false;
+}
+
+export function familyCrossflash(index, key) {
+  const i = index.byKey.get(key);
+  if (!i || i.family !== 'pioneer' || !i.familyId) return [];
+  const pool = index.byFamilyId?.get(i.familyId) ?? [];
+  const seen = new Set([key, ...(i.candidates ?? []).map(c => c.key)]);
+  const out = [];
+  for (const other of pool) {
+    if (seen.has(other.key)) continue;
+    if (!hasKernelAndNormal(other)) continue;
+    seen.add(other.key);
+    out.push({
+      key: other.key, identity: other, latest: other.revisions[0]?.revision ?? null,
+      names: soldNames(index, other.key), isUhd: Boolean(other.isUhd),
+      changes: editionChanges(i, other),
+    });
+  }
+  out.sort((a, b) => a.identity.hardware.localeCompare(b.identity.hardware) || a.identity.destination.localeCompare(b.identity.destination));
+  return out;
+}
+
 /** Reverse lookup: "which drives can become this edition?". */
 export function crossflashTo(index, key) {
   const target = index.byKey.get(key);
@@ -609,6 +657,7 @@ export function identityView(index, key, known = {}) {
     identity: i, hardwareLabel: hwLabel, checklist, recommended, timeline,
     provenance: recommended?.package ? provenanceLine(i, recommended.revision, recommended.package) : null,
     names: index.namesByKey.get(i.key) ?? [], crossflash: crossflashGroups(index, key),
+    familyCrossflash: familyCrossflash(index, key),
   };
 }
 
