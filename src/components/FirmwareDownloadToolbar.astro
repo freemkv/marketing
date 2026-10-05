@@ -65,7 +65,7 @@ const { repo = 'https://github.com/freemkv/freemkv-firmware' } = Astro.props;
       } else {
         arch = 'x86_64';
       }
-      if (os === 'windows') arch = 'x86_64'; // only a Windows x86_64 build exists
+      if (os === 'windows' && arch !== 'arm64') arch = 'x86_64'; // UA hides Windows on ARM unless hinted
       return os + '-' + arch;
     }
 
@@ -84,7 +84,7 @@ const { repo = 'https://github.com/freemkv/freemkv-firmware' } = Astro.props;
       var pretty = {
         'macos-arm64': 'macOS · Apple Silicon', 'macos-x86_64': 'macOS · Intel',
         'linux-x86_64': 'Linux · x86_64', 'linux-arm64': 'Linux · aarch64',
-        'windows-x86_64': 'Windows · x86_64',
+        'windows-x86_64': 'Windows · x86_64', 'windows-arm64': 'Windows · ARM64',
       };
       if (pretty[detectedKey]) {
         document.querySelectorAll('[data-detected-banner]').forEach(function (banner) {
