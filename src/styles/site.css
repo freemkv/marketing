@@ -116,8 +116,10 @@ a[data-unavailable] { display: none !important; }
    instead of pointing at a block below). Shared by /download/, /firmware/modify/
    and /firmware/flash/. The !important overrides the per-page `.grid` column
    rule (body.page-… .grid), which has higher specificity. */
-.dl-stack { grid-template-columns: 1fr !important; max-width: 600px; margin-left: auto; margin-right: auto; }
+.dl-stack { grid-template-columns: minmax(0, 1fr) !important; max-width: 600px; margin-left: auto; margin-right: auto; }
+.dl-stack > .card { min-width: 0; }
 .dl-stack .dl-brew-cmd { margin-top: 0.6rem; }
+.dl-brew-multi { white-space: pre; }
 .dl-stack .dl-brew-cmd + .dl-brew-cmd { margin-top: 0.4rem; }
 .dl-mac-help { margin: 0.75rem 0 0; color: var(--muted); font-size: 0.85rem; line-height: 1.5; }
 .dl-toolbar { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.75rem 1.25rem; margin: 0 auto 2rem; max-width: var(--maxw); }

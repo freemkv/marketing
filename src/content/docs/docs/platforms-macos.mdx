@@ -28,11 +28,11 @@ With Homebrew, which also puts `freemkv` on your PATH:
 brew install --cask freemkv/tap/freemkv
 ```
 
-Or download the matching `.dmg` (`freemkv-aarch64-macos.dmg` or `freemkv-x86_64-macos.dmg`), open it and drag `freemkv.app` into **Applications**.
+Or download the matching `.zip` (`freemkv-aarch64-macos.zip` or `freemkv-x86_64-macos.zip`), unzip it and drag `freemkv.app` into **Applications**. The app is ad-hoc signed, not notarized, so a downloaded copy is quarantined and macOS asks before the first launch; see [first-run help](#apple-could-not-verify-freemkv-on-first-launch). Homebrew skips that prompt.
 
 Open freemkv, select a disc, image or folder, choose the titles and tracks, select an output location and press **Rip**. You can also drag a supported media file onto the window.
 
-The app includes the full CLI. With the cask, run `freemkv disc:// mkv://Movie.mkv` in any terminal; a bare `freemkv` opens the window. With a `.dmg` install, the executable is inside the app:
+The app includes the full CLI. With the cask, run `freemkv disc:// mkv://Movie.mkv` in any terminal; a bare `freemkv` opens the window. With a `.zip` install, the executable is inside the app:
 
 ```bash
 /Applications/freemkv.app/Contents/MacOS/freemkv --version
@@ -60,11 +60,11 @@ A bare `freemkv` prints usage. See the [CLI reference](/docs/cli/) for ripping c
 
 ### Verify the download
 
-Each `.dmg` and standalone CLI binary on [GitHub Releases](https://github.com/freemkv/freemkv/releases) has a matching `.sha256` file. Compare the hash of your download with the line for the same file name:
+Each `.zip` and standalone CLI binary on [GitHub Releases](https://github.com/freemkv/freemkv/releases) has a matching `.sha256` file. Compare the hash of your download with the line for the same file name:
 
 ```bash
-shasum -a 256 freemkv-aarch64-macos.dmg
-cat freemkv-aarch64-macos.dmg.sha256
+shasum -a 256 freemkv-aarch64-macos.zip
+cat freemkv-aarch64-macos.zip.sha256
 ```
 
 <a id="apple-could-not-verify-freemkv-on-first-launch"></a>
@@ -85,7 +85,7 @@ This creates an exception for that app. Different warnings, such as a damaged fi
 |---|---|---|
 | Homebrew app | `brew update`, then `brew upgrade --cask freemkv/tap/freemkv` | `brew uninstall --cask freemkv/tap/freemkv` |
 | Homebrew CLI | `brew update`, then `brew upgrade freemkv/tap/freemkv-cli` | `brew uninstall freemkv/tap/freemkv-cli` |
-| `.dmg` or standalone CLI | Close freemkv and replace the app or binary with the new release | Delete the app or binary |
+| `.zip` or standalone CLI | Close freemkv and replace the app or binary with the new release | Delete the app or binary |
 
 Settings and ripped movies are separate from program files, so updating or removing freemkv leaves them in place.
 

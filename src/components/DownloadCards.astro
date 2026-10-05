@@ -43,7 +43,7 @@ const { platforms, repo } = Astro.props;
             <span class="dl-sub">{b.label}</span>
           </a>
         ))}
-        {p.commands?.map((c) => <code class="dl-brew-cmd">{c}</code>)}
+        {p.commands && p.commands.length > 0 && <code class="dl-brew-cmd dl-brew-multi">{p.commands.join('\n')}</code>}
         {p.note && <p class="dl-mac-help">{p.note}</p>}
       </div>
       {p.os === 'windows' && (

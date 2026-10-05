@@ -53,10 +53,10 @@ const appPlatforms = [
     name: 'macOS',
     os: 'macos',
     brew: 'brew install --cask freemkv/tap/freemkv',
-    note: 'Homebrew also puts freemkv on PATH and skips the macOS security prompt.',
+    note: 'Homebrew also puts freemkv on PATH and skips the macOS security prompt that a downloaded .zip triggers.',
     builds: [
-      { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon · .dmg', file: 'freemkv-aarch64-macos.dmg' },
-      { key: 'macos-x64', arch: 'x86_64', label: 'Intel · .dmg', file: 'freemkv-x86_64-macos.dmg' },
+      { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon · .zip', file: 'freemkv-aarch64-macos.zip' },
+      { key: 'macos-x64', arch: 'x86_64', label: 'Intel · .zip', file: 'freemkv-x86_64-macos.zip' },
     ],
   },
   {
@@ -413,8 +413,8 @@ import '../styles/site.css';
         // tag -> Set of asset names actually attached to that release, filled
         // from the same API response that populates the picker.
         //
-        // WHY: asset names have changed over time. v1.5.2 shipped no .dmg at
-        // all, and no x86_64 macOS CLI binary. Building every link from the
+        // WHY: asset names have changed over time. v1.5.2 shipped no macOS
+        // app (and releases up to v1.8.0 shipped a .dmg, since dropped), and no x86_64 macOS CLI binary. Building every link from the
         // CURRENT naming meant picking an older version handed the visitor a
         // download button that 404s — silently, because nothing here checked
         // the release actually had the file. The API already returns the asset
@@ -463,7 +463,7 @@ import '../styles/site.css';
             if (known && !known[asset]) { markUnavailable(a, true); return; }
             markUnavailable(a, false);
             // The desktop app and the CLI are the SAME binary in the SAME repo
-            // (freemkv), so every freemkv asset — .dmg, .zip, bare binary, .exe
+            // (freemkv), so every freemkv asset — .zip, bare binary, .exe
             // — resolves against cliRepo. (There is no longer a "freemkv-gui-*"
             // asset family; that naming was retired when the GUI and CLI merged
             // into one binary. `guiRepo === cliRepo`.)
