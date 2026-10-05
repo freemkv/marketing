@@ -223,7 +223,7 @@ freemkv-library exposes an HTTP API on the same port as the UI. JSON errors use 
 | Method | Path | Description |
 |---|---|---|
 | `GET` | `/api/state` | Snapshot of every drive's rip state, plus move/verify state. |
-| `GET` | `/api/version` | Running version, e.g. `{"version":"1.7.7"}`. |
+| `GET` | `/api/version` | Running version, e.g. `{"version":"1.8.0"}`. |
 | `GET` | `/api/system` | System info: mux/move queues and the output file list. |
 | `GET` | `/events` | Server-Sent Events stream of live state pushes. |
 

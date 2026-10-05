@@ -207,7 +207,7 @@ _This release aligns all components to 1.7.4._
   BDMV/VIDEO_TS metadata (playlists, clip info — a few hundred KB, no video/audio
   and no keys) so the problem can be reproduced without sending the whole disc.
   Works on a drive, an ISO, or a folder. See
-  https://freemkv.org/docs/troubleshooting/#sharing-a-profile---share
+  https://freemkv.org/docs/troubleshooting/#sharing-a-profile-share
 
 _This release aligns all components to 1.7.3._
 

@@ -408,7 +408,7 @@ import '../styles/site.css';
         // from the same API response that populates the picker.
         //
         // WHY: asset names have changed over time. v1.5.2 shipped no macOS
-        // app (and releases up to v1.8.0 shipped a .dmg, since dropped), and no x86_64 macOS CLI binary. Building every link from the
+        // app (releases v1.7.x shipped a .dmg; 1.8.0 dropped it), and no x86_64 macOS CLI binary. Building every link from the
         // CURRENT naming meant picking an older version handed the visitor a
         // download button that 404s — silently, because nothing here checked
         // the release actually had the file. The API already returns the asset
