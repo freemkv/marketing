@@ -4,20 +4,11 @@
 // Identity = family + hardware + destination ID (e.g. pioneer:9201:ID43).
 // Names (retail, OEM labels, drive-reported strings) are aliases that point at
 // one or more identities. A drive only takes firmware for its own identity;
-// other IDs on the same hardware are offered separately as conversions.
+// other IDs on the same hardware are listed as cross-flash targets.
 
 export const DISCORD_URL = 'https://discord.gg/yu7xMGTyek';
 
 const PIONEER_KERNEL_FIRST = { 'source-contained': 0, 'carried-forward': 1, 'normal-only': 2 };
-const VENDORS = ['PIONEER', 'HL-DT-ST', 'HLDTST', 'ASUS', 'LITE-ON', 'LITEON', 'PLDS', 'TSSTCORP', 'PLEXTOR',
-  'MATSHITA', 'OPTIARC', 'HP', 'BUFFALO', 'LG', 'SONY', 'TEAC', 'NEC', 'TDK', 'MEMOREX', 'LACIE', 'IODATA', 'I-O DATA'];
-const DRIVE_TYPES = new Set(['BD-RW', 'BDRW', 'BD-RE', 'BDRE', 'BD-ROM', 'BDROM', 'DVD-RW', 'DVDRW', 'DVD+-RW',
-  'DVD+RW', 'DVD-ROM', 'DVDROM', 'CD-RW', 'CDRW', 'DVDR', 'DVD-RAM']);
-const MAX_SIMILAR = 25;
-// Alias kinds that are names a drive was sold or published under (not file names).
-const SOLD_AS = new Set(['retail', 'oem', 'release', 'inquiry']);
-export const isSoldAs = alias => SOLD_AS.has(alias.kind);
-
 export function compact(text) {
   return String(text ?? '').toUpperCase().replace(/[^A-Z0-9]+/g, '');
 }
@@ -96,7 +87,6 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
     if (!identities.has(key)) identities.set(key, {
       key, family: init.family, hardware: init.hardware, destination: init.destination || 'GENERAL',
       platforms: [], embeddedModels: [], brands: [], revisions: [], candidates: [], missing: [],
-      familyId: null, isUhd: false,
     });
     return identities.get(key);
   }
@@ -127,15 +117,12 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
       const ident = identity(src.key, { family: src.family, hardware: src.hardware, destination: src.destination });
       for (const p of src.platforms ?? []) pushUnique(ident.platforms, p);
       for (const m of src.embedded_models ?? []) pushUnique(ident.embeddedModels, m);
+      if (src.crossflash_group) ident.crossflashGroup = src.crossflash_group;
       for (const r of src.revisions ?? []) {
         if (!r.packages?.length) { pushUnique(ident.missing, r.revision); continue; }
         for (const p of r.packages) {
           v2Shas.add(p.sha256);
           const isPioneer = p.packageType === 'pioneer-installer';
-          if (isPioneer) {
-            if (p.family_id && !ident.familyId) ident.familyId = p.family_id;
-            if (p.is_uhd === true) ident.isUhd = true;
-          }
           addPackage(ident, r.revision, {
             sha256: p.sha256, bytes: p.bytes, key: p.key, filename: p.filename,
             packageType: p.packageType || (src.family === 'mediatek' ? 'mediatek-image' : 'image'),
@@ -146,8 +133,6 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
             provenance: typeof p.provenance === 'string' ? p.provenance : null,
             chipset: isPioneer ? 'Pioneer' : (src.platforms?.[0] ?? null),
             modifiable: isPioneer ? false : Boolean(mtkBySha.get(p.sha256)?.modifiable),
-            familyId: isPioneer ? (p.family_id ?? null) : null,
-            isUhd: isPioneer ? Boolean(p.is_uhd) : false,
             ...(isPioneer ? {} : mediatekExtras(mtkBySha.get(p.sha256))),
           });
         }
@@ -158,6 +143,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
         key: c.key, hardware: c.hardware, destination: c.destination,
         status: c.crossflash_status || 'untested', steps: c.steps ?? [], evidence: c.evidence ?? [],
         caution: c.caution ?? null, kernelDiff: kernelDiff(c.kernel_comparisons),
+        crossflashGroup: c.crossflash_group ?? null,
       }));
     }
     for (const a of catalog.aliases ?? []) {
@@ -218,34 +204,6 @@ export function v1Filename(model, rev, sha, ext) {
   return [model, rev].filter(Boolean).map(seg).join('_') + '_' + String(sha).slice(0, 8) + '.' + ext;
 }
 
-/** Smaller payload for the page: drop fields the browser never reads. */
-export function clientData(data) {
-  const strip = o => Object.fromEntries(Object.entries(o).filter(([k, v]) => v !== null && v !== undefined && !(Array.isArray(v) && !v.length) && k !== 'normalSha256'));
-  return {
-    aliases: data.aliases.map(a => strip({ ...a, compact: undefined, evidence: a.evidence.slice(0, 1).map(e => ({ ref: e.ref })) })),
-    identities: data.identities.map(i => ({
-      ...i,
-      revisions: i.revisions.map(r => ({ revision: r.revision, packages: r.packages.map(p => {
-        const out = strip({ ...p, key: p.file ? undefined : p.key });
-        if (out.features) out.features = out.features.map(f => ({ name: f.name, ok: f.ok }));
-        return out;
-      }) })),
-    })),
-  };
-}
-
-/** Restore what clientData() dropped. */
-export function hydrate(data) {
-  for (const a of data.aliases) { a.compact = compact(a.display); a.evidence ??= []; a.targets ??= []; }
-  for (const i of data.identities) {
-    i.familyId ??= null; i.isUhd ??= false;
-    for (const r of i.revisions) for (const p of r.packages) {
-      p.key ??= safeDecode(p.file ?? ''); p.components ??= []; p.advertisedVersions ??= [];
-    }
-  }
-  return data;
-}
-
 /** Smallest measured Kernel difference between two editions, for "likely" evidence. */
 function kernelDiff(comparisons) {
   if (!Array.isArray(comparisons) || !comparisons.length) return null;
@@ -266,226 +224,35 @@ function packageOrder(a, b) {
 export function indexFinder(data) {
   const byKey = new Map(data.identities.map(i => [i.key, i]));
   const byHardware = new Map();
-  const byFamilyId = new Map();
   for (const i of data.identities) {
     const h = compact(i.hardware);
     if (!byHardware.has(h)) byHardware.set(h, []);
     byHardware.get(h).push(i);
-    if (i.familyId) {
-      if (!byFamilyId.has(i.familyId)) byFamilyId.set(i.familyId, []);
-      byFamilyId.get(i.familyId).push(i);
-    }
   }
   const namesByKey = new Map();
   for (const a of data.aliases) for (const k of a.targets) {
     if (!namesByKey.has(k)) namesByKey.set(k, []);
     namesByKey.get(k).push(a);
   }
-  return { ...data, byKey, byHardware, byFamilyId, namesByKey };
+  return { ...data, byKey, byHardware, namesByKey };
 }
 
 /**
- * Parse whatever the user pasted: a retail name, a drive-reported INQUIRY
- * string ("PIONEER BD-RW BDR-UD02D 1.01"), MakeMKV drive info
- * ("Drive platform: Pioneer RS8410 ... Firmware version: ID84"), a MakeMKV SDF
- * name ("HL-DT-ST-BD-RE_BH16NS40-NS50-1.00-N002502-2115..."), hardware + ID
- * ("8510 ID19") or a chipset ("MT1959").
+ * Cross-flash rule. Pioneer: same hardware_version, any ID; different hardware
+ * never. MediaTek: same extractor crossflash_group (platform -> loader ->
+ * board), never desktop with slim; different group never. Other families: none.
  */
-export function parseDriveString(text) {
-  const raw = String(text ?? '').trim();
-  const out = { raw, vendor: null, model: null, revision: null, hardware: null, bareHardware: [], destination: null, chipset: null, board: null, variantCode: null };
-  if (!raw) return out;
-  let rest = ' ' + raw.toUpperCase().replace(/[\r\n\t]+/g, ' ') + ' ';
-  const take = (re, fn) => { rest = rest.replace(re, (...m) => { fn(m); return ' '; }); };
-  // MakeMKV labels are noise; their values are kept.
-  rest = rest.replace(/\b(?:DRIVE PLATFORM|FIRMWARE VERSION|FIRMWARE TYPE|FIRMWARE DATE|MANUFACTURER|PRODUCT|REVISION|OS DEVICE NAME|SERIAL NUMBER|HARDWARE)\s*:/g, ' ');
-  take(/\b(?:SAT|RS)[\s_-]?([0-9A-F]{4})(?=[\s_-]|$)/, m => { out.hardware = m[1]; });
-  take(/(?:^|[\s_-])ID[\s_-]?(\d{2,3})(?=[\s_.-]|$)/, m => { out.destination = 'ID' + m[1]; });
-  take(/\bMT[\s-]?(1939|1959|\d{4})\b/, m => { out.chipset = 'MT' + m[1]; });
-  // SDF names: VENDOR-TYPE_PRODUCT-BOARD-REV-CODE-STAMP
-  const sdf = raw.toUpperCase().match(/_([A-Z0-9]+)-([A-Z0-9]{2,5})-(\d\.\d{2})-([A-Z][A-Z0-9]\d{5})(?:-\d+)?\s*$/);
-  if (sdf) {
-    out.model = sdf[1]; out.board = sdf[2]; out.revision = sdf[3]; out.variantCode = sdf[4];
-    out.vendor = VENDORS.find(v => raw.toUpperCase().startsWith(v)) ?? null;
-    return out;
+export function crossflashAllowed(from, to, candidate) {
+  if (!from || !to || from.key === to.key || from.family !== to.family) return false;
+  if (from.family === 'pioneer') return compact(from.hardware) === compact(to.hardware);
+  if (from.family === 'mediatek') {
+    const group = candidate?.crossflashGroup;
+    if (!group) return false;
+    for (const own of [from.crossflashGroup, to.crossflashGroup]) if (own && own !== group) return false;
+    const ff = formFactor(group);
+    return Boolean(ff) && ![from.crossflashGroup, to.crossflashGroup].some(g => g && formFactor(g) !== ff);
   }
-  // Revision: the last "1.01" / "1.01EU" token.
-  const revs = [...rest.matchAll(/(?:^|\s)(\d\.\d{2}[A-Z]{0,2})(?=\s|$)/g)];
-  if (revs.length) { out.revision = revs.at(-1)[1]; rest = rest.replace(new RegExp('(^|\\s)' + out.revision.replace('.', '\\.') + '(?=\\s|$)'), ' '); }
-  const tokens = rest.split(/\s+/).filter(Boolean);
-  const kept = [];
-  for (const [i, t] of tokens.entries()) {
-    const other = tokens.length > 1 || out.hardware || out.destination || out.revision;
-    if (!out.vendor && VENDORS.includes(t) && other && kept.length === 0) { out.vendor = t; continue; }
-    if (DRIVE_TYPES.has(t)) continue;
-    if (/^[0-9][0-9A-F]{3}$/.test(t) && (out.destination || tokens.length === 1)) { out.bareHardware.push(t); continue; }
-    if (/^[\/…·|,;:.]+$/.test(t) || t === '...') continue;
-    kept.push(t);
-  }
-  if (kept.length) out.model = kept.join(' ');
-  return out;
-}
-
-function why(alias) {
-  const kind = { retail: 'retail name', oem: 'OEM label', inquiry: 'name the drive reports', firmware: 'name inside the firmware',
-    'release-note': 'name in release notes', release: 'published release name', filename: 'download file name', sdf: 'MakeMKV name' }[alias.kind] ?? alias.kind;
-  return kind;
-}
-
-function identityLabel(i) {
-  return `${i.family === 'pioneer' ? 'SAT ' : ''}${i.hardware} · ${i.destination}`;
-}
-
-/**
- * Search: exact name -> same drive under other names -> similar names.
- * Each item: {label, kind, targets[], why}. Hardware/ID/chipset in the query
- * narrow the identities a name resolves to.
- */
-export function search(index, query) {
-  const parsed = parseDriveString(query);
-  const groups = { exact: [], otherNames: [], similar: [] };
-  if (!parsed.raw) return { parsed, ...groups };
-  let hardware = parsed.hardware;
-  if (!hardware) hardware = parsed.bareHardware.find(h => index.byHardware.has(h)) ?? null;
-  const dest = parsed.destination;
-  const constrain = keys => keys.filter(k => {
-    const i = index.byKey.get(k);
-    if (!i) return false;
-    if (hardware && compact(i.hardware) !== hardware && !compact(i.hardware).includes(hardware)) return false;
-    if (dest && i.destination !== dest) return false;
-    if (parsed.chipset && !i.platforms.some(p => compact(p) === parsed.chipset)) return false;
-    if (parsed.board && i.family === 'mediatek' && !compact(i.hardware).endsWith(compact(parsed.board)) && i.hardware.includes(' ')) return false;
-    return true;
-  });
-  const q = compact(parsed.model);
-  const seen = new Set();
-  const exactKeys = new Set();
-  if (q) {
-    for (const a of index.aliases) {
-      if (a.compact !== q && a.compact !== compact((parsed.vendor ?? '') + parsed.model)) continue;
-      const targets = constrain(a.targets);
-      const filtered = targets.length < a.targets.length;
-      const use = targets.length ? targets : a.targets;
-      seen.add(a);
-      for (const k of use) exactKeys.add(k);
-      groups.exact.push({ label: a.display, kind: a.kind, targets: use, evidence: a.evidence,
-        why: `Exact ${why(a)}` + (filtered && targets.length ? ' — narrowed by the hardware/ID you entered' : '') +
-          (!targets.length && (hardware || dest) ? ' — but none of its editions match the hardware/ID you entered' : '') });
-    }
-  }
-  if (!groups.exact.length && (hardware || dest || parsed.chipset)) {
-    const keys = constrain(index.identities.map(i => i.key));
-    if (keys.length && (hardware || parsed.chipset)) {
-      for (const k of keys) exactKeys.add(k);
-      groups.exact.push({ label: hardware ? `Hardware ${hardware}${dest ? ' · ' + dest : ''}` : parsed.chipset, kind: 'identity', targets: keys,
-        why: hardware ? `Matches hardware ${hardware}${dest ? ' and ID ' + dest : ''} exactly` : `Uses the ${parsed.chipset} chipset` });
-    }
-  }
-  for (const k of exactKeys) for (const a of index.namesByKey.get(k) ?? []) {
-    if (seen.has(a)) continue;
-    seen.add(a);
-    const i = index.byKey.get(k);
-    groups.otherNames.push({ label: a.display, kind: a.kind, targets: a.targets.filter(t => exactKeys.has(t)), evidence: a.evidence,
-      why: `Same drive (${identityLabel(i)}) — ${why(a)}` });
-  }
-  if (q.length >= 2) {
-    const terms = String(parsed.model).toUpperCase().split(/\s+/).map(compact).filter(Boolean);
-    for (const a of index.aliases) {
-      if (groups.similar.length >= MAX_SIMILAR) break;
-      if (seen.has(a)) continue;
-      const contains = a.compact.includes(q) || (a.compact.length >= 4 && q.includes(a.compact));
-      const allTerms = terms.length > 1 && terms.every(t => a.compact.includes(t) || a.targets.some(k => index.byKey.get(k)?.brands.some(b => compact(b) === t)));
-      if (!contains && !allTerms) continue;
-      const targets = constrain(a.targets);
-      if (!targets.length && (hardware || dest)) continue;
-      seen.add(a);
-      groups.similar.push({ label: a.display, kind: a.kind, targets: targets.length ? targets : a.targets, evidence: a.evidence,
-        why: a.compact.includes(q) ? `Name contains “${parsed.model}”` : contains ? `“${a.display}” is part of what you typed` : 'Name and brand match every word you typed' });
-    }
-  }
-  for (const name of Object.keys(groups)) groups[name] = mergeItems(groups[name]);
-  return { parsed: { ...parsed, hardware }, ...groups };
-}
-
-function mergeItems(items) {
-  const byName = new Map();
-  for (const item of items) {
-    const c = compact(item.label);
-    const prev = byName.get(c);
-    if (!prev) { byName.set(c, { ...item, targets: [...item.targets] }); continue; }
-    for (const t of item.targets) pushUnique(prev.targets, t);
-    if (!prev.why.includes(item.why)) prev.why += '; ' + item.why.replace(/^Exact |^Same drive \([^)]*\) — /, '');
-  }
-  return [...byName.values()];
-}
-
-/** Plain-English picker rows for a name that maps to several identities. */
-export function pickerOptions(index, keys) {
-  return keys.map(k => index.byKey.get(k)).filter(Boolean).map(i => {
-    const names = index.namesByKey.get(i.key) ?? [];
-    const soldAs = [...new Set(names.filter(a => SOLD_AS.has(a.kind)).map(a => a.display))];
-    const newest = i.revisions[0]?.revision ?? null;
-    return { key: i.key, family: i.family, hardware: i.hardware, destination: i.destination, brands: i.brands,
-      soldAs: soldAs.length ? soldAs : [...new Set(names.map(a => a.display))].slice(0, 4), newest,
-      revisionCount: i.revisions.length };
-  }).sort((a, b) => a.hardware.localeCompare(b.hardware) || a.destination.localeCompare(b.destination));
-}
-
-/** Resolve ?hw=&id=&rev= (and ?q=) into an identity or picker. */
-export function parseUrlParams(search) {
-  const p = new URLSearchParams(search);
-  const hw = p.get('hw'), id = p.get('id');
-  return { hardware: hw ? compact(normalizeHardware(hw)) : null, destination: id ? normalizeDestination(id) : null,
-    revision: p.get('rev')?.trim() || null, query: p.get('q')?.trim() || null,
-    mode: p.get('mode') === 'crossflash' ? 'crossflash' : 'firmware' };
-}
-
-export function resolveIdentity(index, { hardware, destination }) {
-  if (!hardware && !destination) return [];
-  return index.identities.filter(i => (!hardware || compact(i.hardware) === hardware) && (!destination || i.destination === destination)).map(i => i.key);
-}
-
-/** Cross-flash candidates for the firmware view (same hardware only). */
-export function crossflashGroups(index, key) {
-  return crossflashFrom(index, key);
-}
-
-function regionsOf(identity) {
-  const set = new Set();
-  for (const r of identity.revisions) for (const p of r.packages) for (const a of p.advertisedVersions ?? []) {
-    const m = String(a).match(/\d\.\d{2}([A-Z]{2})$/);
-    if (m) set.add(m[1]);
-  }
-  return [...set].sort();
-}
-
-/**
- * What visibly changes when a drive becomes `to`, using catalogue data only:
- * the ID label, the name the drive reports, and published regions/features.
- */
-export function editionChanges(from, to) {
-  const changes = [{ term: 'id', text: `The drive's ID changes from ${from.destination} to ${to.destination}` }];
-  const a = from.embeddedModels.join(', '), b = to.embeddedModels.join(', ');
-  if (b && a !== b) changes.push({ term: 'name', text: `The drive will report itself as ${b}${a ? ` instead of ${a}` : ''}` });
-  const ra = regionsOf(from).join(', '), rb = regionsOf(to).join(', ');
-  if (rb && ra !== rb) changes.push({ term: 'region', text: `Its firmware is published for ${rb}${ra ? ` (yours: ${ra})` : ''}` });
-  const feat = i => i.revisions[0]?.packages[0]?.features?.filter(f => f.ok).map(f => f.name).join(', ') ?? '';
-  const fa = feat(from), fb = feat(to);
-  if (fb && fa !== fb) changes.push({ term: 'features', text: `Firmware features: ${fb}` });
-  return changes;
-}
-
-function decorate(index, from, other, candidate) {
-  return {
-    key: other.key, status: candidate.status, steps: candidate.steps ?? [], evidence: candidate.evidence ?? [],
-    caution: candidate.caution ?? null, kernelDiff: candidate.kernelDiff ?? null, identity: other,
-    names: soldNames(index, other.key),
-    latest: other.revisions[0]?.revision ?? null, changes: editionChanges(from, other),
-  };
-}
-
-function soldNames(index, key) {
-  return [...new Set((index.namesByKey.get(key) ?? []).filter(isSoldAs).map(a => a.display))];
+  return false;
 }
 
 function statusGroup(status) {
@@ -493,22 +260,9 @@ function statusGroup(status) {
 }
 
 // MediaTek groups are platform/form-factor/loader/board, e.g. "MT1959/desktop/JBC6/board-unknown".
-/**
- * Cross-flash rule. Pioneer: same hardware_version, any ID; different hardware
- * never. MediaTek: no crossflash is supported at all. Other families: none.
- */
-export function crossflashAllowed(from, to, _candidate) {
-  if (!from || !to || from.key === to.key || from.family !== to.family) return false;
-  if (from.family === 'pioneer') return compact(from.hardware) === compact(to.hardware);
-  // MediaTek has no supported crossflash target set.
-  return false;
-}
+const formFactor = group => String(group ?? '').split('/')[1] ?? '';
 
-function withCaution(_from, c) {
-  return c;
-}
-
-/** "What can my drive become?": other editions it may cross-flash to. */
+/** "I have X": other editions on the same hardware it may be flashed to. */
 export function crossflashFrom(index, key) {
   const i = index.byKey.get(key);
   const groups = { proven: [], likely: [], untested: [] };
@@ -516,92 +270,9 @@ export function crossflashFrom(index, key) {
   for (const c of i.candidates) {
     const other = index.byKey.get(c.key);
     if (!crossflashAllowed(i, other, c)) continue;
-    const status = statusGroup(c.status);
-    groups[status].push(decorate(index, i, other, withCaution(i, { ...c, status })));
+    groups[statusGroup(c.status)].push({ key: other.key, identity: other });
   }
   return groups;
-}
-
-/**
- * Pioneer family cross-flash: every other identity in the same hardware family
- * (fw::get_family fingerprint) that has at least one package with both Kernel
- * and Normal (required for cross-era flashing). Deduplicated from `crossflashFrom`.
- */
-function hasKernelAndNormal(identity) {
-  for (const r of identity.revisions) for (const p of r.packages) {
-    const c = p.components ?? [];
-    if (c.includes('kernel') && c.includes('main')) return true;
-  }
-  return false;
-}
-
-export function familyCrossflash(index, key) {
-  const i = index.byKey.get(key);
-  if (!i || i.family !== 'pioneer' || !i.familyId) return [];
-  const pool = index.byFamilyId?.get(i.familyId) ?? [];
-  const seen = new Set([key, ...(i.candidates ?? []).map(c => c.key)]);
-  const out = [];
-  for (const other of pool) {
-    if (seen.has(other.key)) continue;
-    if (!hasKernelAndNormal(other)) continue;
-    seen.add(other.key);
-    out.push({
-      key: other.key, identity: other, latest: other.revisions[0]?.revision ?? null,
-      names: soldNames(index, other.key), isUhd: Boolean(other.isUhd),
-      changes: editionChanges(i, other),
-    });
-  }
-  out.sort((a, b) => a.identity.hardware.localeCompare(b.identity.hardware) || a.identity.destination.localeCompare(b.identity.destination));
-  return out;
-}
-
-/** Reverse lookup: "which drives can become this edition?". */
-export function crossflashTo(index, key) {
-  const target = index.byKey.get(key);
-  const groups = { proven: [], likely: [], untested: [] };
-  if (!target) return groups;
-  const pool = target.family === 'pioneer' ? (index.byHardware.get(compact(target.hardware)) ?? []) : index.identities;
-  for (const source of pool) {
-    const c = source.candidates?.find(x => x.key === target.key);
-    if (!c || !crossflashAllowed(source, target, c)) continue;
-    const status = statusGroup(c.status);
-    groups[status].push(decorate(index, source, target, withCaution(source, { ...c, status })));
-    const row = groups[status].at(-1);
-    row.key = source.key; row.identity = source; row.latest = source.revisions[0]?.revision ?? null;
-    row.names = soldNames(index, source.key);
-  }
-  return groups;
-}
-
-function editDistance(a, b, limit) {
-  if (Math.abs(a.length - b.length) > limit) return limit + 1;
-  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
-  for (let i = 1; i <= a.length; i++) {
-    const cur = [i];
-    let best = i;
-    for (let j = 1; j <= b.length; j++) {
-      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
-      best = Math.min(best, cur[j]);
-    }
-    if (best > limit) return limit + 1;
-    prev = cur;
-  }
-  return prev[b.length];
-}
-
-/** "Did you mean": closest names by edit distance (bounded, cheap). */
-export function suggestions(index, query, max = 5) {
-  const q = compact(parseDriveString(query).model ?? query);
-  if (q.length < 3) return [];
-  const limit = Math.max(1, Math.min(3, Math.floor(q.length / 3)));
-  const scored = [];
-  const seen = new Set();
-  for (const a of index.aliases) {
-    if (seen.has(a.compact)) continue;
-    const d = editDistance(q, a.compact, limit);
-    if (d <= limit) { seen.add(a.compact); scored.push([d, a]); }
-  }
-  return scored.sort((x, y) => x[0] - y[0] || x[1].display.localeCompare(y[1].display)).slice(0, max).map(([, a]) => a.display);
 }
 
 export function componentsLabel(components) {
@@ -609,83 +280,29 @@ export function componentsLabel(components) {
   return [components.includes('kernel') && 'Kernel', components.includes('main') && 'Normal'].filter(Boolean).join(' + ');
 }
 
-/** One-line provenance for a package; the catalogue's own line wins. */
-export function provenanceLine(identity, revision, pkg) {
-  if (pkg.provenance) return pkg.provenance;
-  const who = titleBrand(pkg.brand) || identity.brands[0] || '';
-  const parts = [`${who ? who + ' ' : ''}${pkg.embeddedModel || identity.hardware} firmware ${revision}`.trim()];
-  if (pkg.advertisedVersions?.length) parts.push(`published as ${pkg.advertisedVersions.join(', ')}`);
-  if (pkg.generatedDate) parts.push(`built ${pkg.generatedDate}`);
-  if (pkg.buildId) parts.push(`build ${pkg.buildId}`);
-  return parts.join('; ') + (pkg.packageType === 'pioneer-installer' ? ' — repackaged unchanged from the official updater' : '');
-}
-
-/**
- * Everything the result view needs for one identity. `known` is what the user
- * told us about their drive (hardware, destination, revision).
- */
-export function identityView(index, key, known = {}) {
-  const i = index.byKey.get(key);
-  if (!i) return null;
-  const newest = i.revisions[0] ?? null;
-  const recommended = newest ? { revision: newest.revision, package: newest.packages[0] } : null;
-  const checklist = [];
-  const hwLabel = i.family === 'pioneer' ? `SAT ${i.hardware}` : i.hardware;
-  if (known.hardware) checklist.push({ term: 'hardware', ok: compact(i.hardware) === compact(known.hardware) || compact(i.hardware).includes(compact(known.hardware)),
-    text: `Your drive's hardware ${known.hardware} ${compact(i.hardware).includes(compact(known.hardware)) ? 'matches' : 'does not match'} ${hwLabel}` });
-  else checklist.push({ term: 'hardware', ok: null, text: `Check your drive reports hardware ${hwLabel}` });
-  if (known.destination) checklist.push({ term: 'id', ok: known.destination === i.destination,
-    text: `Your drive's ID ${known.destination} ${known.destination === i.destination ? 'matches' : 'does not match'} ${i.destination}` });
-  else checklist.push({ term: 'id', ok: null, text: `Check your drive reports the ID ${i.destination}` });
-  if (newest) {
-    if (known.revision) {
-      const cmp = compareRevision(newest.revision, known.revision);
-      checklist.push({ term: 'revision', ok: cmp >= 0,
-        text: cmp > 0 ? `Newest available is ${newest.revision}; your drive has ${known.revision} — this is an update`
-          : cmp === 0 ? `Your drive already has ${known.revision}, the newest we have` : `Your drive has ${known.revision}, newer than anything we have (${newest.revision})` });
-    } else checklist.push({ term: 'revision', ok: null, text: `Newest available revision is ${newest.revision}` });
-  }
-  const timeline = [
-    ...i.revisions.map(r => ({ revision: r.revision, status: 'available', packages: r.packages })),
-    ...i.missing.map(revision => ({ revision, status: 'missing', packages: [] })),
-  ].sort((a, b) => compareRevision(b.revision, a.revision));
-  for (const t of timeline) {
-    t.isRecommended = recommended && t.revision === recommended.revision;
-    t.isCurrent = Boolean(known.revision) && compareRevision(t.revision, known.revision) === 0;
-  }
-  return {
-    identity: i, hardwareLabel: hwLabel, checklist, recommended, timeline,
-    provenance: recommended?.package ? provenanceLine(i, recommended.revision, recommended.package) : null,
-    names: index.namesByKey.get(i.key) ?? [], crossflash: crossflashGroups(index, key),
-    familyCrossflash: familyCrossflash(index, key),
-  };
-}
-
-/** Browse fallback: brand -> chipset family -> hardware, with counts. */
-export function browseTree(index) {
-  const brands = new Map();
-  for (const i of index.identities) {
-    const brand = i.brands[0] || (i.family === 'mediatek' ? titleBrand(i.hardware.split(' ')[0]) : titleBrand(i.family));
-    const family = i.family === 'pioneer' ? 'Pioneer' : (i.platforms.find(p => /^MT/.test(p)) ?? titleBrand(i.family));
-    if (!brands.has(brand)) brands.set(brand, new Map());
-    const fam = brands.get(brand);
-    if (!fam.has(family)) fam.set(family, new Map());
-    const hw = fam.get(family);
-    if (!hw.has(i.hardware)) hw.set(i.hardware, []);
-    hw.get(i.hardware).push(i.key);
-  }
-  const count = keys => keys.reduce((n, k) => n + (index.byKey.get(k)?.revisions.length ?? 0), 0);
-  return [...brands].map(([brand, fams]) => {
-    const families = [...fams].map(([family, hws]) => {
-      const hardware = [...hws].map(([h, keys]) => ({ hardware: h, keys, editions: keys.length, revisions: count(keys) }))
-        .sort((a, b) => a.hardware.localeCompare(b.hardware));
-      return { family, hardware, revisions: hardware.reduce((n, h) => n + h.revisions, 0) };
-    }).sort((a, b) => a.family.localeCompare(b.family));
-    return { brand, families, revisions: families.reduce((n, f) => n + f.revisions, 0) };
-  }).sort((a, b) => b.revisions - a.revisions || a.brand.localeCompare(b.brand));
-}
-
 /** Hero counts: hosted packages by chipset. */
+// What users count: unique drive model + firmware version pairs, as listed
+// in the model dropdown (a model shares firmware with others, so this is
+// larger than the number of distinct files).
+export function modelVersionSummary(page) {
+  const byChip = {};
+  let total = 0;
+  for (const model of page.models) {
+    const seen = new Set();
+    for (const [v] of model.v) {
+      const version = page.versions[v];
+      const key = version.r;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      total++;
+      const ident = page.identities[version.i];
+      const chip = ident.pio ? 'Pioneer' : (ident.chip || 'MediaTek');
+      byChip[chip] = (byChip[chip] || 0) + 1;
+    }
+  }
+  return { total, byChip: Object.entries(byChip).sort((a, b) => b[1] - a[1]) };
+}
+
 export function hostedSummary(data) {
   const byChip = {};
   let total = 0;
@@ -697,25 +314,169 @@ export function hostedSummary(data) {
   return { total, byChip: Object.entries(byChip).sort((a, b) => b[1] - a[1]) };
 }
 
-/**
- * What the page shows for a URL: ?mode=crossflash, ?hw=&id=&rev= deep links
- * (one identity or a picker), or ?q= to prefill the search.
- */
-export function routeFromUrl(index, searchString) {
-  const p = parseUrlParams(searchString);
-  const known = { hardware: p.hardware, destination: p.destination, revision: p.revision };
-  const keys = resolveIdentity(index, p);
-  if (keys.length === 1) return { mode: p.mode, view: 'identity', keys, known, query: p.query };
-  if (keys.length > 1) return { mode: p.mode, view: 'picker', keys, known, query: p.query };
-  if (p.query) return { mode: p.mode, view: 'search', keys: [], known, query: p.query };
-  return { mode: p.mode, view: 'none', keys: [], known, query: null };
+
+// ---------------------------------------------------------------------------
+// Page data for /firmware/find/: model names -> versions -> packages, with
+// human labels only (no identity keys, board strings or placeholder IDs).
+
+// Alias kinds shown as drive model names, best first. File/release names are
+// search terms only.
+const MEDIA_PREFIX = /^(?:BD-?RE|BD-?RW|BD-?ROM|BD-?R|DVD-?RW|DVD-?RAM|DVD-?ROM|BDDVDRW|CDDVDW|DVDRW)\s+(?=\S)/i;
+const NAME_RANK = { legacy: 0, retail: 1, inquiry: 2, 'release-note': 3, oem: 4 };
+const OEM_NAMES = { ASUS: 'ASUS', BUFFALO: 'Buffalo', HP: 'HP', TDK: 'TDK', TEAC: 'TEAC', MEMOREX: 'Memorex', MEDION: 'Medion', SONYDT: 'Sony' };
+
+/** Human label for an identity's destination: "ID43", an OEM name, or "" when unknown. */
+export function destinationLabel(identity) {
+  const d = String(identity.destination ?? '');
+  if (identity.family === 'pioneer' && /^ID\d+$/.test(d)) return d;
+  return OEM_NAMES[d.replace(/\d+$/, '')] ?? '';
 }
 
-export function urlFor({ mode, identity, revision }) {
-  const p = new URLSearchParams();
-  if (mode === 'crossflash') p.set('mode', 'crossflash');
-  if (identity) { p.set('hw', identity.hardware); p.set('id', identity.destination); }
-  if (revision) p.set('rev', revision);
-  const s = p.toString();
-  return s ? '?' + s : '';
+function baseBrand(identity) {
+  if (identity.family === 'pioneer') return 'Pioneer';
+  const first = String(identity.hardware).split(' ')[0];
+  return /^HL-?DT-?ST$/i.test(first) ? 'LG' : titleBrand(first);
+}
+
+/** Heading a version is listed under on the card: the OEM if known, the
+ * maker for its own (GENERAL) builds, otherwise "Other editions". */
+export function versionGroup(identity) {
+  const d = destinationLabel(identity);
+  if (d && !/^ID\d+$/.test(d)) return d;
+  if (identity.family === 'pioneer' || String(identity.destination) === 'GENERAL') return baseBrand(identity);
+  return 'Other editions';
+}
+
+/** Brand shown in the card title: the OEM edition if known, else the maker. */
+export function identityBrand(identity) {
+  const d = destinationLabel(identity);
+  return d && !/^ID\d+$/.test(d) ? d : baseBrand(identity);
+}
+
+function hardwareLabel(identity) {
+  return /^[0-9A-F]{4}$/.test(identity.hardware) ? 'SAT ' + identity.hardware : identity.hardware;
+}
+
+/** Short, human "where it comes from" line for a package. */
+
+function bytesLabel(n) {
+  if (!Number.isFinite(n)) return '';
+  return n >= 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
+}
+
+function contentsLabel(pkg) {
+  if (pkg.packageType !== 'pioneer-installer') return 'Firmware image';
+  const c = componentsLabel(pkg.components);
+  if (!c) return 'Package';
+  return pkg.kernelRevision && pkg.components.includes('kernel') ? c.replace('Kernel', `Kernel ${pkg.kernelRevision}`) : c;
+}
+
+function chips(identity, pkg) {
+  const out = [];
+  if (identity.family === 'pioneer') {
+    out.push(['Pioneer'], ['Hardware ' + hardwareLabel(identity)]);
+    if (/^ID\d+$/.test(identity.destination)) out.push(['ID ' + identity.destination]);
+    const c = componentsLabel(pkg.components);
+    if (c) out.push([c]);
+    return out;
+  }
+  const chip = pkg.chipset || identity.platforms.find(p => /^MT/.test(p));
+  if (chip) out.push([chip]);
+  if (pkg.media) out.push([pkg.media]);
+  if (pkg.variant) out.push([pkg.variant, 'drive-fact-variant', 'Region/SKU code']);
+  if (pkg.confidence === 'hardware-verified') out.push(['Hardware-verified', 'drive-fact-verified', 'Proven on real hardware']);
+  else if (pkg.confidence === 'build-verified') out.push(['Build-verified', 'drive-fact-buildver', 'Strict build + KAT verified; not yet flashed & tested on hardware']);
+  return out;
+}
+
+const norm = t => String(t ?? '').toLowerCase().replace(/[_-]+/g, ' ');
+const searchText = list => [...new Set(list.filter(Boolean).flatMap(t => [norm(t), compact(t).toLowerCase()]))].join(' ');
+
+/**
+ * Everything the finder page ships, built once at build time.
+ *  packages[]:   {s sha256, f filename, k object key (public builds only), b size, src, built, contents}
+ *  identities[]: {n model name, brand, d OEM/ID label or '', pio, chips, t search text, v [version idx newest first], x [[identity idx, status]]}
+ *  versions[]:   {i identity idx, r revision, p [package idx, preferred first], mod, features, baseOnly}
+ *  models[]:     {m name, t search text, v [[version idx, label]]}
+ * `legacy` is the old site index rows ({model, brand, versions:[{sha256}]}): their
+ * model names stay listed, mapped by package hash onto catalogue identities.
+ */
+export function finderPageData(data, { legacy = [], keys = true } = {}) {
+  const index = indexFinder(data);
+  const idIdx = new Map(data.identities.map((i, n) => [i.key, n]));
+  const shaKey = new Map();
+  for (const i of data.identities) for (const r of i.revisions) for (const p of r.packages) shaKey.set(p.sha256, i.key);
+
+  const packages = [], versions = [];
+  const identities = data.identities.map((i, n) => {
+    const v = [];
+    for (const r of i.revisions) {
+      const p = r.packages.map(pkg => {
+        packages.push({ s: pkg.sha256, f: String(pkg.filename ?? '').replace(/_GENERAL(?=_)/, ''), ...(keys ? { k: pkg.file ?? pkg.key } : {}), b: bytesLabel(pkg.bytes),
+          built: pkg.generatedDate || '', contents: contentsLabel(pkg) });
+        return packages.length - 1;
+      });
+      const best = r.packages[0];
+      versions.push({ i: n, r: r.revision, p, ...(best.modifiable ? { mod: 1 } : {}), ...(best.baseOnly ? { baseOnly: 1 } : {}),
+        ...(best.features?.length ? { features: best.features.map(f => ({ name: f.name, ok: f.ok })) } : {}) });
+      v.push(versions.length - 1);
+    }
+    return { i, out: { n: '', brand: identityBrand(i), d: destinationLabel(i), g: versionGroup(i), pio: i.family === 'pioneer' ? 1 : 0, chips: r0chips(i), v } };
+  });
+  function r0chips(i) { return i.revisions[0] ? chips(i, i.revisions[0].packages[0]) : []; }
+
+  // Model names -> identity keys.
+  const names = new Map(); // compact -> {m, rank, keys:Set}
+  const addName = (display, rank, ks) => {
+    const c = compact(display);
+    if (!c || !ks.length) return;
+    const row = names.get(c) ?? { m: String(display).trim(), rank, keys: new Set() };
+    if (rank < row.rank) { row.m = String(display).trim(); row.rank = rank; }
+    for (const k of ks) row.keys.add(k);
+    names.set(c, row);
+  };
+  for (const row of legacy) {
+    const ks = [...new Set((row.versions ?? []).map(v => shaKey.get(v.sha256)).filter(Boolean))];
+    addName(row.model, NAME_RANK.legacy, ks);
+  }
+  const terms = new Map(data.identities.map(i => [i.key, [hardwareLabel(i), i.hardware, destinationLabel(i), identityBrand(i), ...i.platforms, ...i.embeddedModels]]));
+  for (const a of data.aliases) {
+    const ks = a.targets.filter(k => idIdx.has(k));
+    for (const k of ks) terms.get(k).push(a.display);
+    // Drive-reported names lead with the media type ("BDRE BU40N" on HP
+    // units); the model is what follows.
+    const display = a.kind === 'inquiry' ? String(a.display).replace(MEDIA_PREFIX, '') : a.display;
+    if (a.kind in NAME_RANK) addName(display, NAME_RANK[a.kind], ks);
+  }
+  // Every identity needs at least one listed name.
+  const named = new Set([...names.values()].flatMap(r => [...r.keys]));
+  for (const i of data.identities) if (!named.has(i.key)) addName(i.embeddedModels[0] || hardwareLabel(i), 9, [i.key]);
+
+  // Display name per identity: best-ranked name that lists it.
+  const best = new Map();
+  for (const row of [...names.values()].sort((a, b) => a.rank - b.rank || a.m.localeCompare(b.m)))
+    for (const k of row.keys) if (!best.has(k)) best.set(k, row.m);
+  for (const { i, out } of identities) { out.n = best.get(i.key); out.t = searchText(terms.get(i.key)); }
+
+  // Cross-flash targets: same hardware only (crossflashFrom enforces it).
+  for (const { i, out } of identities) {
+    const g = crossflashFrom(index, i.key);
+    out.x = ['proven', 'likely', 'untested'].flatMap(s => g[s].map(c => [idIdx.get(c.key), s]));
+  }
+
+  const models = [...names.values()].sort((a, b) => a.m.localeCompare(b.m)).map(row => {
+    const ids = [...row.keys].map(k => data.identities[idIdx.get(k)]);
+    ids.sort((a, b) => (destinationLabel(a) ? 1 : 0) - (destinationLabel(b) ? 1 : 0) || destinationLabel(a).localeCompare(destinationLabel(b)) ||
+      a.hardware.localeCompare(b.hardware));
+    const rows = ids.flatMap(i => identities[idIdx.get(i.key)].out.v.map(v => ({ v, i })));
+    const labels = rows.map(({ v, i }) => versions[v].r + (destinationLabel(i) ? ` (${destinationLabel(i)})` : ''));
+    // Same label from different editions: add the hardware/chipset, then a counter.
+    const extra = ({ i }) => i.family === 'pioneer' ? hardwareLabel(i) : (packages[versions[rows[0].v].p[0]] && (i.platforms.find(p => /^MT/.test(p)) || ''));
+    const dupes = l => labels.filter(x => x === l).length > 1;
+    labels.forEach((l, n) => { if (dupes(l) && extra(rows[n])) labels[n] = `${l} · ${extra(rows[n])}`; });
+    const seen = {};
+    labels.forEach((l, n) => { seen[l] = (seen[l] ?? 0) + 1; if (dupes(l)) labels[n] = `${l} · ${seen[l]}`; });
+    return { m: row.m, t: searchText([row.m, ...new Set(ids.map(identityBrand))]), v: rows.map(({ v }, n) => [v, labels[n]]) };
+  });
+  return { packages, versions, identities: identities.map(x => x.out), models };
 }

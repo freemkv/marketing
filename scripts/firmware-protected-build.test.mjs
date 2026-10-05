@@ -22,8 +22,11 @@ test('protected build ships no public R2 bucket URL', { timeout: 300000 }, async
     env: { ...process.env, PUBLIC_FIRMWARE_TURNSTILE_SITEKEY: '1x00000000000000000000AA' } });
   assert.equal(r.status, 0, r.stderr || r.stdout);
   const finder = await fs.readFile(path.join(out, 'firmware/find/index.html'), 'utf8');
-  assert.match(finder, /data-protected="1"/);
-  assert.doesNotMatch(finder, /data-base-url/);
+  assert.match(finder, /id="firmware-download-config" data-sitekey="1x00000000000000000000AA"/);
+  assert.match(finder, /src="\/firmware-download.js"/);
+  // Buttons carry the package hash for the gated POST, never an object key.
+  assert.doesNotMatch(finder, /"k":"fw\//);
+  assert.doesNotMatch(finder, /makemkv/i);
   const leaks = [];
   for await (const f of files(out)) if ((await fs.readFile(f, 'utf8')).includes('r2.dev')) leaks.push(path.relative(out, f));
   assert.deepEqual(leaks, []);
