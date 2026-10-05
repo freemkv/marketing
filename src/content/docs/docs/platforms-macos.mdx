@@ -15,77 +15,47 @@ freemkv comes in two builds for macOS. **Install one or the other**; both are th
 ## Requirements
 
 - macOS 11 or later.
-- An Apple Silicon (`aarch64`) or Intel (`x86_64`) Mac. Each has its own download.
+- An Apple Silicon (`aarch64`) or Intel (`x86_64`) Mac. Homebrew picks the right build.
+- [Homebrew](https://brew.sh). On macOS, freemkv installs through Homebrew only.
 - An optical drive. See [OEM (stock) drives](/docs/drives-oem/) and [Unlocked drives](/docs/drives-unlocked/) for drive support.
 
 ## Install
 
 ### App
 
-With Homebrew, which also puts `freemkv` on your PATH:
-
 ```bash
 brew install --cask freemkv/tap/freemkv
 ```
 
-Or download the matching `.zip` (`freemkv-aarch64-macos.zip` or `freemkv-x86_64-macos.zip`), unzip it and drag `freemkv.app` into **Applications**. The app is ad-hoc signed, not notarized, so a downloaded copy is quarantined and macOS asks before the first launch; see [first-run help](#apple-could-not-verify-freemkv-on-first-launch). Homebrew skips that prompt.
+This installs `freemkv.app` and puts `freemkv` on your PATH. Open freemkv, select a disc, image or folder, choose the titles and tracks, select an output location and press **Rip**. You can also drag a supported media file onto the window.
 
-Open freemkv, select a disc, image or folder, choose the titles and tracks, select an output location and press **Rip**. You can also drag a supported media file onto the window.
-
-The app includes the full CLI. With the cask, run `freemkv disc:// mkv://Movie.mkv` in any terminal; a bare `freemkv` opens the window. With a `.zip` install, the executable is inside the app:
-
-```bash
-/Applications/freemkv.app/Contents/MacOS/freemkv --version
-```
+The app includes the full CLI: run `freemkv disc:// mkv://Movie.mkv` in any terminal; a bare `freemkv` opens the window.
 
 ### Command line only
-
-With Homebrew:
 
 ```bash
 brew install freemkv/tap/freemkv-cli
 freemkv --version
 ```
 
-The `freemkv` cask and `freemkv-cli` formula both provide `freemkv`, so uninstall one before installing the other.
-
-For a standalone download, use `freemkv-cli-aarch64-macos` on Apple Silicon or `freemkv-cli-x86_64-macos` on Intel. For example:
-
-```bash
-chmod +x freemkv-cli-aarch64-macos
-./freemkv-cli-aarch64-macos --version
-```
-
 A bare `freemkv` prints usage. See the [CLI reference](/docs/cli/) for ripping commands and options.
 
-### Verify the download
-
-Each `.zip` and standalone CLI binary on [GitHub Releases](https://github.com/freemkv/freemkv/releases) has a matching `.sha256` file. Compare the hash of your download with the line for the same file name:
-
-```bash
-shasum -a 256 freemkv-aarch64-macos.zip
-cat freemkv-aarch64-macos.zip.sha256
-```
+The `freemkv` cask and `freemkv-cli` formula both provide `freemkv`, so uninstall one before installing the other.
 
 <a id="apple-could-not-verify-freemkv-on-first-launch"></a>
 
-## First launch
+## Why Homebrew only
 
-A browser download may prompt macOS to verify the app or CLI. If macOS cannot verify the developer or notarization, and you trust the official download:
-
-1. Try opening the app or running the binary, then dismiss the prompt.
-2. Open **System Settings → Privacy & Security**.
-3. Choose **Open Anyway** for freemkv and confirm.
-
-This creates an exception for that app. Different warnings, such as a damaged file or detected malware, need separate investigation. See [Apple's first-launch guidance](https://support.apple.com/en-us/102445).
+freemkv is ad-hoc signed, not notarized by Apple (notarization needs a paid Apple Developer Program membership). macOS blocks such an app when it is downloaded in a browser. Homebrew installs it without that block, and checks every download against a pinned SHA-256 from the [tap](https://github.com/freemkv/homebrew-tap), so it is the supported way to install freemkv on a Mac.
 
 ## Update or remove
 
 | Installation | Update | Remove |
 |---|---|---|
-| Homebrew app | `brew update`, then `brew upgrade --cask freemkv/tap/freemkv` | `brew uninstall --cask freemkv/tap/freemkv` |
-| Homebrew CLI | `brew update`, then `brew upgrade freemkv/tap/freemkv-cli` | `brew uninstall freemkv/tap/freemkv-cli` |
-| `.zip` or standalone CLI | Close freemkv and replace the app or binary with the new release | Delete the app or binary |
+| App | `brew update`, then `brew upgrade --cask freemkv/tap/freemkv` | `brew uninstall --cask freemkv/tap/freemkv` |
+| CLI | `brew update`, then `brew upgrade freemkv/tap/freemkv-cli` | `brew uninstall freemkv/tap/freemkv-cli` |
+
+Upgrading from `freemkv-app` or the old `freemkv` formula: `brew update` renames them to `freemkv` (cask) and `freemkv-cli` (formula) automatically.
 
 Settings and ripped movies are separate from program files, so updating or removing freemkv leaves them in place.
 

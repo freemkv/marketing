@@ -53,11 +53,8 @@ const appPlatforms = [
     name: 'macOS',
     os: 'macos',
     brew: 'brew install --cask freemkv/tap/freemkv',
-    note: 'Homebrew also puts freemkv on PATH and skips the macOS security prompt that a downloaded .zip triggers.',
-    builds: [
-      { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon · .zip', file: 'freemkv-aarch64-macos.zip' },
-      { key: 'macos-x64', arch: 'x86_64', label: 'Intel · .zip', file: 'freemkv-x86_64-macos.zip' },
-    ],
+    note: 'Installs the app and the freemkv command for Apple Silicon or Intel. On macOS freemkv installs through Homebrew only: it is not notarized, and Homebrew skips the macOS security prompt a browser download would hit.',
+    builds: [],
   },
   {
     name: 'Linux',
@@ -87,11 +84,8 @@ const cliPlatforms = [
     name: 'macOS',
     os: 'macos',
     brew: 'brew install freemkv/tap/freemkv-cli',
-    note: 'Homebrew puts freemkv on PATH and skips the macOS security prompt.',
-    builds: [
-      { key: 'macos-arm64', arch: 'ARM64', label: 'Apple Silicon', file: 'freemkv-cli-aarch64-macos' },
-      { key: 'macos-x64', arch: 'x86_64', label: 'Intel', file: 'freemkv-cli-x86_64-macos' },
-    ],
+    note: 'Puts freemkv on PATH for Apple Silicon or Intel. On macOS freemkv installs through Homebrew only.',
+    builds: [],
   },
   {
     name: 'Linux',
@@ -207,7 +201,7 @@ import '../styles/site.css';
 
           <DownloadCards platforms={appPlatforms} repo={guiRepo} />
           <p class="dl-note">
-            Install the app <strong>or</strong> the CLI, not both: they are the same <code>freemkv</code> command and each replaces the other. <a href="/docs/platforms-macos/#apple-could-not-verify-freemkv-on-first-launch">macOS first-run help →</a>
+            Install the app <strong>or</strong> the CLI, not both: they are the same <code>freemkv</code> command and each replaces the other. <a href="/docs/platforms-macos/#apple-could-not-verify-freemkv-on-first-launch">Why Homebrew on macOS →</a>
           </p>
         </div>
       </section>
