@@ -8,6 +8,7 @@ import FirmwareNavDropdown from '../../components/FirmwareNavDropdown.astro';
 import FirmwareVersion from '../../components/FirmwareVersion.astro';
 import FirmwareDownloadToolbar from '../../components/FirmwareDownloadToolbar.astro';
 import DownloadCards from '../../components/DownloadCards.astro';
+import { aptSetup, rpmSetup, pacmanSetup, scoopSetup, linuxHelp, windowsHelp } from '../../lib/install-commands.mjs';
 
 const title = 'freemkv-fw — modify firmware for freemkv';
 const description =
@@ -18,34 +19,31 @@ const github = 'https://github.com/freemkv';
 const firmwareRepo = 'https://github.com/freemkv/freemkv-firmware';
 const firmwareReleases = `${firmwareRepo}/releases`;
 
-// Prebuilt binaries, grouped by OS into columns (matching the Download page).
-// Asset names MUST match what the freemkv-firmware release workflow attaches
-// (release.yml): `freemkv-<tool>-<os>-<arch>.<ext>` — tar.gz on Linux/macOS,
-// zip on Windows.
-// Distribution per platform, matching the rest of freemkv (CLI + GUI, download.astro):
-//   windows -> direct download of the (unsigned) .exe zip (CLI + GUI)
-//   macos   -> Homebrew only, no direct download: `freemkv-fw` formula for the
-//              CLI and the `freemkv-fw-gui` cask for the app (ad-hoc signed
-//              .app shipped in a .zip; the cask strips quarantine). No .dmg — a
-//              browser download would be Gatekeeper-blocked; Homebrew is not.
-//   linux   -> CLI download (the Linux app and .debs land with the next firmware release)
-// flash and modify are TWO separate apps, each its own formula + cask, versioned
-// together in freemkv-firmware.
-const brew = 'brew install freemkv/tap/freemkv-fw freemkv/tap/freemkv-fw-gui';
+// One box per install method, as on /download/. Every app download carries the
+// CLI; macOS is Homebrew only (not notarized). Asset names follow
+// freemkv-firmware's release.yml.
+const tool = 'freemkv-fw';
 const platforms = [
   {
     name: 'Windows',
     os: 'windows',
     methods: [
       {
+        title: 'Scoop',
+        hint: 'x86_64 · app and command line',
+        commands: [scoopSetup, `scoop install ${tool}`],
+      },
+      {
         title: 'Download',
         builds: [
-          { key: 'windows-x86_64', main: 'App', arch: 'x86_64', label: 'Window · .zip', file: 'freemkv-fw-gui-windows-x86_64.zip' },
-          { key: 'windows-x86_64', main: 'CLI', arch: 'x86_64', label: 'Terminal · .zip', file: 'freemkv-fw-windows-x86_64.zip', secondary: true },
+          { key: 'windows-x86_64', main: 'Installer', arch: 'x86_64', label: 'App + CLI on PATH · Start menu shortcut', file: `${tool}-x86_64-windows-setup.exe` },
+          { main: 'Portable', arch: '.zip', label: 'App + CLI, no install', file: `${tool}-x86_64-windows.zip`, secondary: true },
+          { key: 'windows-arm64', main: 'Installer', arch: 'ARM64', label: 'Windows on ARM', file: `${tool}-aarch64-windows-setup.exe`, secondary: true },
+          { main: 'Portable', arch: 'ARM64 .zip', label: 'Windows on ARM, no install', file: `${tool}-aarch64-windows.zip`, secondary: true },
         ],
       },
     ],
-    footnote: 'Windows may flag this unsigned download: <a href="/docs/platforms-windows/#first-launch">first-run help</a>.',
+    footnote: windowsHelp,
   },
   {
     name: 'macOS',
@@ -54,8 +52,8 @@ const platforms = [
       {
         title: 'Homebrew',
         hint: 'Apple Silicon or Intel',
-        commands: [brew],
-        note: 'Installs the app and the command line. Not notarized, so macOS installs go through Homebrew only, which skips the security prompt.',
+        commands: [`brew install freemkv/tap/${tool}-gui`],
+        note: 'Installs the app and the command line (or <code>brew install freemkv/tap/' + tool + '</code> for the command line only). Not notarized, so macOS installs go through Homebrew only.',
       },
     ],
   },
@@ -64,15 +62,37 @@ const platforms = [
     os: 'linux',
     methods: [
       {
+        title: 'APT',
+        hint: 'Ubuntu 24.04+, Mint 22, Debian 13 · recommended',
+        commands: [...aptSetup, `sudo apt update && sudo apt install ${tool}-gui`],
+        note: `<code>${tool}-gui</code> is the app plus the command line; <code>${tool}</code> is the command line only.`,
+      },
+      {
+        title: 'DNF',
+        hint: 'Fedora 40+',
+        commands: [rpmSetup, `sudo dnf install ${tool}-gui`],
+      },
+      {
+        title: 'pacman',
+        hint: 'Arch Linux',
+        commands: [...pacmanSetup, `sudo pacman -Syu ${tool}-gui`],
+      },
+      {
         title: 'Download',
         builds: [
-          { key: 'linux-x86_64', main: 'CLI', arch: 'x86_64', label: 'Terminal · .tar.gz', file: 'freemkv-fw-linux-x86_64.tar.gz' },
+          { key: 'linux-x86_64', arch: '.deb', label: 'App + CLI · x86_64', file: `${tool}-gui-amd64.deb` },
+          { key: 'linux-arm64', arch: 'ARM64 .deb', label: 'App + CLI · aarch64', file: `${tool}-gui-arm64.deb`, secondary: true },
+          { arch: 'AppImage', label: 'Portable app + CLI · x86_64', file: `${tool}-x86_64-linux.AppImage`, secondary: true },
+          { arch: 'ARM64 AppImage', label: 'Portable app + CLI · aarch64', file: `${tool}-aarch64-linux.AppImage`, secondary: true },
+          { arch: 'CLI', label: 'Static binary · x86_64, any distro', file: `${tool}-cli-x86_64-linux`, secondary: true },
+          { arch: 'CLI ARM64', label: 'Static binary · aarch64', file: `${tool}-cli-aarch64-linux`, secondary: true },
+          { arch: 'CLI ARMv7', label: 'Static binary · Raspberry Pi OS 32-bit', file: `${tool}-cli-armv7-linux`, secondary: true },
         ],
       },
     ],
+    footnote: linuxHelp,
   },
 ];
-
 
 // Capabilities freemkv-fw adds in one pass. These map 1:1 to the CDB command
 // table in the firmware command reference — keep names, wording, and statuses
