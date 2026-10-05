@@ -1,0 +1,133 @@
+name: RPM repository
+
+# Rebuilds the signed dnf/zypper repository at https://freemkv.org/rpm from the
+# .rpm assets on the latest release of freemkv/freemkv and
+# freemkv/freemkv-firmware (scripts/rpm-repo.py). The .rpms themselves stay on
+# GitHub: public/_redirects sends /rpm/packages/... to the release asset.
+# Changed files are committed to dev and fast-forwarded to qa and main, then
+# the Pages deploy is started (a GITHUB_TOKEN push does not trigger pages.yml).
+#
+# Triggers: release workflows send repository_dispatch "rpm-refresh"; a daily
+# run is the safety net; workflow_dispatch for manual runs.
+#
+# Requires secret APT_SIGNING_KEY (the same key signs the APT and RPM repos).
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [rpm-refresh]
+  schedule:
+    - cron: '37 6 * * *'
+
+permissions:
+  contents: write   # commit the regenerated metadata
+  actions: write    # start the Pages deploy
+
+concurrency:
+  group: rpm
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    outputs:
+      repomd: ${{ steps.publish.outputs.repomd }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: dev
+          fetch-depth: 0
+
+      - name: Install rpm and createrepo_c
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq rpm createrepo-c >/dev/null
+
+      - name: Import signing key
+        env:
+          APT_SIGNING_KEY: ${{ secrets.APT_SIGNING_KEY }}
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$APT_SIGNING_KEY" | gpg --batch --import
+          echo "RPM_KEY_ID=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr/{print $10; exit}')" >> "$GITHUB_ENV"
+
+      - name: Build the metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/rpm-repo.py
+
+      - name: Commit, fast-forward qa and main, deploy
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ -n "$(git status --porcelain -- public/rpm public/_redirects)" ]; then
+            git config user.name  "Matthew Jackson"
+            git config user.email "1085847+MattJackson@users.noreply.github.com"
+            git add public/rpm public/_redirects
+            git commit -q -m "rpm: refresh the repository metadata from the latest releases"
+            for i in 1 2 3 4 5; do
+              git pull -q --rebase origin dev && git push -q origin HEAD:dev && break
+              sleep $((i * 5))
+            done
+            git fetch -q origin main qa
+            if git merge-base --is-ancestor origin/main HEAD; then
+              git push -q origin HEAD:qa HEAD:main
+              gh workflow run pages.yml --ref main -R "$GITHUB_REPOSITORY"
+            else
+              echo "::warning::main is not an ancestor of dev; pushed to dev only, the site was not redeployed"
+            fi
+          else
+            echo "metadata unchanged"
+          fi
+          if [ -f public/rpm/repodata/repomd.xml ]; then
+            echo "repomd=$(sha256sum public/rpm/repodata/repomd.xml | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+          fi
+
+  # Install from the live repository in clean containers, with gpgcheck and
+  # repo_gpgcheck on. Waits until freemkv.org serves the repomd.xml the build
+  # job produced (Pages deploy).
+  verify:
+    needs: build
+    if: needs.build.outputs.repomd != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: fedora:40
+            app: true
+          - image: almalinux:9
+            app: false
+          - image: opensuse/tumbleweed
+            app: true
+    container: ${{ matrix.image }}
+    steps:
+      - name: Install freemkv from https://freemkv.org/rpm
+        env:
+          WANT: ${{ needs.build.outputs.repomd }}
+          APP: ${{ matrix.app }}
+        run: |
+          set -eu
+          if command -v zypper >/dev/null; then zypper -n -q install curl; fi
+          for i in $(seq 1 75); do
+            live=$(curl -fsSL "https://freemkv.org/rpm/repodata/repomd.xml?v=$i" | sha256sum | cut -d' ' -f1)
+            [ "$live" = "$WANT" ] && break
+            [ "$i" = 75 ] && { echo "live repomd.xml never matched the build ($live != $WANT)"; exit 1; }
+            sleep 20
+          done
+          if command -v zypper >/dev/null; then
+            zypper -n --gpg-auto-import-keys addrepo https://freemkv.org/rpm/freemkv.repo
+            zypper -n --gpg-auto-import-keys refresh
+            zypper -n install freemkv-cli
+            freemkv --version
+            [ "$APP" = true ] && zypper -n install --dry-run --force-resolution freemkv
+          else
+            curl -fsSL -o /etc/yum.repos.d/freemkv.repo https://freemkv.org/rpm/freemkv.repo
+            dnf -y install freemkv-cli
+            freemkv --version
+            [ "$APP" = true ] && dnf -y install --allowerasing freemkv && freemkv --version
+          fi
+          true
