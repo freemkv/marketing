@@ -41,6 +41,12 @@ const { platforms, repo } = Astro.props;
             <h4 class="dl-method-title">
               {m.title}
               {m.hint && <span class="dl-method-hint">{m.hint}</span>}
+              {m.commands && m.commands.length > 0 && (
+              <button type="button" class="dl-copy" data-copy aria-label="Copy commands" title="Copy">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span class="dl-copy-done">Copied</span>
+              </button>
+              )}
             </h4>
             {m.commands && m.commands.length > 0 && (
               <code class="dl-brew-cmd dl-brew-multi">{m.commands.join('\n')}</code>
@@ -69,3 +75,27 @@ const { platforms, repo } = Astro.props;
     </article>
   ))}
 </div>
+
+<script>
+  // Copy a method box's commands; the button flips to "Copied" briefly.
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const code = btn.closest('.dl-method')?.querySelector('code');
+      if (!code) return;
+      const text = code.textContent ?? '';
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const range = document.createRange();
+        range.selectNodeContents(code);
+        const sel = getSelection();
+        sel?.removeAllRanges();
+        sel?.addRange(range);
+        document.execCommand('copy');
+        sel?.removeAllRanges();
+      }
+      btn.classList.add('is-copied');
+      setTimeout(() => btn.classList.remove('is-copied'), 1500);
+    });
+  });
+</script>

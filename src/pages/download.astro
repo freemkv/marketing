@@ -40,7 +40,6 @@ const allReleases = `${cliRepo}/releases`;
 // `key` ("<os>-<arch>") marks the button the detector highlights;
 // `secondary` renders an outline button; `commands` are copy-paste shell lines.
 const aptSetup = [
-  'sudo install -d -m 0755 /etc/apt/keyrings',
   'curl -fsSL https://freemkv.org/apt/freemkv.gpg | sudo tee /etc/apt/keyrings/freemkv.gpg >/dev/null',
   'echo "deb [signed-by=/etc/apt/keyrings/freemkv.gpg] https://freemkv.org/apt stable main" | sudo tee /etc/apt/sources.list.d/freemkv.list',
 ];
