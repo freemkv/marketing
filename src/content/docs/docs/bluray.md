@@ -7,7 +7,7 @@ Blu-ray is a **disc format**; AACS is the **encryption** layered on top. The two
 independent, exactly as they are for HD DVD and 4K UHD: the format is the medium, the
 filesystem, the navigation data and the stream layout; AACS is the key hierarchy and the content
 cipher. This page documents the format. Encryption is on the [AACS reference](/docs/aacs/);
-4K UHD material (BDXL capacities, HEVC, HDR10, HDR10+, Dolby Vision, AACS 2.x specifics, the
+4K UHD material (UHD media capacities, HEVC, HDR10, HDR10+, Dolby Vision, AACS 2.x specifics, the
 `.fmts` stream extension) is on the [4K UHD reference](/docs/uhd/) and is not repeated here. The
 sibling format with a different container is [HD DVD](/docs/hddvd/).
 
@@ -25,15 +25,14 @@ The last section lists structures this page does not specify.
 |---|---|
 | Logical sector | **2048 bytes** (same as DVD and HD DVD) |
 | Filesystem | **UDF 2.50** with a **metadata partition** |
-| Layers | 1 or 2 for BD-25 / BD-50; more for BDXL (see [4K UHD](/docs/uhd/)) |
-| Stream files | Large (several GB), commonly stored as **several extents** when they cross a layer |
+| Layers | 1 or 2 for BD-25 / BD-50; up to 3 for UHD BD-ROM (see [4K UHD](/docs/uhd/)) |
+| Stream files | Large (several GB), commonly stored as **several extents**, including physically contiguous extents |
 
 The filesystem does not record how many layers the disc has. The layer count follows from the
 total sector capacity of the medium: a single-layer disc is on the order of 12 million sectors,
-a dual-layer disc roughly double. The UDF partition is **shorter than the image**: with N the total
-sector count, it ends **288 sectors before N** (it starts at sector 288). The tail holds the
-second anchor at **N−257**, the reserve volume descriptor sequence at N−256, and a last anchor
-at **N−1**. Capacity must therefore come from the drive, not from the partition descriptor.
+a dual-layer disc roughly double. Partition start and length come from the Partition Descriptor, not a fixed 288-sector
+margin. With N the total sector count, UDF anchor candidates include sector 256, N−257 and
+N−1; the anchors locate the main and reserve descriptor sequences. Capacity must therefore come from the drive, not from the partition descriptor.
 
 ### Locating the root directory
 
@@ -41,10 +40,9 @@ UDF is traversed by following pointers; each step reads one or two sectors.
 
 1. **Anchor Volume Descriptor Pointer (AVDP)** at **sector 256**. Descriptor tag identifier `2`
    (tag id is the little-endian `u16` at offset 0). The Main Volume Descriptor Sequence extent
-   is recorded at **offset 16 (length in bytes, `u32`)** and **offset 20 (location, `u32`)**. A
-   usable extent is at least 16 sectors, non-zero and not wrapping; when it is not, the
-   customary start is **sector 32**. Further anchors lie at N−257 and N−1, beyond the end of the
-   partition.
+   is recorded at **offset 16 (length in bytes, `u32`)** and **offset 20 (location, `u32`)**. Validate the descriptor tag, extent length and bounds. On failure, try the other valid
+   anchors and the reserve sequence. Scanning customary sector 32 is a recovery heuristic,
+   not a substitute for a valid anchor.
 2. **Volume Descriptor Sequence.** Sweep descriptors from that start until the Terminating
    Descriptor (tag `8`). Tags used:
 
@@ -55,8 +53,8 @@ UDF is traversed by following pointers; each step reads one or two sectors.
    | `6` | Logical Volume Descriptor | Number of partition maps `u32` at **offset 268**; File Set Descriptor long_ad: length at **offset 248**, block at **offset 252**; partition maps start at **offset 440** |
 
 3. **Partition maps.** The maps start at offset 440 of the Logical Volume Descriptor; each
-   begins with a type byte and a length byte. The first map is Type 1 (the physical partition).
-   A second map, at `440 +` the first map's length, of **Type 2** (type byte `2`) whose
+   begins with a type byte and a length byte. Walk the map count and each declared length rather than assuming an order. A
+   **Type 2** map (type byte `2`) whose
    23-character type identifier at **offset 5** of the map reads `*UDF Metadata Partition` is
    the **metadata partition**. The map is 64 bytes; the
    **Metadata File location** is the `u32` at **offset 40** of the map (a partition-relative
@@ -64,14 +62,17 @@ UDF is traversed by following pointers; each step reads one or two sectors.
 4. **Metadata File.** An Extended File Entry (tag `266`) whose allocation descriptors list the
    extents (partition-relative) that together form the metadata partition. Only recorded
    extents (type 0) hold metadata blocks; the **metadata partition block number → absolute
-   sector** mapping walks these extents in file order, the last being open-ended.
+   sector** mapping walks these extents in file order and respects every extent length, including the last.
 5. **File Set Descriptor** (tag `256`) at the block recorded in the Logical Volume Descriptor,
    in the metadata partition (block 0 is the customary location). The **root directory ICB** is
    a long_ad at **offset 400** of the FSD, with its location `u32` at **offset 404**.
 
-From here **every directory and File Entry address is a metadata-partition block**, while the
-**data extents of a file are partition-relative**: absolute sector = partition start + extent
-location.
+Resolve each long_ad through its partition-reference number. Metadata addresses and
+physical-partition addresses are different spaces; ordinary stream data usually uses the
+physical partition, where absolute sector = partition start + extent location. A reader must
+follow the selected map rather than assume a partition from the kind of file.
+See [ECMA-167](https://ecma-international.org/publications-and-standards/standards/ecma-167/)
+and [libudfread](https://code.videolan.org/videolan/libudfread) for descriptor traversal.
 
 ### File Entries and allocation descriptors
 
@@ -97,10 +98,10 @@ the byte length.
 |---|---|
 | 0 | Recorded and allocated: `length` bytes of data at the location |
 | 1, 2 | Not recorded (sparse): the file's byte space includes `length` bytes of zeros; nothing is read from the disc, and later extents must not slide down over them |
-| 3 | Continuation: the location is a block (metadata-relative) holding more descriptors, preceded by an Allocation Extent Descriptor header |
+| 3 | Continuation: the location is a block in the referenced partition holding more descriptors, preceded by an Allocation Extent Descriptor header |
 
 A descriptor with a 30-bit length of 0 ends the list. Stream files may use
-multiple extents when split across layers; very small files (key and navigation files of a
+multiple extents even when physically contiguous because one descriptor has a 30-bit length; very small files (key and navigation files of a
 couple of KiB) may use embedded data. A file with an information length of 0 may legally be
 embedded with no content.
 
@@ -118,9 +119,12 @@ A directory's content is a run of **File Identifier Descriptors** (tag `257`):
 
 The descriptor length is `38 + L_IU + L_FI` rounded up to a multiple of 4. A tag of `0` ends the
 listing. A **deleted** entry (bit `0x04`) may point at a zero-length ICB that is not a File
-Entry, so it is skipped. A name is at most 255 bytes; UTF-16BE names may use surrogate pairs. Names are **OSTA CS0**: a first byte of `8` means one byte per character, `16` means
-UTF-16BE. File names on a disc may appear in any letter case (for example `INDEX.BDMV` and
-`index.bdmv`, `.MPLS` and `.mpls`), so a lookup should be case-insensitive. The deepest
+Entry, so it is skipped. A file identifier is at most 255 bytes. Names use **OSTA Compressed Unicode (CS0)**:
+the leading compression ID `8` selects one-byte character values, and `16` selects
+big-endian 16-bit values. Decode CS0 explicitly rather than treating the whole identifier
+as a UTF-16 string. File names on a disc may appear in any letter case (for example `INDEX.BDMV` and
+`index.bdmv`, `.MPLS` and `.mpls`), so a reader may offer a case-insensitive fallback for disc-image compatibility. Preserve
+the recorded name and prefer an exact match; UDF itself does not make names case-insensitive. The deepest
 standard path is `BDMV/BACKUP/BDJO/*.bdjo`, three directories below the root.
 
 ## The disc tree
@@ -219,7 +223,8 @@ Each 12-byte object:
 **Title numbers** as used by navigation commands: `0` is the Top Menu, `1`..N index the title
 table, `0xFFFF` is First Playback.
 
-The type of the First Playback object decides everything about how the disc is driven:
+The First Playback object selects the initial navigation mode. Individual titles have
+their own object types, so a disc can mix HDMV and BD-J:
 
 | First Playback | Behaviour |
 |---|---|
@@ -276,8 +281,10 @@ disc.
 ### Registers that steer a feature-finding program
 
 Navigation programs use compares against player registers to dispatch (first start versus
-return from a title, language, region, and so on). The power-on values below are the register
-state when the First Playback object starts; unlisted registers (0..61) are `0`.
+return from a title, language, region, and so on). The values below describe one initial player configuration, not constants that every
+player must expose. Language, region and capabilities depend on player settings; consult
+[libbluray's register implementation](https://code.videolan.org/videolan/libbluray/-/blob/master/src/libbluray/register.c)
+when reproducing that player's defaults.
 
 | PSR | Power-on value | Note |
 |---|---|---|
@@ -362,8 +369,9 @@ other data **prepended** before the archive, in which case the central directory
 
 ### What lives in application space
 
-The BD-J layer is **application-defined space**. Nothing about the contents of a jar is
-standardized beyond the Java class format. Properties of BD-J discs:
+The BD-J layer is **application-defined space**. BD-J defines APIs, application lifecycle and packaging; disc-specific resource schemas
+and playlist-selection logic are authored by the application. The following resource formats
+are observed authoring conventions, not requirements of the BD-J standard:
 
 - The Xlet selects playlists by number in code. The playlist id often appears as a string
   constant such as `00800.mpls` in the application's classes; jars that are not autostart
@@ -390,8 +398,8 @@ standardized beyond the Java class format. Properties of BD-J discs:
   can enumerate different subtitle sets, so one slot number can resolve to different PIDs in
   different playlists; a list describes one playlist's table only.
 - Manifests may state a **feature playlist** outright, with its running time. An entry whose
-  stated running time is under a minute is a menu or angle stub even when it is named
-  `feature`.
+  stated running time is under a minute is a candidate menu or stub, even when named
+  `feature`; duration and naming are heuristics and require checking the actual content.
 
 ## MPLS
 
@@ -528,10 +536,10 @@ type), not the audio layout.
 
 **Frame rate** nibble: `1` 23.976, `2` 24, `3` 25, `4` 29.97, `6` 50, `7` 59.94 (`5` and `8` are not assigned, although `8` occurs on discs; treat it as unknown).
 
-**Channel layout** nibble: `1` mono, `3` stereo, `6` multichannel (5.1), `12` a stereo plus
+**Channel layout** nibble: `1` mono, `3` stereo, `6` multichannel (channel count unspecified), `12` a stereo plus
 multichannel combination (the multichannel layout is not stated). The nibble is the base
-layout; a lossless track can carry more channels than it states (a TrueHD track listed as 5.1
-may be 7.1 or Atmos).
+layout; a lossless track can carry more channels than it states (a TrueHD track listed as multichannel
+may be 5.1, 7.1 or Atmos).
 
 **Sample rate** nibble: `1` 48 kHz, `4` 96 kHz, `5` 192 kHz, `12` combination of 48 and 192 kHz,
 `14` combination of 48 and 96 kHz. Combination codes name a core plus an extension at another
@@ -724,7 +732,8 @@ non-zero. See [AACS](/docs/aacs/).
 When an adaptation field is present its first byte is its length (at most 183) and the next
 byte holds flags; **bit 7 is the discontinuity_indicator**. PID `0x1FFF` is the null PID.
 Continuity counters increment on each payload-carrying packet of a PID; a packet repeating the
-previous CC with the same payload is a legal duplicate, and any other jump is lost data.
+previous CC with the same payload is a legal duplicate, and other jumps require checking the discontinuity indicator and transport errors before
+concluding that packets were lost.
 A packet with the transport_error_indicator set is damaged.
 
 ### PES
@@ -804,7 +813,7 @@ byte 196 (192 bytes later) is `0x47` again; a lone `0x47` inside payload is not 
 |---|---|---|
 | **MPEG-2** | `0x02` | Start codes after `00 00 01`: sequence header `0xB3`, extension `0xB5`, GOP `0xB8`, picture `0x00`. One coded picture can span several PES packets; only the first carries a PTS. Picture coding type 1 is I. `frame_rate_code`: `1` 23.976, `2` 24, `3` 25, `4` 29.97, `5` 30, `6` 50, `7` 59.94, `8` 60. `aspect_ratio_information`: `1` square pixel, `2` 4:3, `3` 16:9, `4` 2.21:1. 1080i and 480i/576i appear |
 | **VC-1** | `0xEA` | Start codes: sequence header `0x0F`, entry point `0x0E`, frame `0x0D`. Advanced profile when the profile field (bits 7-6 of the first byte after the sequence-header start code) is `3`. A random-access point is signalled by a **sequence header present in the PES**. Advanced-profile picture types come from a PTYPE variable-length code; an interlaced sequence uses an FCM/FPTYPE code first. Emulation-prevention bytes (`00 00 03`) can occur inside headers |
-| **H.264 / AVC** | `0x1B` | Annex B byte stream. NAL types used: slice non-IDR `1`, IDR `5`, SPS `7`, PPS `8`, access unit delimiter `9`. **One PES = one access unit.** Random-access points include **IDR pictures** and **non-IDR recovery points** (open-GOP intra pictures); a disc can contain either. Parameter sets may be redefined mid-stream under the same id |
+| **H.264 / AVC** | `0x1B` | Annex B byte stream. NAL types used: slice non-IDR `1`, IDR `5`, SPS `7`, PPS `8`, access unit delimiter `9`. Disc AVC commonly aligns PES and access units; parse NAL boundaries rather than treating this as a general MPEG-TS rule. Random-access points include **IDR pictures** and **non-IDR recovery points** (open-GOP intra pictures); a disc can contain either. Parameter sets may be redefined mid-stream under the same id |
 | **MVC** | `0x20` | See below |
 | HEVC | `0x24` | [4K UHD](/docs/uhd/) |
 
@@ -817,13 +826,15 @@ and no IDR NAL (a clip, even the last one, can open on one).
 **Interlace.** The video-format nibble can state an interlaced format (480i, 576i, 1080i);
 field order and pairing are carried in the elementary stream.
 
-**Frame reordering.** PTS and DTS differ for reordered pictures, and a PES carries a PTS on
-every picture.
+**Frame reordering.** PTS and DTS differ for reordered pictures. A PES timestamp belongs to the first access
+unit beginning in that PES; timestamp presence and packet alignment must be parsed, not
+inferred from the codec alone.
 
 #### Blu-ray 3D (MVC)
 
-A 3D title stores the left eye as an ordinary H.264 base view (`0x1B`, for example PID `0x1011`)
-and the right eye as an **MVC dependent view** (`0x20`, PID base + 1). The dependent view's
+A 3D title stores one eye as an ordinary H.264 base view (`0x1B`, for example PID `0x1011`)
+and the other as an **MVC dependent view** (`0x20`, PID base + 1). The playlist's `mvc_base_view_r_flag` identifies whether the base view is the right eye;
+it is not always the left. The dependent view's
 NAL units are **prefix NAL (type 14)**, **subset SPS (type 15)**, **coded slice extension
 (type 20)** and PPS (type 8); it carries no ordinary SPS. Its access units share the base
 view's DTS and PTS cadence, so each dependent access unit pairs with the base access unit of the
@@ -941,7 +952,8 @@ same PID.
   mask weigh 2, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 1, 1 and bits 0..4 of the 6-channel mask weigh 2, 1,
   1, 2, 2; bit 2 (and bit 12 of the 8-channel mask) is an LFE.
 - **`num_substreams`** is the high nibble of byte 16 of the major sync (counting the first sync
-  byte as byte 0). **Four or more substreams indicate Dolby Atmos** object data.
+  byte as byte 0). **Four or more substreams are used by freemkv as an Atmos detection heuristic**;
+  the count alone does not describe the object metadata or establish its validity.
 - An access unit lasts **40 samples** of the base rate: 833 333 ns for the 48 kHz family
   (48, 96, 192 kHz) and 907 029 ns for the 44.1 kHz family.
 - Each access unit has a parity check: the XOR of its 4-byte header and the substream directory,
@@ -985,15 +997,18 @@ Segment: `u8` type, `u16` length, payload.
 | 13 | **Number of composition objects** |
 | 14 | First composition object |
 
-A composition object is 8 bytes: object id (2), window id (1), **flags** (1), x (2), y (2). The
+A composition object has an 8-byte base record: object id (2), window id (1), **flags** (1), x (2), y (2). The
 **forced** flag is **bit `0x40` of the flags byte** (offset 17 for the first object).
+If bit `0x80` is set, an additional 8-byte crop rectangle follows; skipping it misaligns
+the next object. See [FFmpeg's PGS parser](https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/pgssubdec.c).
 
 **Display sets and lifecycle.** A **display set** is a PCS followed by its WDS, PDS and ODS
 segments and an END segment. A PCS with one or more composition objects starts a visible
 subtitle; a later PCS with **zero** objects (an "empty" or clear set, followed by WDS and END)
-removes it. The PTS of the PCS is the time the set takes effect, so a subtitle's display
-duration is the clear set's PTS minus the display set's PTS. A display set can span several PES
-packets; it opens at a PCS and closes at the next PCS, or at its END for a clear.
+removes it. The PTS of the PCS is the time the set takes effect, so a composition remains active until a later composition replaces or clears it.
+Its duration follows those presentation events, not the segment byte length. A display set can span several PES
+packets; it opens at a PCS and is terminated by END. A decoder may recover a missing END
+at the next PCS, but that is not the normal display-set boundary.
 
 Other segments:
 
@@ -1006,10 +1021,11 @@ Other segments:
 
 **Forced subtitles.** A subtitle stream is **forced** when it carries only the narrative
 segments that must display even when subtitles are off (foreign-language dialogue, signs). The
-PCS forced flag marks the display sets that must show. Application manifests also record forced
+composition-object forced flag marks objects that must show. Application manifests also record forced
 status: in the `playlists.xml` convention a dedicated forced track and a full track containing
-forced segments are both recorded (the `forced_sub` values `3` and `1`), so a forced track can
-be identified only by an application manifest. The exact patterns of the PCS flag across
+forced segments are both recorded (the `forced_sub` values `3` and `1`), so a manifest can supply track-level intent. It is not the only evidence: inspecting
+composition-object flags also identifies forced content, though classifying an entire track
+requires examining its display sets. The exact patterns of the PCS flag across
 dedicated and full tracks are not established here. The playlist's stream table has no forced
 indicator.
 
@@ -1086,7 +1102,9 @@ sync.
 ## Title identification
 
 A disc usually holds far more playlists than titles. Playlist numbering carries no meaning, and
-the properties below are what a consumer can rely on.
+the properties below are useful evidence for title selection. They are heuristics, not
+proof of editorial intent: short films, chapterless titles and deliberately misleading
+navigation are all possible.
 
 **Playlists can reuse clips.** A playlist is a list of references; clips are shared. One clip
 can appear in many playlists, and several times in one. A playlist's **byte size**
@@ -1138,18 +1156,18 @@ Typical forms:
   feature, however long). A playlist whose first PlayItem is a non-video bumper has a stream
   table that describes only that bumper, so stream presence must be judged over items, not the
   first alone.
-- A complete feature has a **chapter table**: several entry marks whose span covers most of the
+- A complete feature often has a **chapter table**: several entry marks whose span covers most of the
   runtime. A bare body subset or a branch carries one mark or none; marks that cluster in the
   early part of a playlist are not a chapter table.
 - A feature's **byte size** is large and a decoy's is small, because a decoy reuses clips.
 - Very short playlists are menus, logos or stubs.
 - A disc's own **navigation** (First Playback for HDMV discs, or a manifest naming the feature
-  playlist for BD-J discs) states the feature outright and cannot be inflated by authoring
-  tricks: only real playlists can be named.
+  playlist for BD-J discs) can identify the intended playlist more reliably than size alone, but can depend on
+  runtime state, menu choices or obfuscation. A referenced playlist is not automatically the feature.
 
 **Episodes.** On a TV disc the titles are expected to be the episodes, a play-all, and extras;
 this layout is not established here. The disc's
-structure proves a play-all when its extents contain the extents of at least two other,
+structure suggests a play-all when its extents contain the extents of at least two other,
 shorter titles that begin at different sectors; runtimes alone prove nothing, since unrelated
 titles can have equal lengths.
 
@@ -1186,7 +1204,7 @@ in plain text or in 639-2/T codes. An empty language is unknown, not a contradic
 | **CLPI** | Clip information: packet count, program/stream table, CPI |
 | **Connection condition** | PlayItem field: non-seamless (`1`) or seamless (`5`, `6`) join to the previous item |
 | **CPI / EP_map** | Characteristic point information: presentation time → source packet number for seeking |
-| **Dependent view** | The MVC right-eye stream of a 3D title |
+| **Dependent view** | The MVC view predicted from the base view; eye assignment comes from the playlist |
 | **Display set** | A PGS PCS plus its window, palette, object and END segments |
 | **Entry mark** | A PlayListMark of type 1: a chapter point |
 | **First Playback** | The title object that runs when the disc starts |
@@ -1229,24 +1247,32 @@ These structures exist on discs but their layouts are not described above:
 
 ## References
 
-*Further reading on the topics covered here. These sources discuss related material; they are not cited claim by claim, and not every statement in them is endorsed here.*
+Specifications define the formats; implementation links document concrete parser and recovery behavior. Research and community sources are identified separately. Observations from particular discs are not universal format guarantees.
 
 ### Specifications
 
 - ECMA-167, Volume and File Structure of Write-Once and Rewritable Media: <https://ecma-international.org/publications-and-standards/standards/ecma-167/>
-- OSTA, Universal Disk Format (UDF) 2.50: <http://www.osta.org/specs/>
+- [UDF 2.50, ECMA TR/112-3](https://ecma-international.org/wp-content/uploads/ECMA_TR-112-3_1st_edition_december_2023.pdf) — partition maps, allocation descriptors and media constraints
 - AACS, Blu-ray Disc Pre-recorded Book: <https://aacsla.com/wp-content/uploads/2019/02/AACS_Spec_BD_Prerecorded_Final_0_953.pdf>
 - ITU-T H.222.0 / ISO/IEC 13818-1, MPEG-2 Systems: <https://www.itu.int/rec/T-REC-H.222.0>
 - ITU-T H.264, Advanced video coding: <https://www.itu.int/rec/T-REC-H.264>
 - ETSI TS 102 114, DTS Coherent Acoustics: <https://www.etsi.org/deliver/etsi_ts/102100_102199/102114/01.06.01_60/ts_102114v010601p.pdf>
 - ISO 639-2 code list (Library of Congress): <https://www.loc.gov/standards/iso639-2/php/code_list.php>
-- ISO/IEC 13818-2, MPEG-2 Video (no longer publicly available)
-- SMPTE 421M, VC-1 (no longer publicly available)
-- ATSC A/52, Digital Audio Compression (AC-3, E-AC-3) (no longer publicly available)
-- Blu-ray Disc Read-Only Format, System Description (BD-ROM Part 3) (no longer publicly available)
+- [ITU-T H.262 / ISO/IEC 13818-2, MPEG-2 Video](https://www.itu.int/rec/T-REC-H.262)
+- SMPTE ST 421, VC-1 — licensed specification; [SMPTE standards catalog](https://www.smpte.org/standards)
+- [ATSC A/52:2018, AC-3 and E-AC-3](https://www.atsc.org/wp-content/uploads/2021/04/A52-2018.pdf)
+- [BDA format specifications](https://blu-raydisc.info/format-spec/rom4-spec.php) — licensed BD-ROM books; [book/version overview](https://blu-raydisc.info/docs/Spec_Info/AllBooksAugust-14-2020.pdf)
 
 ### Open-source implementations
 
+**Filesystem access and decryption**
+
+- [libudfread](https://code.videolan.org/videolan/libudfread) — UDF filesystem access and extent traversal.
+- libaacs, key-file lookup and bus decryption: <https://code.videolan.org/videolan/libaacs/-/blob/master/src/libaacs/aacs.c>
+
+**Navigation and metadata**
+
+- [freemkv / libfreemkv](https://github.com/freemkv/libfreemkv) — BDMV navigation, playlists and stream metadata; implementation limits are identified in the text.
 - libbluray, playlists: <https://code.videolan.org/videolan/libbluray/-/blob/master/src/libbluray/bdnav/mpls_parse.c>
 - libbluray, clip information: <https://code.videolan.org/videolan/libbluray/-/blob/master/src/libbluray/bdnav/clpi_parse.c>
 - libbluray, index table: <https://code.videolan.org/videolan/libbluray/-/blob/master/src/libbluray/bdnav/index_parse.c>
@@ -1256,15 +1282,23 @@ These structures exist on discs but their layouts are not described above:
 - libbluray, player registers: <https://code.videolan.org/videolan/libbluray/-/blob/master/src/libbluray/register.c>
 - libbluray, BD-J objects: <https://code.videolan.org/videolan/libbluray/-/blob/master/src/libbluray/bdj/bdjo_parse.c>
 - libbluray, public stream-format codes: <https://code.videolan.org/videolan/libbluray/-/blob/master/src/libbluray/bluray.h>
-- libaacs, key-file lookup and bus decryption: <https://code.videolan.org/videolan/libaacs/-/blob/master/src/libaacs/aacs.c>
+- MediaInfo, BDMV parsing: <https://github.com/MediaArea/MediaInfoLib/blob/master/Source/MediaInfo/Multiple/File_Bdmv.cpp>
+
+**Elementary streams and codecs**
+
 - FFmpeg, Blu-ray LPCM: <https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/pcm-bluray.c>
 - FFmpeg, MLP/TrueHD parsing: <https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/mlp_parse.c>
 - FFmpeg, AC-3/E-AC-3 parsing: <https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/ac3_parser.c>
 - FFmpeg, DTS decoding: <https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/dcadec.c>
 - FFmpeg, PGS subtitles: <https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/pgssubdec.c>
 - FFmpeg, MPEG-TS demuxing: <https://github.com/FFmpeg/FFmpeg/blob/master/libavformat/mpegts.c>
-- MediaInfo, BDMV parsing: <https://github.com/MediaArea/MediaInfoLib/blob/master/Source/MediaInfo/Multiple/File_Bdmv.cpp>
 
-### Community references
+**Extraction and output**
+
+- [freemkv](https://github.com/freemkv/freemkv) — disc extraction application built on libfreemkv.
+- [FFmpeg](https://github.com/FFmpeg/FFmpeg) — demuxing, decoding and remuxing.
+- [MKVToolNix](https://mkvtoolnix.download/) — Matroska muxing and inspection.
+
+### Research and community references
 
 - ffmpeg-devel, Blu-ray PID assignments: <https://ffmpeg.org/pipermail/ffmpeg-devel/2010-July/088844.html>

@@ -64,8 +64,9 @@ why title content is split across several VOB files as described below.
 - The top two bits of the same length field give the extent type: 0 = recorded and allocated,
   1 = allocated but not recorded, 2 = neither, 3 = continuation of the descriptor list. A file's
   first descriptor can be type 1: its address is where space is reserved, not where data lives, and
-  the extent reads as zeros. The file's data therefore starts at the first recorded extent. Taking
-  a leading type-1 address as the start of an IFO displaces every VOB address derived from it.
+  the extent reads as zeros. The hole occupies logical file offsets; subsequent recorded extents must not be shifted
+  down over it. An IFO with a leading hole does not have a valid header at file offset zero.
+  Resolve file offsets through the allocation descriptors before deriving disc addresses.
 - UDF 1.02 describes files and directories with a File Entry (descriptor tag 261: extended
   attribute length at byte 168, allocation descriptors from byte 176 plus that length). The
   Extended File Entry (tag 266: lengths at byte 208, descriptors from byte 216) belongs to later
@@ -99,7 +100,9 @@ byte-for-byte copy of the matching IFO, kept so that a damaged IFO can be recove
 
 ## IFO structures
 
-Every IFO file is a sequence of **tables**, each starting on a sector boundary. The first
+An IFO contains top-level tables located by sector pointers and nested structures located
+by byte offsets. Not every structure starts on a sector boundary; the First Play PGC, for
+example, has a byte-addressed pointer. The first
 sector holds a **management table** that begins with a 12-byte identifier —
 `DVDVIDEO-VMG` for `VIDEO_TS.IFO`, `DVDVIDEO-VTS` for a `VTS_nn_0.IFO` — followed by the
 specification version, attributes, and the **sector pointers** that locate every other table
@@ -298,11 +301,13 @@ Playback occurs in one of four domains, each with its own PGCs:
 
 - A **title** is the unit a user selects. Its structure is given in `VTS_PTT_SRPT`.
 - A **Part-of-Title (PTT)** is a chapter: a (PGC, program) entry point within the title. A
-  title has at most 99 chapters.
+  title can have more than 99 chapters; do not confuse the disc title limit with the PTT count.
+  libdvdread checks for fewer than 1000 PTTs, and the on-disc count is a 16-bit field.
 - A **Program Chain (PGC)** is the playback sequence. A PGC groups cells and is the object
   to which navigation commands, stream selections and the palette attach.
 - A **program** is a run of consecutive cells within a PGC that marks an entry point. A PGC
-  has up to 99 programs, and a **program map** lists the first cell of each.
+  stores its program count in an 8-bit field, and a **program map** lists the first cell of each.
+  The program count must not exceed the cell count.
 - A **cell** is a contiguous run of VOBUs and the smallest independently addressable playback
   unit. A PGC has up to 255 cells. A cell is identified by its **VOB ID** (16 bits) and **cell
   ID** (8 bits).
@@ -333,7 +338,9 @@ PGC fields sit at fixed byte offsets from the start of the PGC:
 | 0xE6 | 2 | Offset of the program map, from the start of the PGC (0 = none) |
 | 0xE8 | 2 | Offset of the cell playback information table, from the start of the PGC (0 = none) |
 
-The playback time of a PGC is the sum of the playback times of its cells.
+For a sequential PGC, sum the cells on the selected playback path, taking one alternative
+from each angle block. Summing every angle cell overcounts the duration; commands, stills and
+non-sequential playback can also change the time experienced by a viewer.
 
 ### BCD time
 
@@ -342,17 +349,16 @@ byte whose top two bits give the frame rate and whose low six bits are the frame
 Frame-rate bits `01` mean 25 frames per second and `11` mean 30000/1001 frames per second; `00`
 and `10` are not defined.
 
-The value is a **timecode**, not elapsed real time. At 30000/1001 frames per second the seconds
-field advances every 30 frames, so a timecode must be converted through a frame count: frames
+**NTSC conversion needs an explicit convention.** freemkv interprets this value as
+non-drop-frame **timecode**, not elapsed real time. Under that convention the seconds field advances every 30 frames at the NTSC rate,
+so conversion proceeds through a frame count: frames
 equal ((hours × 3600 + minutes × 60 + seconds) × 30 + frames) at the NTSC rate, or
-(… × 25 + frames) at the PAL rate, and real time is frames × 1001/30000 or frames / 25. Reading
-the hours, minutes and seconds fields as literal seconds understates NTSC durations by 0.1
-percent. A digit above 9 in a field is invalid.
+(… × 25 + frames) at the PAL rate, and real time is frames × 1001/30000 or frames / 25. This produces a duration 0.1 percent longer than treating the nominal frame count as
+30 fps; it must not be applied indiscriminately to every DVD timestamp. A digit above 9 in a field is invalid.
 
 **NTSC timecode drift.** Thirty frames of 1001/30000 s each last 1.001 s, so the timecode runs
 0.1 percent behind real time: about 3.6 s per hour, growing with elapsed time (a chapter mark
-about 67 minutes in is roughly 4 s early when the fields are read as seconds). DVD timecode is
-non-drop-frame; no frame numbers are skipped to compensate. PAL has no such drift, because 25
+about 67 minutes in is roughly 4 s early when the fields are read as seconds). Under this interpretation no frame numbers are skipped to compensate. PAL has no such drift, because 25
 frames last exactly 1 s. Worked examples at the NTSC rate:
 
 | Timecode | Frames | Real time |
@@ -360,8 +366,13 @@ frames last exactly 1 s. Worked examples at the NTSC rate:
 | 00:19:58:24 | 35 964 | 1 199.999 s (just under 20 minutes) |
 | 01:59:30:00 | 215 100 | 7 177.17 s (7170 s read as seconds) |
 
-Summing the frame counts of the preceding cells and converting once puts a chapter mark on an
-exact frame boundary.
+This is freemkv's conversion policy, not a settled statement of DVD conformance.
+[libdvdnav's `dvdnav_convert_time`](https://code.videolan.org/videolan/libdvdnav/-/blob/master/src/dvdnav.c)
+uses literal hours/minutes/seconds and adds the frame component separately; it does not apply
+the 1.001 factor to the whole value. Check IFO-derived times against NAV presentation times
+and the elementary stream before applying a global NTSC correction. The examples above
+describe the frame-count interpretation used in
+[freemkv's IFO parser](https://github.com/freemkv/libfreemkv/blob/dev/src/ifo.rs).
 
 ### Damaged IFOs
 
@@ -408,10 +419,12 @@ ID.
 The **program map** holds one byte per program, at the PGC offset given by `0xE6`: the 1-based
 number of the first cell of that program. A chapter (PTT) points at a program.
 
-The **start time of a chapter** is the sum of the playback times of all cells that come before
+Within one sequential PGC, the **start time of a chapter** is the sum of the playback times
+of the selected cells that come before
 the first cell of its program. The sum is taken in frames at the PGC's frame rate and converted
 once, so that chapter marks land on frame boundaries; adding rounded seconds per cell drifts. The
-first chapter therefore starts at 0. A cell that is a non-first piece of an angle block (below)
+first chapter of that path starts at 0. A title spanning several PGCs also needs the
+preceding PGC paths and its navigation behavior; a PGC-local sum is not a title-wide time. A cell that is a non-first piece of an angle block (below)
 contributes no time, because only one angle of a block plays; an angle block counts once.
 
 **Chapter names.** A chapter has a name only where the disc supplies one in `TXTDT_MG`. Discs may
@@ -731,7 +744,8 @@ next VOB restarted at 0.07 s.
   of 10.08 Mbit/s is 25 200 units.
 - A PES header carries a PTS only on a packet in which an access unit starts, and the PTS
   belongs to the first access unit that starts in that packet. A video picture that starts
-  in the middle of a packet does not take that packet's PTS. Video PTS values are typically
+  after a preceding picture's tail takes that packet's PTS if it is the first picture
+  beginning there; a picture merely continuing from an earlier packet does not. Video PTS values are typically
   present once per group of pictures; pictures without one are timed from temporal_reference
   and the field durations of the pictures before them.
 
@@ -755,10 +769,11 @@ Audio other than MPEG audio, and all subpictures, are carried on `private_stream
 | `0xA0`–`0xA7` | LPCM audio (8) |
 
 Other packet types between payload packets are the system header (`0xBB`), the program
-stream map (`0xBC`) and padding (`0xBE`); padding carries no data. A PES packet of a video stream
-may declare length 0, meaning it runs to the next pack header, system header, program end code
-(`00 00 01 B9`) or PES start code, not to the next raw `00 00 01` byte sequence, which also occurs
-inside the video data. The low 3 bits of byte 13 of the pack header give the number of stuffing
+stream map (`0xBC`) and padding (`0xBE`); padding carries no data. A conforming program-stream PES has a non-zero packet length. H.222.0 permits
+zero-length video PES in **transport streams**. A tolerant demuxer may recover such a malformed
+program-stream packet by scanning for the next pack, system header, program end or valid PES
+start code; that is recovery behavior, not DVD framing. A raw `00 00 01` also occurs inside
+video data and is insufficient to identify a packet boundary. The low 3 bits of byte 13 of the pack header give the number of stuffing
 bytes after it, which extend the header past 14 bytes.
 
 **Sub-stream headers.** After the sub-stream ID byte:
@@ -1207,26 +1222,41 @@ signals the copying permission of the content.
 
 ## References
 
-*Further reading on the topics covered here. These sources discuss related material; they are not cited claim by claim, and not every statement in them is endorsed here.*
+Specifications define the formats; implementation links document concrete parser and recovery behavior. Research and community sources are identified separately. Observations from particular discs are not universal format guarantees.
 
 ### Specifications
 
-- DVD Specifications for Read-Only Disc, Part 3: Video Specifications (DVD Forum) (no longer publicly available)
+- DVD Forum, DVD Specifications for Read-Only Disc, Part 3: Video — licensed specification; the implementation references below are not substitutes for it
 - ECMA-267: 120 mm DVD, Read-Only Disk — [ecma-international.org](https://ecma-international.org/publications-and-standards/standards/ecma-267/)
-- ISO/IEC 13818-1: Generic coding of moving pictures and associated audio, Systems (MPEG-2 Program Stream and PES) (no longer publicly available)
-- ISO/IEC 13818-2: Generic coding of moving pictures and associated audio, Video (no longer publicly available)
-- ATSC A/52: Digital Audio Compression (AC-3) Standard (no longer publicly available)
-- OSTA Universal Disk Format (UDF) 1.02 (no longer publicly available)
+- [ITU-T H.222.0 / ISO/IEC 13818-1, MPEG-2 Systems](https://www.itu.int/rec/T-REC-H.222.0) — program-stream, transport-stream and PES syntax
+- [ITU-T H.262 / ISO/IEC 13818-2, MPEG-2 Video](https://www.itu.int/rec/T-REC-H.262)
+- [ATSC A/52:2018, AC-3 and E-AC-3](https://www.atsc.org/wp-content/uploads/2021/04/A52-2018.pdf)
+- [ECMA TR/112, Universal Disk Format](https://ecma-international.org/publications-and-standards/technical-reports/ecma-tr-112/) — archived UDF revisions, including 1.02
 
 ### Open-source implementations
 
+**Filesystem access and decryption**
+
+- libdvdcss, sector scrambling flag: [css.c](https://code.videolan.org/videolan/libdvdcss/-/blob/master/src/css.c) and [libdvdcss.c](https://code.videolan.org/videolan/libdvdcss/-/blob/master/src/libdvdcss.c)
+
+**Navigation and metadata**
+
+- [freemkv / libfreemkv](https://github.com/freemkv/libfreemkv) — IFO, navigation and title parsing; implementation limits are identified in the text.
 - libdvdread, IFO structures: [ifo_types.h](https://code.videolan.org/videolan/libdvdread/-/blob/master/src/dvdread/ifo_types.h)
 - libdvdread, NAV pack structures: [nav_types.h](https://code.videolan.org/videolan/libdvdread/-/blob/master/src/dvdread/nav_types.h)
 - libdvdnav, command decoding: [vmcmd.c](https://code.videolan.org/videolan/libdvdnav/-/blob/master/src/vm/vmcmd.c) and [decoder.c](https://code.videolan.org/videolan/libdvdnav/-/blob/master/src/vm/decoder.c)
 - libdvdnav, chapter and title times: [searching.c](https://code.videolan.org/videolan/libdvdnav/-/blob/master/src/searching.c)
-- libdvdcss, sector scrambling flag: [css.c](https://code.videolan.org/videolan/libdvdcss/-/blob/master/src/css.c) and [libdvdcss.c](https://code.videolan.org/videolan/libdvdcss/-/blob/master/src/libdvdcss.c)
-- FFmpeg, DVD LPCM: [pcm-dvd.c](https://git.ffmpeg.org/gitweb/ffmpeg.git/blob/HEAD:/libavcodec/pcm-dvd.c)
 
-### Community references
+**Elementary streams and codecs**
 
-- mpucoder's DVD-Video pages: [dvd.sourceforge.net/dvdinfo](http://dvd.sourceforge.net/dvdinfo/), notably [IFO](http://dvd.sourceforge.net/dvdinfo/ifo.html), [VMG IFO](http://dvd.sourceforge.net/dvdinfo/ifo_vmg.html), [VTS IFO](http://dvd.sourceforge.net/dvdinfo/ifo_vts.html), [PGC](http://dvd.sourceforge.net/dvdinfo/pgc.html), [PCI](http://dvd.sourceforge.net/dvdinfo/pci_pkt.html), [DSI](http://dvd.sourceforge.net/dvdinfo/dsi_pkt.html), [VM commands](http://dvd.sourceforge.net/dvdinfo/vmi.html), [registers](http://dvd.sourceforge.net/dvdinfo/sprm.html), [subpictures](http://dvd.sourceforge.net/dvdinfo/spu.html), [LPCM](http://dvd.sourceforge.net/dvdinfo/lpcm.html), [MPEG streams](http://dvd.sourceforge.net/dvdinfo/dvdmpeg.html) and [pack header](http://dvd.sourceforge.net/dvdinfo/packhdr.html)
+- FFmpeg, DVD LPCM: [pcm-dvd.c](https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/pcm-dvd.c)
+
+**Extraction and output**
+
+- [freemkv](https://github.com/freemkv/freemkv) — disc extraction application built on libfreemkv.
+- [FFmpeg](https://github.com/FFmpeg/FFmpeg) — demuxing, decoding and remuxing.
+- [MKVToolNix](https://mkvtoolnix.download/) — Matroska muxing and inspection.
+
+### Research and community references
+
+- mpucoder's DVD-Video pages: [dvd.sourceforge.net/dvdinfo](https://dvd.sourceforge.net/dvdinfo/), notably [IFO](https://dvd.sourceforge.net/dvdinfo/ifo.html), [VMG IFO](https://dvd.sourceforge.net/dvdinfo/ifo_vmg.html), [VTS IFO](https://dvd.sourceforge.net/dvdinfo/ifo_vts.html), [PGC](https://dvd.sourceforge.net/dvdinfo/pgc.html), [PCI](https://dvd.sourceforge.net/dvdinfo/pci_pkt.html), [DSI](https://dvd.sourceforge.net/dvdinfo/dsi_pkt.html), [VM commands](https://dvd.sourceforge.net/dvdinfo/vmi.html), [registers](https://dvd.sourceforge.net/dvdinfo/sprm.html), [subpictures](https://dvd.sourceforge.net/dvdinfo/spu.html), [LPCM](https://dvd.sourceforge.net/dvdinfo/lpcm.html), [MPEG streams](https://dvd.sourceforge.net/dvdinfo/dvdmpeg.html) and [pack header](https://dvd.sourceforge.net/dvdinfo/packhdr.html)

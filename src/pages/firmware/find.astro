@@ -51,6 +51,7 @@ import '../../styles/site.css';
     <meta name="twitter:image" content="https://freemkv.org/freemkv-icon.svg" />
     <script type="application/ld+json" set:html={graph(webPageNode({ path: '/firmware/find/', name: title, description }), breadcrumbNode('/firmware/find/', [['freemkv', '/'], ['Firmware', '/firmware/'], ['Find', '/firmware/find/']]), websiteNode(), orgNode())} />
     <style is:global>
+      #drive-detail { scroll-margin-top: 6rem; }
       .fx-view { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; }
       .fx-viewing { color: var(--muted); font-size: 0.9rem; }
       .fx-vgroup { margin: 0.9rem 0 0.2rem; font-size: 0.8rem; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.05em; }
@@ -392,7 +393,7 @@ import '../../styles/site.css';
             nextLink.textContent = canModify ? 'Next: modify it →' : 'Next: flash it →';
             document.getElementById('modify-feature-note').hidden = !canModify;
 
-            var facts = ident.chips.map(function (c) {
+            var facts = p.chips.map(function (c) {
               return '<span class="drive-fact' + (c[1] ? ' ' + c[1] : '') + '"' + (c[2] ? ' title="' + escapeText(c[2]) + '"' : '') + '>' + escapeText(c[0]) + '</span>';
             }).join('');
             var factsHtml = facts ? '<div class="drive-facts">' + facts + '</div>' : '';
@@ -489,6 +490,10 @@ import '../../styles/site.css';
               xf;
           }
 
+          function scrollToCard() {
+            detail.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+          }
+
           // Selecting a cross-flash target shows its firmware in the same flow.
           function showIdentity(t, vi) {
             var name = identities[t].n;
@@ -502,13 +507,13 @@ import '../../styles/site.css';
             if (!pick) return;
             searchInput.value = pick.m;
             selectModel(pick, '', revIdx);
-            detail.scrollIntoView({ block: 'nearest' });
+            scrollToCard();
           }
           detail.addEventListener('click', function (e) {
             var b = e.target.closest('[data-xf]');
             if (b) showIdentity(Number(b.dataset.xf), b.dataset.xv != null ? Number(b.dataset.xv) : null);
             var v = e.target.closest('[data-view]');
-            if (v) { curRevIdx = Number(v.dataset.view); render(); detail.scrollIntoView({ block: 'nearest' }); }
+            if (v) { curRevIdx = Number(v.dataset.view); render(); scrollToCard(); }
           });
 
           searchInput.addEventListener('input', function () {
