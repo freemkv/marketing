@@ -22,6 +22,7 @@ on:
 
 permissions:
   contents: read
+  actions: read   # find the previous successful deploy
 
 jobs:
   announce:
@@ -35,13 +36,14 @@ jobs:
       - uses: actions/checkout@v5
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
-          fetch-depth: 2   # need the parent to diff the changelog
+          fetch-depth: 0   # need the previous deploy's commit to compare against
 
       - name: Post the newest changelog entry to Discord
         env:
           HOOK: ${{ secrets.DISCORD_RELEASE_WEBHOOK }}
           EVENT: ${{ github.event_name }}
           VER_INPUT: ${{ github.event.inputs.version }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           CL=src/content/docs/docs/changelog.md
@@ -49,10 +51,23 @@ jobs:
           # Automatic runs announce only when THIS deploy's commit touched the
           # changelog. A manual dispatch always announces (bypasses the guard).
           if [ "${EVENT:-}" != "workflow_dispatch" ]; then
-            if git rev-parse HEAD~1 >/dev/null 2>&1 && git diff --quiet HEAD~1 HEAD -- "$CL"; then
-              echo "changelog.md unchanged in this deploy — nothing to announce"
+            # Compare against the LAST SUCCESSFUL deploy, not the parent commit: deploys
+            # cancel each other (cancel-in-progress), so the deploy that carried a release
+            # entry can be cancelled and only a later commit ever deploys. Announce when
+            # the newest released version differs from what that deploy published.
+            top() { grep -m1 -E '^## [0-9]' | sed 's/^## //'; }
+            NOW=$(top < "$CL")
+            PREV_SHA=$(gh run list -R "$GITHUB_REPOSITORY" -w pages.yml -b main -s success -L 10 \
+                         --json headSha -q '.[].headSha' | grep -vx "$(git rev-parse HEAD)" | head -1 || true)
+            PREV=""
+            if [ -n "$PREV_SHA" ] && git cat-file -e "$PREV_SHA" 2>/dev/null; then
+              PREV=$(git show "$PREV_SHA:$CL" 2>/dev/null | top || true)
+            fi
+            if [ "$NOW" = "$PREV" ]; then
+              echo "newest changelog version $NOW was already live — nothing to announce"
               exit 0
             fi
+            echo "newest changelog version: $NOW (last deploy: ${PREV:-none})"
           fi
           [ -n "${HOOK:-}" ] || { echo "::warning::DISCORD_RELEASE_WEBHOOK unset — skipping"; exit 0; }
 
