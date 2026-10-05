@@ -20,8 +20,7 @@ Counts, download links, modification features, and the next step come from the g
 Only downloadable versions appear in the finder.
 
 `src/data/firmware-index.json` is the existing MediaTek catalog. Its generator is
-`../freemkv-private/scripts/publish-firmware.py`; that script now targets this
-`marketing` directory. The page also reads `src/data/pioneer-firmware-index.json`.
+`scripts/firmware-features.mjs` (see [firmware-release.md](scripts/firmware-release.md)). The page also reads `src/data/pioneer-firmware-index.json`.
 Build the latter from structurally complete Pioneer installer packages with:
 
 ```bash

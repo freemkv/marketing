@@ -4,6 +4,29 @@ The existing Pages workflow accepts an optional `firmware_release` tag. A firmwa
 release uploads and publicly verifies every staged tar before building download
 links into the site. A site-only release uses the already committed catalog.
 
+## MediaTek feature data (run before `prepare`)
+
+`src/data/firmware-features.json`, `firmware-index.json` and
+`firmware-features-summary.md` are generated, never hand-edited. Regenerate them
+whenever the hoard or the freemkv-fw engine changes, before `prepare` (which
+reads `firmware-index.json` as a legacy input):
+
+```
+node scripts/firmware-features.mjs /path/to/hoard.v3 --fw /path/to/freemkv-fw
+```
+
+Inputs: a v3 hoard (`index/identities.json`, `index/sources.json`, `images/...`)
+and the `freemkv-fw` binary (`--fw` or env `FREEMKV_FW`; build with
+`cargo build --release` in freemkv-firmware). Optional: `--out-dir` (default
+`src/data`), `--jobs`, and `--hardware-verified allowlist.json` (JSON array of
+sha256 proven on hardware; default none, so everything is `build-verified`).
+
+An image is listed only if it is not MK-patched, no source name contains
+"omnidrive", it is not a fragment, and `freemkv-fw create --json` applies at
+least one lever. Flags follow engine lineage (see the header of the script).
+Review the diff before committing: counts, base_facts and r2 keys come straight
+from the engine. Tests: `node --test scripts/*.test.mjs`.
+
 Prepare from the v3 identity hoard (no upload):
 
 ```
