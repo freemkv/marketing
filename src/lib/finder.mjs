@@ -126,7 +126,6 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
       const ident = identity(src.key, { family: src.family, hardware: src.hardware, destination: src.destination });
       for (const p of src.platforms ?? []) pushUnique(ident.platforms, p);
       for (const m of src.embedded_models ?? []) pushUnique(ident.embeddedModels, m);
-      if (src.crossflash_group) ident.crossflashGroup = src.crossflash_group;
       for (const r of src.revisions ?? []) {
         if (!r.packages?.length) { pushUnique(ident.missing, r.revision); continue; }
         for (const p of r.packages) {
@@ -152,7 +151,6 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
         key: c.key, hardware: c.hardware, destination: c.destination,
         status: c.crossflash_status || 'untested', steps: c.steps ?? [], evidence: c.evidence ?? [],
         caution: c.caution ?? null, kernelDiff: kernelDiff(c.kernel_comparisons),
-        crossflashGroup: c.crossflash_group ?? null,
       }));
     }
     for (const a of catalog.aliases ?? []) {
@@ -480,29 +478,19 @@ function statusGroup(status) {
 }
 
 // MediaTek groups are platform/form-factor/loader/board, e.g. "MT1959/desktop/JBC6/board-unknown".
-const formFactor = group => String(group ?? '').split('/')[1] ?? '';
-
 /**
  * Cross-flash rule. Pioneer: same hardware_version, any ID; different hardware
- * never. MediaTek: same extractor crossflash_group (platform -> loader ->
- * board), never desktop with slim; different group never. Other families: none.
+ * never. MediaTek: no crossflash is supported at all. Other families: none.
  */
-export function crossflashAllowed(from, to, candidate) {
+export function crossflashAllowed(from, to, _candidate) {
   if (!from || !to || from.key === to.key || from.family !== to.family) return false;
   if (from.family === 'pioneer') return compact(from.hardware) === compact(to.hardware);
-  if (from.family === 'mediatek') {
-    const group = candidate?.crossflashGroup;
-    if (!group) return false;
-    for (const own of [from.crossflashGroup, to.crossflashGroup]) if (own && own !== group) return false;
-    const ff = formFactor(group);
-    return Boolean(ff) && ![from.crossflashGroup, to.crossflashGroup].some(g => g && formFactor(g) !== ff);
-  }
+  // MediaTek has no supported crossflash target set.
   return false;
 }
 
-function withCaution(from, c) {
-  // MediaTek group members are OEM changes on the same board: untested unless reported.
-  return from.family === 'mediatek' ? { ...c, caution: c.caution || 'oem-change' } : c;
+function withCaution(_from, c) {
+  return c;
 }
 
 /** "What can my drive become?": other editions it may cross-flash to. */

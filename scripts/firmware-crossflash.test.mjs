@@ -91,19 +91,14 @@ function mtkCatalog() {
   return c;
 }
 
-test('MediaTek: same crossflash group is a cautioned candidate; desktop/slim and other groups never shown', () => {
+test('MediaTek: no crossflash is supported — every mediatek lookup returns empty', () => {
   const ix = indexFinder(buildFinderData({ catalog: mtkCatalog() }));
-  const from = crossflashFrom(ix, 'mediatek:HL-DT-ST BH16NS40 NS50:N');
-  assert.deepEqual(keys(from), { proven: [], likely: [], untested: ['mediatek:HL-DT-ST BH16NS40 NS50:W'] });
-  assert.equal(from.untested[0].caution, 'oem-change');
-  const html = renderCrossflash(ix.byKey.get('mediatek:HL-DT-ST BH16NS40 NS50:N'), from);
-  assert.match(html, /Caution: OEM change on the same board, untested unless reported/);
-  assert.match(html, /Only drives on the same board/);
-  assert.doesNotMatch(html, /BU40N|JB7|BH16NS48/);
-  // A reported result moves the pair out of untested; reverse lookup obeys the same group rule.
-  assert.deepEqual(keys(crossflashTo(ix, 'mediatek:HL-DT-ST BH16NS40 NS50:N')), { proven: [], likely: ['mediatek:HL-DT-ST BH16NS40 NS50:W'], untested: [] });
-  assert.deepEqual(keys(crossflashFrom(ix, 'mediatek:HL-DT-ST BU40N NS50:P')), { proven: [], likely: [], untested: [] });
-  // Pioneer keeps the hardware rule.
+  const empty = { proven: [], likely: [], untested: [] };
+  // Same-group, different-group, slim-vs-desktop: all return nothing on mediatek.
+  assert.deepEqual(keys(crossflashFrom(ix, 'mediatek:HL-DT-ST BH16NS40 NS50:N')), empty);
+  assert.deepEqual(keys(crossflashTo(ix, 'mediatek:HL-DT-ST BH16NS40 NS50:N')), empty);
+  assert.deepEqual(keys(crossflashFrom(ix, 'mediatek:HL-DT-ST BU40N NS50:P')), empty);
+  // Pioneer still crossflashes within the same hardware.
   assert.deepEqual(keys(crossflashFrom(ix, 'pioneer:9201:ID43')).proven, ['pioneer:9201:ID72']);
 });
 
