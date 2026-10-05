@@ -1,6 +1,6 @@
 ---
 title: Ultra HD Blu-ray (4K UHD)
-description: A reference for what Ultra HD Blu-ray adds to or changes in the Blu-ray disc format — BDXL media, the 0300 version stamp, HEVC Main 10 at 2160p, HDR10 / HDR10+ / Dolby Vision signalling, the Dolby Vision enhancement layer in the STN table, audio carriage, and the AACS 2.x file layout as it appears on disc.
+description: A reference for what Ultra HD Blu-ray adds to or changes in the Blu-ray disc format — UHD BD-ROM media, the 0300 version stamp, HEVC Main 10 at 2160p, HDR10 / HDR10+ / Dolby Vision signalling, the Dolby Vision enhancement layer in the STN table, audio carriage, and the AACS 2.x file layout as it appears on disc.
 ---
 
 Ultra HD Blu-ray is a **delta on Blu-ray**, not a new container. The filesystem, the `BDMV`
@@ -22,29 +22,31 @@ section lists what is out of scope.
 
 | Area | Blu-ray | Ultra HD Blu-ray |
 |---|---|---|
-| Media | 25 / 50 GB (BD-25, BD-50) | 66 GB (two layers) and 100 GB (three layers, BDXL) |
+| Media | 25 / 50 GB (BD-25, BD-50) | 50 / 66 GB (two layers) and 100 GB (three layers) |
 | `index.bdmv` version | `0200` | `0300` |
 | Video | MPEG-2, H.264/AVC, VC-1 | HEVC (H.265), Main 10, 3840x2160 |
 | Colour | BT.709 | BT.2020 primaries (BT.709 is also signalled, for SDR), 10-bit |
 | HDR | none (SDR) | HDR10 (PQ); Dolby Vision; HDR10+ |
 | Second video layer | none (PiP aside) | Dolby Vision enhancement layer, STN category 7 |
 | AACS generation | 1.0 | 2.0 or 2.1 |
-| Sector-level protection | AACS aligned-unit encryption | the same, plus optional bus encryption |
+| Sector-level protection | AACS aligned-unit encryption; optional bus encryption | AACS aligned-unit encryption; optional bus encryption |
 | Key-storage stride in `Unit_Key_RO.inf` | 48 bytes | 64 bytes |
 | Feature clip extension | `.m2ts` | `.m2ts`, or `.fmts` on AACS 2.1 |
 | Region | A / B / C | region-free |
 
 ## Media
 
-### BDXL capacity
+### BD-ROM capacity
 
-UHD discs use the **BDXL** physical format family. Titles ship on **66 GB** dual-layer and
-**100 GB** triple-layer discs; the 100 GB capacity is **48,878,592** logical sectors of
-2048 bytes. The filesystem is UDF as on Blu-ray, with the same 2048-byte logical sector. The
-A large `.m2ts` on a dual-layer disc is not contiguous: a main title can span 70 or more extents
-of about 1 GB each. The extra layers are invisible above the sector address space: a layer break is simply a sector
-number, and a file that crosses it is described by more than one extent in its UDF allocation
-descriptors. A reader sizes a disc by the volume's sector count and does not address layers
+UHD BD-ROM supports **50 GB**, **66 GB** and **100 GB** media. The BDA
+[format-book overview](https://blu-raydisc.info/docs/Spec_Info/AllBooksAugust-14-2020.pdf)
+lists these capacities separately from recordable BDXL. A 100 GB disc commonly exposes
+48,878,592 logical sectors of 2048 bytes; query the actual medium rather than hardcode that
+count. The filesystem is UDF with 2048-byte logical sectors.
+
+A large `.m2ts` can have many allocation descriptors even when its extents are physically
+contiguous: an extent length has only 30 bits. Extent boundaries do not establish layer
+boundaries. Layers are invisible above the logical sector address space. A reader sizes a disc by the volume's sector count and does not address layers
 separately.
 
 ### How a UHD disc identifies itself
@@ -59,20 +61,22 @@ There is no single "UHD" flag. Three independent markers agree on a UHD disc:
 
 `index.bdmv` begins with the ASCII magic `INDX` followed by a four-character ASCII version at
 bytes 4-7. Playlist (`MPLS`) and clip-information (`HDMV`) files use the same layout: a four-byte
-magic, then a four-byte ASCII version at bytes 4-7. A reader must not rely on the version for
-parsing; the structures it governs parse identically.
+magic, then a four-byte ASCII version at bytes 4-7. Common structures remain recognizable, but readers must validate the version, section
+lengths and version-specific fields and extensions. An unknown version is not permission
+to parse every structure as an older version.
 
 The MKB's generation is the most reliable discriminator: the MKB record framing is one type byte
 plus a 3-byte big-endian length that includes the 4-byte header, and the Type-and-Version record
 (type `0x10`) carries the 32-bit MKBType in bytes 4-7 of the record. The three values above map
 as 2.1 = UHD with forensic `.fmts` content, 2.0 = UHD, 1.0 = Blu-ray.
 
-A disc whose MKB is absent or unreadable falls back to the video stream: any 2160p video stream
-marks the disc UHD.
+When the MKB is absent, freemkv can use 2160p video as a classification fallback. This is
+a heuristic, not proof that an arbitrary BDMV folder conforms to the UHD disc specification.
 
 ### Drive implications
 
-Reading a UHD disc requires a BDXL-capable, UHD-capable drive. In addition to the media, the
+Reading UHD media requires a drive that supports the particular UHD BD-ROM medium;
+recordable BDXL support alone does not establish UHD compatibility. In addition to the media, the
 protection layer places a requirement on the drive path: when the content certificate asks for
 **bus encryption** (see below), stream data crosses the drive interface already encrypted under
 a session key, and the host cannot interpret the content until that layer is removed. That
@@ -90,7 +94,7 @@ protected disc until they are told otherwise, so a UHD disc read at full speed n
 drive's maximum read speed requested explicitly.
 
 The drive's error-correction block on UHD is the Blu-ray one: **64 KiB, 32 sectors of 2048
-bytes**. Damage on UHD media therefore appears as whole 32-sector blocks; an AACS aligned unit
+bytes**. This does not require every read failure to affect exactly 32 sectors; an AACS aligned unit
 (3 sectors) lies wholly inside one block or spans two adjacent blocks.
 
 ## Video
@@ -142,13 +146,15 @@ a reader derives:
   equal to 2 (10-bit). A record that assumed 8-bit 4:2:0 would be wrong for essentially every
   UHD stream.
 - **Reorder depth** (`sps_max_num_reorder_pics`) and the VUI picture period
-  (`num_units_in_tick / time_scale`), which govern display-order timestamps.
+  (`num_units_in_tick / time_scale`). This ratio is a clock tick; deriving a picture
+  period also requires the applicable POC timing and HRD syntax. It is not universally
+  the duration of one picture.
 - **VUI colour description**, when present (`video_full_range_flag` plus colour primaries,
   transfer characteristics and matrix coefficients as three 8-bit CICP codes), which is the
   authoritative statement of PQ vs HLG for a stream.
 
-The SPS is an RBSP: it contains emulation-prevention bytes (`00 00 03`), which shift field
-offsets and must be removed before the fields are read, even within its first bytes.
+The SPS NAL payload on the wire is an **EBSP** and can contain emulation-prevention
+bytes (`00 00 03`). Remove them to obtain the **RBSP** before reading syntax fields.
 
 A VPS, SPS or PPS may be repeated in-band at random-access points, and a stream may **redefine**
 a parameter set under the same id partway through a title (a PPS id 0 redefined mid-title is
@@ -168,7 +174,7 @@ Types 0-31 are coded slices (VCL); 32-63 are non-VCL.
 
 | NAL type | Name | Role on UHD |
 |---|---|---|
-| 16, 18 | BLA_W_LP, BLA_N_LP | random-access points |
+| 16, 17, 18 | BLA_W_LP, BLA_W_RADL, BLA_N_LP | random-access points |
 | 19, 20 | IDR_W_RADL, IDR_N_LP | random-access points |
 | 21 | CRA | random-access point; typical clip start |
 | 6-9 | RADL_N/R, RASL_N/R | leading pictures |
@@ -208,10 +214,11 @@ uses BT.2020 primaries.
 
 ### HDR10: static metadata in SEI
 
-HDR10 is PQ transfer (CICP 16) over BT.2020 primaries plus two **static** SEI messages, carried in
-prefix SEI NAL units (type 39), and tolerated in suffix SEI (type 40). An HDR10 stream carries
-the SEI on its keyframes (IRAP access units), not on every access unit; a reader needs only the
-first of each kind. The SEI NAL has the
+HDR10 uses PQ transfer (CICP 16), BT.2020 signalling and static mastering metadata.
+The two relevant SEI payloads are described below; content light level information can be
+absent. They are normally carried in prefix SEI (type 39). Preserve their applicable scope
+and process later updates, especially across clip joins: the first value in a title need
+not describe every subsequent sequence. The SEI NAL has the
 usual two-byte header, then a sequence of messages, each with `payloadType` and `payloadSize`
 in **0xFF-extension coding** (a run of `0xFF` bytes plus a final byte, summed), then the
 payload. Emulation-prevention bytes (`00 00 03`) are removed before reading payloads.
@@ -281,9 +288,10 @@ Dolby Vision on disc (**profile 7**, dual layer) is carried as **two HEVC stream
   to parameter sets must not touch it.
 - **EL carriage.** The EL is a native second video elementary stream (its own PID, `0x1015`
   being typical) in the same transport stream as the base layer, with HEVC coding type `0x24`;
-  it is an ordinary HEVC stream with its own VPS/SPS/PPS and its own HDR10 SEI at its keyframes.
-  The PMT carries no Dolby Vision descriptor; the dual-PID layout is signalled only by the
-  playlist.
+  it is an ordinary HEVC stream with its own VPS/SPS/PPS and may contain SEI at its keyframes.
+  The disc playlist identifies the enhancement layer. Do not generalize an absent PMT
+  descriptor in inspected discs to all Dolby Vision transport streams: Dolby also specifies
+  a [DOVI video stream descriptor](https://professional.dolby.com/siteassets/pdfs/dolby-vision-bitstreams-in-mpeg-2-transport-stream-multiplex-v1.2.pdf).
 - **EL resolution.** The base layer is always 3840x2160. The enhancement layer is frequently
   **1920x1080**, so the video stream tagged as Dolby Vision is often the lower-resolution one;
   a reader cannot infer the title's resolution from the DV-tagged stream.
@@ -441,7 +449,8 @@ Per-bit channel counts for the assignments (each set bit adds this many channels
 If the 8-channel mask is non-zero it gives the channel count (e.g. a mask of `0x4F` is 8 channels,
 7.1; `0x1F` is also 8 channels but is 5.1.2, with a front-height pair in bit 4); otherwise the 6-channel mask does. Bit 2 is LFE in both; bit 12 of the 8-channel mask is
 LFE2. The substream count (`num_substreams`) is the high nibble of byte 16 of the major sync, counting
-the `0xF8` sync byte as byte 0; a TrueHD stream carries Atmos object data when it is 4 or more.
+the `0xF8` sync byte as byte 0; freemkv treats a count of 4 or more as an Atmos detection heuristic. This does not parse
+or validate the object metadata.
 A TrueHD access unit spans 40 samples at the 48 kHz family (1/1200 s) or 40 samples at the 44.1
 kHz family. TrueHD predictor state persists across access units, so decoding can only restart at
 a major sync; a major sync header is 28 bytes plus an optional extension. The same TrueHD elementary stream may interleave AC-3 frames (sync `0x0B77`) on
@@ -563,10 +572,16 @@ decryption, is damaged (or was cut off the grid) and cannot be recovered from th
 
 ### AACS 2.1 forensic segments (`.fmts`)
 
-An AACS 2.1 disc stores its **main feature in a single `.fmts` clip** in `BDMV/STREAM/` instead
+The layouts below are reverse-engineered observations implemented in freemkv. Public
+AACS 1.x books do not establish the AACS 2.1 variant tables. Keep sample dimensions and
+parser assumptions separate from licensed AACS2 requirements.
+
+The AACS 2.1 discs examined by freemkv store their **main feature in a single `.fmts` clip** in `BDMV/STREAM/` instead
 of an `.m2ts`: for example `BDMV/STREAM/00001.fmts`, while the playlist still names the clip
 `00001`. A BD-tree reader that looks for the clip must try `.m2ts`, then `.fmts`, then `.ssif`
-(3D). A 2.1 disc has exactly one `.fmts` clip; the segment map is addressed relative to it.
+(3D). The parser currently assumes one `.fmts` clip and addresses the segment map relative to
+it. This is an implementation limit supported by the inspected samples, not a demonstrated
+universal restriction of AACS 2.1.
 
 The `.fmts` clip is an ordinary 192-byte-packet transport stream, **plus interleaved forensic
 segments**: short runs of packets that exist in several watermarked variants, of which a given
@@ -596,7 +611,7 @@ Source-packet numbers count 192-byte packets **from the start of the `.fmts` cli
 offset of a segment is `start_spn * 192`. Index values cycle across the table rather than
 counting up. Content outside every segment is ordinary content with no segment record.
 
-Every segment is 2,560 packets (80 aligned units) and starts and ends on an aligned-unit
+In the inspected samples, each segment is 2,560 packets (80 aligned units) and starts and ends on an aligned-unit
 boundary. A forensic unit is opened with the key for the
 segment's index (one of 32 forensic index keys), not with the ordinary CPS unit key. Inside a
 segment, the units of **two variants alternate**: units alternate by parity of their index within
@@ -624,17 +639,17 @@ is not described here.
 The forensic **index** (1-32) selects which of 32 index keys opens a segment; it is distinct
 from the 16-bit **variant selector** (0-65535) that indexes the segment-key table.
 
-## Edge cases that are format properties
+## Edge cases and implementation policies
 
 - **Non-seamless clip joins and CRA pictures.** A CRA (type 21) at the start of a clip can carry
   RASL pictures that reference frames from before the clip. When clips are concatenated and the
   join is non-seamless (PlayItem `connection_condition` = 1, held in the low nibble of the
-  PlayItem's byte 10), those references no longer exist. The CRA must be treated as a **BLA**
+  PlayItem's byte 10), those references no longer exist. freemkv handles this splice by treating the CRA as a **BLA**
   (BLA_W_LP, type 16) so that the leading RASL pictures are discarded. This is a one-shot rewrite
   of the first CRA at the join: every slice NAL of the picture changes type, using
   `byte0 = (byte0 & 0x81) | (16 << 1)`. Seamless joins (`connection_condition` 5 or 6) and the
-  first PlayItem are never rewritten. A join can also be recognised by the PES timestamps
-  stepping backwards while the stream stays a single title.
+  first PlayItem are never rewritten. Use the playlist boundary as the primary evidence; a backward PTS step alone can also
+  be reordering, wrap or a discontinuity.
 - **Stream start on a CRA.** A stream can open on a CRA whose RASL pictures reference pictures
   that do not exist; they are undecodable, while RADL pictures are decodable.
 - **Sibling playlists differing only in streams.** Playlists of equal size, duration and audio
@@ -651,8 +666,8 @@ from the 16-bit **variant selector** (0-65535) that indexes the segment-key tabl
 - **Unrecorded extents.** A UDF file can contain extents that are allocated but never recorded;
   they occupy file-offset space (a hole) and shift every later offset if dropped. Segment
   numbers and aligned-unit positions are counted over the file including holes.
-- **One `.fmts` clip only.** A 2.1 disc's segment map is relative to a single `.fmts` clip; a
-  disc with more than one `.fmts` file has an ambiguous byte space.
+- **One `.fmts` clip assumption.** freemkv's current mapping requires one forensic clip.
+  Multiple files require additional association information and are not handled by that model.
 - **Stale segment records.** `IndividualSegment.tbl` can contain records addressing source
   packets past the end of the clip; those cannot be located on disc.
 - **Truncated parameter sets.** HEVC configuration records encode each NAL length in 16 bits; a
@@ -672,10 +687,10 @@ from the 16-bit **variant selector** (0-65535) that indexes the segment-key tabl
 | Term | Meaning |
 |---|---|
 | **AACS 2.0 / 2.1** | The AACS generation for UHD; 2.1 adds the forensic variant structure |
-| **BDXL** | The 66 GB / 100 GB Blu-ray media family used by UHD |
+| **BDXL** | Higher-capacity recordable Blu-ray formats; distinct from UHD BD-ROM |
 | **BEE** | Bus Encryption Enabled flag, bit 7 of byte 1 of the content certificate |
 | **BL / EL** | Dolby Vision base layer / enhancement layer |
-| **BLA / CRA / IDR** | HEVC random-access picture types (NAL 16/18, 21, 19/20) |
+| **BLA / CRA / IDR** | HEVC random-access picture types (NAL 16–18, 21, 19/20) |
 | **Bus encryption** | A per-sector AES layer applied between drive and host, bytes 16-2047 of each sector |
 | **CICP** | ITU-T H.273 colour code points: primaries, transfer, matrix |
 | **CPI** | Copy Permission Indicator, top 2 bits of each packet's TP_extra_header |
@@ -707,34 +722,52 @@ shared.
   (rather than by coded content).
 - Variant playlists used by the AACS 2.1 forensic structure (how playlists select among variants).
 - The segment-key record layout beyond its 8-byte sub-header.
-- 66 GB per-layer sector counts, and the UDF structures specific to BDXL beyond the standard
+- 66 GB per-layer sector counts, and any media-specific UDF constraints beyond the standard
   Long-AD/metadata-partition handling.
 - The audio object-layer (Atmos / DTS:X) bitstream structure.
 - The AACS 2.0 authentication exchange itself (message layout, certificate fields); see the AACS
   page.
-- Whether a player applies the bus layer only when BEE is set; the CPI-based per-unit rule above
-  is the structural property, the BEE interplay is not specified here.
+- Full AACS 2.x conformance: the forensic layouts above describe inspected files and the
+  current implementation, not a substitute for the licensed AACS2 specification.
 - Typical UHD video bitrates and peak rates.
 
 ## References
 
-*Further reading on the topics covered here. These sources discuss related material; they are not cited claim by claim, and not every statement in them is endorsed here.*
+Specifications define the formats; implementation links document concrete parser and recovery behavior. Research and community sources are identified separately. Observations from particular discs are not universal format guarantees.
 
 ### Specifications
 
-- AACS, *Blu-ray Disc Pre-recorded Book* (no longer publicly available)
-- Dolby, *Dolby Vision Streams Within the MPEG-2 Transport Stream* (no longer publicly available)
+- [BDA format-book overview](https://blu-raydisc.info/docs/Spec_Info/AllBooksAugust-14-2020.pdf) — UHD BD-ROM capacities and applicable book versions.
+
+- [AACS, Blu-ray Disc Pre-recorded Book, rev. 0.953](https://aacsla.com/wp-content/uploads/2019/02/AACS_Spec_BD_Prerecorded_Final_0_953.pdf) — public AACS 1.x baseline; [AACS2 specifications are licensed separately](https://aacsla.com/license-aacs/)
+- [Dolby Vision Bitstreams in MPEG-2 Transport Stream Multiplex, v1.2](https://professional.dolby.com/siteassets/pdfs/dolby-vision-bitstreams-in-mpeg-2-transport-stream-multiplex-v1.2.pdf)
 - ITU-T H.265, High efficiency video coding: <https://www.itu.int/rec/T-REC-H.265>
 - ITU-T H.273, Coding-independent code points for video signal type identification: <https://www.itu.int/rec/T-REC-H.273>
 - ECMA-167, Volume and file structure of write-once and rewritable media: <https://www.ecma-international.org/publications-and-standards/standards/ecma-167/>
 - SMPTE ST 2086, ST 2094-40, and ST 2084 (not freely available)
-- ISO/IEC 14496-15, Carriage of NAL unit structured video in the ISO base media file format (no longer publicly available)
+- ISO/IEC 14496-15, Carriage of NAL unit structured video in the ISO base media file format — licensed ISO specification
 
 ### Open-source implementations
 
+**Filesystem access and decryption**
+
+- [libudfread](https://code.videolan.org/videolan/libudfread) — UDF filesystem access and extent traversal.
+- libaacs, AACS handling: <https://code.videolan.org/videolan/libaacs/-/blob/master/src/libaacs/aacs.c>
+
+**Navigation and metadata**
+
+- [freemkv / libfreemkv](https://github.com/freemkv/libfreemkv) — UHD classification, HDR metadata and forensic-stream handling; implementation limits are identified in the text.
 - libbluray, playlist parsing (STN table, stream attributes, Dolby Vision entries): <https://code.videolan.org/videolan/libbluray/-/blob/master/src/libbluray/bdnav/mpls_parse.c>
 - libbluray, public constants (video format and rate, audio format, dynamic range, colour space): <https://code.videolan.org/videolan/libbluray/-/blob/master/src/libbluray/bluray.h>
-- libaacs, AACS handling: <https://code.videolan.org/videolan/libaacs/-/blob/master/src/libaacs/aacs.c>
+
+**Elementary streams and codecs**
+
 - FFmpeg, TrueHD/MLP major-sync parsing: <https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/mlp_parse.c>
 - FFmpeg, TrueHD channel tables: <https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/mlp_parse.h>
 - FFmpeg, HEVC SEI parsing: <https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/hevc/sei.c>
+
+**Extraction and output**
+
+- [freemkv](https://github.com/freemkv/freemkv) — disc extraction application built on libfreemkv.
+- [FFmpeg](https://github.com/FFmpeg/FFmpeg) — demuxing, decoding and remuxing.
+- [MKVToolNix](https://mkvtoolnix.download/) — Matroska muxing and inspection.

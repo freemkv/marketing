@@ -129,7 +129,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
             sha256: p.sha256, bytes: p.bytes, key: p.key, filename: p.filename,
             packageType: p.packageType || (src.family === 'mediatek' ? 'mediatek-image' : 'image'),
             components: roles(p.components), selection: p.selection ?? null,
-            kernelRevision: p.kernel_revision ?? null, normalSha256: p.normal_sha256 ?? null,
+            uhd: p.is_uhd === true, kernelRevision: p.kernel_revision ?? null, normalSha256: p.normal_sha256 ?? null,
             advertisedVersions: [...(p.advertised_versions ?? [])], generatedDate: p.generated_date ?? null,
             embeddedModel: p.embedded_model ?? null, brand: p.brand ?? null, buildId: p.build_id ?? null,
             provenance: typeof p.provenance === 'string' ? p.provenance : null,
@@ -354,9 +354,11 @@ function chips(identity, pkg) {
   const out = [];
   if (identity.family === 'pioneer') {
     out.push(['Pioneer'], ['Hardware ' + hardwareLabel(identity)]);
-    if (/^ID\d+$/.test(identity.destination)) out.push(['ID ' + identity.destination]);
+    if (identity.destination) out.push([/^ID\d+$/.test(identity.destination)
+      ? identity.destination : 'Destination ' + identity.destination]);
     const c = componentsLabel(pkg.components);
     if (c) out.push([c]);
+    if (pkg.uhd) out.push(['UHD capable']);
     return out;
   }
   const chip = pkg.chipset || identity.platforms.find(p => /^MT/.test(p));
@@ -373,8 +375,8 @@ const searchText = list => [...new Set(list.filter(Boolean).flatMap(t => [norm(t
 
 /**
  * Everything the finder page ships, built once at build time.
- *  packages[]:   {s sha256, f filename, k object key (public builds only), b size, src, built, contents}
- *  identities[]: {n model name, brand, d OEM/ID label or '', pio, chips, t search text, v [version idx newest first], x [[identity idx, status]]}
+ *  packages[]:   {s sha256, f filename, k object key (public builds only), b size, src, built, contents, chips}
+ *  identities[]: {n model name, brand, d OEM/ID label or '', pio, t search text, v [version idx newest first], x [[identity idx, status]]}
  *  versions[]:   {i identity idx, r revision, p [package idx, preferred first], mod, features, baseOnly}
  *  models[]:     {m name, t search text, v [[version idx, label]]}
  * `legacy` is the old site index rows ({model, brand, versions:[{sha256}]}): their
@@ -391,7 +393,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     for (const r of i.revisions) {
       const p = r.packages.map(pkg => {
         packages.push({ s: pkg.sha256, f: String(pkg.filename ?? '').replace(/_GENERAL(?=_)/, ''), ...(keys ? { k: pkg.file ?? pkg.key } : {}), b: bytesLabel(pkg.bytes),
-          built: pkg.generatedDate || '', contents: contentsLabel(pkg) });
+          built: pkg.generatedDate || '', contents: contentsLabel(pkg), chips: chips(i, pkg) });
         return packages.length - 1;
       });
       const best = r.packages[0];
@@ -399,9 +401,8 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
         ...(best.features?.length ? { features: best.features.map(f => ({ name: f.name, ok: f.ok })) } : {}) });
       v.push(versions.length - 1);
     }
-    return { i, out: { n: '', brand: identityBrand(i), d: destinationLabel(i), g: versionGroup(i), pio: i.family === 'pioneer' ? 1 : 0, chips: r0chips(i), v } };
+    return { i, out: { n: '', brand: identityBrand(i), d: destinationLabel(i), g: versionGroup(i), pio: i.family === 'pioneer' ? 1 : 0, v } };
   });
-  function r0chips(i) { return i.revisions[0] ? chips(i, i.revisions[0].packages[0]) : []; }
 
   // Model names -> identity keys.
   const names = new Map(); // compact -> {m, rank, keys:Set}

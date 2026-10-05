@@ -10,14 +10,14 @@ page documents the format first, then the AACS layer, cross-referencing the shar
 hierarchy on the [AACS reference](/docs/aacs/) rather than repeating it.
 
 :::note[Confidence]
-Claims are marked as **confirmed** or **unconfirmed**. The content-encryption model is
-specified in the AACS HD DVD book (§4.3) and is confirmed. See the summary table at the end.
+Specification-backed structures are distinguished from implementation observations below.
+The content-encryption model is specified in the AACS HD DVD book (§4.3). See the summary table at the end.
 :::
 
 ## One format, two content models
 
 Every HD DVD-Video disc uses **UDF 2.5** as its filesystem, with **2048-byte logical
-sectors** inherited from DVD. At the disc root sit two directories:
+sectors** inherited from DVD. The root directories depend on the content model; an Advanced Content disc uses:
 
 ```
 /  (UDF 2.5, 2048-byte sectors)
@@ -44,8 +44,8 @@ HD DVD defines two ways to author a title, and many discs ship both:
 - **Capacity.** Single-layer discs hold about 7.3 million 2048-byte sectors (15 GB), dual-layer
   about 14.6 million (30 GB), and a triple-layer 51 GB format (17 GB per layer, about 25 million
   sectors) was approved in 2007 but never released commercially.
-- **Error-correction block.** Like DVD, the physical error-correction block is **32 KiB**
-  (16 sectors).
+- **Error-correction block.** HD DVD uses **64 KiB** (32 sectors), not DVD's 32 KiB. See
+  [ECMA TR/112-3, UDF 2.50 errata §7.20](https://ecma-international.org/wp-content/uploads/ECMA_TR-112-3_1st_edition_december_2023.pdf).
 - A file's data may occupy **several extents** (UDF allocation descriptors); the file is the
   extents read in order. An extent can also be marked unrecorded, or a clip can be zero length,
   and a clip in that state has no complete data.
@@ -109,10 +109,10 @@ of interest) and program end (`00 00 01 B9`, 4 bytes, no body).
 - **PTS / DTS** are 33-bit values at 90 kHz in the standard 5-byte form (`0010`/`0011`/`0001`
   prefix nibble, then three marker bits, bit 0 of bytes 0, 2 and 4, all `1`). A field with a
   cleared marker bit is malformed.
-- **`PES_packet_length` = 0** is used for video: the packet is unbounded and runs to the next
-  *program-stream-layer* unit — a pack header, system header, program end, or the next PES
-  start code with a valid `stream_id`. A raw `00 00 01 xx` inside the payload is **not** a
-  boundary; elementary-stream data is full of them.
+- **`PES_packet_length` = 0** is permitted for video PES in transport streams, not ordinary
+  conforming MPEG program streams. A demuxer that accepts it in EVO is using a recovery
+  extension: scan for a valid program-stream-layer boundary, not an arbitrary `00 00 01`
+  within elementary-stream payload.
 - `private_stream_2` (`0xBF`) PES packets carry no PES header extension: the payload follows
   the 6-byte prefix directly. For a navigation pack the first payload byte is a sub-stream id,
   `0x00` = PCI, `0x01` = DSI, as on DVD.
@@ -138,7 +138,8 @@ of interest) and program end (`00 00 01 B9`, 4 bytes, no body).
   The VTI begins with the ASCII magic **`ADVANCED-VTS`**. Its clip table is a run of
   fixed-stride records, **0x140 (320) bytes** apart, each holding a NUL-terminated ASCII
   `<name>.EVO` at one constant offset inside the record; the names appear in authored order,
-  so the table is the playback order of the clips. The offset of the table within the file and of the name within a record is
+  but this order alone does not define title playback; the active playlist selects clips
+  and intervals. The offset of the table within the file and of the name within a record is
   not stated here (see the end of this page).
 - **`.IFO` / `.BUP`** — some discs use a DVD-style IFO/BUP navigation instead: `HV000I01.IFO`
   as the VMG analogue, `HV0nnI01.IFO` as per-VTS. These Standard Content (Category 1) discs are
@@ -158,7 +159,7 @@ per EVO as a separate file.
 - **`VPLST%%%.XPL`** — the **playlist(s)**, an XML document in the `HDDVDVideo/Playlist`
   namespace. On a genuine AACS disc the playlist is wrapped in an AACS hash header (the ASCII
   tag `AACS`, a protection-type byte `0x12`, the resource file name, then the XML, then a
-  trailing hash pointer); the XML follows the header. It is a `<Playlist>` → `<Configuration>` → `<TitleSet>` → `<Title>`, each `<Title>`
+  trailing hash pointer); the XML follows the header. It is a `<Playlist>` containing configuration and a `<TitleSet>` with `<Title>` entries, each `<Title>`
   naming its `<PrimaryAudioVideoClip>` clips (referenced by `file:///dvddisc/HVDVD_TS/…MAP`
   URIs, i.e. the `.MAP` sidecar) in playback order with `titleTimeBegin`/`titleTimeEnd`, a
   `titleDuration`, a `displayName`, and a `<ChapterList>`. The `TitleSet` carries `tickBase`
@@ -182,9 +183,11 @@ per EVO as a separate file.
   description>`) select and label the tracks.
 
   **Timecodes** are `HH:MM:SS:FF`, or `MM:SS:FF` with the hours omitted, where `FF` is a frame
-  count in `timeBase` units (so `FF` runs `0`..`timeBase-1`). A `timeBase` of `60fps` is the
-  60000/1001 NTSC rate, **not** an exact 60, so title times read about 0.1% short unless
-  multiplied by 1.001. The rates behind other `timeBase` values (24/30/50) are unconfirmed.
+  count in `timeBase` units (so `FF` runs `0`..`timeBase-1`). For the real-disc samples measured in
+  [freemkv's HD DVD parser](https://github.com/freemkv/libfreemkv/blob/dev/src/disc/hddvd.rs),
+  `60fps` timecodes match the EVO duration after multiplication by 1.001 (60000/1001).
+  The code explicitly labels this as measured, not specification-derived; it is not
+  established here as the meaning of every `60fps` playlist. The rates behind other `timeBase` values (24/30/50) are unconfirmed.
 
   Consecutive clips of one title have contiguous timelines: in a layer-break split, the second
   clip's `titleTimeBegin` equals the first clip's `titleTimeEnd`. Several titles may name the same clip (angles, branches, seamless-join
@@ -205,15 +208,16 @@ model:
   (`VPLST000.XPL`, `VPLST090.XPL`, … — each paired with its own `VTKF%%%.AACS`). A playlist can
   name a clip that is not on the disc; such a title cannot be played in full. A single `.EVO`
   can be named by many titles, and a clip can be present on the disc but named by no title.
-- **Without a usable playlist** (absent, not well-formed XML, or naming nothing present), titles
-  can only be derived from the clips. The ADVANCED-VTS VTI gives clip order; the segments of a
-  split feature are recognised by their names (see below). Such clip-derived titles have **no duration, name or chapter list** — those exist only
-  in the playlist.
+- **For Standard Content**, use the IFO title, PGC and chapter tables.
+- **For Advanced Content without a usable playlist**, clips can supply fallback candidates,
+  but they do not reconstruct the application's intended titles. The ADVANCED-VTS VTI gives clip order; the segments of a
+  split feature are recognised by their names (see below). Such clip-derived titles have **no duration, name or chapter list** — they have not been recovered from navigation. Duration may be estimated from a stream
+  scan, but that does not recover authored chapter or title semantics.
 - A playlist is a small document (kilobytes; about 5 nesting levels).
 
 ### Layer-break feature splitting
 
-A feature spanning the disc's layer break (single-layer 15 GB / dual-layer 30 GB) is authored
+A feature spanning the disc's layer break (single-layer 15 GB / dual-layer 30 GB) may be authored
 as **multiple EVO segments** — commonly `FEATURE_1.EVO` + `FEATURE_2.EVO` — with the playlist
 stitching them into one seamless title via ordered `<PrimaryAudioVideoClip>` entries; the
 segments are concatenated in playlist order. Several naming variants occur:
@@ -223,7 +227,7 @@ zero-length or unreadable part leaves a feature that is short by that part.
 ## Streams and codecs
 
 HD DVD-Video mandates three video codecs — **VC-1, H.264/AVC, and MPEG-2** — all decodable by
-every player; in practice the great majority of releases are VC-1. Inside the EVO program
+every player. Inside the EVO program
 stream they are routed by `stream_id`:
 
 - **VC-1** rides the **extended stream-id `0xFD`** with `stream_id_extension = 0x55` — composite
@@ -275,21 +279,21 @@ Plus tracks occur on sub-ids `0xC0`–`0xC7`.
 
 #### Timestamps in the program stream
 
-- Program-stream video is timestamped per GOP, not per picture: only one access unit per GOP
-  carries a PES `PTS`. H.264 and VC-1 pictures in the rest of the GOP have no timestamp, so their
-  presentation times follow from the picture type (I/P/B) and the sparse anchor `PTS`. The GOP
-  structures used for HD DVD H.264 and VC-1 are non-hierarchical: an anchor picture displays
-  after the previously held anchor, and a B-picture displays immediately.
+- PES timestamps can be sparse; inspected EVO streams often supply GOP-level anchors.
+  Neither one PTS per GOP nor non-hierarchical picture ordering follows from the program-stream
+  container. Reconstruct missing times using the codec's ordering and timing syntax; I/P/B
+  labels alone are insufficient for every AVC or VC-1 stream.
 - Per ISO/IEC 13818-1 §2.4.3.7, a PES `PTS` times the first access unit that *starts* in that
-  PES packet. HD DVD opens a PES at each timed picture; program streams that pack pictures back
-  to back do not.
+  PES packet. A packet can begin with the tail of an earlier picture; its timestamp still applies to
+  the first new access unit beginning later in that packet.
 
 #### VC-1 elementary stream
 
 | Item | Fact |
 |---|---|
 | Header order | An advanced-profile random-access point is a sequence header (start code `0x0F`), then an entry-point header (`0x0E`), then the frame (`0x0D`), in that order (SMPTE 421M). The headers belong to the picture that follows them; an access unit is delimited by the next frame start code |
-| Entry-point flags | The first two bits are `BROKEN_LINK` and `CLOSED_ENTRY`. With `CLOSED_ENTRY` = 0, leading B-pictures can predict from an anchor before the entry point, so they cannot be decoded at a stream start or after a join; `BROKEN_LINK` marks the same |
+| Entry-point flags | The first two bits are `BROKEN_LINK` and `CLOSED_ENTRY`. With `CLOSED_ENTRY` = 0, leading B-pictures can predict from an anchor before the entry point, so they cannot be decoded at a stream start or after a join; `BROKEN_LINK` separately signals a broken prediction link; an open entry point alone
+  does not prove the preceding reference is missing during continuous playback |
 | Picture type, progressive | `PTYPE` is a variable-length code: `0` = P, `10` = B, `110` = I, `1110` = BI, `1111` = skipped |
 | Picture type, interlaced | `FCM` precedes the picture type: `0` progressive, `10` frame-interlace, `11` field-interlace. A field-interlaced picture then carries a 3-bit `FPTYPE`: `000` I/I, `001` I/P, `010` P/I, `011` P/P, `100` B/B, `101` B/BI, `110` BI/B, `111` BI/BI |
 | Interlace flag | In the advanced-profile sequence header (SMPTE 421M §6.1.1, bit 41) |
@@ -298,8 +302,8 @@ Plus tracks occur on sub-ids `0xC0`–`0xC7`.
 
 #### Identifying a codec from the elementary stream
 
-Stream layout is a property of the clip, not the playlist: all clips of a split feature are
-continuations of one layout, so the first clip's streams describe the title. The signatures
+Inspect every selected clip: split features often keep one layout, but the first clip
+alone does not establish the codecs or stream identities of all subsequent clips. The signatures
 below are only readable in **clear** payload. In an encrypted pack, bytes 128–2047 are
 ciphertext, so only the first ~100 bytes of PES payload in each pack are readable; the codec of
 a clip whose packs are all encrypted cannot be read from later offsets until it is decrypted.
@@ -311,10 +315,10 @@ The clear head of an EVO reveals each stream's codec within its first few KiB (e
 | MPEG-2 video | start code `00 00 01 B3` (sequence header) |
 | VC-1 video | start code `00 00 01 0F` (sequence start code) |
 | H.264 video | a `00 00 01` start code followed by a byte whose `byte & 0x9F == 0x07` (NAL type 7, SPS; `nal_ref_idc` ignored) |
-| Dolby Digital Plus | 16-bit syncword `0B 77` in the sub-stream's ES |
+| Dolby Digital / Plus | Shared syncword `0B 77`; inspect `bsid` to distinguish AC-3 from E-AC-3 |
 
 One divergence from Blu-ray worth noting for a muxer: **Dolby TrueHD was mandatory on HD DVD**
-(optional on Blu-ray), so a TrueHD track is always player-decodable; DTS-HD MA/HR were optional
+(optional on Blu-ray), but this does not imply mandatory decoding of every multichannel presentation; DTS-HD MA/HR were optional
 (the DTS core is always present).
 
 ## AACS on HD DVD
@@ -334,7 +338,8 @@ The AACS key material lives in a root directory named **`AACS`**, with a paralle
 
 Images are also seen with the directory named **`ANY!`** or **`AAC!`** (with a
 `<name>!_BAK` mirror). These names are not part of the format and do not appear on retail
-discs; they occur on modified copies whose content has already been decrypted. Such a directory
+discs; they are evidence of a modified copy. The directory name alone does not establish
+that every content pack has been decrypted. Such a directory
 sits at the root, its name ends in `!`, and it contains `MKBROM.AACS`; the files inside keep
 their nominal names. The AACS directory is key material, not content: it is separate from the
 A/V tree, and its presence marks the disc as AACS-protected only when it carries the genuine
@@ -382,7 +387,7 @@ The VTKF is where HD DVD diverges most visibly from Blu-ray (which keeps all tit
     is at offset 132; entry #2 begins at 164; and so on. `BIFO` bit 7 (`AV_FLG`) set = the slot
     holds a key; the entry index (1-based) is the CPS unit number;
   - bytes 2432–2463 sit between the last entry and the MAC and are not described here;
-  - a trailing **16-byte `TKF MAC`** (bytes 2464–2479), a CMAC over the file keyed by the
+  - a trailing **16-byte `TKF MAC`** (bytes 2464–2479), a CMAC over the preceding 2464 bytes, excluding the MAC field, keyed by the
     Volume Unique Key — which lets an implementation *verify a candidate key is correct*.
   - For pre-recorded discs the binding type is "Volume-ID only" and the 16-byte binding MAC is
     filled with `0xFF`.
@@ -394,7 +399,9 @@ The VTKF is where HD DVD diverges most visibly from Blu-ray (which keeps all tit
   Only one holds keys valid for the active playlist.
 - All 64 slots can be populated. The key an EVOB uses is selected by the `TITLE_KEY_PTR` in its
   CPI, not by the slot count.
-- The **SHA-1 of the whole VTKF file is the per-disc DiscID** used to index a key database.
+- Some key databases use **SHA-1 of a VTKF file** as a lookup identifier. This is a
+  database convention, not the AACS Volume Identifier or a guarantee of one identifier per
+  disc: Advanced Content can have several playlist-specific VTKFs.
 
 ### VTUF, DKF, CONTENT_CERT
 
@@ -416,11 +423,13 @@ The VTKF is where HD DVD diverges most visibly from Blu-ray (which keeps all tit
 This is the second major divergence from Blu-ray, and the one that most affects a decryptor.
 
 Blu-ray encrypts a **6144-byte aligned unit** (three sectors): the first 16 bytes are a clear
-seed, and bytes 16–6144 are AES-128-CBC encrypted under a per-unit block key, with a fresh CBC
+seed, and bytes 16–6143 are AES-128-CBC encrypted under a per-unit block key, with a fresh CBC
 chain per unit.
 
 HD DVD does **not** use that model. Content is MPEG-2 Program Stream in 2048-byte packs, and
-the AACS HD DVD book (§4.3) specifies encryption **per pack**:
+the AACS HD DVD book (§4.3) specifies encryption **per pack**. The following algorithm
+applies when the EVOBU's `KEY_VF` selects an encrypted title or segment key; `KEY_VF = 00`
+means no content decryption is needed:
 
 - **Within an encrypted pack, bytes 0–127 are clear and bytes 128–2047 are encrypted.** The
   boundary is a fixed byte offset, not the end of the PES header: the clear head includes the
@@ -438,49 +447,72 @@ the AACS HD DVD book (§4.3) specifies encryption **per pack**:
 - **The per-pack Content Key** is `Kc = AES-G(Kt, D_tk ‖ CPI_lsb96)`, where `Kt` is the title
   key from the VTKF, `D_tk` is the 32-bit Title Key Data at bytes 84–87 of the pack, and
   `CPI_lsb96` is the low 96 bits (bytes 4–15) of the 16-byte **CPI**. The CPI is carried in the
-  GCI packet of the EVOBU's navigation pack, at **pack offset 60**. The derivation is always
+  GCI packet of the EVOBU's navigation pack, at **pack offset 60 in the inspected NV_PCK layout**; that placement is measured
+  in freemkv's implementation, whereas the key derivation is specified by AACS. The derivation is always
   applied: the plain title key is never the cipher key. The `KEY_VF` field of the CPI selects
   the title key (`TITLE_KEY_PTR` picks the slot) or, for interleaved sections, a **Segment Key**
   (from `SKF.AACS`) in place of `Kt`.
 - Bytes 128–2047 are decrypted with AES-128-CBC under `Kc` and the AACS **fixed,
   format-constant IV**; a clear `PES_scrambling_control` is then restored.
 
-## What is confirmed, and what is not
+### Bus encryption is a separate layer
 
-| Area | Status |
+The HD DVD book also specifies bus encryption (§4.3.5). When the sector's physical
+`B_flag` is set, a licensed drive bus-encrypts bytes 128–2047 before transferring the
+pack to the host, leaving the first 128 bytes clear. This layer is distinct from the
+per-pack content encryption above and must be removed using the authenticated session
+data key before content decryption. An intact pack start code proves neither layer is absent.
+
+## Evidence and remaining limits
+
+| Area | Evidence and scope |
 |---|---|
-| UDF 2.5, 2048-byte packs, `HVDVD_TS` + `ADV_OBJ` layout | **Confirmed** |
-| EVO = MPEG-2 Program Stream; stream-id routing (VC-1 `0xFD/0x55`, sub-video VC-1 `0xFD/0x56`, MPEG-2 `0xE0`, H.264 `0xE2`, audio `0xBD`) | **Confirmed** |
-| First-generation AACS, crypto identical to Blu-ray AACS 1.0 | **Confirmed** |
-| `.AACS` file inventory and each file's role; VTKF↔playlist binding | **Confirmed** |
-| VTKF layout: 2480-byte file, 128-byte header, 64 × 36-byte entries, trailing MAC | **Confirmed** |
-| Per-2048-byte-pack encryption: bytes 0–127 clear, 128–2047 CBC, `PES_scrambling_control` flag, `Kc = AES-G(Kt, D_tk ‖ CPI)`, CPI at pack offset 60, constant IV, Segment Key for interleaved sections | **Confirmed** (AACS HD DVD book §4.3) |
-| Genuine discs use `/AACS`; `ANY!` / `AAC!` appear only on modified, already-decrypted copies | **Confirmed** |
-| Title definition: playlist authoritative; clip-derived titles carry no duration or chapters | **Confirmed** |
-| Capacity ↔ layers (about 7.3 M / 14.6 M / 25 M sectors), 32 KiB ECC block | **Confirmed** |
-| ADVANCED-VTS VTI: magic, 0x140-byte clip-record stride, NUL-terminated `.EVO` names in authored order | Table start and in-record name offset not confirmed |
-| XPL structure and attributes; `timeBase` 60fps = 60000/1001 | **Confirmed** for 60fps; other time bases unconfirmed |
-| VC-1 header order, entry-point flags, picture-type codes, advanced-profile resolution; per-GOP PTS | **Confirmed** (SMPTE 421M / ISO 13818-1) |
-| PES layout, unbounded video PES, `0xFD` extension parsing, 4-byte E-AC-3 sub-header | **Confirmed** |
-| Frame rates behind `timeBase` values other than 60fps | **Unconfirmed** |
+| UDF 2.50, 2048-byte sectors, 64 KiB ECC blocks | UDF media requirements, ECMA TR/112-3 errata §7.20 |
+| Content categories, file naming and stream routing | HD DVD format descriptions in the cited patents, corroborated by parser behavior; patents are not normative specifications |
+| AACS files, playlist-bound VTKFs, 2480-byte TKF and MAC coverage | AACS HD DVD and DVD Pre-recorded Book rev. 0.952, §3.5 / Table 3-8 |
+| Per-pack cipher and `Kc = AES-G(Kt, Dtk ‖ CPI_lsb96)` | AACS HD DVD book §4.3.2–4.3.5; shared cryptography does not imply Blu-ray's content framing |
+| CPI at pack offset 60 | Measured navigation-pack layout, recorded in freemkv's implementation; locate the GCI packet rather than assuming a generic PES layout |
+| VTI 0x140-byte records | Observed layout; table start and in-record filename offset are not fully specified here |
+| XPL `60fps` correction | Measured freemkv behavior, not an independently established universal time-base rule |
+| Sparse PTS and codec ordering | Parse the actual PES and codec syntax; GOP structure and timestamp density vary |
+| Renamed `ANY!` / `AAC!` directories | Modified-copy convention; not proof that the payload is decrypted |
 
 ## References
 
-*Further reading on the topics covered here. These sources discuss related material; they are not cited claim by claim, and not every statement in them is endorsed here.*
+Specifications define the formats; implementation links document concrete parser and recovery behavior. Research and community sources are identified separately. Observations from particular discs are not universal format guarantees.
 
 ### Specifications
 
-- Advanced Access Content System (AACS): HD DVD and DVD Pre-recorded Video Book, Final Revision 0.952 (no longer publicly available)
-- [HD DVD-Video patent US 2008/0298219 A1 (disc categories, file naming, stream-id tables, navigation pack layout)](https://patents.google.com/patent/US20080298219A1/en)
-- [HD DVD-Video patent CN 101091217 A (Advanced VTS file naming)](https://patents.google.com/patent/CN101091217A)
-- ISO/IEC 13818-1, MPEG-2 Systems (program stream and PES syntax)
-- SMPTE 421M, VC-1 compressed video bitstream format
+- [AACS specifications catalog](https://aacsla.com/aacs-specifications/) — HD DVD and DVD Pre-recorded Book rev. 0.952 used for this audit. The publisher has withdrawn the download and says the HD DVD books remain available on request.
+- [ITU-T H.222.0 / ISO/IEC 13818-1, MPEG-2 Systems](https://www.itu.int/rec/T-REC-H.222.0) — program stream and PES syntax
+- [UDF 2.50, ECMA TR/112-3](https://ecma-international.org/wp-content/uploads/ECMA_TR-112-3_1st_edition_december_2023.pdf) — particularly HD DVD media requirements, errata §7.20
+- SMPTE ST 421, VC-1 — licensed specification; [SMPTE standards catalog](https://www.smpte.org/standards)
 
 ### Open-source implementations
 
+**Filesystem access and decryption**
+
+- [libudfread](https://code.videolan.org/videolan/libudfread) — UDF filesystem access and extent traversal.
+- [freemkv AACS HD DVD implementation](https://github.com/freemkv/libfreemkv/blob/dev/src/aacs/hddvd.rs) — pack classification, CPI and per-pack content decryption.
+
+**Navigation and metadata**
+
+- [freemkv / libfreemkv](https://github.com/freemkv/libfreemkv) — XPL, VTI and EVO title discovery; implementation limits are identified in the text.
 - libdvdread: [ifo_types.h](https://code.videolan.org/videolan/libdvdread/-/blob/master/src/dvdread/ifo_types.h) (DVD IFO structures, including the time map table)
+
+**Elementary streams and codecs**
+
 - FFmpeg: [libavcodec/vc1.c](https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/vc1.c) (VC-1 headers), [libavformat/mpeg.c](https://github.com/FFmpeg/FFmpeg/blob/master/libavformat/mpeg.c) (program stream demuxer)
 
-### Community references
+**Extraction and output**
+
+- [freemkv](https://github.com/freemkv/freemkv) — disc extraction application built on libfreemkv.
+- [FFmpeg](https://github.com/FFmpeg/FFmpeg) — demuxing, decoding and remuxing.
+- [MKVToolNix](https://mkvtoolnix.download/) — Matroska muxing and inspection.
+
+### Research and community references
+
+- [HD DVD-Video patent US 2008/0298219 A1 (disc categories, file naming, stream-id tables, navigation pack layout)](https://patents.google.com/patent/US20080298219A1/en)
+- [HD DVD-Video patent CN 101091217 A (Advanced VTS file naming)](https://patents.google.com/patent/CN101091217A)
 
 - [Doom9: ANY! folder discussion](https://forum.doom9.org/archive/index.php/t-159163.html)
