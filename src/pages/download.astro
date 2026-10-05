@@ -43,6 +43,13 @@ const aptSetup = [
   'curl -fsSL https://freemkv.org/apt/freemkv.gpg | sudo tee /etc/apt/keyrings/freemkv.gpg >/dev/null',
   'echo "deb [signed-by=/etc/apt/keyrings/freemkv.gpg] https://freemkv.org/apt stable main" | sudo tee /etc/apt/sources.list.d/freemkv.list',
 ];
+const rpmSetup = 'sudo curl -fsSL -o /etc/yum.repos.d/freemkv.repo https://freemkv.org/rpm/freemkv.repo';
+const pacmanSetup = [
+  'curl -fsSL https://freemkv.org/arch/freemkv.asc | sudo pacman-key --add -',
+  'sudo pacman-key --lsign-key 3C77286840178C3512276AC49030E403F8320C5D',
+  "printf '\\n[freemkv]\\nServer = https://freemkv.org/arch/$arch\\n' | sudo tee -a /etc/pacman.conf",
+];
+const scoopSetup = 'scoop bucket add freemkv https://github.com/freemkv/scoop-bucket';
 const linuxHelp = 'Setup, drive access and older distros: <a href="/docs/platforms-linux/">Linux guide</a>.';
 const windowsHelp = 'Windows may flag this unsigned download: <a href="/docs/platforms-windows/#first-launch">first-run help</a>.';
 
@@ -51,6 +58,11 @@ const appPlatforms = [
     name: 'Windows',
     os: 'windows',
     methods: [
+      {
+        title: 'Scoop',
+        hint: 'x86_64 · updates with scoop update',
+        commands: [scoopSetup, 'scoop install freemkv'],
+      },
       {
         title: 'Download',
         builds: [
@@ -82,6 +94,17 @@ const appPlatforms = [
         hint: 'Ubuntu 24.04+, Mint 22, Debian 13 · recommended',
         commands: [...aptSetup, 'sudo apt update && sudo apt install freemkv'],
         note: 'Updates arrive with <code>apt upgrade</code>.',
+      },
+      {
+        title: 'DNF',
+        hint: 'Fedora 40+',
+        commands: [rpmSetup, 'sudo dnf install freemkv'],
+        note: 'openSUSE: <code>sudo zypper addrepo https://freemkv.org/rpm/freemkv.repo</code>, then <code>sudo zypper install freemkv</code>.',
+      },
+      {
+        title: 'pacman',
+        hint: 'Arch Linux',
+        commands: [...pacmanSetup, 'sudo pacman -Syu freemkv'],
       },
       {
         title: 'Snap',
@@ -118,6 +141,11 @@ const cliPlatforms = [
     os: 'windows',
     methods: [
       {
+        title: 'Scoop',
+        hint: 'x86_64 · updates with scoop update',
+        commands: [scoopSetup, 'scoop install freemkv-cli'],
+      },
+      {
         title: 'Download',
         builds: [
           { key: 'windows-x64', arch: 'x86_64', label: 'Console .exe · rename to freemkv.exe', file: 'freemkv-cli-x86_64-windows.exe' },
@@ -145,6 +173,17 @@ const cliPlatforms = [
         title: 'APT',
         hint: 'Debian, Ubuntu 22.04+, Mint · recommended',
         commands: [...aptSetup, 'sudo apt update && sudo apt install freemkv-cli'],
+      },
+      {
+        title: 'DNF',
+        hint: 'Fedora, RHEL 9, Alma, Rocky',
+        commands: [rpmSetup, 'sudo dnf install freemkv-cli'],
+        note: 'openSUSE: <code>sudo zypper addrepo https://freemkv.org/rpm/freemkv.repo</code>, then <code>sudo zypper install freemkv-cli</code>.',
+      },
+      {
+        title: 'pacman',
+        hint: 'Arch Linux',
+        commands: [...pacmanSetup, 'sudo pacman -Syu freemkv-cli'],
       },
       {
         title: 'Download',
