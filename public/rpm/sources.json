@@ -1,12 +1,27 @@
 [
   {
+    "file": "freemkv-1.8.0-1.aarch64.rpm",
+    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.0/freemkv-aarch64.rpm",
+    "sha256": "1eafb60b845143148f9e77105f87fe688d808e630d6d3344892c5e6a3100675a"
+  },
+  {
     "file": "freemkv-1.8.0-1.x86_64.rpm",
     "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.0/freemkv-x86_64.rpm",
-    "sha256": "b849a6e2e1a5e3c54d61c16b814d9bb2f9b89e448f80634f01fdaa8dd7957f89"
+    "sha256": "5598e40f7b8dcdd45677b06a7c82f514b2288ac9762e91462e55beadca0695d3"
+  },
+  {
+    "file": "freemkv-cli-1.8.0-1.aarch64.rpm",
+    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.0/freemkv-cli-aarch64.rpm",
+    "sha256": "3eda5ffae0bad726c828052f3f224642756f4cc4b4c05dcedbfe3e23328101fe"
+  },
+  {
+    "file": "freemkv-cli-1.8.0-1.armv7hl.rpm",
+    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.0/freemkv-cli-armv7hl.rpm",
+    "sha256": "9f8b97dc1b5e0d4236e28c444d31cf906b34d3284aa24c7da27a75e612913ce5"
   },
   {
     "file": "freemkv-cli-1.8.0-1.x86_64.rpm",
     "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.0/freemkv-cli-x86_64.rpm",
-    "sha256": "00fdb4a82be230a558748e2cc5c7f591b3beb829596430f77deea86314c2d40b"
+    "sha256": "466799089e7e71cff43f035026bf3b645447ce468f5b02c93aa3aeeff1860284"
   }
 ]
