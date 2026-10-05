@@ -10,8 +10,7 @@ freemkv-library server (autorip before 1.8.0) — newest first. Every release sh
 one version number.
 
 For the full technical detail behind a release, see the per-component notes:
-[freemkv releases](https://github.com/freemkv/freemkv/releases) ·
-[autorip releases](https://github.com/freemkv/autorip/releases) (before 1.8.0).
+[freemkv releases](https://github.com/freemkv/freemkv/releases).
 
 ## 1.8.0
 
