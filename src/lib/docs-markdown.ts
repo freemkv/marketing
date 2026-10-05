@@ -1,6 +1,6 @@
 // Shared helpers that turn a docs collection entry into clean, self-contained
 // Markdown for machine readers (/docs/<slug>.md and /llms.txt). Build-time only.
-import firmwareVersionSrc from '../components/FirmwareVersion.astro?raw';
+import { latestRelease } from './releases.mjs';
 import { shotsFor } from '../data/app-screenshots';
 
 export const SITE = 'https://freemkv.org';
@@ -17,11 +17,8 @@ export const htmlUrl = (id: string) => `${SITE}/${id}/`;
 /** URL of the Markdown rendition of a docs entry. */
 export const markdownUrl = (id: string) => `${SITE}/${id}.md`;
 
-// <FirmwareVersion /> renders its `fallback` prop default at build time (and is
-// upgraded client-side). Reuse that same default so the Markdown matches the
-// static HTML instead of hard-coding a second copy of the version.
-const firmwareFallback =
-  /fallback\s*=\s*['"]([^'"]+)['"]/.exec(firmwareVersionSrc)?.[1] ?? 'latest';
+// Match the release version rendered in the docs HTML.
+const { version: firmwareFallback } = await latestRelease('freemkv-firmware');
 
 /**
  * MDX bodies contain `import` lines and Astro/Starlight components that mean

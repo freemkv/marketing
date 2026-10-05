@@ -1,14 +1,6 @@
 ---
-// Live freemkv-firmware version. Renders a fallback tag (the latest known
-// firmware release) and upgrades it at runtime from the freemkv-firmware
-// GitHub "latest release" tag — the same client-side pattern the download page
-// uses for the main stack version. When firmware ships a new release the site
-// updates automatically; the fallback is only shown if the API can't be reached.
-interface Props {
-  /** Shown until the live tag loads (and if the fetch fails). */
-  fallback?: string;
-}
-const { fallback = '0.10.0' } = Astro.props;
+import { latestRelease } from '../lib/releases.mjs';
+const { version: fallback } = await latestRelease('freemkv-firmware');
 ---
 
 <span class="fw-version" data-fw-version>{fallback}</span>
@@ -22,6 +14,7 @@ const { fallback = '0.10.0' } = Astro.props;
     const TTL = 60 * 60 * 1000; // 1h
     const apply = (tag: string) => {
       if (!tag) return;
+      if (String(tag).replace(/^v/, '').localeCompare(nodes[0].textContent || '', undefined, { numeric: true }) < 0) return;
       const v = String(tag).replace(/^v/, '');
       document
         .querySelectorAll('[data-fw-version]')
@@ -34,7 +27,7 @@ const { fallback = '0.10.0' } = Astro.props;
     let fresh = false;
     if (cached && cached.tag) {
       apply(cached.tag);
-      fresh = Date.now() - (cached.ts || 0) < TTL;
+      fresh = String(cached.tag).replace(/^v/, '').localeCompare(nodes[0].textContent || '', undefined, { numeric: true }) >= 0 && Date.now() - (cached.ts || 0) < TTL;
     }
     if (!fresh) {
       fetch(
@@ -45,6 +38,7 @@ const { fallback = '0.10.0' } = Astro.props;
         .then((rel) => {
           const tag = rel && rel.tag_name;
           if (!tag) return;
+      if (String(tag).replace(/^v/, '').localeCompare(nodes[0].textContent || '', undefined, { numeric: true }) < 0) return;
           apply(tag);
           try {
             localStorage.setItem(KEY, JSON.stringify({ tag, ts: Date.now() }));

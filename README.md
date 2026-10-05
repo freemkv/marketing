@@ -84,3 +84,20 @@ Deployment is automatic via GitHub Actions (`.github/workflows/pages.yml`):
 
 `public/.nojekyll` disables Jekyll processing on Pages so Astro's `_`-prefixed asset
 directories are served correctly.
+
+### Release badges and announcements
+
+Builds resolve the app and firmware tools from each repository’s GitHub latest
+stable release, including the publication date. GitHub API failures stop the
+build rather than publishing stale defaults. CI supplies `GH_TOKEN`; local
+builds can also use it to avoid unauthenticated rate limits. Browser refreshes
+remain enabled, but older cached versions cannot replace the built badge.
+
+Discord announcements are serialized and claimed once per app version using
+`refs/tags/discord-announced/vX.Y.Z`. Existing releases in
+`.github/announced-versions.txt` are excluded during migration. Manual dispatch
+uses the same protection. Claims are written before sending to avoid duplicate
+pings if Discord accepts a request but its response is lost. If a send fails,
+inspect Discord and the workflow log; only after confirming no message was
+posted should an operator delete that version’s claim tag and dispatch again.
+Do not remove a claim merely because a workflow is being retried.

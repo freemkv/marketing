@@ -1,4 +1,6 @@
 ---
+import { latestRelease } from '../lib/releases.mjs';
+const release = await latestRelease('freemkv');
 import { graph, websiteNode, orgNode, appNode, webPageNode, breadcrumbNode, ID } from '../lib/jsonld.mjs';
 // Standalone styled Download page for freemkv.org.
 // Owns the "/download" route directly (NOT part of the Starlight docs
@@ -264,9 +266,9 @@ import '../styles/site.css';
           <div class="hero-version">
             <span class="hero-version-dot" aria-hidden="true"></span>
             <span class="hero-version-label">Latest release</span>
-            <span class="hero-version-num" data-latest-version>v1.8.0</span>
+            <span class="hero-version-num" data-latest-version>{release.tag}</span>
           </div>
-          <div class="hero-version-date" data-latest-date>October 5, 2026</div>
+          <div class="hero-version-date" data-latest-date>{release.date}</div>
           <p class="hero-foot">Free &amp; open source · Windows, macOS &amp; Linux · Intel &amp; ARM</p>
         </div>
       </section>
@@ -578,12 +580,14 @@ import '../styles/site.css';
 
         function populate(tags, latestDate) {
           if (!tags || !tags.length) return;
+      var badge = document.querySelector('[data-latest-version]');
+      if (badge && tags[0].localeCompare(badge.textContent || '', undefined, { numeric: true }) < 0) return;
           // The baked static badge is ALREADY the latest release (the release
           // script bakes it in), so the API call only VERIFIES it. Rewrite the
           // text only when it genuinely differs — a no-op avoids the version/date
           // "flash" on load when the static is already correct.
           document.querySelectorAll('[data-latest-version]').forEach(function (el) {
-            if (el.textContent !== tags[0]) el.textContent = tags[0];
+            if (tags[0].localeCompare(el.textContent || '', undefined, { numeric: true }) >= 0) el.textContent = tags[0];
           });
           if (latestDate) {
             document.querySelectorAll('[data-latest-date]').forEach(function (el) {
@@ -629,7 +633,7 @@ import '../styles/site.css';
         fetch(API, { headers: { Accept: 'application/vnd.github+json' } })
           .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
           .then(function (rels) {
-            var list = (rels || []).filter(function (r) { return !r.draft; });
+            var list = (rels || []).filter(function (r) { return !r.draft && !r.prerelease; });
             var tags = list.map(function (r) { return r.tag_name; });
             list.forEach(function (r) {
               var set = Object.create(null);

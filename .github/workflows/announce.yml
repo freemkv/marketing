@@ -1,14 +1,8 @@
 name: Announce release on Discord
 
-# When a new version lands on the changelog page, drop a plain-text note in
-# the Discord release channel. Fires AFTER "Deploy site to Pages" succeeds so
-# the #anchor link it posts is already live, and only when this deploy's push
-# actually added a changelog entry — an unrelated site change posts nothing.
-#
-# Manual fire: workflow_dispatch (optional `version` input; blank = newest)
-# posts unconditionally, bypassing the diff guard — a recovery path for when
-# the automatic run missed (e.g. the changelog deploy was cancelled by a later
-# same-second deploy, so the successful deploy's tip did not touch the file).
+# Each version is claimed once with a durable Git tag before sending.
+# Manual dispatch uses the same duplicate guard. A failed/ambiguous send
+# leaves its claim in place for explicit operator review (never auto-retry).
 on:
   workflow_run:
     workflows: ["Deploy site to Pages"]
@@ -21,8 +15,11 @@ on:
         default: ""
 
 permissions:
-  contents: read
-  actions: read   # find the previous successful deploy
+  contents: write
+
+concurrency:
+  group: discord-release-announcements
+  cancel-in-progress: false
 
 jobs:
   announce:
@@ -36,80 +33,10 @@ jobs:
       - uses: actions/checkout@v5
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
-          fetch-depth: 0   # need the previous deploy's commit to compare against
 
       - name: Post the newest changelog entry to Discord
         env:
           HOOK: ${{ secrets.DISCORD_RELEASE_WEBHOOK }}
-          EVENT: ${{ github.event_name }}
           VER_INPUT: ${{ github.event.inputs.version }}
           GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          CL=src/content/docs/docs/changelog.md
-
-          # Automatic runs announce only when THIS deploy's commit touched the
-          # changelog. A manual dispatch always announces (bypasses the guard).
-          if [ "${EVENT:-}" != "workflow_dispatch" ]; then
-            # Compare against the LAST SUCCESSFUL deploy, not the parent commit: deploys
-            # cancel each other (cancel-in-progress), so the deploy that carried a release
-            # entry can be cancelled and only a later commit ever deploys. Announce when
-            # the newest released version differs from what that deploy published.
-            top() { grep -m1 -E '^## [0-9]' | sed 's/^## //'; }
-            NOW=$(top < "$CL")
-            PREV_SHA=$(gh run list -R "$GITHUB_REPOSITORY" -w pages.yml -b main -s success -L 10 \
-                         --json headSha -q '.[].headSha' | grep -vx "$(git rev-parse HEAD)" | head -1 || true)
-            PREV=""
-            if [ -n "$PREV_SHA" ] && git cat-file -e "$PREV_SHA" 2>/dev/null; then
-              PREV=$(git show "$PREV_SHA:$CL" 2>/dev/null | top || true)
-            fi
-            if [ "$NOW" = "$PREV" ]; then
-              echo "newest changelog version $NOW was already live — nothing to announce"
-              exit 0
-            fi
-            echo "newest changelog version: $NOW (last deploy: ${PREV:-none})"
-          fi
-          [ -n "${HOOK:-}" ] || { echo "::warning::DISCORD_RELEASE_WEBHOOK unset — skipping"; exit 0; }
-
-          # Version = the dispatch input if given, else the newest "## x.y.z"
-          # heading. Anchor is the dotless slug github-slugger emits (1.6.11 ->
-          # 1611), matching the live page.
-          if [ -n "${VER_INPUT:-}" ]; then
-            VER="$VER_INPUT"
-          else
-            VER=$(grep -m1 -E '^## [0-9]' "$CL" | sed 's/^## //')
-          fi
-          ANCHOR=${VER//./}
-          URL="https://freemkv.org/docs/changelog/#${ANCHOR}"
-
-          # The section = lines between "## VER" and the next "## ", with the
-          # HTML bits (the <small>date</small> tag) stripped so it reads as
-          # clean markdown in Discord.
-          SECTION=$(awk -v v="## $VER" '$0==v{f=1;next} f&&/^## /{exit} f{print}' "$CL" \
-                      | sed -E 's/<[^>]+>//g')
-          [ -n "$SECTION" ] || { echo "::error::no changelog section for '$VER'"; exit 1; }
-
-          # The first non-blank line is the release date. Fold it into the
-          # header rather than leaving it as an orphan line in the body.
-          FIRST=$(printf '%s\n' "$SECTION" | awk 'NF{print; exit}')
-          if printf '%s' "$FIRST" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'; then
-            HEADER="@everyone **freemkv $VER** — released $FIRST"
-            BODY=$(printf '%s\n' "$SECTION" | awk 'NF&&!seen{seen=1;next} seen{print}')
-          else
-            HEADER="@everyone **freemkv $VER** was just released."
-            BODY="$SECTION"
-          fi
-          # Trim leading blank lines so the body starts at the first heading.
-          BODY=$(printf '%s\n' "$BODY" | awk 'NF{f=1} f')
-
-          CONTENT=$(printf '%s\n\n%s\n\n%s' "$HEADER" "$BODY" "$URL")
-
-          # Discord hard-limits `content` to 2000 chars; leave headroom.
-          CONTENT=${CONTENT:0:1900}
-
-          # allowed_mentions.parse=["everyone"] is REQUIRED for @everyone to
-          # actually ping when posting through a webhook.
-          jq -n --arg c "$CONTENT" \
-            '{content:$c, allowed_mentions:{parse:["everyone"]}}' \
-          | curl -fsS -X POST "$HOOK" -H 'Content-Type: application/json' -d @-
-          echo "Announced freemkv $VER"
+        run: bash scripts/announce-release.sh

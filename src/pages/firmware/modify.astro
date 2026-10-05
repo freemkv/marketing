@@ -1,4 +1,6 @@
 ---
+import { latestRelease } from '../../lib/releases.mjs';
+const release = await latestRelease('freemkv-firmware');
 import { graph, websiteNode, orgNode, webPageNode, breadcrumbNode, firmwareToolNode, ID } from '../../lib/jsonld.mjs';
 // "Modify" — /firmware/modify/. freemkv-fw: turns a base image into freemkv
 // firmware (`create`) and checks whether a file or a live drive is freemkv
@@ -180,9 +182,9 @@ import '../../styles/site.css';
           <div class="hero-version">
             <span class="hero-version-dot" aria-hidden="true"></span>
             <span class="hero-version-label">Latest release</span>
-            <span class="hero-version-num" data-latest-version>v0.9.2</span>
+            <span class="hero-version-num" data-latest-version>{release.tag}</span>
           </div>
-          <div class="hero-version-date" data-latest-date>September 25, 2026</div>
+          <div class="hero-version-date" data-latest-date>{release.date}</div>
           <p class="hero-lead">
             Turns any stock MediaTek image into freemkv firmware.
             <br />

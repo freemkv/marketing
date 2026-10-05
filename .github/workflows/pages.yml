@@ -66,6 +66,7 @@ jobs:
         run: node scripts/firmware-withdraw.mjs
       - run: npm run build   # astro build -> dist/
         env:
+          GH_TOKEN: ${{ github.token }}
           PUBLIC_FIRMWARE_TURNSTILE_SITEKEY: ${{ vars.PUBLIC_FIRMWARE_TURNSTILE_SITEKEY }}
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
