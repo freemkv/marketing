@@ -22,7 +22,7 @@ Go to the **[Download](/download/)** page; it detects your OS and highlights the
 |---|---|---|
 | **[Windows](/docs/platforms-windows/)** | `freemkv-x86_64-windows-setup.exe` installer (adds `freemkv` to PATH), or the portable `freemkv-x86_64-windows.zip` | `freemkv-cli-x86_64-windows.exe` |
 | **[macOS](/docs/platforms-macos/)** | `brew install --cask freemkv/tap/freemkv`, or the `.zip` (Apple Silicon / Intel) | `brew install freemkv/tap/freemkv-cli`, or the bare binary (Apple Silicon / Intel) |
-| **[Linux](/docs/platforms-linux/)** | `freemkv-amd64.deb` (package `freemkv`), `freemkv-x86_64-linux.AppImage`, `freemkv-x86_64-linux.flatpak`, or the Flatpak from [FlatPark](/docs/platforms-linux/#flatpak-from-flatpark); Flathub listing on the way | `freemkv-cli-amd64.deb` (package `freemkv-cli`), or a static binary for x86_64 / aarch64 |
+| **[Linux](/docs/platforms-linux/)** | `snap install freemkv` ([Snap Store](/docs/platforms-linux/#snap-store)), `freemkv-amd64.deb` (package `freemkv`), `freemkv-x86_64-linux.AppImage`, `freemkv-x86_64-linux.flatpak`, or the Flatpak from [FlatPark](/docs/platforms-linux/#flatpak-from-flatpark); Flathub listing on the way | `freemkv-cli-amd64.deb` (package `freemkv-cli`), or a static binary for x86_64 / aarch64 |
 
 Every asset has a matching `.sha256` checksum on its releases page: [freemkv](https://github.com/freemkv/freemkv/releases).
 

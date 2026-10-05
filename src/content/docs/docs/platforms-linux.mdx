@@ -24,7 +24,19 @@ With the app, a bare `freemkv` opens the window. With no display (for example ov
 
 ### App
 
-The app packages include both the desktop app and the CLI. Snap Store and Flathub listings are not currently available; the downloads below work independently of those submissions.
+The app packages include both the desktop app and the CLI. The Flathub listing is not available yet; the downloads below work without it.
+
+#### Snap Store
+
+freemkv is on the Snap Store (x86_64), strictly confined:
+
+```bash
+sudo snap install freemkv
+sudo snap connect freemkv:optical-drive
+sudo snap connect freemkv:optical-write
+```
+
+The two `connect` lines give the snap access to the optical drive (read, and write for tray and drive commands); they are needed until the Snap Store grants automatic connection. Updates arrive through `snap refresh`.
 
 #### Native .deb package
 
