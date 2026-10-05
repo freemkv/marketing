@@ -62,13 +62,18 @@ const appPlatforms = [
     builds: [
       { key: 'linux-x64', arch: '.deb', label: 'Ubuntu 24.04+ / Linux Mint 22 · package freemkv', file: 'freemkv-amd64.deb' },
       { arch: 'AppImage', label: 'Portable · Ubuntu 24.04+ / Fedora 40+', file: 'freemkv-x86_64-linux.AppImage', secondary: true },
-      { arch: 'Flatpak', label: 'flatpak install --user ./freemkv-x86_64-linux.flatpak', file: 'freemkv-x86_64-linux.flatpak', secondary: true },
+      { arch: 'Flatpak', label: 'Bundle file · x86_64 · install command below', file: 'freemkv-x86_64-linux.flatpak', secondary: true },
     ],
     commands: [
+      '# Flatpak bundle you downloaded above',
+      'flatpak install --user ./freemkv-x86_64-linux.flatpak',
+      '# or from FlatPark, with updates through flatpak update',
       'flatpak remote-add --if-not-exists flatpark https://dl.flatpark.org/flatpark.flatpakrepo',
       'flatpak install flatpark org.freemkv.FreeMKV',
+      '# or from the Snap Store (drive access: see the Linux page)',
+      'sudo snap install freemkv',
     ],
-    note: 'Or install the Flatpak from FlatPark (commands above) and get updates through flatpak update. Also on the Snap Store: sudo snap install freemkv (drive access: see the Linux page). Flathub listing (org.freemkv.FreeMKV) coming.',
+    note: 'Flathub listing (org.freemkv.FreeMKV) coming.',
   },
 ];
 
