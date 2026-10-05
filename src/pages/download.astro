@@ -36,49 +36,80 @@ const cliRepo = 'https://github.com/freemkv/freemkv';
 const guiRepo = cliRepo;
 const allReleases = `${cliRepo}/releases`;
 
-// Card data for the app and CLI sections. `key` ("<os>-<arch>") marks the
-// button the detector highlights; `secondary` renders an outline button;
-// `brew` is a Homebrew command shown above the buttons; `commands` are shell
-// commands shown below them.
+// Card data for the app and CLI sections: one box per install method.
+// `key` ("<os>-<arch>") marks the button the detector highlights;
+// `secondary` renders an outline button; `commands` are copy-paste shell lines.
+const aptSetup = [
+  'sudo install -d -m 0755 /etc/apt/keyrings',
+  'curl -fsSL https://freemkv.org/apt/freemkv.gpg | sudo tee /etc/apt/keyrings/freemkv.gpg >/dev/null',
+  'echo "deb [signed-by=/etc/apt/keyrings/freemkv.gpg] https://freemkv.org/apt stable main" | sudo tee /etc/apt/sources.list.d/freemkv.list',
+];
+const linuxHelp = 'Setup, drive access and older distros: <a href="/docs/platforms-linux/">Linux guide</a>.';
+const windowsHelp = 'Windows may flag this unsigned download: <a href="/docs/platforms-windows/#first-launch">first-run help</a>.';
+
 const appPlatforms = [
   {
     name: 'Windows',
     os: 'windows',
-    builds: [
-      { key: 'windows-x64', main: 'Installer', arch: 'x86_64', label: 'Adds freemkv to PATH · Start menu shortcut', file: 'freemkv-x86_64-windows-setup.exe' },
-      { main: 'Portable', arch: '.zip', label: 'freemkv.exe + freemkv.com, no install', file: 'freemkv-x86_64-windows.zip', secondary: true },
+    methods: [
+      {
+        title: 'Download',
+        builds: [
+          { key: 'windows-x64', main: 'Installer', arch: 'x86_64', label: 'Adds freemkv to PATH · Start menu shortcut', file: 'freemkv-x86_64-windows-setup.exe' },
+          { main: 'Portable', arch: '.zip', label: 'freemkv.exe + freemkv.com, no install', file: 'freemkv-x86_64-windows.zip', secondary: true },
+        ],
+      },
     ],
+    footnote: windowsHelp,
   },
   {
     name: 'macOS',
     os: 'macos',
-    brew: 'brew install --cask freemkv/tap/freemkv',
-    note: 'Installs the app and the freemkv command for Apple Silicon or Intel. On macOS freemkv installs through Homebrew only: it is not notarized, and Homebrew skips the macOS security prompt a browser download would hit.',
-    builds: [],
+    methods: [
+      {
+        title: 'Homebrew',
+        hint: 'Apple Silicon or Intel',
+        commands: ['brew install --cask freemkv/tap/freemkv'],
+        note: 'Installs the app and the <code>freemkv</code> command. freemkv is not notarized, so on macOS it installs through Homebrew only, which skips the security prompt a browser download would hit.',
+      },
+    ],
   },
   {
     name: 'Linux',
     os: 'linux',
-    builds: [
-      { key: 'linux-x64', arch: '.deb', label: 'Ubuntu 24.04+ / Linux Mint 22 · package freemkv', file: 'freemkv-amd64.deb' },
-      { arch: 'AppImage', label: 'Portable · Ubuntu 24.04+ / Fedora 40+', file: 'freemkv-x86_64-linux.AppImage', secondary: true },
-      { arch: 'Flatpak', label: 'Bundle file · x86_64 · install command below', file: 'freemkv-x86_64-linux.flatpak', secondary: true },
+    methods: [
+      {
+        title: 'APT',
+        hint: 'Ubuntu 24.04+, Mint 22, Debian 13 · recommended',
+        commands: [...aptSetup, 'sudo apt update && sudo apt install freemkv'],
+        note: 'Updates arrive with <code>apt upgrade</code>.',
+      },
+      {
+        title: 'Snap',
+        hint: 'any distro with snapd',
+        commands: ['sudo snap install freemkv', 'sudo snap connect freemkv:optical-drive', 'sudo snap connect freemkv:optical-write'],
+      },
+      {
+        title: 'Flatpak',
+        hint: 'any distro · includes Ubuntu 22.04',
+        commands: [
+          'flatpak remote-add --if-not-exists flatpark https://dl.flatpark.org/flatpark.flatpakrepo',
+          'flatpak install flatpark org.freemkv.FreeMKV',
+        ],
+        builds: [
+          { arch: '.flatpak', label: 'Or the bundle file: flatpak install --user ./freemkv-x86_64-linux.flatpak', file: 'freemkv-x86_64-linux.flatpak', secondary: true },
+        ],
+      },
+      {
+        title: 'Download',
+        builds: [
+          { key: 'linux-x64', arch: '.deb', label: 'Ubuntu 24.04+ / Mint 22 / Debian 13 · x86_64', file: 'freemkv-amd64.deb' },
+          { arch: 'AppImage', label: 'Portable · x86_64 · GTK 4.10+', file: 'freemkv-x86_64-linux.AppImage', secondary: true },
+        ],
+        note: 'The .deb and AppImage need GTK 4.10+. On Ubuntu 22.04 or Mint 21 use the Flatpak or Snap, or the CLI.',
+      },
     ],
-    commands: [
-      '# APT repository (recommended; updates with apt upgrade)',
-      'sudo install -d -m 0755 /etc/apt/keyrings',
-      'curl -fsSL https://freemkv.org/apt/freemkv.gpg | sudo tee /etc/apt/keyrings/freemkv.gpg >/dev/null',
-      'echo "deb [signed-by=/etc/apt/keyrings/freemkv.gpg] https://freemkv.org/apt stable main" | sudo tee /etc/apt/sources.list.d/freemkv.list',
-      'sudo apt update && sudo apt install freemkv',
-      '# or the Flatpak bundle you downloaded above',
-      'flatpak install --user ./freemkv-x86_64-linux.flatpak',
-      '# or from FlatPark, with updates through flatpak update',
-      'flatpak remote-add --if-not-exists flatpark https://dl.flatpark.org/flatpark.flatpakrepo',
-      'flatpak install flatpark org.freemkv.FreeMKV',
-      '# or from the Snap Store (drive access: see the Linux page)',
-      'sudo snap install freemkv',
-    ],
-    note: 'The .deb and AppImage need GTK 4.10+ (Ubuntu 24.04, Mint 22, Debian 13, Fedora 40 or newer). On older systems such as Ubuntu 22.04 or Mint 21, use the Flatpak or Snap, which bring their own GTK. The CLI runs on any distro. Flathub listing (org.freemkv.FreeMKV) coming.',
+    footnote: linuxHelp,
   },
 ];
 
@@ -86,29 +117,46 @@ const cliPlatforms = [
   {
     name: 'Windows',
     os: 'windows',
-    builds: [
-      { key: 'windows-x64', arch: 'x86_64', label: 'Console .exe · rename to freemkv.exe', file: 'freemkv-cli-x86_64-windows.exe' },
+    methods: [
+      {
+        title: 'Download',
+        builds: [
+          { key: 'windows-x64', arch: 'x86_64', label: 'Console .exe · rename to freemkv.exe', file: 'freemkv-cli-x86_64-windows.exe' },
+        ],
+      },
     ],
+    footnote: windowsHelp,
   },
   {
     name: 'macOS',
     os: 'macos',
-    brew: 'brew install freemkv/tap/freemkv-cli',
-    note: 'Puts freemkv on PATH for Apple Silicon or Intel. On macOS freemkv installs through Homebrew only.',
-    builds: [],
+    methods: [
+      {
+        title: 'Homebrew',
+        hint: 'Apple Silicon or Intel',
+        commands: ['brew install freemkv/tap/freemkv-cli'],
+      },
+    ],
   },
   {
     name: 'Linux',
     os: 'linux',
-    builds: [
-      { key: 'linux-x64', arch: '.deb', label: 'Ubuntu 24.04 / Linux Mint 22 · package freemkv-cli', file: 'freemkv-cli-amd64.deb' },
-      { arch: 'x86_64', label: 'Static binary · any distro', file: 'freemkv-cli-x86_64-linux', secondary: true },
-      { key: 'linux-arm64', arch: 'ARM64', label: 'Static binary · aarch64', file: 'freemkv-cli-aarch64-linux', secondary: true },
+    methods: [
+      {
+        title: 'APT',
+        hint: 'Debian, Ubuntu 22.04+, Mint · recommended',
+        commands: [...aptSetup, 'sudo apt update && sudo apt install freemkv-cli'],
+      },
+      {
+        title: 'Download',
+        builds: [
+          { key: 'linux-x64', arch: 'x86_64', label: 'Static binary · any distro', file: 'freemkv-cli-x86_64-linux' },
+          { key: 'linux-arm64', arch: 'ARM64', label: 'Static binary · aarch64', file: 'freemkv-cli-aarch64-linux', secondary: true },
+          { arch: '.deb', label: 'x86_64 · package freemkv-cli', file: 'freemkv-cli-amd64.deb', secondary: true },
+        ],
+      },
     ],
-    commands: [
-      '# or from the APT repository: add it as in the app card above, then',
-      'sudo apt install freemkv-cli',
-    ],
+    footnote: linuxHelp,
   },
 ];
 

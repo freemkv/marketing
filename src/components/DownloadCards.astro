@@ -1,7 +1,8 @@
 ---
-// Per-OS download cards for the freemkv app and CLI sections of download.astro.
-// Links use `releases/latest/download/<asset>`; the page script rewrites them
-// for a picked version via `data-asset`.
+// Per-OS download cards, one labelled box per install method (Homebrew, APT,
+// Snap, a direct download, ...). Shared by /download/, /firmware/flash/ and
+// /firmware/modify/. Links use `releases/latest/download/<asset>`; the page
+// script rewrites them for a picked version via `data-asset`.
 interface Build {
   file: string;
   arch: string;
@@ -10,13 +11,18 @@ interface Build {
   key?: string;
   secondary?: boolean;
 }
+interface Method {
+  title: string;
+  hint?: string;
+  commands?: string[];
+  builds?: Build[];
+  note?: string;
+}
 interface Platform {
   name: string;
   os: string;
-  builds: Build[];
-  brew?: string;
-  commands?: string[];
-  note?: string;
+  methods: Method[];
+  footnote?: string;
 }
 interface Props {
   platforms: Platform[];
@@ -29,28 +35,37 @@ const { platforms, repo } = Astro.props;
   {platforms.map((p) => (
     <article class="card" data-os={p.os} data-platform-card>
       <h3 class="card-title">{p.name}</h3>
-      <div class="dl-list">
-        {p.brew && <code class="dl-brew-cmd">{p.brew}</code>}
-        {p.builds.map((b) => (
-          <a
-            class={`btn ${b.secondary ? 'btn-secondary' : 'btn-primary'} dl-btn`}
-            data-key={b.key}
-            data-asset={b.file}
-            href={`${repo}/releases/latest/download/${b.file}`}
-            download
-          >
-            <span class="dl-main">{b.main ?? 'Download'} <span class="dl-arch">{b.arch}</span></span>
-            <span class="dl-sub">{b.label}</span>
-          </a>
+      <div class="dl-methods">
+        {p.methods.map((m) => (
+          <section class="dl-method">
+            <h4 class="dl-method-title">
+              {m.title}
+              {m.hint && <span class="dl-method-hint">{m.hint}</span>}
+            </h4>
+            {m.commands && m.commands.length > 0 && (
+              <code class="dl-brew-cmd dl-brew-multi">{m.commands.join('\n')}</code>
+            )}
+            {m.builds && m.builds.length > 0 && (
+              <div class="dl-list">
+                {m.builds.map((b) => (
+                  <a
+                    class={`btn ${b.secondary ? 'btn-secondary' : 'btn-primary'} dl-btn`}
+                    data-key={b.key}
+                    data-asset={b.file}
+                    href={`${repo}/releases/latest/download/${b.file}`}
+                    download
+                  >
+                    <span class="dl-main">{b.main ?? 'Download'} <span class="dl-arch">{b.arch}</span></span>
+                    <span class="dl-sub">{b.label}</span>
+                  </a>
+                ))}
+              </div>
+            )}
+            {m.note && <p class="dl-method-note" set:html={m.note} />}
+          </section>
         ))}
-        {p.commands && p.commands.length > 0 && <code class="dl-brew-cmd dl-brew-multi">{p.commands.join('\n')}</code>}
-        {p.note && <p class="dl-mac-help">{p.note}</p>}
       </div>
-      {p.os === 'windows' && (
-        <p class="dl-soon-note">
-          Windows may flag this unsigned download — <a href="/docs/platforms-windows/#first-launch">first-run help</a>.
-        </p>
-      )}
+      {p.footnote && <p class="dl-soon-note" set:html={p.footnote} />}
     </article>
   ))}
 </div>

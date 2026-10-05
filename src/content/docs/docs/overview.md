@@ -54,7 +54,7 @@ disc://` to list titles with durations.
 
 Available for Windows, macOS, and Linux. See the **[CLI reference](/docs/cli/)**.
 
-**freemkv app**: the same program with a window — pick titles and tracks, choose an output format, and watch live progress — and every CLI command still works. Install the app *or* the command-line-only CLI, not both ([Install](/docs/install/)). Available on Windows, macOS and Linux (GTK4 + libadwaita, as a `.deb`, Flatpak or AppImage; Flathub listing on the way). See the **[macOS](/docs/platforms-macos/)**, **[Windows](/docs/platforms-windows/)** or **[Linux](/docs/platforms-linux/)** pages.
+**freemkv app**: the same program with a window — pick titles and tracks, choose an output format, and watch live progress — and every CLI command still works. Install the app *or* the command-line-only CLI, not both ([Install](/docs/install/)). Available on Windows, macOS and Linux (GTK4 + libadwaita, from the APT repository, the Snap Store or FlatPark, or as a `.deb`, Flatpak or AppImage download). See the **[macOS](/docs/platforms-macos/)**, **[Windows](/docs/platforms-windows/)** or **[Linux](/docs/platforms-linux/)** pages.
 
 **freemkv-library**: a service (Docker image) that watches your optical drives, runs the full pipeline on disc insert, and exposes a web UI with a Library tab for your MKVs and ISOs. Insert a disc, get an MKV, repeat. It replaces autorip. See **[freemkv-library](/docs/library/)**.
 
