@@ -65,6 +65,8 @@ Settings and ripped movies are separate from program files, so updating or remov
 |---|---|
 | Desktop settings | `~/Library/Application Support/freemkv/gui-settings.json` |
 | Desktop diagnostic log | `log.txt` in the same folder, written only when the app's log level is **Verbose** or debug messages are on |
+| Native Library settings | `~/Library/Application Support/freemkv-library/settings.json` by default |
+| Native Library login service | `~/Library/LaunchAgents/io.freemkv.library.plist` |
 | Finished movies | The output location you choose before ripping; the desktop app suggests `~/Movies` |
 | AACS keys | See [Decryption Keys](/docs/decryption-keys/) |
 | CLI diagnostic log | Off by default; `--log-level 3` writes `log.txt` in the current folder |
@@ -85,13 +87,46 @@ Close other software using the disc. If access fails, reconnect the drive and tr
 
 ## freemkv-library
 
-For automatic ripping through a browser, see [freemkv-library](/docs/library/). It ships as a Docker image.
+For automatic ripping through a browser, see [freemkv-library](/docs/library/). Library can also run natively on macOS with access to USB optical drives.
+
+### Native login service
+
+Use a freemkv binary built with `--features server`; see the repository's [native Library installation instructions](https://github.com/freemkv/freemkv/blob/main/INSTALL.md#native-library-service). This is separate from the regular Homebrew app or CLI installation above.
+
+From a freemkv source checkout, run:
+
+```bash
+macos/install-library-service.sh /absolute/path/to/freemkv
+```
+
+Replace the example path with the absolute path to your executable. The installer creates a login service for your user and starts Library at [localhost:8080/drives](http://localhost:8080/drives), unless you configured a different port. Existing Library settings and service environment variables are preserved.
+
+The installer sets `ProcessType` to `Interactive` in the LaunchAgent. This gives Library app-level resource limits and avoids the slow network copies observed with the default service policy.
+
+### Update an existing service
+
+Run the installer again with the path to your server-enabled binary to apply the resource-policy fix. It updates the LaunchAgent without restarting a running Library. **Wait for ripping, muxing and moving jobs to finish, then log out and back in** to load the updated configuration.
+
+To check the saved setting:
+
+```bash
+plutil -extract ProcessType raw "$HOME/Library/LaunchAgents/io.freemkv.library.plist"
+```
+
+The result should be `Interactive`. This checks the saved configuration; an already-running service still needs to be restarted as described above.
+
+### Slow moves to a network share
+
+If Library moves files much more slowly than a copy from Terminal, check the login service's resource policy first. In a same-file, same-destination SMB test, the default policy copied at about **11 MiB/s**, while `Interactive` reached about **46 MiB/s**, with the copy chunk size unchanged. These are measurements from one setup, not a guaranteed transfer rate; Wi-Fi, the server and storage still affect throughput.
+
+The installer applies this setting automatically. No SMB or copy-buffer tuning is needed to apply this fix.
 
 ## Troubleshooting
 
 - **macOS blocks the app or CLI:** install through Homebrew; see [Why Homebrew only](#why-homebrew-only).
 - **The disc disappears from Finder:** freemkv unmounts it to take exclusive drive access.
 - **No drive is available:** check the connection, close other disc software and review [Drive access](#drive-access).
+- **Library moves slowly to a network share:** see [Slow moves to a network share](#slow-moves-to-a-network-share) and update the native login service.
 - **A movie is missing:** check the output location selected for that rip.
 
 ## See also
