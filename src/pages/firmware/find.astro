@@ -65,12 +65,6 @@ import '../../styles/site.css';
       .fx-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; display: block; overflow-x: auto; }
       .fx-table th, .fx-table td { text-align: left; padding: 0.3rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
       .fx-sha { font-size: 0.72rem; word-break: break-all; }
-      .fx-xf { font: inherit; font-size: 0.92rem; color: var(--ink); background: none; border: 0; padding: 0.1rem 0; cursor: pointer; text-align: left; display: flex; gap: 0.5rem; align-items: center; }
-      .fx-xf:hover .fx-xf-name { color: var(--teal-dark); text-decoration: underline; }
-      .fx-badge { font-size: 0.68rem; font-weight: 800; border-radius: 999px; padding: 0.08rem 0.5rem; }
-      .fx-badge-proven { background: #ecfdf3; color: #067647; }
-      .fx-badge-likely { background: #eff8ff; color: #175cd3; }
-      .fx-badge-untested { background: #fffaeb; color: #93370d; }
       .fx-note { margin: 0.4rem 0 0; font-size: 0.8rem; color: var(--muted); }
     </style>
   </head>
@@ -207,7 +201,6 @@ import '../../styles/site.css';
           revRow.style.display = 'none';
 
           var models = finder.models, versions = finder.versions, identities = finder.identities, packages = finder.packages;
-          var BADGE = { proven: 'Proven', likely: 'Likely', untested: 'Untested' };
 
           var filtered = [];
           var activeIdx = -1;
@@ -380,11 +373,6 @@ import '../../styles/site.css';
             return '<a class="' + cls + '" ' + attrs + '>' + label + '</a>';
           }
 
-          function xfLabel(t) {
-            var newest = versions[t.v[0]].r;
-            return t.pio ? t.n + (t.d ? ' (' + t.d + ')' : ' · ' + newest) : t.n + ' · ' + (t.d || newest);
-          }
-
           function render() {
             var d = curModel;
             if (!d) {
@@ -474,14 +462,17 @@ import '../../styles/site.css';
               '<th scope="col">Revision</th><th scope="col">File</th><th scope="col">Contents</th><th scope="col">SHA-256</th>' +
               '</tr></thead><tbody>' + rows + '</tbody></table></details>';
 
-            // "I have X, what can I flash on it": same hardware only (built in).
+            // Cross Flash: same hardware family, Kernel + Normal revisions only; same rows as Versions.
             var xf = '';
             if (ident.x.length) {
-              xf = '<h4 class="fx-h">Can also be flashed to</h4><ul class="fx-list">' + ident.x.map(function (x) {
-                return '<li><button type="button" class="fx-xf" data-xf="' + x[0] + '"><span class="fx-badge fx-badge-' + x[1] + '">' +
-                  BADGE[x[1]] + '</span><span class="fx-xf-name">' + escapeText(xfLabel(identities[x[0]])) + '</span></button></li>';
-              }).join('') + '</ul>' +
-              (ident.x.some(function (x) { return x[1] === 'untested'; }) ? '<p class="fx-note">Untested targets may not work.</p>' : '');
+              xf = '<h4 class="fx-h">Cross Flash</h4>' + ident.x.map(function (x) {
+                var t = identities[x[0]];
+                return '<p class="fx-vgroup">' + escapeText(t.n + (t.d ? ' (' + t.d + ')' : '')) + (t.u ? ' (UHD)' : '') + '</p><ul class="fx-list">' +
+                  x[1].map(function (vi) {
+                    return '<li><span class="fx-rev-num">' + escapeText(versions[vi].r) + '</span>' +
+                      '<button type="button" class="fx-dl fx-view" data-xf="' + x[0] + '" data-xv="' + vi + '">View</button></li>';
+                  }).join('') + '</ul>';
+              }).join('');
             }
 
             var name = ident.brand && compact(d.m).indexOf(compact(ident.brand)) !== 0 ? ident.brand + ' ' + d.m : d.m;
@@ -499,11 +490,11 @@ import '../../styles/site.css';
           }
 
           // Selecting a cross-flash target shows its firmware in the same flow.
-          function showIdentity(t) {
+          function showIdentity(t, vi) {
             var name = identities[t].n;
             var pick = null, revIdx = 0;
             models.some(function (d) {
-              var i = d.v.findIndex(function (v) { return versions[v[0]].i === t; });
+              var i = d.v.findIndex(function (v) { return vi != null ? v[0] === vi : versions[v[0]].i === t; });
               if (i < 0) return false;
               if (!pick || d.m === name) { pick = d; revIdx = i; }
               return d.m === name;
@@ -515,7 +506,7 @@ import '../../styles/site.css';
           }
           detail.addEventListener('click', function (e) {
             var b = e.target.closest('[data-xf]');
-            if (b) showIdentity(Number(b.dataset.xf));
+            if (b) showIdentity(Number(b.dataset.xf), b.dataset.xv != null ? Number(b.dataset.xv) : null);
             var v = e.target.closest('[data-view]');
             if (v) { curRevIdx = Number(v.dataset.view); render(); detail.scrollIntoView({ block: 'nearest' }); }
           });

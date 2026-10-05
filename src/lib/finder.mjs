@@ -87,6 +87,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
     if (!identities.has(key)) identities.set(key, {
       key, family: init.family, hardware: init.hardware, destination: init.destination || 'GENERAL',
       platforms: [], embeddedModels: [], brands: [], revisions: [], candidates: [], missing: [],
+      familyId: null, uhd: false,
     });
     return identities.get(key);
   }
@@ -117,12 +118,13 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
       const ident = identity(src.key, { family: src.family, hardware: src.hardware, destination: src.destination });
       for (const p of src.platforms ?? []) pushUnique(ident.platforms, p);
       for (const m of src.embedded_models ?? []) pushUnique(ident.embeddedModels, m);
-      if (src.crossflash_group) ident.crossflashGroup = src.crossflash_group;
       for (const r of src.revisions ?? []) {
         if (!r.packages?.length) { pushUnique(ident.missing, r.revision); continue; }
         for (const p of r.packages) {
           v2Shas.add(p.sha256);
           const isPioneer = p.packageType === 'pioneer-installer';
+          if (isPioneer && p.family_id) ident.familyId ??= p.family_id;
+          if (isPioneer && p.is_uhd === true) ident.uhd = true;
           addPackage(ident, r.revision, {
             sha256: p.sha256, bytes: p.bytes, key: p.key, filename: p.filename,
             packageType: p.packageType || (src.family === 'mediatek' ? 'mediatek-image' : 'image'),
@@ -143,7 +145,6 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
         key: c.key, hardware: c.hardware, destination: c.destination,
         status: c.crossflash_status || 'untested', steps: c.steps ?? [], evidence: c.evidence ?? [],
         caution: c.caution ?? null, kernelDiff: kernelDiff(c.kernel_comparisons),
-        crossflashGroup: c.crossflash_group ?? null,
       }));
     }
     for (const a of catalog.aliases ?? []) {
@@ -237,42 +238,19 @@ export function indexFinder(data) {
   return { ...data, byKey, byHardware, namesByKey };
 }
 
+const hasKernelAndNormal = pkg => pkg.components.includes('kernel') && pkg.components.includes('main');
+
 /**
- * Cross-flash rule. Pioneer: same hardware_version, any ID; different hardware
- * never. MediaTek: same extractor crossflash_group (platform -> loader ->
- * board), never desktop with slim; different group never. Other families: none.
+ * Cross flash: other Pioneer editions in the same hardware family (fwext
+ * `family_id`) and, per edition, only the revisions that ship both Kernel and
+ * Normal. MediaTek has no cross flash. Returns [{ identity, revisions }].
  */
-export function crossflashAllowed(from, to, candidate) {
-  if (!from || !to || from.key === to.key || from.family !== to.family) return false;
-  if (from.family === 'pioneer') return compact(from.hardware) === compact(to.hardware);
-  if (from.family === 'mediatek') {
-    const group = candidate?.crossflashGroup;
-    if (!group) return false;
-    for (const own of [from.crossflashGroup, to.crossflashGroup]) if (own && own !== group) return false;
-    const ff = formFactor(group);
-    return Boolean(ff) && ![from.crossflashGroup, to.crossflashGroup].some(g => g && formFactor(g) !== ff);
-  }
-  return false;
-}
-
-function statusGroup(status) {
-  return status === 'proven' ? 'proven' : (status === 'likely' || status === 'reported') ? 'likely' : 'untested';
-}
-
-// MediaTek groups are platform/form-factor/loader/board, e.g. "MT1959/desktop/JBC6/board-unknown".
-const formFactor = group => String(group ?? '').split('/')[1] ?? '';
-
-/** "I have X": other editions on the same hardware it may be flashed to. */
-export function crossflashFrom(index, key) {
-  const i = index.byKey.get(key);
-  const groups = { proven: [], likely: [], untested: [] };
-  if (!i) return groups;
-  for (const c of i.candidates) {
-    const other = index.byKey.get(c.key);
-    if (!crossflashAllowed(i, other, c)) continue;
-    groups[statusGroup(c.status)].push({ key: other.key, identity: other });
-  }
-  return groups;
+export function crossflashTargets(data, identity) {
+  if (identity.family !== 'pioneer' || !identity.familyId) return [];
+  return data.identities
+    .filter(o => o !== identity && o.family === 'pioneer' && o.familyId === identity.familyId)
+    .map(o => ({ identity: o, revisions: o.revisions.filter(r => r.packages.some(hasKernelAndNormal)) }))
+    .filter(t => t.revisions.length);
 }
 
 export function componentsLabel(components) {
@@ -402,7 +380,6 @@ const searchText = list => [...new Set(list.filter(Boolean).flatMap(t => [norm(t
  * model names stay listed, mapped by package hash onto catalogue identities.
  */
 export function finderPageData(data, { legacy = [], keys = true } = {}) {
-  const index = indexFinder(data);
   const idIdx = new Map(data.identities.map((i, n) => [i.key, n]));
   const shaKey = new Map();
   for (const i of data.identities) for (const r of i.revisions) for (const p of r.packages) shaKey.set(p.sha256, i.key);
@@ -458,10 +435,14 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     for (const k of row.keys) if (!best.has(k)) best.set(k, row.m);
   for (const { i, out } of identities) { out.n = best.get(i.key); out.t = searchText(terms.get(i.key)); }
 
-  // Cross-flash targets: same hardware only (crossflashFrom enforces it).
+  // Cross flash: [identity index, [version indexes]] per target edition; UHD flag per identity.
   for (const { i, out } of identities) {
-    const g = crossflashFrom(index, i.key);
-    out.x = ['proven', 'likely', 'untested'].flatMap(s => g[s].map(c => [idIdx.get(c.key), s]));
+    out.x = crossflashTargets(data, i).map(t => {
+      const n = idIdx.get(t.identity.key);
+      const vs = identities[n].out.v.filter(vi => t.revisions.some(r => r.revision === versions[vi].r));
+      return [n, vs];
+    });
+    if (i.uhd) out.u = 1;
   }
 
   const models = [...names.values()].sort((a, b) => a.m.localeCompare(b.m)).map(row => {
