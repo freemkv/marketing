@@ -62,6 +62,10 @@ and the UI reports "No drives detected" with no other error. This is the single 
 setup mistake. See [Troubleshooting](/docs/troubleshooting/).
 :::
 
+### Unraid
+
+Unraid web UI > **Docker** > **Template Repositories**: add `https://github.com/freemkv/unraid-templates` and **Save**. Then **Add Container** and pick **freemkv-library**. The template sets privileged mode, `/dev` and `/sys`, port 8080, and paths for `/config`, `/output`, `/staging` and the keys directory (defaults under `/mnt/user/appdata/freemkv-library` and `/mnt/user/media`); check them and **Apply**.
+
 ### Upgrading from autorip
 
 Pull the new image. freemkv-library reads autorip's `/config/settings.json` unchanged and keeps the `AUTORIP_*` environment variable names, so an existing install can point at the same `./config` directory. The image also still answers to the `autorip` command. From 1.8.0 there are no native binary downloads and no Homebrew formula; freemkv-library ships only as this Docker image.

@@ -19,6 +19,17 @@ freemkv comes in two builds for Windows. **Install one or the other**; both are 
 
 ## Install
 
+### Scoop
+
+With [Scoop](https://scoop.sh), add the freemkv bucket once and install:
+
+```powershell
+scoop bucket add freemkv https://github.com/freemkv/scoop-bucket
+scoop install freemkv          # or freemkv-cli
+```
+
+`freemkv` is the app: a **freemkv** shortcut under Start menu > Scoop Apps, and the `freemkv` command on your PATH. `freemkv-cli` is the command line only; install one or the other. `scoop update freemkv` installs new releases. The bucket also has the firmware tools: `scoop install freemkv-flash freemkv-fw`.
+
 ### App
 
 Run `freemkv-x86_64-windows-setup.exe`. It installs for your user only (no administrator prompt) into `%LOCALAPPDATA%\Programs\freemkv`, adds a **freemkv** Start menu shortcut and an optional desktop icon, and **adds freemkv to your user PATH**.
