@@ -1,0 +1,12 @@
+[
+  {
+    "file": "freemkv-1.8.0-1-x86_64.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.0/freemkv-x86_64.pkg.tar.zst",
+    "sha256": "d8070ce129dd8c04325f91793862f1e291e6fca5d7fab5f25a71b6e6f9ec8a2b"
+  },
+  {
+    "file": "freemkv-cli-1.8.0-1-x86_64.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.0/freemkv-cli-x86_64.pkg.tar.zst",
+    "sha256": "0f98c8b24145a851d76d2ad07a41edb5ac2989c7d355d740d424e03518193c86"
+  }
+]
