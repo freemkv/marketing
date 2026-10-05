@@ -9,7 +9,7 @@ On disc insert, freemkv-library runs the full pipeline automatically: a tolerant
 
 freemkv-library runs on a host with an optical drive (a home server or NAS works well) and ships as a Docker image. The configuration and API reference below apply to every platform.
 
-![freemkv-library ripping a disc, showing the matched title, poster, and live per-pass progress](/autorip-ripper.png)
+![The freemkv-library Library tab: every movie with its codec, track counts and the tool that made it, a live audit in progress, and filters for problems, out-of-date and queued files](/freemkv-library.png)
 
 *The freemkv-library dashboard during an active rip: matched title and metadata up top, with live per-pass progress, ETA, and throughput below.*
 
