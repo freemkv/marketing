@@ -170,11 +170,9 @@ import '../../styles/site.css';
 <span class="c"># 2. Back up before touching anything — saves the drive's firmware to a .tar</span>
 <span class="p">$</span> freemkv-flash backup &lt;dev&gt; -o backup.tar
 
-<span class="c"># 3. Eject any disc, then flash. Without --execute it only prints the plan</span>
-<span class="p">$</span> freemkv-flash flash &lt;dev&gt; -i BU40N_1.00.freemkv.bin
-<span class="c"># Happy with the plan? Flash for real (irreversible); it reads back to verify</span>
-<span class="p">$</span> freemkv-flash flash &lt;dev&gt; -i BU40N_1.00.freemkv.bin \
-      --backup backup.tar --execute --i-understand-risk</code></pre>
+<span class="c"># 3. Eject any disc, then flash (irreversible). Drop --execute to only print the plan;</span>
+<span class="c">#    it takes its own pre-flash backup first and reads back to verify</span>
+<span class="p">$</span> freemkv-flash flash &lt;dev&gt; -i BU40N_1.00.freemkv.bin --execute --i-understand-risk</code></pre>
           </div>
 
           <div class="notice">

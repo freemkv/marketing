@@ -106,7 +106,7 @@ you have edited it by hand. `--family` forces the chipset, as for `verify`.
 
 `freemkv-flash` is a generic MediaTek (MT19xx) optical-drive flasher and dumper. It isn't
 specific to freemkv — it can read and write any compatible firmware image. It always backs up
-before writing, and reads back every write to confirm it took. `dump` also works on Pioneer and
+before writing, and reads back every write to confirm it took. `backup` also works on Pioneer and
 Renesas drives, as a backup only: `flash` never writes to those.
 
 ### info
@@ -123,38 +123,39 @@ MT1939), vendor/model/revision, media capability (BD / UHD / DVD), whether the t
 and whether its integrity tables are valid. Both use the **same detection**, which is exactly
 what the flasher's file↔drive safety check compares. Read-only and safe.
 
-### dump
+### backup
 
 ```bash
-freemkv-flash dump <device> [-o backup.tar]     # default output: <product>_<revision>.dump.tar
+freemkv-flash backup <device> [-o backup.tar]   # default output: <product>_<revision>.backup.tar
 ```
 
-Reads the drive's current firmware to a file. Always dump and keep a backup before flashing
-anything.
+Reads the drive's current firmware to a `.tar`. Always take a backup and keep it before flashing
+anything. An existing backup is never overwritten. (`dump` is a different command: a best-effort
+salvage read for a damaged drive, not a validated backup.)
 
 ### flash
 
 ```bash
 # dry-run (default — plans the write, changes nothing):
-freemkv-flash flash --input <image.bin> <device>
+freemkv-flash flash <device> -i <image.bin>
 
 # actually write it:
-freemkv-flash flash --input <image.bin> <device> \
-    --execute --i-understand-risk --backup <backup.tar>
+freemkv-flash flash <device> -i <image.bin> --execute --i-understand-risk
 ```
 
 Writes an image to the drive. **It is dry-run by default** — without `--execute` it only prints
 the plan and writes nothing. A real write requires `--execute` and `--i-understand-risk`, and
-takes a **mandatory pre-flash backup** first (`--backup`), then reads the image back to verify.
-The only way around the backup is `--rescue-no-dump`, for rescuing a drive that can no longer be
-read. (`--mode main|full` is accepted but has no effect on MT1959: the full image is always
+takes a **mandatory pre-flash backup** first, then reads the image back to verify. The pre-flash
+backup goes to `<image>.preflash.backup.tar` unless `--backup <path>` names a new file; it refuses
+a path that already exists. The only way around it is `--skip-backup`, for a drive that can no
+longer be read. (`--mode main|full` is accepted but has no effect on MT1959: the full image is always
 written.)
 Before flashing it runs the same file↔drive check as `info`, refusing an image whose chipset
 family doesn't match the connected drive.
 
 Executable writes are supported today for **MediaTek MT1959**; other families are catalogued and
 can be planned (dry-run) but are gated off real writes until validated on hardware. `flash` is
-newer and less battle-tested than `info`/`dump` — always keep your own separate dump as well.
+newer and less battle-tested than `info`/`backup` — always keep your own separate backup as well.
 
 :::caution[Crossflash is experimental]
 `--allow-crossflash` waives the drive-*model* match (but **never** the chipset-family match, and
