@@ -1,0 +1,12 @@
+[
+  {
+    "file": "freemkv-1.8.0-1.x86_64.rpm",
+    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.0/freemkv-x86_64.rpm",
+    "sha256": "b849a6e2e1a5e3c54d61c16b814d9bb2f9b89e448f80634f01fdaa8dd7957f89"
+  },
+  {
+    "file": "freemkv-cli-1.8.0-1.x86_64.rpm",
+    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.0/freemkv-cli-x86_64.rpm",
+    "sha256": "00fdb4a82be230a558748e2cc5c7f591b3beb829596430f77deea86314c2d40b"
+  }
+]

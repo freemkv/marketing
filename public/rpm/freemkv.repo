@@ -1,0 +1,9 @@
+[freemkv]
+name=freemkv
+baseurl=https://freemkv.org/rpm
+type=rpm-md
+enabled=1
+autorefresh=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://freemkv.org/rpm/freemkv.asc
