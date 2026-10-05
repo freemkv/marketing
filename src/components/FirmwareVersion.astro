@@ -8,7 +8,7 @@ interface Props {
   /** Shown until the live tag loads (and if the fetch fails). */
   fallback?: string;
 }
-const { fallback = '0.9.2' } = Astro.props;
+const { fallback = '0.10.0' } = Astro.props;
 ---
 
 <span class="fw-version" data-fw-version>{fallback}</span>
