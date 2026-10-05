@@ -67,10 +67,18 @@ jobs:
             git config user.email "1085847+MattJackson@users.noreply.github.com"
             git add public/arch public/_redirects
             git commit -q -m "arch: refresh the repository databases from the latest releases"
+            pushed=false
             for i in 1 2 3 4 5; do
-              git pull -q --rebase origin dev && git push -q origin HEAD:dev && break
+              git push -q origin HEAD:dev && { pushed=true; break; }
+              # Another refresh moved dev (they share public/_redirects): rebuild on top of it.
               sleep $((i * 5))
+              git fetch -q origin dev && git reset -q --hard origin/dev
+              python3 scripts/arch-repo.py
+              git add public/arch public/_redirects
+              if git diff --cached --quiet; then pushed=true; break; fi
+              git commit -q -m "arch: refresh the repository databases from the latest releases"
             done
+            $pushed || { echo "::error::could not push the refreshed arch repository to dev"; exit 1; }
             git fetch -q origin main qa
             if git merge-base --is-ancestor origin/main HEAD; then
               git push -q origin HEAD:qa HEAD:main
