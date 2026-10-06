@@ -12,10 +12,10 @@ whenever the hoard or the freemkv-fw engine changes, before `prepare` (which
 reads `firmware-index.json` as a legacy input):
 
 ```
-node scripts/firmware-features.mjs /path/to/hoard.v3 --fw /path/to/freemkv-fw
+node scripts/firmware-features.mjs /path/to/firmware-extractor/hoard --fw /path/to/freemkv-fw
 ```
 
-Inputs: a v3 hoard (`index/identities.json`, `index/sources.json`, `images/...`)
+Inputs: the firmware-extractor hoard (`index/identities.json`, `index/sources.json`, `images/...`)
 and the `freemkv-fw` binary (`--fw` or env `FREEMKV_FW`; build with
 `cargo build --release` in freemkv-firmware). Optional: `--out-dir` (default
 `src/data`), `--jobs`, and `--hardware-verified allowlist.json` (JSON array of
@@ -27,10 +27,10 @@ least one lever. Flags follow engine lineage (see the header of the script).
 Review the diff before committing: counts, base_facts and r2 keys come straight
 from the engine. Tests: `node --test scripts/*.test.mjs`.
 
-Prepare from the v3 identity hoard (no upload):
+Prepare from the firmware-extractor hoard (no upload):
 
 ```
-node scripts/firmware-release.mjs prepare /path/to/firmware-extractor /tmp/firmware-assets /path/to/hoard.v3
+node scripts/firmware-release.mjs prepare /path/to/firmware-extractor /tmp/firmware-assets /path/to/firmware-extractor/hoard
 node --test scripts/*.test.mjs
 ```
 

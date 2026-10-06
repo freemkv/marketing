@@ -1,10 +1,10 @@
 // Regenerates the MediaTek firmware data the site ships:
 //   src/data/firmware-features.json, src/data/firmware-index.json,
 //   src/data/firmware-features-summary.md
-// from a v3 hoard plus the freemkv-fw modify engine. Run it BEFORE
+// from the firmware-extractor hoard plus the freemkv-fw modify engine. Run it BEFORE
 // `firmware-release.mjs prepare` (see scripts/firmware-release.md).
 //
-//   node scripts/firmware-features.mjs <hoard.v3> [--fw /path/to/freemkv-fw]
+//   node scripts/firmware-features.mjs <hoard> [--fw /path/to/freemkv-fw]
 //        [--out-dir src/data] [--hardware-verified allowlist.json] [--jobs 8]
 //
 // The binary may also come from FREEMKV_FW. `--hardware-verified` names a JSON
@@ -299,7 +299,7 @@ async function main(argv) {
     else if (x.startsWith('-')) throw new Error(`unknown option ${x}`);
     else hoard = x;
   }
-  if (!hoard || !a.fw) throw new Error('usage: firmware-features.mjs <hoard.v3> --fw <freemkv-fw> [--out-dir D] [--hardware-verified FILE] [--jobs N]  (or FREEMKV_FW=...)');
+  if (!hoard || !a.fw) throw new Error('usage: firmware-features.mjs <hoard> --fw <freemkv-fw> [--out-dir D] [--hardware-verified FILE] [--jobs N]  (or FREEMKV_FW=...)');
   const hardware = new Set(hardwareFile ? await readJson(hardwareFile) : []);
   await generate({ hoard: path.resolve(hoard), fw: a.fw, outDir: a.outDir, hardware, jobs: a.jobs, log: m => console.log(m) });
 }
