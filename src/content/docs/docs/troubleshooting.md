@@ -50,22 +50,38 @@ What it captures is **context-aware by source**:
 
 ## macOS: "app is damaged" / can't open
 
-freemkv isn't notarized yet, so macOS Gatekeeper blocks anything you download until you allow it once.
-
-1. Double-click the app. It refuses — the dialog says macOS "could not verify" it. Click **Done**.
-2. Open **System Settings → Privacy & Security** and scroll down. There is now a line naming freemkv, with an **Open Anyway** button. Click it and confirm.
-
-That's a one-time step per download.
-
-Older guides (including earlier versions of this page) say to right-click the app and choose **Open**. **macOS 15 Sequoia removed that shortcut** — the blocked dialog no longer offers anything but **Done**, and Open Anyway in System Settings is the only route.
-
-This applies to the **CLI binary too**, not just the desktop app: a downloaded `freemkv` is quarantined the same way and is refused the first time you run it. Allow it in System Settings as above, or strip the quarantine flag yourself:
+Install through Homebrew, the [supported macOS installation route](/docs/platforms-macos/).
+The releases are not notarized. Removing a downloaded executable's quarantine attribute
+may allow it to launch, but does not establish that macOS will authorize drive access.
 
 ```bash
-xattr -d com.apple.quarantine ./freemkv
+brew update
+brew install --cask freemkv/tap/freemkv
 ```
 
-See [macOS](/docs/platforms-macos/) for the full walkthrough.
+For the CLI, use `brew install freemkv/tap/freemkv-cli`. If already installed,
+use `brew upgrade` with the same package name.
+
+### Firmware tools: `list` works but `info` reports E1006
+
+`list` reads the macOS device registry; `info` must open the drive's native interface.
+A successful listing does not establish permission to open it. `E1006` with
+`0xe00002be` can mask an authorization failure inside Apple's plug-in.
+
+For a browser-downloaded firmware tool, install the Homebrew package and run that
+installed command, rather than the old `./freemkv-flash-…` file in Downloads:
+
+```bash
+brew update
+brew install freemkv/tap/freemkv-flash
+freemkv-flash --version
+freemkv-flash info 1
+```
+
+Use `brew upgrade freemkv/tap/freemkv-flash` if already installed. If it still fails,
+attach the automatic diagnostic log named by the command. Homebrew installation has
+resolved this failure in a reported case, but the error code alone does not identify
+which macOS authorization check failed.
 
 ## No drives detected in freemkv-library
 

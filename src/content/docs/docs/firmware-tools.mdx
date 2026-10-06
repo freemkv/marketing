@@ -17,6 +17,19 @@ command-line tools do the work: **freemkv-fw** builds and checks firmware images
 step by step; this page is the detailed reference — for the tools themselves, for identifying
 your drive, and for the command ABI the firmware they build actually implements.
 
+## Install on macOS
+
+```bash
+brew update
+brew install freemkv/tap/freemkv-flash freemkv/tap/freemkv-fw
+```
+
+If already installed, use `brew upgrade` with the same package names. Run
+`freemkv-flash --version` to confirm the installed version. Use the installed command
+rather than a previously downloaded `./freemkv-flash-…` executable. For a drive that
+appears in `list` but fails to open in `info`, see
+[macOS firmware-tool troubleshooting](/docs/troubleshooting/#firmware-tools-list-works-but-info-reports-e1006).
+
 ## freemkv-fw
 
 `freemkv-fw` turns a base MediaTek firmware image into freemkv firmware, and checks whether a
