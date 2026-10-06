@@ -81,7 +81,8 @@ test('S12JX package pills agree with cross-flash completeness for each selected 
   const source = d.identities.find(i => i.n === 'BDR-212D');
   const target = source.x.find(([name]) => name === 'BDR-S12JX');
   assert.ok(target);
-  for (const [revision, complete] of [['1.05', true], ['1.03', false], ['1.02', false], ['1.01', false]]) {
+  // 1.01-1.03 are Pioneer Normal-only releases chained to the factory Kernel 1.00.
+  for (const [revision, complete] of [['1.05', true], ['1.03', true], ['1.02', true], ['1.01', true]]) {
     const vi = s12.v.find(v => d.versions[v].r === revision);
     const pkg = d.packages[d.versions[vi].p[0]];
     const labels = pkg.chips.map(c => c[0]);

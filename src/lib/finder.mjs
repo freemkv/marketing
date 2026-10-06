@@ -8,7 +8,7 @@
 
 export const DISCORD_URL = 'https://discord.gg/yu7xMGTyek';
 
-const PIONEER_KERNEL_FIRST = { 'source-contained': 0, 'carried-forward': 1, 'normal-only': 2 };
+const PIONEER_KERNEL_FIRST = { 'source-contained': 0, 'carried-forward': 1, 'direct-match': 2, 'release-chain': 3, 'normal-only': 4 };
 export function compact(text) {
   return String(text ?? '').toUpperCase().replace(/[^A-Z0-9]+/g, '');
 }
@@ -217,7 +217,7 @@ function safeDecode(s) {
 }
 
 function packageOrder(a, b) {
-  const ka = PIONEER_KERNEL_FIRST[a.selection] ?? 3, kb = PIONEER_KERNEL_FIRST[b.selection] ?? 3;
+  const ka = PIONEER_KERNEL_FIRST[a.selection] ?? 5, kb = PIONEER_KERNEL_FIRST[b.selection] ?? 5;
   return ka - kb || String(a.sha256).localeCompare(String(b.sha256));
 }
 
@@ -384,8 +384,11 @@ const searchText = list => [...new Set(list.filter(Boolean).flatMap(t => [norm(t
  */
 export function finderPageData(data, { legacy = [], keys = true } = {}) {
   const idIdx = new Map(data.identities.map((i, n) => [i.key, n]));
-  const shaKey = new Map();
-  for (const i of data.identities) for (const r of i.revisions) for (const p of r.packages) shaKey.set(p.sha256, i.key);
+  const shaKey = new Map(), normalKey = new Map();
+  for (const i of data.identities) for (const r of i.revisions) for (const p of r.packages) {
+    shaKey.set(p.sha256, i.key);
+    if (p.normalSha256) normalKey.set(p.normalSha256, i.key);
+  }
 
   const packages = [], versions = [];
   const identities = data.identities.map((i, n) => {
@@ -415,7 +418,8 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     names.set(c, row);
   };
   for (const row of legacy) {
-    const ks = [...new Set((row.versions ?? []).map(v => shaKey.get(v.sha256)).filter(Boolean))];
+    // A package gains a new hash when its Kernel changes; its Normal does not.
+    const ks = [...new Set((row.versions ?? []).map(v => shaKey.get(v.sha256) ?? normalKey.get(v.normalSha256)).filter(Boolean))];
     addName(row.model, NAME_RANK.legacy, ks);
   }
   const terms = new Map(data.identities.map(i => [i.key, [hardwareLabel(i), i.hardware, destinationLabel(i), identityBrand(i), ...i.platforms, ...i.embeddedModels]]));
