@@ -441,8 +441,8 @@ import '../../styles/site.css';
             var list = '';
             var rows = '';
             if (d.v.length > 1) {
-              // Vertical list. Pioneer: one heading per SAT, the edition (GENERAL,
-              // ID58, an OEM) next to each revision. Others: brand headings, maker
+              // Vertical list. Pioneer: one heading per SAT, the viewed SAT first (marked
+              // when there are several), the edition (GENERAL, ID58, an OEM) next to each revision. Others: brand headings, maker
               // first, then OEMs, unknown editions last. Newest first in each group.
               var groups = [], byName = {};
               d.v.forEach(function (row, n) {
@@ -452,7 +452,7 @@ import '../../styles/site.css';
                 byName[g].push(n);
               });
               var isSat = function (g) { return d.v.some(function (row) { return identities[versions[row[0]].i].h === g; }); };
-              var rank = function (g) { return isSat(g) ? -1 : g === 'Other editions' ? 2 : (g === ident.brand && !ident.d) || g === 'LG' || g === 'Pioneer' ? 0 : 1; };
+              var rank = function (g) { return g === ident.h ? -2 : isSat(g) ? -1 : g === 'Other editions' ? 2 : (g === ident.brand && !ident.d) || g === 'LG' || g === 'Pioneer' ? 0 : 1; };
               groups.sort(function (a, b) { return rank(a) - rank(b) || a.localeCompare(b); });
               var revKey = function (r) { return /^\d+\.\d+/.test(r) ? '1' + r : '0' + r; };
               list = '<h4 class="fx-h">Versions</h4>' + groups.map(function (g) {
@@ -460,7 +460,8 @@ import '../../styles/site.css';
                   var ra = revKey(versions[d.v[a][0]].r), rb = revKey(versions[d.v[b][0]].r);
                   return ra < rb ? 1 : ra > rb ? -1 : editionOrder(identities[versions[d.v[a][0]].i], identities[versions[d.v[b][0]].i]);
                 });
-                return '<p class="fx-vgroup">' + escapeText(g) + '</p><ul class="fx-list">' + rows.map(function (n) {
+                var viewing = g === ident.h && groups.filter(isSat).length > 1 ? ' · viewing' : '';
+                return '<p class="fx-vgroup">' + escapeText(g + viewing) + '</p><ul class="fx-list">' + rows.map(function (n) {
                   var id = identities[versions[d.v[n][0]].i];
                   return '<li><span class="fx-rev-num">' + escapeText(versions[d.v[n][0]].r) + '</span>' + editionHtml(id) +
                     (n === curRevIdx ? '<span class="fx-viewing">Viewing</span>'
@@ -485,8 +486,14 @@ import '../../styles/site.css';
             // Cross Flash: every target shares this edition's hardware family, whatever its SAT,
             // so there is no SAT heading. A revision without a Kernel is listed, not viewable.
             var xf = '';
-            if (ident.x.length) {
-              xf = '<h4 class="fx-h">Cross Flash</h4>' + ident.x.map(function (x) {
+            // This model's own editions are already under Versions; leave them out here.
+            var own = {};
+            d.v.forEach(function (row) { own[versions[row[0]].i] = 1; });
+            var targets = ident.x.map(function (x) {
+              return [x[0], x[1], x[2].filter(function (row) { return !own[row[0]]; })];
+            }).filter(function (x) { return x[2].length; });
+            if (targets.length) {
+              xf = '<h4 class="fx-h">Cross Flash</h4>' + targets.map(function (x) {
                 return '<p class="fx-vgroup">' + escapeText(x[0]) + (x[1] ? ' (UHD)' : '') + '</p><ul class="fx-list">' +
                   x[2].map(function (row) {
                     return '<li><span class="fx-rev-num">' + escapeText(versions[row[1]].r) + '</span>' + editionHtml(identities[row[0]]) +

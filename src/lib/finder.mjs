@@ -298,10 +298,12 @@ export function hostedSummary(data) {
 // Page data for /firmware/find/: model names -> versions -> packages, with
 // human labels only (no identity keys, board strings or placeholder IDs).
 
-// Alias kinds shown as drive model names, best first. File/release names are
+// Alias kinds shown as drive model names, best first: the name the drive itself
+// reports (INQUIRY), then the retail name, then old site/download names. One rule
+// for search entries, card titles and Cross Flash headings. File/release names are
 // search terms only.
 const MEDIA_PREFIX = /^(?:BD-?RE|BD-?RW|BD-?ROM|BD-?R|DVD-?RW|DVD-?RAM|DVD-?ROM|BDDVDRW|CDDVDW|DVDRW)\s+(?=\S)/i;
-const NAME_RANK = { legacy: 0, retail: 1, inquiry: 2, 'release-note': 3, oem: 4 };
+const NAME_RANK = { inquiry: 0, retail: 1, legacy: 2, 'release-note': 3, oem: 4 };
 const OEM_NAMES = { ASUS: 'ASUS', BUFFALO: 'Buffalo', HP: 'HP', TDK: 'TDK', TEAC: 'TEAC', MEMOREX: 'Memorex', MEDION: 'Medion', SONYDT: 'Sony' };
 
 /** Human label for an identity's destination: "ID43", an OEM name, or "" when unknown. */
@@ -458,7 +460,9 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     for (const k of row.keys) if (!best.has(k)) best.set(k, row.m);
   for (const { i, out } of identities) { out.n = best.get(i.key); out.t = searchText(terms.get(i.key)); }
 
-  // Cross flash: [name, uhd, rows] per target model name, rows = [identity index,
+
+  // Cross flash: [name, uhd, rows] per target model name (its display name, so every
+  // 211M edition lists as "BDR-211M"), headings alphabetical; rows = [identity index,
   // version index, incomplete] with one row per revision and edition (the card shows
   // the edition next to the revision), newest first. Every target shares the
   // source's hardware family, whatever its SAT.
@@ -474,8 +478,8 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
         if (r) g.rows.push([n, vi, r.complete ? 0 : 1]);
       }
     }
-    out.x = [...byName].map(([name, g]) => [name, g.uhd, g.rows.sort((a, b) =>
-      compareRevision(versions[b[1]].r, versions[a[1]].r) || compareEdition(identities[a[0]].out, identities[b[0]].out))]);
+    out.x = [...byName].sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true })).map(([name, g]) => [name, g.uhd,
+      g.rows.sort((a, b) => compareRevision(versions[b[1]].r, versions[a[1]].r) || compareEdition(identities[a[0]].out, identities[b[0]].out))]);
   }
 
   const models = [...names.values()].sort((a, b) => a.m.localeCompare(b.m)).map(row => {
@@ -484,15 +488,26 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     ids.sort((a, b) => a.hardware.localeCompare(b.hardware) ||
       (destinationLabel(a) ? 1 : 0) - (destinationLabel(b) ? 1 : 0) || destinationLabel(a).localeCompare(destinationLabel(b)));
     const rows = ids.flatMap(i => identities[idIdx.get(i.key)].out.v.map(v => ({ v, i })));
-    const labels = rows.map(({ v, i }) => versions[v].r + (destinationLabel(i) ? ` (${destinationLabel(i)})` : ''));
-    // Same label from different editions: add the hardware/chipset, then a counter.
-    const extra = ({ i }) => i.family === 'pioneer' ? hardwareLabel(i) : (packages[versions[rows[0].v].p[0]] && (i.platforms.find(p => /^MT/.test(p)) || ''));
-    const dupes = l => labels.filter(x => x === l).length > 1;
-    labels.forEach((l, n) => { if (dupes(l) && extra(rows[n])) labels[n] = `${l} · ${extra(rows[n])}`; });
+    // Pioneer: every row reads "1.54 ID58 · SAT 8801". Others: "1.02 (ASUS)", and a
+    // label shared by several rows gets the chipset, then a counter, on every copy.
+    let labels = rows.map(({ v, i }) => i.family === 'pioneer'
+      ? `${versions[v].r} ${editionLabel(i)} · ${hardwareLabel(i)}`
+      : versions[v].r + (destinationLabel(i) ? ` (${destinationLabel(i)})` : ''));
+    const shared = list => { const c = {}; for (const l of list) c[l] = (c[l] ?? 0) + 1; return l => c[l] > 1; };
+    let dupes = shared(labels);
+    labels = labels.map((l, n) => {
+      const chip = rows[n].i.family === 'pioneer' ? '' : rows[n].i.platforms.find(p => /^MT/.test(p)) || '';
+      return dupes(l) && chip ? `${l} · ${chip}` : l;
+    });
+    dupes = shared(labels);
     const seen = {};
-    labels.forEach((l, n) => { seen[l] = (seen[l] ?? 0) + 1; if (dupes(l)) labels[n] = `${l} · ${seen[l]}`; });
-    // Default pick order: newest revision first, then SAT/edition order.
-    const o = rows.map((_, n) => n).sort((a, b) => compareRevision(versions[rows[b].v].r, versions[rows[a].v].r) || a - b);
+    labels = labels.map(l => { if (!dupes(l)) return l; seen[l] = (seen[l] ?? 0) + 1; return `${l} · ${seen[l]}`; });
+    // Default pick order: newest revision first; a tie prefers a real ID over
+    // GENERAL, then the higher SAT, then list order. A search naming a SAT or ID
+    // narrows the rows first (find.astro matchingVersionIndex).
+    const realId = i => /^ID\d+$/.test(String(i.destination)) ? 1 : 0;
+    const o = rows.map((_, n) => n).sort((a, b) => compareRevision(versions[rows[b].v].r, versions[rows[a].v].r) ||
+      realId(rows[b].i) - realId(rows[a].i) || String(rows[b].i.hardware).localeCompare(String(rows[a].i.hardware)) || a - b);
     return { m: row.m, t: searchText([row.m, ...new Set(ids.map(identityBrand))]), v: rows.map(({ v }, n) => [v, labels[n]]), o };
   });
   return { packages, versions, identities: identities.map(x => x.out), models };

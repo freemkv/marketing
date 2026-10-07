@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { buildFinderData, finderPageData, hostedSummary, compareRevision, destinationLabel, editionLabel } from '../src/lib/finder.mjs';
+import { buildFinderData, finderPageData, hostedSummary, compareRevision, destinationLabel, editionLabel, crossflashTargets } from '../src/lib/finder.mjs';
 import { catalog, mediatek, pioneer, SHA, V1_ONLY_SHA, MTK_ONLY_SHA } from './fixtures/finder-catalog.mjs';
 
 const data = () => buildFinderData({ catalog: catalog(), mediatek: mediatek() });
@@ -29,16 +29,17 @@ test('the real catalogue: all packages reachable, old model names listed, no raw
   for (const row of [...mtk, ...pio]) assert.ok(names.has(row.model.toUpperCase().replace(/[^A-Z0-9]/g, '')), row.model);
   const shown = [...d.models.flatMap(m => [m.m, ...m.v.map(v => v[1])]), ...d.identities.flatMap(i => [i.n, i.brand, i.d]),
     ...d.packages.flatMap(p => p.chips.map(c => c[0]).filter(c => c !== 'Destination GENERAL'))];
-  for (const s of shown) assert.doesNotMatch(String(s), /\?|GENERAL|makemkv/i, s);
+  // "GENERAL" is a Pioneer edition name ("1.53 GENERAL · SAT 8800"); nothing else raw.
+  for (const s of shown) assert.doesNotMatch(String(s).replace(/ GENERAL · /, ' '), /\?|GENERAL|makemkv/i, s);
   // One model sold in several editions: OEM where known, else just the version.
   const bu40 = d.models.find(m => m.m === 'BU40N').v.map(v => v[1]);
   for (const l of ['BU12 (Buffalo)', 'BW42 (HP)', 'BN12', 'U100']) assert.ok(bu40.includes(l), l);
 });
 
-test('versions are labelled by revision plus OEM/ID only', () => {
+test('versions are labelled by revision plus edition (Pioneer: and SAT on every row)', () => {
   const d = page();
-  assert.deepEqual(labels(d, 'BDR-XD07'), ['1.10 (ID35)', '1.10 (ID36)']);
-  assert.deepEqual(labels(d, 'BDR-S13U'), ['1.05 (ID43)', '1.02 (ID43)']);
+  assert.deepEqual(labels(d, 'BDR-XD07'), ['1.10 ID35 · SAT 8D30', '1.10 ID36 · SAT 8D30']);
+  assert.deepEqual(labels(d, 'BDR-S13U'), ['1.05 ID43 · SAT 9201', '1.02 ID43 · SAT 9201']);
   assert.deepEqual(labels(d, 'BU40N'), ['1.00']);
   assert.equal(destinationLabel({ family: 'mediatek', destination: 'R?' }), '');
   assert.equal(destinationLabel({ family: 'mediatek', destination: 'BUFFALO' }), 'Buffalo');
@@ -153,4 +154,45 @@ test('all published cross-flash rows agree with the package their View button op
       assert.equal(p.chips.some(c => c[0] === 'Kernel + Normal'), !incomplete, `${i.n} → ${name} ${v.r}`);
     }
   }
+});
+
+const realPage = () => finderPageData(buildFinderData({ catalog: JSON.parse(readFileSync(new URL('../src/data/finder-catalog.json', import.meta.url))) }));
+const rowOf = (d, m, n) => { const v = d.versions[m.v[n][0]]; return { r: v.r, ...d.identities[v.i] }; };
+
+test('a model on two SATs: every row carries its SAT and edition, duplicates all labelled', () => {
+  const d = realPage();
+  const m = d.models.find(x => x.m === 'BDR-211M');
+  assert.deepEqual([...new Set(m.v.map((_, n) => rowOf(d, m, n).h))].sort(), ['SAT 8800', 'SAT 8801']);
+  const ls = m.v.map(v => v[1]);
+  for (const l of ['1.54 ID58 · SAT 8800', '1.54 ID58 · SAT 8801', '1.53 GENERAL · SAT 8800', '1.53 GENERAL · SAT 8801']) assert.ok(ls.includes(l), l);
+  assert.equal(new Set(ls).size, ls.length);
+});
+
+test('default pick: newest revision, a real ID over GENERAL, then the higher SAT', () => {
+  const d = realPage();
+  const pick = name => { const m = d.models.find(x => x.m === name); const r = rowOf(d, m, m.o[0]); return [r.r, r.e, r.h]; };
+  assert.deepEqual(pick('BDR-211M'), ['1.54', 'ID58', 'SAT 8801']);
+  assert.deepEqual(pick('BDR-212M'), ['1.05', 'ID56', 'SAT 8F00']);
+  assert.deepEqual(pick('BDR-S12JX'), ['1.05', 'ID72', 'SAT 8F01']);
+});
+
+test('cross flash: same family members only, headed by the drive-reported name, alphabetical', () => {
+  const catalog = JSON.parse(readFileSync(new URL('../src/data/finder-catalog.json', import.meta.url)));
+  const data = buildFinderData({ catalog });
+  const d = finderPageData(data);
+  for (const [n, i] of data.identities.entries()) {
+    const expected = crossflashTargets(data, i).map(t => t.identity.key).sort();
+    const listed = [...new Set(d.identities[n].x.flatMap(([, , rows]) => rows.map(([t]) => data.identities[t].key)))].sort();
+    assert.deepEqual(listed, expected, i.key);
+    const heads = d.identities[n].x.map(([name]) => name);
+    assert.deepEqual(heads, [...heads].sort((a, b) => a.localeCompare(b, undefined, { numeric: true })), i.key);
+  }
+  // Every BDR-211M edition on SAT 8800 lists under "BDR-211M" from the S11J-X, never the 8801 board.
+  const s11jx = d.identities[data.identities.findIndex(i => i.key === 'pioneer:8800:ID72')];
+  const m211 = s11jx.x.find(([name]) => name === 'BDR-211M');
+  assert.ok(m211);
+  assert.deepEqual([...new Set(m211[2].map(([t]) => data.identities[t].key))].sort(),
+    ['pioneer:8800:GENERAL', 'pioneer:8800:ID58', 'pioneer:8800:ID60']);
+  const heads = s11jx.x.map(([name]) => name);
+  assert.equal(heads.indexOf('BDR-S11') - heads.indexOf('BDR-S09JX'), 1);
 });
