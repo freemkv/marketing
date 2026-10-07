@@ -14254,6 +14254,18 @@
           "held": true
         },
         {
+          "destination": "OEM_EXT2",
+          "family": "pioneer",
+          "hardware": "ATA 0009",
+          "held": true
+        },
+        {
+          "destination": "OEM_INT",
+          "family": "pioneer",
+          "hardware": "ATA 0009",
+          "held": true
+        },
+        {
           "destination": "PIO_ADV",
           "family": "pioneer",
           "hardware": "ATA 0009",
@@ -14271,6 +14283,18 @@
       "targets": [
         {
           "destination": "GENERAL",
+          "family": "pioneer",
+          "hardware": "ATA 0009",
+          "held": true
+        },
+        {
+          "destination": "OEM_EXT2",
+          "family": "pioneer",
+          "hardware": "ATA 0009",
+          "held": true
+        },
+        {
+          "destination": "OEM_INT",
           "family": "pioneer",
           "hardware": "ATA 0009",
           "held": true
@@ -30851,6 +30875,42 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.20EU"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1886208,
+              "components": [
+                {
+                  "identity_key": "pioneer:8600:ID81:1.20:normal",
+                  "member": "components/S8600811.120.enc",
+                  "revision": "1.20",
+                  "role": "normal",
+                  "sha256": "f0ba4149696a5db0559246d225f4debbfc36be7633f7f471e0343c171828294c"
+                }
+              ],
+              "embedded_model": "BDR-209",
+              "family_id": "ce31c9016c68a046",
+              "filename": "BDR-209_1.20_8600_ID81_e9d86360.tar",
+              "generated_date": "14/04/08",
+              "is_uhd": false,
+              "kernel_revision": null,
+              "kernel_selection_reason": "only-newer-kernels",
+              "kernel_sha256": null,
+              "key": "fw/pioneer/e9d86360146ab82505c25acb1690aa0ac3aed4bda3bd1735eda5a85cf7a6b7cb.tar",
+              "modifiable": false,
+              "normal_sha256": "f0ba4149696a5db0559246d225f4debbfc36be7633f7f471e0343c171828294c",
+              "packageType": "pioneer-installer",
+              "revision": "1.20",
+              "selection": "normal-only",
+              "sha256": "e9d86360146ab82505c25acb1690aa0ac3aed4bda3bd1735eda5a85cf7a6b7cb"
+            }
+          ],
+          "revision": "1.20"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
                 "1.30AEU",
                 "1.30EU"
               ],
@@ -46629,6 +46689,208 @@
             }
           ],
           "revision": "1.59"
+        }
+      ]
+    },
+    {
+      "destination": "OEM_EXT2",
+      "embedded_models": [
+        "DVR-109"
+      ],
+      "family": "pioneer",
+      "hardware": "ATA 0009",
+      "key": "pioneer:ATA 0009:OEM_EXT2",
+      "other_candidates": [],
+      "platforms": [
+        "ata"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "8.50"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1378304,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0009:OEM_EXT2:8.50:kernel",
+                  "member": "components/R9153009.850.enc",
+                  "revision": "8.50",
+                  "role": "kernel",
+                  "sha256": "fe7a8f6ca4cb7d9a6cc5e4834a372946eff52db286033f72fb022dee6ad8404d"
+                },
+                {
+                  "identity_key": "pioneer:ATA 0009:OEM_EXT2:8.50:normal",
+                  "member": "components/R9153109.850.enc",
+                  "revision": "8.50",
+                  "role": "normal",
+                  "sha256": "ab21106696817b8c866f58bdc21b0a3a1ee5c73c64b7146d734426688e00d2e2"
+                }
+              ],
+              "embedded_model": "DVR-109",
+              "family_id": null,
+              "filename": "DVR-109_8.50_ATA_0009_OEM_EXT2_3006e631.tar",
+              "generated_date": "05/04/22",
+              "is_uhd": false,
+              "kernel_revision": "8.50",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "fe7a8f6ca4cb7d9a6cc5e4834a372946eff52db286033f72fb022dee6ad8404d",
+              "key": "fw/pioneer/3006e6312f92d4c2d90e6f3564c013f276267bf016136a45cb0e5193b19d25cb.tar",
+              "modifiable": false,
+              "normal_sha256": "ab21106696817b8c866f58bdc21b0a3a1ee5c73c64b7146d734426688e00d2e2",
+              "packageType": "pioneer-installer",
+              "revision": "8.50",
+              "selection": "source-contained",
+              "sha256": "3006e6312f92d4c2d90e6f3564c013f276267bf016136a45cb0e5193b19d25cb"
+            }
+          ],
+          "revision": "8.50"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "8.58"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1411072,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0009:OEM_EXT2:8.58:kernel",
+                  "member": "components/R9153009.858.enc",
+                  "revision": "8.58",
+                  "role": "kernel",
+                  "sha256": "8fff6909cf846eccad7fe19426a485d03c1aa8af51326398a80f4e55958d99f9"
+                },
+                {
+                  "identity_key": "pioneer:ATA 0009:OEM_EXT2:8.58:normal",
+                  "member": "components/R9153109.858.enc",
+                  "revision": "8.58",
+                  "role": "normal",
+                  "sha256": "179d2a1c656512fc8aa904ae7630d0b5d6fa30448512112c93dd4a7cad900c49"
+                }
+              ],
+              "embedded_model": "DVR-109",
+              "family_id": null,
+              "filename": "DVR-109_8.58_ATA_0009_OEM_EXT2_4391dab1.tar",
+              "generated_date": "05/08/09",
+              "is_uhd": false,
+              "kernel_revision": "8.58",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "8fff6909cf846eccad7fe19426a485d03c1aa8af51326398a80f4e55958d99f9",
+              "key": "fw/pioneer/4391dab17de0ecb67c5515528dcbd74d48d11676043fa51b74bcdea3dd29a0a7.tar",
+              "modifiable": false,
+              "normal_sha256": "179d2a1c656512fc8aa904ae7630d0b5d6fa30448512112c93dd4a7cad900c49",
+              "packageType": "pioneer-installer",
+              "revision": "8.58",
+              "selection": "source-contained",
+              "sha256": "4391dab17de0ecb67c5515528dcbd74d48d11676043fa51b74bcdea3dd29a0a7"
+            }
+          ],
+          "revision": "8.58"
+        }
+      ]
+    },
+    {
+      "destination": "OEM_INT",
+      "embedded_models": [
+        "DVR-109"
+      ],
+      "family": "pioneer",
+      "hardware": "ATA 0009",
+      "key": "pioneer:ATA 0009:OEM_INT",
+      "other_candidates": [],
+      "platforms": [
+        "ata"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "8.50"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1378304,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0009:OEM_INT:8.50:kernel",
+                  "member": "components/R9154009.850.enc",
+                  "revision": "8.50",
+                  "role": "kernel",
+                  "sha256": "aaa13c4849a735abb06fd2814d7629c22722789085fddcab059b4ea1fb674887"
+                },
+                {
+                  "identity_key": "pioneer:ATA 0009:OEM_INT:8.50:normal",
+                  "member": "components/R9154109.850.enc",
+                  "revision": "8.50",
+                  "role": "normal",
+                  "sha256": "591ccb41a5e0118781d098750f4225bfc9a1b5cdddc101082274497bedf1d4f0"
+                }
+              ],
+              "embedded_model": "DVR-109",
+              "family_id": null,
+              "filename": "DVR-109_8.50_ATA_0009_OEM_INT_c73db4a4.tar",
+              "generated_date": "05/04/22",
+              "is_uhd": false,
+              "kernel_revision": "8.50",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "aaa13c4849a735abb06fd2814d7629c22722789085fddcab059b4ea1fb674887",
+              "key": "fw/pioneer/c73db4a470df12c8c0b700d7d7f2920c36a85da437d51fba82c471f42a8683d1.tar",
+              "modifiable": false,
+              "normal_sha256": "591ccb41a5e0118781d098750f4225bfc9a1b5cdddc101082274497bedf1d4f0",
+              "packageType": "pioneer-installer",
+              "revision": "8.50",
+              "selection": "source-contained",
+              "sha256": "c73db4a470df12c8c0b700d7d7f2920c36a85da437d51fba82c471f42a8683d1"
+            }
+          ],
+          "revision": "8.50"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "8.58"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1411072,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0009:OEM_INT:8.58:kernel",
+                  "member": "components/R9154009.858.enc",
+                  "revision": "8.58",
+                  "role": "kernel",
+                  "sha256": "db53094f787eb7bacd9deaa3d97438a761088b48975a1bef36c4135f9f64e682"
+                },
+                {
+                  "identity_key": "pioneer:ATA 0009:OEM_INT:8.58:normal",
+                  "member": "components/R9154109.858.enc",
+                  "revision": "8.58",
+                  "role": "normal",
+                  "sha256": "e92723a0d2ec4364b153dd0fa2a0de7e79c9a396f073bd5320c58204660c4c9d"
+                }
+              ],
+              "embedded_model": "DVR-109",
+              "family_id": null,
+              "filename": "DVR-109_8.58_ATA_0009_OEM_INT_8126a056.tar",
+              "generated_date": "05/08/09",
+              "is_uhd": false,
+              "kernel_revision": "8.58",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "db53094f787eb7bacd9deaa3d97438a761088b48975a1bef36c4135f9f64e682",
+              "key": "fw/pioneer/8126a056968433ac152a08a948be50119aa0c55d22e8ca7dc693153313fd0bcc.tar",
+              "modifiable": false,
+              "normal_sha256": "e92723a0d2ec4364b153dd0fa2a0de7e79c9a396f073bd5320c58204660c4c9d",
+              "packageType": "pioneer-installer",
+              "revision": "8.58",
+              "selection": "source-contained",
+              "sha256": "8126a056968433ac152a08a948be50119aa0c55d22e8ca7dc693153313fd0bcc"
+            }
+          ],
+          "revision": "8.58"
         }
       ]
     },
