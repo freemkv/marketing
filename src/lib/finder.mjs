@@ -502,12 +502,13 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     dupes = shared(labels);
     const seen = {};
     labels = labels.map(l => { if (!dupes(l)) return l; seen[l] = (seen[l] ?? 0) + 1; return `${l} · ${seen[l]}`; });
-    // Default pick order: newest revision first; a tie prefers a real ID over
-    // GENERAL, then the higher SAT, then list order. A search naming a SAT or ID
-    // narrows the rows first (find.astro matchingVersionIndex).
+    // Default pick order: the first SAT (ascending, as the card lists them), its
+    // newest revision; a tie prefers a real ID over GENERAL, then list order (ID
+    // ascending). A search naming a SAT or ID narrows the rows first (find.astro
+    // matchingVersionIndex).
     const realId = i => /^ID\d+$/.test(String(i.destination)) ? 1 : 0;
-    const o = rows.map((_, n) => n).sort((a, b) => compareRevision(versions[rows[b].v].r, versions[rows[a].v].r) ||
-      realId(rows[b].i) - realId(rows[a].i) || String(rows[b].i.hardware).localeCompare(String(rows[a].i.hardware)) || a - b);
+    const o = rows.map((_, n) => n).sort((a, b) => String(rows[a].i.hardware).localeCompare(String(rows[b].i.hardware)) ||
+      compareRevision(versions[rows[b].v].r, versions[rows[a].v].r) || realId(rows[b].i) - realId(rows[a].i) || a - b);
     return { m: row.m, t: searchText([row.m, ...new Set(ids.map(identityBrand))]), v: rows.map(({ v }, n) => [v, labels[n]]), o };
   });
   return { packages, versions, identities: identities.map(x => x.out), models };

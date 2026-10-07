@@ -168,10 +168,11 @@ test('a model on two SATs: every row carries its SAT and edition, duplicates all
   assert.equal(new Set(ls).size, ls.length);
 });
 
-test('default pick: newest revision, a real ID over GENERAL, then the higher SAT', () => {
+test('default pick: first SAT, its newest revision, a real ID over GENERAL', () => {
   const d = realPage();
   const pick = name => { const m = d.models.find(x => x.m === name); const r = rowOf(d, m, m.o[0]); return [r.r, r.e, r.h]; };
-  assert.deepEqual(pick('BDR-211M'), ['1.54', 'ID58', 'SAT 8801']);
+  assert.deepEqual(pick('BDR-211M'), ['1.54', 'ID58', 'SAT 8800']);
+  assert.deepEqual(pick('BDR-S11JX'), ['1.54', 'ID72', 'SAT 8800']);
   assert.deepEqual(pick('BDR-212M'), ['1.05', 'ID56', 'SAT 8F00']);
   assert.deepEqual(pick('BDR-S12JX'), ['1.05', 'ID72', 'SAT 8F01']);
 });

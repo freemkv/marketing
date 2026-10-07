@@ -441,8 +441,8 @@ import '../../styles/site.css';
             var list = '';
             var rows = '';
             if (d.v.length > 1) {
-              // Vertical list. Pioneer: one heading per SAT, the viewed SAT first (marked
-              // when there are several), the edition (GENERAL, ID58, an OEM) next to each revision. Others: brand headings, maker
+              // Vertical list. Pioneer: one heading per SAT in ascending order (the viewed one
+              // marked when there are several), the edition (GENERAL, ID58, an OEM) next to each revision. Others: brand headings, maker
               // first, then OEMs, unknown editions last. Newest first in each group.
               var groups = [], byName = {};
               d.v.forEach(function (row, n) {
@@ -452,7 +452,7 @@ import '../../styles/site.css';
                 byName[g].push(n);
               });
               var isSat = function (g) { return d.v.some(function (row) { return identities[versions[row[0]].i].h === g; }); };
-              var rank = function (g) { return g === ident.h ? -2 : isSat(g) ? -1 : g === 'Other editions' ? 2 : (g === ident.brand && !ident.d) || g === 'LG' || g === 'Pioneer' ? 0 : 1; };
+              var rank = function (g) { return isSat(g) ? -1 : g === 'Other editions' ? 2 : (g === ident.brand && !ident.d) || g === 'LG' || g === 'Pioneer' ? 0 : 1; };
               groups.sort(function (a, b) { return rank(a) - rank(b) || a.localeCompare(b); });
               var revKey = function (r) { return /^\d+\.\d+/.test(r) ? '1' + r : '0' + r; };
               list = '<h4 class="fx-h">Versions</h4>' + groups.map(function (g) {
