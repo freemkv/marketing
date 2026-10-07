@@ -51,7 +51,7 @@ test('page data: [name, uhd, rows] per target name, one row per revision; nothin
   assert.deepEqual(d.identities[by('BDR-S13U')].x, []);
 });
 
-test('editions sharing a name merge under one heading; a complete edition wins a shared revision', () => {
+test('editions sharing a name share one heading, with one row per revision and edition', () => {
   const cat = familyCatalog();
   cat.identities.push(ident('8A11', 'ID41', 'BDR-UD04', [
     { revision: '1.11', packages: [pkg(sha('G'), '1.11', 'BDR-UD04', { kn: true })] },
@@ -61,7 +61,8 @@ test('editions sharing a name merge under one heading; a complete edition wins a
   const ud03 = d.identities.find(i => i.n === 'BDR-UD03');
   const ud04 = ud03.x.filter(([name]) => name === 'BDR-UD04');
   assert.equal(ud04.length, 1);
-  assert.deepEqual(ud04[0][2].map(([, v, inc]) => [d.versions[v].r, inc]), [['1.20', 1], ['1.14', 0], ['1.11', 0]]);
+  assert.deepEqual(ud04[0][2].map(([t, v, inc]) => [d.versions[v].r, d.identities[t].e, inc]),
+    [['1.20', 'ID41', 1], ['1.14', 'ID40', 0], ['1.11', 'ID40', 1], ['1.11', 'ID41', 0]]);
 });
 
 test('the base fixture (no family ids) and MediaTek never produce cross-flash rows', () => {

@@ -60,6 +60,7 @@ import '../../styles/site.css';
       .fx-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; font-size: 0.92rem; }
       .fx-list li { display: flex; gap: 0.75rem; align-items: baseline; }
       .fx-rev-num { font-family: var(--mono); font-weight: 700; min-width: 3.5rem; }
+      .fx-edition { font-family: var(--mono); color: var(--muted); min-width: 5rem; }
       .fx-dl { font-size: 0.85rem; font-weight: 600; color: var(--teal-dark); }
       .fx-details { margin-top: 1rem; font-size: 0.82rem; }
       .fx-details summary { cursor: pointer; color: var(--slate); font-weight: 600; }
@@ -222,6 +223,17 @@ import '../../styles/site.css';
             return models.find(function (d) { return compact(d.m) === needle; }) || null;
           }
 
+          // Pioneer edition next to a revision ("ID58", "GENERAL", an OEM).
+          function editionHtml(id) {
+            return id.pio && id.e ? '<span class="fx-edition">' + escapeText(id.e) + '</span>' : '';
+          }
+
+          // Editions sharing a revision: GENERAL, then IDs numerically, then OEMs.
+          function editionOrder(a, b) {
+            var rank = function (e) { return !e || e === 'GENERAL' ? 0 : /^ID\d+$/.test(e) ? 1 : 2; };
+            return rank(a.e) - rank(b.e) || String(a.e).localeCompare(String(b.e), undefined, { numeric: true });
+          }
+
           function escapeText(text) {
             return String(text).replace(/[&<>"']/g, function (c) {
               return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -238,8 +250,11 @@ import '../../styles/site.css';
           }
 
           function matchingVersionIndex(d, query) {
+            // Newest matching revision; `d.o` is the row order newest first.
             var terms = queryTerms(query);
-            return Math.max(0, d.v.findIndex(function (v) { return versionMatches(d, v, terms); }));
+            var order = d.o || d.v.map(function (_, n) { return n; });
+            for (var k = 0; k < order.length; k++) if (versionMatches(d, d.v[order[k]], terms)) return order[k];
+            return order.length ? order[0] : 0;
           }
 
           function filterModels(q) {
@@ -426,24 +441,28 @@ import '../../styles/site.css';
             var list = '';
             var rows = '';
             if (d.v.length > 1) {
-              // Vertical list under brand headings: maker first, then OEMs,
-              // unknown editions last; newest first within each group.
+              // Vertical list. Pioneer: one heading per SAT, the edition (GENERAL,
+              // ID58, an OEM) next to each revision. Others: brand headings, maker
+              // first, then OEMs, unknown editions last. Newest first in each group.
               var groups = [], byName = {};
               d.v.forEach(function (row, n) {
-                var g = identities[versions[row[0]].i].g || 'Other editions';
+                var id = identities[versions[row[0]].i];
+                var g = id.h || id.g || 'Other editions';
                 if (!byName[g]) { byName[g] = []; groups.push(g); }
                 byName[g].push(n);
               });
-              var rank = function (g) { return g === 'Other editions' ? 2 : (g === ident.brand && !ident.d) || g === 'LG' || g === 'Pioneer' ? 0 : 1; };
+              var isSat = function (g) { return d.v.some(function (row) { return identities[versions[row[0]].i].h === g; }); };
+              var rank = function (g) { return isSat(g) ? -1 : g === 'Other editions' ? 2 : (g === ident.brand && !ident.d) || g === 'LG' || g === 'Pioneer' ? 0 : 1; };
               groups.sort(function (a, b) { return rank(a) - rank(b) || a.localeCompare(b); });
               var revKey = function (r) { return /^\d+\.\d+/.test(r) ? '1' + r : '0' + r; };
               list = '<h4 class="fx-h">Versions</h4>' + groups.map(function (g) {
                 var rows = byName[g].slice().sort(function (a, b) {
                   var ra = revKey(versions[d.v[a][0]].r), rb = revKey(versions[d.v[b][0]].r);
-                  return ra < rb ? 1 : ra > rb ? -1 : 0;
+                  return ra < rb ? 1 : ra > rb ? -1 : editionOrder(identities[versions[d.v[a][0]].i], identities[versions[d.v[b][0]].i]);
                 });
                 return '<p class="fx-vgroup">' + escapeText(g) + '</p><ul class="fx-list">' + rows.map(function (n) {
-                  return '<li><span class="fx-rev-num">' + escapeText(versions[d.v[n][0]].r) + '</span>' +
+                  var id = identities[versions[d.v[n][0]].i];
+                  return '<li><span class="fx-rev-num">' + escapeText(versions[d.v[n][0]].r) + '</span>' + editionHtml(id) +
                     (n === curRevIdx ? '<span class="fx-viewing">Viewing</span>'
                       : '<button type="button" class="fx-dl fx-view" data-view="' + n + '">View</button>') + '</li>';
                 }).join('') + '</ul>';
@@ -463,13 +482,14 @@ import '../../styles/site.css';
               '<th scope="col">Revision</th><th scope="col">File</th><th scope="col">Contents</th><th scope="col">SHA-256</th>' +
               '</tr></thead><tbody>' + rows + '</tbody></table></details>';
 
-            // Cross Flash: same hardware family; same rows as Versions. A revision without a Kernel is listed, not viewable.
+            // Cross Flash: every target shares this edition's hardware family, whatever its SAT,
+            // so there is no SAT heading. A revision without a Kernel is listed, not viewable.
             var xf = '';
             if (ident.x.length) {
               xf = '<h4 class="fx-h">Cross Flash</h4>' + ident.x.map(function (x) {
                 return '<p class="fx-vgroup">' + escapeText(x[0]) + (x[1] ? ' (UHD)' : '') + '</p><ul class="fx-list">' +
                   x[2].map(function (row) {
-                    return '<li><span class="fx-rev-num">' + escapeText(versions[row[1]].r) + '</span>' +
+                    return '<li><span class="fx-rev-num">' + escapeText(versions[row[1]].r) + '</span>' + editionHtml(identities[row[0]]) +
                       (row[2] ? '<span class="fx-viewing">Incomplete - missing kernel</span>'
                         : '<button type="button" class="fx-dl fx-view" data-xf="' + row[0] + '" data-xv="' + row[1] + '">View</button>') + '</li>';
                   }).join('') + '</ul>';
@@ -480,7 +500,8 @@ import '../../styles/site.css';
             detail.innerHTML =
               '<div class="drive-detail-head">' +
               '<h3 class="card-title drive-title">' + escapeText(name) + '</h3>' +
-              '<span class="drive-rev">rev ' + escapeText(ver.r) + '</span>' +
+              '<span class="drive-rev">rev ' + escapeText(ver.r) + (ident.pio && ident.e ? ' ' + escapeText(ident.e) : '') +
+                (ident.h ? ' · ' + escapeText(ident.h) : '') + '</span>' +
               '</div>' +
               factsHtml +
               capsHtml +

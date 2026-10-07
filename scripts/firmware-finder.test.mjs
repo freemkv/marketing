@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { buildFinderData, finderPageData, hostedSummary, compareRevision, destinationLabel } from '../src/lib/finder.mjs';
+import { buildFinderData, finderPageData, hostedSummary, compareRevision, destinationLabel, editionLabel } from '../src/lib/finder.mjs';
 import { catalog, mediatek, pioneer, SHA, V1_ONLY_SHA, MTK_ONLY_SHA } from './fixtures/finder-catalog.mjs';
 
 const data = () => buildFinderData({ catalog: catalog(), mediatek: mediatek() });
@@ -43,6 +43,10 @@ test('versions are labelled by revision plus OEM/ID only', () => {
   assert.equal(destinationLabel({ family: 'mediatek', destination: 'R?' }), '');
   assert.equal(destinationLabel({ family: 'mediatek', destination: 'BUFFALO' }), 'Buffalo');
   assert.equal(destinationLabel({ family: 'pioneer', destination: 'GENERAL' }), '');
+  assert.equal(editionLabel({ family: 'pioneer', destination: 'GENERAL' }), 'GENERAL');
+  assert.equal(editionLabel({ family: 'pioneer', destination: 'ID58' }), 'ID58');
+  assert.equal(editionLabel({ family: 'pioneer', destination: 'MEDION2' }), 'Medion');
+  assert.equal(editionLabel({ family: 'mediatek', destination: 'GENERAL' }), '');
 });
 
 test('one version per revision; the kernel-bearing package is preferred and the other stays downloadable', () => {
@@ -50,7 +54,10 @@ test('one version per revision; the kernel-bearing package is preferred and the 
   const v = d.versions.find(x => x.r === '1.05' && d.identities[x.i].n === 'BDR-S13U');
   assert.deepEqual(v.p.map(p => d.packages[p].s), [SHA.s13u105k, SHA.s13u105n]);
   assert.deepEqual(v.p.map(p => d.packages[p].contents), ['Kernel 1.00 + Normal', 'Normal']);
-  assert.deepEqual(d.packages[v.p[0]].chips.map(c => c[0]), ['Pioneer', 'Hardware SAT 9201', 'ID43', 'Kernel + Normal']);
+  // SAT and edition are a heading and row text, not pills.
+  assert.deepEqual(d.packages[v.p[0]].chips.map(c => c[0]), ['Pioneer', 'Kernel + Normal']);
+  assert.equal(d.identities[v.i].h, 'SAT 9201');
+  assert.equal(d.identities[v.i].e, 'ID43');
 });
 
 test('MediaTek keeps feature data from the old index; no provenance', () => {
@@ -89,8 +96,8 @@ test('S12JX package pills agree with cross-flash completeness for each selected 
     assert.ok(labels.includes(complete ? 'Kernel + Normal' : 'Normal'), revision);
     assert.equal(labels.includes('Kernel + Normal'), complete, revision);
     assert.ok(labels.includes('UHD capable'));
-    assert.ok(labels.includes('ID72'));
-    assert.ok(!labels.some(l => /^ID ID/.test(l)));
+    assert.equal(s12.e, 'ID72');
+    assert.ok(!labels.some(l => /^ID/.test(l) || /^Hardware /.test(l)));
     assert.equal(target[2].find(([, v]) => v === vi)[2], complete ? 0 : 1);
   }
   const normal = d.packages[d.versions[source.v[0]].p[0]];
@@ -105,7 +112,7 @@ test('alternate downloads have their own component pills instead of inheriting t
   assert.ok(!d.packages[v.p[1]].chips.some(c => c[0] === 'Kernel + Normal'));
 });
 
-test('every Pioneer package shows its own contents, destination and catalogued UHD capability', () => {
+test('every Pioneer package shows its own contents and catalogued UHD capability; SAT and edition live on the identity', () => {
   const catalog = JSON.parse(readFileSync(new URL('../src/data/finder-catalog.json', import.meta.url)));
   const d = finderPageData(buildFinderData({ catalog }));
   const bySha = new Map(d.packages.map(p => [p.s, p]));
@@ -116,7 +123,10 @@ test('every Pioneer package shows its own contents, destination and catalogued U
       const componentLabel = [roles.includes('kernel') && 'Kernel', roles.includes('normal') && 'Normal'].filter(Boolean).join(' + ');
       if (componentLabel) assert.ok(labels.includes(componentLabel), p.filename);
       assert.equal(labels.includes('Kernel + Normal'), roles.includes('kernel') && roles.includes('normal'), p.filename);
-      assert.ok(labels.includes(/^ID\d+$/.test(i.destination) ? i.destination : 'Destination ' + i.destination), p.filename);
+      const ident = d.identities.find(x => x.v.some(v => d.versions[v].p.some(pi => d.packages[pi].s === p.sha256)));
+      assert.equal(ident.e, editionLabel(i), p.filename);
+      assert.equal(ident.h, /^[0-9A-F]{4}$/.test(i.hardware) ? 'SAT ' + i.hardware : i.hardware, p.filename);
+      assert.ok(!labels.some(l => l === ident.e || /^Hardware |^Destination /.test(l)), p.filename);
       assert.equal(labels.includes('UHD capable'), p.is_uhd === true, p.filename);
     }
   }
