@@ -3073,6 +3073,14 @@
       "status": "published"
     },
     {
+      "basis": "projection",
+      "key": "pioneer/BDR-209BK/SAT%208600/1.20EU/e9d86360146ab82505c25acb1690aa0ac3aed4bda3bd1735eda5a85cf7a6b7cb.tar",
+      "model": "BDR-209BK",
+      "new_key": "fw/pioneer/e9d86360146ab82505c25acb1690aa0ac3aed4bda3bd1735eda5a85cf7a6b7cb.tar",
+      "sha256": "e9d86360146ab82505c25acb1690aa0ac3aed4bda3bd1735eda5a85cf7a6b7cb",
+      "status": "published"
+    },
+    {
       "basis": "projection+site",
       "key": "pioneer/BDR-209BK/SAT%208600/1.30AEU/f01f92116971b6550d805ad73f14b2b2d960e1b3cf2746a0e6893e74bc220933.tar",
       "model": "BDR-209BK",
@@ -13716,6 +13724,38 @@
       "model": "DVR-109",
       "new_key": "fw/pioneer/cb35e55bca2e3bd54f448a1c67ba85941aff1c76558006f07b09468528e8e444.tar",
       "sha256": "cb35e55bca2e3bd54f448a1c67ba85941aff1c76558006f07b09468528e8e444",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/DVR-109/ATA%200009/8.50/3006e6312f92d4c2d90e6f3564c013f276267bf016136a45cb0e5193b19d25cb.tar",
+      "model": "DVR-109",
+      "new_key": "fw/pioneer/3006e6312f92d4c2d90e6f3564c013f276267bf016136a45cb0e5193b19d25cb.tar",
+      "sha256": "3006e6312f92d4c2d90e6f3564c013f276267bf016136a45cb0e5193b19d25cb",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/DVR-109/ATA%200009/8.50/c73db4a470df12c8c0b700d7d7f2920c36a85da437d51fba82c471f42a8683d1.tar",
+      "model": "DVR-109",
+      "new_key": "fw/pioneer/c73db4a470df12c8c0b700d7d7f2920c36a85da437d51fba82c471f42a8683d1.tar",
+      "sha256": "c73db4a470df12c8c0b700d7d7f2920c36a85da437d51fba82c471f42a8683d1",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/DVR-109/ATA%200009/8.58/4391dab17de0ecb67c5515528dcbd74d48d11676043fa51b74bcdea3dd29a0a7.tar",
+      "model": "DVR-109",
+      "new_key": "fw/pioneer/4391dab17de0ecb67c5515528dcbd74d48d11676043fa51b74bcdea3dd29a0a7.tar",
+      "sha256": "4391dab17de0ecb67c5515528dcbd74d48d11676043fa51b74bcdea3dd29a0a7",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/DVR-109/ATA%200009/8.58/8126a056968433ac152a08a948be50119aa0c55d22e8ca7dc693153313fd0bcc.tar",
+      "model": "DVR-109",
+      "new_key": "fw/pioneer/8126a056968433ac152a08a948be50119aa0c55d22e8ca7dc693153313fd0bcc.tar",
+      "sha256": "8126a056968433ac152a08a948be50119aa0c55d22e8ca7dc693153313fd0bcc",
       "status": "published"
     },
     {
