@@ -129,26 +129,36 @@ function prologues and epilogues in all three firmware generations examined
 (BDR-UD04 `SAT 8A10`, the newest `SAT 9401`/`X13U`, and the older `SAT 1003`),
 and establish use of the H8S instruction set rather than H8/300H.
 
-**No H8SX features are used.** Across roughly 133,000 control-flow-verified
-instructions spanning all three generations, no H8SX-exclusive instruction
-(`MOVA`, `BFLD`/`BFST`, indexed addressing, the `#imm:3` short-immediate forms)
-and no instruction requiring H8SX maximum (greater-than-24-bit) mode was found.
-The firmware runs in **advanced mode**: a 24-bit program space, with 32-bit
-absolute (`@aa:32`) addressing — itself an H8S feature — used only to reach the
-on-chip I/O register area (addresses such as `0xFF3F10xx` and `0xFFFDFFxx`).
-No code addresses a program location above `0x00FFFFFF`. No `MAC`
-multiply-accumulate instructions occur either, so the H8S/2000 instruction
-subset is sufficient and the firmware does not require an H8S/2600-class
-multiplier.
+**What identifies the H8S/2600.** At the instruction-set level the H8S/2600
+and H8S/2000 differ in one respect only: the 2600 has a multiply-accumulate
+register (`MACH`/`MACL`) and four instructions that use it — `MAC`, `CLRMAC`,
+`LDMAC` and `STMAC`. (The 2600's faster `MULXU`/`MULXS` is a timing
+difference, not an encoding one.) The firmware never issues `MAC` itself, but
+`LDMAC` (`03 2x`/`03 3x`) and `STMAC` (`02 2x`/`02 3x`) appear in the
+low-level microkernel layer: the startup code clears `MACH`/`MACL` at reset,
+and interrupt handlers save both halves on entry and restore them on exit.
+This is the context-save boilerplate a compiler emits for an H8S/2600 CPU
+target. Because these instructions do not exist on an H8S/2000, the code
+cannot run on one.
 
-Because H8SX is binary-upward-compatible with H8S, these bytes cannot rule out
-H8SX silicon running H8S-compatible code; but there is no positive H8SX
-evidence, and the total absence of any SX instruction across three firmwares
-shows that the toolchain targeted H8S. Only the physical part number — or an
-H8SX-only on-chip peripheral register access — would settle silicon H8S versus
-H8SX. External corroboration is consistent with an H8S-class part: a decap of
-the Renesas R8J32040FPV2 drive controller shows controller and Flash-ROM dies,
-though it offers no die-level ISA confirmation.
+**No H8SX features are used.** Across roughly 133,000 control-flow-verified
+instructions spanning all three generations, no H8SX-exclusive instruction was
+found: no `MOVA`, no `BFLD`/`BFST`, no indexed addressing and no `#imm:3`
+short-immediate forms. The firmware runs in H8S **advanced mode**, with a
+16 MiB (24-bit) address space, and nothing requires the H8SX's 32-bit maximum
+mode. 32-bit absolute operands (`@aa:32`) are common — for RAM and data tables
+as well as I/O registers — but their top byte is always `00` or `FF`. In
+advanced mode only the low 24 bits reach the bus, so every such operand falls
+inside the 16 MiB space.
+
+**Silicon versus toolchain.** Because H8SX is binary-upward-compatible with
+H8S, these bytes cannot rule out H8SX silicon running H8S/2600 code. They do
+show that the toolchain targeted the H8S/2600, and there is no positive H8SX
+evidence. Only the physical part number — or an access to an H8SX-only on-chip
+peripheral register — would settle the question. External evidence is
+consistent with an H8S-class part: a decap of the Renesas R8J32040FPV2 drive
+controller shows controller and Flash-ROM dies, though it offers no
+die-level ISA confirmation.
 
 Several instruction forms recur throughout this document because the firmware's
 control logic is built from them, and reading the firmware means reading them:
@@ -164,7 +174,7 @@ control logic is built from them, and reading the firmware means reading them:
 | `CMP.B #imm,RnL` | byte immediate compare | buffer-id (`FE`/`F0`/`FF`) dispatch |
 | `BSET`/`BCLR #b,@aa:16` | bit set/clear, absolute-16 | permission/state-bit management |
 | `EXTU.L ERn` | zero-extend long | operand preparation |
-| `RTE` / `RTE/L` | `56 70` / `56 0x`–`56 3x` | exception return |
+| `RTE` | `56 70` | exception return |
 
 The variable-length encoding matters for anyone disassembling the image:
 linear sweep is prone to false cross-references because a mis-synchronised
@@ -659,7 +669,7 @@ the seed.
 Crucially, **the Kernel code itself records which layout it expects**. Every
 receiver contains the buffer-id dispatch (Chapter 12) that distinguishes Kernel
 from Normal transfers, written as an adjacent instruction pair `CMP.B #FE,RnL`
-followed six bytes later by `CMP.B #F0,RnL` (encoded `Rn FE .. .. .. .. Rn F0`).
+followed six bytes later by `CMP.B #F0,RnL` (encoded `An FE .. .. .. .. An F0`, where `n` is the register nibble).
 The two generations compare on different byte registers: **R6L (`AE FE … AE F0`)
 for front-key Kernels and R5L (`AD FE … AD F0`) for derived-key Kernels**. Exactly
 one such pair, on exactly one of the two registers, is present in a decoded Kernel
