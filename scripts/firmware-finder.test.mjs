@@ -197,3 +197,12 @@ test('cross flash: same family members only, headed by the drive-reported name, 
   const heads = s11jx.x.map(([name]) => name);
   assert.equal(heads.indexOf('BDR-S11') - heads.indexOf('BDR-S09JX'), 1);
 });
+
+test('"Also sold as": retail box names per edition, split, without bare numbers or other brands', () => {
+  const d = realPage();
+  const aka = name => d.models.find(x => x.m === name).a;
+  assert.deepEqual(aka('BDR-211M'), [['GENERAL', ['BDR-211XJ']], ['ID58', ['BDR-211JBK']], ['ID60', ['BDR-211EBK', 'BDR-211UBK']]]);
+  assert.deepEqual(aka('BDR-212M'), [['GENERAL', ['BDR-212XJ']], ['ID56', ['BDR-212EBK', 'BDR-212UBK', 'BDR-212ULBK']]]);
+  assert.equal(aka('BDR-S11JX'), undefined);
+  for (const m of d.models) for (const [, names] of m.a ?? []) for (const n of names) assert.doesNotMatch(n, /_|BWU|\s/, m.m);
+});

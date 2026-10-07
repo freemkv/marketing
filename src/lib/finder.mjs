@@ -396,7 +396,8 @@ const searchText = list => [...new Set(list.filter(Boolean).flatMap(t => [norm(t
  *  identities[]: {n model name, brand, d OEM/ID label or '', pio, h SAT heading (Pioneer) or '', e edition label, t search text,
  *                 v [version idx newest first], x [[target name, uhd, [[identity idx, version idx, incomplete]]]]}
  *  versions[]:   {i identity idx, r revision, p [package idx, preferred first], mod, features, baseOnly}
- *  models[]:     {m name, t search text, v [[version idx, label]] SAT first, o [row idx newest first] (default pick)}
+ *  models[]:     {m name, t search text, v [[version idx, label]] SAT first, o [row idx, default pick first],
+ *                 a [[edition, [retail box names]]] "Also sold as" (Pioneer, when known)}
  * `legacy` is the old site index rows ({model, brand, versions:[{sha256}]}): their
  * model names stay listed, mapped by package hash onto catalogue identities.
  */
@@ -482,6 +483,37 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
       g.rows.sort((a, b) => compareRevision(versions[b[1]].r, versions[a[1]].r) || compareEdition(identities[a[0]].out, identities[b[0]].out))]);
   }
 
+  // Retail box names per Pioneer identity, from Pioneer's release titles and release
+  // notes. Shared listings are split ("BDR-211EBK / UBK", "BDR-211EBK___UBK" ->
+  // BDR-211EBK, BDR-211UBK).
+  const boxNames = new Map();
+  for (const a of data.aliases) {
+    if (a.kind !== 'release' && a.kind !== 'release-note') continue;
+    const split = [];
+    for (const tok of String(a.display).split(/\s*\/\s*|_{2,}|\s+/).filter(Boolean)) {
+      const prev = split[split.length - 1];
+      split.push(!tok.includes('-') && prev && tok.length < prev.length ? prev.slice(0, prev.length - tok.length) + tok : tok);
+    }
+    for (const k of a.targets) for (const name of split) (boxNames.get(k) ?? boxNames.set(k, new Set()).get(k)).add(name);
+  }
+  // "Also sold as" for a model card: [[edition, [box names]]], editions in list order.
+  // A box name extends the model number with a box suffix (BDR-211 + JBK); bare
+  // numbers, other brands' names (BWU-100A) and the model's own names are left out.
+  const alsoSoldAs = (model, ids) => {
+    const byEdition = new Map();
+    for (const i of ids) {
+      if (i.family !== 'pioneer') continue;
+      const out = identities[idIdx.get(i.key)].out;
+      const stem = compact(out.n).replace(/[A-Z]+$/, '');
+      for (const name of boxNames.get(i.key) ?? []) {
+        const c = compact(name);
+        if (/_/.test(name) || c === stem || !c.startsWith(stem) || c === compact(out.n) || c === compact(model)) continue;
+        (byEdition.get(out.e) ?? byEdition.set(out.e, new Set()).get(out.e)).add(name);
+      }
+    }
+    return [...byEdition].sort(([a], [b]) => compareEdition({ e: a }, { e: b })).map(([e, s]) => [e, [...s].sort()]);
+  };
+
   const models = [...names.values()].sort((a, b) => a.m.localeCompare(b.m)).map(row => {
     const ids = [...row.keys].map(k => data.identities[idIdx.get(k)]);
     // SAT first (the card groups versions by SAT), then edition.
@@ -509,7 +541,9 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     const realId = i => /^ID\d+$/.test(String(i.destination)) ? 1 : 0;
     const o = rows.map((_, n) => n).sort((a, b) => String(rows[a].i.hardware).localeCompare(String(rows[b].i.hardware)) ||
       compareRevision(versions[rows[b].v].r, versions[rows[a].v].r) || realId(rows[b].i) - realId(rows[a].i) || a - b);
-    return { m: row.m, t: searchText([row.m, ...new Set(ids.map(identityBrand))]), v: rows.map(({ v }, n) => [v, labels[n]]), o };
+    const a = alsoSoldAs(row.m, ids);
+    return { m: row.m, t: searchText([row.m, ...new Set(ids.map(identityBrand))]), v: rows.map(({ v }, n) => [v, labels[n]]), o,
+      ...(a.length ? { a } : {}) };
   });
   return { packages, versions, identities: identities.map(x => x.out), models };
 }

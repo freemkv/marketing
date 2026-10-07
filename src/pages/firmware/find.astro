@@ -61,6 +61,7 @@ import '../../styles/site.css';
       .fx-list li { display: flex; gap: 0.75rem; align-items: baseline; }
       .fx-rev-num { font-family: var(--mono); font-weight: 700; min-width: 3.5rem; }
       .fx-edition { font-family: var(--mono); color: var(--muted); min-width: 5rem; }
+      .drive-aka { margin: 0.1rem 0 0.6rem; font-size: 0.85rem; color: var(--muted); }
       .fx-dl { font-size: 0.85rem; font-weight: 600; color: var(--teal-dark); }
       .fx-details { margin-top: 1rem; font-size: 0.82rem; }
       .fx-details summary { cursor: pointer; color: var(--slate); font-weight: 600; }
@@ -510,6 +511,9 @@ import '../../styles/site.css';
               '<span class="drive-rev">rev ' + escapeText(ver.r) + (ident.pio && ident.e ? ' ' + escapeText(ident.e) : '') +
                 (ident.h ? ' · ' + escapeText(ident.h) : '') + '</span>' +
               '</div>' +
+              (d.a ? '<p class="drive-aka">Also sold as ' + d.a.map(function (a) {
+                return escapeText(a[1].join(', ')) + ' (' + escapeText(a[0]) + ')';
+              }).join(' · ') + '</p>' : '') +
               factsHtml +
               capsHtml +
               bodyHtml +
