@@ -2501,12 +2501,6 @@
           "family": "pioneer",
           "hardware": "8301",
           "held": true
-        },
-        {
-          "destination": "ID72",
-          "family": "pioneer",
-          "hardware": "8800",
-          "held": true
         }
       ]
     },
@@ -22079,44 +22073,6 @@
               "revision": "1.12",
               "selection": "release-chain",
               "sha256": "1511a0b6a1b896225e7bdb3f76f6a859e0804ed9e3fe38bf067d7c4b5139fff4"
-            },
-            {
-              "advertised_versions": [
-                "1.12"
-              ],
-              "brand": "PIONEER",
-              "bytes": 2316800,
-              "components": [
-                {
-                  "identity_key": "pioneer:1014:GENERAL:0000:kernel",
-                  "member": "components/S1014000.000.enc",
-                  "revision": "0000",
-                  "role": "kernel",
-                  "sha256": "27c6df414f99791a681a663ef45789d178b705779c169d72710de014bd109f7d"
-                },
-                {
-                  "identity_key": "pioneer:1014:GENERAL:1.12:normal",
-                  "member": "components/S1014001.112.enc",
-                  "revision": "1.12",
-                  "role": "normal",
-                  "sha256": "ee5a57c5d5ca07d40629ccfcb4c411be5acd485ec80998d39f8a6654b4e1dbab"
-                }
-              ],
-              "embedded_model": "BDR-205",
-              "family_id": "72a2f71d42f6a37e",
-              "filename": "BDR-205_1.12_1014_GENERAL_aaf51a6b.tar",
-              "generated_date": "11/06/16",
-              "is_uhd": false,
-              "kernel_revision": "0000",
-              "kernel_selection_reason": null,
-              "kernel_sha256": "27c6df414f99791a681a663ef45789d178b705779c169d72710de014bd109f7d",
-              "key": "fw/pioneer/aaf51a6bb9f49d33c9a778ee4c5ffb17dd9e9d592c56b0eabadaf7329b44c4ae.tar",
-              "modifiable": false,
-              "normal_sha256": "ee5a57c5d5ca07d40629ccfcb4c411be5acd485ec80998d39f8a6654b4e1dbab",
-              "packageType": "pioneer-installer",
-              "revision": "1.12",
-              "selection": "source-contained",
-              "sha256": "aaf51a6bb9f49d33c9a778ee4c5ffb17dd9e9d592c56b0eabadaf7329b44c4ae"
             }
           ],
           "revision": "1.12"
@@ -22505,44 +22461,6 @@
         },
         {
           "packages": [
-            {
-              "advertised_versions": [
-                "1.12"
-              ],
-              "brand": "PIONEER",
-              "bytes": 2321920,
-              "components": [
-                {
-                  "identity_key": "pioneer:1014:ID43:0000:kernel",
-                  "member": "components/S1014430.000.enc",
-                  "revision": "0000",
-                  "role": "kernel",
-                  "sha256": "fb88bc508fd1d7e38f7db5daffa7ecc9ab6a1b3ad5912d54e55b5faccf46ba2d"
-                },
-                {
-                  "identity_key": "pioneer:1014:ID43:1.12:normal",
-                  "member": "components/S1014431.112.enc",
-                  "revision": "1.12",
-                  "role": "normal",
-                  "sha256": "6df2f97dbebad549f80e58de96c7ea37a09a3ed57e7b61402add551b32e60b73"
-                }
-              ],
-              "embedded_model": "BDR-205",
-              "family_id": "72a2f71d42f6a37e",
-              "filename": "BDR-205_1.12_1014_ID43_5fe1386b.tar",
-              "generated_date": "11/06/16",
-              "is_uhd": false,
-              "kernel_revision": "0000",
-              "kernel_selection_reason": null,
-              "kernel_sha256": "fb88bc508fd1d7e38f7db5daffa7ecc9ab6a1b3ad5912d54e55b5faccf46ba2d",
-              "key": "fw/pioneer/5fe1386b16c7a9868f112e8d32f0b38556d75daac85454e85389e50303c92a6a.tar",
-              "modifiable": false,
-              "normal_sha256": "6df2f97dbebad549f80e58de96c7ea37a09a3ed57e7b61402add551b32e60b73",
-              "packageType": "pioneer-installer",
-              "revision": "1.12",
-              "selection": "source-contained",
-              "sha256": "5fe1386b16c7a9868f112e8d32f0b38556d75daac85454e85389e50303c92a6a"
-            },
             {
               "advertised_versions": [
                 "1.12",
@@ -24431,44 +24349,6 @@
           "packages": [
             {
               "advertised_versions": [
-                "1.21"
-              ],
-              "brand": "PIONEER",
-              "bytes": 2755072,
-              "components": [
-                {
-                  "identity_key": "pioneer:8000:ID43:0000:kernel",
-                  "member": "components/S8000430.000.enc",
-                  "revision": "0000",
-                  "role": "kernel",
-                  "sha256": "1ea2b27caa4195954bb2b0a7056b430a402ea8843bae5192605da62c6baeab92"
-                },
-                {
-                  "identity_key": "pioneer:8000:ID43:1.21:normal",
-                  "member": "components/S8000431.121.enc",
-                  "revision": "1.21",
-                  "role": "normal",
-                  "sha256": "3117f11b1012d1a3994f12ecbffd94545dad80ef6c10ac3695cd83a5cec12379"
-                }
-              ],
-              "embedded_model": "BDR-207M",
-              "family_id": "cee5c9016d0174c9",
-              "filename": "BDR-207M_1.21_8000_ID43_88e42703.tar",
-              "generated_date": "12/03/27",
-              "is_uhd": false,
-              "kernel_revision": "0000",
-              "kernel_selection_reason": null,
-              "kernel_sha256": "1ea2b27caa4195954bb2b0a7056b430a402ea8843bae5192605da62c6baeab92",
-              "key": "fw/pioneer/88e42703f3e070628d64497ba76645253fdf5d18e9a92d2f79d4ff5d5d24856e.tar",
-              "modifiable": false,
-              "normal_sha256": "3117f11b1012d1a3994f12ecbffd94545dad80ef6c10ac3695cd83a5cec12379",
-              "packageType": "pioneer-installer",
-              "revision": "1.21",
-              "selection": "source-contained",
-              "sha256": "88e42703f3e070628d64497ba76645253fdf5d18e9a92d2f79d4ff5d5d24856e"
-            },
-            {
-              "advertised_versions": [
                 "1.21",
                 "1.21EU",
                 "1.21EUJ"
@@ -24747,44 +24627,6 @@
         },
         {
           "packages": [
-            {
-              "advertised_versions": [
-                "1.25"
-              ],
-              "brand": "PIONEER",
-              "bytes": 2753536,
-              "components": [
-                {
-                  "identity_key": "pioneer:8000:ID58:0000:kernel",
-                  "member": "components/S8000580.000.enc",
-                  "revision": "0000",
-                  "role": "kernel",
-                  "sha256": "5589874408d1b6af39c69cbb19e0441c5cb103e176b218f528dc29d89b28c0ea"
-                },
-                {
-                  "identity_key": "pioneer:8000:ID58:1.25:normal",
-                  "member": "components/S8000581.125.enc",
-                  "revision": "1.25",
-                  "role": "normal",
-                  "sha256": "849690d5cd7e67815cf3bb63934ff5875b33602dd3e7834cecb42930aee15d39"
-                }
-              ],
-              "embedded_model": "BDR-207M",
-              "family_id": "cee5c9016d0174c9",
-              "filename": "BDR-207M_1.25_8000_ID58_3a743cd1.tar",
-              "generated_date": "12/08/07",
-              "is_uhd": false,
-              "kernel_revision": "0000",
-              "kernel_selection_reason": null,
-              "kernel_sha256": "5589874408d1b6af39c69cbb19e0441c5cb103e176b218f528dc29d89b28c0ea",
-              "key": "fw/pioneer/3a743cd103e9ff0cd0fe0dc397d9fa4de1aab74af9d95a8697a28152c04b0b41.tar",
-              "modifiable": false,
-              "normal_sha256": "849690d5cd7e67815cf3bb63934ff5875b33602dd3e7834cecb42930aee15d39",
-              "packageType": "pioneer-installer",
-              "revision": "1.25",
-              "selection": "source-contained",
-              "sha256": "3a743cd103e9ff0cd0fe0dc397d9fa4de1aab74af9d95a8697a28152c04b0b41"
-            },
             {
               "advertised_versions": [
                 "1.25EUJ"
@@ -25746,44 +25588,6 @@
               "revision": "1.75",
               "selection": "source-contained",
               "sha256": "a1fea2b6390c668cb3c499e46c77ec4dcae0e9522b08a6c19928feb0b1ccdd00"
-            },
-            {
-              "advertised_versions": [
-                "1.75"
-              ],
-              "brand": "PIONEER",
-              "bytes": 2799104,
-              "components": [
-                {
-                  "identity_key": "pioneer:8000:ID88:0000:kernel",
-                  "member": "components/S8000880.000.enc",
-                  "revision": "0000",
-                  "role": "kernel",
-                  "sha256": "5969c8b7d6882c2138400882c668c561ae65a862657024944526989ad44a6e5e"
-                },
-                {
-                  "identity_key": "pioneer:8000:ID88:1.75:normal",
-                  "member": "components/S8000881.175.enc",
-                  "revision": "1.75",
-                  "role": "normal",
-                  "sha256": "54f0bc7b38dde455a385253658a06c7beaf3cb494eb66f5b2f203669ab5b3574"
-                }
-              ],
-              "embedded_model": "BDR-PR1ML",
-              "family_id": "cee5c9016d0174c9",
-              "filename": "BDR-PR1ML_1.75_8000_ID88_f1706ac0.tar",
-              "generated_date": "20/10/26",
-              "is_uhd": false,
-              "kernel_revision": "0000",
-              "kernel_selection_reason": null,
-              "kernel_sha256": "5969c8b7d6882c2138400882c668c561ae65a862657024944526989ad44a6e5e",
-              "key": "fw/pioneer/f1706ac00912578b531cea14838e2d335d8c6126a780f3d91f1ddb11024f1666.tar",
-              "modifiable": false,
-              "normal_sha256": "54f0bc7b38dde455a385253658a06c7beaf3cb494eb66f5b2f203669ab5b3574",
-              "packageType": "pioneer-installer",
-              "revision": "1.75",
-              "selection": "source-contained",
-              "sha256": "f1706ac00912578b531cea14838e2d335d8c6126a780f3d91f1ddb11024f1666"
             }
           ],
           "revision": "1.75"
@@ -34405,44 +34209,6 @@
               "revision": "1.53",
               "selection": "direct-match",
               "sha256": "35ac188930b9e89ddbea5a2f62246a267eb062531fc235fd2fe0af4015c59118"
-            },
-            {
-              "advertised_versions": [
-                "1.53"
-              ],
-              "brand": "PIONEER",
-              "bytes": 2011136,
-              "components": [
-                {
-                  "identity_key": "pioneer:8800:ID72:0000:kernel",
-                  "member": "components/S8800720.000.enc",
-                  "revision": "0000",
-                  "role": "kernel",
-                  "sha256": "af405a1de7de14109addeaea626a61564bedaa6b4e28066e775023a64b5d0727"
-                },
-                {
-                  "identity_key": "pioneer:8800:ID72:1.53:normal",
-                  "member": "components/S8800721.153.enc",
-                  "revision": "1.53",
-                  "role": "normal",
-                  "sha256": "7ac6169bb92e5631385b93533dce36f7f15b3a79bb0ac776ec1e7a5e8ae7f222"
-                }
-              ],
-              "embedded_model": "BDR-S11JX",
-              "family_id": "ce31c9016c68a046",
-              "filename": "BDR-S11JX_1.53_8800_ID72_e9c22e4d.tar",
-              "generated_date": "20/08/03",
-              "is_uhd": true,
-              "kernel_revision": "0000",
-              "kernel_selection_reason": null,
-              "kernel_sha256": "af405a1de7de14109addeaea626a61564bedaa6b4e28066e775023a64b5d0727",
-              "key": "fw/pioneer/e9c22e4d9012eec4e02c2cad949f08e9ef84b5beff6b83238973ca3e23160aa2.tar",
-              "modifiable": false,
-              "normal_sha256": "7ac6169bb92e5631385b93533dce36f7f15b3a79bb0ac776ec1e7a5e8ae7f222",
-              "packageType": "pioneer-installer",
-              "revision": "1.53",
-              "selection": "source-contained",
-              "sha256": "e9c22e4d9012eec4e02c2cad949f08e9ef84b5beff6b83238973ca3e23160aa2"
             }
           ],
           "revision": "1.53"
@@ -35817,44 +35583,6 @@
       "revisions": [
         {
           "packages": [
-            {
-              "advertised_versions": [
-                "1.11"
-              ],
-              "brand": "PIONEER",
-              "bytes": 1994752,
-              "components": [
-                {
-                  "identity_key": "pioneer:8B30:ID69:0000:kernel",
-                  "member": "components/S8B30690.000.enc",
-                  "revision": "0000",
-                  "role": "kernel",
-                  "sha256": "57fcb28ac1fc013ae06bd39173fac78bbf42cb94da0e6a5c387ef4ab7b479aa0"
-                },
-                {
-                  "identity_key": "pioneer:8B30:ID69:1.11:normal",
-                  "member": "components/S8B30691.111.enc",
-                  "revision": "1.11",
-                  "role": "normal",
-                  "sha256": "2e019fe885adae9e2f3379c11e8458d962bed1e0104a228bdd105aefcf07d63f"
-                }
-              ],
-              "embedded_model": "BDR-XD06U",
-              "family_id": "458d6b3a826fa946",
-              "filename": "BDR-XD06U_1.11_8B30_ID69_4b7cd586.tar",
-              "generated_date": "17/06/22",
-              "is_uhd": true,
-              "kernel_revision": "0000",
-              "kernel_selection_reason": null,
-              "kernel_sha256": "57fcb28ac1fc013ae06bd39173fac78bbf42cb94da0e6a5c387ef4ab7b479aa0",
-              "key": "fw/pioneer/4b7cd586b850823f2424fb58d0bde2ef575cee756f5bf3400aeb5569d3b29ccf.tar",
-              "modifiable": false,
-              "normal_sha256": "2e019fe885adae9e2f3379c11e8458d962bed1e0104a228bdd105aefcf07d63f",
-              "packageType": "pioneer-installer",
-              "revision": "1.11",
-              "selection": "source-contained",
-              "sha256": "4b7cd586b850823f2424fb58d0bde2ef575cee756f5bf3400aeb5569d3b29ccf"
-            },
             {
               "advertised_versions": [
                 "1.11",
@@ -39626,44 +39354,6 @@
               "revision": "1.03",
               "selection": "release-chain",
               "sha256": "019ba5f96d6820eb25a827101199278c812d78dc35b63caf8e34ce225f3a8e7c"
-            },
-            {
-              "advertised_versions": [
-                "1.03"
-              ],
-              "brand": "PIONEER",
-              "bytes": 2027008,
-              "components": [
-                {
-                  "identity_key": "pioneer:8F01:ID72:0000:kernel",
-                  "member": "components/S8F01720.000.enc",
-                  "revision": "0000",
-                  "role": "kernel",
-                  "sha256": "bfc911894802b9bd17b6d859bd2830230c20efb0698181bce18d0154a7f84aec"
-                },
-                {
-                  "identity_key": "pioneer:8F01:ID72:1.03:normal",
-                  "member": "components/S8F01721.103.enc",
-                  "revision": "1.03",
-                  "role": "normal",
-                  "sha256": "b35dbaa35f73a2fb12107d2aa50a10c0a7c81004a4f35f966f105379f048b396"
-                }
-              ],
-              "embedded_model": "BDR-S12JX",
-              "family_id": "cf3183a51bc41e42",
-              "filename": "BDR-S12JX_1.03_8F01_ID72_97e82472.tar",
-              "generated_date": "22/10/13",
-              "is_uhd": true,
-              "kernel_revision": "0000",
-              "kernel_selection_reason": null,
-              "kernel_sha256": "bfc911894802b9bd17b6d859bd2830230c20efb0698181bce18d0154a7f84aec",
-              "key": "fw/pioneer/97e82472d5f32596f13238017189b21aa2eab5b02261cf960d4fee4065e92b4c.tar",
-              "modifiable": false,
-              "normal_sha256": "b35dbaa35f73a2fb12107d2aa50a10c0a7c81004a4f35f966f105379f048b396",
-              "packageType": "pioneer-installer",
-              "revision": "1.03",
-              "selection": "source-contained",
-              "sha256": "97e82472d5f32596f13238017189b21aa2eab5b02261cf960d4fee4065e92b4c"
             }
           ],
           "revision": "1.03"
@@ -42339,44 +42029,6 @@
               "revision": "1.04",
               "selection": "source-contained",
               "sha256": "0c1046c9cd91ad39e20f004a6837aa8808839a218901567cf738b2ba45c956c0"
-            },
-            {
-              "advertised_versions": [
-                "1.04"
-              ],
-              "brand": "PIONEER",
-              "bytes": 1946112,
-              "components": [
-                {
-                  "identity_key": "pioneer:9400:ID15:1.03:kernel",
-                  "member": "components/S9400150.103.enc",
-                  "revision": "1.03",
-                  "role": "kernel",
-                  "sha256": "ca20add490aea84f2b828b6aa0bd0acbab703cc1b8f8e5557b7f44588fefeb40"
-                },
-                {
-                  "identity_key": "pioneer:9400:ID15:1.04:normal",
-                  "member": "components/S9400151.104.enc",
-                  "revision": "1.04",
-                  "role": "normal",
-                  "sha256": "1ac77f3a7d854b22041de8429c172d63cb47a55b84f64715bcacbd14e10acedd"
-                }
-              ],
-              "embedded_model": "BDR-X13",
-              "family_id": "57fc4212844724bb",
-              "filename": "BDR-X13_1.04_9400_ID15_f8777922.tar",
-              "generated_date": "23/08/01",
-              "is_uhd": false,
-              "kernel_revision": "1.03",
-              "kernel_selection_reason": null,
-              "kernel_sha256": "ca20add490aea84f2b828b6aa0bd0acbab703cc1b8f8e5557b7f44588fefeb40",
-              "key": "fw/pioneer/f87779227146ce3d07c8ec3c477a926099af248b50d90b0934f4ee3132616bf1.tar",
-              "modifiable": false,
-              "normal_sha256": "1ac77f3a7d854b22041de8429c172d63cb47a55b84f64715bcacbd14e10acedd",
-              "packageType": "pioneer-installer",
-              "revision": "1.04",
-              "selection": "source-contained",
-              "sha256": "f87779227146ce3d07c8ec3c477a926099af248b50d90b0934f4ee3132616bf1"
             }
           ],
           "revision": "1.04"
