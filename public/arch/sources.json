@@ -25,53 +25,53 @@
     "sha256": "3cd9ff05570e56f7107047507559b90617bdf7897ce476d7746651aa1c07b418"
   },
   {
-    "file": "freemkv-flash-0.10.7-1-aarch64.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.7/freemkv-flash-aarch64.pkg.tar.zst",
-    "sha256": "4477d7d64354c43ed7315dfcfa1c9e3cee1f20bbe665760a2bb987af699a2860"
+    "file": "freemkv-flash-0.10.8-1-aarch64.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.8/freemkv-flash-aarch64.pkg.tar.zst",
+    "sha256": "4357eb6b35db24e4470668e646f4a133dfcd0240d8307eb8129a73914fcd7159"
   },
   {
-    "file": "freemkv-flash-0.10.7-1-armv7h.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.7/freemkv-flash-armv7h.pkg.tar.zst",
-    "sha256": "d3410ff612fb362e73ce373df7a6ff2ef8a7deaab0d502d9503f324cf5fb548e"
+    "file": "freemkv-flash-0.10.8-1-armv7h.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.8/freemkv-flash-armv7h.pkg.tar.zst",
+    "sha256": "f0deb61f2617d86ab8076c2bab22753308c7f79bdd716f208efb6f458f6d9223"
   },
   {
-    "file": "freemkv-flash-0.10.7-1-x86_64.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.7/freemkv-flash-x86_64.pkg.tar.zst",
-    "sha256": "f7279373d7d18879cb228a01e5136e86f6e5e47d703f4786f19a51ea17b92f1c"
+    "file": "freemkv-flash-0.10.8-1-x86_64.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.8/freemkv-flash-x86_64.pkg.tar.zst",
+    "sha256": "a4500fdcfb502b15b5f6a3d576c620dbfd3fc942485ebf2702e1714d0f15ca44"
   },
   {
-    "file": "freemkv-flash-gui-0.10.7-1-aarch64.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.7/freemkv-flash-gui-aarch64.pkg.tar.zst",
-    "sha256": "7e910121a6009a12f8952e2cbd51a25db81eae7c2c72b7477f727b66e10bab05"
+    "file": "freemkv-flash-gui-0.10.8-1-aarch64.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.8/freemkv-flash-gui-aarch64.pkg.tar.zst",
+    "sha256": "190021760387f56b75e961869f4ea7d305df38d992a178735ac09f7d1be3ab7e"
   },
   {
-    "file": "freemkv-flash-gui-0.10.7-1-x86_64.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.7/freemkv-flash-gui-x86_64.pkg.tar.zst",
-    "sha256": "9fd5d64a33ddfed355f4ccf29ec9551e08ba2e5f68f8f7bca5740aa460e72399"
+    "file": "freemkv-flash-gui-0.10.8-1-x86_64.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.8/freemkv-flash-gui-x86_64.pkg.tar.zst",
+    "sha256": "d9bbf70ab51a63097f2888f059da5647b873e2dc8053538ff86bef92143cdadd"
   },
   {
-    "file": "freemkv-fw-0.10.7-1-aarch64.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.7/freemkv-fw-aarch64.pkg.tar.zst",
-    "sha256": "213799a87acaf05a5620f361be7f59634412b4efb43a0ae5ceba01bc529f2fce"
+    "file": "freemkv-fw-0.10.8-1-aarch64.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.8/freemkv-fw-aarch64.pkg.tar.zst",
+    "sha256": "78a6dfe942e4478df5e4c37e890e9a0fe8c2ad29150071585c2c3d840c4be40c"
   },
   {
-    "file": "freemkv-fw-0.10.7-1-armv7h.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.7/freemkv-fw-armv7h.pkg.tar.zst",
-    "sha256": "3ea2cc92db388601bbbed5469a133a0cd6f25d88654f1785f15295367090e1bf"
+    "file": "freemkv-fw-0.10.8-1-armv7h.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.8/freemkv-fw-armv7h.pkg.tar.zst",
+    "sha256": "82ba522de46b7fdf3a6e59e225c5039bd0a078b3a30a907d85abda27c502f7b7"
   },
   {
-    "file": "freemkv-fw-0.10.7-1-x86_64.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.7/freemkv-fw-x86_64.pkg.tar.zst",
-    "sha256": "63fb8cc09faa5b1dd93337ebc36d632554c2406cc8d607858012f9e373dad5f6"
+    "file": "freemkv-fw-0.10.8-1-x86_64.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.8/freemkv-fw-x86_64.pkg.tar.zst",
+    "sha256": "1c84fc52f007aa853b431a02aaf8d0d8456d95dc368204581b1ff2985b34f420"
   },
   {
-    "file": "freemkv-fw-gui-0.10.7-1-aarch64.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.7/freemkv-fw-gui-aarch64.pkg.tar.zst",
-    "sha256": "f887147c0ddd5c634566baadcee90dae148c6e5a0fb748c7615446d15aaaf0fe"
+    "file": "freemkv-fw-gui-0.10.8-1-aarch64.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.8/freemkv-fw-gui-aarch64.pkg.tar.zst",
+    "sha256": "d650a111590ee401738426ba3848939b890d33934ea107337200708038391014"
   },
   {
-    "file": "freemkv-fw-gui-0.10.7-1-x86_64.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.7/freemkv-fw-gui-x86_64.pkg.tar.zst",
-    "sha256": "c5cba28de42f2bcd590156f58d44b8e797f82ba94a2e8bde9c01a1c5ebca42bf"
+    "file": "freemkv-fw-gui-0.10.8-1-x86_64.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.10.8/freemkv-fw-gui-x86_64.pkg.tar.zst",
+    "sha256": "03b517032faa962687431d6f83b48b47e4858fa79775afa856b1a234b00341b3"
   }
 ]
