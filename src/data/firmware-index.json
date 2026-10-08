@@ -6229,6 +6229,59 @@
         ]
       },
       {
+        "rev": "1.V2",
+        "embeddedRev": "1.V2",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1939/WH16NS58_1.V2_3018997b.bin",
+        "sha256": "3018997b63cc9a2f31618fd9b6b5c6bfe0cc921b891f4a80ac08ae3ef2b16504",
+        "brand": "LG",
+        "chipset": "MT1939",
+        "media": "BD/UHD",
+        "variant": "N004100",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": true
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": true
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": true
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
         "rev": "1.V5",
         "embeddedRev": "1.V5",
         "advertisedVersion": "",
