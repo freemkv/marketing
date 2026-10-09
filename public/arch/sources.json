@@ -1,28 +1,28 @@
 [
   {
-    "file": "freemkv-1.8.2-1-aarch64.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.2/freemkv-aarch64.pkg.tar.zst",
-    "sha256": "ee6f4a4bdd90329bf7f08ba5463fa88e66233382ece8f06c5caa0c82134f07f9"
+    "file": "freemkv-1.8.3-1-aarch64.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.3/freemkv-aarch64.pkg.tar.zst",
+    "sha256": "1c94b5daa43a72cd88cea0d52acf573baa8dc516646752f3cae8ce69d46b24c5"
   },
   {
-    "file": "freemkv-1.8.2-1-x86_64.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.2/freemkv-x86_64.pkg.tar.zst",
-    "sha256": "650d985ee74084c6bb2638e19771c6b62509a4c975a1562e2de58c2dd3ecd9ab"
+    "file": "freemkv-1.8.3-1-x86_64.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.3/freemkv-x86_64.pkg.tar.zst",
+    "sha256": "a3405143eb8948f8bf4c0eae51be261b85c4b7eba233705df4853b52a7601599"
   },
   {
-    "file": "freemkv-cli-1.8.2-1-aarch64.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.2/freemkv-cli-aarch64.pkg.tar.zst",
-    "sha256": "d89686163298fe44e4d3b777e8fc16755fcc8edd9853126580b4887366441554"
+    "file": "freemkv-cli-1.8.3-1-aarch64.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.3/freemkv-cli-aarch64.pkg.tar.zst",
+    "sha256": "61101252e70c318df5faeeac3666f91ed28ba70d18ee44acc7e7b9a30d2b3517"
   },
   {
-    "file": "freemkv-cli-1.8.2-1-armv7h.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.2/freemkv-cli-armv7h.pkg.tar.zst",
-    "sha256": "316ec7df40013872f5f1886e55d96be454b6554ac407933be83cded765dfe6ee"
+    "file": "freemkv-cli-1.8.3-1-armv7h.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.3/freemkv-cli-armv7h.pkg.tar.zst",
+    "sha256": "a4e1670ed9c11c7e10fb41e46d4fffea03a8c61770bf3cda4adf5c1116668e53"
   },
   {
-    "file": "freemkv-cli-1.8.2-1-x86_64.pkg.tar.zst",
-    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.2/freemkv-cli-x86_64.pkg.tar.zst",
-    "sha256": "3cd9ff05570e56f7107047507559b90617bdf7897ce476d7746651aa1c07b418"
+    "file": "freemkv-cli-1.8.3-1-x86_64.pkg.tar.zst",
+    "url": "https://github.com/freemkv/freemkv/releases/download/v1.8.3/freemkv-cli-x86_64.pkg.tar.zst",
+    "sha256": "c6eb231091fa3e62564ca09945d96fe563bbb70b21deea2c18d52145e6153fec"
   },
   {
     "file": "freemkv-flash-0.11.1-1-aarch64.pkg.tar.zst",
