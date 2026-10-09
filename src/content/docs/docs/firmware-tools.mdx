@@ -62,8 +62,9 @@ capability comes back as one of four states:
 Running `create` on freemkv firmware again is **idempotent**: every capability reports *already
 set* and the output is byte-identical to the input. `--audit` (also `create --audit`) re-derives
 the exact expected patch bytes and confirms each applied capability actually landed at its hook
-site — an automated correctness check, no drive required. The drive stays completely stock until
-the freemkv command is sent — see [Command reference](#command-reference) below.
+site — an automated correctness check, no drive required. Unrestricted is enabled by
+default where supported; other features start at OEM settings — see
+[Command reference](#command-reference) below.
 
 | Capability | What it does | Status |
 |---|---|---|
