@@ -21,6 +21,8 @@ freemkv supports a growing range of drives and firmware versions. Check your mod
 
 ### MediaTek-based drives
 
+**MediaTek drive support is available in freemkv.** Compatible MediaTek-based drives require **updated firmware** for unlocked support. We recommend freemkv firmware.
+
 Set up a compatible MediaTek drive in three steps:
 
 1. **[Find and download your firmware](/firmware/find/)** — select your exact drive model and an appropriate firmware revision.
