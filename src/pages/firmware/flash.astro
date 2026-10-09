@@ -2,7 +2,10 @@
 import { latestRelease } from '../../lib/releases.mjs';
 const release = await latestRelease('freemkv-firmware');
 import { graph, websiteNode, orgNode, webPageNode, breadcrumbNode, firmwareToolNode, ID } from '../../lib/jsonld.mjs';
-// Downloads and workflows for supported MediaTek and Pioneer firmware.
+// "Flash" — /firmware/flash/. freemkv-flash: a generic MT19xx optical-drive
+// flasher/dumper — not freemkv-specific — that backs up before writing and
+// verifies after. Carries the download link for the freemkv-flash binary,
+// reusing the release-asset button pattern from src/pages/download.astro.
 import FirmwareNavDropdown from '../../components/FirmwareNavDropdown.astro';
 import FirmwareDownloadToolbar from '../../components/FirmwareDownloadToolbar.astro';
 import DownloadCards from '../../components/DownloadCards.astro';
@@ -10,7 +13,7 @@ import { aptSetup, rpmSetup, pacmanSetup, scoopSetup, linuxHelp, windowsHelp } f
 
 const title = 'freemkv-flash — flash your drive';
 const description =
-  'Back up, dump, flash and recover supported optical-drive firmware with freemkv-flash.';
+  'freemkv-flash is a generic optical-drive flasher and dumper. It backs up before writing and verifies after.';
 
 const docs = '/docs/overview/';
 const github = 'https://github.com/freemkv';
@@ -169,9 +172,9 @@ import '../../styles/site.css';
           <p class="hero-lead">
             A generic optical-drive flasher and backup tool.{' '}<strong>Not freemkv-specific.</strong>
             <br />
-            Back up and flash compatible OEM or modified firmware.
+            It flashes and backs up any drive firmware image, for any purpose.
             <br />
-            Supports compatible MediaTek and Pioneer firmware.
+            Works with MediaTek and Pioneer.
           </p>
         </div>
       </section>
@@ -193,7 +196,12 @@ import '../../styles/site.css';
             <li class="step">
               <span class="step-num">3</span>
               <span class="step-title">Flash</span>
-              <span class="step-desc">Write and check completion.</span>
+              <span class="step-desc">Write and verify.</span>
+            </li>
+            <li class="step">
+              <span class="step-num">4</span>
+              <span class="step-title">Recovery</span>
+              <span class="step-desc">Attempt firmware recovery.</span>
             </li>
           </ol>
 
@@ -205,29 +213,21 @@ import '../../styles/site.css';
             <pre class="terminal-body"><code><span class="c"># 1. Identify the drive first — MediaTek or Pioneer, read-only</span>
 <span class="p">$</span> freemkv-flash info &lt;dev&gt;
 
-<span class="c"># 2. Save a MediaTek backup (.tar for Pioneer)</span>
-<span class="p">$</span> freemkv-flash backup &lt;dev&gt; -o backup.bin
+<span class="c"># 2. Back up before touching anything — saves the drive's firmware to a .tar</span>
+<span class="p">$</span> freemkv-flash backup &lt;dev&gt; -o backup.tar
 
 <span class="c"># 3. Eject any disc, then flash (irreversible). Drop --execute to only print the plan;</span>
-<span class="c">#    normal Flash requires its own fresh pre-flash backup</span>
+<span class="c">#    it takes its own pre-flash backup first and reads back to verify</span>
 <span class="p">$</span> freemkv-flash flash &lt;dev&gt; -i BU40N_1.00.freemkv.bin --execute --i-understand-risk</code></pre>
           </div>
 
           <div class="notice">
-            <h2 class="notice-title">Recovery is a separate workflow</h2>
+            <h2 class="notice-title">Info and Backup are safe on any drive</h2>
             <p>
-              In 0.11.0, use the Recovery tab or <code>recover</code> command for a supported
-              Pioneer drive that cannot complete normal Flash. Supply Current firmware and
-              the target package, each containing Kernel and Normal. With a Current file,
-              Recovery skips firmware reads, backups and compatibility policy; required file
-              and write-protocol checks still apply. Read from drive is an explicit alternative.
-            </p>
-            <pre><code>freemkv-flash recover &lt;dev&gt; --current current.tar -i target.tar --execute --i-understand-risk</code></pre>
-            <p>
-              Recovery is experimental and cannot guarantee restoration. Success means the
-              drive reports normal mode and readiness, without firmware readback verification.
-              Flashing can permanently disable a drive. See the
-              <a href="/docs/firmware-tools/#freemkv-flash">command reference and recovery limits</a>.
+              Info and Backup only read from the drive, so they are safe to run on any drive.
+              <br />
+              Flash has been tested on a range of MediaTek and Pioneer drives, but use it at
+              your own risk: we are not responsible for any drive bricked by this software.
             </p>
           </div>
 
