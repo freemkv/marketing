@@ -3,8 +3,6 @@ title: Unlocked drives
 description: What an unlocked-firmware optical drive is, why it helps, and which drive families freemkv supports today.
 ---
 
-**freemkv firmware is our recommended path for supported MediaTek drives.** We develop and validate the firmware alongside freemkv, giving us control over the drive features the software uses.
-
 Modified ("unlocked") firmware can lift restrictions such as **[rip-lock](/docs/drives-oem/#rip-lock-why-a-stock-drive-can-be-slow)** and the host-certificate requirement. On supported drives, that means a smoother ripping experience, especially for 4K UHD. Pioneer drives can use supported OEM firmware; see the [Pioneer beta](#pioneer-drives-beta) below.
 
 Stock firmware also works through the [OEM-drive workflow](/docs/drives-oem/).
