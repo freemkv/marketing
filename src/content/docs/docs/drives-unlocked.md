@@ -36,6 +36,12 @@ If you own an LG, ASUS, or HP Blu-ray drive from roughly **2012-2020**, it's ver
 
 [Download the latest freemkv](/download/) to try it. [Share your drive profile](#help-us-add-your-drive) to help us expand coverage.
 
+:::note[Unlocking is not decryption]
+AACS-protected Blu-ray and 4K UHD discs still need [decryption keys](/docs/decryption-keys/). Unlocking the drive does not decrypt the disc.
+:::
+
+For drives without unlocked support, see the [OEM-drive workflow](/docs/drives-oem/).
+
 ## Firmware choices
 
 - **[freemkv firmware](/firmware/find/) — recommended.** Our own firmware is the path we develop, test, and support directly. Start here when setting up a compatible MediaTek drive.
