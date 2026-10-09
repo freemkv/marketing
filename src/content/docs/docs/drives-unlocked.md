@@ -3,19 +3,10 @@ title: Unlocked drives
 description: What an unlocked-firmware optical drive is, why it helps, and which drive families freemkv supports today.
 ---
 
-Modified ("unlocked") firmware can lift restrictions such as **[rip-lock](/docs/drives-oem/#rip-lock-why-a-stock-drive-can-be-slow)** and the host-certificate requirement. On supported drives, that means a smoother ripping experience, especially for 4K UHD. Pioneer drives can use supported OEM firmware; see the [Pioneer beta](#pioneer-drives-beta) below.
+Unlocked drives remove restrictions that can prevent freemkv from accessing a disc. There are two paths, depending on your drive:
 
-Stock firmware also works through the [OEM-drive workflow](/docs/drives-oem/).
-
-:::note[Unlocking is not decryption]
-AACS-protected Blu-ray and 4K UHD discs still need [decryption keys](/docs/decryption-keys/). Unlocking the drive does not decrypt the disc.
-:::
-
-## Which drives does freemkv support?
-
-:::note[Support keeps growing]
-freemkv supports a growing range of drives and firmware versions. Check your model and firmware below; if yours is not covered yet, sharing a drive profile helps us extend support.
-:::
+- **[Pioneer (beta)](#pioneer-drives-beta):** nothing to install or flash. freemkv automatically unlocks supported drives using their original OEM firmware.
+- **[MediaTek](#mediatek-based-drives):** updated firmware is required. Follow the steps below to prepare your drive.
 
 ### MediaTek-based drives
 
