@@ -5,7 +5,7 @@ description: What an unlocked-firmware optical drive is, why it helps, and which
 
 **freemkv firmware is our recommended path for supported MediaTek drives.** We develop and validate the firmware alongside freemkv, giving us control over the drive features the software uses.
 
-Modified ("unlocked") firmware can lift restrictions such as **[rip-lock](/docs/drives-oem/#rip-lock-why-a-stock-drive-can-be-slow)** and the host-certificate requirement. On supported drives, that means a smoother ripping experience, especially for 4K UHD. Pioneer support uses a runtime unlock instead; see the [Pioneer beta](#pioneer-drives-beta) below.
+Modified ("unlocked") firmware can lift restrictions such as **[rip-lock](/docs/drives-oem/#rip-lock-why-a-stock-drive-can-be-slow)** and the host-certificate requirement. On supported drives, that means a smoother ripping experience, especially for 4K UHD. Pioneer drives can use supported OEM firmware; see the [Pioneer beta](#pioneer-drives-beta) below.
 
 Stock firmware also works through the [OEM-drive workflow](/docs/drives-oem/).
 
@@ -41,9 +41,7 @@ If you own an LG, ASUS, or HP Blu-ray drive from roughly **2012-2020**, it's ver
 
 ### Pioneer drives (beta)
 
-**Pioneer beta support is now available in freemkv 1.8.3.** On supported Pioneer and Pioneer-based drives, freemkv automatically installs its runtime unlock in the drive's **RAM**. No firmware flashing is required.
-
-The beta supports unlocking disc access and reading the disc Volume ID. Speed and region controls are not yet available. freemkv checks the drive's firmware before installing the unlock; hardware validation includes the **BDR-UD04 running firmware 1.14**.
+**Pioneer beta support is now available in freemkv 1.8.3.** Compatible Pioneer and Pioneer-based drives work with their original **OEM firmware**. No firmware modification or flashing is required.
 
 [Download the latest freemkv](/download/) to try it. [Share your drive profile](#help-us-add-your-drive) to help us expand coverage.
 
