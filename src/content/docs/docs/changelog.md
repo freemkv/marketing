@@ -12,6 +12,18 @@ one version number.
 For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases).
 
+## 1.8.3
+
+<small>2026-10-09</small>
+
+### Added
+
+- **Pioneer runtime unlocking (beta).** freemkv automatically unlocks supported Pioneer and Pioneer-based drives in RAM, without flashing firmware. The CLI, app, and Library use the same unlock flow and can read the disc Volume ID. Speed and region controls are not yet available for Pioneer drives.
+
+### Changed
+
+- Release checks now verify download links, checksums, and package manifests before the release is considered complete.
+
 ## Firmware 0.11.0
 
 <small>2026-10-08</small>
