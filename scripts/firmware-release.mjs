@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { spawn, spawnSync } from 'node:child_process';
 import { createGunzip } from 'node:zlib';
 import { firmwareObjectFetcher } from './firmware-object-fetch.mjs';
+import { LATEST_ARCHIVE_KEY } from '../src/lib/firmware-archive.mjs';
 
 const PUBLIC_BASE = 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -220,7 +221,7 @@ export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Pr
  * site, so superseded firmware has no reason to linger.
  */
 export async function pruneOrphans(keep, { listPage, deleteKey, bucket = 'freemkv-firmware' } = {}) {
-  const keepSet = keep instanceof Set ? keep : new Set(keep);
+  const keepSet = new Set([...keep, LATEST_ARCHIVE_KEY]);
   let cursor; const orphans = [];
   do {
     const page = await listPage({ cursor, bucket });

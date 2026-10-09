@@ -58,6 +58,14 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           FIRMWARE_R2_ACCESS: ${{ vars.FIRMWARE_R2_ACCESS }}
         run: node scripts/firmware-release.mjs publish "$RUNNER_TEMP/firmware-stage"
+      - name: Retain and verify latest full firmware archive
+        if: inputs.firmware_release != ''
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          python -m pip install boto3==1.43.109
+          python scripts/firmware-archive-upload.py "$RUNNER_TEMP/firmware-download/firmware-assets.tar.gz"
       - name: Withdraw proven-invalid firmware objects
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -74,3 +82,9 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=freemkv --branch=${{ github.ref_name }}
+      - name: Remove temporary GitHub firmware archive
+        if: inputs.firmware_release != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.firmware_release }}
+        run: gh release delete-asset "$RELEASE_TAG" firmware-assets.tar.gz --repo "$GITHUB_REPOSITORY" --yes

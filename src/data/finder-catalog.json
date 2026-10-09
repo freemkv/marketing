@@ -33,6 +33,38 @@
       ]
     },
     {
+      "display": "APP",
+      "displays": [
+        "APP"
+      ],
+      "kind": "filename",
+      "name": "APP",
+      "targets": [
+        {
+          "destination": "AOPEN",
+          "family": "pioneer",
+          "hardware": "ATA 0007",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "APP",
+      "displays": [
+        "APP"
+      ],
+      "kind": "inquiry",
+      "name": "APP",
+      "targets": [
+        {
+          "destination": "AOPEN",
+          "family": "pioneer",
+          "hardware": "ATA 0007",
+          "held": true
+        }
+      ]
+    },
+    {
       "display": "BC-12B1ST",
       "displays": [
         "BC-12B1ST"
@@ -108,6 +140,22 @@
           "destination": "ID66",
           "family": "pioneer",
           "hardware": "1003",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDC0198827559",
+      "displays": [
+        "BDC0198827559"
+      ],
+      "kind": "filename",
+      "name": "BDC0198827559",
+      "targets": [
+        {
+          "destination": "ID29",
+          "family": "pioneer",
+          "hardware": "9401",
           "held": true
         }
       ]
@@ -646,6 +694,38 @@
           "destination": "ID02",
           "family": "pioneer",
           "hardware": "1013",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDE-PR1MEL",
+      "displays": [
+        "BDE-PR1MEL"
+      ],
+      "kind": "filename",
+      "name": "BDEPR1MEL",
+      "targets": [
+        {
+          "destination": "ID87",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDE-PR1MEL",
+      "displays": [
+        "BDE-PR1MEL"
+      ],
+      "kind": "inquiry",
+      "name": "BDEPR1MEL",
+      "targets": [
+        {
+          "destination": "ID87",
+          "family": "pioneer",
+          "hardware": "8801",
           "held": true
         }
       ]
@@ -4979,6 +5059,54 @@
       ]
     },
     {
+      "display": "BDR-PR1MC",
+      "displays": [
+        "BDR-PR1MC"
+      ],
+      "kind": "filename",
+      "name": "BDRPR1MC",
+      "targets": [
+        {
+          "destination": "ID88",
+          "family": "pioneer",
+          "hardware": "8000",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDR-PR1ML",
+      "displays": [
+        "BDR-PR1ML"
+      ],
+      "kind": "filename",
+      "name": "BDRPR1ML",
+      "targets": [
+        {
+          "destination": "ID88",
+          "family": "pioneer",
+          "hardware": "8000",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDR-PR1ML",
+      "displays": [
+        "BDR-PR1ML"
+      ],
+      "kind": "inquiry",
+      "name": "BDRPR1ML",
+      "targets": [
+        {
+          "destination": "ID88",
+          "family": "pioneer",
+          "hardware": "8000",
+          "held": true
+        }
+      ]
+    },
+    {
       "display": "BDR-S03",
       "displays": [
         "BDR-S03"
@@ -5529,6 +5657,22 @@
       ]
     },
     {
+      "display": "BDR-S08JBK",
+      "displays": [
+        "BDR-S08JBK"
+      ],
+      "kind": "filename",
+      "name": "BDRS08JBK",
+      "targets": [
+        {
+          "destination": "ID43",
+          "family": "pioneer",
+          "hardware": "8301",
+          "held": true
+        }
+      ]
+    },
+    {
       "display": "BDR-S08XLB",
       "displays": [
         "BDR-S08XLB"
@@ -5692,6 +5836,22 @@
           "destination": "ID43",
           "family": "pioneer",
           "hardware": "8601",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDR-S09J",
+      "displays": [
+        "BDR-S09J"
+      ],
+      "kind": "filename",
+      "name": "BDRS09J",
+      "targets": [
+        {
+          "destination": "ID43",
+          "family": "pioneer",
+          "hardware": "8600",
           "held": true
         }
       ]
@@ -7415,6 +7575,22 @@
       "displays": [
         "BDR-WX1DM"
       ],
+      "kind": "filename",
+      "name": "BDRWX1DM",
+      "targets": [
+        {
+          "destination": "ID36",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDR-WX1DM",
+      "displays": [
+        "BDR-WX1DM"
+      ],
       "kind": "inquiry",
       "name": "BDRWX1DM",
       "targets": [
@@ -7863,6 +8039,12 @@
           "family": "pioneer",
           "hardware": "9400",
           "held": true
+        },
+        {
+          "destination": "ID56",
+          "family": "pioneer",
+          "hardware": "9400",
+          "held": true
         }
       ]
     },
@@ -8123,6 +8305,12 @@
       "kind": "filename",
       "name": "BDRX13U",
       "targets": [
+        {
+          "destination": "ID29",
+          "family": "pioneer",
+          "hardware": "9401",
+          "held": true
+        },
         {
           "destination": "ID43",
           "family": "pioneer",
@@ -9955,6 +10143,22 @@
           "destination": "ID35",
           "family": "pioneer",
           "hardware": "8D30",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDR-XD08",
+      "displays": [
+        "BDR-XD08"
+      ],
+      "kind": "filename",
+      "name": "BDRXD08",
+      "targets": [
+        {
+          "destination": "GENERAL",
+          "family": "pioneer",
+          "hardware": "9330",
           "held": true
         }
       ]
@@ -12463,6 +12667,86 @@
       ]
     },
     {
+      "display": "BDX-PR1ML",
+      "displays": [
+        "BDX-PR1ML"
+      ],
+      "kind": "filename",
+      "name": "BDXPR1ML",
+      "targets": [
+        {
+          "destination": "ID88",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDX-PR1ML",
+      "displays": [
+        "BDX-PR1ML"
+      ],
+      "kind": "inquiry",
+      "name": "BDXPR1ML",
+      "targets": [
+        {
+          "destination": "ID88",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDX-PR1ML",
+      "displays": [
+        "BDX-PR1ML"
+      ],
+      "kind": "retail",
+      "name": "BDXPR1ML",
+      "targets": [
+        {
+          "destination": "ID88",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDX-PR1MLA",
+      "displays": [
+        "BDX-PR1MLA"
+      ],
+      "kind": "filename",
+      "name": "BDXPR1MLA",
+      "targets": [
+        {
+          "destination": "ID89",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDX-PR1MLA",
+      "displays": [
+        "BDX-PR1MLA"
+      ],
+      "kind": "inquiry",
+      "name": "BDXPR1MLA",
+      "targets": [
+        {
+          "destination": "ID89",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        }
+      ]
+    },
+    {
       "display": "BE14NU40",
       "displays": [
         "BE14NU40"
@@ -13147,6 +13431,38 @@
       ]
     },
     {
+      "display": "DRW-0402P/D",
+      "displays": [
+        "DRW-0402P/D"
+      ],
+      "kind": "filename",
+      "name": "DRW0402PD",
+      "targets": [
+        {
+          "destination": "ASUS",
+          "family": "pioneer",
+          "hardware": "ATA 0006",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "DRW-0402P/D",
+      "displays": [
+        "DRW-0402P/D"
+      ],
+      "kind": "inquiry",
+      "name": "DRW0402PD",
+      "targets": [
+        {
+          "destination": "ASUS",
+          "family": "pioneer",
+          "hardware": "ATA 0006",
+          "held": true
+        }
+      ]
+    },
+    {
       "display": "DRW-0804P",
       "displays": [
         "DRW-0804P"
@@ -13626,6 +13942,12 @@
           "held": true
         },
         {
+          "destination": "NECJPN",
+          "family": "pioneer",
+          "hardware": "ATA 0003",
+          "held": true
+        },
+        {
           "destination": "SONY",
           "family": "pioneer",
           "hardware": "ATA 0003",
@@ -13649,6 +13971,12 @@
       "targets": [
         {
           "destination": "GENERAL",
+          "family": "pioneer",
+          "hardware": "ATA 0003",
+          "held": true
+        },
+        {
+          "destination": "NECJPN",
           "family": "pioneer",
           "hardware": "ATA 0003",
           "held": true
@@ -13772,7 +14100,8 @@
     {
       "display": "DVR-106",
       "displays": [
-        "DVR-106"
+        "DVR-106",
+        "DVR106"
       ],
       "kind": "filename",
       "name": "DVR106",
@@ -13891,6 +14220,22 @@
           "destination": "MEDION",
           "family": "pioneer",
           "hardware": "ATA 0006",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "DVR107",
+      "displays": [
+        "DVR107"
+      ],
+      "kind": "filename",
+      "name": "DVR107",
+      "targets": [
+        {
+          "destination": "GENERAL",
+          "family": "pioneer",
+          "hardware": "ATA 0007",
           "held": true
         }
       ]
@@ -14046,7 +14391,8 @@
     {
       "display": "DVR-108",
       "displays": [
-        "DVR-108"
+        "DVR-108",
+        "DVR108"
       ],
       "kind": "filename",
       "name": "DVR108",
@@ -14242,7 +14588,8 @@
     {
       "display": "DVR-109",
       "displays": [
-        "DVR-109"
+        "DVR-109",
+        "DVR109"
       ],
       "kind": "filename",
       "name": "DVR109",
@@ -14348,6 +14695,12 @@
           "destination": "PIO_ADV",
           "family": "pioneer",
           "hardware": "ATA 0010",
+          "held": true
+        },
+        {
+          "destination": "GENERAL",
+          "family": "pioneer",
+          "hardware": "ATA 0011",
           "held": true
         }
       ]
@@ -14659,7 +15012,8 @@
     {
       "display": "DVR-111",
       "displays": [
-        "DVR-111"
+        "DVR-111",
+        "DVR111"
       ],
       "kind": "filename",
       "name": "DVR111",
@@ -14674,6 +15028,12 @@
           "destination": "PIO_ADV",
           "family": "pioneer",
           "hardware": "ATA 0012",
+          "held": true
+        },
+        {
+          "destination": "GENERAL",
+          "family": "pioneer",
+          "hardware": "ATA 0812",
           "held": true
         }
       ]
@@ -16892,6 +17252,70 @@
           "destination": "TEAC",
           "family": "pioneer",
           "hardware": "ATA 0006",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "DV-W50E",
+      "displays": [
+        "DV-W50E"
+      ],
+      "kind": "filename",
+      "name": "DVW50E",
+      "targets": [
+        {
+          "destination": "TEAC",
+          "family": "pioneer",
+          "hardware": "ATA 0004",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "DV-W50E",
+      "displays": [
+        "DV-W50E"
+      ],
+      "kind": "inquiry",
+      "name": "DVW50E",
+      "targets": [
+        {
+          "destination": "TEAC",
+          "family": "pioneer",
+          "hardware": "ATA 0004",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "DV-W516D",
+      "displays": [
+        "DV-W516D"
+      ],
+      "kind": "filename",
+      "name": "DVW516D",
+      "targets": [
+        {
+          "destination": "TEAC",
+          "family": "pioneer",
+          "hardware": "ATA 0008",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "DV-W516D",
+      "displays": [
+        "DV-W516D"
+      ],
+      "kind": "inquiry",
+      "name": "DVW516D",
+      "targets": [
+        {
+          "destination": "TEAC",
+          "family": "pioneer",
+          "hardware": "ATA 0008",
           "held": true
         }
       ]
@@ -19752,6 +20176,22 @@
             }
           ],
           "revision": "1.V1"
+        },
+        {
+          "packages": [
+            {
+              "build_id": "1711231023",
+              "bytes": 2097152,
+              "filename": "WH16NS58_1.V2_3018997b.bin",
+              "fragment": false,
+              "key": "fw/mediatek/3018997b63cc9a2f31618fd9b6b5c6bfe0cc921b891f4a80ac08ae3ef2b16504.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.V2",
+              "sha256": "3018997b63cc9a2f31618fd9b6b5c6bfe0cc921b891f4a80ac08ae3ef2b16504"
+            }
+          ],
+          "revision": "1.V2"
         },
         {
           "packages": [
@@ -25049,6 +25489,108 @@
             }
           ],
           "revision": "1.60"
+        }
+      ]
+    },
+    {
+      "destination": "ID88",
+      "embedded_models": [
+        "BDR-PR1ML"
+      ],
+      "family": "pioneer",
+      "hardware": "8000",
+      "key": "pioneer:8000:ID88",
+      "other_candidates": [],
+      "platforms": [
+        "sat"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.30"
+              ],
+              "brand": "PIONEER",
+              "bytes": 2788352,
+              "components": [
+                {
+                  "identity_key": "pioneer:8000:ID88:1.30:kernel",
+                  "member": "components/S8000880.130.enc",
+                  "revision": "1.30",
+                  "role": "kernel",
+                  "sha256": "21516d0142a837924eada939b577efa6d28c01b6053b5e01fdb905a7bbc2283d"
+                },
+                {
+                  "identity_key": "pioneer:8000:ID88:1.30:normal",
+                  "member": "components/S8000881.130.enc",
+                  "revision": "1.30",
+                  "role": "normal",
+                  "sha256": "84073ee4b780d7a2d0e3531834215b3f3f4ce8096eca70a81b8d19b3c65af527"
+                }
+              ],
+              "embedded_model": "BDR-PR1ML",
+              "family_id": "cee5c9016d0174c9",
+              "filename": "BDR-PR1ML_1.30_8000_ID88_dc2bd48e.tar",
+              "generated_date": "14/10/08",
+              "is_uhd": false,
+              "kernel_revision": "1.30",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "21516d0142a837924eada939b577efa6d28c01b6053b5e01fdb905a7bbc2283d",
+              "key": "fw/pioneer/dc2bd48ef64c2106f3527f0637c66ce120b88d0f8470e97fc511268ade19edcd.tar",
+              "modifiable": false,
+              "normal_sha256": "84073ee4b780d7a2d0e3531834215b3f3f4ce8096eca70a81b8d19b3c65af527",
+              "packageType": "pioneer-installer",
+              "revision": "1.30",
+              "selection": "source-contained",
+              "sha256": "dc2bd48ef64c2106f3527f0637c66ce120b88d0f8470e97fc511268ade19edcd"
+            }
+          ],
+          "revision": "1.30"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.75",
+                "1.75EU"
+              ],
+              "brand": "PIONEER",
+              "bytes": 2799104,
+              "components": [
+                {
+                  "identity_key": "pioneer:8000:ID88:1.75:kernel",
+                  "member": "components/S8000880.175.enc",
+                  "revision": "1.75",
+                  "role": "kernel",
+                  "sha256": "f7c63703c7899dc7621fc379337eda059ed8d83481a0f43d0d5137ad7be4895e"
+                },
+                {
+                  "identity_key": "pioneer:8000:ID88:1.75:normal",
+                  "member": "components/S8000881.175.enc",
+                  "revision": "1.75",
+                  "role": "normal",
+                  "sha256": "aec11ca3bff106a01e60436999be11bf6bd6edbbf4a8477972c60ff1d0b43f0a"
+                }
+              ],
+              "embedded_model": "BDR-PR1ML",
+              "family_id": "cee5c9016d0174c9",
+              "filename": "BDR-PR1ML_1.75_8000_ID88_a1fea2b6.tar",
+              "generated_date": "20/10/26",
+              "is_uhd": false,
+              "kernel_revision": "1.75",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "f7c63703c7899dc7621fc379337eda059ed8d83481a0f43d0d5137ad7be4895e",
+              "key": "fw/pioneer/a1fea2b6390c668cb3c499e46c77ec4dcae0e9522b08a6c19928feb0b1ccdd00.tar",
+              "modifiable": false,
+              "normal_sha256": "aec11ca3bff106a01e60436999be11bf6bd6edbbf4a8477972c60ff1d0b43f0a",
+              "packageType": "pioneer-installer",
+              "revision": "1.75",
+              "selection": "source-contained",
+              "sha256": "a1fea2b6390c668cb3c499e46c77ec4dcae0e9522b08a6c19928feb0b1ccdd00"
+            }
+          ],
+          "revision": "1.75"
         }
       ]
     },
@@ -31426,6 +31968,7 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.51",
                 "1.51EU"
               ],
               "brand": "PIONEER",
@@ -31550,6 +32093,7 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.55",
                 "1.55EU"
               ],
               "brand": "PIONEER",
@@ -31583,7 +32127,7 @@
               "normal_sha256": "97e0ede0583f3b9d74edea4b1e347f38df4c655cd53b70d3af710ce280d6c2b5",
               "packageType": "pioneer-installer",
               "revision": "1.55",
-              "selection": "source-contained",
+              "selection": "direct-match",
               "sha256": "769a076e8c647d4b4247ca5bc57eb8baa872082dbe756b3880e26ec56a0337f9"
             }
           ],
@@ -33423,6 +33967,7 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.54",
                 "1.54EU"
               ],
               "brand": "PIONEER",
@@ -33456,7 +34001,7 @@
               "normal_sha256": "0a486f059bcaf5f9e0b5ad21ca94b5a3da6f1b583cd24f09cdf653ec235321aa",
               "packageType": "pioneer-installer",
               "revision": "1.54",
-              "selection": "source-contained",
+              "selection": "direct-match",
               "sha256": "29388537b2e8c14a241383e8c9d4c7bae8b69652c9461ef25ad9af3ba4081313"
             }
           ],
@@ -33672,6 +34217,7 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.54",
                 "1.54EU"
               ],
               "brand": "PIONEER",
@@ -33705,7 +34251,7 @@
               "normal_sha256": "5dc719b2f307354fa22d9951ef8fc03693c92f5b42cf3ae31262892fa20b1aa4",
               "packageType": "pioneer-installer",
               "revision": "1.54",
-              "selection": "source-contained",
+              "selection": "direct-match",
               "sha256": "88dc4e83f698586406b5255d9dccc1c4cf138f017f2da6a07c7d024d74841f0b"
             }
           ],
@@ -33911,6 +34457,7 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.02",
                 "1.02EU"
               ],
               "brand": "PIONEER",
@@ -34633,6 +35180,44 @@
               "revision": "1.53",
               "selection": "direct-match",
               "sha256": "a3c70f7550ed0ee1d8b52703a2bf566722230dc43c1299ac6547e227723942e6"
+            },
+            {
+              "advertised_versions": [
+                "1.53"
+              ],
+              "brand": "PIONEER",
+              "bytes": 2026496,
+              "components": [
+                {
+                  "identity_key": "pioneer:8801:ID72:1.52:kernel",
+                  "member": "components/S8801720.152.enc",
+                  "revision": "1.52",
+                  "role": "kernel",
+                  "sha256": "26654edc9127792d1a7974845251fe8cd0f13e9e07416db7f6a38fb1ca9b424d"
+                },
+                {
+                  "identity_key": "pioneer:8801:ID72:1.53:normal",
+                  "member": "components/S8801721.153.enc",
+                  "revision": "1.53",
+                  "role": "normal",
+                  "sha256": "ca11e6c17a96786051e00e3d85cb5ef1570b6c5269e5676b1192299a310aa01c"
+                }
+              ],
+              "embedded_model": "BDR-S11JX",
+              "family_id": "cf3183a51bc41e42",
+              "filename": "BDR-S11JX_1.53_8801_ID72_bc7439a8.tar",
+              "generated_date": "20/08/03",
+              "is_uhd": true,
+              "kernel_revision": "1.52",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "26654edc9127792d1a7974845251fe8cd0f13e9e07416db7f6a38fb1ca9b424d",
+              "key": "fw/pioneer/bc7439a81f27ad90e82ce9c9bab4cc264e662bc25d56fc0da1577c2f7593b5d6.tar",
+              "modifiable": false,
+              "normal_sha256": "ca11e6c17a96786051e00e3d85cb5ef1570b6c5269e5676b1192299a310aa01c",
+              "packageType": "pioneer-installer",
+              "revision": "1.53",
+              "selection": "source-contained",
+              "sha256": "bc7439a81f27ad90e82ce9c9bab4cc264e662bc25d56fc0da1577c2f7593b5d6"
             }
           ],
           "revision": "1.53"
@@ -34641,6 +35226,7 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.54",
                 "1.54EU"
               ],
               "brand": "PIONEER",
@@ -34674,11 +35260,180 @@
               "normal_sha256": "5afe14e772419ce6be3487e84977e9c8605f8b0a7e5f4d9477f4b37afc15bd98",
               "packageType": "pioneer-installer",
               "revision": "1.54",
-              "selection": "source-contained",
+              "selection": "direct-match",
               "sha256": "f4f4aec476a83f86d8101b28cc653b6e1d7c2babaab7f641928ce40aeb7cc3ba"
             }
           ],
           "revision": "1.54"
+        }
+      ]
+    },
+    {
+      "destination": "ID87",
+      "embedded_models": [
+        "BDE-PR1MEL"
+      ],
+      "family": "pioneer",
+      "hardware": "8801",
+      "key": "pioneer:8801:ID87",
+      "other_candidates": [],
+      "platforms": [
+        "sat"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.02",
+                "1.02EU"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1864192,
+              "components": [
+                {
+                  "identity_key": "pioneer:8801:ID87:1.02:normal",
+                  "member": "components/S8801871.102.enc",
+                  "revision": "1.02",
+                  "role": "normal",
+                  "sha256": "55b5e7a8d9e6ab4d29ba96af190512cb513d37166cc2c0b0d4e52f963262448a"
+                }
+              ],
+              "embedded_model": "BDE-PR1MEL",
+              "family_id": "31ce81c2dbb0fdb",
+              "filename": "BDE-PR1MEL_1.02_8801_ID87_4b32e9c0.tar",
+              "generated_date": "20/10/08",
+              "is_uhd": true,
+              "kernel_revision": null,
+              "kernel_selection_reason": "no-kernel-for-drive",
+              "kernel_sha256": null,
+              "key": "fw/pioneer/4b32e9c04e23063d22dcaa6b6acf10fff19e809f9411c2f564c166e81bfe1025.tar",
+              "modifiable": false,
+              "normal_sha256": "55b5e7a8d9e6ab4d29ba96af190512cb513d37166cc2c0b0d4e52f963262448a",
+              "packageType": "pioneer-installer",
+              "revision": "1.02",
+              "selection": "normal-only",
+              "sha256": "4b32e9c04e23063d22dcaa6b6acf10fff19e809f9411c2f564c166e81bfe1025"
+            }
+          ],
+          "revision": "1.02"
+        }
+      ]
+    },
+    {
+      "destination": "ID88",
+      "embedded_models": [
+        "BDX-PR1ML"
+      ],
+      "family": "pioneer",
+      "hardware": "8801",
+      "key": "pioneer:8801:ID88",
+      "other_candidates": [],
+      "platforms": [
+        "sat"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.05EU"
+              ],
+              "brand": "PIONEER",
+              "bytes": 2021888,
+              "components": [
+                {
+                  "identity_key": "pioneer:8801:ID88:1.05:kernel",
+                  "member": "components/S8801880.105.enc",
+                  "revision": "1.05",
+                  "role": "kernel",
+                  "sha256": "8304d8a6d9f9d13fcfb178b9d4d7512961419be319f79cdde69cd27195384ccc"
+                },
+                {
+                  "identity_key": "pioneer:8801:ID88:1.05:normal",
+                  "member": "components/S8801881.105.enc",
+                  "revision": "1.05",
+                  "role": "normal",
+                  "sha256": "12e3b82d971db577ef6cafed54f31393bc3061359ce0fd60e3bdcfdbe82f889b"
+                }
+              ],
+              "embedded_model": "BDX-PR1ML",
+              "family_id": "31ce81c2dbb0fdb",
+              "filename": "BDX-PR1ML_1.05_8801_ID88_1a39e48c.tar",
+              "generated_date": "22/03/11",
+              "is_uhd": true,
+              "kernel_revision": "1.05",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "8304d8a6d9f9d13fcfb178b9d4d7512961419be319f79cdde69cd27195384ccc",
+              "key": "fw/pioneer/1a39e48cc18d092e84d99b13063135df657894c347c1957dec07fbe8c800016e.tar",
+              "modifiable": false,
+              "normal_sha256": "12e3b82d971db577ef6cafed54f31393bc3061359ce0fd60e3bdcfdbe82f889b",
+              "packageType": "pioneer-installer",
+              "revision": "1.05",
+              "selection": "source-contained",
+              "sha256": "1a39e48cc18d092e84d99b13063135df657894c347c1957dec07fbe8c800016e"
+            }
+          ],
+          "revision": "1.05"
+        }
+      ]
+    },
+    {
+      "destination": "ID89",
+      "embedded_models": [
+        "BDX-PR1MLA"
+      ],
+      "family": "pioneer",
+      "hardware": "8801",
+      "key": "pioneer:8801:ID89",
+      "other_candidates": [],
+      "platforms": [
+        "sat"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.03",
+                "1.03EU"
+              ],
+              "brand": "PIONEER",
+              "bytes": 2026496,
+              "components": [
+                {
+                  "identity_key": "pioneer:8801:ID89:1.03:kernel",
+                  "member": "components/S8801890.103.enc",
+                  "revision": "1.03",
+                  "role": "kernel",
+                  "sha256": "687ec475c0fd6ba87f9736012a26d057390e0726896394d5057d062cc769f9c3"
+                },
+                {
+                  "identity_key": "pioneer:8801:ID89:1.03:normal",
+                  "member": "components/S8801891.103.enc",
+                  "revision": "1.03",
+                  "role": "normal",
+                  "sha256": "cdc579c67dcefc76aecd05ff1c86a5a3c8742aee79fcdf1925b493b265056cbc"
+                }
+              ],
+              "embedded_model": "BDX-PR1MLA",
+              "family_id": "31ce81c2dbb0fdb",
+              "filename": "BDX-PR1MLA_1.03_8801_ID89_c6905e2c.tar",
+              "generated_date": "20/10/08",
+              "is_uhd": true,
+              "kernel_revision": "1.03",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "687ec475c0fd6ba87f9736012a26d057390e0726896394d5057d062cc769f9c3",
+              "key": "fw/pioneer/c6905e2c8550fe9280024bbbaa96414eaffc77cf757b60746b4586b9589a6d03.tar",
+              "modifiable": false,
+              "normal_sha256": "cdc579c67dcefc76aecd05ff1c86a5a3c8742aee79fcdf1925b493b265056cbc",
+              "packageType": "pioneer-installer",
+              "revision": "1.03",
+              "selection": "source-contained",
+              "sha256": "c6905e2c8550fe9280024bbbaa96414eaffc77cf757b60746b4586b9589a6d03"
+            }
+          ],
+          "revision": "1.03"
         }
       ]
     },
@@ -34874,6 +35629,7 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.12",
                 "1.12EU"
               ],
               "brand": "PIONEER",
@@ -38562,6 +39318,7 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.03",
                 "1.03EU"
               ],
               "brand": "PIONEER",
@@ -38600,6 +39357,49 @@
             }
           ],
           "revision": "1.03"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.04EU"
+              ],
+              "brand": "PIONEER",
+              "bytes": 2092544,
+              "components": [
+                {
+                  "identity_key": "pioneer:8F01:ID72:1.04:kernel",
+                  "member": "components/S8F01720.104.enc",
+                  "revision": "1.04",
+                  "role": "kernel",
+                  "sha256": "4c6e3881a75f3eb5a92b9afc284876128b0834ba9209be4eded5230505c1ba88"
+                },
+                {
+                  "identity_key": "pioneer:8F01:ID72:1.04:normal",
+                  "member": "components/S8F01721.104.enc",
+                  "revision": "1.04",
+                  "role": "normal",
+                  "sha256": "b60b310bd111abea832c34f6a9a166502ac1ab918cc7bec9eccd479e67606a49"
+                }
+              ],
+              "embedded_model": "BDR-S12JX",
+              "family_id": "cf3183a51bc41e42",
+              "filename": "BDR-S12JX_1.04_8F01_ID72_f9f188e8.tar",
+              "generated_date": "22/12/20",
+              "is_uhd": true,
+              "kernel_revision": "1.04",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "4c6e3881a75f3eb5a92b9afc284876128b0834ba9209be4eded5230505c1ba88",
+              "key": "fw/pioneer/f9f188e8792088436cae80a77c6207189d184a6a2431e88a1c389663a96b1ef4.tar",
+              "modifiable": false,
+              "normal_sha256": "b60b310bd111abea832c34f6a9a166502ac1ab918cc7bec9eccd479e67606a49",
+              "packageType": "pioneer-installer",
+              "revision": "1.04",
+              "selection": "source-contained",
+              "sha256": "f9f188e8792088436cae80a77c6207189d184a6a2431e88a1c389663a96b1ef4"
+            }
+          ],
+          "revision": "1.04"
         },
         {
           "packages": [
@@ -38663,7 +39463,8 @@
           "packages": [
             {
               "advertised_versions": [
-                "1.01"
+                "1.01",
+                "1.01EU"
               ],
               "brand": "PIONEER",
               "bytes": 2010624,
@@ -38884,6 +39685,49 @@
             }
           ],
           "revision": "1.04"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.05EU"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1938944,
+              "components": [
+                {
+                  "identity_key": "pioneer:9000:ID15:1.03:kernel",
+                  "member": "components/S9000150.103.enc",
+                  "revision": "1.03",
+                  "role": "kernel",
+                  "sha256": "814aec2e0d079e49b83fc3cfa060432c0eee5fedf6135392f87519d3c7c279f6"
+                },
+                {
+                  "identity_key": "pioneer:9000:ID15:1.05:normal",
+                  "member": "components/S9000151.105.enc",
+                  "revision": "1.05",
+                  "role": "normal",
+                  "sha256": "67c0fcac8fd47193499509d5e1b5c34d256606be8c487e16866162808aaee441"
+                }
+              ],
+              "embedded_model": "BDR-X12",
+              "family_id": "cf3183a51bc41e42",
+              "filename": "BDR-X12_1.05_9000_ID15_68d63650.tar",
+              "generated_date": "22/10/11",
+              "is_uhd": false,
+              "kernel_revision": "1.03",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "814aec2e0d079e49b83fc3cfa060432c0eee5fedf6135392f87519d3c7c279f6",
+              "key": "fw/pioneer/68d6365072bfa03d04b3f1db22e9403b8197335060ec30adcd46f7e0f250e84d.tar",
+              "modifiable": false,
+              "normal_sha256": "67c0fcac8fd47193499509d5e1b5c34d256606be8c487e16866162808aaee441",
+              "packageType": "pioneer-installer",
+              "revision": "1.05",
+              "selection": "release-chain",
+              "sha256": "68d6365072bfa03d04b3f1db22e9403b8197335060ec30adcd46f7e0f250e84d"
+            }
+          ],
+          "revision": "1.05"
         },
         {
           "packages": [
@@ -39342,6 +40186,49 @@
             }
           ],
           "revision": "1.04"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.05EU"
+              ],
+              "brand": "PIONEER",
+              "bytes": 2023936,
+              "components": [
+                {
+                  "identity_key": "pioneer:9001:ID43:1.03:kernel",
+                  "member": "components/S9001430.103.enc",
+                  "revision": "1.03",
+                  "role": "kernel",
+                  "sha256": "c9a0cf5fccf944e5e6fc6cd38eebfe809b875e2d28f45cf448604b0fb09f7f1c"
+                },
+                {
+                  "identity_key": "pioneer:9001:ID43:1.05:normal",
+                  "member": "components/S9001431.105.enc",
+                  "revision": "1.05",
+                  "role": "normal",
+                  "sha256": "983dbc1d2f3240e5de721a9aeecc93eb05ccec6fff96554c6165791f9ad6df00"
+                }
+              ],
+              "embedded_model": "BDR-X12U",
+              "family_id": "cf3183a51bc41e42",
+              "filename": "BDR-X12U_1.05_9001_ID43_60b6b26e.tar",
+              "generated_date": "22/10/11",
+              "is_uhd": true,
+              "kernel_revision": "1.03",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "c9a0cf5fccf944e5e6fc6cd38eebfe809b875e2d28f45cf448604b0fb09f7f1c",
+              "key": "fw/pioneer/60b6b26ed1aad925d3e8efd0d447cd5b4cebd71863df59b110a0778e2f9cb829.tar",
+              "modifiable": false,
+              "normal_sha256": "983dbc1d2f3240e5de721a9aeecc93eb05ccec6fff96554c6165791f9ad6df00",
+              "packageType": "pioneer-installer",
+              "revision": "1.05",
+              "selection": "release-chain",
+              "sha256": "60b6b26ed1aad925d3e8efd0d447cd5b4cebd71863df59b110a0778e2f9cb829"
+            }
+          ],
+          "revision": "1.05"
         },
         {
           "packages": [
@@ -40154,6 +41041,7 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.01",
                 "1.01EU"
               ],
               "brand": "PIONEER",
@@ -41200,6 +42088,7 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.03",
                 "1.03EU"
               ],
               "brand": "PIONEER",
@@ -41337,6 +42226,7 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.03",
                 "1.03EU"
               ],
               "brand": "PIONEER",
@@ -41380,6 +42270,7 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.04",
                 "1.04EU"
               ],
               "brand": "PIONEER",
@@ -41570,6 +42461,7 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.04",
                 "1.04EU"
               ],
               "brand": "PIONEER",
@@ -42275,6 +43167,57 @@
       ]
     },
     {
+      "destination": "NECJPN",
+      "embedded_models": [
+        "DVR-104"
+      ],
+      "family": "pioneer",
+      "hardware": "ATA 0003",
+      "key": "pioneer:ATA 0003:NECJPN",
+      "other_candidates": [],
+      "platforms": [
+        "ata"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.30"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1050112,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0003:NECJPN:1.30:normal",
+                  "member": "components/R4108103.130.enc",
+                  "revision": "1.30",
+                  "role": "normal",
+                  "sha256": "7682b562abd51b09d82aaa76e9d56acca033b8ce67c995ba120086789e2ab8f2"
+                }
+              ],
+              "embedded_model": "DVR-104",
+              "family_id": null,
+              "filename": "DVR-104_1.30_ATA_0003_NECJPN_df113e7a.tar",
+              "generated_date": "02/05/31",
+              "is_uhd": false,
+              "kernel_revision": null,
+              "kernel_selection_reason": "no-kernel-for-drive",
+              "kernel_sha256": null,
+              "key": "fw/pioneer/df113e7ada7e11d8530c51ed3f1526c7d4a62693a995bd108a20728542c98907.tar",
+              "modifiable": false,
+              "normal_sha256": "7682b562abd51b09d82aaa76e9d56acca033b8ce67c995ba120086789e2ab8f2",
+              "packageType": "pioneer-installer",
+              "revision": "1.30",
+              "selection": "normal-only",
+              "sha256": "df113e7ada7e11d8530c51ed3f1526c7d4a62693a995bd108a20728542c98907"
+            }
+          ],
+          "revision": "1.30"
+        }
+      ]
+    },
+    {
       "destination": "SONY",
       "embedded_models": [
         "DVR-104"
@@ -42587,7 +43530,7 @@
               "normal_sha256": "0ac7b4a324cef02f56aae32fa904e5343c232026492af7805e79031468095121",
               "packageType": "pioneer-installer",
               "revision": "1.21",
-              "selection": "direct-match",
+              "selection": "source-contained",
               "sha256": "2f9a6ae9a875f8a290e30866cb96ff95cc8bf71fa01129223e2e25c6cccadc88"
             }
           ],
@@ -42969,6 +43912,115 @@
       ]
     },
     {
+      "destination": "TEAC",
+      "embedded_models": [
+        "DV-W50E"
+      ],
+      "family": "pioneer",
+      "hardware": "ATA 0004",
+      "key": "pioneer:ATA 0004:TEAC",
+      "other_candidates": [],
+      "platforms": [
+        "ata"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.30"
+              ],
+              "brand": "TEAC",
+              "bytes": 2099200,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0004:TEAC:1.30:kernel",
+                  "member": "components/R5124004.130.enc",
+                  "revision": "1.30",
+                  "role": "kernel",
+                  "sha256": "82a54db5ebec0695e5fa04a3b6d87c940d9ee490b2622fa39a68ebcf6b029129"
+                },
+                {
+                  "identity_key": "pioneer:ATA 0004:TEAC:1.30:normal",
+                  "member": "components/R5124104.130.enc",
+                  "revision": "1.30",
+                  "role": "normal",
+                  "sha256": "0f60de405cff9efa91ec2831b2a261dc9172c78f8377c9ccca2d768e14359265"
+                }
+              ],
+              "embedded_model": "DV-W50E",
+              "family_id": null,
+              "filename": "DV-W50E_1.30_ATA_0004_TEAC_bb333bc9.tar",
+              "generated_date": "03/02/06",
+              "is_uhd": false,
+              "kernel_revision": "1.30",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "82a54db5ebec0695e5fa04a3b6d87c940d9ee490b2622fa39a68ebcf6b029129",
+              "key": "fw/pioneer/bb333bc9e22e2ae329172d49b4316ae81660c9b2909a1e007631fa576687608e.tar",
+              "modifiable": false,
+              "normal_sha256": "0f60de405cff9efa91ec2831b2a261dc9172c78f8377c9ccca2d768e14359265",
+              "packageType": "pioneer-installer",
+              "revision": "1.30",
+              "selection": "source-contained",
+              "sha256": "bb333bc9e22e2ae329172d49b4316ae81660c9b2909a1e007631fa576687608e"
+            }
+          ],
+          "revision": "1.30"
+        }
+      ]
+    },
+    {
+      "destination": "ASUS",
+      "embedded_models": [
+        "DRW-0402P/D"
+      ],
+      "family": "pioneer",
+      "hardware": "ATA 0006",
+      "key": "pioneer:ATA 0006:ASUS",
+      "other_candidates": [],
+      "platforms": [
+        "ata"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.07"
+              ],
+              "brand": "ASUS",
+              "bytes": 1050112,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0006:ASUS:1.07:normal",
+                  "member": "components/R6123106.107.enc",
+                  "revision": "1.07",
+                  "role": "normal",
+                  "sha256": "23afdbfa9a4aea97a9ca5f93c78c3faa5a15a6fd26167e006108dde33c3c356a"
+                }
+              ],
+              "embedded_model": "DRW-0402P/D",
+              "family_id": null,
+              "filename": "DRW-0402P_D_1.07_ATA_0006_ASUS_1543dde7.tar",
+              "generated_date": "03/09/08",
+              "is_uhd": false,
+              "kernel_revision": null,
+              "kernel_selection_reason": "no-kernel-for-drive",
+              "kernel_sha256": null,
+              "key": "fw/pioneer/1543dde7d2ea564fa1ff72de1a61a07cec29cb7661a29d137ee29a4694ef3378.tar",
+              "modifiable": false,
+              "normal_sha256": "23afdbfa9a4aea97a9ca5f93c78c3faa5a15a6fd26167e006108dde33c3c356a",
+              "packageType": "pioneer-installer",
+              "revision": "1.07",
+              "selection": "normal-only",
+              "sha256": "1543dde7d2ea564fa1ff72de1a61a07cec29cb7661a29d137ee29a4694ef3378"
+            }
+          ],
+          "revision": "1.07"
+        }
+      ]
+    },
+    {
       "destination": "GENERAL",
       "embedded_models": [
         "DVR-106D"
@@ -43022,7 +44074,8 @@
           "packages": [
             {
               "advertised_versions": [
-                "1.07"
+                "1.07",
+                "1.07J"
               ],
               "brand": "PIONEER",
               "bytes": 1050112,
@@ -43089,7 +44142,8 @@
           "packages": [
             {
               "advertised_versions": [
-                "1.08"
+                "1.08",
+                "1.08J"
               ],
               "brand": "PIONEER",
               "bytes": 1050112,
@@ -43316,6 +44370,93 @@
             }
           ],
           "revision": "1.07"
+        }
+      ]
+    },
+    {
+      "destination": "AOPEN",
+      "embedded_models": [
+        "APP"
+      ],
+      "family": "pioneer",
+      "hardware": "ATA 0007",
+      "key": "pioneer:ATA 0007:AOPEN",
+      "other_candidates": [],
+      "platforms": [
+        "ata"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.13"
+              ],
+              "brand": "AOPEN",
+              "bytes": 1050112,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0007:AOPEN:1.13:normal",
+                  "member": "components/R7145107.113.enc",
+                  "revision": "1.13",
+                  "role": "normal",
+                  "sha256": "db9be39bb1af27e3661014ce1ea531f92e1ebcad96e9cd282ae36c83ae882204"
+                }
+              ],
+              "embedded_model": "APP",
+              "family_id": null,
+              "filename": "APP_1.13_ATA_0007_AOPEN_5b470b59.tar",
+              "generated_date": "04/03/24",
+              "is_uhd": false,
+              "kernel_revision": null,
+              "kernel_selection_reason": "no-kernel-for-drive",
+              "kernel_sha256": null,
+              "key": "fw/pioneer/5b470b5931b146da3a61d60ea68486dc69b48d6be047da1449276aa157d85c73.tar",
+              "modifiable": false,
+              "normal_sha256": "db9be39bb1af27e3661014ce1ea531f92e1ebcad96e9cd282ae36c83ae882204",
+              "packageType": "pioneer-installer",
+              "revision": "1.13",
+              "selection": "normal-only",
+              "sha256": "5b470b5931b146da3a61d60ea68486dc69b48d6be047da1449276aa157d85c73"
+            }
+          ],
+          "revision": "1.13"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.19"
+              ],
+              "brand": "AOPEN",
+              "bytes": 1050112,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0007:AOPEN:1.19:normal",
+                  "member": "components/R7145107.119.enc",
+                  "revision": "1.19",
+                  "role": "normal",
+                  "sha256": "0ac26e01c6ee8e04af115a28b3dc65ab46cea643894fb320bba00f7343455d19"
+                }
+              ],
+              "embedded_model": "APP",
+              "family_id": null,
+              "filename": "APP_1.19_ATA_0007_AOPEN_da6c5e02.tar",
+              "generated_date": "04/07/14",
+              "is_uhd": false,
+              "kernel_revision": null,
+              "kernel_selection_reason": "no-kernel-for-drive",
+              "kernel_sha256": null,
+              "key": "fw/pioneer/da6c5e028ef7f938c02c094711f14545441718845b8f675ec32a4e61b2e3a2e1.tar",
+              "modifiable": false,
+              "normal_sha256": "0ac26e01c6ee8e04af115a28b3dc65ab46cea643894fb320bba00f7343455d19",
+              "packageType": "pioneer-installer",
+              "revision": "1.19",
+              "selection": "normal-only",
+              "sha256": "da6c5e028ef7f938c02c094711f14545441718845b8f675ec32a4e61b2e3a2e1"
+            }
+          ],
+          "revision": "1.19"
         }
       ]
     },
@@ -43762,7 +44903,8 @@
             },
             {
               "advertised_versions": [
-                "1.10"
+                "1.10",
+                "1.10EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1116160,
@@ -43874,7 +45016,8 @@
             {
               "advertised_versions": [
                 "1.13",
-                "1.13EU"
+                "1.13EU",
+                "1.13EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1050112,
@@ -43910,7 +45053,8 @@
           "packages": [
             {
               "advertised_versions": [
-                "1.15"
+                "1.15",
+                "1.15J"
               ],
               "brand": "PIONEER",
               "bytes": 1050112,
@@ -43977,7 +45121,8 @@
             },
             {
               "advertised_versions": [
-                "1.16"
+                "1.16",
+                "1.16J"
               ],
               "brand": "PIONEER",
               "bytes": 1050112,
@@ -44044,7 +45189,8 @@
             },
             {
               "advertised_versions": [
-                "1.18"
+                "1.18",
+                "1.18J"
               ],
               "brand": "PIONEER",
               "bytes": 1050112,
@@ -44080,7 +45226,8 @@
           "packages": [
             {
               "advertised_versions": [
-                "1.20"
+                "1.20",
+                "1.20J"
               ],
               "brand": "PIONEER",
               "bytes": 1050112,
@@ -44183,7 +45330,8 @@
           "packages": [
             {
               "advertised_versions": [
-                "1.22"
+                "1.22",
+                "1.22J"
               ],
               "brand": "PIONEER",
               "bytes": 1050112,
@@ -45055,6 +46203,42 @@
             }
           ],
           "revision": "1.13"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.21"
+              ],
+              "brand": "TEAC",
+              "bytes": 1050112,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0007:TEAC:1.21:normal",
+                  "member": "components/R7124107.121.enc",
+                  "revision": "1.21",
+                  "role": "normal",
+                  "sha256": "4878cf13de21eadc2e2e47b317b8694432c6c9007e6fc37849c55be6be142b6a"
+                }
+              ],
+              "embedded_model": "DV-W58D",
+              "family_id": null,
+              "filename": "DV-W58D_1.21_ATA_0007_TEAC_4e5286ba.tar",
+              "generated_date": "04/10/29",
+              "is_uhd": false,
+              "kernel_revision": null,
+              "kernel_selection_reason": "no-kernel-for-drive",
+              "kernel_sha256": null,
+              "key": "fw/pioneer/4e5286baada3ae3d8205b891509197410a6ce9b6e20996a0e7150f4eb7f5cf50.tar",
+              "modifiable": false,
+              "normal_sha256": "4878cf13de21eadc2e2e47b317b8694432c6c9007e6fc37849c55be6be142b6a",
+              "packageType": "pioneer-installer",
+              "revision": "1.21",
+              "selection": "normal-only",
+              "sha256": "4e5286baada3ae3d8205b891509197410a6ce9b6e20996a0e7150f4eb7f5cf50"
+            }
+          ],
+          "revision": "1.21"
         }
       ]
     },
@@ -45204,11 +46388,56 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.18EU"
+              ],
+              "brand": "ASUS",
+              "bytes": 1116160,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0008:ASUS:1.18:kernel",
+                  "member": "components/R8123008.118.enc",
+                  "revision": "1.18",
+                  "role": "kernel",
+                  "sha256": "beb3dcc6206d8c84ede915b18491feef3dfeeb8d771a0f5a177ccb8d9205c249"
+                },
+                {
+                  "identity_key": "pioneer:ATA 0008:ASUS:1.18:normal",
+                  "member": "components/R8123108.118.enc",
+                  "revision": "1.18",
+                  "role": "normal",
+                  "sha256": "ca2a8af87051729cb13b253441b63b6b26f8aa8b183e6c6da30d0704211257ec"
+                }
+              ],
+              "embedded_model": "DRW-1604P",
+              "family_id": null,
+              "filename": "DRW-1604P_1.18_ATA_0008_ASUS_6d0943ba.tar",
+              "generated_date": "05/02/16",
+              "is_uhd": false,
+              "kernel_revision": "1.18",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "beb3dcc6206d8c84ede915b18491feef3dfeeb8d771a0f5a177ccb8d9205c249",
+              "key": "fw/pioneer/6d0943ba1f6726dea0e89d2b3090fa41c30f18af41b05b4f4500105d7caaa06b.tar",
+              "modifiable": false,
+              "normal_sha256": "ca2a8af87051729cb13b253441b63b6b26f8aa8b183e6c6da30d0704211257ec",
+              "packageType": "pioneer-installer",
+              "revision": "1.18",
+              "selection": "source-contained",
+              "sha256": "6d0943ba1f6726dea0e89d2b3090fa41c30f18af41b05b4f4500105d7caaa06b"
+            },
+            {
+              "advertised_versions": [
                 "1.18"
               ],
               "brand": "ASUS",
-              "bytes": 1050112,
+              "bytes": 1116160,
               "components": [
+                {
+                  "identity_key": "pioneer:ATA 0008:ASUS:1.18:kernel",
+                  "member": "components/R8123008.118.enc",
+                  "revision": "1.18",
+                  "role": "kernel",
+                  "sha256": "beb3dcc6206d8c84ede915b18491feef3dfeeb8d771a0f5a177ccb8d9205c249"
+                },
                 {
                   "identity_key": "pioneer:ATA 0008:ASUS:1.18:normal",
                   "member": "components/R8123108.118.enc",
@@ -45219,19 +46448,19 @@
               ],
               "embedded_model": "DRW-1604P",
               "family_id": null,
-              "filename": "DRW-1604P_1.18_ATA_0008_ASUS_90e47a59.tar",
+              "filename": "DRW-1604P_1.18_ATA_0008_ASUS_8639ad61.tar",
               "generated_date": "04/11/25",
               "is_uhd": false,
-              "kernel_revision": null,
-              "kernel_selection_reason": "release-history-break",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/90e47a59b8c1b0afdbe80f1cac149888e243ef95ebc49dfd3267aae143610f92.tar",
+              "kernel_revision": "1.18",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "beb3dcc6206d8c84ede915b18491feef3dfeeb8d771a0f5a177ccb8d9205c249",
+              "key": "fw/pioneer/8639ad61f4574c0642979d8b5a92a0882e9ad7ae0513e1b907f125926e2fe8d8.tar",
               "modifiable": false,
               "normal_sha256": "79b244c3f8942ac8cc590a06601ea2cf6b75a4437f552723756adb1b3c990f3b",
               "packageType": "pioneer-installer",
               "revision": "1.18",
-              "selection": "normal-only",
-              "sha256": "90e47a59b8c1b0afdbe80f1cac149888e243ef95ebc49dfd3267aae143610f92"
+              "selection": "direct-match",
+              "sha256": "8639ad61f4574c0642979d8b5a92a0882e9ad7ae0513e1b907f125926e2fe8d8"
             }
           ],
           "revision": "1.18"
@@ -45361,7 +46590,8 @@
             {
               "advertised_versions": [
                 "1.14",
-                "1.14EU"
+                "1.14EU",
+                "1.14EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1050112,
@@ -45429,7 +46659,8 @@
             {
               "advertised_versions": [
                 "1.18",
-                "1.18EU"
+                "1.18EU",
+                "1.18EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1050112,
@@ -45466,7 +46697,8 @@
             {
               "advertised_versions": [
                 "1.19",
-                "1.19EU"
+                "1.19EU",
+                "1.19EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1050112,
@@ -45944,37 +47176,6 @@
           "packages": [
             {
               "advertised_versions": [
-                "1.19"
-              ],
-              "brand": "PIONEER",
-              "bytes": 107520,
-              "components": [
-                {
-                  "identity_key": "pioneer:ATA 0008:PIO_EXT:1.19:normal",
-                  "member": "components/R8129108.119.enc",
-                  "revision": "1.19",
-                  "role": "normal",
-                  "sha256": "05235008786a1e0f903498ed11fb0216f67fe19cfc51b9778665e922bf55f61f"
-                }
-              ],
-              "embedded_model": "DVR-108",
-              "family_id": null,
-              "filename": "DVR-108_1.19_ATA_0008_PIO_EXT_309bbf3f.tar",
-              "generated_date": "05/03/18",
-              "is_uhd": false,
-              "kernel_revision": null,
-              "kernel_selection_reason": "no-kernel-for-drive",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/309bbf3f0d1e2034f4aa2e3d8d1fef1ab14ea5e9232998116a58b00b18a69c83.tar",
-              "modifiable": false,
-              "normal_sha256": "05235008786a1e0f903498ed11fb0216f67fe19cfc51b9778665e922bf55f61f",
-              "packageType": "pioneer-installer",
-              "revision": "1.19",
-              "selection": "normal-only",
-              "sha256": "309bbf3f0d1e2034f4aa2e3d8d1fef1ab14ea5e9232998116a58b00b18a69c83"
-            },
-            {
-              "advertised_versions": [
                 "1.19J"
               ],
               "brand": "PIONEER",
@@ -46043,6 +47244,57 @@
             }
           ],
           "revision": "1.20"
+        }
+      ]
+    },
+    {
+      "destination": "TEAC",
+      "embedded_models": [
+        "DV-W516D"
+      ],
+      "family": "pioneer",
+      "hardware": "ATA 0008",
+      "key": "pioneer:ATA 0008:TEAC",
+      "other_candidates": [],
+      "platforms": [
+        "ata"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.18"
+              ],
+              "brand": "TEAC",
+              "bytes": 1050112,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0008:TEAC:1.18:normal",
+                  "member": "components/R8124108.118.enc",
+                  "revision": "1.18",
+                  "role": "normal",
+                  "sha256": "342a0ca7ec53606152c957ee915f90bda707cbf6cfd982897867c1db760e8f54"
+                }
+              ],
+              "embedded_model": "DV-W516D",
+              "family_id": null,
+              "filename": "DV-W516D_1.18_ATA_0008_TEAC_b1908361.tar",
+              "generated_date": "04/11/25",
+              "is_uhd": false,
+              "kernel_revision": null,
+              "kernel_selection_reason": "no-kernel-for-drive",
+              "kernel_sha256": null,
+              "key": "fw/pioneer/b19083618e7c72ba55fb6e4455361d913e47ad006a824384f33a2d6efac666f3.tar",
+              "modifiable": false,
+              "normal_sha256": "342a0ca7ec53606152c957ee915f90bda707cbf6cfd982897867c1db760e8f54",
+              "packageType": "pioneer-installer",
+              "revision": "1.18",
+              "selection": "normal-only",
+              "sha256": "b19083618e7c72ba55fb6e4455361d913e47ad006a824384f33a2d6efac666f3"
+            }
+          ],
+          "revision": "1.18"
         }
       ]
     },
@@ -46298,7 +47550,8 @@
             {
               "advertised_versions": [
                 "1.09",
-                "1.09EU"
+                "1.09EU",
+                "1.09EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1213952,
@@ -46335,7 +47588,8 @@
             {
               "advertised_versions": [
                 "1.17",
-                "1.17EU"
+                "1.17EU",
+                "1.17EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1213952,
@@ -46416,7 +47670,8 @@
           "packages": [
             {
               "advertised_versions": [
-                "1.50EU"
+                "1.50EU",
+                "1.50EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1378304,
@@ -46460,7 +47715,8 @@
             {
               "advertised_versions": [
                 "1.55",
-                "1.55EU"
+                "1.55EU",
+                "1.55EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1411072,
@@ -46504,7 +47760,8 @@
             {
               "advertised_versions": [
                 "1.57",
-                "1.57EU"
+                "1.57EU",
+                "1.57EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1411072,
@@ -46548,7 +47805,8 @@
             {
               "advertised_versions": [
                 "1.58",
-                "1.58EU"
+                "1.58EU",
+                "1.58EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1411072,
@@ -47372,7 +48630,8 @@
           "packages": [
             {
               "advertised_versions": [
-                "1.37EU"
+                "1.37EU",
+                "1.37EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1869824,
@@ -47407,44 +48666,6 @@
               "revision": "1.37",
               "selection": "source-contained",
               "sha256": "476a14caa093cd9b926fee2100f1f820147e6419956bbde589da36481480fb07"
-            },
-            {
-              "advertised_versions": [
-                "1.37EU"
-              ],
-              "brand": "PIONEER",
-              "bytes": 1869824,
-              "components": [
-                {
-                  "identity_key": "pioneer:ATA 0010:GENERAL:1.37:kernel",
-                  "member": "components/RA100010.137.enc",
-                  "revision": "1.37",
-                  "role": "kernel",
-                  "sha256": "76054b9d36e4bbd80715a07a844bb1692108f9491f8e495e3dfcca53689b84b6"
-                },
-                {
-                  "identity_key": "pioneer:ATA 0010:GENERAL:1.37:normal",
-                  "member": "components/RA100110.137.enc",
-                  "revision": "1.37",
-                  "role": "normal",
-                  "sha256": "3209fd50ff6ddfcc49d1512395d9e5d589a42f38b8cf3655a6c5daed29185328"
-                }
-              ],
-              "embedded_model": "DVR-110",
-              "family_id": null,
-              "filename": "DVR-110_1.37_ATA_0010_GENERAL_db3a9ca9.tar",
-              "generated_date": "05/11/08",
-              "is_uhd": false,
-              "kernel_revision": "1.37",
-              "kernel_selection_reason": null,
-              "kernel_sha256": "76054b9d36e4bbd80715a07a844bb1692108f9491f8e495e3dfcca53689b84b6",
-              "key": "fw/pioneer/db3a9ca91fcd874a0099d3a70e7cfb06d3cb8b67882837481172553a09dcbf09.tar",
-              "modifiable": false,
-              "normal_sha256": "3209fd50ff6ddfcc49d1512395d9e5d589a42f38b8cf3655a6c5daed29185328",
-              "packageType": "pioneer-installer",
-              "revision": "1.37",
-              "selection": "source-contained",
-              "sha256": "db3a9ca91fcd874a0099d3a70e7cfb06d3cb8b67882837481172553a09dcbf09"
             }
           ],
           "revision": "1.37"
@@ -47454,7 +48675,8 @@
             {
               "advertised_versions": [
                 "1.39",
-                "1.39EU"
+                "1.39EU",
+                "1.39EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1869824,
@@ -47498,7 +48720,8 @@
             {
               "advertised_versions": [
                 "1.41",
-                "1.41EU"
+                "1.41EU",
+                "1.41EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1869824,
@@ -47705,6 +48928,92 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.17EU"
+              ],
+              "brand": "ASUS",
+              "bytes": 1804288,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0011:ASUS:1.17:kernel",
+                  "member": "components/RB123011.117.enc",
+                  "revision": "1.17",
+                  "role": "kernel",
+                  "sha256": "aae73db82d5bfeb694ecb3271fc7df525b1e7b75c7bf8afb0da9e71284f52937"
+                },
+                {
+                  "identity_key": "pioneer:ATA 0011:ASUS:1.17:normal",
+                  "member": "components/RB123111.117.enc",
+                  "revision": "1.17",
+                  "role": "normal",
+                  "sha256": "26bfbc5c5ea650aa85743ff785240106501eed2cedacb255fdd266d62c80abaf"
+                }
+              ],
+              "embedded_model": "DRW-1608P2",
+              "family_id": null,
+              "filename": "DRW-1608P2_1.17_ATA_0011_ASUS_1ca07820.tar",
+              "generated_date": "05/08/31",
+              "is_uhd": false,
+              "kernel_revision": "1.17",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "aae73db82d5bfeb694ecb3271fc7df525b1e7b75c7bf8afb0da9e71284f52937",
+              "key": "fw/pioneer/1ca07820e61e419c79b92af5e10e636cc2857c44fea1c3b657ff39ee10de5059.tar",
+              "modifiable": false,
+              "normal_sha256": "26bfbc5c5ea650aa85743ff785240106501eed2cedacb255fdd266d62c80abaf",
+              "packageType": "pioneer-installer",
+              "revision": "1.17",
+              "selection": "source-contained",
+              "sha256": "1ca07820e61e419c79b92af5e10e636cc2857c44fea1c3b657ff39ee10de5059"
+            }
+          ],
+          "revision": "1.17"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.37EU"
+              ],
+              "brand": "ASUS",
+              "bytes": 1837056,
+              "components": [
+                {
+                  "identity_key": "pioneer:ATA 0011:ASUS:1.37:kernel",
+                  "member": "components/RB123011.137.enc",
+                  "revision": "1.37",
+                  "role": "kernel",
+                  "sha256": "b0b8cbbb8af6c9436ca94a70c61f5c2b8aea0b3c7257f155c3dec5b278c63b41"
+                },
+                {
+                  "identity_key": "pioneer:ATA 0011:ASUS:1.37:normal",
+                  "member": "components/RB123111.137.enc",
+                  "revision": "1.37",
+                  "role": "normal",
+                  "sha256": "1e5ee67ad1458752ac50485bdc27b7c42cc765e6d5f3d9e865c127ce757640bc"
+                }
+              ],
+              "embedded_model": "DRW-1608P2",
+              "family_id": null,
+              "filename": "DRW-1608P2_1.37_ATA_0011_ASUS_310fdc0d.tar",
+              "generated_date": "05/11/08",
+              "is_uhd": false,
+              "kernel_revision": "1.37",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "b0b8cbbb8af6c9436ca94a70c61f5c2b8aea0b3c7257f155c3dec5b278c63b41",
+              "key": "fw/pioneer/310fdc0dcd732e41851a0b50561df1f327acd48b94dbf285a5221452dc3e84a4.tar",
+              "modifiable": false,
+              "normal_sha256": "1e5ee67ad1458752ac50485bdc27b7c42cc765e6d5f3d9e865c127ce757640bc",
+              "packageType": "pioneer-installer",
+              "revision": "1.37",
+              "selection": "source-contained",
+              "sha256": "310fdc0dcd732e41851a0b50561df1f327acd48b94dbf285a5221452dc3e84a4"
+            }
+          ],
+          "revision": "1.37"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
                 "1.39",
                 "1.39EU"
               ],
@@ -47809,7 +49118,8 @@
             {
               "advertised_versions": [
                 "1.17",
-                "1.17EU"
+                "1.17EU",
+                "1.17EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1804288,
@@ -47852,7 +49162,8 @@
           "packages": [
             {
               "advertised_versions": [
-                "1.22EU"
+                "1.22EU",
+                "1.22EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1804288,
@@ -47896,7 +49207,8 @@
             {
               "advertised_versions": [
                 "1.37",
-                "1.37EU"
+                "1.37EU",
+                "1.37EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1869824,
@@ -47940,7 +49252,8 @@
             {
               "advertised_versions": [
                 "1.39",
-                "1.39EU"
+                "1.39EU",
+                "1.39EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1869824,
@@ -47984,7 +49297,8 @@
             {
               "advertised_versions": [
                 "1.41",
-                "1.41EU"
+                "1.41EU",
+                "1.41EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1869824,
@@ -48046,8 +49360,15 @@
                 "1.24EU"
               ],
               "brand": "ASUS",
-              "bytes": 1836544,
+              "bytes": 1968128,
               "components": [
+                {
+                  "identity_key": "pioneer:ATA 0012:ASUS:1.24:kernel",
+                  "member": "components/A0012230.124.enc",
+                  "revision": "1.24",
+                  "role": "kernel",
+                  "sha256": "c9ba2254839ba3cbb6915d68c1213ec8f2a15203462145672927c5962922254c"
+                },
                 {
                   "identity_key": "pioneer:ATA 0012:ASUS:1.24:normal",
                   "member": "components/A0012231.124.enc",
@@ -48058,19 +49379,19 @@
               ],
               "embedded_model": "DRW-1608P3S",
               "family_id": null,
-              "filename": "DRW-1608P3S_1.24_ATA_0012_ASUS_30cb0345.tar",
+              "filename": "DRW-1608P3S_1.24_ATA_0012_ASUS_54b74c55.tar",
               "generated_date": "06/05/24",
               "is_uhd": false,
-              "kernel_revision": null,
-              "kernel_selection_reason": "no-kernel-for-drive",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/30cb0345904e4af7873930558a39fbf53fde271df0bdb04639ccd97fcc24e8b8.tar",
+              "kernel_revision": "1.24",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "c9ba2254839ba3cbb6915d68c1213ec8f2a15203462145672927c5962922254c",
+              "key": "fw/pioneer/54b74c558c83299864245425b0454fc8443575eeae4ed40211c772070eb6cd69.tar",
               "modifiable": false,
               "normal_sha256": "7b535f5af79487df57017e2d7db647ee75c2197a24c33b7244205eccf3201af7",
               "packageType": "pioneer-installer",
               "revision": "1.24",
-              "selection": "normal-only",
-              "sha256": "30cb0345904e4af7873930558a39fbf53fde271df0bdb04639ccd97fcc24e8b8"
+              "selection": "source-contained",
+              "sha256": "54b74c558c83299864245425b0454fc8443575eeae4ed40211c772070eb6cd69"
             }
           ],
           "revision": "1.24"
@@ -48132,7 +49453,8 @@
             {
               "advertised_versions": [
                 "1.19",
-                "1.19EU"
+                "1.19EU",
+                "1.19EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1803776,
@@ -48169,7 +49491,8 @@
             {
               "advertised_versions": [
                 "1.23",
-                "1.23EU"
+                "1.23EU",
+                "1.23EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1836544,
@@ -48205,7 +49528,8 @@
           "packages": [
             {
               "advertised_versions": [
-                "1.29EU"
+                "1.29EU",
+                "1.29EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1836544,
@@ -49148,7 +50472,8 @@
           "packages": [
             {
               "advertised_versions": [
-                "1.06EU"
+                "1.06EU",
+                "1.06EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1771008,
@@ -49185,7 +50510,8 @@
             {
               "advertised_versions": [
                 "1.19",
-                "1.19EU"
+                "1.19EU",
+                "1.19EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1803776,
@@ -49222,7 +50548,8 @@
             {
               "advertised_versions": [
                 "1.23",
-                "1.23EU"
+                "1.23EU",
+                "1.23EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1836544,
@@ -49259,7 +50586,8 @@
             {
               "advertised_versions": [
                 "1.29",
-                "1.29EU"
+                "1.29EU",
+                "1.29EUJ"
               ],
               "brand": "PIONEER",
               "bytes": 1836544,

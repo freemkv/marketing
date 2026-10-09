@@ -171,3 +171,9 @@ const out=a[a.indexOf('--out')+1];fs.cpSync(${JSON.stringify(template)},out,{rec
  await fs.access(stage+'.tar.gz');await fs.access(path.join(stage,'firmware-index.json'));
  await assert.rejects(prepare(path.join(root,'extractor'),stage,path.join(root,'hoard')),/already exists/);
 });
+
+test('pruning retains the unlisted latest archive',async()=>{
+ const deleted=[];
+ assert.deepEqual(await pruneOrphans(new Set(),{listPage:async()=>({objects:[{key:'releases/latest.tar.gz'},{key:'fw/pioneer/old.tar'}],truncated:false}),deleteKey:async key=>deleted.push(key)}),['fw/pioneer/old.tar']);
+ assert.deepEqual(deleted,['fw/pioneer/old.tar']);
+});

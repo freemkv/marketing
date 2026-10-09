@@ -1,5 +1,5 @@
 {
- "note": "Per-firmware feature availability over the full 124-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from `freemkv-fw create --base --json`; per-feature `ok` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (100 images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, 24 images). Regenerate with scripts/firmware-features.mjs — do not hand-edit.",
+ "note": "Per-firmware feature availability over the full 125-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from `freemkv-fw create --base --json`; per-feature `ok` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (101 images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, 24 images). Regenerate with scripts/firmware-features.mjs — do not hand-edit.",
  "flags": [
   "Speed",
   "Region",
@@ -10,20 +10,20 @@
   "Bus"
  ],
  "counts": {
-  "total": 124,
+  "total": 125,
   "base_only": 0,
-  "feature_bearing": 124,
+  "feature_bearing": 125,
   "hardware_verified": 0,
-  "build_verified": 124
+  "build_verified": 125
  },
  "per_flag": {
-  "Speed": 100,
-  "Region-free": 124,
-  "UHD": 100,
-  "BD": 100,
-  "HRL Bypass": 124,
-  "AKE Bypass": 124,
-  "Bus Decrypt": 124
+  "Speed": 101,
+  "Region-free": 125,
+  "UHD": 101,
+  "BD": 101,
+  "HRL Bypass": 125,
+  "AKE Bypass": 125,
+  "Bus Decrypt": 125
  },
  "images": [
   {
@@ -5317,6 +5317,73 @@
     "hrl_sites": 1
    },
    "r2_key": "MT1939/WH16NS58_1.V1_4041c0f1.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "3018997b63cc9a2f31618fd9b6b5c6bfe0cc921b891f4a80ac08ae3ef2b16504",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1939_WH16NS58_3018997b63cc9a2f.bin",
+   "engine": "MT1939",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "WH16NS58",
+   "rev": "1.V2",
+   "media": "BD/UHD",
+   "variant": "N004100",
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1415596,
+    "boot_stub_va": 1416384,
+    "boot_init_site": 1323544,
+    "de_off": 2015318,
+    "speed_gate": 101122,
+    "region_emitter": 1168924,
+    "ake_gate": 1286064,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1416772,
+    "hrl_sites": 1
+   },
+   "r2_key": "MT1939/WH16NS58_1.V2_3018997b.bin",
    "lineage": "MT1959-lineage"
   },
   {
