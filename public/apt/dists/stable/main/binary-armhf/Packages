@@ -1,18 +1,18 @@
 Package: freemkv-cli
-Version: 1.8.2
+Version: 1.8.3
 Architecture: armhf
 Section: video
 Priority: optional
 Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
-Installed-Size: 11166
+Installed-Size: 12816
 Conflicts: freemkv
 Replaces: freemkv
 Homepage: https://freemkv.org
-Filename: pool/main/freemkv-cli/freemkv-cli_1.8.2_armhf.deb
-Size: 3978794
-MD5sum: fe19d6a4c425b3e6b9e27f59d785a28a
-SHA1: 644650eb95522f6cca75ab9998772cc5e9f600cc
-SHA256: 48dff243579e0c2cd00eb17563a78ecc278c2f5d659a0f02291879976172dcc1
+Filename: pool/main/freemkv-cli/freemkv-cli_1.8.3_armhf.deb
+Size: 4208852
+MD5sum: b481de2cdc679a73ed8c42621be12087
+SHA1: 5fbbb1c326c695bca713d4c12cd9621a7b8c3563
+SHA256: 32dab30aadfb0b5f73a4a3111f84125bf81707031fc57145e4f40e99b4ebad68
 Description: Rip DVD, Blu-ray and UHD discs without re-encoding (command line)
  Static command-line build of freemkv for selecting titles, audio and
  subtitle tracks and saving them to MKV, MP4 or M2TS. It has no desktop
