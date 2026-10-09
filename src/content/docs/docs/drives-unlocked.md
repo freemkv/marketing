@@ -3,6 +3,10 @@ title: Unlocked drives
 description: What an unlocked-firmware optical drive is, why it helps, and which drive families freemkv supports today.
 ---
 
+:::note[Unlocking is not decryption]
+AACS-protected Blu-ray and 4K UHD discs still need [decryption keys](/docs/decryption-keys/). Unlocking the drive does not decrypt the disc.
+:::
+
 Unlocked drives remove restrictions that can prevent freemkv from accessing a disc. There are two paths, depending on your drive:
 
 - **[Pioneer (beta)](#pioneer-drives-beta):** nothing to install or flash. freemkv automatically unlocks supported drives using their original OEM firmware.
@@ -35,10 +39,6 @@ If you own an LG, ASUS, or HP Blu-ray drive from roughly **2012-2020**, it's ver
 **Pioneer beta support is now available in freemkv 1.8.3.** Compatible Pioneer and Pioneer-based drives work with their original **OEM firmware**. No firmware modification or flashing is required.
 
 [Download the latest freemkv](/download/) to try it. [Share your drive profile](#help-us-add-your-drive) to help us expand coverage.
-
-:::note[Unlocking is not decryption]
-AACS-protected Blu-ray and 4K UHD discs still need [decryption keys](/docs/decryption-keys/). Unlocking the drive does not decrypt the disc.
-:::
 
 For drives without unlocked support, see the [OEM-drive workflow](/docs/drives-oem/).
 
