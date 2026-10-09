@@ -117,66 +117,103 @@ you have edited it by hand. `--family` forces the chipset, as for `verify`.
 
 ## freemkv-flash
 
-`freemkv-flash` is a generic MediaTek (MT19xx) optical-drive flasher and dumper. It isn't
-specific to freemkv — it can read and write any compatible firmware image. It always backs up
-before writing, and reads back every write to confirm it took. `backup` also works on Pioneer and
-Renesas drives, as a backup only: `flash` never writes to those.
+`freemkv-flash` backs up, dumps and flashes supported optical-drive firmware on
+Windows, macOS and Linux. Executable write paths support MediaTek images and
+Pioneer packages understood by the backend. MT1959 is the hardware-tested MediaTek
+path; MT1939 is recognized but not hardware-validated. A catalogued chipset or model alone
+is not proof that its firmware can be flashed. The desktop app uses the same
+workflows as the CLI.
 
-### info
-
-```bash
-freemkv-flash info <device>        # identify a live drive
-freemkv-flash info <image.bin>     # classify a firmware file
-```
-
-`info` works on **either a live drive or a firmware file** — it auto-detects which. On a
-**device** it reports the drive's **vendor**, **product**, and **firmware revision** (from the
-drive's own SCSI `INQUIRY` data). On a **file** it classifies the image: chipset (MT1959 /
-MT1939), vendor/model/revision, media capability (BD / UHD / DVD), whether the tool can flash it,
-and whether its integrity tables are valid. Both use the **same detection**, which is exactly
-what the flasher's file↔drive safety check compares. Read-only and safe.
-
-### backup
+### list, info and check
 
 ```bash
-freemkv-flash backup <device> [-o backup.tar]   # default output: <product>_<revision>.backup.tar
+freemkv-flash list
+freemkv-flash info <device>
+freemkv-flash check firmware.tar
 ```
 
-Reads the drive's current firmware to a `.tar`. Always take a backup and keep it before flashing
-anything. An existing backup is never overwritten. (`dump` is a different command: a best-effort
-salvage read for a damaged drive, not a validated backup.)
+Use the drive name or ID printed by `list`. Omit the device when exactly one drive
+is connected. `info` identifies a drive or inspects a firmware file; `check` always
+inspects a file without opening a drive. Identification is not a guarantee of
+compatibility or a successful flash.
+
+### backup and dump
+
+```bash
+# MediaTek update-format image:
+freemkv-flash backup <device> -o backup.bin
+# Pioneer package:
+freemkv-flash backup <device> -o backup.tar
+# Raw diagnostic capture, not an update package:
+freemkv-flash dump <device> -o dump.bin
+```
+
+Backup reads and validates supported firmware. MediaTek output is a 2 MiB update
+image with factory per-drive data. Pioneer output is a package of captured
+components; recognized images can be reconstructed in OEM format. An unsigned
+Pioneer candidate is not automatically a transferable update: Recovery accepts
+it as a Current reference, but the target must pass authentication. Keep a copy
+of the original signed OEM package as well as your backup.
+
+Dump captures accessible memory and records unavailable regions. It is not a
+validated restoration image. Pioneer dump may enable temporary command logging
+in RAM. Read commands can fail on unsupported or degraded drives.
 
 ### flash
 
 ```bash
-# dry-run (default — plans the write, changes nothing):
-freemkv-flash flash <device> -i <image.bin>
-
-# actually write it:
-freemkv-flash flash <device> -i <image.bin> --execute --i-understand-risk
+# Preview (default):
+freemkv-flash flash <device> -i firmware.bin
+# Write, with an automatically saved pre-flash backup:
+freemkv-flash flash <device> -i firmware.bin --execute --i-understand-risk
+# Choose a new backup destination:
+freemkv-flash flash <device> -i firmware.bin --backup preflash.bin --execute --i-understand-risk
 ```
 
-Writes an image to the drive. **It is dry-run by default** — without `--execute` it only prints
-the plan and writes nothing. A real write requires `--execute` and `--i-understand-risk`, and
-takes a **mandatory pre-flash backup** first, then reads the image back to verify. The pre-flash
-backup goes to `<image>.preflash.backup.tar` unless `--backup <path>` names a new file; it refuses
-a path that already exists. The only way around it is `--skip-backup`, for a drive that can no
-longer be read. (`--mode main|full` is accepted but has no effect on MT1959: the full image is always
-written.)
-Before flashing it runs the same file↔drive check as `info`, refusing an image whose chipset
-family doesn't match the connected drive.
+Normal Flash retains compatibility checks and requires a fresh pre-flash backup
+before writing. Backup failure stops the operation. Inputs include supported MTK
+images and older backup archives, and Pioneer envelopes or envelope packages.
+Completion checks depend on the backend; do not assume every protocol supports
+byte-for-byte firmware readback. Eject any disc and close the empty tray first.
 
-Executable writes are supported today for **MediaTek MT1959**; other families are catalogued and
-can be planned (dry-run) but are gated off real writes until validated on hardware. `flash` is
-newer and less battle-tested than `info`/`backup` — always keep your own separate backup as well.
+### recover (0.11.0)
 
-:::caution[Crossflash is experimental]
-`--allow-crossflash` waives the drive-*model* match (but **never** the chipset-family match, and
-never the backup/risk gates) to flash one MT1959 drive's firmware onto a different MT1959 drive.
-It is **experimental and not hardware-validated**, warns on capability mismatches (e.g. UHD vs
-non-UHD), and can brick an incompatible drive. Same-chipset only; different chipsets are always
-refused.
+Recovery is a separate command and desktop tab. It currently supports Pioneer
+packages containing **both Kernel and Normal**. Supply a copy of the firmware
+currently running on the drive and the package you want to install:
+
+```bash
+# Preview with a supplied receiver reference:
+freemkv-flash recover <device> --current current.tar -i target.tar
+# Write:
+freemkv-flash recover <device> --current current.tar -i target.tar --execute --i-understand-risk
+# Explicit alternative: read Current firmware from the drive:
+freemkv-flash recover <device> --read-from-drive -i target.tar --execute --i-understand-risk
+```
+
+Choose exactly one of `--current` or `--read-from-drive`. Unsupported drives are rejected before firmware reads or update commands. With a supplied Current
+file, Recovery makes no firmware memory reads, backups or readback verification;
+identity and status queries still occur. The explicit read option needs working
+firmware reads and does not save a backup.
+
+Recovery derives receiver credentials from Current, enters update mode only if
+needed, then sends the target Kernel and Normal. It skips normal installed-versus-target
+compatibility policy, but retains required file integrity, target authentication,
+protocol and write-error checks. It does not automatically patch a downgrade or
+try additional restoration passes. The correct Current reference is essential.
+
+:::caution[Recovery is experimental]
+A completed recovery means the drive reports normal mode and readiness, not that
+the installed firmware was read back and compared. Recovery has simulated-transport
+tests but has not been verified on the reported failed PR1ML crossflash. An
+incompatible package can leave a drive unusable. Do not interrupt a firmware write.
 :::
+
+In 0.11.0, `flash --force` is removed. There are no `--skip-backup`,
+`--allow-crossflash`, `--mode`, or `flash --recover` switches. Use `recover` for the
+Pioneer recovery workflow. Both write commands require `--execute` and
+`--i-understand-risk`; without `--execute`, they preview without programming firmware.
+Diagnostic logs are saved automatically for failures and successful operations.
 
 ## How do I tell what drive I have?
 

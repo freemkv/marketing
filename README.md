@@ -74,16 +74,12 @@ remain distinct even when the downloadable tars have identical bytes.
 
 Deployment is automatic via GitHub Actions (`.github/workflows/pages.yml`):
 
-1. Push to `main`. The workflow runs `npm ci && npm run build` and uploads `dist/` as a
-   Pages artifact, then deploys it.
-2. **One-time setup:** in the repo's **Settings → Pages**, set **Source** to
-   **GitHub Actions** (not "Deploy from a branch").
-3. The custom domain `freemkv.org` is set via `public/CNAME`, which Astro copies into
-   `dist/` at build time. Confirm the domain shows under Settings → Pages after the first
-   deploy.
-
-`public/.nojekyll` disables Jekyll processing on Pages so Astro's `_`-prefixed asset
-directories are served correctly.
+1. Push to `main`. The workflow runs `npm ci` and `npm run build`, then uploads
+   `dist/` to the Cloudflare Pages project `freemkv` with Wrangler.
+2. Configure `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repository
+   secrets. The custom domain `freemkv.org` is managed in Cloudflare Pages.
+3. Release badges resolve published GitHub releases during the build. Deploy
+   documentation for a new tool release after that release is published.
 
 ### Release badges and announcements
 

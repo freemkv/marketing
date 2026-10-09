@@ -12,6 +12,23 @@ one version number.
 For the full technical detail behind a release, see the per-component notes:
 [freemkv releases](https://github.com/freemkv/freemkv/releases).
 
+## Firmware 0.11.0
+
+<small>2026-10-08</small>
+
+- **Recovery** is a separate Pioneer workflow in the desktop app and CLI. Supply
+  Current firmware and the package to install, or explicitly read Current from
+  the drive. Recovery skips backups and firmware readback, and handles a receiver
+  already in update mode. It remains experimental pending hardware confirmation.
+- Remove `flash --force`. Normal Flash retains its backup and compatibility
+  checks for supported MediaTek and Pioneer firmware.
+- Reject unsupported recovery drives before firmware reads or update commands.
+- Add firmware inspection and comparison, align source labels, and shorten the
+  Flash tab name.
+
+See the [firmware command reference](/docs/firmware-tools/#freemkv-flash) and
+[0.11.0 release notes](https://github.com/freemkv/freemkv-firmware/releases/tag/v0.11.0).
+
 ## 1.8.1
 
 <small>2026-10-07</small>

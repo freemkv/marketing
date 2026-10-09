@@ -43,7 +43,7 @@ export const GET: APIRoute = async () => {
         `- [Firmware](${SITE}/firmware/): find, modify, and flash optical-drive firmware for freemkv`,
         `- [Find your drive firmware](${SITE}/firmware/find/): search a drive model to find its OEM firmware base image`,
         `- [freemkv-fw (modify)](${SITE}/firmware/modify/): turn a MediaTek drive firmware image into freemkv firmware and verify it`,
-        `- [freemkv-flash (flash)](${SITE}/firmware/flash/): generic optical-drive flasher and dumper that backs up before writing and verifies after`,
+        `- [freemkv-flash (flash)](${SITE}/firmware/flash/): generic optical-drive flasher and dumper that requires a backup for normal Flash; separate experimental Pioneer Recovery skips backups and firmware readback`,
       ].join('\n')
   );
 

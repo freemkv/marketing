@@ -43,9 +43,9 @@ import pioneerIndex from '../../data/pioneer-firmware-index.json';
 const hostedModels = [...firmwareIndex, ...pioneerIndex].filter((d) => d.ready).length;
 
 const parity = [
-  { name: 'Back up & restore', detail: 'Every flash starts with a backup of the drive; dump everything readable any time and restore from the backup.' },
-  { name: 'Verified flashing', detail: 'The image’s integrity signature is checked before writing; afterwards the drive is read back and re-identified.' },
-  { name: 'Downgrade any version', detail: 'Flash any firmware version over any existing one.' },
+  { name: 'Back up & restore', detail: 'Normal Flash requires a fresh backup. Recovery uses a supplied firmware reference or an explicit drive read, without saving a backup.' },
+  { name: 'Checked flashing', detail: 'Inputs are validated before writing. Completion checks depend on the drive protocol; Recovery checks readiness and normal identity without readback.' },
+  { name: 'Firmware downgrades', detail: 'Supported paths can install older firmware; compatible hardware, image pairs and protocol checks still matter.' },
   { name: 'UHD & Blu-ray unlock', detail: 'Unrestricted opens the drive to read every disc type, including Ultra HD Blu-ray.' },
   { name: 'Region-free', detail: 'RPC-1 across DVD and Blu-ray, or force a specific region.' },
   { name: 'Full rip speed', detail: 'Lift the read-speed / riplock ceiling, or set your own cap.' },
@@ -53,7 +53,7 @@ const parity = [
   { name: 'Revocation-list skip', detail: 'A revoked-but-genuine host certificate still works (non-destructive).' },
   { name: 'Hosted base images', detail: `Stock OEM firmware for ${hostedModels} drive models, ready to find and download.` },
   { name: 'Stock until switched on', detail: 'Every feature ships at OEM; the drive behaves exactly as stock until you arm one.' },
-  { name: 'Windows, macOS & Linux', detail: 'Command-line tools on all three; desktop apps on Windows and macOS.' },
+  { name: 'Windows, macOS & Linux', detail: 'Command-line tools and desktop apps on all three.' },
   { name: 'Free & open source', detail: 'MIT-licensed. No license key, no subscription, no disc quota.' },
 ];
 import '../../styles/site.css';
@@ -145,7 +145,7 @@ import '../../styles/site.css';
       <!-- ============ CAPABILITIES ============ -->
       <section class="block block-alt">
         <div class="section-inner">
-          <h2 class="section-title">Everything other tools do — free and open source</h2>
+          <h2 class="section-title">Firmware tools — free and open source</h2>
           <p class="section-lead">Downgrade, unlock and flash your drive with free, MIT-licensed tools.</p>
           <div class="grid cap-grid">
             {parity.map((c) => (
@@ -158,7 +158,7 @@ import '../../styles/site.css';
               </div>
             ))}
           </div>
-          <p class="block-note">Flashing supports MediaTek MT1939 and MT1959 drives; Pioneer drives can be backed up today. See <a href="/firmware/flash/">Flash</a> before writing to a drive.</p>
+          <p class="block-note">Flashing supports compatible MediaTek and Pioneer firmware. MT1959 is the hardware-tested MediaTek path; MT1939 remains unvalidated on hardware. See <a href="/firmware/flash/">Flash</a> before writing to a drive.</p>
         </div>
       </section>
     </main>
