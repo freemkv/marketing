@@ -81,42 +81,20 @@ test('missing object and storage outage return actionable errors',async()=>{
  f.env.FIRMWARE_BUCKET.get=async()=>{throw Error('storage');};assert.equal((await f.run(f.request())).status,503);
 });
 
-// ---- daily per-IP limit (KV FIRMWARE_RATELIMIT) ----
-function limited(validation={success:true,hostname:'freemkv.org',action:'firmware-download'}) {
- const store=new Map(),puts=[];
- const kv={async get(k){return store.get(k)??null;},async put(k,v,o){puts.push([k,v,o]);store.set(k,v);}};
- const env={FIRMWARE_TURNSTILE_SECRET:'secret',FIRMWARE_RATELIMIT:kv,FIRMWARE_BUCKET:{async get(){return {body:'firmware',size:8};}}};
- const fetcher=async()=>Response.json(validation);
- const run=(ip,at)=>firmwareDownload(new Request('https://freemkv.org/api/firmware-download',{method:'POST',headers:{Origin:'https://freemkv.org','Content-Type':'application/json','CF-Connecting-IP':ip},body:JSON.stringify({package:pkg,token:'valid'})}),env,allowed,fetcher,()=>at);
- return {store,puts,env,run};
-}
-const noon=Date.UTC(2026,9,2,12,0,0);
-test('the 11th download in a UTC day gets 429 with Retry-After until midnight',async()=>{
- const l=limited();
- for(let i=0;i<10;i++) assert.equal((await l.run('203.0.113.5',noon+i)).status,200);
- const r=await l.run('203.0.113.5',noon);
- assert.equal(r.status,429);assert.equal(await r.text(),'Download limit reached.');
- assert.equal(r.headers.get('retry-after'),String(12*3600));
- assert.equal(l.store.get('dl:203.0.113.5:2026-10-02'),'10');
- assert.ok(l.puts.every(([,,o])=>o.expirationTtl===90000));
-});
-test('separate IPs are independent and a new UTC day resets the count',async()=>{
- const l=limited();
- for(let i=0;i<10;i++) await l.run('198.51.100.1',noon);
- assert.equal((await l.run('198.51.100.1',noon)).status,429);
- assert.equal((await l.run('198.51.100.2',noon)).status,200);
- assert.equal((await l.run('198.51.100.1',Date.UTC(2026,9,3,0,0,1))).status,200);
- assert.equal(l.store.get('dl:198.51.100.1:2026-10-03'),'1');
-});
-test('failed verification and unknown packages do not consume quota; missing binding fails open on the limit only',async()=>{
- const bad=limited({success:false});
- for(let i=0;i<12;i++) assert.equal((await bad.run('192.0.2.9',noon)).status,403);
- assert.equal(bad.puts.length,0);
- const l=limited();
- const r=await firmwareDownload(new Request('https://freemkv.org/api/firmware-download',{method:'POST',headers:{Origin:'https://freemkv.org','Content-Type':'application/json','CF-Connecting-IP':'192.0.2.9'},body:JSON.stringify({package:'0'.repeat(64),token:'valid'})}),l.env,allowed,async()=>Response.json({success:true,hostname:'freemkv.org',action:'firmware-download'}),()=>noon);
- assert.equal(r.status,404);assert.equal(l.puts.length,0);
- delete l.env.FIRMWARE_RATELIMIT;
- for(let i=0;i<12;i++) assert.equal((await l.run('192.0.2.9',noon)).status,200);
- const denied=limited({success:false});delete denied.env.FIRMWARE_RATELIMIT;
- assert.equal((await denied.run('192.0.2.9',noon)).status,403);
+test('verified downloads remain available beyond the former daily quota',async()=>{
+ const f=fixture();
+ let quotaAccesses=0;
+ f.env.FIRMWARE_RATELIMIT={
+  async get(){quotaAccesses++;return '10';},
+  async put(){quotaAccesses++;},
+ };
+ for(let i=0;i<12;i++){
+  const r=await f.run(f.request(undefined,{'CF-Connecting-IP':'203.0.113.5'}));
+  assert.equal(r.status,200);
+  assert.equal(await r.text(),'firmware');
+  assert.equal(r.headers.get('retry-after'),null);
+ }
+ assert.equal(f.seen.verified,12);
+ assert.equal(f.seen.reads.length,12);
+ assert.equal(quotaAccesses,0);
 });

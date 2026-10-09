@@ -41,13 +41,11 @@ If you own an LG, ASUS, or HP Blu-ray drive from roughly **2012-2020**, it's ver
 
 ### Pioneer drives (beta)
 
-**Pioneer runtime unlocking is entering beta for the next 1.8.x update.** Initial hardware testing has successfully unlocked a **BDR-UD04 running firmware 1.14** and read its disc Volume ID. We are now validating the shared unlock flow and repeat use before the update ships.
+**Pioneer beta support is now available in freemkv 1.8.3.** On supported Pioneer and Pioneer-based drives, freemkv automatically installs its runtime unlock in the drive's **RAM**. No firmware flashing is required.
 
-On supported firmware, freemkv installs its unlock support in the drive's **RAM**, without flashing replacement firmware. This beta focuses on unlocking disc access; it does not yet provide the full set of MediaTek firmware features, such as speed and region controls.
+The beta supports unlocking disc access and reading the disc Volume ID. Speed and region controls are not yet available. freemkv checks the drive's firmware before installing the unlock; hardware validation includes the **BDR-UD04 running firmware 1.14**.
 
-The beta starts with the validated firmware above. We are working toward more BDR-series drives and Pioneer-based models such as the **ASUS BW-16D1X-U**. freemkv checks the exact firmware image before installing the runtime unlock.
-
-**Your drive profile can help expand the beta.** See [Help us add your drive](#help-us-add-your-drive) below.
+[Download the latest freemkv](/download/) to try it. [Share your drive profile](#help-us-add-your-drive) to help us expand coverage.
 
 ## Firmware choices
 

@@ -6,29 +6,6 @@ const VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 export const DOWNLOAD_ACTION = 'firmware-download';
 
 const SHA256 = /^[a-f0-9]{64}$/;
-export const DAILY_LIMIT = 10;
-const DAY_MS = 86400000;
-let warnedNoLimiter = false;
-
-/**
- * Per-IP daily quota in KV (`FIRMWARE_RATELIMIT`): key dl:<ip>:<UTC date>.
- * Called only after Turnstile and the allowlist pass, so failed or invalid
- * requests never consume quota. Missing binding or KV outage fails open on the
- * limit only; Turnstile and the allowlist are still enforced.
- */
-export async function checkDailyLimit(env, ip, now) {
-  const kv = env.FIRMWARE_RATELIMIT;
-  if (!kv) {
-    if (!warnedNoLimiter) { warnedNoLimiter = true; console.warn('FIRMWARE_RATELIMIT binding missing: download rate limit disabled'); }
-    return { allowed: true, commit: async () => {} };
-  }
-  const key = `dl:${ip}:${new Date(now).toISOString().slice(0, 10)}`;
-  let count = 0;
-  try { count = Number.parseInt(await kv.get(key), 10) || 0; } catch { return { allowed: true, commit: async () => {} }; }
-  if (count >= DAILY_LIMIT) return { allowed: false, retryAfter: Math.max(1, Math.ceil((Math.floor(now / DAY_MS + 1) * DAY_MS - now) / 1000)) };
-  return { allowed: true, commit: async () => { try { await kv.put(key, String(count + 1), { expirationTtl: 90000 }); } catch {} } };
-}
-
 /**
  * Exact download allowlist from the published catalogues:
  *  bySha:  package sha256 -> {key (R2 object key, decoded), filename}
@@ -78,7 +55,7 @@ function reply(message, status, extra = {}) {
   }});
 }
 
-export async function firmwareDownload(request, env, allowlist, fetcher = fetch, now = Date.now) {
+export async function firmwareDownload(request, env, allowlist, fetcher = fetch) {
   if (request.method !== 'POST') return reply('Use Download on the firmware finder.', 405, {Allow: 'POST'});
   if (!env.FIRMWARE_BUCKET || !env.FIRMWARE_TURNSTILE_SECRET) return reply('Downloads are temporarily unavailable.', 503);
   const url = new URL(request.url);
@@ -117,12 +94,9 @@ export async function firmwareDownload(request, env, allowlist, fetcher = fetch,
   } catch { return reply('Verification is temporarily unavailable. Try again.', 503); }
   if (!validation || validation.success !== true || validation.hostname !== url.hostname || validation.action !== DOWNLOAD_ACTION)
     return reply('Verification expired or failed. Click Download to try again.', 403);
-  const limit = await checkDailyLimit(env, request.headers.get('CF-Connecting-IP') || 'unknown', now());
-  if (!limit.allowed) return reply('Download limit reached.', 429, {'Retry-After': String(limit.retryAfter)});
   let object;
   try { object = await env.FIRMWARE_BUCKET.get(entry.key); } catch { return reply('Download is temporarily unavailable. Try again.', 503); }
   if (!object) return reply('Firmware not found.', 404);
-  await limit.commit();
   return new Response(object.body, {headers: {
     'Content-Type': entry.key.endsWith('.tar') ? 'application/x-tar' : 'application/octet-stream',
     'Content-Disposition': contentDisposition(entry.filename),

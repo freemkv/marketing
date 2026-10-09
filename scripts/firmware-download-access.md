@@ -7,8 +7,8 @@ When enabled, clicking Download in the Finder runs a managed Turnstile
 challenge, posts `{package: <sha256>, token}` to `/api/firmware-download`, and
 saves the returned bytes. The Pages Function validates the token server-side
 (including hostname and action), resolves the package hash through the exact
-catalogue allowlist (sha256 -> R2 key + catalogue filename), applies the daily
-per-IP limit, then streams the private R2 object with
+catalogue allowlist (sha256 -> R2 key + catalogue filename), then streams the
+private R2 object with
 `Content-Disposition` set to the catalogue filename. Old clients posting
 `{file: <legacy key>}` still work: legacy `pioneer/...` and `MT1939/...` keys
 resolve through the v1 site indexes and `src/data/legacy-keys.json` to the
@@ -24,20 +24,11 @@ reduces automation; it is not a login or a download quota. Configure a Cloudflar
 WAF rate limit on the POST endpoint if quotas/abuse controls are desired; those
 account/plan settings have not been inspected or changed.
 
-## Daily download limit
+## Download availability
 
-Each IP may make 10 successful downloads per UTC day. Cloudflare Free WAF rules
-cannot express a one-day window, so the Pages Function enforces it with the KV
-binding `FIRMWARE_RATELIMIT` (bound on the Pages project for production and
-preview). Key: `dl:<CF-Connecting-IP>:<YYYY-MM-DD UTC>`, integer counter,
-`expirationTtl` 90000 s. Only requests that passed Turnstile and the allowlist
-and found an object are counted; failed challenges and unknown packages cost
-nothing. Over the limit the function returns 429 `Download limit reached.` with
-`Retry-After` = seconds until the next UTC midnight; the Finder shows that text
-in the download status. If the binding is missing (or KV errors), the limit
-fails open and logs once; Turnstile and the allowlist are still enforced. KV is
-eventually consistent, so simultaneous requests from one IP can slightly exceed
-the limit; it is a soft quota, not a security boundary.
+There is no daily download quota. Every download still requires a valid
+Turnstile token and a package in the catalogue allowlist. No KV storage or
+per-IP counters are needed.
 
 ## Configuration and order
 
