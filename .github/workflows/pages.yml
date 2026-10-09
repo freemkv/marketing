@@ -88,3 +88,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ inputs.firmware_release }}
         run: gh release delete-asset "$RELEASE_TAG" firmware-assets.tar.gz --repo "$GITHUB_REPOSITORY" --yes
+      - name: Announce the deployed release on Discord
+        if: github.ref_name == 'main'
+        env:
+          HOOK: ${{ secrets.DISCORD_RELEASE_WEBHOOK }}
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/announce-release.sh

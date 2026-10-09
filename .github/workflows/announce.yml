@@ -1,12 +1,10 @@
 name: Announce release on Discord
 
+# Production deployments announce directly in pages.yml; this is the manual fallback.
 # Each version is claimed once with a durable Git tag before sending.
 # Manual dispatch uses the same duplicate guard. A failed/ambiguous send
 # leaves its claim in place for explicit operator review (never auto-retry).
 on:
-  workflow_run:
-    workflows: ["Deploy site to Pages"]
-    types: [completed]
   workflow_dispatch:
     inputs:
       version:
@@ -23,16 +21,11 @@ concurrency:
 
 jobs:
   announce:
-    # Automatic: a successful deploy from main. Manual: always.
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' &&
-       github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          ref: ${{ github.sha }}
 
       - name: Post the newest changelog entry to Discord
         env:
