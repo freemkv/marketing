@@ -1,0 +1,40 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { flashChangelog } from './flash-changelog.mjs';
+
+const SRC = `# Changelog
+
+## [0.2.0] - 2026-01-02
+
+### Added
+
+- Engine lever \`Feature::Foo\` retargeted at a new address.
+- Backup-first flash for new drives.
+  Continuation line.
+
+### Fixed
+
+- Engine-only trampoline fix.
+
+## [0.1.0]
+
+- Engine-only release.
+
+## [0.0.1] - 2025-01-01
+
+First flasher release.
+`;
+
+test('keeps flash blocks, drops engine-only blocks, headings and releases', () => {
+  const out = flashChangelog(SRC);
+  assert.match(out, /^## 0\.2\.0\n\n<small>2026-01-02<\/small>/m);
+  assert.match(out, /Backup-first flash[^]*Continuation line/);
+  assert.doesNotMatch(out, /Feature::Foo|trampoline|### Fixed|0\.1\.0/);
+  assert.match(out, /## 0\.0\.1/);
+});
+
+test('the main site changelog carries no firmware release sections', () => {
+  const cl = readFileSync(new URL('../src/content/docs/docs/changelog.md', import.meta.url), 'utf8');
+  assert.doesNotMatch(cl, /^## Firmware/m);
+});

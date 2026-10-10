@@ -25,8 +25,8 @@ jobs:
           released=$(gh api repos/freemkv/freemkv/releases/latest --jq '.tag_name' | sed 's/^v//')
           echo "freemkv/freemkv latest release: $released"
 
-          # Highest `## X.Y.Z` heading in the site changelog. Firmware headings
-          # (`## Firmware X.Y.Z`) version independently and are excluded.
+          # Highest `## X.Y.Z` heading in the site changelog. Firmware releases
+          # have their own page (/docs/flash-changelog/) and never appear here.
           latest_cl=$(grep -Eo '^## [0-9]+\.[0-9]+\.[0-9]+' src/content/docs/docs/changelog.md \
             | sed 's/^## //' | sort -V | tail -1)
           echo "changelog latest entry:         ${latest_cl:-<none>}"

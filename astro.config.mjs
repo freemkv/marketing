@@ -143,6 +143,7 @@ export default defineConfig({
             { label: 'libfreemkv (library)', slug: 'docs/libfreemkv' },
             { label: 'FVI Format', slug: 'docs/fvi-format' },
             { label: 'Changelog', slug: 'docs/changelog' },
+            { label: 'Flash Changelog', slug: 'docs/flash-changelog' },
             { label: 'License', slug: 'docs/license' },
           ],
         },
