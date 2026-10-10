@@ -35494,8 +35494,15 @@
                 "1.14"
               ],
               "brand": "PIONEER",
-              "bytes": 1932800,
+              "bytes": 2003456,
               "components": [
+                {
+                  "identity_key": "pioneer:8A10:GENERAL:1.00:kernel",
+                  "member": "components/S8A10000.100.enc",
+                  "revision": "1.00",
+                  "role": "kernel",
+                  "sha256": "36996326ae5eaa369ef34a8434514ca137b31a3f144af0955c2d12f4a8b2ea83"
+                },
                 {
                   "identity_key": "pioneer:8A10:GENERAL:1.14:normal",
                   "member": "components/S8A10001.114.enc",
@@ -35506,19 +35513,19 @@
               ],
               "embedded_model": "BDR-UD04",
               "family_id": "b4b142ad333aeb2",
-              "filename": "BDR-UD04_1.14_8A10_GENERAL_8cacfc8e.tar",
+              "filename": "BDR-UD04_1.14_8A10_GENERAL_349da8b4.tar",
               "generated_date": "20/06/15",
               "is_uhd": true,
-              "kernel_revision": null,
-              "kernel_selection_reason": "release-history-break",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/8cacfc8e265cfb056b5c2d75fb58901965347300c769014c54c07a3339282d4b.tar",
+              "kernel_revision": "1.00",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "36996326ae5eaa369ef34a8434514ca137b31a3f144af0955c2d12f4a8b2ea83",
+              "key": "fw/pioneer/349da8b41479735437872a898556c9bc9ddca135ddac0ef90a0684949f96dfb6.tar",
               "modifiable": false,
               "normal_sha256": "8e02ed7244d8de7564f6e0606ba803f8614a6e2b87b5e24f7ee344cdcea71141",
               "packageType": "pioneer-installer",
               "revision": "1.14",
-              "selection": "normal-only",
-              "sha256": "8cacfc8e265cfb056b5c2d75fb58901965347300c769014c54c07a3339282d4b"
+              "selection": "curated",
+              "sha256": "349da8b41479735437872a898556c9bc9ddca135ddac0ef90a0684949f96dfb6"
             }
           ],
           "revision": "1.14"

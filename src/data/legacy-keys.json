@@ -8881,18 +8881,11 @@
       "status": "missing-package"
     },
     {
-      "basis": "site",
+      "basis": "projection+site",
       "key": "pioneer/BDR-UD04/SAT%208A10/1.14/349da8b41479735437872a898556c9bc9ddca135ddac0ef90a0684949f96dfb6.tar",
-      "new_key": null,
-      "sha256": "349da8b41479735437872a898556c9bc9ddca135ddac0ef90a0684949f96dfb6",
-      "status": "missing-package"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/BDR-UD04/SAT%208A10/1.14/8cacfc8e265cfb056b5c2d75fb58901965347300c769014c54c07a3339282d4b.tar",
       "model": "BDR-UD04",
-      "new_key": "fw/pioneer/8cacfc8e265cfb056b5c2d75fb58901965347300c769014c54c07a3339282d4b.tar",
-      "sha256": "8cacfc8e265cfb056b5c2d75fb58901965347300c769014c54c07a3339282d4b",
+      "new_key": "fw/pioneer/349da8b41479735437872a898556c9bc9ddca135ddac0ef90a0684949f96dfb6.tar",
+      "sha256": "349da8b41479735437872a898556c9bc9ddca135ddac0ef90a0684949f96dfb6",
       "status": "published"
     },
     {

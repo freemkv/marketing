@@ -8,7 +8,7 @@
 
 export const DISCORD_URL = 'https://discord.gg/yu7xMGTyek';
 
-const PIONEER_KERNEL_FIRST = { 'source-contained': 0, 'carried-forward': 1, 'direct-match': 2, 'release-chain': 3, 'normal-only': 4 };
+const PIONEER_KERNEL_FIRST = { 'source-contained': 0, 'carried-forward': 1, 'direct-match': 2, 'curated': 3, 'release-chain': 4, 'normal-only': 5 };
 export function compact(text) {
   return String(text ?? '').toUpperCase().replace(/[^A-Z0-9]+/g, '');
 }
@@ -217,7 +217,7 @@ function safeDecode(s) {
 }
 
 function packageOrder(a, b) {
-  const ka = PIONEER_KERNEL_FIRST[a.selection] ?? 5, kb = PIONEER_KERNEL_FIRST[b.selection] ?? 5;
+  const ka = PIONEER_KERNEL_FIRST[a.selection] ?? 6, kb = PIONEER_KERNEL_FIRST[b.selection] ?? 6;
   return ka - kb || String(a.sha256).localeCompare(String(b.sha256));
 }
 
