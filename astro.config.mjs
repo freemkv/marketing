@@ -108,6 +108,7 @@ export default defineConfig({
           label: 'Guides',
           items: [
             { label: 'CLI Reference', slug: 'docs/cli' },
+            { label: 'Desktop app', slug: 'docs/desktop' },
             { label: 'freemkv-library', slug: 'docs/library' },
             { label: 'MKV Output', slug: 'docs/mkv-output' },
             { label: 'Decryption Keys', slug: 'docs/decryption-keys' },

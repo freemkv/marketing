@@ -65,4 +65,5 @@ All three compose libfreemkv, the core library that handles drive access, sector
 - **[Install](/docs/install/)**: prebuilt binaries or build from source.
 - **[Platforms](/docs/platforms-windows/)**: per-OS setup, file locations, and drive access (Windows, macOS, Linux).
 - **[CLI reference](/docs/cli/)**: every subcommand, flag, and stream URL.
+- **[Desktop app](/docs/desktop/)**: title and track selection, preferences, and progress.
 - **[Decryption Keys](/docs/decryption-keys/)**: what Blu-ray and UHD need.

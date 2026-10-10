@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {downloadAllowlist, firmwareDownload} from '../src/lib/firmware-download.mjs';
+import {readFileSync} from 'node:fs';
+import {downloadAllowlist, firmwareDownload, resolveDownload} from '../src/lib/firmware-download.mjs';
 import {catalog, mediatek, pioneer, SHA, V1_ONLY_SHA, MTK_ONLY_SHA} from './fixtures/finder-catalog.mjs';
 
 const pkg = SHA.s13u102;
@@ -11,6 +12,16 @@ const legacyKeys = {format:'freemkv-firmware-legacy-keys',version:1,keys:[
  {key:'MT1959/BW-16D1HT_3.02.bin',sha256:MTK_ONLY_SHA,new_key:null,status:'missing-bytes'},
 ]};
 const allowed = downloadAllowlist({catalog:catalog(),mediatek:mediatek(),pioneer:pioneer(),legacyKeys});
+
+test('a curated replacement keeps the previously published UD04 package identity downloadable', () => {
+ const read = (file) => JSON.parse(readFileSync(new URL('../src/data/' + file, import.meta.url), 'utf8'));
+ const allow = downloadAllowlist({catalog:read('finder-catalog.json'),legacyKeys:read('legacy-keys.json')});
+ const old = '8cacfc8e265cfb056b5c2d75fb58901965347300c769014c54c07a3339282d4b';
+ const current = '349da8b41479735437872a898556c9bc9ddca135ddac0ef90a0684949f96dfb6';
+ assert.equal(resolveDownload(allow, {package:old})?.key, `fw/pioneer/${old}.tar`);
+ assert.equal(resolveDownload(allow, {file:`pioneer/BDR-UD04/SAT%208A10/1.14/${old}.tar`})?.key, `fw/pioneer/${old}.tar`);
+ assert.equal(resolveDownload(allow, {package:current})?.key, `fw/pioneer/${current}.tar`);
+});
 const file = legacyFile;
 function fixture({validation = {success:true,hostname:'freemkv.org',action:'firmware-download'}, object = {body:'firmware',size:8}} = {}) {
  const seen={verified:0,reads:[]};

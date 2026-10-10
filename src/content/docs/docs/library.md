@@ -54,6 +54,63 @@ docker compose up -d
 
 Then open `http://<host>:8080`.
 
+## Using the dashboard
+
+### Drives: correct a title without restarting the capture
+
+**Change title** selects the movie or show used for library naming. Pick a TMDB
+result to save its title, year, media type and ID, or enter a name manually.
+The correction is saved with the disc's staging job before the dashboard reports
+success. It survives Stop, a library reboot and a later resume of the same disc.
+
+Staging identity is separate from the display name: AACS discs use their disc
+hash; other discs use a content-sampled fingerprint and capacity. A title alone
+is not sufficient to resume another disc's capture. Existing matching staging
+is adopted in place; the active ISO and recovery map are **not renamed** when you
+correct a title. Two matching partial jobs are held for review, not merged or
+deleted automatically.
+
+If damaged sectors prevent fingerprinting, a fresh isolated capture can still
+start, but it does not automatically adopt an older partial job. The dashboard
+logs that identity could not be verified; cross-restart resume by disc identity
+is unavailable for that capture.
+
+You can correct a title during capture. Changing a show's TMDB identity or
+movie/TV selection can require rebuilding the episode plan before delivery. If
+that plan needs sectors missing from the saved ISO, insert the same disc and
+resume. A single-pass rip must be stopped before changing movie/TV selection
+or the show's TMDB identity.
+Once delivery has begun, a title correction is refused rather than racing the
+copy to the library.
+
+### Library: remux and audit
+
+**Remux** rebuilds media from a saved ISO with this version of freemkv. Movies
+normally produce one output; recognized TV episode selections can produce
+multiple episode files. Existing files are replaced only after their replacements
+pass validation. Disc ripping takes priority over a library remux.
+
+**Audit** checks existing library media; it does not create replacement MKVs.
+Use the respective needs-work selection to queue only titles needing an audit
+or remux. **Stop** cancels the current work and clears that queue; **Pause** keeps
+the queue for resuming later.
+
+### System: storage, staging and reboot
+
+**System** shows storage space and folder health together. **Clear staging**
+removes recognized idle staging entries and retained remux output. It preserves
+active captures, mux jobs, deliveries, and unknown or unreadable entries. Clearing
+an interrupted capture discards its resume progress and saved title correction;
+it does not delete the original ISO or MKV already in the library.
+
+**Reboot library** restarts the library's internal services, not the computer or
+container. It drains active work at a safe boundary and reloads the saved state.
+If an old worker cannot drain, restart waits rather than starting a second set
+of workers; requests receive a temporary draining response until it is safe.
+Both reboot and staging cleanup require a second confirmation click.
+
+## Container lifecycle
+
 `stop_grace_period: 75s` gives a rip time to cancel and drain on a restart or redeploy; Docker's default 10 seconds is too short for a drive mid-recovery, which can take up to about a minute.
 
 :::caution[privileged is mandatory]
@@ -245,6 +302,7 @@ freemkv-library exposes an HTTP API on the same port as the UI. JSON errors use 
 | `POST` | `/api/scan/{device}` | - | Scan the disc (no rip). |
 | `POST` | `/api/rip/{device}` | `?resume=yes\|no` (optional) | Start a rip. See [Resume](#resume) below. |
 | `POST` | `/api/stop/{device}` | - | Stop the active rip; **preserves** staging for resume (404 if device unknown). |
+| `POST` | `/api/title/{device}` | `job_id`, `title`, `year`, optional `media_type`, `tmdb_id`, `poster_url`, `overview` | Save the disc's naming metadata. Use the `job_id` from the current drive state; stale jobs or delivery already begun return 409. |
 | `POST` | `/api/eject/{device}` | - | Eject the disc (409 if a rip/scan is in progress). |
 | `POST` | `/api/accept-loss/{device}` | - | Accept the recorded main-movie loss on a rip that aborted on loss, and deliver it as-is. See [Accepted loss](#accepted-loss). |
 
