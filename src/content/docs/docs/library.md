@@ -3,7 +3,7 @@ title: freemkv-library
 description: Deploy and configure freemkv-library, the freemkv web server. Automatic ripping, the Library tab, HTTP API, recovery tuning, and resume.
 ---
 
-freemkv-library is the freemkv web server and replaces autorip: insert a disc, and it rips the main movie automatically to MKV. A browser-based UI shows live progress, settings, and history, with nothing to type, and a Library tab manages the MKVs and ISOs you already have. This page covers deploying freemkv-library and tuning it; for the manual command-line workflow, see the [CLI reference](/docs/cli/). It always rips the main movie only; for other titles use the CLI or the desktop app.
+freemkv-library is the freemkv web server and replaces autorip: insert a disc, and it automatically captures and muxes the selected movie or TV episodes. A browser-based UI shows live progress, settings, and history, with nothing to type, and a Library tab manages the MKVs and ISOs you already have. This page covers deploying freemkv-library and tuning it; for manual title selection, use the [CLI](/docs/cli/) or desktop app.
 
 On disc insert, freemkv-library runs the full pipeline automatically: a tolerant sweep, targeted patch retries on bad ranges, decrypt, and mux to MKV. Multiple drives rip in parallel, each with independent state.
 
@@ -83,6 +83,34 @@ or the show's TMDB identity.
 Once delivery has begun, a title correction is refused rather than racing the
 copy to the library.
 
+### Moving files to your library
+
+Each file is delivered independently. During copying its row shows progress,
+speed and estimated time remaining. **Finalizing** means the bytes have been
+copied but flushing, verification or publication is still in progress; it does
+not show a stale transfer rate. Delivered rows collapse into a completed-file
+count while the remaining files continue. The whole job finishes only when all
+required files are delivered and staging cleanup succeeds.
+
+A failed delivery keeps the staged source. Copy and validation failures retry
+after 30 seconds, then after two minutes; after three failed attempts, automatic
+retries stop. An unsupported required operation stops automatic retries
+immediately. Fix the reported destination problem, then choose **Retry** or
+**Retry all** under **Needs action**. These controls reset the retry budget;
+they do not delete media. Retry state currently lasts for the running Library
+process, so a reboot starts a fresh retry budget.
+
+If a copy makes no byte progress for 60 seconds, Library reports the stalled
+operation and destination and requests cancellation. It retains the staged
+sources and delivery journal. **Retry** stays unavailable until the copy worker
+returns: a blocked filesystem call cannot safely be abandoned, and a publication
+already in progress may still finish. Restore the destination filesystem, wait
+for the worker to return, then retry to reconcile any completed delivery.
+
+**Accessible** in System describes the folder-access check, not successful
+delivery of a particular file. Outstanding delivery errors are reported
+separately even if every folder answers its access checks.
+
 ### Library: remux and audit
 
 **Remux** rebuilds media from a saved ISO with this version of freemkv. Movies
@@ -95,6 +123,47 @@ as one movie. A complete selection containing zero or one episode retains the
 single-output behavior, as do movies and jobs with automatic TV handling disabled.
 Existing saved output plans are reused unless a metadata correction requires
 replanning.
+
+#### Correct a saved ISO's movie or TV match
+
+Choose **Change match** on an eligible ISO row, search TMDB, then choose
+**Remux as movie** or **Remux as TV**. The correction is saved for that ISO and
+a corrected remux is queued. This reads the saved ISO, not the optical disc:
+you do not need to insert or recapture the disc. The ISO is kept. Active jobs
+and jobs with retained output to deliver do not offer **Change match**.
+
+For TV, set the season and, when known, the disc number. **TV First episode
+(optional)** is an explicit starting episode number from **1 to 65535**. For
+example, if you have confirmed that the two selected programs are episodes 4
+and 5, enter **4**. The saved value is shown when you reopen the dialog; clearing
+it removes the override. The complete output numbering must also fit within
+the supported range.
+
+A later-disc number, the number of programs on that disc, or their runtimes
+does **not** establish the first episode. A later-disc multi-episode plan without
+a confirmed **First episode** stops for review rather than guessing an offset.
+This number controls episode numbering; it does not prove which titles are
+episodes. Unsupported or ambiguous authored title selection still needs review.
+
+An explicit **Remux as TV** choice requests TV planning even when automatic TV
+handling is disabled. **Remux as movie** uses the main-movie single-output plan
+and clears the TV season, disc and first-episode fields in the saved match.
+The dialog lists source-linked files affected by the correction. The new output
+set must pass verification before those old files are replaced or removed;
+unlinked files are left alone unless you explicitly authorize them.
+
+For older outputs without source links, expand **Confirm legacy outputs belonging
+to this ISO**. Candidates from the current complete movie and TV folder scan start
+unchecked. Select only files you know were produced from this ISO, then check the
+separate ownership confirmation. This is your authorization to remove those exact
+files after every replacement output is verified—not a claim that the app recovered
+their source provenance. Unselected files and the ISO stay untouched. Unsafe,
+unavailable or aliased candidates are omitted; filename similarity is not proof.
+
+The preview expires after ten minutes and can be submitted only once. If the ISO,
+selected files, roots, saved match or recorded ownership changes, reopen **Change
+match** for a fresh preview. Ambiguous filename groups still offer correction for
+each indexed ISO; they do not authorize deleting the group's MKVs automatically.
 
 **Audit** checks existing library media; it does not create replacement MKVs.
 Use the respective needs-work selection to queue only titles needing an audit
@@ -195,8 +264,37 @@ All settings are editable in the **Settings** page of the web UI and stored in `
 | `on_insert` | `scan` | What to do on disc insert: `nothing`, `scan`, `rip`, or `resume` (prefer resuming an existing partial rip). |
 | `auto_eject` | `true` | Eject the disc automatically after a rip completes. |
 | `main_feature` | `true` | Rip only the longest (main feature) title. |
-| `tv_auto` | `true` | On a detected TV disc, rip every episode and file it as `Show (Year)/Season NN/` with no operator step. `false` holds TV discs for review instead. |
+| `presentation_language` | _(empty)_ | Prefer a content presentation, for example `de` or `en`, without removing audio tracks. Independent of interface language; unsupported, unmatched or ambiguous authored launch choices require review. |
+| `tv_auto` | `true` | Automatically split detected TV discs into episode files under `Show (Year)/Season NN/` when supported authored episode evidence identifies the selection. Ambiguous multi-title selections require review before muxing. `false` disables automatic episode splitting and uses the single-output path; it does not itself hold TV discs for review. |
 | `min_length_secs` | `600` | Ignore titles shorter than this many seconds. |
+
+This applies to automatic episode planning for both fresh rips and library remuxes;
+an explicit **Remux as TV** correction requests TV planning regardless of `tv_auto`.
+Existing saved plans and retained delivery-only jobs are not automatically
+reselected when `tv_auto` changes. Whole-disc ISO capture does not require an
+episode selection; title-matching and other safety checks can still require
+review independently of this setting.
+
+### Presentation language and audio retention
+
+Set **Settings → Presentation language** (`presentation_language`) to `de` to
+prefer the German authored presentation when planning a title output. Library
+retains all audio tracks in the selected title; the preference does not filter
+those tracks or combine audio from other presentations. Interface language never
+supplies a content preference.
+
+An empty value leaves presentation language unspecified. The shared model can
+fall back to requested audio languages in the desktop or CLI, but Library's
+all-audio policy supplies no such language preference. Supported DVD root-menu
+language choices therefore require review with an empty setting rather than
+silently choosing the first title. Unmatched or ambiguous choices and incomplete
+launch proof also require review; neither runtime similarity nor a TMDB match
+resolves that uncertainty.
+
+The preference is used when creating a selection plan. Existing saved plans and
+retained delivery-only jobs keep their selected title indices; changing the
+setting does not silently reselect them. Authored launch evidence is separate
+from the episode-roster and confirmed-numbering requirements described above.
 
 ### Recovery tuning
 

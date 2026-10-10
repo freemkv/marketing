@@ -328,6 +328,7 @@ freemkv iso://Disc.iso -t 1 mkv://Movie.mkv     # convert an ISO's main title to
 |---|---|
 | `-t, --title N` | Select title (1-based, repeatable). Default: the main title. Use `-t all` for every title in the source. |
 | `-a, --audio SPEC` | Audio streams to keep: `all` (default), `none`, or a comma-separated language list (names or ISO codes). Video is always kept. |
+| `--presentation-language LANGUAGE` | Content-presentation preference, such as `de` or `English`, independent of audio retention. Omit it to use requested audio languages as the selection fallback. Explicit `-t` choices take precedence. |
 | `-s, --subtitles SPEC` | Subtitle streams to keep: `all` (default), `none`, or a comma-separated language list. |
 
 `-t` / `-a` / `-s` apply **only to a `disc://`, `iso://` or `dir://` source** — those are the
@@ -343,6 +344,29 @@ freemkv disc:// mkv://Movie.mkv -a English -s none          # English audio only
 ```
 
 Language tags match by identity: `English`, `en`, and `eng` all select the same track. A language that isn't on the disc lists the disc's actual languages and stops, rather than silently shipping the wrong file.
+
+### Presentation language versus retained tracks
+
+Choose a German authored presentation while keeping all audio in that title:
+
+```bash
+freemkv iso://disc.iso mkv://movie.mkv --presentation-language de --audio all
+```
+
+`--presentation-language` selects content using the shared selection model;
+`--audio` filters tracks within the selected title. `--audio all` neither clears
+the explicit presentation preference nor combines tracks from other titles.
+`--language de` is different: it changes interface text only and never chooses
+disc content.
+
+Without `--presentation-language`, requested audio languages such as `--audio de`
+remain the selection fallback. With the default `--audio all`, no presentation
+language is specified. Supported DVD root-menu language choices then require
+review instead of choosing the first title. Unmatched or ambiguous choices and
+incomplete launch proof also stop automatic selection. Inspect the source and
+use `--title N` for an explicit choice; that choice is not replaced by the
+presentation preference. This bounded menu support does not infer equivalence
+from duration or prove that standalone titles are TV episodes.
 
 > On a **rip** (source *and* destination), `-s` means **subtitles**. On an info-only invocation (`freemkv info disc://`, no destination), `-s` / `--share` still submits the drive profile; use the long form `--share` when in doubt.
 

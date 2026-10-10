@@ -22,7 +22,8 @@ These controls change the checked selection, not the source files. Expand a titl
 | **Titles: Longest title** | Select by duration; a play-all title can be longer than any individual episode. |
 | **Titles: All titles** | Check all titles visible under the minimum-duration setting, including extras. |
 | **Titles: No titles** | Clear title selection so you can check titles individually. |
-| **Audio: All** | Keep every audio track in selected titles. |
+| **Settings: Presentation language** | Choose a content presentation, for example `de` (German) or `en` (English), independently of retained tracks. Set this before opening the disc. Blank uses the requested audio languages as the selection fallback. |
+| **Audio: All** | Keep every audio track in selected titles. Does not clear an explicit Presentation language preference or combine tracks from different presentations. |
 | **Audio: language(s)** | Prefer those audio languages; if a title has no match, its available audio is retained rather than silently producing a video-only file. |
 | **Subtitles: All / None / Forced only** | Keep all subtitles, none, or only forced subtitles respectively. |
 | **Subtitles: language(s)** | Select subtitle languages. Unticking the last selected language means None, not All. |
@@ -30,6 +31,14 @@ These controls change the checked selection, not the source files. Expand a titl
 Title selection is automatic guidance, not proof of episode identity. Discs can contain alternate cuts, language versions, repeated playlists, menus, and misleading titles. Review the checked titles when the disc's authoring is ambiguous. Similar duration alone does not establish identical content.
 
 The CLI, desktop, and library use the same selection model. A movie's First-Play target or a playlist mentioned in a Java menu is not, by itself, a complete episode list. When automatic episode selection cannot establish a complete list, inspect the titles and check them explicitly. Choosing **All titles** is an explicit choice and may include extras or duplicates.
+
+### Presentation language is not audio retention or interface language
+
+For a German presentation with all of its audio tracks, set **Settings → Presentation language** to `de` before opening the source, then choose **Audio: All**. The presentation preference chooses among supported authored title choices; the audio control chooses tracks within the selected title. Neither setting changes the source.
+
+Leave **Presentation language** blank to use the requested **Audio: language(s)** as the selection fallback. Blank plus **Audio: All** expresses no presentation-language preference: when a supported DVD root menu offers language-dependent launch choices, automatic selection stops for review rather than assuming German, English, or the first title. An unmatched language, ambiguous choices, or incomplete launch proof also requires review. Titles remain available to check explicitly; explicit title choices take precedence.
+
+**Settings → Language** changes interface text only. It never supplies the presentation preference. Authored launch choices are not a universal DVD menu interpreter or proof that standalone titles are TV episodes.
 
 ## Remembering choices
 
