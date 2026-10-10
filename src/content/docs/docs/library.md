@@ -90,6 +90,12 @@ normally produce one output; recognized TV episode selections can produce
 multiple episode files. Existing files are replaced only after their replacements
 pass validation. Disc ripping takes priority over a library remux.
 
+Ambiguous automatic TV selection is held for review rather than silently remuxed
+as one movie. A complete selection containing zero or one episode retains the
+single-output behavior, as do movies and jobs with automatic TV handling disabled.
+Existing saved output plans are reused unless a metadata correction requires
+replanning.
+
 **Audit** checks existing library media; it does not create replacement MKVs.
 Use the respective needs-work selection to queue only titles needing an audit
 or remux. **Stop** cancels the current work and clears that queue; **Pause** keeps

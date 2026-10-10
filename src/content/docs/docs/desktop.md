@@ -18,7 +18,7 @@ These controls change the checked selection, not the source files. Expand a titl
 | Control | Meaning |
 | --- | --- |
 | **Titles: Main film only** | Select the recommended main feature. It is not necessarily the longest title. |
-| **Titles: Episodes** | Select the engine's episode candidates, excluding presentations it identifies as duplicates and play-all titles. Available when episodes are identified. |
+| **Titles: Episodes** | Select episodes supported by the shared selection model's authored evidence, collapsing exact alternate presentations. Incomplete or unsupported navigation requires manual title selection. |
 | **Titles: Longest title** | Select by duration; a play-all title can be longer than any individual episode. |
 | **Titles: All titles** | Check all titles visible under the minimum-duration setting, including extras. |
 | **Titles: No titles** | Clear title selection so you can check titles individually. |
@@ -29,9 +29,11 @@ These controls change the checked selection, not the source files. Expand a titl
 
 Title selection is automatic guidance, not proof of episode identity. Discs can contain alternate cuts, language versions, repeated playlists, menus, and misleading titles. Review the checked titles when the disc's authoring is ambiguous. Similar duration alone does not establish identical content.
 
+The CLI, desktop, and library use the same selection model. A movie's First-Play target or a playlist mentioned in a Java menu is not, by itself, a complete episode list. When automatic episode selection cannot establish a complete list, inspect the titles and check them explicitly. Choosing **All titles** is an explicit choice and may include extras or duplicates.
+
 ## Remembering choices
 
-The setting to remember audio/subtitle choices saves those toolbar changes across application restarts. Disable it to keep toolbar changes temporary. The title mode remains disc-dependent instead of remembering that the previous disc happened to be a series.
+The setting to remember audio/subtitle choices saves those toolbar changes across application restarts. Disable it to keep toolbar changes temporary. It does not save the toolbar's title choice: opening another source uses **Settings → Default selection**. **Episodes** is available only when the selection model can identify a supported episode selection.
 
 Settings also provide separate preferred regular-subtitle and forced-subtitle language lists. Forced subtitles commonly translate signs or foreign dialogue; their preferred language need not match every audio language you retain.
 
