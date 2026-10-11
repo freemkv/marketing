@@ -6,9 +6,10 @@
 // a changelog block (one top-level bullet or paragraph) is kept only when it
 // concerns flashing / freemkv-flash (see FLASH_TOPIC); engine-only blocks,
 // sub-headings left empty, and releases left with nothing are dropped.
-// Run by `npm run build` / `npm run dev` (prebuild / predev), so every site
-// deploy -- push to main, workflow_dispatch, or the firmware release's
-// refresh -- regenerates it. The output is gitignored; never hand-edit it.
+// Run from astro.config.mjs, so every `astro build` / `astro dev` -- site
+// deploys (push to main, workflow_dispatch, the firmware release's refresh)
+// and the build tests alike -- regenerates it. The output is gitignored;
+// never hand-edit it.
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -97,7 +98,7 @@ export function flashChangelog(source) {
   ].join('\n');
 }
 
-async function main() {
+export async function generate() {
   const { tag } = await fetchRelease('freemkv-firmware');
   const url = `https://raw.githubusercontent.com/freemkv/freemkv-firmware/${tag}/CHANGELOG.md`;
   const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
@@ -108,4 +109,4 @@ async function main() {
   console.log(`flash changelog: wrote ${out} from ${tag}`);
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) await main();
+if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) await generate();

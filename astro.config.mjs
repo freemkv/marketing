@@ -2,6 +2,10 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import { graph, websiteNode, orgNode, appNode } from './src/lib/jsonld.mjs';
+import { generate as generateFlashChangelog } from './scripts/flash-changelog.mjs';
+
+// The sidebar links /docs/flash-changelog/, which is generated, not committed.
+await generateFlashChangelog();
 
 export default defineConfig({
   site: 'https://freemkv.org',
