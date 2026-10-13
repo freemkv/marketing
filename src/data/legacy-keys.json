@@ -59,23 +59,9 @@
     },
     {
       "basis": "site",
-      "key": "MT1939/BE16NU50_1.01_d286c5a7.bin",
-      "new_key": "fw/mediatek/d286c5a7ea4a4d0779fec709fd30ed6a9ad5e20fd760364edf93e570678ba9e4.bin",
-      "sha256": "d286c5a7ea4a4d0779fec709fd30ed6a9ad5e20fd760364edf93e570678ba9e4",
-      "status": "published"
-    },
-    {
-      "basis": "site",
       "key": "MT1939/BE16NU50_1.02_2b3ea41f.bin",
       "new_key": "fw/mediatek/2b3ea41f87764ccc497059c9e362657df545fb169d6eeb2e78ccfbd7fafee533.bin",
       "sha256": "2b3ea41f87764ccc497059c9e362657df545fb169d6eeb2e78ccfbd7fafee533",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1939/BE16NU50_1.04_3d628625.bin",
-      "new_key": "fw/mediatek/3d6286253da6e18c5c2674e6fec75c332fa057a75ed8fd076849c8b22ce9b8a5.bin",
-      "sha256": "3d6286253da6e18c5c2674e6fec75c332fa057a75ed8fd076849c8b22ce9b8a5",
       "status": "published"
     },
     {
@@ -136,23 +122,9 @@
     },
     {
       "basis": "site",
-      "key": "MT1939/BH14NS50_1.03_4f9ac355.bin",
-      "new_key": "fw/mediatek/4f9ac3555f29dfb15ffe9bc65389a00341c5e5e973890bac3319fd64baea88fc.bin",
-      "sha256": "4f9ac3555f29dfb15ffe9bc65389a00341c5e5e973890bac3319fd64baea88fc",
-      "status": "published"
-    },
-    {
-      "basis": "site",
       "key": "MT1939/BH14NS58_1.00_53d2cdc3.bin",
       "new_key": "fw/mediatek/53d2cdc32a2ae99864ec8fc4ea98a3a5218220aea990481f560112adaa871624.bin",
       "sha256": "53d2cdc32a2ae99864ec8fc4ea98a3a5218220aea990481f560112adaa871624",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1939/BH14NS58_1.00_aaeea1ba.bin",
-      "new_key": "fw/mediatek/aaeea1ba97d05fae0b4de1ff1b84076f8ba897cb15b45a398f9bc4c25fe1738b.bin",
-      "sha256": "aaeea1ba97d05fae0b4de1ff1b84076f8ba897cb15b45a398f9bc4c25fe1738b",
       "status": "published"
     },
     {
@@ -192,13 +164,6 @@
     },
     {
       "basis": "site",
-      "key": "MT1939/BH16NS40_1.02_beb8330e.bin",
-      "new_key": "fw/mediatek/beb8330e79d08824a62d5eb2b91a144ebb34c9acba8d393d8b32f2b2ae3196de.bin",
-      "sha256": "beb8330e79d08824a62d5eb2b91a144ebb34c9acba8d393d8b32f2b2ae3196de",
-      "status": "published"
-    },
-    {
-      "basis": "site",
       "key": "MT1939/BH16NS40_1.03_614b41f6.bin",
       "new_key": "fw/mediatek/614b41f61837f84a46b73fe4da28ff9db13bf45fe291f2728a5197c67857446e.bin",
       "sha256": "614b41f61837f84a46b73fe4da28ff9db13bf45fe291f2728a5197c67857446e",
@@ -227,13 +192,6 @@
     },
     {
       "basis": "site",
-      "key": "MT1939/BH16NS40_1.05_5b6e9d85.bin",
-      "new_key": "fw/mediatek/5b6e9d854c0e4a77c75986aa286cb10cbb2323dbcdf044569ed1839b144db464.bin",
-      "sha256": "5b6e9d854c0e4a77c75986aa286cb10cbb2323dbcdf044569ed1839b144db464",
-      "status": "published"
-    },
-    {
-      "basis": "site",
       "key": "MT1939/BH16NS40_INTM_c3a18eed.bin",
       "new_key": "fw/mediatek/c3a18eed17251d1508964647e833ffdfe01b13c28dff9a717dfac6336e7c70e6.bin",
       "sha256": "c3a18eed17251d1508964647e833ffdfe01b13c28dff9a717dfac6336e7c70e6",
@@ -258,13 +216,6 @@
       "key": "MT1939/BH16NS50_1.01_b7a368da.bin",
       "new_key": "fw/mediatek/b7a368da0fcbe905e45a09c6523bdd6f80557ce455272238c73868aa4ae4bd41.bin",
       "sha256": "b7a368da0fcbe905e45a09c6523bdd6f80557ce455272238c73868aa4ae4bd41",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1939/BH16NS50_1.03_1b99561b.bin",
-      "new_key": "fw/mediatek/1b99561b17ea6dcd76c263335e1a0ae77782028caf7cba726b4eb5b9b986f09f.bin",
-      "sha256": "1b99561b17ea6dcd76c263335e1a0ae77782028caf7cba726b4eb5b9b986f09f",
       "status": "published"
     },
     {
@@ -304,13 +255,6 @@
     },
     {
       "basis": "site",
-      "key": "MT1939/BH16NS55_1.05_530d194f.bin",
-      "new_key": "fw/mediatek/530d194f7f92bbc764b20e2a7092e6eff2330616405534eb88ba650ba48778de.bin",
-      "sha256": "530d194f7f92bbc764b20e2a7092e6eff2330616405534eb88ba650ba48778de",
-      "status": "published"
-    },
-    {
-      "basis": "site",
       "key": "MT1939/BH16NS58_1.00_6d9fdb2b.bin",
       "new_key": "fw/mediatek/6d9fdb2bd658165a073e6144c8938057e08d8cba7ca108274b120dd30c55328f.bin",
       "sha256": "6d9fdb2bd658165a073e6144c8938057e08d8cba7ca108274b120dd30c55328f",
@@ -332,16 +276,9 @@
     },
     {
       "basis": "site",
-      "key": "MT1939/BH16NS60_1.00_b96b5abc.bin",
-      "new_key": "fw/mediatek/b96b5abc6b27327c6f837e99d4860bfb91bfcb61297595541454186f02e3652c.bin",
-      "sha256": "b96b5abc6b27327c6f837e99d4860bfb91bfcb61297595541454186f02e3652c",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1939/BH16NS60_1.02_4d070ee2.bin",
-      "new_key": "fw/mediatek/4d070ee2630f03793ddce81f35f8779d3bcc1484a89dee7e1db19ba2adc0dbb4.bin",
-      "sha256": "4d070ee2630f03793ddce81f35f8779d3bcc1484a89dee7e1db19ba2adc0dbb4",
+      "key": "MT1939/BH16NS60_1.00_580d867c.bin",
+      "new_key": "fw/mediatek/580d867cee3d219a6e61e460c11fa33e27ca43c912d1d2dc777039a6a8f3f7e9.bin",
+      "sha256": "580d867cee3d219a6e61e460c11fa33e27ca43c912d1d2dc777039a6a8f3f7e9",
       "status": "published"
     },
     {
@@ -349,13 +286,6 @@
       "key": "MT1939/BH16NS60_INTM_1baed51d.bin",
       "new_key": "fw/mediatek/1baed51d34e05db345798e3820a38ae2c6598cad38d20522e476e803d1f46562.bin",
       "sha256": "1baed51d34e05db345798e3820a38ae2c6598cad38d20522e476e803d1f46562",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1939/BH40N_B7C6_0b2cdb82.bin",
-      "new_key": "fw/mediatek/0b2cdb82ff520589d4c750fae726571798901bf41e433de0a7164f7d74927d5f.bin",
-      "sha256": "0b2cdb82ff520589d4c750fae726571798901bf41e433de0a7164f7d74927d5f",
       "status": "published"
     },
     {
@@ -374,23 +304,9 @@
     },
     {
       "basis": "site",
-      "key": "MT1939/BW-16D1HT_3.01_40118f81.bin",
-      "new_key": "fw/mediatek/40118f8171daf03e62e89055c14f7680bcfa5108df71acf1a79bd2c326bd14f2.bin",
-      "sha256": "40118f8171daf03e62e89055c14f7680bcfa5108df71acf1a79bd2c326bd14f2",
-      "status": "published"
-    },
-    {
-      "basis": "site",
       "key": "MT1939/BW-16D1HT_3.02_784e017f.bin",
       "new_key": "fw/mediatek/784e017fbacd2250fc37ee442869db82ccc8d637d78126b570ba33c0256d1715.bin",
       "sha256": "784e017fbacd2250fc37ee442869db82ccc8d637d78126b570ba33c0256d1715",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1939/BW-16D1HT_3.02_83ea24bb.bin",
-      "new_key": "fw/mediatek/83ea24bb07b8a7a451bba1856d1db18b7f54b1823b9d148e213f25daf2e0a1d2.bin",
-      "sha256": "83ea24bb07b8a7a451bba1856d1db18b7f54b1823b9d148e213f25daf2e0a1d2",
       "status": "published"
     },
     {
@@ -493,13 +409,6 @@
     },
     {
       "basis": "site",
-      "key": "MT1939/WH14NS40_1.05_de6c3f26.bin",
-      "new_key": "fw/mediatek/de6c3f26359bedb5d465b76f41b70989bf9a0869a088643c7c0371b66620e3de.bin",
-      "sha256": "de6c3f26359bedb5d465b76f41b70989bf9a0869a088643c7c0371b66620e3de",
-      "status": "published"
-    },
-    {
-      "basis": "site",
       "key": "MT1939/WH16NS40_1.01_7af021b0.bin",
       "new_key": "fw/mediatek/7af021b026f8aef225b2211183885be211a66c1a4d64c9dad5c84661586144c7.bin",
       "sha256": "7af021b026f8aef225b2211183885be211a66c1a4d64c9dad5c84661586144c7",
@@ -507,23 +416,9 @@
     },
     {
       "basis": "site",
-      "key": "MT1939/WH16NS40_1.01_eee6563f.bin",
-      "new_key": "fw/mediatek/eee6563f68a414eb1dbc9048ab0820d01003320b080988437f762ca23d727e56.bin",
-      "sha256": "eee6563f68a414eb1dbc9048ab0820d01003320b080988437f762ca23d727e56",
-      "status": "published"
-    },
-    {
-      "basis": "site",
       "key": "MT1939/WH16NS40_1.02_1368766f.bin",
       "new_key": "fw/mediatek/1368766f8d384d0c86d4803d057b7aa1ca205542b9b6b0580e875aaa8bd015b3.bin",
       "sha256": "1368766f8d384d0c86d4803d057b7aa1ca205542b9b6b0580e875aaa8bd015b3",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1939/WH16NS40_1.02_7f26c559.bin",
-      "new_key": "fw/mediatek/7f26c559774b87a8da10c42d5ce72b8f1af3aa369d14d64f7d880d2b20b0327a.bin",
-      "sha256": "7f26c559774b87a8da10c42d5ce72b8f1af3aa369d14d64f7d880d2b20b0327a",
       "status": "published"
     },
     {
@@ -542,13 +437,6 @@
     },
     {
       "basis": "site",
-      "key": "MT1939/WH16NS40_1.05_36d65e3d.bin",
-      "new_key": "fw/mediatek/36d65e3d0c3cd223116b3865e3f0f06b247a0ee842d3c7ddf576e620b590da6a.bin",
-      "sha256": "36d65e3d0c3cd223116b3865e3f0f06b247a0ee842d3c7ddf576e620b590da6a",
-      "status": "published"
-    },
-    {
-      "basis": "site",
       "key": "MT1939/WH16NS58_1.V1_4041c0f1.bin",
       "new_key": "fw/mediatek/4041c0f122a902288ca8439888f68f7760616a0a37c366b825d6497b51157e46.bin",
       "sha256": "4041c0f122a902288ca8439888f68f7760616a0a37c366b825d6497b51157e46",
@@ -563,23 +451,9 @@
     },
     {
       "basis": "site",
-      "key": "MT1939/WH16NS58_1.V5_873a8c96.bin",
-      "new_key": "fw/mediatek/873a8c96ddae57a4cb271b30865a75fdb36e46ac7fb9b1b0169b307b74975fe7.bin",
-      "sha256": "873a8c96ddae57a4cb271b30865a75fdb36e46ac7fb9b1b0169b307b74975fe7",
-      "status": "published"
-    },
-    {
-      "basis": "site",
       "key": "MT1939/WH16NS58_1.V5_e2406018.bin",
       "new_key": "fw/mediatek/e24060184915a9860a84ea7d0ad23fee478e6eb31af86da589f5723c8e29a1cd.bin",
       "sha256": "e24060184915a9860a84ea7d0ad23fee478e6eb31af86da589f5723c8e29a1cd",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1939/WH16NS60_1.00_5e2ec51f.bin",
-      "new_key": "fw/mediatek/5e2ec51fb3559623e555aadf280c96268fee6da0acfa7b4000c0d4564e7da073.bin",
-      "sha256": "5e2ec51fb3559623e555aadf280c96268fee6da0acfa7b4000c0d4564e7da073",
       "status": "published"
     },
     {
@@ -598,23 +472,9 @@
     },
     {
       "basis": "site",
-      "key": "MT1939/WH16NS60_1.01_b0476f44.bin",
-      "new_key": "fw/mediatek/b0476f44509acc7d97c0aa08a9cda4d9acf59624963b455a67f0abae5a017bf0.bin",
-      "sha256": "b0476f44509acc7d97c0aa08a9cda4d9acf59624963b455a67f0abae5a017bf0",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1939/WH16NS60_1.02_3ebfe345.bin",
-      "new_key": "fw/mediatek/3ebfe3455911e5e881017edb26207734e3f6d679602db071f0b300bcccf5db6f.bin",
-      "sha256": "3ebfe3455911e5e881017edb26207734e3f6d679602db071f0b300bcccf5db6f",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1939/WH16NS60_1.03_c2279417.bin",
-      "new_key": "fw/mediatek/c2279417184935a7bb8f714f16f052f01915e6ecceb5457943f5998e9af91800.bin",
-      "sha256": "c2279417184935a7bb8f714f16f052f01915e6ecceb5457943f5998e9af91800",
+      "key": "MT1939/WH16NS60_1.02_12c4ee6f.bin",
+      "new_key": "fw/mediatek/12c4ee6fb88d4c5402e9e8fab0881a93fd1ab18e5a82bb87ecd4ef30c807cf53.bin",
+      "sha256": "12c4ee6fb88d4c5402e9e8fab0881a93fd1ab18e5a82bb87ecd4ef30c807cf53",
       "status": "published"
     },
     {
@@ -629,13 +489,6 @@
       "key": "MT1959/BP50NB40_1.02_a344e289.bin",
       "new_key": "fw/mediatek/a344e289e0b1f34bd1a5ae66f0498df9f1a485ad1416f93592e40db2fb5409c7.bin",
       "sha256": "a344e289e0b1f34bd1a5ae66f0498df9f1a485ad1416f93592e40db2fb5409c7",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1959/BP50NB40_1.03_7823c0d7.bin",
-      "new_key": "fw/mediatek/7823c0d7c396c2a8bb6b77e8674034f10afb7cc4aa34d0e22272f1900e70a1b6.bin",
-      "sha256": "7823c0d7c396c2a8bb6b77e8674034f10afb7cc4aa34d0e22272f1900e70a1b6",
       "status": "published"
     },
     {
@@ -661,13 +514,6 @@
     },
     {
       "basis": "site",
-      "key": "MT1959/BP55EB40_1.03_044077a4.bin",
-      "new_key": "fw/mediatek/044077a4688d6076b6de7e9b00502ec5f778d89888c4071d7957c3bde13af73a.bin",
-      "sha256": "044077a4688d6076b6de7e9b00502ec5f778d89888c4071d7957c3bde13af73a",
-      "status": "published"
-    },
-    {
-      "basis": "site",
       "key": "MT1959/BP60NB10_1.00_f60b037f.bin",
       "new_key": "fw/mediatek/f60b037fb29edecff5d0d8476cc5dcfd5acf96b2b985c1d841c2b5a1a41f7da8.bin",
       "sha256": "f60b037fb29edecff5d0d8476cc5dcfd5acf96b2b985c1d841c2b5a1a41f7da8",
@@ -678,13 +524,6 @@
       "key": "MT1959/BP60NB10_1.01_fb9174aa.bin",
       "new_key": "fw/mediatek/fb9174aa26153911120a92d95beb8cf598f1f860344af2ccf67e98a99f4ca049.bin",
       "sha256": "fb9174aa26153911120a92d95beb8cf598f1f860344af2ccf67e98a99f4ca049",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1959/BP60NB10_1.02_084dcf93.bin",
-      "new_key": "fw/mediatek/084dcf93b9a7989d0926a19a033383fe672d66acb778ef605f9d3c8183bd4b46.bin",
-      "sha256": "084dcf93b9a7989d0926a19a033383fe672d66acb778ef605f9d3c8183bd4b46",
       "status": "published"
     },
     {
@@ -703,13 +542,6 @@
     },
     {
       "basis": "site",
-      "key": "MT1959/BU40N_1.01_afd2d99b.bin",
-      "new_key": "fw/mediatek/afd2d99b6e2a0a1f585918fa466dc736094f085586049e452e49c54122e53300.bin",
-      "sha256": "afd2d99b6e2a0a1f585918fa466dc736094f085586049e452e49c54122e53300",
-      "status": "published"
-    },
-    {
-      "basis": "site",
       "key": "MT1959/BU40N_1.02_1bbeb535.bin",
       "new_key": "fw/mediatek/1bbeb5351dc0d69feaeefdac9ada7f3f48eed0ca4e2f879d9266679cec133396.bin",
       "sha256": "1bbeb5351dc0d69feaeefdac9ada7f3f48eed0ca4e2f879d9266679cec133396",
@@ -724,23 +556,9 @@
     },
     {
       "basis": "site",
-      "key": "MT1959/BU40N_1.02_c86dbfed.bin",
-      "new_key": "fw/mediatek/c86dbfed95a6c52c474a34e2d71dff786c909ddf14a1735b63f01b4b999a0441.bin",
-      "sha256": "c86dbfed95a6c52c474a34e2d71dff786c909ddf14a1735b63f01b4b999a0441",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1959/BU40N_1.03_106156b4.bin",
-      "new_key": "fw/mediatek/106156b4024d1bed76026f35d1d10a0f35793ea9aeb15991431ed2a770775c77.bin",
-      "sha256": "106156b4024d1bed76026f35d1d10a0f35793ea9aeb15991431ed2a770775c77",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1959/BU40N_1.04_e973da48.bin",
-      "new_key": "fw/mediatek/e973da48de143b57350f0ab97feda437d7dab6b28c8ecf32c0e16e354eefcca7.bin",
-      "sha256": "e973da48de143b57350f0ab97feda437d7dab6b28c8ecf32c0e16e354eefcca7",
+      "key": "MT1959/BU40N_1.03_64688690.bin",
+      "new_key": "fw/mediatek/64688690a2878c792833d9af8731004411f86d7a64ceb522a82368584d84282a.bin",
+      "sha256": "64688690a2878c792833d9af8731004411f86d7a64ceb522a82368584d84282a",
       "status": "published"
     },
     {
@@ -762,13 +580,6 @@
       "key": "MT1959/BU40N_BU10_14d86e99.bin",
       "new_key": "fw/mediatek/14d86e9949d93126d6ec7eaa11eeaba512569f51a8ecfce9d707cb0cec6b5e24.bin",
       "sha256": "14d86e9949d93126d6ec7eaa11eeaba512569f51a8ecfce9d707cb0cec6b5e24",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1959/BU40N_BU10_58203b53.bin",
-      "new_key": "fw/mediatek/58203b539de096786cde232ee3b0ef3fe824b20d7768a96b30f6a96bdac77bfb.bin",
-      "sha256": "58203b539de096786cde232ee3b0ef3fe824b20d7768a96b30f6a96bdac77bfb",
       "status": "published"
     },
     {
@@ -822,20 +633,6 @@
     },
     {
       "basis": "site",
-      "key": "MT1959/BU40N_U100_8c90e968.bin",
-      "new_key": "fw/mediatek/8c90e968f3d3c68838168df47265b23b6d5ceba8c03fef5d32629f35c68acbea.bin",
-      "sha256": "8c90e968f3d3c68838168df47265b23b6d5ceba8c03fef5d32629f35c68acbea",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1959/BU40N_U101_0378599a.bin",
-      "new_key": "fw/mediatek/0378599a409de593b23474d4d763a63aae0b26bae1d01a4df6c755a7b4a10e30.bin",
-      "sha256": "0378599a409de593b23474d4d763a63aae0b26bae1d01a4df6c755a7b4a10e30",
-      "status": "published"
-    },
-    {
-      "basis": "site",
       "key": "MT1959/BU40N_U101_5f9abd3f.bin",
       "new_key": "fw/mediatek/5f9abd3f7169b1d6525c47c5f406c1ddb13fca5b9f93fc646a1a924f13da9779.bin",
       "sha256": "5f9abd3f7169b1d6525c47c5f406c1ddb13fca5b9f93fc646a1a924f13da9779",
@@ -850,13 +647,6 @@
     },
     {
       "basis": "site",
-      "key": "MT1959/BU50N_1.00_6b4fa7bd.bin",
-      "new_key": "fw/mediatek/6b4fa7bd47c0b2578b256bb792b034a385de32264c454eaf5f6950a4d75c2c0d.bin",
-      "sha256": "6b4fa7bd47c0b2578b256bb792b034a385de32264c454eaf5f6950a4d75c2c0d",
-      "status": "published"
-    },
-    {
-      "basis": "site",
       "key": "MT1959/BU50N_BW51_d1e4d3d7.bin",
       "new_key": "fw/mediatek/d1e4d3d704c6f2f8ea200d64ff39e3a1a564769dfa66798039015c615536cf4b.bin",
       "sha256": "d1e4d3d704c6f2f8ea200d64ff39e3a1a564769dfa66798039015c615536cf4b",
@@ -867,13 +657,6 @@
       "key": "MT1959/WP50NB40_1.01_bea3a823.bin",
       "new_key": "fw/mediatek/bea3a823370a985afe37ce6a6aad4b67ef7af15307f622aaac1f76bc7a1dbb5c.bin",
       "sha256": "bea3a823370a985afe37ce6a6aad4b67ef7af15307f622aaac1f76bc7a1dbb5c",
-      "status": "published"
-    },
-    {
-      "basis": "site",
-      "key": "MT1959/WP50NB40_1.03_dc24229f.bin",
-      "new_key": "fw/mediatek/dc24229fe4c94f1c341d0cfe21b416b4ebb0449dfe5bd991bae70d7d4ce28a73.bin",
-      "sha256": "dc24229fe4c94f1c341d0cfe21b416b4ebb0449dfe5bd991bae70d7d4ce28a73",
       "status": "published"
     },
     {

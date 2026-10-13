@@ -33,7 +33,7 @@ test('the real catalogue: all packages reachable, old model names listed, no raw
   for (const s of shown) assert.doesNotMatch(String(s).replace(/ GENERAL · /, ' '), /\?|GENERAL|makemkv/i, s);
   // One model sold in several editions: OEM where known, else just the version.
   const bu40 = d.models.find(m => m.m === 'BU40N').v.map(v => v[1]);
-  for (const l of ['BU12 (Buffalo)', 'BW42 (HP)', 'BN12', 'U100']) assert.ok(bu40.includes(l), l);
+  for (const l of ['BU12 (Buffalo)', 'BW42 (HP)', 'BN12', 'U101']) assert.ok(bu40.includes(l), l);
 });
 
 test('versions are labelled by revision plus edition (Pioneer: and SAT on every row)', () => {
