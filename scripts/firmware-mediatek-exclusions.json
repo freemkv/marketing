@@ -1,0 +1,8 @@
+[
+  {
+    "sha256": "0b2cdb82ff520589d4c750fae726571798901bf41e433de0a7164f7d74927d5f",
+    "model": "BH40N",
+    "revision": "B7C6",
+    "reason": "Not an exact vendor image (source marked NOTEXACTMATCH)"
+  }
+]

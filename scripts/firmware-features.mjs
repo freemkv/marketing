@@ -14,6 +14,7 @@ import { promises as fs } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -21,18 +22,59 @@ const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // ---------------------------------------------------------------------------
 // Eligibility (the owner's rule). A MediaTek image is listed iff ALL hold:
 //   (a) identities.json images[].mediatek.patched is not true (MK-patched images
-//       are excluded; unMK images count as OEM),
+//       are excluded; unMK images count as OEM only when fully restored),
 //   (b) no source name that produced it (sources.json extraction.image -> names)
 //       contains "omnidrive" (case-insensitive),
 //   (c) it is not a fragment (mediatek.fragment),
-//   (d) `freemkv-fw create --json` applies at least one lever.
+//   (d) it is not on scripts/firmware-mediatek-exclusions.json (sha-bound,
+//       with the reason it is not an OEM image),
+//   (e) it is not a raw drive read (boot page equal to its 0x10000 mirror),
+//   (f) `freemkv-fw verify` passes every integrity region (a partial MK
+//       removal leaves a region that no longer verifies),
+//   (g) `freemkv-fw create --json` applies at least one lever,
+//   (h) no other listed image has the same bytes apart from the
+//       downgrade-enable byte (0x1EC056); of such a pair, the one with vendor
+//       updater provenance is listed.
 // ---------------------------------------------------------------------------
-export function metadataExclusion(image, names = []) {
+export function metadataExclusion(image, names = [], excluded = new Set()) {
   const mt = image?.mediatek ?? {};
   if (mt.patched === true) return 'patched';
   if (names.some(n => /omnidrive/i.test(n))) return 'omnidrive';
   if (mt.fragment) return 'fragment';
+  if (excluded.has(image?.sha256)) return 'excluded';
   return null;
+}
+
+// A drive read returns the boot mirror (0x10000) in place of the boot page.
+export const BOOT_PAGE_LEN = 0x400, BOOT_MIRROR = 0x10000;
+export const isDriveRead = bytes =>
+  bytes.length >= BOOT_MIRROR + BOOT_PAGE_LEN &&
+  bytes.subarray(0, BOOT_PAGE_LEN).equals(bytes.subarray(BOOT_MIRROR, BOOT_MIRROR + BOOT_PAGE_LEN));
+
+// The downgrade-enable byte is outside the integrity table; images that differ
+// only there are the same firmware.
+export const DE_OFFSET = 0x1EC056;
+export function deMaskedSha(bytes) {
+  const copy = Buffer.from(bytes);
+  if (copy.length > DE_OFFSET) copy[DE_OFFSET] = 0;
+  return createHash('sha256').update(copy).digest('hex');
+}
+
+// Provenance from a vendor updater: a member extracted from an archive or
+// installer that is not a downgrade-enabled pack, a drive dump or an unMK file.
+const NOT_VENDOR = /(^|[/:_ -])(DE_|DE-firmware-pack|Downgrade Enabled|dump|unMK)/i;
+export const hasVendorProvenance = (names = []) => names.some(n => n.includes('::') && !NOT_VENDOR.test(n));
+
+// One image per DE-masked content: vendor provenance first, then lowest sha.
+export function dedupeByDeMask(items) {
+  const best = new Map();
+  for (const it of items) {
+    const cur = best.get(it.masked);
+    const rank = x => (x.vendor ? 0 : 1);
+    if (!cur || rank(it) < rank(cur) || (rank(it) === rank(cur) && it.sha < cur.sha)) best.set(it.masked, it);
+  }
+  const kept = new Set([...best.values()].map(x => x.sha));
+  return { kept: items.filter(x => kept.has(x.sha)), dropped: items.filter(x => !kept.has(x.sha)) };
 }
 export const appliedLevers = report => (report?.levers ?? []).filter(l => l.outcome === 'Applied');
 export const hasAppliedLever = report => appliedLevers(report).length > 0;
@@ -217,7 +259,17 @@ export function buildSummary(doc) {
 // ---------------------------------------------------------------------------
 const readJson = async p => JSON.parse(await fs.readFile(p, 'utf8'));
 
-export async function loadCandidates(hoard) {
+export const EXCLUSIONS = path.join(SITE, 'scripts/firmware-mediatek-exclusions.json');
+export async function loadExclusions(file = EXCLUSIONS) {
+  const rows = await readJson(file);
+  if (!Array.isArray(rows)) throw new Error(`${file}: not a JSON array`);
+  for (const r of rows) {
+    if (!/^[0-9a-f]{64}$/.test(r?.sha256 ?? '') || !String(r?.reason ?? '').trim()) throw new Error(`${file}: every row needs a sha256 and a reason`);
+  }
+  return new Set(rows.map(r => r.sha256));
+}
+
+export async function loadCandidates(hoard, exclusions = new Set()) {
   const ids = (await readJson(path.join(hoard, 'index/identities.json'))).identities;
   const sources = (await readJson(path.join(hoard, 'index/sources.json'))).sources;
   const names = new Map();
@@ -232,9 +284,10 @@ export async function loadCandidates(hoard) {
     if (id.family !== 'mediatek') continue;
     for (const image of id.images ?? []) {
       if (seen.has(image.sha256)) continue;
-      const why = metadataExclusion(image, names.get(image.sha256) ?? []);
+      const imageNames = names.get(image.sha256) ?? [];
+      const why = metadataExclusion(image, imageNames, exclusions);
       if (why) { excluded[why] = (excluded[why] ?? 0) + 1; seen.set(image.sha256, null); continue; }
-      seen.set(image.sha256, { sha: image.sha256, file: path.join(hoard, image.path) });
+      seen.set(image.sha256, { sha: image.sha256, file: path.join(hoard, image.path), vendor: hasVendorProvenance(imageNames) });
     }
   }
   return { candidates: [...seen.values()].filter(Boolean), excluded };
@@ -253,18 +306,21 @@ const parse = s => { try { return JSON.parse(s); } catch { return null; } };
 
 // Runs the engine for one candidate. `run(args)` is injectable for tests.
 export async function evaluate(cand, run, tmp, hardware = new Set()) {
+  const raw = await fs.readFile(cand.file);
+  if (isDriveRead(raw)) return { reason: 'drive-read' };
+  if ((await run(['verify', cand.file])).code !== 0) return { reason: 'integrity' };
   const c = await run(['create', '--json', cand.file, path.join(tmp, `${cand.sha.slice(0, 16)}.out.bin`)]);
   const create = c.code === 0 ? parse(c.out) : null;
   if (!create || !hasAppliedLever(create)) return { reason: 'no-applied-lever' };
   const b = await run(['create', '--base', '--json', cand.file, path.join(tmp, `${cand.sha.slice(0, 16)}.base.bin`)]);
   const base = b.code === 0 ? parse(b.out) : null;
   if (!base?.base_facts) return { reason: 'no-base' };
-  const bytes = (await fs.stat(cand.file)).size;
-  return { entry: buildEntry({ sha: cand.sha, bytes, create, base, hardwareVerified: hardware.has(cand.sha) }) };
+  const entry = buildEntry({ sha: cand.sha, bytes: raw.length, create, base, hardwareVerified: hardware.has(cand.sha) });
+  return { entry, masked: deMaskedSha(raw), vendor: !!cand.vendor, sha: cand.sha };
 }
 
-export async function generate({ hoard, fw, outDir, hardware = new Set(), jobs = 8, log = () => {} }) {
-  const { candidates, excluded } = await loadCandidates(hoard);
+export async function generate({ hoard, fw, outDir, hardware = new Set(), jobs = 8, exclusions, log = () => {} }) {
+  const { candidates, excluded } = await loadCandidates(hoard, exclusions ?? await loadExclusions());
   const tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'firmware-features-'));
   try {
     const run = args => runFw(fw, args);
@@ -274,7 +330,9 @@ export async function generate({ hoard, fw, outDir, hardware = new Set(), jobs =
       while (next < candidates.length) { const i = next++; results[i] = await evaluate(candidates[i], run, tmp, hardware); }
     }));
     for (const r of results) if (r.reason) excluded[r.reason] = (excluded[r.reason] ?? 0) + 1;
-    const entries = sortEntries(results.filter(r => r.entry).map(r => r.entry));
+    const { kept, dropped } = dedupeByDeMask(results.filter(r => r.entry));
+    if (dropped.length) excluded['de-duplicate'] = dropped.length;
+    const entries = sortEntries(kept.map(r => r.entry));
     const doc = buildFeaturesDoc(entries);
     await fs.mkdir(outDir, { recursive: true });
     await fs.writeFile(path.join(outDir, 'firmware-features.json'), JSON.stringify(doc, null, 1));
