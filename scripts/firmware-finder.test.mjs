@@ -149,9 +149,12 @@ test('all published cross-flash rows agree with the package their View button op
   const catalog = JSON.parse(readFileSync(new URL('../src/data/finder-catalog.json', import.meta.url)));
   const d = finderPageData(buildFinderData({ catalog }));
   for (const i of d.identities) for (const [name, , rows] of i.x) {
-    for (const [, vi, incomplete] of rows) {
+    for (const [t, vi, incomplete] of rows) {
       const v = d.versions[vi], p = d.packages[v.p[0]];
-      assert.equal(p.chips.some(c => c[0] === 'Kernel + Normal'), !incomplete, `${i.n} → ${name} ${v.r}`);
+      // Pioneer: complete means a Kernel + Normal package. MediaTek ships one full
+      // image, so every MediaTek row is complete.
+      if (!d.identities[t].pio) assert.equal(incomplete, 0, `${i.n} → ${name} ${v.r}`);
+      else assert.equal(p.chips.some(c => c[0] === 'Kernel + Normal'), !incomplete, `${i.n} → ${name} ${v.r}`);
     }
   }
 });
