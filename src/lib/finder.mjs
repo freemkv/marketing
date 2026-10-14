@@ -242,17 +242,23 @@ export function indexFinder(data) {
  * to. Decided by freemkv-flash itself, not here: `crossflash-links.json` is the
  * `freemkv-crossflash` tool's output, which runs the flasher's own offline gates
  * over every published package pair (`installed sha256 -> [target sha256]`). A
- * target identity is listed when any of this identity's packages links to it;
- * each of its revisions is `complete` when it has a linked package (a revision
- * with none, e.g. a Normal-only Pioneer package, cannot be crossflashed).
+ * target identity is listed when any of this identity's packages links to it,
+ * with its linked revisions (`complete`). The only unlinked revision listed is a
+ * Pioneer one with no Kernel + Normal package (`complete: false`, shown as
+ * missing its Kernel); any other unlinked revision is not a target and is left
+ * out (e.g. a MediaTek INTM build the flasher refuses).
  * Returns [{ identity, revisions: [{ revision, complete }] }].
  */
 export function crossflashTargets(data, identity) {
   const linked = new Set(identity.revisions.flatMap(r => r.packages.flatMap(p => data.crossflash[p.sha256] ?? [])));
   if (!linked.size) return [];
+  const missingKernel = (o, r) => o.family === 'pioneer' && !r.packages.some(p => p.components.includes('kernel') && p.components.includes('main'));
   return data.identities
     .filter(o => o !== identity)
-    .map(o => ({ identity: o, revisions: o.revisions.map(r => ({ revision: r.revision, complete: r.packages.some(p => linked.has(p.sha256)) })) }))
+    .map(o => ({ identity: o, revisions: o.revisions
+      .map(r => ({ revision: r.revision, complete: r.packages.some(p => linked.has(p.sha256)), missing: missingKernel(o, r) }))
+      .filter(r => r.complete || r.missing)
+      .map(({ revision, complete }) => ({ revision, complete })) }))
     .filter(t => t.revisions.some(r => r.complete));
 }
 
@@ -382,6 +388,7 @@ function chips(identity, pkg) {
   }
   const chip = pkg.chipset || identity.platforms.find(p => /^MT/.test(p));
   if (chip) out.push([chip]);
+  if (pkg.modifiable) out.push(['Modifiable', 'drive-fact-modifiable', 'freemkv-fw can modify this image']);
   if (pkg.media) out.push([pkg.media]);
   if (pkg.variant) out.push([pkg.variant, 'drive-fact-variant', 'Region/SKU code']);
   if (pkg.confidence === 'hardware-verified') out.push(['Hardware-verified', 'drive-fact-verified', 'Proven on real hardware']);

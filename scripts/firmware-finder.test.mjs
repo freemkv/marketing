@@ -150,9 +150,14 @@ test('all published cross-flash rows agree with the package their View button op
   const data = realData(), d = finderPageData(data);
   for (const [n, i] of d.identities.entries()) {
     const linked = new Set(data.identities[n].revisions.flatMap(r => r.packages.flatMap(p => data.crossflash[p.sha256] ?? [])));
-    for (const [name, , rows] of i.x) for (const [, vi, incomplete] of rows) {
+    for (const [name, , rows] of i.x) for (const [t, vi, incomplete] of rows) {
       const v = d.versions[vi];
       assert.equal(v.p.some(p => linked.has(d.packages[p].s)), !incomplete, `${i.n} → ${name} ${v.r}`);
+      // "Incomplete - missing kernel" is Pioneer-only and only for a revision without Kernel + Normal.
+      if (incomplete) {
+        assert.equal(d.identities[t].pio, 1, `${i.n} → ${name} ${v.r}`);
+        assert.ok(!v.p.some(p => d.packages[p].chips.some(c => c[0] === 'Kernel + Normal')), `${i.n} → ${name} ${v.r}`);
+      }
     }
   }
 });
