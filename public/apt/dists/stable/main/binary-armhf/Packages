@@ -19,27 +19,27 @@ Description: Rip DVD, Blu-ray and UHD discs without re-encoding (command line)
  interface; install the freemkv package for the desktop app.
 
 Package: freemkv-flash
-Version: 0.12.1
+Version: 0.12.2
 Architecture: armhf
 Section: utils
 Priority: optional
 Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
-Installed-Size: 3616
+Installed-Size: 3608
 Conflicts: freemkv-flash-gui
 Replaces: freemkv-flash-gui
 Homepage: https://freemkv.org/firmware/flash/
-Filename: pool/main/freemkv-flash/freemkv-flash_0.12.1_armhf.deb
-Size: 1503366
-MD5sum: 1174a0b35249cf6051d1b1df6d6ec95b
-SHA1: 443517f595060161f687a1fd660480a0729f24f2
-SHA256: e221bd9f4c5b18620e6935feca032890e55439855770947e77e3147684d73386
+Filename: pool/main/freemkv-flash/freemkv-flash_0.12.2_armhf.deb
+Size: 1500402
+MD5sum: ff6ef8b2c60e0ea00461e889e2b0b1be
+SHA1: 21d7bba2d05129ab82f97f89ce7fa87ea0360ddc
+SHA256: 501257ab2479d7e89d06c1ed11f26a43d8b866f78f77f8d39f6844f5efb52874
 Description: freemkv drive firmware flasher and dumper (command line)
  Reads, backs up and flashes optical-drive firmware (MediaTek MT19xx and
  Renesas; Pioneer live writes gated). info and dump are read-only; flash
  writes and can brick a drive given the wrong image.
 
 Package: freemkv-fw
-Version: 0.12.1
+Version: 0.12.2
 Architecture: armhf
 Section: utils
 Priority: optional
@@ -48,11 +48,11 @@ Installed-Size: 1560
 Conflicts: freemkv-fw-gui
 Replaces: freemkv-fw-gui
 Homepage: https://freemkv.org/firmware/modify/
-Filename: pool/main/freemkv-fw/freemkv-fw_0.12.1_armhf.deb
-Size: 624862
-MD5sum: c1051ef99f8377d5e86555b20e79b60c
-SHA1: 3b77d9610debebb7a56471770d62a91a83e658fc
-SHA256: 0ef1fd2a2f9e06365790dba4495b0d0228d498f195c5673384cb10dfd0f5ab02
+Filename: pool/main/freemkv-fw/freemkv-fw_0.12.2_armhf.deb
+Size: 624514
+MD5sum: 119f065dd73f8e60d2eb6df3d35e6be9
+SHA1: f33764754f2df3922d966033983f241190d51a36
+SHA256: beabc74a8d73e0cb37a52610ebafcbc80c6c284311c86303e3477f5622660191
 Description: freemkv drive firmware modifier (command line)
  Builds and verifies modified optical-drive firmware images offline
  (MediaTek MT19xx integrity tables). It does not touch a drive itself;

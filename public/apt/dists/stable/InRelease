@@ -5,37 +5,37 @@ Origin: freemkv
 Label: freemkv
 Suite: stable
 Codename: stable
-Date: Wed, 14 Oct 2026 18:45:34 GMT
+Date: Wed, 14 Oct 2026 19:57:23 GMT
 Architectures: amd64 arm64 armhf
 Components: main
 Description: freemkv packages (https://freemkv.org/apt)
 MD5Sum:
- 9b93c7e9daa5a754711f3e98d4fb4cc7             5123 main/binary-amd64/Packages
- 37f97602c41a32a9921d1edb453c407a             1743 main/binary-amd64/Packages.gz
- affc1c73c89e1eb72a2c74cd55ca1fb6             5206 main/binary-arm64/Packages
- 2aecdf31e11e606e42f2cb932123399e             1782 main/binary-arm64/Packages.gz
- 6d0acb870c0f641803bba8ca58a6d85b             2332 main/binary-armhf/Packages
- 320f85f5e5f7de2c4d778b6d6ac18cbc             1051 main/binary-armhf/Packages.gz
+ 27a15a763f90e25021f97f04b29fb29a             5123 main/binary-amd64/Packages
+ 0add832a60b4c50abd411453cac2afac             1738 main/binary-amd64/Packages.gz
+ 679c3f71be614b18d2970b444d1bdf92             5206 main/binary-arm64/Packages
+ c098766623bfdf6ac30754873fe8aeb2             1791 main/binary-arm64/Packages.gz
+ 6ef2201e9af391f0a3f5fe5b7343d38b             2332 main/binary-armhf/Packages
+ 74500ddad3e3f539ee473160b42f170a             1053 main/binary-armhf/Packages.gz
 SHA256:
- 9317d0ab6b9fdcf706e6467f74319fc8d7313a52a28b70fe287d04c91eff81c9             5123 main/binary-amd64/Packages
- f3f5671a32b55c1d965071de3be63e76176558fd345af22466163e0661cee88b             1743 main/binary-amd64/Packages.gz
- 42785c6020a4e7f642bd6f807daad473b6a1d3dd4a8de761cbf5731ee7feff93             5206 main/binary-arm64/Packages
- 0ca4b45bdf8673e18b108c19ceae2ee0823cd00bc784e6d53ad8c1d3185e1e93             1782 main/binary-arm64/Packages.gz
- 1c6e3d08355a69a76a9e72048ccd6e7d077cb104fbaf645ea8c7a51dccfaf08f             2332 main/binary-armhf/Packages
- 337b8ecc75230c189c36c1b33839f71974833a52eab2422487ba823848953a1e             1051 main/binary-armhf/Packages.gz
+ 022a00a8484b309d9bbb930386cf8f3e7bce76286d3413abf04115c94b108d56             5123 main/binary-amd64/Packages
+ 80ab1c8bb39ea58ef9cbf42154af4b4fe0522ca6c861dbff757e099f4154051e             1738 main/binary-amd64/Packages.gz
+ 631a8f7e2413a1cebb34c367f2bfcaa99e5a061962ce474e4ee149392ecbb27c             5206 main/binary-arm64/Packages
+ ee813551617b607d2d59a25d9a6266cfb1571ae13cd1163b7b1576c17f2d920a             1791 main/binary-arm64/Packages.gz
+ d729dd2063acb796da71bb40c2ec5eb8bab036e3d6b4dce10136fa31de2fb2da             2332 main/binary-armhf/Packages
+ 9917fcef28c0b99c7d85392d10955cd7d80aa77c3d9d10328a76eabd1d8d811f             1053 main/binary-armhf/Packages.gz
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEPHcoaEAXjDUSJ2rEkDDkA/gyDF0FAmrP0YQACgkQkDDkA/gy
-DF1ZEA/+OIN0bL7iHeZFaNeBbtxo8Fdz4PiLOdn76omfE3W7+6TwinrI5mQSP+Ok
-yomMAmA+3PqECJaUPjx9TtFMGTm3NKNJZljsJz2SRhz6KJThuudER26QaQcsCDl+
-/5jSAnOd1pgSVwEVePvIU6fpCTM8IelDEsW1dKqlfnVfNzjV5fI+77t16Tqw/QlQ
-uU2pVgEgLzOMAjRfgT8lUlK6v5CfpqGXoZ/BE6VmKSWi/HuhPeqvguQ6HqQBIvm4
-W2o0BjWMxx/6OJ6I5/jTv8DQlk6egLkj9e/3O9rC2pvaGVKNW1XVFt6Bp1rHykYX
-m/1hnHU24pf3dvU/4YBpoRRJWHQM8YRfZiU7jNOYDhU0mVACs0PcHmg3RDSS3XcS
-i6MtQmnGoINO3OQJdxrk/uROeR2QY3ur56IgIKvBmeGRINBz0HkTHwCqzqhGlZdf
-2BLolv2C0rYuXqb4JWhLY1CliClYQRpwR/OhspGwn8LctNYT0mTmwwJorvw3Wn5Z
-yos1kgeEV92cXpDGU8e+zsdhqdBqP0NFSNWEGH9Ayk1LvNn/3i+iIJ/cZNjrwmwC
-gdgOLxYjmZaagt+Q5kTU1JstYV5qplI36jmQwNYSKr2EZt0NS1iKIYTVMl/bzokp
-2oPFez+fg5Hh+IYBsNNfLZfr48Tcgchv5mx+jcbD2uXrd8iIDOw=
-=nM3g
+iQIzBAEBCgAdFiEEPHcoaEAXjDUSJ2rEkDDkA/gyDF0FAmrP4sEACgkQkDDkA/gy
+DF0mIxAAqamGqHWIbAippj1xdFaoOAEH9uMmum2f9vKbUpZ7GpWD2SzYxj1l3/oq
+WfTb4JmMYArK35NoBqj55O+dBWX6Xr/9FmM6YHlUmLQJXDDyZiMWWYlH2lgr6d3v
+E3DjvgZZiJMJJ1q6EdnnMnThCSWLnKAAzXIDnkPTyMshgCNk8LhQYxtCFLSo5C+J
+eQt9NmiFcnCpivHES/Lk7khpjJE+WYRjM2zX/uD272VV4nyWsHwwBbA99b2Qa3oo
+YRpAVyoqpDPfRwa1aQZt4b1jeaRDhKKCTeqOenvBHC3jHaSA41zl10+gFpu7DUJh
+bnrdpjHM8/aK4IuFhkb039AZ0SCteeBYg/fdNHVWTvVeq0V/AdyvYkrimwJ495UJ
+MGRrOH0M9/fGo5NMU7D5K3XrznlBrYGE3/6mKicASrZHDFVUxyhG0sANgaz1VQbI
+1alcZebx4J+ITz43ED+Fc8os59fYnC1vvC+Y80fno0R+31pWiV6Ve/VLUstzK/zJ
+xrg7YgF92xuIslhbof1lJl4hSvxf84xTeeDuMnMDALENDX7f2QFzHBUNKnFd+wBQ
+iNAVIE+0XrQ04i94e7OAO3Zfk1L1lZiN4e07H/DH3HvqKMewtwtpn/RPF00Ks/8i
+fDjedhUKfJVJbGw1Kkx9YpQaV8QmhuPNLIjQxKW/RzvQotb459s=
+=msib
 -----END PGP SIGNATURE-----
