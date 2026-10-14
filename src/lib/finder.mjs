@@ -87,7 +87,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
     if (!identities.has(key)) identities.set(key, {
       key, family: init.family, hardware: init.hardware, destination: init.destination || 'GENERAL',
       platforms: [], embeddedModels: [], brands: [], revisions: [], candidates: [], missing: [],
-      familyId: null, uhd: false,
+      familyId: null, receiverKey: null, uhd: false,
     });
     return identities.get(key);
   }
@@ -124,6 +124,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
           v2Shas.add(p.sha256);
           const isPioneer = p.packageType === 'pioneer-installer';
           if (p.family_id) ident.familyId ??= p.family_id;
+          if (isPioneer) { const rk = pioneerReceiverKey(p); if (rk) ident.receiverKey ??= rk; }
           if (isPioneer && p.is_uhd === true) ident.uhd = true;
           addPackage(ident, r.revision, {
             sha256: p.sha256, bytes: p.bytes, key: p.key, filename: p.filename,
@@ -240,6 +241,22 @@ export function indexFinder(data) {
 
 const hasKernelAndNormal = pkg => pkg.components.includes('kernel') && pkg.components.includes('main');
 
+/**
+ * The Pioneer "receiver class" key of a catalogue package: the two un-XORed
+ * payload offsets its Kernel leaves plus the reverse-rotation flag, as derived by
+ * firmware-extractor from the same pioneer-optical logic the flasher gates on.
+ * The flasher refuses a same-family crossflash whose receiver class differs
+ * (`RECEIVER_INCOMPATIBLE`), so crossflash suggestions must match on this key too.
+ * `null` when the package carries no derivable class (a Normal-only package, an
+ * undecodable pair, or a stale index without the fields) — such a package must
+ * never be offered as a crossflash target.
+ */
+function pioneerReceiverKey(pkg) {
+  const offsets = pkg.receiver_xor_offsets;
+  if (!Array.isArray(offsets) || offsets.length !== 2 || typeof pkg.receiver_reverse !== 'boolean') return null;
+  return `${offsets[0]}-${offsets[1]}:${pkg.receiver_reverse ? 'r' : 'f'}`;
+}
+
 // A revision is cross-flashable when it ships a complete, flashable image.
 // Pioneer packages split into Kernel + Normal, and a Normal-only revision cannot
 // be cross-flashed on its own; MediaTek ships a single full image, so every
@@ -256,12 +273,21 @@ function revisionComplete(identity, revision) {
  * (Pioneer and MediaTek today); grouping is by `family_id` equality, so a build
  * with no family hash lists no targets. A revision is `complete` when it ships a
  * flashable image (Pioneer: Kernel + Normal; MediaTek: the full image).
+ *
+ * Pioneer additionally gates on the receiver class (`receiverKey`): the flasher
+ * refuses a same-family crossflash whose Kernel receiver class differs, so we
+ * must never propose one. A Pioneer identity with no derivable receiver class
+ * (null) offers and is offered nothing — fail closed, matching the flasher. The
+ * receiver class is a Pioneer concept, so MediaTek is gated on `family_id` alone.
  * Returns [{ identity, revisions: [{ revision, complete }] }].
  */
 export function crossflashTargets(data, identity) {
   if (!identity.familyId) return [];
+  const pioneer = identity.family === 'pioneer';
+  if (pioneer && !identity.receiverKey) return [];
   return data.identities
-    .filter(o => o !== identity && o.familyId === identity.familyId)
+    .filter(o => o !== identity && o.familyId === identity.familyId
+      && (!pioneer || o.receiverKey === identity.receiverKey))
     .map(o => ({ identity: o, revisions: o.revisions.map(r => ({ revision: r.revision, complete: revisionComplete(o, r) })) }))
     .filter(t => t.revisions.length);
 }

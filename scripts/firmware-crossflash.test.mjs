@@ -6,11 +6,18 @@ import { catalog, mediatekFamilyCatalog, MTK_FAMILY_ID } from './fixtures/finder
 // One hardware family over four SATs; revisions without a Kernel are listed as incomplete.
 const sha = c => c.repeat(64).slice(0, 64);
 const FAM = '748b2f82aa55aa55';
-const pkg = (s, rev, model, { kn = false, uhd = false, family = FAM } = {}) => ({
+// Two Pioneer receiver classes: the family shares CLASS_X; CLASS_Y is a same-family,
+// different-receiver-class edition the flasher would refuse, so it is never offered.
+const CLASS_X = { off: [0x16900, 0x77300], rev: false };
+const CLASS_Y = { off: [0x32400, 0xb1700], rev: true };
+// A Kernel+Normal package carries a receiver class; a Normal-only one carries none
+// (null) and so, like the flasher, is never a crossflash target.
+const pkg = (s, rev, model, { kn = false, uhd = false, family = FAM, recv = kn ? CLASS_X : null } = {}) => ({
   sha256: s, bytes: 2048, key: `fw/pioneer/${s}.tar`, filename: `${model}_${rev}_${s.slice(0, 8)}.tar`, revision: rev,
   packageType: 'pioneer-installer', brand: 'PIONEER', embedded_model: model, selection: kn ? 'source-contained' : 'normal-only',
   components: kn ? [{ role: 'kernel' }, { role: 'normal' }] : [{ role: 'normal' }], advertised_versions: [rev + 'EU'],
   family_id: family, is_uhd: uhd,
+  ...(recv ? { receiver_xor_offsets: recv.off, receiver_reverse: recv.rev } : {}),
 });
 const ident = (hw, dest, model, revisions) => ({ key: `pioneer:${hw}:${dest}`, family: 'pioneer', hardware: hw, destination: dest,
   platforms: ['pioneer'], embedded_models: [model], revisions, other_candidates: [] });
@@ -25,28 +32,39 @@ const familyCatalog = () => ({
     ident('8511', 'ID22', 'SBW-06D2X-U', [{ revision: '1.10', packages: [pkg(sha('D'), '1.10', 'SBW-06D2X-U')] }]),
     ident('8510', 'ID19', 'BDR-UD03', [{ revision: '1.03', packages: [pkg(sha('E'), '1.03', 'BDR-UD03', { kn: true })] }]),
     ident('9201', 'ID43', 'BDR-S13U', [{ revision: '1.05', packages: [pkg(sha('F'), '1.05', 'BDR-S13U', { kn: true, family: 'other00000000000' })] }]),
+    // Same family, but a different receiver class: the flasher refuses it, so it is never offered.
+    ident('8512', 'ID23', 'BDR-PR1ML', [{ revision: '1.00', packages: [pkg(sha('Y'), '1.00', 'BDR-PR1ML', { kn: true, recv: CLASS_Y })] }]),
   ],
   aliases: [],
 });
 
-test('targets: same family only; revisions without Kernel + Normal are incomplete', () => {
+test('targets: same family AND same receiver class; revisions without Kernel + Normal are incomplete', () => {
   const data = buildFinderData({ catalog: familyCatalog() });
   const by = k => data.identities.find(i => i.key === k);
   const t = crossflashTargets(data, by('pioneer:8510:ID19'));
+  // 8A10/8591 share the receiver class and are offered; 8511 (Normal-only, no
+  // derivable class) and 8512 (different receiver class) are both excluded.
   assert.deepEqual(t.map(x => [x.identity.key, x.revisions.map(r => [r.revision, r.complete])]),
-    [['pioneer:8A10:ID40', [['1.14', true], ['1.11', false]]], ['pioneer:8591:ID22', [['1.10', true]]],
-      ['pioneer:8511:ID22', [['1.10', false]]]]);
+    [['pioneer:8A10:ID40', [['1.14', true], ['1.11', false]]], ['pioneer:8591:ID22', [['1.10', true]]]]);
+  // Different hardware family: never a target.
   assert.deepEqual(crossflashTargets(data, by('pioneer:9201:ID43')), []);
+  // A same-family, different-receiver-class edition offers nothing from the family either.
+  assert.deepEqual(crossflashTargets(data, by('pioneer:8512:ID23')), []);
+  // A Pioneer identity with no derivable receiver class (only a Normal-only
+  // package) fails closed: it offers nothing even inside its own family.
+  assert.equal(by('pioneer:8511:ID22').receiverKey, null);
+  assert.deepEqual(crossflashTargets(data, by('pioneer:8511:ID22')), []);
 });
 
 test('page data: [name, uhd, rows] per target name, one row per revision; nothing without a family', () => {
   const d = finderPageData(buildFinderData({ catalog: familyCatalog() }));
   const by = n => d.identities.findIndex(i => i.n === n);
   const view = i => d.identities[by(i)].x.map(([name, u, rows]) => [name, u, rows.map(([t, v, inc]) => [d.identities[t].n, d.versions[v].r, inc])]);
+  // SBW-06D2X-U (Normal-only, no receiver class) and BDR-PR1ML (different receiver
+  // class) are both excluded by the receiver-class gate.
   assert.deepEqual(view('BDR-UD03').sort(), [
     ['BDR-UD04', 1, [['BDR-UD04', '1.14', 0], ['BDR-UD04', '1.11', 1]]],
     ['SBC-06D2X-U', 0, [['SBC-06D2X-U', '1.10', 0]]],
-    ['SBW-06D2X-U', 0, [['SBW-06D2X-U', '1.10', 1]]],
   ]);
   assert.deepEqual(d.identities[by('BDR-S13U')].x, []);
 });
