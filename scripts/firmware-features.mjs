@@ -162,6 +162,10 @@ export function buildEntry({ sha, bytes, create, base, hardwareVerified = false 
     bytes,
     src: srcOf(create.engine, model, sha),
     engine: create.engine,
+    // The chip generation is the banner chip (`create.chip`), kept distinct from
+    // `engine` (the code-layout/lineage name). Older engines without a `chip`
+    // field fall back to the engine name.
+    chip: create.chip ?? create.engine,
     brand: brandOf(sha, create.vendor),
     vendor: create.vendor,
     model,
@@ -222,7 +226,7 @@ export function buildIndex(entries) {
       ready: true,
       versions: es.map(e => ({
         rev: e.rev, embeddedRev: e.rev, advertisedVersion: '', hardware: '',
-        file: e.r2_key, sha256: e.sha256, brand: e.brand, chipset: e.engine, media: e.media, variant: e.variant,
+        file: e.r2_key, sha256: e.sha256, brand: e.brand, chipset: e.chip, media: e.media, variant: e.variant,
         confidence: e.confidence, baseOnly: e.base_only, advertised: e.advertised, modifiable: true,
         features: e.features,
       })),

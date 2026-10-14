@@ -108,7 +108,7 @@ test('model, brand and entry shape', () => {
   assert.equal(brandOf(sha('a'), 'HL-DT-ST'), 'LG');
   assert.equal(brandOf('c328b656' + '0'.repeat(56), 'HL-DT-ST'), 'dynabook');
   const e = buildEntry({ sha: sha('c'), bytes: 10, create: create(), base });
-  assert.deepEqual(Object.keys(e), ['sha256', 'bytes', 'src', 'engine', 'brand', 'vendor', 'model', 'rev', 'media', 'variant', 'base_ok', 'base_only', 'confidence', 'advertised', 'features', 'base_facts', 'r2_key', 'lineage']);
+  assert.deepEqual(Object.keys(e), ['sha256', 'bytes', 'src', 'engine', 'chip', 'brand', 'vendor', 'model', 'rev', 'media', 'variant', 'base_ok', 'base_only', 'confidence', 'advertised', 'features', 'base_facts', 'r2_key', 'lineage']);
   assert.equal(e.r2_key, 'MT1939/BH16NS40_1.02_cccccccc.bin');
   assert.equal(e.src, `/tmp/corpus_dw/MT1939_BH16NS40_${'c'.repeat(16)}.bin`);
   assert.equal(e.confidence, 'build-verified');
