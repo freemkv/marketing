@@ -87,3 +87,43 @@ export function pioneer() {
 }
 export const V1_ONLY_SHA = sha('8');
 export const MTK_ONLY_SHA = sha('7');
+
+// MediaTek cross-flash fixture (parallel to Pioneer's `family_id` grouping).
+// Two models share one MediaTek hardware-family hash and must list each other;
+// a third model is a different family; a fourth has no `family_id` (older
+// catalog) and must produce no cross-flash rows. Each image is a single full
+// flashable image (no Kernel/Normal split), so every shared build is complete.
+export const MTK_FAMILY_ID = '70f72c46f9603141';
+const MTK_OTHER_FAMILY_ID = 'aaaa1111bbbb2222';
+export const MTK_SHA = { bu40n: sha('A'), wh16: sha('B'), bw16: sha('C'), bh16: sha('D') };
+const mtkPkg = (s, rev, model, extra = {}) => ({
+  sha256: s, bytes: 2048, key: `fw/mediatek/${s}.bin`, filename: `${model}_${rev}_${s.slice(0, 8)}.bin`,
+  revision: rev, packageType: 'mediatek-image', build_id: '1711201943', ...extra,
+});
+const mtkIdent = (hardware, destination, models, revisions) => ({
+  key: `mediatek:${hardware}:${destination}`, family: 'mediatek', hardware, destination,
+  platforms: ['MT1959'], embedded_models: models, revisions, other_candidates: [],
+});
+export function mediatekFamilyCatalog() {
+  return {
+    format: 'freemkv-finder-catalog', version: 2, withdrawn: [],
+    identities: [
+      mtkIdent('BU40N', 'GENERAL', ['BU40N'],
+        [{ revision: '1.00', packages: [mtkPkg(MTK_SHA.bu40n, '1.00', 'BU40N', { family_id: MTK_FAMILY_ID })] }]),
+      mtkIdent('WH16NS60', 'GENERAL', ['WH16NS60'],
+        [{ revision: '1.03', packages: [mtkPkg(MTK_SHA.wh16, '1.03', 'WH16NS60', { family_id: MTK_FAMILY_ID })] }]),
+      // Different hardware family: never a cross-flash target of the pair above.
+      mtkIdent('BW-16D1HT', 'BUFFALO', ['BW-16D1HT'],
+        [{ revision: '3.02', packages: [mtkPkg(MTK_SHA.bw16, '3.02', 'BW-16D1HT', { family_id: MTK_OTHER_FAMILY_ID })] }]),
+      // Stale catalogue entry with no family_id: no cross-flash rows, no crash.
+      mtkIdent('BH16NS55', 'GENERAL', ['BH16NS55'],
+        [{ revision: '1.02', packages: [mtkPkg(MTK_SHA.bh16, '1.02', 'BH16NS55')] }]),
+    ],
+    aliases: [
+      alias('BU40N', 'retail', [['BU40N', 'GENERAL', 'mediatek']]),
+      alias('WH16NS60', 'retail', [['WH16NS60', 'GENERAL', 'mediatek']]),
+      alias('BW-16D1HT', 'retail', [['BW-16D1HT', 'BUFFALO', 'mediatek']]),
+      alias('BH16NS55', 'retail', [['BH16NS55', 'GENERAL', 'mediatek']]),
+    ],
+  };
+}

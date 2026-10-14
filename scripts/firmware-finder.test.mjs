@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { buildFinderData, finderPageData, hostedSummary, compareRevision, destinationLabel, editionLabel, crossflashTargets } from '../src/lib/finder.mjs';
-import { catalog, mediatek, pioneer, SHA, V1_ONLY_SHA, MTK_ONLY_SHA } from './fixtures/finder-catalog.mjs';
+import { catalog, mediatek, pioneer, SHA, V1_ONLY_SHA, MTK_ONLY_SHA, mediatekFamilyCatalog } from './fixtures/finder-catalog.mjs';
 
 const data = () => buildFinderData({ catalog: catalog(), mediatek: mediatek() });
 const page = (opts = {}) => finderPageData(data(), { legacy: [...mediatek(), ...pioneer()], ...opts });
@@ -205,4 +205,18 @@ test('"Also sold as": retail box names per edition, split, without bare numbers 
   assert.deepEqual(aka('BDR-212M'), [['GENERAL', ['BDR-212XJ']], ['ID56', ['BDR-212EBK', 'BDR-212UBK', 'BDR-212ULBK']]]);
   assert.equal(aka('BDR-S11JX'), undefined);
   for (const m of d.models) for (const [, names] of m.a ?? []) for (const n of names) assert.doesNotMatch(n, /_|BWU|\s/, m.m);
+});
+
+test('MediaTek page data: same-family models list each other; other-family and family-less do not', () => {
+  const d = finderPageData(buildFinderData({ catalog: mediatekFamilyCatalog() }));
+  const by = n => d.identities.findIndex(i => i.n === n);
+  const view = n => d.identities[by(n)].x.map(([name, u, rows]) => [name, u, rows.map(([t, v, inc]) => [d.identities[t].n, d.versions[v].r, inc])]);
+  // Two same-family MediaTek models list each other; the single full image is complete (inc 0).
+  assert.deepEqual(view('BU40N'), [['WH16NS60', 0, [['WH16NS60', '1.03', 0]]]]);
+  assert.deepEqual(view('WH16NS60'), [['BU40N', 0, [['BU40N', '1.00', 0]]]]);
+  // A different family and a package without family_id produce no cross-flash rows.
+  assert.deepEqual(d.identities[by('BW-16D1HT')].x, []);
+  assert.deepEqual(d.identities[by('BH16NS55')].x, []);
+  // These are MediaTek identities, not Pioneer.
+  assert.equal(d.identities[by('BU40N')].pio, 0);
 });

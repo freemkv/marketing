@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildFinderData, crossflashTargets, finderPageData } from '../src/lib/finder.mjs';
-import { catalog } from './fixtures/finder-catalog.mjs';
+import { catalog, mediatekFamilyCatalog, MTK_FAMILY_ID } from './fixtures/finder-catalog.mjs';
 
 // One hardware family over four SATs; revisions without a Kernel are listed as incomplete.
 const sha = c => c.repeat(64).slice(0, 64);
@@ -68,4 +68,23 @@ test('editions sharing a name share one heading, with one row per revision and e
 test('the base fixture (no family ids) and MediaTek never produce cross-flash rows', () => {
   const d = finderPageData(buildFinderData({ catalog: catalog() }));
   for (const i of d.identities) assert.deepEqual(i.x, []);
+});
+
+test('MediaTek: same-family models cross-flash each other; other-family and family-less builds do not', () => {
+  const data = buildFinderData({ catalog: mediatekFamilyCatalog() });
+  const by = k => data.identities.find(i => i.key === k);
+  // familyId is populated from the package family_id for MediaTek too.
+  assert.equal(by('mediatek:BU40N:GENERAL').familyId, MTK_FAMILY_ID);
+  // Two models share the family: each lists the other, and a full image is complete.
+  assert.deepEqual(crossflashTargets(data, by('mediatek:BU40N:GENERAL'))
+    .map(x => [x.identity.key, x.revisions.map(r => [r.revision, r.complete])]),
+    [['mediatek:WH16NS60:GENERAL', [['1.03', true]]]]);
+  assert.deepEqual(crossflashTargets(data, by('mediatek:WH16NS60:GENERAL'))
+    .map(x => [x.identity.key, x.revisions.map(r => [r.revision, r.complete])]),
+    [['mediatek:BU40N:GENERAL', [['1.00', true]]]]);
+  // A different family hash is never a target.
+  assert.deepEqual(crossflashTargets(data, by('mediatek:BW-16D1HT:BUFFALO')), []);
+  // A stale package without family_id has no familyId and no targets.
+  assert.equal(by('mediatek:BH16NS55:GENERAL').familyId, null);
+  assert.deepEqual(crossflashTargets(data, by('mediatek:BH16NS55:GENERAL')), []);
 });
