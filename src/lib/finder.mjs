@@ -123,7 +123,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
         for (const p of r.packages) {
           v2Shas.add(p.sha256);
           const isPioneer = p.packageType === 'pioneer-installer';
-          if (isPioneer && p.family_id) ident.familyId ??= p.family_id;
+          if (p.family_id) ident.familyId ??= p.family_id;
           if (isPioneer && p.is_uhd === true) ident.uhd = true;
           addPackage(ident, r.revision, {
             sha256: p.sha256, bytes: p.bytes, key: p.key, filename: p.filename,
