@@ -240,17 +240,29 @@ export function indexFinder(data) {
 
 const hasKernelAndNormal = pkg => pkg.components.includes('kernel') && pkg.components.includes('main');
 
+// A revision is cross-flashable when it ships a complete, flashable image.
+// Pioneer packages split into Kernel + Normal, and a Normal-only revision cannot
+// be cross-flashed on its own; MediaTek ships a single full image, so every
+// hosted revision is complete.
+function revisionComplete(identity, revision) {
+  return identity.family === 'pioneer'
+    ? revision.packages.some(hasKernelAndNormal)
+    : revision.packages.length > 0;
+}
+
 /**
- * Cross flash: other Pioneer editions in the same hardware family (fwext
- * `family_id`), with every revision. A revision is `complete` when a package
- * ships both Kernel and Normal; without a Kernel it cannot be cross-flashed.
- * MediaTek has no cross flash. Returns [{ identity, revisions: [{ revision, complete }] }].
+ * Cross flash: other editions in the same hardware family (fwext `family_id`),
+ * with every revision. Works for any chipset whose packages carry a `family_id`
+ * (Pioneer and MediaTek today); grouping is by `family_id` equality, so a build
+ * with no family hash lists no targets. A revision is `complete` when it ships a
+ * flashable image (Pioneer: Kernel + Normal; MediaTek: the full image).
+ * Returns [{ identity, revisions: [{ revision, complete }] }].
  */
 export function crossflashTargets(data, identity) {
-  if (identity.family !== 'pioneer' || !identity.familyId) return [];
+  if (!identity.familyId) return [];
   return data.identities
-    .filter(o => o !== identity && o.family === 'pioneer' && o.familyId === identity.familyId)
-    .map(o => ({ identity: o, revisions: o.revisions.map(r => ({ revision: r.revision, complete: r.packages.some(hasKernelAndNormal) })) }))
+    .filter(o => o !== identity && o.familyId === identity.familyId)
+    .map(o => ({ identity: o, revisions: o.revisions.map(r => ({ revision: r.revision, complete: revisionComplete(o, r) })) }))
     .filter(t => t.revisions.length);
 }
 
