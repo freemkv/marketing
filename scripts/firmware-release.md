@@ -34,6 +34,14 @@ node scripts/firmware-release.mjs prepare /path/to/firmware-extractor /tmp/firmw
 node --test scripts/*.test.mjs
 ```
 
+`prepare` also needs `FREEMKV_CROSSFLASH`: the `freemkv-crossflash` binary from
+freemkv-firmware (`cargo build --release -p freemkv-flash --bin freemkv-crossflash`).
+It runs the flasher's own offline gates over every staged package pair and
+writes `crossflash-links.json` (installed sha256 -> target sha256s) into the
+stage; `prepare` checks every link names a catalogue package. The finder lists
+exactly these links, so it never re-implements the crossflash rule. Diagnose
+one pair with `freemkv-crossflash --why <installed> <target>`.
+
 The third argument defaults to `<extractor>/hoard`. `prepare` runs
 `cargo run --release --bin fwext -- publish-catalog` in the extractor (set
 `FWEXT=/path/to/fwext` to use a prebuilt binary) with the site's current
@@ -48,7 +56,7 @@ bytes, payload hashes) and creates `/tmp/firmware-assets.tar.gz` containing
 content-addressed, so each package is uploaded once whatever its names.
 
 On an isolated release branch, commit the staged `finder-catalog.json`,
-`legacy-keys.json` and `firmware-index.json` into `src/data` (publish copies the
+`legacy-keys.json`, `firmware-index.json` and `crossflash-links.json` into `src/data` (publish copies the
 same three after verification). Keep `pioneer-firmware-index.json`: the Finder
 hides its entries whose hash is in the v2 catalogue, and the download function
 uses it so old links keep resolving. MediaTek files without hoard bytes stay on

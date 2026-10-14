@@ -77,7 +77,7 @@ function pushUnique(list, value) {
  *    already in the v2 catalog are skipped, the rest are adapted so nothing
  *    currently downloadable disappears (e.g. MediaTek files without hoard bytes).
  */
-export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } = {}) {
+export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], crossflash = null } = {}) {
   const identities = new Map();
   const aliases = new Map(); // compact|kind -> alias
   const mtkBySha = new Map();
@@ -87,7 +87,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
     if (!identities.has(key)) identities.set(key, {
       key, family: init.family, hardware: init.hardware, destination: init.destination || 'GENERAL',
       platforms: [], embeddedModels: [], brands: [], revisions: [], candidates: [], missing: [],
-      familyId: null, receiverKey: null, uhd: false,
+      uhd: false,
     });
     return identities.get(key);
   }
@@ -123,8 +123,6 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
         for (const p of r.packages) {
           v2Shas.add(p.sha256);
           const isPioneer = p.packageType === 'pioneer-installer';
-          if (p.family_id) ident.familyId ??= p.family_id;
-          if (isPioneer) { const rk = pioneerReceiverKey(p); if (rk) ident.receiverKey ??= rk; }
           if (isPioneer && p.is_uhd === true) ident.uhd = true;
           addPackage(ident, r.revision, {
             sha256: p.sha256, bytes: p.bytes, key: p.key, filename: p.filename,
@@ -197,7 +195,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
     for (const r of ident.revisions) r.packages.sort(packageOrder);
     ident.missing = ident.missing.filter(rev => !ident.revisions.some(r => r.revision === rev));
   }
-  return { identities: [...identities.values()], aliases: [...aliases.values()] };
+  return { identities: [...identities.values()], aliases: [...aliases.values()], crossflash: crossflash?.links ?? {} };
 }
 
 /** Same shape as the extractor's catalogue filenames: MODEL_REV_sha8.ext */
@@ -239,57 +237,23 @@ export function indexFinder(data) {
   return { ...data, byKey, byHardware, namesByKey };
 }
 
-const hasKernelAndNormal = pkg => pkg.components.includes('kernel') && pkg.components.includes('main');
-
 /**
- * The Pioneer "receiver class" key of a catalogue package: the two un-XORed
- * payload offsets its Kernel leaves plus the reverse-rotation flag, as derived by
- * firmware-extractor from the same pioneer-optical logic the flasher gates on.
- * The flasher refuses a same-family crossflash whose receiver class differs
- * (`RECEIVER_INCOMPATIBLE`), so crossflash suggestions must match on this key too.
- * `null` when the package carries no derivable class (a Normal-only package, an
- * undecodable pair, or a stale index without the fields) — such a package must
- * never be offered as a crossflash target.
- */
-function pioneerReceiverKey(pkg) {
-  const offsets = pkg.receiver_xor_offsets;
-  if (!Array.isArray(offsets) || offsets.length !== 2 || typeof pkg.receiver_reverse !== 'boolean') return null;
-  return `${offsets[0]}-${offsets[1]}:${pkg.receiver_reverse ? 'r' : 'f'}`;
-}
-
-// A revision is cross-flashable when it ships a complete, flashable image.
-// Pioneer packages split into Kernel + Normal, and a Normal-only revision cannot
-// be cross-flashed on its own; MediaTek ships a single full image, so every
-// hosted revision is complete.
-function revisionComplete(identity, revision) {
-  return identity.family === 'pioneer'
-    ? revision.packages.some(hasKernelAndNormal)
-    : revision.packages.length > 0;
-}
-
-/**
- * Cross flash: other editions in the same hardware family (fwext `family_id`),
- * with every revision. Works for any chipset whose packages carry a `family_id`
- * (Pioneer and MediaTek today); grouping is by `family_id` equality, so a build
- * with no family hash lists no targets. A revision is `complete` when it ships a
- * flashable image (Pioneer: Kernel + Normal; MediaTek: the full image).
- *
- * Pioneer additionally gates on the receiver class (`receiverKey`): the flasher
- * refuses a same-family crossflash whose Kernel receiver class differs, so we
- * must never propose one. A Pioneer identity with no derivable receiver class
- * (null) offers and is offered nothing — fail closed, matching the flasher. The
- * receiver class is a Pioneer concept, so MediaTek is gated on `family_id` alone.
+ * Cross flash: the other editions a drive running this identity can be flashed
+ * to. Decided by freemkv-flash itself, not here: `crossflash-links.json` is the
+ * `freemkv-crossflash` tool's output, which runs the flasher's own offline gates
+ * over every published package pair (`installed sha256 -> [target sha256]`). A
+ * target identity is listed when any of this identity's packages links to it;
+ * each of its revisions is `complete` when it has a linked package (a revision
+ * with none, e.g. a Normal-only Pioneer package, cannot be crossflashed).
  * Returns [{ identity, revisions: [{ revision, complete }] }].
  */
 export function crossflashTargets(data, identity) {
-  if (!identity.familyId) return [];
-  const pioneer = identity.family === 'pioneer';
-  if (pioneer && !identity.receiverKey) return [];
+  const linked = new Set(identity.revisions.flatMap(r => r.packages.flatMap(p => data.crossflash[p.sha256] ?? [])));
+  if (!linked.size) return [];
   return data.identities
-    .filter(o => o !== identity && o.familyId === identity.familyId
-      && (!pioneer || o.receiverKey === identity.receiverKey))
-    .map(o => ({ identity: o, revisions: o.revisions.map(r => ({ revision: r.revision, complete: revisionComplete(o, r) })) }))
-    .filter(t => t.revisions.length);
+    .filter(o => o !== identity)
+    .map(o => ({ identity: o, revisions: o.revisions.map(r => ({ revision: r.revision, complete: r.packages.some(p => linked.has(p.sha256)) })) }))
+    .filter(t => t.revisions.some(r => r.complete));
 }
 
 export function componentsLabel(components) {

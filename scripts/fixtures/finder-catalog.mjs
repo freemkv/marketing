@@ -104,6 +104,15 @@ const mtkIdent = (hardware, destination, models, revisions) => ({
   key: `mediatek:${hardware}:${destination}`, family: 'mediatek', hardware, destination,
   platforms: ['MT1959'], embedded_models: models, revisions, other_candidates: [],
 });
+// What freemkv-crossflash reports for that catalogue: the two same-family
+// models link both ways; the other-family and family-less builds link nowhere.
+export function mediatekFamilyLinks() {
+  return { format: 'freemkv-crossflash-links', version: 1, links: {
+    [MTK_SHA.bu40n]: [MTK_SHA.wh16],
+    [MTK_SHA.wh16]: [MTK_SHA.bu40n],
+  } };
+}
+
 export function mediatekFamilyCatalog() {
   return {
     format: 'freemkv-finder-catalog', version: 2, withdrawn: [],

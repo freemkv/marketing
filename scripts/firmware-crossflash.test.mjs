@@ -1,23 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildFinderData, crossflashTargets, finderPageData } from '../src/lib/finder.mjs';
-import { catalog, mediatekFamilyCatalog, MTK_FAMILY_ID } from './fixtures/finder-catalog.mjs';
+import { catalog, mediatekFamilyCatalog, mediatekFamilyLinks, MTK_SHA } from './fixtures/finder-catalog.mjs';
 
-// One hardware family over four SATs; revisions without a Kernel are listed as incomplete.
+// The finder does not decide crossflash: it lists freemkv-flash's links
+// (`freemkv-crossflash` output, installed sha256 -> [target sha256]) per identity.
 const sha = c => c.repeat(64).slice(0, 64);
-const FAM = '748b2f82aa55aa55';
-// Two Pioneer receiver classes: the family shares CLASS_X; CLASS_Y is a same-family,
-// different-receiver-class edition the flasher would refuse, so it is never offered.
-const CLASS_X = { off: [0x16900, 0x77300], rev: false };
-const CLASS_Y = { off: [0x32400, 0xb1700], rev: true };
-// A Kernel+Normal package carries a receiver class; a Normal-only one carries none
-// (null) and so, like the flasher, is never a crossflash target.
-const pkg = (s, rev, model, { kn = false, uhd = false, family = FAM, recv = kn ? CLASS_X : null } = {}) => ({
+const pkg = (s, rev, model, { kn = false, uhd = false } = {}) => ({
   sha256: s, bytes: 2048, key: `fw/pioneer/${s}.tar`, filename: `${model}_${rev}_${s.slice(0, 8)}.tar`, revision: rev,
   packageType: 'pioneer-installer', brand: 'PIONEER', embedded_model: model, selection: kn ? 'source-contained' : 'normal-only',
-  components: kn ? [{ role: 'kernel' }, { role: 'normal' }] : [{ role: 'normal' }], advertised_versions: [rev + 'EU'],
-  family_id: family, is_uhd: uhd,
-  ...(recv ? { receiver_xor_offsets: recv.off, receiver_reverse: recv.rev } : {}),
+  components: kn ? [{ role: 'kernel' }, { role: 'normal' }] : [{ role: 'normal' }], advertised_versions: [rev + 'EU'], is_uhd: uhd,
 });
 const ident = (hw, dest, model, revisions) => ({ key: `pioneer:${hw}:${dest}`, family: 'pioneer', hardware: hw, destination: dest,
   platforms: ['pioneer'], embedded_models: [model], revisions, other_candidates: [] });
@@ -31,37 +23,40 @@ const familyCatalog = () => ({
     ident('8591', 'ID22', 'SBC-06D2X-U', [{ revision: '1.10', packages: [pkg(sha('C'), '1.10', 'SBC-06D2X-U', { kn: true })] }]),
     ident('8511', 'ID22', 'SBW-06D2X-U', [{ revision: '1.10', packages: [pkg(sha('D'), '1.10', 'SBW-06D2X-U')] }]),
     ident('8510', 'ID19', 'BDR-UD03', [{ revision: '1.03', packages: [pkg(sha('E'), '1.03', 'BDR-UD03', { kn: true })] }]),
-    ident('9201', 'ID43', 'BDR-S13U', [{ revision: '1.05', packages: [pkg(sha('F'), '1.05', 'BDR-S13U', { kn: true, family: 'other00000000000' })] }]),
-    // Same family, but a different receiver class: the flasher refuses it, so it is never offered.
-    ident('8512', 'ID23', 'BDR-PR1ML', [{ revision: '1.00', packages: [pkg(sha('Y'), '1.00', 'BDR-PR1ML', { kn: true, recv: CLASS_Y })] }]),
+    ident('9201', 'ID43', 'BDR-S13U', [{ revision: '1.05', packages: [pkg(sha('F'), '1.05', 'BDR-S13U', { kn: true })] }]),
   ],
   aliases: [],
 });
+// UD03 (8510) crossflashes to the UD04 1.14 and SBC 1.10 Kernel+Normal packages;
+// UD04 1.14 back to UD03. Nothing links to the Normal-only packages or the S13U.
+const familyLinks = () => ({ format: 'freemkv-crossflash-links', version: 1, links: {
+  [sha('E')]: [sha('A'), sha('C')],
+  [sha('A')]: [sha('E')],
+} });
 
-test('targets: same family AND same receiver class; revisions without Kernel + Normal are incomplete', () => {
-  const data = buildFinderData({ catalog: familyCatalog() });
+test('targets are the linked identities; a revision is complete when it has a linked package', () => {
+  const data = buildFinderData({ catalog: familyCatalog(), crossflash: familyLinks() });
   const by = k => data.identities.find(i => i.key === k);
-  const t = crossflashTargets(data, by('pioneer:8510:ID19'));
-  // 8A10/8591 share the receiver class and are offered; 8511 (Normal-only, no
-  // derivable class) and 8512 (different receiver class) are both excluded.
-  assert.deepEqual(t.map(x => [x.identity.key, x.revisions.map(r => [r.revision, r.complete])]),
+  assert.deepEqual(crossflashTargets(data, by('pioneer:8510:ID19')).map(x => [x.identity.key, x.revisions.map(r => [r.revision, r.complete])]),
     [['pioneer:8A10:ID40', [['1.14', true], ['1.11', false]]], ['pioneer:8591:ID22', [['1.10', true]]]]);
-  // Different hardware family: never a target.
+  // Any package of the identity may be the installed one: UD04 1.14 links back to UD03.
+  assert.deepEqual(crossflashTargets(data, by('pioneer:8A10:ID40')).map(x => x.identity.key), ['pioneer:8510:ID19']);
+  // No links out: no targets.
   assert.deepEqual(crossflashTargets(data, by('pioneer:9201:ID43')), []);
-  // A same-family, different-receiver-class edition offers nothing from the family either.
-  assert.deepEqual(crossflashTargets(data, by('pioneer:8512:ID23')), []);
-  // A Pioneer identity with no derivable receiver class (only a Normal-only
-  // package) fails closed: it offers nothing even inside its own family.
-  assert.equal(by('pioneer:8511:ID22').receiverKey, null);
   assert.deepEqual(crossflashTargets(data, by('pioneer:8511:ID22')), []);
 });
 
-test('page data: [name, uhd, rows] per target name, one row per revision; nothing without a family', () => {
-  const d = finderPageData(buildFinderData({ catalog: familyCatalog() }));
+test('without links nothing is offered (the finder never guesses)', () => {
+  const data = buildFinderData({ catalog: familyCatalog() });
+  for (const i of data.identities) assert.deepEqual(crossflashTargets(data, i), []);
+  const d = finderPageData(buildFinderData({ catalog: catalog() }));
+  for (const i of d.identities) assert.deepEqual(i.x, []);
+});
+
+test('page data: [name, uhd, rows] per target name, one row per revision', () => {
+  const d = finderPageData(buildFinderData({ catalog: familyCatalog(), crossflash: familyLinks() }));
   const by = n => d.identities.findIndex(i => i.n === n);
   const view = i => d.identities[by(i)].x.map(([name, u, rows]) => [name, u, rows.map(([t, v, inc]) => [d.identities[t].n, d.versions[v].r, inc])]);
-  // SBW-06D2X-U (Normal-only, no receiver class) and BDR-PR1ML (different receiver
-  // class) are both excluded by the receiver-class gate.
   assert.deepEqual(view('BDR-UD03').sort(), [
     ['BDR-UD04', 1, [['BDR-UD04', '1.14', 0], ['BDR-UD04', '1.11', 1]]],
     ['SBC-06D2X-U', 0, [['SBC-06D2X-U', '1.10', 0]]],
@@ -75,7 +70,9 @@ test('editions sharing a name share one heading, with one row per revision and e
     { revision: '1.11', packages: [pkg(sha('G'), '1.11', 'BDR-UD04', { kn: true })] },
     { revision: '1.20', packages: [pkg(sha('H'), '1.20', 'BDR-UD04')] },
   ]));
-  const d = finderPageData(buildFinderData({ catalog: cat }));
+  const links = familyLinks();
+  links.links[sha('E')].push(sha('G'));
+  const d = finderPageData(buildFinderData({ catalog: cat, crossflash: links }));
   const ud03 = d.identities.find(i => i.n === 'BDR-UD03');
   const ud04 = ud03.x.filter(([name]) => name === 'BDR-UD04');
   assert.equal(ud04.length, 1);
@@ -83,26 +80,16 @@ test('editions sharing a name share one heading, with one row per revision and e
     [['1.20', 'ID41', 1], ['1.14', 'ID40', 0], ['1.11', 'ID40', 1], ['1.11', 'ID41', 0]]);
 });
 
-test('the base fixture (no family ids) and MediaTek never produce cross-flash rows', () => {
-  const d = finderPageData(buildFinderData({ catalog: catalog() }));
-  for (const i of d.identities) assert.deepEqual(i.x, []);
-});
-
-test('MediaTek: same-family models cross-flash each other; other-family and family-less builds do not', () => {
-  const data = buildFinderData({ catalog: mediatekFamilyCatalog() });
+test('MediaTek: linked models list each other; unlinked models list nothing', () => {
+  const data = buildFinderData({ catalog: mediatekFamilyCatalog(), crossflash: mediatekFamilyLinks() });
   const by = k => data.identities.find(i => i.key === k);
-  // familyId is populated from the package family_id for MediaTek too.
-  assert.equal(by('mediatek:BU40N:GENERAL').familyId, MTK_FAMILY_ID);
-  // Two models share the family: each lists the other, and a full image is complete.
   assert.deepEqual(crossflashTargets(data, by('mediatek:BU40N:GENERAL'))
     .map(x => [x.identity.key, x.revisions.map(r => [r.revision, r.complete])]),
     [['mediatek:WH16NS60:GENERAL', [['1.03', true]]]]);
   assert.deepEqual(crossflashTargets(data, by('mediatek:WH16NS60:GENERAL'))
     .map(x => [x.identity.key, x.revisions.map(r => [r.revision, r.complete])]),
     [['mediatek:BU40N:GENERAL', [['1.00', true]]]]);
-  // A different family hash is never a target.
   assert.deepEqual(crossflashTargets(data, by('mediatek:BW-16D1HT:BUFFALO')), []);
-  // A stale package without family_id has no familyId and no targets.
-  assert.equal(by('mediatek:BH16NS55:GENERAL').familyId, null);
   assert.deepEqual(crossflashTargets(data, by('mediatek:BH16NS55:GENERAL')), []);
+  assert.ok(MTK_SHA.bu40n);
 });

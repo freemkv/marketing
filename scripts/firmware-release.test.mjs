@@ -156,19 +156,24 @@ test('pruneOrphans deletes every R2 key not in the fresh manifest, paginating th
   assert.deepEqual(deleted.sort(),['fw/mediatek/c.bin','fw/pioneer/a.tar']);
   assert.deepEqual(await pruneOrphans(new Set(['fw/pioneer/a.tar','fw/pioneer/b.tar']),{listPage:async()=>({objects:[{key:'fw/pioneer/a.tar'},{key:'fw/pioneer/b.tar'}],truncated:false}),deleteKey:async()=>assert.fail('no delete')}),[]);
 });
-test('prepare runs fwext publish-catalog against the hoard and packs a validated stage',async t=>{
+test('prepare runs fwext publish-catalog and freemkv-crossflash against the hoard and packs a validated stage',async t=>{
  const {d:template}=await stageV2(t);const root=await fs.mkdtemp(path.join(os.tmpdir(),'firmware-prepare-'));t.after(()=>fs.rm(root,{recursive:true,force:true}));
  const fake=path.join(root,'fwext');const log=path.join(root,'args.json');
  await fs.writeFile(fake,`#!/usr/bin/env node
 const fs=require('fs');const a=process.argv.slice(2);fs.writeFileSync(${JSON.stringify(log)},JSON.stringify(a));
 const out=a[a.indexOf('--out')+1];fs.cpSync(${JSON.stringify(template)},out,{recursive:true});fs.rmSync(out+'/firmware-index.json');
 `);await fs.chmod(fake,0o755);
+ const fakeLinks=path.join(root,'freemkv-crossflash');
+ await fs.writeFile(fakeLinks,`#!/usr/bin/env node
+process.stdout.write(JSON.stringify({format:'freemkv-crossflash-links',version:1,links:{}}));
+`);await fs.chmod(fakeLinks,0o755);
+ const previousLinks=process.env.FREEMKV_CROSSFLASH;process.env.FREEMKV_CROSSFLASH=fakeLinks;t.after(()=>{if(previousLinks===undefined)delete process.env.FREEMKV_CROSSFLASH;else process.env.FREEMKV_CROSSFLASH=previousLinks;});
  await fs.mkdir(path.join(root,'extractor'));const stage=path.join(root,'stage');const previous=process.env.FWEXT;process.env.FWEXT=fake;t.after(()=>{if(previous===undefined)delete process.env.FWEXT;else process.env.FWEXT=previous;});
  await prepare(path.join(root,'extractor'),stage,path.join(root,'hoard'));
  const args=JSON.parse(await fs.readFile(log,'utf8'));
  assert.deepEqual(args.slice(0,5),['publish-catalog','--hoard',path.join(root,'hoard'),'--out',stage]);
  for(const flag of ['--legacy-pioneer','--legacy-mediatek','--withdrawals']) assert.ok(args.includes(flag));
- await fs.access(stage+'.tar.gz');await fs.access(path.join(stage,'firmware-index.json'));
+ await fs.access(stage+'.tar.gz');await fs.access(path.join(stage,'firmware-index.json'));await fs.access(path.join(stage,'crossflash-links.json'));
  await assert.rejects(prepare(path.join(root,'extractor'),stage,path.join(root,'hoard')),/already exists/);
 });
 

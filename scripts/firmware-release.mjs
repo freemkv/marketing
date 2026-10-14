@@ -84,6 +84,13 @@ export function checkStageV2(manifest, catalog, legacy) {
     if (!o || o.sha256 !== row.sha256) throw new Error(`Legacy key does not resolve: ${row.key}`);
   }
 }
+// The crossflash links come from freemkv-flash itself (its `freemkv-crossflash`
+// binary runs the flasher's own gates over the staged payloads), so the finder
+// never re-implements the crossflash rule.
+export function crossflashCommand(env = process.env) {
+  if (!env.FREEMKV_CROSSFLASH) throw new Error('Set FREEMKV_CROSSFLASH to the freemkv-crossflash binary (cargo build --release -p freemkv-flash --bin freemkv-crossflash in freemkv-firmware)');
+  return env.FREEMKV_CROSSFLASH;
+}
 export function fwextCommand(extractor, env = process.env) {
   return env.FWEXT ? [env.FWEXT, []] : ['cargo', ['run', '--quiet', '--release', '--bin', 'fwext', '--']];
 }
@@ -108,9 +115,20 @@ export async function prepare(extractor, destination, hoard) {
     const raw = await fs.readFile(path.join(destination, 'payloads', o.key));
     if (raw.length !== o.bytes || hash(raw) !== o.sha256) throw new Error('Payload hash/size mismatch');
   }
+  const links = spawnSync(crossflashCommand(), [path.join(destination, 'payloads', 'fw')], { encoding: 'utf8', maxBuffer: 1 << 28, stdio: ['ignore', 'pipe', 'inherit'] });
+  if (links.status !== 0) throw new Error('freemkv-crossflash failed');
+  checkCrossflashLinks(JSON.parse(links.stdout), catalog);
+  await fs.writeFile(path.join(destination, 'crossflash-links.json'), links.stdout);
   // ustar deliberately excludes PAX records, links and platform metadata.
   run('tar',['--format=ustar','-czf',`${destination}.tar.gz`,'-C',destination,...V2_MEMBERS,'payloads'],{env:{...process.env,COPYFILE_DISABLE:'1'}});
   console.log(`Prepared ${manifest.objects.length} objects: ${destination}.tar.gz`);
+}
+/** Every crossflash link must name packages of this catalogue. */
+export function checkCrossflashLinks(links, catalog) {
+  if (links?.format !== 'freemkv-crossflash-links' || links.version !== 1 || typeof links.links !== 'object') throw new Error('Invalid crossflash links');
+  const shas = new Set();
+  for (const i of catalog.identities) for (const r of i.revisions ?? []) for (const p of r.packages ?? []) shas.add(p.sha256);
+  for (const [from, to] of Object.entries(links.links)) for (const s of [from, ...to]) if (!shas.has(s)) throw new Error(`Crossflash link names a package not in the catalogue: ${s}`);
 }
 const V1_MEMBERS = ['publish-manifest.json','pioneer-firmware-index.json','firmware-index.json'];
 const V2_MEMBERS = ['publish-manifest.json','finder-catalog.json','legacy-keys.json','firmware-index.json'];

@@ -3,13 +3,15 @@ import { graph, websiteNode, orgNode, webPageNode, breadcrumbNode } from '../../
 // "Find your drive" — /firmware/find/.
 // Type a drive model, pick a firmware revision, get a short card with the
 // download, its versions and what else the same hardware can be flashed to.
-// Data: src/data/finder-catalog.json, shaped by finderPageData() in
+// Data: src/data/finder-catalog.json (+ crossflash-links.json from
+// freemkv-flash's `freemkv-crossflash`), shaped by finderPageData() in
 // src/lib/finder.mjs at build time. The old site indexes only add MediaTek
 // feature data and keep their model names listed.
 import FirmwareNavDropdown from '../../components/FirmwareNavDropdown.astro';
 import mediatekIndex from '../../data/firmware-index.json';
 import pioneerIndex from '../../data/pioneer-firmware-index.json';
 import finderCatalog from '../../data/finder-catalog.json';
+import crossflashLinks from '../../data/crossflash-links.json';
 import { buildFinderData, finderPageData, modelVersionSummary } from '../../lib/finder.mjs';
 
 const title = 'Find your drive firmware — freemkv';
@@ -24,7 +26,7 @@ const firmwareDownloadSitekey = import.meta.env.PUBLIC_FIRMWARE_TURNSTILE_SITEKE
 const protectedDownloads = Boolean(firmwareDownloadSitekey);
 const firmwareBaseUrl = protectedDownloads ? '' : 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 
-const finderData = buildFinderData({ catalog: finderCatalog, mediatek: mediatekIndex });
+const finderData = buildFinderData({ catalog: finderCatalog, mediatek: mediatekIndex, crossflash: crossflashLinks });
 const finder = finderPageData(finderData, { legacy: [...mediatekIndex, ...pioneerIndex], keys: !protectedDownloads });
 const { total: hostedTotal, byChip: hostedByChip } = modelVersionSummary(finder);
 import '../../styles/site.css';
