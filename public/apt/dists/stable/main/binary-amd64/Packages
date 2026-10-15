@@ -1,39 +1,39 @@
 Package: freemkv
-Version: 1.8.3
+Version: 1.8.4
 Architecture: amd64
 Section: video
 Priority: optional
 Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
-Installed-Size: 17902
+Installed-Size: 18723
 Depends: libadwaita-1-0 (>= 1.4~beta), libc6 (>= 2.39), libgcc-s1 (>= 4.2), libglib2.0-0t64 (>= 2.54.0), libgtk-4-1 (>= 4.9.3), ca-certificates
 Conflicts: freemkv-cli
 Replaces: freemkv-cli
 Homepage: https://freemkv.org
-Filename: pool/main/freemkv/freemkv_1.8.3_amd64.deb
-Size: 4960610
-MD5sum: 4f410a2c03eadeb7fdb255675a8bdf20
-SHA1: b55e7c2cb71c4de947dd61d76c4d3aeb5211c215
-SHA256: 3c720d66cebd1cfce62d53146b77e52b10807b2775c0b727c5a236b485b21c52
+Filename: pool/main/freemkv/freemkv_1.8.4_amd64.deb
+Size: 5121858
+MD5sum: ba6af93de1ed2a37681af58498eb699e
+SHA1: be9374b37543b5c6b667015ac6162c20ba8c55e3
+SHA256: a1a6507c6258ffcfbabbf60a73245835f846a14435d0acac5bf862badfc41610
 Description: Rip DVD, Blu-ray and UHD discs without re-encoding
  Native GTK4 desktop app and command-line interface for selecting titles,
  audio and subtitle tracks and saving them to MKV, MP4 or M2TS.
  Running freemkv without arguments opens the desktop app.
 
 Package: freemkv-cli
-Version: 1.8.3
+Version: 1.8.4
 Architecture: amd64
 Section: video
 Priority: optional
 Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
-Installed-Size: 16200
+Installed-Size: 16858
 Conflicts: freemkv
 Replaces: freemkv
 Homepage: https://freemkv.org
-Filename: pool/main/freemkv-cli/freemkv-cli_1.8.3_amd64.deb
-Size: 4670002
-MD5sum: 89953ed6a5404a139f2388b92495a38f
-SHA1: 752022a7c486239288587f2c6333f315265d162a
-SHA256: 6d6906c52c9256beccb001fc313c605dc5ba70c8ff7b1edc2d0cb88cd1d4e7aa
+Filename: pool/main/freemkv-cli/freemkv-cli_1.8.4_amd64.deb
+Size: 4838332
+MD5sum: 87fa60aee5a90e216b00b5e2bc1aa9aa
+SHA1: 14f908094e64120e519e56abe7d9736f22959be4
+SHA256: 278da6aeb3ff19e638b0fae869ab65fe524a1e23923f2ac90d0d01117ee04358
 Description: Rip DVD, Blu-ray and UHD discs without re-encoding (command line)
  Static command-line build of freemkv for selecting titles, audio and
  subtitle tracks and saving them to MKV, MP4 or M2TS. It has no desktop
