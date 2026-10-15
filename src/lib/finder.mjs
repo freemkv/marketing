@@ -77,7 +77,7 @@ function pushUnique(list, value) {
  *    already in the v2 catalog are skipped, the rest are adapted so nothing
  *    currently downloadable disappears (e.g. MediaTek files without hoard bytes).
  */
-export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } = {}) {
+export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], crossflash = null } = {}) {
   const identities = new Map();
   const aliases = new Map(); // compact|kind -> alias
   const mtkBySha = new Map();
@@ -87,7 +87,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
     if (!identities.has(key)) identities.set(key, {
       key, family: init.family, hardware: init.hardware, destination: init.destination || 'GENERAL',
       platforms: [], embeddedModels: [], brands: [], revisions: [], candidates: [], missing: [],
-      familyId: null, uhd: false,
+      uhd: false,
     });
     return identities.get(key);
   }
@@ -123,7 +123,6 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
         for (const p of r.packages) {
           v2Shas.add(p.sha256);
           const isPioneer = p.packageType === 'pioneer-installer';
-          if (isPioneer && p.family_id) ident.familyId ??= p.family_id;
           if (isPioneer && p.is_uhd === true) ident.uhd = true;
           addPackage(ident, r.revision, {
             sha256: p.sha256, bytes: p.bytes, key: p.key, filename: p.filename,
@@ -196,7 +195,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [] } 
     for (const r of ident.revisions) r.packages.sort(packageOrder);
     ident.missing = ident.missing.filter(rev => !ident.revisions.some(r => r.revision === rev));
   }
-  return { identities: [...identities.values()], aliases: [...aliases.values()] };
+  return { identities: [...identities.values()], aliases: [...aliases.values()], crossflash: crossflash?.links ?? {} };
 }
 
 /** Same shape as the extractor's catalogue filenames: MODEL_REV_sha8.ext */
@@ -238,20 +237,29 @@ export function indexFinder(data) {
   return { ...data, byKey, byHardware, namesByKey };
 }
 
-const hasKernelAndNormal = pkg => pkg.components.includes('kernel') && pkg.components.includes('main');
-
 /**
- * Cross flash: other Pioneer editions in the same hardware family (fwext
- * `family_id`), with every revision. A revision is `complete` when a package
- * ships both Kernel and Normal; without a Kernel it cannot be cross-flashed.
- * MediaTek has no cross flash. Returns [{ identity, revisions: [{ revision, complete }] }].
+ * Cross flash: the other editions a drive running this identity can be flashed
+ * to. Decided by freemkv-flash itself, not here: `crossflash-links.json` is the
+ * `freemkv-crossflash` tool's output, which runs the flasher's own offline gates
+ * over every published package pair (`installed sha256 -> [target sha256]`). A
+ * target identity is listed when any of this identity's packages links to it,
+ * with its linked revisions (`complete`). The only unlinked revision listed is a
+ * Pioneer one with no Kernel + Normal package (`complete: false`, shown as
+ * missing its Kernel); any other unlinked revision is not a target and is left
+ * out (e.g. a MediaTek INTM build the flasher refuses).
+ * Returns [{ identity, revisions: [{ revision, complete }] }].
  */
 export function crossflashTargets(data, identity) {
-  if (identity.family !== 'pioneer' || !identity.familyId) return [];
+  const linked = new Set(identity.revisions.flatMap(r => r.packages.flatMap(p => data.crossflash[p.sha256] ?? [])));
+  if (!linked.size) return [];
+  const missingKernel = (o, r) => o.family === 'pioneer' && !r.packages.some(p => p.components.includes('kernel') && p.components.includes('main'));
   return data.identities
-    .filter(o => o !== identity && o.family === 'pioneer' && o.familyId === identity.familyId)
-    .map(o => ({ identity: o, revisions: o.revisions.map(r => ({ revision: r.revision, complete: r.packages.some(hasKernelAndNormal) })) }))
-    .filter(t => t.revisions.length);
+    .filter(o => o !== identity)
+    .map(o => ({ identity: o, revisions: o.revisions
+      .map(r => ({ revision: r.revision, complete: r.packages.some(p => linked.has(p.sha256)), missing: missingKernel(o, r) }))
+      .filter(r => r.complete || r.missing)
+      .map(({ revision, complete }) => ({ revision, complete })) }))
+    .filter(t => t.revisions.some(r => r.complete));
 }
 
 export function componentsLabel(components) {
@@ -380,6 +388,7 @@ function chips(identity, pkg) {
   }
   const chip = pkg.chipset || identity.platforms.find(p => /^MT/.test(p));
   if (chip) out.push([chip]);
+  if (pkg.modifiable) out.push(['Modifiable', 'drive-fact-modifiable', 'freemkv-fw can modify this image']);
   if (pkg.media) out.push([pkg.media]);
   if (pkg.variant) out.push([pkg.variant, 'drive-fact-variant', 'Region/SKU code']);
   if (pkg.confidence === 'hardware-verified') out.push(['Hardware-verified', 'drive-fact-verified', 'Proven on real hardware']);

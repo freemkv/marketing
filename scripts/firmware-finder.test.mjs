@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { buildFinderData, finderPageData, hostedSummary, compareRevision, destinationLabel, editionLabel, crossflashTargets } from '../src/lib/finder.mjs';
-import { catalog, mediatek, pioneer, SHA, V1_ONLY_SHA, MTK_ONLY_SHA } from './fixtures/finder-catalog.mjs';
+import { catalog, mediatek, pioneer, SHA, V1_ONLY_SHA, MTK_ONLY_SHA, mediatekFamilyCatalog, mediatekFamilyLinks } from './fixtures/finder-catalog.mjs';
 
 const data = () => buildFinderData({ catalog: catalog(), mediatek: mediatek() });
 const page = (opts = {}) => finderPageData(data(), { legacy: [...mediatek(), ...pioneer()], ...opts });
@@ -33,7 +33,7 @@ test('the real catalogue: all packages reachable, old model names listed, no raw
   for (const s of shown) assert.doesNotMatch(String(s).replace(/ GENERAL · /, ' '), /\?|GENERAL|makemkv/i, s);
   // One model sold in several editions: OEM where known, else just the version.
   const bu40 = d.models.find(m => m.m === 'BU40N').v.map(v => v[1]);
-  for (const l of ['BU12 (Buffalo)', 'BW42 (HP)', 'BN12', 'U100']) assert.ok(bu40.includes(l), l);
+  for (const l of ['BU12 (Buffalo)', 'BW42 (HP)', 'BN12', 'U101']) assert.ok(bu40.includes(l), l);
 });
 
 test('versions are labelled by revision plus edition (Pioneer: and SAT on every row)', () => {
@@ -83,8 +83,7 @@ test('revision ordering is numeric and ignores region suffixes', () => {
 });
 
 test('S12JX package pills agree with cross-flash completeness for each selected revision', () => {
-  const catalog = JSON.parse(readFileSync(new URL('../src/data/finder-catalog.json', import.meta.url)));
-  const d = finderPageData(buildFinderData({ catalog }));
+  const d = finderPageData(realData());
   const s12 = d.identities.find(i => i.n === 'BDR-S12JX');
   const source = d.identities.find(i => i.n === 'BDR-212D');
   const target = source.x.find(([name]) => name === 'BDR-S12JX');
@@ -115,7 +114,7 @@ test('alternate downloads have their own component pills instead of inheriting t
 
 test('every Pioneer package shows its own contents and catalogued UHD capability; SAT and edition live on the identity', () => {
   const catalog = JSON.parse(readFileSync(new URL('../src/data/finder-catalog.json', import.meta.url)));
-  const d = finderPageData(buildFinderData({ catalog }));
+  const d = finderPageData(realData());
   const bySha = new Map(d.packages.map(p => [p.s, p]));
   for (const i of catalog.identities.filter(i => i.family === 'pioneer')) {
     for (const r of i.revisions) for (const p of r.packages) {
@@ -146,17 +145,28 @@ test('UHD capability is attached to the selected package, not inherited from ano
 });
 
 test('all published cross-flash rows agree with the package their View button opens', () => {
-  const catalog = JSON.parse(readFileSync(new URL('../src/data/finder-catalog.json', import.meta.url)));
-  const d = finderPageData(buildFinderData({ catalog }));
-  for (const i of d.identities) for (const [name, , rows] of i.x) {
-    for (const [, vi, incomplete] of rows) {
-      const v = d.versions[vi], p = d.packages[v.p[0]];
-      assert.equal(p.chips.some(c => c[0] === 'Kernel + Normal'), !incomplete, `${i.n} → ${name} ${v.r}`);
+  // A row is complete exactly when one of its packages is a freemkv-flash link
+  // target from a package of the source drive.
+  const data = realData(), d = finderPageData(data);
+  for (const [n, i] of d.identities.entries()) {
+    const linked = new Set(data.identities[n].revisions.flatMap(r => r.packages.flatMap(p => data.crossflash[p.sha256] ?? [])));
+    for (const [name, , rows] of i.x) for (const [t, vi, incomplete] of rows) {
+      const v = d.versions[vi];
+      assert.equal(v.p.some(p => linked.has(d.packages[p].s)), !incomplete, `${i.n} → ${name} ${v.r}`);
+      // "Incomplete - missing kernel" is Pioneer-only and only for a revision without Kernel + Normal.
+      if (incomplete) {
+        assert.equal(d.identities[t].pio, 1, `${i.n} → ${name} ${v.r}`);
+        assert.ok(!v.p.some(p => d.packages[p].chips.some(c => c[0] === 'Kernel + Normal')), `${i.n} → ${name} ${v.r}`);
+      }
     }
   }
 });
 
-const realPage = () => finderPageData(buildFinderData({ catalog: JSON.parse(readFileSync(new URL('../src/data/finder-catalog.json', import.meta.url))) }));
+const realPage = () => finderPageData(realData());
+const realData = () => buildFinderData({
+  catalog: JSON.parse(readFileSync(new URL('../src/data/finder-catalog.json', import.meta.url))),
+  crossflash: JSON.parse(readFileSync(new URL('../src/data/crossflash-links.json', import.meta.url))),
+});
 const rowOf = (d, m, n) => { const v = d.versions[m.v[n][0]]; return { r: v.r, ...d.identities[v.i] }; };
 
 test('a model on two SATs: every row carries its SAT and edition, duplicates all labelled', () => {
@@ -177,9 +187,8 @@ test('default pick: first SAT, its newest revision, a real ID over GENERAL', () 
   assert.deepEqual(pick('BDR-S12JX'), ['1.05', 'ID72', 'SAT 8F01']);
 });
 
-test('cross flash: same family members only, headed by the drive-reported name, alphabetical', () => {
-  const catalog = JSON.parse(readFileSync(new URL('../src/data/finder-catalog.json', import.meta.url)));
-  const data = buildFinderData({ catalog });
+test('cross flash: freemkv-flash link targets only, headed by the drive-reported name, alphabetical', () => {
+  const data = realData();
   const d = finderPageData(data);
   for (const [n, i] of data.identities.entries()) {
     const expected = crossflashTargets(data, i).map(t => t.identity.key).sort();
@@ -205,4 +214,18 @@ test('"Also sold as": retail box names per edition, split, without bare numbers 
   assert.deepEqual(aka('BDR-212M'), [['GENERAL', ['BDR-212XJ']], ['ID56', ['BDR-212EBK', 'BDR-212UBK', 'BDR-212ULBK']]]);
   assert.equal(aka('BDR-S11JX'), undefined);
   for (const m of d.models) for (const [, names] of m.a ?? []) for (const n of names) assert.doesNotMatch(n, /_|BWU|\s/, m.m);
+});
+
+test('MediaTek page data: linked models list each other; unlinked models do not', () => {
+  const d = finderPageData(buildFinderData({ catalog: mediatekFamilyCatalog(), crossflash: mediatekFamilyLinks() }));
+  const by = n => d.identities.findIndex(i => i.n === n);
+  const view = n => d.identities[by(n)].x.map(([name, u, rows]) => [name, u, rows.map(([t, v, inc]) => [d.identities[t].n, d.versions[v].r, inc])]);
+  // Two same-family MediaTek models list each other; the single full image is complete (inc 0).
+  assert.deepEqual(view('BU40N'), [['WH16NS60', 0, [['WH16NS60', '1.03', 0]]]]);
+  assert.deepEqual(view('WH16NS60'), [['BU40N', 0, [['BU40N', '1.00', 0]]]]);
+  // A different family and a package without family_id produce no cross-flash rows.
+  assert.deepEqual(d.identities[by('BW-16D1HT')].x, []);
+  assert.deepEqual(d.identities[by('BH16NS55')].x, []);
+  // These are MediaTek identities, not Pioneer.
+  assert.equal(d.identities[by('BU40N')].pio, 0);
 });

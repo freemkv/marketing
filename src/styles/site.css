@@ -202,6 +202,7 @@ a[data-unavailable] { display: none !important; }
 /* Confidence tier badges: hardware-proven vs strict-build verified. */
 .drive-fact-verified { color: #067647; background: #ecfdf3; }
 .drive-fact-buildver { color: var(--slate); background: var(--bg-soft); }
+.drive-fact-modifiable { color: #175cd3; background: #eff8ff; }
 /* Base-only firmware: shows base capabilities + a pending-unlock note. */
 .drive-cap-note { font-size: 0.72rem; font-weight: 600; color: var(--muted); font-style: italic; }
 .drive-fw-btn { width: 100%; }
