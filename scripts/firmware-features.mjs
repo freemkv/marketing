@@ -31,10 +31,17 @@ const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 //   (e) it is not a raw drive read (boot page equal to its 0x10000 mirror),
 //   (f) `freemkv-fw verify` passes every integrity region (a partial MK
 //       removal leaves a region that no longer verifies),
-//   (g) `freemkv-fw create --json` applies at least one lever,
+//   (g) `freemkv-fw create --json` reports the image's identity (model and
+//       revision), whether or not it can modify it,
 //   (h) no other listed image has the same bytes apart from the
 //       downgrade-enable byte (0x1EC056); of such a pair, the one with vendor
 //       updater provenance is listed.
+//
+// Modifiable: `freemkv-fw create` (the exact command a user runs) succeeds and
+// applies at least one change. A modifiable image shows the "Modifiable" pill
+// and leads to the modify page; any other listed image leads to the flash page,
+// like Pioneer. Only a modifiable image that also builds a strict freemkv base
+// (`create --base`) carries base facts and a build-verified confidence.
 // ---------------------------------------------------------------------------
 export function metadataExclusion(image, names = [], excluded = new Set()) {
   const mt = image?.mediatek ?? {};
@@ -153,10 +160,10 @@ export function brandOf(sha, vendor) {
 export const srcOf = (engine, model, sha) => `/tmp/corpus_dw/${engine}_${model}_${sha.slice(0, 16)}.bin`;
 export const r2KeyOf = (engine, model, rev, sha) => `${engine}/${model}_${rev}_${sha.slice(0, 8)}.bin`;
 
-export function buildEntry({ sha, bytes, create, base, hardwareVerified = false }) {
+export function buildEntry({ sha, bytes, create, modifiable = true, base = null, hardwareVerified = false }) {
   const model = modelOf(create.model);
-  const lineage = lineageOf(create.engine, create.levers);
-  const bf = base.base_facts;
+  const lineage = modifiable ? lineageOf(create.engine, create.levers) : null;
+  const bf = base?.base_facts ?? null;
   return {
     sha256: sha,
     bytes,
@@ -172,12 +179,13 @@ export function buildEntry({ sha, bytes, create, base, hardwareVerified = false 
     rev: create.rev,
     media: create.media,
     variant: create.vendor_specific,
-    base_ok: true,
+    modifiable,
+    base_ok: Boolean(bf),
     base_only: false,
-    confidence: hardwareVerified ? 'hardware-verified' : 'build-verified',
-    advertised: 'features',
-    features: featuresFor(lineage),
-    base_facts: {
+    confidence: !bf ? null : hardwareVerified ? 'hardware-verified' : 'build-verified',
+    advertised: modifiable ? 'features' : 'stock',
+    features: modifiable ? featuresFor(lineage) : [],
+    base_facts: bf && {
       handler_va: bf.handler_va, boot_stub_va: bf.boot_stub_va, boot_init_site: bf.boot_init_site,
       de_off: bf.de_off, speed_gate: bf.speed_gate, region_emitter: bf.region_emitter,
       ake_gate: bf.ake_gate, uhd_stub_va: bf.uhd_stub_va, bd_stub_va: bf.bd_stub_va, hrl_sites: bf.hrl_sites,
@@ -199,12 +207,13 @@ const SCRIPT = 'scripts/firmware-features.mjs';
 export function buildFeaturesDoc(entries) {
   const lin = l => entries.filter(e => e.lineage === l).length;
   const nNew = lin(LINEAGE_NEW), nClassic = lin(LINEAGE_CLASSIC);
-  const perFlag = Object.fromEntries(FLAGS.map(f => [f.name, entries.filter(e => e.features.find(x => x.key === f.key).ok).length]));
+  const perFlag = Object.fromEntries(FLAGS.map(f => [f.name, entries.filter(e => e.features.find(x => x.key === f.key)?.ok).length]));
+  const modifiable = entries.filter(e => e.modifiable).length;
   const hw = entries.filter(e => e.confidence === 'hardware-verified').length;
   return {
     note: `Per-firmware feature availability over the full ${entries.length}-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from \`freemkv-fw create --base --json\`; per-feature \`ok\` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (${nNew} images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, ${nClassic} images). Regenerate with ${SCRIPT} — do not hand-edit.`,
     flags: FLAGS.map(f => f.key),
-    counts: { total: entries.length, base_only: 0, feature_bearing: entries.length, hardware_verified: hw, build_verified: entries.length - hw },
+    counts: { total: entries.length, base_only: 0, feature_bearing: modifiable, stock_only: entries.length - modifiable, hardware_verified: hw, build_verified: entries.filter(e => e.confidence === 'build-verified').length },
     per_flag: perFlag,
     images: entries,
   };
@@ -227,7 +236,7 @@ export function buildIndex(entries) {
       versions: es.map(e => ({
         rev: e.rev, embeddedRev: e.rev, advertisedVersion: '', hardware: '',
         file: e.r2_key, sha256: e.sha256, brand: e.brand, chipset: e.chip, media: e.media, variant: e.variant,
-        confidence: e.confidence, baseOnly: e.base_only, advertised: e.advertised, modifiable: true,
+        confidence: e.confidence, baseOnly: e.base_only, advertised: e.advertised, modifiable: e.modifiable,
         features: e.features,
       })),
     };
@@ -241,8 +250,7 @@ export function buildSummary(doc) {
     '',
     `Regenerated by \`${SCRIPT}\` over the ${counts.total}-entry OEM corpus. Per-feature availability is by ENGINE LINEAGE per the firmware CHANGELOG [0.8.1] (MT1959-lineage: all 7 flags · MT1939-classic: Region/HRL/AKE/Bus only — Speed/UHD/BD architecturally absent). Do not hand-edit.`,
     '',
-    `- images (base-gated): **${counts.total}**`,
-    `- feature-bearing: **${counts.feature_bearing}**   base-only (Identity/Save/Reset, features pending boot-bless): **${counts.base_only}**`,
+    `- images: **${counts.total}**   modifiable: **${counts.feature_bearing}**   stock only (flash as-is): **${counts.stock_only}**`,
     `- hardware-verified: **${counts.hardware_verified}**   build-verified: **${counts.build_verified}**`,
     '',
     'Feature availability across feature-bearing images:',
@@ -253,7 +261,7 @@ export function buildSummary(doc) {
     '',
     `| Chip | Brand | Model | Rev | Advertised | Confidence | ${FLAGS.map(f => f.name).join(' | ')} |`,
     `| --- | --- | --- | --- | --- | --- | ${FLAGS.map(() => '---').join(' | ')} |`,
-    ...images.map(e => `| ${e.engine} | ${e.brand} | ${e.model} | ${e.rev} | ${e.advertised} | ${e.confidence === 'hardware-verified' ? 'HW' : 'build'} | ${e.features.map(f => (f.ok ? 'yes' : '-')).join(' | ')} |`),
+    ...images.map(e => `| ${e.engine} | ${e.brand} | ${e.model} | ${e.rev} | ${e.advertised} | ${e.confidence === 'hardware-verified' ? 'HW' : e.confidence ? 'build' : '-'} | ${FLAGS.map(f => (e.features.find(x => x.key === f.key)?.ok ? 'yes' : '-')).join(' | ')} |`),
   ];
   return lines.join('\n') + '\n';
 }
@@ -313,13 +321,17 @@ export async function evaluate(cand, run, tmp, hardware = new Set()) {
   const raw = await fs.readFile(cand.file);
   if (isDriveRead(raw)) return { reason: 'drive-read' };
   if ((await run(['verify', cand.file])).code !== 0) return { reason: 'integrity' };
+  // freemkv-fw reports the lever outcomes even when it refuses to modify.
   const c = await run(['create', '--json', cand.file, path.join(tmp, `${cand.sha.slice(0, 16)}.out.bin`)]);
-  const create = c.code === 0 ? parse(c.out) : null;
-  if (!create || !hasAppliedLever(create)) return { reason: 'no-applied-lever' };
-  const b = await run(['create', '--base', '--json', cand.file, path.join(tmp, `${cand.sha.slice(0, 16)}.base.bin`)]);
-  const base = b.code === 0 ? parse(b.out) : null;
-  if (!base?.base_facts) return { reason: 'no-base' };
-  const entry = buildEntry({ sha: cand.sha, bytes: raw.length, create, base, hardwareVerified: hardware.has(cand.sha) });
+  const create = parse(c.out);
+  if (!create?.model || !create?.rev) return { reason: 'no-identity' };
+  const modifiable = c.code === 0 && hasAppliedLever(create);
+  let base = null;
+  if (modifiable) {
+    const b = await run(['create', '--base', '--json', cand.file, path.join(tmp, `${cand.sha.slice(0, 16)}.base.bin`)]);
+    base = b.code === 0 ? parse(b.out) : null;
+  }
+  const entry = buildEntry({ sha: cand.sha, bytes: raw.length, create, modifiable, base, hardwareVerified: hardware.has(cand.sha) });
   return { entry, masked: deMaskedSha(raw), vendor: !!cand.vendor, sha: cand.sha };
 }
 

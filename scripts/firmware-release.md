@@ -21,9 +21,12 @@ and the `freemkv-fw` binary (`--fw` or env `FREEMKV_FW`; build with
 `src/data`), `--jobs`, and `--hardware-verified allowlist.json` (JSON array of
 sha256 proven on hardware; default none, so everything is `build-verified`).
 
-An image is listed only if it is not MK-patched, no source name contains
-"omnidrive", it is not a fragment, and `freemkv-fw create --json` applies at
-least one lever. Flags follow engine lineage (see the header of the script).
+An image is listed when it is not MK-patched, no source name contains
+"omnidrive", it is not a fragment, and `freemkv-fw create --json` reports its
+model and revision. Every such image is published: one where `create` applies at
+least one lever is `modifiable` (the Finder shows the Modifiable pill and leads
+to the modify page); any other leads to the flash page, like Pioneer. Flags
+follow engine lineage (see the header of the script).
 Review the diff before committing: counts, base_facts and r2 keys come straight
 from the engine. Tests: `node --test scripts/*.test.mjs`.
 

@@ -72,16 +72,27 @@ test('exclusions file: every row is sha-bound with a reason', async t => {
   await assert.rejects(loadExclusions(bad), /not a JSON array/);
 });
 
-test('eligibility: zero applied levers means not listed', async () => {
+test('modifiable: create succeeds with an applied lever; otherwise listed as stock', async () => {
   assert.equal(hasAppliedLever(create()), true);
   const none = create({ levers: [lever('Identity', 'AlreadyPresent'), lever('Speed', { SignatureNotFound: {} })] });
   assert.equal(hasAppliedLever(none), false);
   const file = path.join(await fs.mkdtemp(path.join(os.tmpdir(), 'fweval-')), 'x.bin');
   await fs.writeFile(file, 'x');
-  const run = async args => ({ code: 0, out: JSON.stringify(args.includes('--base') ? base : none) });
-  assert.deepEqual(await evaluate({ sha: sha('b'), file }, run, os.tmpdir()), { reason: 'no-applied-lever' });
+  // freemkv-fw refuses (exit 1) but still reports the identity and levers: stock.
+  const refuses = async args => ({ code: args[0] === 'verify' ? 0 : 1, out: args.includes('--base') ? '' : JSON.stringify(none) });
+  const stock = (await evaluate({ sha: sha('b'), file }, refuses, os.tmpdir())).entry;
+  assert.equal(stock.modifiable, false);
+  assert.equal(stock.confidence, null);
+  assert.deepEqual(stock.features, []);
+  assert.equal(stock.base_facts, null);
+  // Modifiable, but no strict base: still modifiable, without a build-verified claim.
+  const noBase = async args => ({ code: args.includes('--base') || args[0] === 'verify' ? (args[0] === 'verify' ? 0 : 1) : 0, out: args.includes('--base') ? '' : JSON.stringify(create()) });
+  const partial = (await evaluate({ sha: sha('b'), file }, noBase, os.tmpdir())).entry;
+  assert.equal(partial.modifiable, true);
+  assert.equal(partial.confidence, null);
+  // No identity in the report (e.g. an engine error): not listed.
   const createFails = async args => ({ code: args[0] === 'verify' ? 0 : 1, out: '' });
-  assert.deepEqual(await evaluate({ sha: sha('b'), file }, createFails, os.tmpdir()), { reason: 'no-applied-lever' });
+  assert.deepEqual(await evaluate({ sha: sha('b'), file }, createFails, os.tmpdir()), { reason: 'no-identity' });
   const verifyFails = async args => ({ code: args[0] === 'verify' ? 1 : 0, out: JSON.stringify(args.includes('--base') ? base : create()) });
   assert.deepEqual(await evaluate({ sha: sha('b'), file }, verifyFails, os.tmpdir()), { reason: 'integrity' });
 });
@@ -108,7 +119,7 @@ test('model, brand and entry shape', () => {
   assert.equal(brandOf(sha('a'), 'HL-DT-ST'), 'LG');
   assert.equal(brandOf('c328b656' + '0'.repeat(56), 'HL-DT-ST'), 'dynabook');
   const e = buildEntry({ sha: sha('c'), bytes: 10, create: create(), base });
-  assert.deepEqual(Object.keys(e), ['sha256', 'bytes', 'src', 'engine', 'chip', 'brand', 'vendor', 'model', 'rev', 'media', 'variant', 'base_ok', 'base_only', 'confidence', 'advertised', 'features', 'base_facts', 'r2_key', 'lineage']);
+  assert.deepEqual(Object.keys(e), ['sha256', 'bytes', 'src', 'engine', 'chip', 'brand', 'vendor', 'model', 'rev', 'media', 'variant', 'modifiable', 'base_ok', 'base_only', 'confidence', 'advertised', 'features', 'base_facts', 'r2_key', 'lineage']);
   assert.equal(e.r2_key, 'MT1939/BH16NS40_1.02_cccccccc.bin');
   assert.equal(e.src, `/tmp/corpus_dw/MT1939_BH16NS40_${'c'.repeat(16)}.bin`);
   assert.equal(e.confidence, 'build-verified');
@@ -118,16 +129,20 @@ test('model, brand and entry shape', () => {
 test('documents: counts, per_flag, index grouping and summary', () => {
   const a = buildEntry({ sha: sha('a'), bytes: 1, create: create(), base });
   const b = buildEntry({ sha: sha('b'), bytes: 1, create: create({ model: 'BD-RE  BH14NS40', rev: '1.00', levers: [lever('Identity', 'Applied'), lever('Speed', { SignatureNotFound: {} })] }), base });
-  const doc = buildFeaturesDoc(sortEntries([a, b]));
-  assert.equal(doc.counts.total, 2);
+  const c = buildEntry({ sha: sha('d'), bytes: 1, create: create({ model: 'BD-RE  WH16NS60', rev: '1.00' }), modifiable: false });
+  const doc = buildFeaturesDoc(sortEntries([a, b, c]));
+  assert.equal(doc.counts.total, 3);
+  assert.equal(doc.counts.feature_bearing, 2);
+  assert.equal(doc.counts.stock_only, 1);
   assert.equal(doc.counts.build_verified, 2);
   assert.equal(doc.counts.hardware_verified, 0);
   assert.deepEqual(doc.per_flag, { Speed: 1, 'Region-free': 2, UHD: 1, BD: 1, 'HRL Bypass': 2, 'AKE Bypass': 2, 'Bus Decrypt': 2 });
-  assert.match(doc.note, /2-entry/);
+  assert.match(doc.note, /3-entry/);
   assert.match(doc.note, /\(1 images\); MT1939-classic.*, 1 images\)/);
-  assert.deepEqual(doc.images.map(i => i.model), ['BH14NS40', 'BH16NS40']);
+  assert.deepEqual(doc.images.map(i => i.model), ['BH14NS40', 'BH16NS40', 'WH16NS60']);
   const idx = buildIndex(doc.images);
-  assert.deepEqual(idx.map(g => g.model), ['BH14NS40', 'BH16NS40']);
+  assert.deepEqual(idx.map(g => g.model), ['BH14NS40', 'BH16NS40', 'WH16NS60']);
+  assert.equal(idx[2].versions[0].modifiable, false);
   assert.equal(idx[0].versions[0].file, 'MT1939/BH14NS40_1.00_bbbbbbbb.bin');
   assert.equal(idx[0].versions[0].modifiable, true);
   const md = buildSummary(doc);
@@ -157,12 +172,11 @@ if [ "$2" = "--base" ]; then echo '${JSON.stringify(base)}'; else echo '{"engine
 `, { mode: 0o755 });
   const out = path.join(d, 'out');
   const res = await generate({ hoard: d, fw, outDir: out, jobs: 2, exclusions: new Set() });
-  assert.deepEqual(res.entries.map(e => e.sha256), [shas.oem]);
-  assert.equal(res.excluded['no-applied-lever'], 1);
+  assert.deepEqual(res.entries.map(e => [e.sha256, e.modifiable]).sort(), [[shas.oem, true], [shas.zero, false]].sort());
   const doc = JSON.parse(await fs.readFile(path.join(out, 'firmware-features.json'), 'utf8'));
-  assert.equal(doc.counts.total, 1);
-  assert.equal(doc.images[0].confidence, 'build-verified');
+  assert.equal(doc.counts.total, 2);
+  assert.equal(doc.images.find(i => i.sha256 === shas.oem).confidence, 'build-verified');
   const hw = await generate({ hoard: d, fw, outDir: out, hardware: new Set([shas.oem]), jobs: 1, exclusions: new Set() });
-  assert.equal(hw.entries[0].confidence, 'hardware-verified');
+  assert.equal(hw.entries.find(e => e.sha256 === shas.oem).confidence, 'hardware-verified');
   assert.equal(JSON.parse(await fs.readFile(path.join(out, 'firmware-features.json'), 'utf8')).counts.hardware_verified, 1);
 });
