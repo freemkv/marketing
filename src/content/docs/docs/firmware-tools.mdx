@@ -45,6 +45,10 @@ freemkv-fw create <input.bin> --in-place               # rewrite the input image
 freemkv-fw create <input.bin> --base                   # strict base build: all-or-nothing, refuses without a full freemkv base
 ```
 
+Accepts BIN images or website TAR packages and returns the same format. For a paired
+TAR, Modify changes only the final firmware and preserves the intermediate (INTM)
+image and its extraction-derived pairing.
+
 Takes one stock (OEM) image and produces one freemkv image. It **auto-detects the chipset**
 (MediaTek MT1959 or MT1939) from the image, then applies **every capability that drive supports
 and reports each one individually** — by default it is never all-or-nothing (`--base` is the
@@ -177,9 +181,32 @@ images and older backup archives, and Pioneer envelopes or envelope packages.
 Completion checks depend on the backend; do not assume every protocol supports
 byte-for-byte firmware readback. Eject any disc and close the empty tray first.
 
-### recover (0.11.0)
+Website downloads are TAR packages. When a MediaTek package contains an explicitly
+paired INTM, Flash installs it first, confirms startup, then installs the final
+firmware. Failure stops the sequence. A standalone BIN flashes only that supplied
+image. Transfer encoding is detected automatically from the active receiver.
 
-Recovery is a separate command and desktop tab. It currently supports Pioneer
+### recover
+
+MediaTek Recovery accepts a website TAR without a Current reference and creates no
+backup. For a paired TAR, explicitly select the one image to write:
+
+```bash
+freemkv-flash recover <device> -i firmware.tar --member intermediate.bin
+# After reviewing the preview:
+freemkv-flash recover <device> -i firmware.tar --member intermediate.bin --execute --i-understand-risk
+```
+
+Choose `firmware.bin` instead to recover with the final image. Recovery never
+automatically writes the second member. It detects BOOT/application mode and
+plaintext/encrypted transfer, bypasses installed-model compatibility policy, and
+retains image, controller, receiver and write validation. The paired update and
+MediaTek BOOT recovery paths have simulated-transport coverage; physical-drive
+validation remains outstanding.
+
+#### Pioneer recovery
+
+Recovery is a separate command and desktop tab. For Pioneer, use
 packages containing **both Kernel and Normal**. Supply a copy of the firmware
 currently running on the drive and the package you want to install:
 
