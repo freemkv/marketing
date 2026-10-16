@@ -9,6 +9,7 @@ import { graph, websiteNode, orgNode, webPageNode, breadcrumbNode } from '../../
 // Flash-gated catalog; Pioneer aliases remain during their key migration.
 import FirmwareNavDropdown from '../../components/FirmwareNavDropdown.astro';
 import pioneerIndex from '../../data/pioneer-firmware-index.json';
+import mediatekIndex from '../../data/firmware-index.json';
 import finderCatalog from '../../data/finder-catalog.json';
 import crossflashLinks from '../../data/crossflash-links.json';
 import { buildFinderData, finderPageData, modelVersionSummary } from '../../lib/finder.mjs';
@@ -25,7 +26,7 @@ const firmwareDownloadSitekey = import.meta.env.PUBLIC_FIRMWARE_TURNSTILE_SITEKE
 const protectedDownloads = Boolean(firmwareDownloadSitekey);
 const firmwareBaseUrl = protectedDownloads ? '' : 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 
-const finderData = buildFinderData({ catalog: finderCatalog, mediatek: [], crossflash: crossflashLinks });
+const finderData = buildFinderData({ catalog: finderCatalog, mediatek: mediatekIndex, crossflash: crossflashLinks });
 const finder = finderPageData(finderData, { legacy: pioneerIndex, keys: !protectedDownloads });
 const { total: hostedTotal, byChip: hostedByChip } = modelVersionSummary(finder);
 import '../../styles/site.css';

@@ -206,6 +206,8 @@ import '../../styles/site.css';
             </li>
           </ol>
 
+          <p>Open the downloaded TAR directly. Flash applies an included intermediate update before the final firmware. A BIN flashes only that image. Recovery writes only the member you select.</p>
+
           <div class="terminal">
             <div class="terminal-bar" aria-hidden="true">
               <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
@@ -219,7 +221,7 @@ import '../../styles/site.css';
 
 <span class="c"># 3. Eject any disc, then flash (irreversible). Drop --execute to only print the plan;</span>
 <span class="c">#    it takes its own pre-flash backup first and reads back to verify</span>
-<span class="p">$</span> freemkv-flash flash &lt;dev&gt; -i BU40N_1.00.freemkv.bin --execute --i-understand-risk</code></pre>
+<span class="p">$</span> freemkv-flash flash &lt;dev&gt; -i BU40N_1.00.freemkv.tar --execute --i-understand-risk</code></pre>
           </div>
 
           <div class="notice">
