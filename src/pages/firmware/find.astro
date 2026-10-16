@@ -71,6 +71,21 @@ import '../../styles/site.css';
       .fx-table th, .fx-table td { text-align: left; padding: 0.3rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
       .fx-sha { font-size: 0.72rem; word-break: break-all; }
       .fx-note { margin: 0.4rem 0 0; font-size: 0.8rem; color: var(--muted); }
+      .fw-verification { background: #fff; color: #475569; border: 1px solid #dbe3e8; cursor: pointer; font: inherit; font-size: 0.8rem; font-weight: 700; border-radius: 0.55rem; padding: 0.35rem 0.6rem; white-space: nowrap; }
+      .fw-verification.is-verified { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
+      .fw-verification[hidden] { display: none; }
+      .fw-verification:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+      .fw-verify-dialog { width: min(26rem, calc(100% - 2rem)); border: 1px solid var(--line); border-radius: 1rem; padding: 1.5rem; color: var(--slate); background: #fff; }
+      .fw-verify-dialog::backdrop { background: rgb(15 23 42 / 45%); }
+      .fw-verify-dialog h2 { margin: 0 2rem 0.6rem 0; font-size: 1.15rem; }
+      .fw-verify-dialog .fw-scope { margin: 0 0 1.25rem; font-size: 0.9rem; overflow-wrap: anywhere; }
+      .fw-verify-dialog .fw-close { position: absolute; top: 0.6rem; right: 0.7rem; background: none; border: 0; font-size: 1.5rem; cursor: pointer; color: inherit; }
+      .fw-verify-dialog label { display: block; margin-bottom: 0.35rem; font-size: 0.85rem; font-weight: 600; }
+      .fw-verify-dialog input { box-sizing: border-box; width: 100%; border: 1px solid var(--line); border-radius: 0.5rem; padding: 0.65rem; font: inherit; margin-bottom: 1rem; }
+      .fw-verify-dialog .fw-actions { display: grid; gap: 0.6rem; }
+      .fw-verify-dialog .fw-error { color: #9f1239; font-size: 0.85rem; margin: 0.8rem 0 0; }
+      .fw-verify-dialog [hidden] { display: none; }
+      .fx-list li { flex-wrap: wrap; }
     </style>
   </head>
   <body class="page-find">
@@ -192,6 +207,8 @@ import '../../styles/site.css';
 
       {protectedDownloads && <div id="firmware-download-config" data-sitekey={firmwareDownloadSitekey} hidden />}
       {protectedDownloads && <script is:inline type="module" src="/firmware-download.js"></script>}
+      <div id="firmware-verification-config" data-sitekey={firmwareDownloadSitekey} hidden />
+      <script is:inline type="module" src="/firmware-verification.js"></script>
       <script define:vars={{ finder, firmwareBaseUrl }}>
         (function () {
           var searchInput = document.getElementById('drive-search');
@@ -206,6 +223,16 @@ import '../../styles/site.css';
           revRow.style.display = 'none';
 
           var models = finder.models, versions = finder.versions, identities = finder.identities, packages = finder.packages;
+          function verificationBox(version, source) {
+            if (!version.verification || (source && !source.verification)) return '';
+            var id = identities[version.i];
+            var label = id.brand + ' ' + id.n + ' ' + version.r + (id.e ? ' ' + id.e : '');
+            return '<button type="button" class="fw-verification" data-verification-target="' + escapeText(version.verification) +
+              '" data-verification-source="' + escapeText(source ? source.verification || '' : '') +
+              '" data-verification-label="' + escapeText(label) + '"' +
+              (source ? ' data-verification-from="' + escapeText(identities[source.i].n + ' ' + source.r + (identities[source.i].e ? ' ' + identities[source.i].e : '')) + '"' : '') +
+              ' disabled aria-label="Community verification for ' + escapeText(label) + '">…</button>';
+          }
 
           var filtered = [];
           var activeIdx = -1;
@@ -468,7 +495,7 @@ import '../../styles/site.css';
                   var id = identities[versions[d.v[n][0]].i];
                   return '<li><span class="fx-rev-num">' + escapeText(versions[d.v[n][0]].r) + '</span>' + editionHtml(id) +
                     (n === curRevIdx ? '<span class="fx-viewing">Viewing</span>'
-                      : '<button type="button" class="fx-dl fx-view" data-view="' + n + '">View</button>') + '</li>';
+                      : '<button type="button" class="fx-dl fx-view" data-view="' + n + '">View</button>') + verificationBox(versions[d.v[n][0]]) + '</li>';
                 }).join('') + '</ul>';
               }).join('');
             }
@@ -502,7 +529,7 @@ import '../../styles/site.css';
                     return '<li><span class="fx-rev-num">' + escapeText(versions[row[1]].r) + '</span>' + editionHtml(identities[row[0]]) +
                       (row[2] ? '<span class="fx-viewing">Incomplete - missing kernel</span>'
                         : '<button type="button" class="fx-dl fx-view" data-xf="' + row[0] + '" data-xv="' + row[1] + '">View</button>') +
-                      (row[3] ? '<span class="drive-fact drive-fact-future" title="Requires an intermediate transfer that is currently unavailable">Future</span>' : '') + '</li>';
+                      (row[3] ? '<span class="drive-fact drive-fact-future" title="Requires an intermediate transfer that is currently unavailable">Future</span>' : !row[2] ? verificationBox(versions[row[1]], ver) : '') + '</li>';
                   }).join('') + '</ul>';
               }).join('');
             }
@@ -520,6 +547,7 @@ import '../../styles/site.css';
               factsHtml +
               capsHtml +
               bodyHtml +
+              (d.v.length === 1 ? verificationBox(ver) : '') +
               list +
               details +
               xf;

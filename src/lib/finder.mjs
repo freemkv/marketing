@@ -5,6 +5,7 @@
 // Names (retail, OEM labels, drive-reported strings) are aliases that point at
 // one or more identities. A drive only takes firmware for its own identity;
 // other IDs on the same hardware are listed as cross-flash targets.
+import { verificationKey } from './firmware-verification-catalog.mjs';
 
 export const DISCORD_URL = 'https://discord.gg/yu7xMGTyek';
 
@@ -129,6 +130,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], c
             packageType: p.packageType || (src.family === 'mediatek' ? 'mediatek-image' : 'image'),
             components: roles(p.components), selection: p.selection ?? null,
             uhd: p.is_uhd === true, kernelRevision: p.kernel_revision ?? null, normalSha256: p.normal_sha256 ?? null,
+            kernelSha256: p.kernel_sha256 ?? null, imageSha256: p.image_sha256 ?? null,
             advertisedVersions: [...(p.advertised_versions ?? [])], generatedDate: p.generated_date ?? null,
             embeddedModel: p.embedded_model ?? null, brand: p.brand ?? null, buildId: p.build_id ?? null,
             provenance: typeof p.provenance === 'string' ? p.provenance : null,
@@ -433,7 +435,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
         return packages.length - 1;
       });
       const best = r.packages[0];
-      versions.push({ i: n, r: r.revision, p, ...(best.modifiable ? { mod: 1 } : {}), ...(best.baseOnly ? { baseOnly: 1 } : {}),
+      versions.push({ i: n, r: r.revision, p, verification: verificationKey(i, r.revision, best), ...(best.modifiable ? { mod: 1 } : {}), ...(best.baseOnly ? { baseOnly: 1 } : {}),
         ...(best.features?.length ? { features: best.features.map(f => ({ name: f.name, ok: f.ok })) } : {}) });
       v.push(versions.length - 1);
     }
