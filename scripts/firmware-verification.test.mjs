@@ -4,6 +4,7 @@ import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
 import {firmwareVerification} from '../src/lib/firmware-verification.mjs';
 import {verificationKey, verificationCatalog} from '../src/lib/firmware-verification-catalog.mjs';
+import emailWorker from '../workers/firmware-email.mjs';
 
 class D1 {
   constructor() {
@@ -159,6 +160,25 @@ test('real counts remain available without email delivery; requesting a code fai
   assert.equal(result.status, 503);
   assert.equal(result.data.error, 'Email verification is temporarily unavailable.');
   assert.equal(f.state.mail.length, 1);
+});
+
+test('private native email service delivers the fixed code message without API credentials', async () => {
+  const f = fixture(); delete f.env.FIRMWARE_EMAIL_TOKEN; delete f.env.FIRMWARE_EMAIL_ACCOUNT_ID;
+  const sent = [];
+  f.env.FIRMWARE_EMAIL_SERVICE = {fetch: (url, init) => emailWorker.fetch(new Request(url, init), {
+    EMAIL: {send: async message => { sent.push(message); return {messageId: 'native-message'}; }},
+  })};
+  const result = await f.call({action: 'request', target: 'b', email: 'person@example.com', token: 'good'});
+  assert.equal(result.status, 200);
+  assert.equal(sent.length, 1); assert.equal(sent[0].from, 'noreply@freemkv.org');
+  assert.match(sent[0].text, /^\d{6}\n\nDrive B 2.00/);
+  const code = sent[0].text.slice(0, 6);
+  assert.equal((await f.call({action: 'authenticate', challenge: result.data.challenge, code})).status, 200);
+  const invalid = await emailWorker.fetch(new Request('https://internal/', {method: 'POST', body: JSON.stringify({email: 'bad', code, label: 'x'})}), {});
+  assert.equal(invalid.status, 400);
+  f.env.FIRMWARE_EMAIL_SERVICE = {fetch: async () => new Response(null, {status: 503})};
+  f.state.time += 60000;
+  assert.equal((await f.call({action: 'request', target: 'b', email: 'other@example.com', token: 'good'})).status, 503);
 });
 
 test('unknown/unsupported routes, other origins, missing setup, oversized and invalid requests fail closed', async () => {

@@ -6,6 +6,7 @@ function cloud(existing = false) {
   const calls = [];
   const project = {deployment_configs: Object.fromEntries(['preview', 'production'].map(environment => [environment, {
     d1_databases: {UNRELATED: {id: 'leave-this-alone'}},
+    services: {UNRELATED_SERVICE: {service: 'leave-this-service-alone'}},
     env_vars: {FIRMWARE_TURNSTILE_SECRET: {type: 'secret_text'},
       ...(existing ? {FIRMWARE_VERIFICATION_SECRET: {type: 'secret_text'}, FIRMWARE_EMAIL_ACCOUNT_ID: {type: 'secret_text'}, FIRMWARE_EMAIL_TOKEN: {type: 'secret_text'}} : {})},
   }]))};
@@ -59,4 +60,16 @@ test('repeated setup does not recreate databases or rotate the identity/session 
   const config = f.calls.find(c => c.method === 'PATCH').body.deployment_configs;
   assert.deepEqual(config.preview.env_vars, {});
   assert.deepEqual(config.production.env_vars, {});
+});
+
+test('native email setup preserves unrelated services and never requires a runtime token', async () => {
+  const f = cloud(true);
+  const report = await provisionVerification({token: 'admin-test-token', accountId: 'acct', emailService: 'freemkv-verification-email', apply: true, fetcher: f.fetcher});
+  const config = f.calls.find(c => c.method === 'PATCH').body.deployment_configs;
+  for (const environment of Object.values(config)) {
+    assert.equal(environment.services.UNRELATED_SERVICE.service, 'leave-this-service-alone');
+    assert.deepEqual(environment.services.FIRMWARE_EMAIL_SERVICE, {service: 'freemkv-verification-email', environment: 'production'});
+    assert.deepEqual(environment.env_vars, {});
+  }
+  assert.ok(report.environments.every(e => e.emailServiceConfigured));
 });

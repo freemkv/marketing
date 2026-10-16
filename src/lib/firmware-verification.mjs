@@ -64,6 +64,14 @@ async function challengeToken(request, env, token, fetcher) {
   }
 }
 async function sendCode(email, code, label, env, fetcher) {
+  if (env.FIRMWARE_EMAIL_SERVICE) {
+    const response = await env.FIRMWARE_EMAIL_SERVICE.fetch('https://firmware-email.internal/', {
+      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, code, label}),
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!response.ok || !(await response.json()).sent) throw new Refusal('The code could not be sent. Please try again later.', 503);
+    return;
+  }
   if (!env.FIRMWARE_EMAIL_ACCOUNT_ID || !env.FIRMWARE_EMAIL_TOKEN) {
     throw new Refusal('Email verification is temporarily unavailable.', 503);
   }
@@ -119,7 +127,7 @@ export async function firmwareVerification(request, env, catalog, {fetcher = fet
     }
     if (body.action === 'request') {
       const scope = scopeOf(body, catalog), email = emailAddress(body.email);
-      if (!env.FIRMWARE_EMAIL_ACCOUNT_ID || !env.FIRMWARE_EMAIL_TOKEN) {
+      if (!env.FIRMWARE_EMAIL_SERVICE && (!env.FIRMWARE_EMAIL_ACCOUNT_ID || !env.FIRMWARE_EMAIL_TOKEN)) {
         throw new Refusal('Email verification is temporarily unavailable.', 503);
       }
       await challengeToken(request, env, body.token, fetcher);

@@ -8,7 +8,7 @@ import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {randomBytes} from 'node:crypto';
 
-export async function provisionVerification({token, accountId, emailToken, apply = false, fetcher = fetch}) {
+export async function provisionVerification({token, accountId, emailToken, emailService, apply = false, fetcher = fetch}) {
   if (!token) throw new Error('Cloudflare authentication is required.');
   async function api(path, method = 'GET', body, optional = false) {
     const response = await fetcher(`https://api.cloudflare.com/client/v4${path}`, {method,
@@ -47,10 +47,12 @@ export async function provisionVerification({token, accountId, emailToken, apply
     if (emailToken) vars.FIRMWARE_EMAIL_TOKEN = {type: 'secret_text', value: emailToken};
     if (apply) configs[environment] = {
       d1_databases: {...existing.d1_databases, FIRMWARE_VERIFICATIONS: {id: database.uuid}},
+      ...(emailService ? {services: {...existing.services, FIRMWARE_EMAIL_SERVICE: {service: emailService, environment: 'production'}}} : {}),
       env_vars: vars, wrangler_config_hash: existing.wrangler_config_hash,
     };
     report.push({environment, database: name, databaseExists: Boolean(database),
       emailTokenConfigured: Boolean(emailToken || current.FIRMWARE_EMAIL_TOKEN),
+      emailServiceConfigured: Boolean(emailService || existing.services?.FIRMWARE_EMAIL_SERVICE),
       turnstileConfigured: Boolean(current.FIRMWARE_TURNSTILE_SECRET),
       sender: 'noreply@freemkv.org'});
   }
@@ -58,7 +60,7 @@ export async function provisionVerification({token, accountId, emailToken, apply
   return {applied: apply, environments: report};
 }
 
-async function localToken() {
+export async function localToken() {
   if (process.env.CLOUDFLARE_API_TOKEN) return process.env.CLOUDFLARE_API_TOKEN;
   for (const path of ['Library/Preferences/.wrangler/config/default.toml', '.wrangler/config/default.toml', '.config/.wrangler/config/default.toml']) {
     try {

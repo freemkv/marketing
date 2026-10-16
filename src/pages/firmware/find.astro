@@ -56,6 +56,8 @@ import '../../styles/site.css';
       #drive-detail { scroll-margin-top: 6rem; }
       .fx-view { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; }
       .fx-viewing { color: var(--muted); font-size: 0.9rem; }
+      .fx-list .fx-view, .fx-list .fx-viewing { flex: 0 0 4rem; text-align: left; }
+      .fx-list .fx-incomplete { flex: 1 1 auto; }
       .fx-vgroup { margin: 0.9rem 0 0.2rem; font-size: 0.8rem; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.05em; }
       .fx-file { margin: 0.4rem 0 0; font-size: 0.8rem; color: var(--muted); overflow-wrap: anywhere; }
       .fx-h { margin: 1.3rem 0 0.4rem; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal-dark); }
@@ -71,7 +73,8 @@ import '../../styles/site.css';
       .fx-table th, .fx-table td { text-align: left; padding: 0.3rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
       .fx-sha { font-size: 0.72rem; word-break: break-all; }
       .fx-note { margin: 0.4rem 0 0; font-size: 0.8rem; color: var(--muted); }
-      .fw-verification { background: #fff; color: #475569; border: 1px solid #dbe3e8; cursor: pointer; font: inherit; font-size: 0.8rem; font-weight: 700; border-radius: 0.55rem; padding: 0.35rem 0.6rem; white-space: nowrap; }
+      .fw-verification { background: #fff; color: var(--muted); border: 1px solid #dbe3e8; cursor: pointer; font: inherit; font-size: 0.7rem; font-weight: 600; line-height: 1.4; border-radius: 0.35rem; padding: 0.15rem 0.45rem; white-space: nowrap; }
+      .fx-list .drive-fact-future { font-size: 0.7rem; line-height: 1.4; border: 1px solid transparent; padding: 0.15rem 0.45rem; border-radius: 0.35rem; }
       .fw-verification.is-verified { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
       .fw-verification[hidden] { display: none; }
       .fw-verification:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
@@ -86,6 +89,12 @@ import '../../styles/site.css';
       .fw-verify-dialog .fw-error { color: #9f1239; font-size: 0.85rem; margin: 0.8rem 0 0; }
       .fw-verify-dialog [hidden] { display: none; }
       .fx-list li { flex-wrap: wrap; }
+      @media (max-width: 480px) {
+        .fx-list li { gap: 0.4rem; }
+        .fx-rev-num { min-width: 3rem; }
+        .fx-edition { min-width: 4.5rem; }
+        .fx-list .fx-view, .fx-list .fx-viewing { flex-basis: 3.8rem; }
+      }
     </style>
   </head>
   <body class="page-find">
@@ -563,7 +572,7 @@ import '../../styles/site.css';
                 return '<p class="fx-vgroup">' + escapeText(x[0]) + (x[1] ? ' (UHD)' : '') + '</p><ul class="fx-list">' +
                   x[2].map(function (row) {
                     return '<li><span class="fx-rev-num">' + escapeText(versions[row[1]].r) + '</span>' + editionHtml(identities[row[0]]) +
-                      (row[2] ? '<span class="fx-viewing">Incomplete - missing kernel</span>'
+                      (row[2] ? '<span class="fx-viewing fx-incomplete">Incomplete - missing kernel</span>'
                         : '<button type="button" class="fx-dl fx-view" data-xf="' + row[0] + '" data-xv="' + row[1] + '">View</button>') +
                       (row[3] ? '<span class="drive-fact drive-fact-future" title="Requires an intermediate transfer that is currently unavailable">Future</span>' : !row[2] ? verificationBox(versions[row[1]], ver) : '') + '</li>';
                   }).join('') + '</ul>';
