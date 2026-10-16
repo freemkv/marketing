@@ -102,10 +102,9 @@ export async function prepare(extractor, destination, hoard) {
   try { await fs.access(destination); throw new Error(`${destination} already exists`); } catch (e) { if (e.code !== 'ENOENT') throw e; }
   const [cmd, prefix] = fwextCommand(extractor);
   run(cmd, [...prefix, 'publish-catalog', '--hoard', hoard, '--out', destination,
+    '--flasher', crossflashCommand(),
     '--legacy-pioneer', path.join(SITE, 'src/data/pioneer-firmware-index.json'),
-    '--legacy-mediatek', path.join(SITE, 'src/data/firmware-index.json'),
     '--withdrawals', path.join(SITE, 'scripts/firmware-withdrawals.json')], { cwd: extractor });
-  await fs.copyFile(path.join(SITE, 'src/data/firmware-index.json'), path.join(destination, 'firmware-index.json'));
   const manifest = validateManifest(await json(path.join(destination, 'publish-manifest.json')));
   if (manifest.format !== V2) throw new Error('fwext produced an unexpected manifest format');
   const catalog = await json(path.join(destination, 'finder-catalog.json'));
@@ -131,7 +130,7 @@ export function checkCrossflashLinks(links, catalog) {
   for (const [from, to] of Object.entries(links.links)) for (const s of [from, ...to]) if (!shas.has(s)) throw new Error(`Crossflash link names a package not in the catalogue: ${s}`);
 }
 const V1_MEMBERS = ['publish-manifest.json','pioneer-firmware-index.json','firmware-index.json'];
-const V2_MEMBERS = ['publish-manifest.json','finder-catalog.json','legacy-keys.json','firmware-index.json'];
+const V2_MEMBERS = ['publish-manifest.json','finder-catalog.json','legacy-keys.json'];
 // Strict streaming ustar extraction: no links, PAX, devices, traversal or overwrites.
 export async function extract(archive, directory) {
   await fs.mkdir(directory); const seen = new Set();
@@ -166,8 +165,6 @@ export async function extract(archive, directory) {
 export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Promise(resolve=>setTimeout(resolve,ms))) {
   const manifest=validateManifest(await json(path.join(directory,'publish-manifest.json')));
   const objects=new Map(manifest.objects.map(o=>[o.key,o]));
-  const mediatek=await json(path.join(directory,'firmware-index.json'));
-  if (!Array.isArray(mediatek)) throw new Error('Invalid staged catalogs');
   if (manifest.format===V2) {
     const catalog=await json(path.join(directory,'finder-catalog.json'));
     await checkWithdrawals(catalog);
@@ -186,6 +183,8 @@ export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Pr
         used.add(v.file);
       }
     }
+    const mediatek=await json(path.join(directory,'firmware-index.json'));
+    if (!Array.isArray(mediatek)) throw new Error('Invalid staged catalogs');
     for (const m of mediatek) for (const v of m.versions ?? []) {
       const o=objects.get(v.file);
       if (o) {
@@ -289,7 +288,7 @@ async function main() {
     const orphans=await pruneOrphans(keep,{listPage:cfListPage(fetch),deleteKey:(key,bucket)=>wranglerDelete(bucket,key)});
     if(orphans.length) console.log(`Deleted ${orphans.length} orphan R2 object${orphans.length===1?'':'s'}`);
     // Only expose links to the build after every public object verifies.
-    const files=manifest.format===V2?['finder-catalog.json','legacy-keys.json','firmware-index.json']:['pioneer-firmware-index.json','firmware-index.json'];
+    const files=manifest.format===V2?['finder-catalog.json','legacy-keys.json']:['pioneer-firmware-index.json','firmware-index.json'];
     for(const file of files) await fs.copyFile(path.join(a,file),path.join(SITE,'src/data',file));
     return;
   }

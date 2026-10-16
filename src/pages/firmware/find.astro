@@ -5,10 +5,9 @@ import { graph, websiteNode, orgNode, webPageNode, breadcrumbNode } from '../../
 // download, its versions and what else the same hardware can be flashed to.
 // Data: src/data/finder-catalog.json (+ crossflash-links.json from
 // freemkv-flash's `freemkv-crossflash`), shaped by finderPageData() in
-// src/lib/finder.mjs at build time. The old site indexes only add MediaTek
-// feature data and keep their model names listed.
+// src/lib/finder.mjs at build time. MediaTek availability comes only from the
+// Flash-gated catalog; Pioneer aliases remain during their key migration.
 import FirmwareNavDropdown from '../../components/FirmwareNavDropdown.astro';
-import mediatekIndex from '../../data/firmware-index.json';
 import pioneerIndex from '../../data/pioneer-firmware-index.json';
 import finderCatalog from '../../data/finder-catalog.json';
 import crossflashLinks from '../../data/crossflash-links.json';
@@ -26,8 +25,8 @@ const firmwareDownloadSitekey = import.meta.env.PUBLIC_FIRMWARE_TURNSTILE_SITEKE
 const protectedDownloads = Boolean(firmwareDownloadSitekey);
 const firmwareBaseUrl = protectedDownloads ? '' : 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 
-const finderData = buildFinderData({ catalog: finderCatalog, mediatek: mediatekIndex, crossflash: crossflashLinks });
-const finder = finderPageData(finderData, { legacy: [...mediatekIndex, ...pioneerIndex], keys: !protectedDownloads });
+const finderData = buildFinderData({ catalog: finderCatalog, mediatek: [], crossflash: crossflashLinks });
+const finder = finderPageData(finderData, { legacy: pioneerIndex, keys: !protectedDownloads });
 const { total: hostedTotal, byChip: hostedByChip } = modelVersionSummary(finder);
 import '../../styles/site.css';
 ---

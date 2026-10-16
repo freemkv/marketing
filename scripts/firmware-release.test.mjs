@@ -172,8 +172,8 @@ process.stdout.write(JSON.stringify({format:'freemkv-crossflash-links',version:1
  await prepare(path.join(root,'extractor'),stage,path.join(root,'hoard'));
  const args=JSON.parse(await fs.readFile(log,'utf8'));
  assert.deepEqual(args.slice(0,5),['publish-catalog','--hoard',path.join(root,'hoard'),'--out',stage]);
- for(const flag of ['--legacy-pioneer','--legacy-mediatek','--withdrawals']) assert.ok(args.includes(flag));
- await fs.access(stage+'.tar.gz');await fs.access(path.join(stage,'firmware-index.json'));await fs.access(path.join(stage,'crossflash-links.json'));
+ for(const flag of ['--legacy-pioneer','--flasher','--withdrawals']) assert.ok(args.includes(flag));
+ await fs.access(stage+'.tar.gz');await fs.access(path.join(stage,'crossflash-links.json'));
  await assert.rejects(prepare(path.join(root,'extractor'),stage,path.join(root,'hoard')),/already exists/);
 });
 
