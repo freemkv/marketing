@@ -3,6 +3,176 @@ title: Flash Changelog
 description: What's new in freemkv-flash, the drive flasher and dumper - newest first.
 ---
 
+## 0.12.4
+
+<small>2026-10-15</small>
+
+### freemkv-flash
+
+- MediaTek **INTM** (interim OEM) builds are now gated like any other MediaTek
+  build. An INTM image is a complete, CMAC-valid build, and refusing it on either
+  side of a crossflash had no reason of its own. INTM builds now pass the same
+  family, chip, CMAC, OEM boot page, banner, rollback and post-flash identity
+  checks as every other build, so a drive running an INTM build can be
+  crossflashed back.
+- Pioneer drives whose OEM receiver uses the two-part Kernel transfer now send
+  the header and key first, followed by the body at the receiver-selected
+  offset. The prior ordering could reject a valid 2.05 → 2.06 update.
+- Update to `pioneer-optical 0.15.2` and `mediatek-optical 0.7.1`, both
+  firmware-backed releases used by the flashing path.
+
+## 0.12.3
+
+<small>2026-10-14</small>
+
+### freemkv-fw
+
+- `create` now refuses an image where no change can be applied: it exits
+  non-zero and writes no output file, instead of exiting 0 with a copy of the
+  input. An image whose changes are all already set reports "this image is
+  already modified"; any other image reports "nothing in this image can be
+  modified by freemkv-fw" and points to flashing the stock image with
+  `freemkv-flash`. `create --json` still prints the report, with a new
+  top-level `"modified"` field (`true` when at least one change was applied).
+
+### All tools
+
+- The drive/chip generation (MT1959 vs MT1939) is now read from the firmware's
+  **boot loader banner**, not the `MTEKMT19xx` identity string in the drive
+  descriptor. That identity string is a stale vendor label on a number of
+  drives — the JB8/JBC6/JBP6 builds (e.g. LG WH16NS58/WH16NS60,
+  BH16NS40..NS50) report `MT1939` but run an MT1959 boot loader and MT1959
+  code — so those drives and images are now correctly shown as **MT1959**.
+  - `freemkv-fw create` modifies exactly the same images, byte-for-byte, as
+    before; only the displayed chip/engine name changes for the affected
+    builds (now MT1959). `create --json` gains a `chip` field (the banner chip);
+    `engine` remains the code-layout/lineage name.
+  - `freemkv-flash` info/inspect show the banner chip and list the identity tag
+    only as a raw-facts curiosity; a live drive's chip is read from the banner
+    it reports (the banner is always read). Flashing is unaffected; the chip
+    gate compares banner to banner.
+  - Restoring an existing backup still works: a backup of an affected drive that
+    recorded the old `MT1939` label is accepted as a legacy alias of the banner
+    chip.
+
+### freemkv-flash
+
+- MediaTek `backup` on a drive whose firmware does not expose its flash to the
+  standard read (some drives answer only their calibration area) now says so
+  plainly, instead of "backup needs every firmware byte", and points to the new
+  diagnostic below. No partial or invented backup is written.
+- New `freemkv-flash dump --read-map`: a read-only map of which READ BUFFER
+  channels the drive answers with firmware. Run it and send the output to
+  support when backup reports that the drive does not expose its flash.
+- SCSI errors during flash and recover are reported accurately: a drive that
+  rejects a command (CHECK CONDITION) is no longer described as a transport
+  failure. The message names the status, decodes the sense data when the drive
+  returns any, and says so when it returns none. The diagnostic log now records
+  every firmware write chunk (offset, length, result).
+- Pioneer **Kernel** flashing now follows the installed loader's real receive
+  transport instead of one linear stream. The BD 10xx-generation loader (BDR-205
+  through the S06/206 family) stages the Kernel body at transfer offset 0 and its
+  front-key block at `0x10200`; sending the block at the linear `0x10000` lands
+  in a reserved gap and the drive rejects it (the `SCSI transport failure …
+  cdb=[3b,07,fe,01,00,00,…]` seen when recovering a 206 Kernel onto a 205). The
+  transport is detected from the installed Kernel's own code, so loaders that do
+  want a linear stream are unaffected, and an unrecognised Kernel layout is
+  refused rather than written. Flash and recover now build the Kernel transfer
+  with the same shared plan.
+- `flash` can proceed **without a rollback backup** when the drive hides its
+  flash from backup and the operator explicitly consents. The CLI shows an amber
+  warning and requires a typed `y`; without a TTY (or in the GUI) it fails
+  closed. Required file and drive-protocol checks still run; only the backup
+  rollback simulation is skipped. The plan prints `NONE — flashing without a
+  rollback backup`.
+- MediaTek `backup` of a drive already running freemkv firmware reads the image
+  back through freemkv's own injected command, so a drive whose stock firmware
+  never exposed its flash can still be backed up once modified.
+
+## 0.12.2
+
+<small>2026-10-14</small>
+
+### Pioneer
+
+- Restore the 0.11.x crossflash rule: `flash` and `recover` gate on the hardware
+  family, which spans several hardware versions (SATs). 0.12.1 added a
+  same-SAT requirement to both, which refused every cross-model crossflash
+  (e.g. BDR-UD03 -> BDR-UD04) that worked in 0.11.x. That requirement is
+  removed.
+- Keep the 0.12.1 receiver-encoding check in `flash`: a same-family image whose
+  receiver encoding differs from the installed Kernel's (e.g. BDR-207M <->
+  BDR-PR1ML) is refused before any write and pointed to `recover`, which
+  re-encodes it. Re-encode stays recover-only until it is proven on hardware.
+- Remove the backup-restorable (one-way Kernel-ABI) refusal from `flash`; it
+  was not part of the 0.11.x rule.
+
+## 0.12.1
+
+<small>2026-10-14</small>
+
+### Pioneer
+
+- Add a brick-prevention receiver gate to `flash`. Before any write, the drive's
+  currently-installed Kernel must be able to receive every component the flash
+  sends: for a Kernel+Normal flash the target Kernel must carry the installed
+  Kernel's hardware version (SAT), and the target Normal must decode, under the
+  installed Kernel's receiver rules, to the same zero-checksum body the target
+  Kernel decodes. A written Kernel+Normal must also share model and variant (the
+  boot-time pairing the loader enforces at reset). This refuses, before any
+  write, a Kernel swap across hardware versions and any Normal the installed
+  Kernel cannot decode to the identical body (e.g. BDR-207M <-> BDR-PR1ML inside
+  one SAT, and BDR-205 <-> BDR-206 across SATs), which would otherwise leave the
+  drive stuck in update mode.
+- Refuse a crossflash that would make the pre-flash backup un-restorable. A kept
+  backup must always flash back, so `flash` refuses, before any write, a one-way
+  cross-receiver pairing whose backup Normal needs Kernel entry points the target
+  Kernel does not provide (the reverse direction still works). The gate fails
+  closed: if restorability cannot be proven, the flash is refused.
+- Route a same-SAT, different-edition bundle (e.g. BDR-207M ID43 -> BDR-PR1ML
+  ID88) through the same crossflash classifier as a different-SAT target, so the
+  receiver gate and backup-restorable check apply to it too.
+- Add EXPERIMENTAL re-encode recovery to `recover` (recover-only, no override
+  flag). For a drive stuck after a same-hardware crossflash, `recover` re-encodes
+  the target Normal into the installed Kernel's receive transport (its XOR-skip
+  offsets, rotation, derived-key pad and authentication) so the installed loader
+  decodes it to the identical zero-checksum body, then writes the untouched
+  target Kernel and the re-encoded Normal; the end-state resident firmware is
+  byte-identical OEM. The re-encode is PROVEN OFFLINE (it must decode under the
+  installed Kernel to the identical body with a zero BE32 checksum, including the
+  real BDR-207M <-> BDR-PR1ML pair) but is NOT yet proven on hardware, so it
+  stays recover-only for now; it is intended for promotion into the default
+  `flash` path in a later release once proven on hardware. A fresh, caller-owned
+  signature is applied, whose on-drive acceptance is part of what is unproven.
+- `recover` refuses, before any write, a target that is not the installed
+  drive's hardware family. It gates on the firmware family hash and, because
+  that hash does not include the hardware version, additionally requires the
+  target Kernel's SAT to match the installed Kernel's (a different SAT is a
+  different drive generation); `recover` may cross receiver class but never
+  hardware. Fails closed when the family or SAT cannot be read.
+- Build against `pioneer-optical` 0.15.0, which exposes the receiver-class,
+  Kernel-ABI (`required_abi`/`provided_abi`) and rotation APIs the receiver and
+  backup-restorable gates above are built on.
+
+### MediaTek
+
+- Admit a MediaTek crossflash automatically between drives of the same hardware
+  family, derived from the firmware itself — a content hash of
+  chip·platform·loader·interface·medium·BD-write, which is the finest hardware
+  distinction the image encodes (14x/16x/UHD differences within a family are
+  firmware limits, and per-drive calibration lives on the drive and is not
+  overwritten). An image of another model is flashed when it is the drive's
+  hardware family and passes every content gate: chip match, a boot page a known
+  OEM build stores, a valid AES-CMAC, an identical boot banner, a rollback
+  simulation (the backup must flash back under the same rule), and a post-flash
+  identity that confirms the drive now reports the new model. A different family,
+  an INTM build or an unknown-identity image is refused, and an unknown family
+  fails closed. There is no curated allowlist, no hardware-validated flag and no
+  override. Same-model flashes and their messages are unchanged. The motivating
+  case — LG WH16NS60 and WH16NS58 and the ASUS BW-16D1HT, all one JB8 family —
+  now crossflashes; a JB7 BW-16D1HT or an LG BU40N is refused as a different
+  family. Replaces the curated crossflash-class gate.
+
 ## 0.12.0
 
 <small>2026-10-10</small>
