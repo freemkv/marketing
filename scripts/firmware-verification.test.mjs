@@ -148,6 +148,19 @@ test('request limits, anti-bot check and email failure do not create confirmatio
   assert.equal(await f.count(), 0);
 });
 
+test('real counts remain available without email delivery; requesting a code fails clearly', async () => {
+  const f = fixture();
+  const cookie = await f.login('person@example.com', {target: 'b', source: 'a'});
+  await f.call({action: 'add', target: 'b', source: 'a'}, cookie);
+  delete f.env.FIRMWARE_EMAIL_TOKEN;
+  assert.deepEqual((await f.call({action: 'counts', scopes: [{target: 'b'}, {target: 'b', source: 'a'}]})).data.counts, [1, 1]);
+  assert.equal((await f.call({action: 'status', target: 'b'}, cookie)).status, 200);
+  const result = await f.call({action: 'request', target: 'b', email: 'other@example.com', token: 'good'});
+  assert.equal(result.status, 503);
+  assert.equal(result.data.error, 'Email verification is temporarily unavailable.');
+  assert.equal(f.state.mail.length, 1);
+});
+
 test('unknown/unsupported routes, other origins, missing setup, oversized and invalid requests fail closed', async () => {
   const f = fixture();
   assert.equal((await f.call({action: 'counts', scopes: [{target: 'missing'}]})).status, 400);

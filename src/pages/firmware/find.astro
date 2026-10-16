@@ -231,7 +231,7 @@ import '../../styles/site.css';
               '" data-verification-source="' + escapeText(source ? source.verification || '' : '') +
               '" data-verification-label="' + escapeText(label) + '"' +
               (source ? ' data-verification-from="' + escapeText(identities[source.i].n + ' ' + source.r + (identities[source.i].e ? ' ' + identities[source.i].e : '')) + '"' : '') +
-              ' disabled aria-label="Community verification for ' + escapeText(label) + '">…</button>';
+              ' hidden disabled aria-label="Community verification for ' + escapeText(label) + '">…</button>';
           }
 
           var filtered = [];

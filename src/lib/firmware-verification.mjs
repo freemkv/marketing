@@ -108,8 +108,7 @@ export async function firmwareVerification(request, env, catalog, {fetcher = fet
     let body;
     try { body = JSON.parse(text); } catch { throw new Refusal('Invalid request.'); }
     if (!body || typeof body !== 'object' || Array.isArray(body)) throw new Refusal('Invalid request.');
-    if (!env.FIRMWARE_VERIFICATIONS || typeof env.FIRMWARE_VERIFICATION_SECRET !== 'string' || env.FIRMWARE_VERIFICATION_SECRET.length < 32 ||
-      !env.FIRMWARE_EMAIL_ACCOUNT_ID || !env.FIRMWARE_EMAIL_TOKEN) {
+    if (!env.FIRMWARE_VERIFICATIONS || typeof env.FIRMWARE_VERIFICATION_SECRET !== 'string' || env.FIRMWARE_VERIFICATION_SECRET.length < 32) {
       throw new Refusal('Verification is temporarily unavailable.', 503);
     }
     const db = env.FIRMWARE_VERIFICATIONS, time = Math.floor(now() / 1000);
@@ -120,6 +119,9 @@ export async function firmwareVerification(request, env, catalog, {fetcher = fet
     }
     if (body.action === 'request') {
       const scope = scopeOf(body, catalog), email = emailAddress(body.email);
+      if (!env.FIRMWARE_EMAIL_ACCOUNT_ID || !env.FIRMWARE_EMAIL_TOKEN) {
+        throw new Refusal('Email verification is temporarily unavailable.', 503);
+      }
       await challengeToken(request, env, body.token, fetcher);
       const person = await mac(env.FIRMWARE_VERIFICATION_SECRET, 'email', email);
       const ip = await mac(env.FIRMWARE_VERIFICATION_SECRET, 'ip', request.headers.get('CF-Connecting-IP') || 'unknown');
