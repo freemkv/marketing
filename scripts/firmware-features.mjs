@@ -371,6 +371,13 @@ export async function generate({ hoard, fw, flash, outDir, eligible = null, hard
   }
 }
 
+// Feature evaluation reads firmware images, while the catalogue addresses TARs.
+export function eligibleImageHashes(catalog) {
+  return new Set((catalog.identities ?? []).filter(i => i.family === 'mediatek')
+    .flatMap(i => (i.revisions ?? []).flatMap(r => r.packages ?? [])
+      .map(p => p.image_sha256 ?? p.sha256)));
+}
+
 async function main(argv) {
   const a = { jobs: 8, outDir: path.join(SITE, 'src/data'), fw: process.env.FREEMKV_FW, flash: process.env.FREEMKV_CROSSFLASH };
   let hardwareFile, eligibleCatalog, hoard;
@@ -388,7 +395,7 @@ async function main(argv) {
   if (!hoard || !a.fw || !a.flash) throw new Error('usage: firmware-features.mjs <hoard> --fw <freemkv-fw> --flash <freemkv-crossflash> [--out-dir D] [--hardware-verified FILE] [--jobs N]');
   const hardware = new Set(hardwareFile ? await readJson(hardwareFile) : []);
   const catalog = eligibleCatalog ? await readJson(eligibleCatalog) : null;
-  const eligible = catalog ? new Set((catalog.identities ?? []).filter(i => i.family === 'mediatek').flatMap(i => (i.revisions ?? []).flatMap(r => r.packages ?? []).map(p => p.sha256))) : null;
+  const eligible = catalog ? eligibleImageHashes(catalog) : null;
   await generate({ hoard: path.resolve(hoard), fw: a.fw, flash: a.flash, outDir: a.outDir, eligible, hardware, jobs: a.jobs, log: m => console.log(m) });
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

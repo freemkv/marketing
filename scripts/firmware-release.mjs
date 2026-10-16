@@ -310,7 +310,7 @@ async function main() {
     // copy and should be deleted.
     const manifest=await json(path.join(a,'publish-manifest.json'));
     const keep=new Set(manifest.objects.map(o=>o.key));
-    const orphans=await pruneOrphans(keep,{listPage:cfListPage(fetch),deleteKey:(key,bucket)=>wranglerDelete(bucket,key)});
+    const orphans=process.argv.includes('--keep-existing') ? [] : await pruneOrphans(keep,{listPage:cfListPage(fetch),deleteKey:(key,bucket)=>wranglerDelete(bucket,key)});
     if(orphans.length) console.log(`Deleted ${orphans.length} orphan R2 object${orphans.length===1?'':'s'}`);
     // Only expose links to the build after every public object verifies.
     const files=manifest.format===V2?['finder-catalog.json','legacy-keys.json','crossflash-links.json']:['pioneer-firmware-index.json','firmware-index.json'];

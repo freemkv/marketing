@@ -1,5 +1,5 @@
 {
- "note": "Per-firmware feature availability over the full 102-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from `freemkv-fw create --base --json`; per-feature `ok` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (74 images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, 25 images). Regenerate with scripts/firmware-features.mjs — do not hand-edit.",
+ "note": "Per-firmware feature availability over the full 121-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from `freemkv-fw create --base --json`; per-feature `ok` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (93 images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, 25 images). Regenerate with scripts/firmware-features.mjs — do not hand-edit.",
  "flags": [
   "Speed",
   "Region",
@@ -10,21 +10,21 @@
   "Bus"
  ],
  "counts": {
-  "total": 102,
+  "total": 121,
   "base_only": 0,
-  "feature_bearing": 99,
+  "feature_bearing": 118,
   "stock_only": 3,
   "hardware_verified": 0,
-  "build_verified": 95
+  "build_verified": 114
  },
  "per_flag": {
-  "Speed": 74,
-  "Region-free": 99,
-  "UHD": 74,
-  "BD": 74,
-  "HRL Bypass": 99,
-  "AKE Bypass": 99,
-  "Bus Decrypt": 99
+  "Speed": 93,
+  "Region-free": 118,
+  "UHD": 93,
+  "BD": 93,
+  "HRL Bypass": 118,
+  "AKE Bypass": 118,
+  "Bus Decrypt": 118
  },
  "images": [
   {
@@ -2214,17 +2214,17 @@
    "lineage": "MT1959-lineage"
   },
   {
-   "sha256": "215488b5ac20fc3ed7fe33ff5679a13a839f0729cc85d0b8bcf0fd3e4c749b23",
+   "sha256": "7dcc99d276008cf2cfc6214eb0f4b88ec5eb3937f21bb1853b53f2b8d42ea6c8",
    "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BE16NU50_215488b5ac20fc3e.bin",
+   "src": "/tmp/corpus_dw/MT1959_BE16NU50_7dcc99d276008cf2.bin",
    "engine": "MT1959",
    "chip": "MT1959",
    "brand": "LG",
    "vendor": "HL-DT-ST",
    "model": "BE16NU50",
-   "rev": "INTM",
+   "rev": "1.04",
    "media": "BD/UHD",
-   "variant": "N004800",
+   "variant": "N006300",
    "modifiable": true,
    "base_ok": true,
    "base_only": false,
@@ -2268,18 +2268,18 @@
     }
    ],
    "base_facts": {
-    "handler_va": 1404664,
-    "boot_stub_va": 1405452,
-    "boot_init_site": 1311882,
+    "handler_va": 98420,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1312730,
     "de_off": 2015318,
     "speed_gate": 101122,
-    "region_emitter": 1167416,
-    "ake_gate": 1284266,
+    "region_emitter": 1168256,
+    "ake_gate": 0,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405840,
-    "hrl_sites": 1
+    "bd_stub_va": 0,
+    "hrl_sites": 0
    },
-   "r2_key": "MT1959/BE16NU50_INTM_215488b5.bin",
+   "r2_key": "MT1959/BE16NU50_1.04_7dcc99d2.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -2697,17 +2697,17 @@
    "lineage": "MT1959-lineage"
   },
   {
-   "sha256": "c3a18eed17251d1508964647e833ffdfe01b13c28dff9a717dfac6336e7c70e6",
+   "sha256": "dd27dc3901ea0ef2e8704a54c8e0f3be44d11cbef061b202f69ef96f70522681",
    "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BH16NS40_c3a18eed17251d15.bin",
+   "src": "/tmp/corpus_dw/MT1959_BH16NS40_dd27dc3901ea0ef2.bin",
    "engine": "MT1959",
    "chip": "MT1959",
    "brand": "LG",
    "vendor": "HL-DT-ST",
    "model": "BH16NS40",
-   "rev": "INTM",
+   "rev": "1.05",
    "media": "BD/UHD",
-   "variant": "N003600",
+   "variant": "N005600",
    "modifiable": true,
    "base_ok": true,
    "base_only": false,
@@ -2751,18 +2751,18 @@
     }
    ],
    "base_facts": {
-    "handler_va": 1404580,
-    "boot_stub_va": 1405368,
-    "boot_init_site": 1311838,
+    "handler_va": 98420,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1312010,
     "de_off": 2015318,
     "speed_gate": 101122,
-    "region_emitter": 1167372,
-    "ake_gate": 1284222,
+    "region_emitter": 1167536,
+    "ake_gate": 0,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405756,
-    "hrl_sites": 1
+    "bd_stub_va": 0,
+    "hrl_sites": 0
    },
-   "r2_key": "MT1959/BH16NS40_INTM_c3a18eed.bin",
+   "r2_key": "MT1959/BH16NS40_1.05_dd27dc39.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -3180,6 +3180,144 @@
    "lineage": "MT1959-lineage"
   },
   {
+   "sha256": "5f3fa17d61118f8405248cf9d206e32824c2321c9bfda0739b75a8633c3a81e8",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BH16NS55_5f3fa17d61118f84.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BH16NS55",
+   "rev": "1.05",
+   "media": "BD/UHD",
+   "variant": "N005601",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 98420,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1312014,
+    "de_off": 2015318,
+    "speed_gate": 101122,
+    "region_emitter": 1167540,
+    "ake_gate": 0,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 0,
+    "hrl_sites": 0
+   },
+   "r2_key": "MT1959/BH16NS55_1.05_5f3fa17d.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "ca7e8db8576a0ab5f5376270159c133195ba1f60d90e7e7465dae7f4dacc3532",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BH16NS55_ca7e8db8576a0ab5.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BH16NS55",
+   "rev": "1.05",
+   "media": "BD/UHD",
+   "variant": "N005400",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 98420,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1311982,
+    "de_off": 2015318,
+    "speed_gate": 101122,
+    "region_emitter": 1167508,
+    "ake_gate": 0,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 0,
+    "hrl_sites": 0
+   },
+   "r2_key": "MT1959/BH16NS55_1.05_ca7e8db8.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
    "sha256": "6d9fdb2bd658165a073e6144c8938057e08d8cba7ca108274b120dd30c55328f",
    "bytes": 2097152,
    "src": "/tmp/corpus_dw/MT1959_BH16NS58_6d9fdb2bd658165a.bin",
@@ -3456,75 +3594,6 @@
    "lineage": "MT1959-lineage"
   },
   {
-   "sha256": "1baed51d34e05db345798e3820a38ae2c6598cad38d20522e476e803d1f46562",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BH16NS60_1baed51d34e05db3.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "LG",
-   "vendor": "HL-DT-ST",
-   "model": "BH16NS60",
-   "rev": "INTM",
-   "media": "BD/UHD",
-   "variant": "N016400",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1392248,
-    "boot_stub_va": 1393036,
-    "boot_init_site": 1299042,
-    "de_off": 2015318,
-    "speed_gate": 113412,
-    "region_emitter": 1150502,
-    "ake_gate": 1269156,
-    "uhd_stub_va": 1393392,
-    "bd_stub_va": 1393448,
-    "hrl_sites": 3
-   },
-   "r2_key": "MT1959/BH16NS60_INTM_1baed51d.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
    "sha256": "c88a69013d557b9c4cf1a4d603c314585f51a258b9747c345184e866eef36306",
    "bytes": 2097152,
    "src": "/tmp/corpus_dw/MT1959_BP50NB40_c88a69013d557b9c.bin",
@@ -3732,17 +3801,17 @@
    "lineage": "MT1959-lineage"
   },
   {
-   "sha256": "92bb22b2c8999bbcde4e02d785b711063cb414f40bdbe16fac862643b298610d",
+   "sha256": "3cdbdacace5c6ed3d505bbbff65350274c5775ab871c42d130082fcf0ab56050",
    "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BP50NB40_92bb22b2c8999bbc.bin",
+   "src": "/tmp/corpus_dw/MT1959_BP50NB40_3cdbdacace5c6ed3.bin",
    "engine": "MT1959",
    "chip": "MT1959",
    "brand": "LG",
    "vendor": "HL-DT-ST",
    "model": "BP50NB40",
-   "rev": "INTM",
+   "rev": "1.03",
    "media": "BD/UHD",
-   "variant": "N008900",
+   "variant": "N009800",
    "modifiable": true,
    "base_ok": true,
    "base_only": false,
@@ -3786,18 +3855,18 @@
     }
    ],
    "base_facts": {
-    "handler_va": 1381588,
-    "boot_stub_va": 1382376,
-    "boot_init_site": 1289426,
+    "handler_va": 110752,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1289998,
     "de_off": 2015318,
     "speed_gate": 113586,
-    "region_emitter": 1145518,
-    "ake_gate": 1262142,
+    "region_emitter": 1146090,
+    "ake_gate": 0,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1382764,
-    "hrl_sites": 1
+    "bd_stub_va": 0,
+    "hrl_sites": 0
    },
-   "r2_key": "MT1959/BP50NB40_INTM_92bb22b2.bin",
+   "r2_key": "MT1959/BP50NB40_1.03_3cdbdaca.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -4077,6 +4146,75 @@
    "lineage": "MT1959-lineage"
   },
   {
+   "sha256": "0bd77fed4ec9df86aab9d8550f3182a8a95f4c27ee8342119b1b1f9f2c8303e0",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BU40N_0bd77fed4ec9df86.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BU40N",
+   "rev": "1.00",
+   "media": "BD/UHD",
+   "variant": "N000103",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1390952,
+    "boot_stub_va": 1391740,
+    "boot_init_site": 1299496,
+    "de_off": 2015318,
+    "speed_gate": 113442,
+    "region_emitter": 1153168,
+    "ake_gate": 1271188,
+    "uhd_stub_va": 1392096,
+    "bd_stub_va": 1392152,
+    "hrl_sites": 3
+   },
+   "r2_key": "MT1959/BU40N_1.00_0bd77fed.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
    "sha256": "221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4",
    "bytes": 2097152,
    "src": "/tmp/corpus_dw/MT1959_BU40N_221ad35b7edd4023.bin",
@@ -4146,6 +4284,213 @@
    "lineage": "MT1959-lineage"
   },
   {
+   "sha256": "22edcf493f22a3e3ed66ba8b4cdd79ccc49533d9b8e7f06b6beade8cab2a9039",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BU40N_22edcf493f22a3e3.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BU40N",
+   "rev": "1.00",
+   "media": "BD/UHD",
+   "variant": "N000103",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1390952,
+    "boot_stub_va": 1391740,
+    "boot_init_site": 1299496,
+    "de_off": 2015318,
+    "speed_gate": 113442,
+    "region_emitter": 1153168,
+    "ake_gate": 1271188,
+    "uhd_stub_va": 1392096,
+    "bd_stub_va": 1392152,
+    "hrl_sites": 3
+   },
+   "r2_key": "MT1959/BU40N_1.00_22edcf49.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BU40N_4c2e0b2d87ba5935.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BU40N",
+   "rev": "1.00",
+   "media": "BD/UHD",
+   "variant": "N000103",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1390952,
+    "boot_stub_va": 1391740,
+    "boot_init_site": 1299496,
+    "de_off": 2015318,
+    "speed_gate": 113442,
+    "region_emitter": 1153168,
+    "ake_gate": 1271188,
+    "uhd_stub_va": 1392096,
+    "bd_stub_va": 1392152,
+    "hrl_sites": 3
+   },
+   "r2_key": "MT1959/BU40N_1.00_4c2e0b2d.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "734ccb11f0b4763a27b358655a14ce60f4801cf131a936d14ee7dd86d34e2c1f",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BU40N_734ccb11f0b4763a.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BU40N",
+   "rev": "1.00",
+   "media": "BD/UHD",
+   "variant": "N000103",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1390952,
+    "boot_stub_va": 1391740,
+    "boot_init_site": 1299496,
+    "de_off": 2015318,
+    "speed_gate": 113442,
+    "region_emitter": 1153168,
+    "ake_gate": 1271188,
+    "uhd_stub_va": 1392096,
+    "bd_stub_va": 1392152,
+    "hrl_sites": 3
+   },
+   "r2_key": "MT1959/BU40N_1.00_734ccb11.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
    "sha256": "822b229a9685f1e7af4e263dd4d1b6da2d361bd383b10ba93aea24235db93469",
    "bytes": 2097152,
    "src": "/tmp/corpus_dw/MT1959_BU40N_822b229a9685f1e7.bin",
@@ -4166,6 +4511,75 @@
    "base_facts": null,
    "r2_key": "MT1959/BU40N_1.00_822b229a.bin",
    "lineage": null
+  },
+  {
+   "sha256": "b2139fd99d7c5b7fc5b525e53730b2f0f7108ffd2fd1ea4aab173949aa5ff44e",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BU40N_b2139fd99d7c5b7f.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BU40N",
+   "rev": "1.00",
+   "media": "BD/UHD",
+   "variant": "N000103",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1390952,
+    "boot_stub_va": 1391740,
+    "boot_init_site": 1299496,
+    "de_off": 2015318,
+    "speed_gate": 113442,
+    "region_emitter": 1153168,
+    "ake_gate": 1271188,
+    "uhd_stub_va": 1392096,
+    "bd_stub_va": 1392152,
+    "hrl_sites": 3
+   },
+   "r2_key": "MT1959/BU40N_1.00_b2139fd9.bin",
+   "lineage": "MT1959-lineage"
   },
   {
    "sha256": "b9b94841096f45005b5f12c78009bf420c840fa44e8b0d451b7b490ba04f8356",
@@ -4466,6 +4880,213 @@
    "lineage": "MT1959-lineage"
   },
   {
+   "sha256": "5c1a47392976add3f84aa90a9a17dcf835361cecda706e6d7d388d7b92a24b69",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BU40N_5c1a47392976add3.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BU40N",
+   "rev": "1.04",
+   "media": "BD/UHD",
+   "variant": "N083500",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 110752,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1301236,
+    "de_off": 2015318,
+    "speed_gate": 113442,
+    "region_emitter": 1154292,
+    "ake_gate": 0,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 0,
+    "hrl_sites": 0
+   },
+   "r2_key": "MT1959/BU40N_1.04_5c1a4739.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "fbfed0cc2d55bf823012d76cc7ac6d7fa742f059602d9d126b4866bdd8617d2d",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BU40N_fbfed0cc2d55bf82.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BU40N",
+   "rev": "1.05",
+   "media": "BD/UHD",
+   "variant": "N085300",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 110752,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1305360,
+    "de_off": 2015318,
+    "speed_gate": 113442,
+    "region_emitter": 1158492,
+    "ake_gate": 0,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 0,
+    "hrl_sites": 0
+   },
+   "r2_key": "MT1959/BU40N_1.05_fbfed0cc.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "7d7f2465feafbcc05b74fbaff1dced8a55b19ddb1c03297a8027e261045d2e9e",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BU40N_7d7f2465feafbcc0.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BU40N",
+   "rev": "A103",
+   "media": "BD/UHD",
+   "variant": "D003600",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 110752,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1303482,
+    "de_off": 2015318,
+    "speed_gate": 113442,
+    "region_emitter": 1155514,
+    "ake_gate": 0,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 0,
+    "hrl_sites": 0
+   },
+   "r2_key": "MT1959/BU40N_A103_7d7f2465.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
    "sha256": "5c01c1fda59f3db130bd14aa64fe97d4010376798716b16792dbffd59c488a95",
    "bytes": 2097152,
    "src": "/tmp/corpus_dw/MT1959_BU40N_5c01c1fda59f3db1.bin",
@@ -4532,6 +5153,75 @@
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_BN11_5c01c1fd.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "3d3badd67d471b380e5566e747b42f7775abff7dd9fbbc2d0d21920a937b34d7",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BU40N_3d3badd67d471b38.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BU40N",
+   "rev": "BN12",
+   "media": "BD/UHD",
+   "variant": "0001001",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1387040,
+    "boot_stub_va": 1387828,
+    "boot_init_site": 1295600,
+    "de_off": 2015318,
+    "speed_gate": 113442,
+    "region_emitter": 1147618,
+    "ake_gate": 1266164,
+    "uhd_stub_va": 1388184,
+    "bd_stub_va": 1388240,
+    "hrl_sites": 3
+   },
+   "r2_key": "MT1959/BU40N_BN12_3d3badd6.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -4670,6 +5360,75 @@
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_BU10_14d86e99.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "08d14869e553b84a92c4f897a120559673e75eee6d786988d038471aa2f5369a",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BU40N_08d14869e553b84a.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "BU40N",
+   "rev": "BU11",
+   "media": "BD/UHD",
+   "variant": "O000300",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1394036,
+    "boot_stub_va": 1394824,
+    "boot_init_site": 1302024,
+    "de_off": 2015318,
+    "speed_gate": 113442,
+    "region_emitter": 1153990,
+    "ake_gate": 1272572,
+    "uhd_stub_va": 1395180,
+    "bd_stub_va": 1395236,
+    "hrl_sites": 3
+   },
+   "r2_key": "MT1959/BU40N_BU11_08d14869.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -5015,75 +5774,6 @@
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_FR07_4af842c0.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "29ad302647148e270c15a5a4542aa4796ee9ba25ea9fbf9f2be9465c01c139a7",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BU40N_29ad302647148e27.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "LG",
-   "vendor": "HL-DT-ST",
-   "model": "BU40N",
-   "rev": "INTM",
-   "media": "BD/UHD",
-   "variant": "N081800",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1396420,
-    "boot_stub_va": 1397208,
-    "boot_init_site": 1304296,
-    "de_off": 2015318,
-    "speed_gate": 113444,
-    "region_emitter": 1156250,
-    "ake_gate": 1274844,
-    "uhd_stub_va": 1397564,
-    "bd_stub_va": 1397620,
-    "hrl_sites": 3
-   },
-   "r2_key": "MT1959/BU40N_INTM_29ad3026.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -5570,6 +6260,213 @@
    "lineage": "MT1959-lineage"
   },
   {
+   "sha256": "0d085b4c854bfc03c08b2e7fde1b25096bdf888eaa65adbb28a10b529ced07ac",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BW-16D1HT_0d085b4c854bfc03.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "ASUS",
+   "vendor": "ASUS",
+   "model": "BW-16D1HT",
+   "rev": "3.02",
+   "media": "BD/UHD",
+   "variant": "W001800",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1403092,
+    "boot_stub_va": 1403880,
+    "boot_init_site": 1310738,
+    "de_off": 2015318,
+    "speed_gate": 101122,
+    "region_emitter": 1165574,
+    "ake_gate": 1282282,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404268,
+    "hrl_sites": 1
+   },
+   "r2_key": "MT1959/BW-16D1HT_3.02_0d085b4c.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "21e1f77e0ea0bd8b8d6b324f5ae4d68070d6bb5394f83bbaa5032cedde441cc1",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BW-16D1HT_21e1f77e0ea0bd8b.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "ASUS",
+   "vendor": "ASUS",
+   "model": "BW-16D1HT",
+   "rev": "3.02",
+   "media": "BD/UHD",
+   "variant": "W001800",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1403092,
+    "boot_stub_va": 1403880,
+    "boot_init_site": 1310738,
+    "de_off": 2015318,
+    "speed_gate": 101122,
+    "region_emitter": 1165574,
+    "ake_gate": 1282282,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404268,
+    "hrl_sites": 1
+   },
+   "r2_key": "MT1959/BW-16D1HT_3.02_21e1f77e.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "663c1b55e479f83e958b5addc430df1bfa290e5350ef9d036ca26e4acd653a82",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BW-16D1HT_663c1b55e479f83e.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "ASUS",
+   "vendor": "ASUS",
+   "model": "BW-16D1HT",
+   "rev": "3.02",
+   "media": "BD/UHD",
+   "variant": "W001800",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1403092,
+    "boot_stub_va": 1403880,
+    "boot_init_site": 1310738,
+    "de_off": 2015318,
+    "speed_gate": 101122,
+    "region_emitter": 1165574,
+    "ake_gate": 1282282,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404268,
+    "hrl_sites": 1
+   },
+   "r2_key": "MT1959/BW-16D1HT_3.02_663c1b55.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
    "sha256": "784e017fbacd2250fc37ee442869db82ccc8d637d78126b570ba33c0256d1715",
    "bytes": 2097152,
    "src": "/tmp/corpus_dw/MT1959_BW-16D1HT_784e017fbacd2250.bin",
@@ -5636,6 +6533,144 @@
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BW-16D1HT_3.02_784e017f.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "afeab3e66cbdf9973e3127162551f111b9d048246b5581885b99a44c38f18ee6",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BW-16D1HT_afeab3e66cbdf997.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "ASUS",
+   "vendor": "ASUS",
+   "model": "BW-16D1HT",
+   "rev": "3.02",
+   "media": "BD/UHD",
+   "variant": "W001800",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1403092,
+    "boot_stub_va": 1403880,
+    "boot_init_site": 1310738,
+    "de_off": 2015318,
+    "speed_gate": 101122,
+    "region_emitter": 1165574,
+    "ake_gate": 1282282,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404268,
+    "hrl_sites": 1
+   },
+   "r2_key": "MT1959/BW-16D1HT_3.02_afeab3e6.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "d00191537a8f38405bbe33bac43ac97c254f019531ef7bf998d95c2214e8807f",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_BW-16D1HT_d00191537a8f3840.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "ASUS",
+   "vendor": "ASUS",
+   "model": "BW-16D1HT",
+   "rev": "3.02",
+   "media": "BD/UHD",
+   "variant": "W001800",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 1403092,
+    "boot_stub_va": 1403880,
+    "boot_init_site": 1310738,
+    "de_off": 2015318,
+    "speed_gate": 101122,
+    "region_emitter": 1165574,
+    "ake_gate": 1282282,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 1404268,
+    "hrl_sites": 1
+   },
+   "r2_key": "MT1959/BW-16D1HT_3.02_d0019153.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -5843,75 +6878,6 @@
     "hrl_sites": 0
    },
    "r2_key": "MT1959/CH12NS40_1.01_731bcf7a.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "fc98fda6431f71ebc29a3fadf572fcd09c58cc4b5bed1bf918dbc29b3616777e",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_CH12NS40_fc98fda6431f71eb.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "LG",
-   "vendor": "HL-DT-ST",
-   "model": "CH12NS40",
-   "rev": "INTM",
-   "media": "BD",
-   "variant": "N000700",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 98420,
-    "boot_stub_va": 66644,
-    "boot_init_site": 1555572,
-    "de_off": 2015318,
-    "speed_gate": 101090,
-    "region_emitter": 1335500,
-    "ake_gate": 0,
-    "uhd_stub_va": 0,
-    "bd_stub_va": 0,
-    "hrl_sites": 0
-   },
-   "r2_key": "MT1959/CH12NS40_INTM_fc98fda6.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -6191,6 +7157,75 @@
    "lineage": "MT1959-lineage"
   },
   {
+   "sha256": "38a70ac234a1dfd67725890bdb82f1bf798262a6e345b8edc6633f5d980bfcb1",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_WH14NS40_38a70ac234a1dfd6.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "WH14NS40",
+   "rev": "1.05",
+   "media": "BD/UHD",
+   "variant": "N003900",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 98420,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1312146,
+    "de_off": 2015318,
+    "speed_gate": 101122,
+    "region_emitter": 1167672,
+    "ake_gate": 0,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 0,
+    "hrl_sites": 0
+   },
+   "r2_key": "MT1959/WH14NS40_1.05_38a70ac2.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
    "sha256": "87790f053877e3e1bdd22969d70a7b1b6ed36624bb474bfcdee6526ac6e227c0",
    "bytes": 2097152,
    "src": "/tmp/corpus_dw/MT1959_WH16NS40_87790f053877e3e1.bin",
@@ -6326,6 +7361,75 @@
     "hrl_sites": 1
    },
    "r2_key": "MT1959/WH16NS40_1.03_3e3b227e.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "ffde0e55aed6484046d539a455e04dfd0765b927a57cce0af9018726fe23725f",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_WH16NS40_ffde0e55aed64840.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "WH16NS40",
+   "rev": "1.05",
+   "media": "BD",
+   "variant": "N003900",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 98420,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1312010,
+    "de_off": 2015318,
+    "speed_gate": 101122,
+    "region_emitter": 1167536,
+    "ake_gate": 0,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 0,
+    "hrl_sites": 0
+   },
+   "r2_key": "MT1959/WH16NS40_1.05_ffde0e55.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -6533,6 +7637,75 @@
     "hrl_sites": 1
    },
    "r2_key": "MT1959/WH16NS58_1.V5_e2406018.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "569cea9bb8add8b5638fbf0f5ea47b8014f851f007b2cbef2be44737d7cdbf68",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_WH16NS58_569cea9bb8add8b5.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "WH16NS58",
+   "rev": "1.V7",
+   "media": "BD/UHD",
+   "variant": "N007800",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 98420,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1325696,
+    "de_off": 2015318,
+    "speed_gate": 101122,
+    "region_emitter": 1171068,
+    "ake_gate": 0,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 0,
+    "hrl_sites": 0
+   },
+   "r2_key": "MT1959/WH16NS58_1.V7_569cea9b.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -6812,6 +7985,75 @@
    "lineage": "MT1959-lineage"
   },
   {
+   "sha256": "f1cd257b8c4bb163c7f00610abb30704ea58d93a87be385f48afeb61de239814",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_WH16NS60_f1cd257b8c4bb163.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "WH16NS60",
+   "rev": "1.03",
+   "media": "BD/UHD",
+   "variant": "N017600",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 110724,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1296246,
+    "de_off": 2015318,
+    "speed_gate": 113410,
+    "region_emitter": 1148868,
+    "ake_gate": 0,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 0,
+    "hrl_sites": 0
+   },
+   "r2_key": "MT1959/WH16NS60_1.03_f1cd257b.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
    "sha256": "bea3a823370a985afe37ce6a6aad4b67ef7af15307f622aaac1f76bc7a1dbb5c",
    "bytes": 2097152,
    "src": "/tmp/corpus_dw/MT1959_WP50NB40_bea3a823370a985a.bin",
@@ -6878,6 +8120,75 @@
     "hrl_sites": 1
    },
    "r2_key": "MT1959/WP50NB40_1.01_bea3a823.bin",
+   "lineage": "MT1959-lineage"
+  },
+  {
+   "sha256": "263994abefb0b5a757d7b7b677b4e24dffb537ff124a81ad54426948a83265f1",
+   "bytes": 2097152,
+   "src": "/tmp/corpus_dw/MT1959_WP50NB40_263994abefb0b5a7.bin",
+   "engine": "MT1959",
+   "chip": "MT1959",
+   "brand": "LG",
+   "vendor": "HL-DT-ST",
+   "model": "WP50NB40",
+   "rev": "1.03",
+   "media": "BD/UHD",
+   "variant": "N009800",
+   "modifiable": true,
+   "base_ok": true,
+   "base_only": false,
+   "confidence": "build-verified",
+   "advertised": "features",
+   "features": [
+    {
+     "key": "Speed",
+     "name": "Speed",
+     "ok": true
+    },
+    {
+     "key": "Region",
+     "name": "Region-free",
+     "ok": true
+    },
+    {
+     "key": "UHD",
+     "name": "UHD",
+     "ok": true
+    },
+    {
+     "key": "BD",
+     "name": "BD",
+     "ok": true
+    },
+    {
+     "key": "HRL",
+     "name": "HRL Bypass",
+     "ok": true
+    },
+    {
+     "key": "AKE",
+     "name": "AKE Bypass",
+     "ok": true
+    },
+    {
+     "key": "Bus",
+     "name": "Bus Decrypt",
+     "ok": true
+    }
+   ],
+   "base_facts": {
+    "handler_va": 110752,
+    "boot_stub_va": 66672,
+    "boot_init_site": 1289998,
+    "de_off": 2015318,
+    "speed_gate": 113586,
+    "region_emitter": 1146090,
+    "ake_gate": 0,
+    "uhd_stub_va": 0,
+    "bd_stub_va": 0,
+    "hrl_sites": 0
+   },
+   "r2_key": "MT1959/WP50NB40_1.03_263994ab.bin",
    "lineage": "MT1959-lineage"
   }
  ]

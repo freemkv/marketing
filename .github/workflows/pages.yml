@@ -57,7 +57,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           FIRMWARE_R2_ACCESS: ${{ vars.FIRMWARE_R2_ACCESS }}
-        run: node scripts/firmware-release.mjs publish "$RUNNER_TEMP/firmware-stage"
+        run: node scripts/firmware-release.mjs publish "$RUNNER_TEMP/firmware-stage" --keep-existing
       - name: Retain and verify latest full firmware archive
         if: inputs.firmware_release != ''
         env:

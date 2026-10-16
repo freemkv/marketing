@@ -13153,12 +13153,6 @@
         {
           "destination": "GENERAL",
           "family": "mediatek",
-          "hardware": "HL-DT-ST BH16NS60 MT1959 JB8/JB8",
-          "held": true
-        },
-        {
-          "destination": "GENERAL",
-          "family": "mediatek",
           "hardware": "HL-DT-ST BH16NS60 NS60",
           "held": true
         }
@@ -13299,7 +13293,7 @@
           "held": true
         },
         {
-          "destination": "GENERAL",
+          "destination": "D?",
           "family": "mediatek",
           "hardware": "HL-DT-ST BU40N MT1959 BU5/BU3",
           "held": true
@@ -18152,15 +18146,16 @@
           "packages": [
             {
               "build_id": "1711291725",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "8c779fa82f683729",
-              "filename": "BC-12B1ST_b_3.01_8961b80b.bin",
+              "filename": "BC-12B1ST_b_3.01_5668b35f.tar",
               "fragment": false,
-              "key": "fw/mediatek/8961b80b005c1b2ba7a8dbc10a4bd3fe6680bd2befcc71de95bd32de34bb4482.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "8961b80b005c1b2ba7a8dbc10a4bd3fe6680bd2befcc71de95bd32de34bb4482",
+              "key": "fw/mediatek/5668b35fc1c20191400105cbc938e317d37f78c7cb2ce785ceb05122ace68ef4.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.01",
-              "sha256": "8961b80b005c1b2ba7a8dbc10a4bd3fe6680bd2befcc71de95bd32de34bb4482"
+              "sha256": "5668b35fc1c20191400105cbc938e317d37f78c7cb2ce785ceb05122ace68ef4"
             }
           ],
           "revision": "3.01"
@@ -18169,15 +18164,16 @@
           "packages": [
             {
               "build_id": "1902271321",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "8c779fa82f683729",
-              "filename": "BC-12B1ST_b_3.11_ae0c0313.bin",
+              "filename": "BC-12B1ST_b_3.11_a713177f.tar",
               "fragment": false,
-              "key": "fw/mediatek/ae0c03138570c73d0ba8ed6d7d5e9798ee54e6c22fcb4c815a86eea3301180f6.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "ae0c03138570c73d0ba8ed6d7d5e9798ee54e6c22fcb4c815a86eea3301180f6",
+              "key": "fw/mediatek/a713177f9821c7812192a9cf9b4cd81e6052b6581b757916af1fe1a5bf73995b.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.11",
-              "sha256": "ae0c03138570c73d0ba8ed6d7d5e9798ee54e6c22fcb4c815a86eea3301180f6"
+              "sha256": "a713177f9821c7812192a9cf9b4cd81e6052b6581b757916af1fe1a5bf73995b"
             }
           ],
           "revision": "3.11"
@@ -18202,15 +18198,16 @@
           "packages": [
             {
               "build_id": "1512091147",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "8c779fa82f683729",
-              "filename": "BC-12D2HT_3.00_dd03cdae.bin",
+              "filename": "BC-12D2HT_3.00_c49f9c92.tar",
               "fragment": false,
-              "key": "fw/mediatek/dd03cdae194de03a710b5f6e88dfedf421fd20667a3cc9ec58e828bd769ab2ed.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "dd03cdae194de03a710b5f6e88dfedf421fd20667a3cc9ec58e828bd769ab2ed",
+              "key": "fw/mediatek/c49f9c92ccabec7bc02a9401ab48ec83d992e2dee6c7649d4a198fe0d17ea83e.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.00",
-              "sha256": "dd03cdae194de03a710b5f6e88dfedf421fd20667a3cc9ec58e828bd769ab2ed"
+              "sha256": "c49f9c92ccabec7bc02a9401ab48ec83d992e2dee6c7649d4a198fe0d17ea83e"
             }
           ],
           "revision": "3.00"
@@ -18219,15 +18216,16 @@
           "packages": [
             {
               "build_id": "1711151926",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "8c779fa82f683729",
-              "filename": "BC-12D2HT_3.01_93ea068d.bin",
+              "filename": "BC-12D2HT_3.01_40cfe136.tar",
               "fragment": false,
-              "key": "fw/mediatek/93ea068da225140d9628c105d88d13088982c61024bf6cca03e0fe456d53a721.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "93ea068da225140d9628c105d88d13088982c61024bf6cca03e0fe456d53a721",
+              "key": "fw/mediatek/40cfe136a5fafcfa35e70f7ce52a760db42260d979c44fc3d708689951193e5a.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.01",
-              "sha256": "93ea068da225140d9628c105d88d13088982c61024bf6cca03e0fe456d53a721"
+              "sha256": "40cfe136a5fafcfa35e70f7ce52a760db42260d979c44fc3d708689951193e5a"
             }
           ],
           "revision": "3.01"
@@ -18236,15 +18234,16 @@
           "packages": [
             {
               "build_id": "1902271319",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "8c779fa82f683729",
-              "filename": "BC-12D2HT_3.11_9f5bc003.bin",
+              "filename": "BC-12D2HT_3.11_a824979f.tar",
               "fragment": false,
-              "key": "fw/mediatek/9f5bc003674065d4b5108ba45033c418cd38be4e46e5d218dc82409260c2f05c.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "9f5bc003674065d4b5108ba45033c418cd38be4e46e5d218dc82409260c2f05c",
+              "key": "fw/mediatek/a824979fd9e172435a316d7fe1f8163f042f96f5f96c1662f77f70a15cac4a66.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.11",
-              "sha256": "9f5bc003674065d4b5108ba45033c418cd38be4e46e5d218dc82409260c2f05c"
+              "sha256": "a824979fd9e172435a316d7fe1f8163f042f96f5f96c1662f77f70a15cac4a66"
             }
           ],
           "revision": "3.11"
@@ -18269,15 +18268,16 @@
           "packages": [
             {
               "build_id": "1801111117",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BW-16D1H-U_A203_e9d8bcdd.bin",
+              "filename": "BW-16D1H-U_A203_a4292658.tar",
               "fragment": false,
-              "key": "fw/mediatek/e9d8bcddf85aab6627c90623efcb7a39ee97681a68b729ef58fea391bc99b33a.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "e9d8bcddf85aab6627c90623efcb7a39ee97681a68b729ef58fea391bc99b33a",
+              "key": "fw/mediatek/a4292658bb39e8b48d2fca35235e5cdeecf5e87b4e32c09bf50a4891f02286f9.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "A203",
-              "sha256": "e9d8bcddf85aab6627c90623efcb7a39ee97681a68b729ef58fea391bc99b33a"
+              "sha256": "a4292658bb39e8b48d2fca35235e5cdeecf5e87b4e32c09bf50a4891f02286f9"
             }
           ],
           "revision": "A203"
@@ -18286,15 +18286,16 @@
           "packages": [
             {
               "build_id": "1901041044",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BW-16D1H-U_A204_223e7e38.bin",
+              "filename": "BW-16D1H-U_A204_e562e34b.tar",
               "fragment": false,
-              "key": "fw/mediatek/223e7e38b85f0d27464de596d373464cb7bf77ca825b81f2351abaf8c6cefba1.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "223e7e38b85f0d27464de596d373464cb7bf77ca825b81f2351abaf8c6cefba1",
+              "key": "fw/mediatek/e562e34b81d919bb8b39e5395a381d84438de83b4fedab16c3bf609a32adf55f.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "A204",
-              "sha256": "223e7e38b85f0d27464de596d373464cb7bf77ca825b81f2351abaf8c6cefba1"
+              "sha256": "e562e34b81d919bb8b39e5395a381d84438de83b4fedab16c3bf609a32adf55f"
             }
           ],
           "revision": "A204"
@@ -18319,15 +18320,16 @@
           "packages": [
             {
               "build_id": "1302051930",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BW-16D1HT_1.01_3f436c31.bin",
+              "filename": "BW-16D1HT_1.01_5bf6ef3c.tar",
               "fragment": false,
-              "key": "fw/mediatek/3f436c31124f6b7bbe582c67370924077018eb14e768f27d9b7194904f099aa5.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "3f436c31124f6b7bbe582c67370924077018eb14e768f27d9b7194904f099aa5",
+              "key": "fw/mediatek/5bf6ef3c96c178e48ab36b7882ed7f83d33e9b1ea489cf1238694be205d065cf.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "3f436c31124f6b7bbe582c67370924077018eb14e768f27d9b7194904f099aa5"
+              "sha256": "5bf6ef3c96c178e48ab36b7882ed7f83d33e9b1ea489cf1238694be205d065cf"
             }
           ],
           "revision": "1.01"
@@ -18352,15 +18354,16 @@
           "packages": [
             {
               "build_id": "1703311426",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BW-16D1HT_3.01_2e243a16.bin",
+              "filename": "BW-16D1HT_3.01_1206ed98.tar",
               "fragment": false,
-              "key": "fw/mediatek/2e243a167739d4e46ad7095db7cb5452c2980579a0cb359208945a0bbe0f3f29.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "2e243a167739d4e46ad7095db7cb5452c2980579a0cb359208945a0bbe0f3f29",
+              "key": "fw/mediatek/1206ed98cff08c8a428f369858303be5f3f328f0287def60ebe7ffd952b728cb.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.01",
-              "sha256": "2e243a167739d4e46ad7095db7cb5452c2980579a0cb359208945a0bbe0f3f29"
+              "sha256": "1206ed98cff08c8a428f369858303be5f3f328f0287def60ebe7ffd952b728cb"
             }
           ],
           "revision": "3.01"
@@ -18369,87 +18372,94 @@
           "packages": [
             {
               "build_id": "1711241413",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BW-16D1HT_3.02_0d085b4c.bin",
+              "filename": "BW-16D1HT_3.02_0b4ec4a8.tar",
               "fragment": false,
-              "key": "fw/mediatek/0d085b4c854bfc03c08b2e7fde1b25096bdf888eaa65adbb28a10b529ced07ac.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "663c1b55e479f83e958b5addc430df1bfa290e5350ef9d036ca26e4acd653a82",
+              "key": "fw/mediatek/0b4ec4a86ef5502443c4a48b739d2e9c08ef6a6ba74733c0bad4c8783c1ff810.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.02",
-              "sha256": "0d085b4c854bfc03c08b2e7fde1b25096bdf888eaa65adbb28a10b529ced07ac"
+              "sha256": "0b4ec4a86ef5502443c4a48b739d2e9c08ef6a6ba74733c0bad4c8783c1ff810"
             },
             {
               "build_id": "1711241413",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BW-16D1HT_3.02_21e1f77e.bin",
+              "filename": "BW-16D1HT_3.02_1bcd0e88.tar",
               "fragment": false,
-              "key": "fw/mediatek/21e1f77e0ea0bd8b8d6b324f5ae4d68070d6bb5394f83bbaa5032cedde441cc1.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "d00191537a8f38405bbe33bac43ac97c254f019531ef7bf998d95c2214e8807f",
+              "key": "fw/mediatek/1bcd0e883b915e5f6a2dc72ee803642f4a65ccc8d0befa72f683f4de89097b02.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.02",
-              "sha256": "21e1f77e0ea0bd8b8d6b324f5ae4d68070d6bb5394f83bbaa5032cedde441cc1"
+              "sha256": "1bcd0e883b915e5f6a2dc72ee803642f4a65ccc8d0befa72f683f4de89097b02"
             },
             {
               "build_id": "1711241413",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BW-16D1HT_3.02_663c1b55.bin",
+              "filename": "BW-16D1HT_3.02_1c0a0fba.tar",
               "fragment": false,
-              "key": "fw/mediatek/663c1b55e479f83e958b5addc430df1bfa290e5350ef9d036ca26e4acd653a82.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "21e1f77e0ea0bd8b8d6b324f5ae4d68070d6bb5394f83bbaa5032cedde441cc1",
+              "key": "fw/mediatek/1c0a0fba097a48f45399243169be2c823876c92bd430e3c9dcc56938d885f5e3.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.02",
-              "sha256": "663c1b55e479f83e958b5addc430df1bfa290e5350ef9d036ca26e4acd653a82"
+              "sha256": "1c0a0fba097a48f45399243169be2c823876c92bd430e3c9dcc56938d885f5e3"
             },
             {
               "build_id": "1711241413",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BW-16D1HT_3.02_784e017f.bin",
+              "filename": "BW-16D1HT_3.02_470bf70c.tar",
               "fragment": false,
-              "key": "fw/mediatek/784e017fbacd2250fc37ee442869db82ccc8d637d78126b570ba33c0256d1715.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "afeab3e66cbdf9973e3127162551f111b9d048246b5581885b99a44c38f18ee6",
+              "key": "fw/mediatek/470bf70ca7f873a3d1340607f7de3c64ad76c026639c915437ea592e1643634b.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.02",
-              "sha256": "784e017fbacd2250fc37ee442869db82ccc8d637d78126b570ba33c0256d1715"
+              "sha256": "470bf70ca7f873a3d1340607f7de3c64ad76c026639c915437ea592e1643634b"
             },
             {
               "build_id": "1711241413",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BW-16D1HT_3.02_83ea24bb.bin",
+              "filename": "BW-16D1HT_3.02_4a397eef.tar",
               "fragment": false,
-              "key": "fw/mediatek/83ea24bb07b8a7a451bba1856d1db18b7f54b1823b9d148e213f25daf2e0a1d2.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "784e017fbacd2250fc37ee442869db82ccc8d637d78126b570ba33c0256d1715",
+              "key": "fw/mediatek/4a397eefeae423e03907a3d0d808f3555eb29d91ded709ed3165618fee9e794e.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.02",
-              "sha256": "83ea24bb07b8a7a451bba1856d1db18b7f54b1823b9d148e213f25daf2e0a1d2"
+              "sha256": "4a397eefeae423e03907a3d0d808f3555eb29d91ded709ed3165618fee9e794e"
             },
             {
               "build_id": "1711241413",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BW-16D1HT_3.02_afeab3e6.bin",
+              "filename": "BW-16D1HT_3.02_552e975c.tar",
               "fragment": false,
-              "key": "fw/mediatek/afeab3e66cbdf9973e3127162551f111b9d048246b5581885b99a44c38f18ee6.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "0d085b4c854bfc03c08b2e7fde1b25096bdf888eaa65adbb28a10b529ced07ac",
+              "key": "fw/mediatek/552e975c941e7b92ca646529abdcdb0b7b080d5dd25dd28494ad20ce6dede0a6.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.02",
-              "sha256": "afeab3e66cbdf9973e3127162551f111b9d048246b5581885b99a44c38f18ee6"
+              "sha256": "552e975c941e7b92ca646529abdcdb0b7b080d5dd25dd28494ad20ce6dede0a6"
             },
             {
               "build_id": "1711241413",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BW-16D1HT_3.02_d0019153.bin",
+              "filename": "BW-16D1HT_3.02_9d9d7a5e.tar",
               "fragment": false,
-              "key": "fw/mediatek/d00191537a8f38405bbe33bac43ac97c254f019531ef7bf998d95c2214e8807f.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "83ea24bb07b8a7a451bba1856d1db18b7f54b1823b9d148e213f25daf2e0a1d2",
+              "key": "fw/mediatek/9d9d7a5efa04ca20c5180ab1e86862d76a75327999fa02c0e84ae4f9465e9f14.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.02",
-              "sha256": "d00191537a8f38405bbe33bac43ac97c254f019531ef7bf998d95c2214e8807f"
+              "sha256": "9d9d7a5efa04ca20c5180ab1e86862d76a75327999fa02c0e84ae4f9465e9f14"
             }
           ],
           "revision": "3.02"
@@ -18458,15 +18468,16 @@
           "packages": [
             {
               "build_id": "1801191558",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BW-16D1HT_3.03_1d57260b.bin",
+              "filename": "BW-16D1HT_3.03_3d1fd2d6.tar",
               "fragment": false,
-              "key": "fw/mediatek/1d57260bf091dc89b6ab5b3e2cc7aa1b843d89227a3a4811e6244eaba353b764.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "1d57260bf091dc89b6ab5b3e2cc7aa1b843d89227a3a4811e6244eaba353b764",
+              "key": "fw/mediatek/3d1fd2d6797b52dbdeab28aae826c41294190194a35c374bd46ad1787eb81977.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.03",
-              "sha256": "1d57260bf091dc89b6ab5b3e2cc7aa1b843d89227a3a4811e6244eaba353b764"
+              "sha256": "3d1fd2d6797b52dbdeab28aae826c41294190194a35c374bd46ad1787eb81977"
             }
           ],
           "revision": "3.03"
@@ -18475,15 +18486,16 @@
           "packages": [
             {
               "build_id": "1901041014",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BW-16D1HT_3.10_37a32bfd.bin",
+              "filename": "BW-16D1HT_3.10_843f7656.tar",
               "fragment": false,
-              "key": "fw/mediatek/37a32bfd708b86c825877364d7e52c943d0a856ec3e5457953b61b7fa1c9a23f.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "37a32bfd708b86c825877364d7e52c943d0a856ec3e5457953b61b7fa1c9a23f",
+              "key": "fw/mediatek/843f7656d99c61f42acc3c0d7a89c9a39fa575aeeaeab8e334fcdd03378c5e7f.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "3.10",
-              "sha256": "37a32bfd708b86c825877364d7e52c943d0a856ec3e5457953b61b7fa1c9a23f"
+              "sha256": "843f7656d99c61f42acc3c0d7a89c9a39fa575aeeaeab8e334fcdd03378c5e7f"
             }
           ],
           "revision": "3.10"
@@ -18508,15 +18520,16 @@
           "packages": [
             {
               "build_id": "1206262029",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BE14NU40_1.00_01c6a76a.bin",
+              "filename": "BE14NU40_1.00_819d63b3.tar",
               "fragment": false,
-              "key": "fw/mediatek/01c6a76a4d16c0c6b9aafa60ececccd331b73ac1a7f8b899b3f05e558c92c07c.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "01c6a76a4d16c0c6b9aafa60ececccd331b73ac1a7f8b899b3f05e558c92c07c",
+              "key": "fw/mediatek/819d63b3320e05c899648cc6d0b2012289c9a2ce4185c8089a2edf7618c72a49.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "01c6a76a4d16c0c6b9aafa60ececccd331b73ac1a7f8b899b3f05e558c92c07c"
+              "sha256": "819d63b3320e05c899648cc6d0b2012289c9a2ce4185c8089a2edf7618c72a49"
             }
           ],
           "revision": "1.00"
@@ -18525,27 +18538,29 @@
           "packages": [
             {
               "build_id": "1406161935",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BE14NU40_1.01_2f023084.bin",
+              "filename": "BE14NU40_1.01_97fe345e.tar",
               "fragment": false,
-              "key": "fw/mediatek/2f02308413c86c180ec863ada97fec3f594ebd7bf144e3159e91439518e57847.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "2f02308413c86c180ec863ada97fec3f594ebd7bf144e3159e91439518e57847",
+              "key": "fw/mediatek/97fe345e8902215a61f5e1c378b01033ade5a6c1c069d840c7a78b48e31b4a21.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "2f02308413c86c180ec863ada97fec3f594ebd7bf144e3159e91439518e57847"
+              "sha256": "97fe345e8902215a61f5e1c378b01033ade5a6c1c069d840c7a78b48e31b4a21"
             },
             {
               "build_id": "1408221631",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BE14NU40_1.01_7ff91816.bin",
+              "filename": "BE14NU40_1.01_b1aaca90.tar",
               "fragment": false,
-              "key": "fw/mediatek/7ff91816c192f4c0ba492b507c8119fafb71df7a25118d0e456682bb34e2e567.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "7ff91816c192f4c0ba492b507c8119fafb71df7a25118d0e456682bb34e2e567",
+              "key": "fw/mediatek/b1aaca90f9d0d708371471a2d598bbb08db96f99163ce5ae62f7f323daed00d7.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "7ff91816c192f4c0ba492b507c8119fafb71df7a25118d0e456682bb34e2e567"
+              "sha256": "b1aaca90f9d0d708371471a2d598bbb08db96f99163ce5ae62f7f323daed00d7"
             }
           ],
           "revision": "1.01"
@@ -18570,15 +18585,16 @@
           "packages": [
             {
               "build_id": "1606090920",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "c6031f4c104ccf7",
-              "filename": "BE16NU50_1.01_9c46e697.bin",
+              "filename": "BE16NU50_1.01_80192d4e.tar",
               "fragment": false,
-              "key": "fw/mediatek/9c46e6972b7950004e9746256c97b79e8e681faad1a4174b542477ad6ff5257e.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "9c46e6972b7950004e9746256c97b79e8e681faad1a4174b542477ad6ff5257e",
+              "key": "fw/mediatek/80192d4e2c25cdbab7597e99fcea57325d6d8a8c587db53c135e9f6df24f3839.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "9c46e6972b7950004e9746256c97b79e8e681faad1a4174b542477ad6ff5257e"
+              "sha256": "80192d4e2c25cdbab7597e99fcea57325d6d8a8c587db53c135e9f6df24f3839"
             }
           ],
           "revision": "1.01"
@@ -18587,15 +18603,16 @@
           "packages": [
             {
               "build_id": "1711201953",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "c6031f4c104ccf7",
-              "filename": "BE16NU50_1.02_2b3ea41f.bin",
+              "filename": "BE16NU50_1.02_072786d4.tar",
               "fragment": false,
-              "key": "fw/mediatek/2b3ea41f87764ccc497059c9e362657df545fb169d6eeb2e78ccfbd7fafee533.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "2b3ea41f87764ccc497059c9e362657df545fb169d6eeb2e78ccfbd7fafee533",
+              "key": "fw/mediatek/072786d4083568d73151afb117db9392fcd0b2af0771a835fd7727dd66a6bf35.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "2b3ea41f87764ccc497059c9e362657df545fb169d6eeb2e78ccfbd7fafee533"
+              "sha256": "072786d4083568d73151afb117db9392fcd0b2af0771a835fd7727dd66a6bf35"
             }
           ],
           "revision": "1.02"
@@ -18603,19 +18620,20 @@
         {
           "packages": [
             {
-              "build_id": "2004231013",
-              "bytes": 2097152,
+              "build_id": "2005081025",
+              "bytes": 4197888,
               "family_id": "c6031f4c104ccf7",
-              "filename": "BE16NU50_INTM_215488b5.bin",
+              "filename": "BE16NU50_1.04_a1472058.tar",
               "fragment": false,
-              "key": "fw/mediatek/215488b5ac20fc3ed7fe33ff5679a13a839f0729cc85d0b8bcf0fd3e4c749b23.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "7dcc99d276008cf2cfc6214eb0f4b88ec5eb3937f21bb1853b53f2b8d42ea6c8",
+              "key": "fw/mediatek/a1472058485c8ccba2d48337083a4393bb224ba26f1a43a7dc05d04f1fac502f.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
-              "revision": "INTM",
-              "sha256": "215488b5ac20fc3ed7fe33ff5679a13a839f0729cc85d0b8bcf0fd3e4c749b23"
+              "revision": "1.04",
+              "sha256": "a1472058485c8ccba2d48337083a4393bb224ba26f1a43a7dc05d04f1fac502f"
             }
           ],
-          "revision": "INTM"
+          "revision": "1.04"
         }
       ]
     },
@@ -18637,15 +18655,16 @@
           "packages": [
             {
               "build_id": "1206161823",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BH14NS40_1.00_d8ab861b.bin",
+              "filename": "BH14NS40_1.00_403b1d1a.tar",
               "fragment": false,
-              "key": "fw/mediatek/d8ab861b6fefa847223a1a95b53241c9838953ac298ff068d9243fc31587df87.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "d8ab861b6fefa847223a1a95b53241c9838953ac298ff068d9243fc31587df87",
+              "key": "fw/mediatek/403b1d1a4427ce84ca14ad0bb62cb99985c63f0c6008bb42e29e9a2a94831329.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "d8ab861b6fefa847223a1a95b53241c9838953ac298ff068d9243fc31587df87"
+              "sha256": "403b1d1a4427ce84ca14ad0bb62cb99985c63f0c6008bb42e29e9a2a94831329"
             }
           ],
           "revision": "1.00"
@@ -18654,15 +18673,16 @@
           "packages": [
             {
               "build_id": "1304042319",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BH14NS40_1.01_007ac6bf.bin",
+              "filename": "BH14NS40_1.01_53c735de.tar",
               "fragment": false,
-              "key": "fw/mediatek/007ac6bfe4ea432c7d8e5b4bd1142a636abe452516e3cc36f67e4e13520fe40d.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "007ac6bfe4ea432c7d8e5b4bd1142a636abe452516e3cc36f67e4e13520fe40d",
+              "key": "fw/mediatek/53c735dea4da30bcf619913be0b10384180ca2441952bbff5bf5b7e02af62ebc.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "007ac6bfe4ea432c7d8e5b4bd1142a636abe452516e3cc36f67e4e13520fe40d"
+              "sha256": "53c735dea4da30bcf619913be0b10384180ca2441952bbff5bf5b7e02af62ebc"
             }
           ],
           "revision": "1.01"
@@ -18671,15 +18691,16 @@
           "packages": [
             {
               "build_id": "1312061453",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BH14NS40_1.02_6a96f726.bin",
+              "filename": "BH14NS40_1.02_73a22a5b.tar",
               "fragment": false,
-              "key": "fw/mediatek/6a96f7267ba605eb85ead6999944069eaa5fc19bd57dca5becd79aa1525aba6e.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "6a96f7267ba605eb85ead6999944069eaa5fc19bd57dca5becd79aa1525aba6e",
+              "key": "fw/mediatek/73a22a5b51f9f2b3a0a1816cc618ca12686e914c6bd0a3b0fc5822c69d9484f1.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "6a96f7267ba605eb85ead6999944069eaa5fc19bd57dca5becd79aa1525aba6e"
+              "sha256": "73a22a5b51f9f2b3a0a1816cc618ca12686e914c6bd0a3b0fc5822c69d9484f1"
             }
           ],
           "revision": "1.02"
@@ -18704,15 +18725,16 @@
           "packages": [
             {
               "build_id": "1206161825",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BH14NS48_1.00_f1141a32.bin",
+              "filename": "BH14NS48_1.00_524e09fd.tar",
               "fragment": false,
-              "key": "fw/mediatek/f1141a3295076c0d1a558e7ed396fee7709dc47f3ae277faed7068cd7ba66ce8.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "f1141a3295076c0d1a558e7ed396fee7709dc47f3ae277faed7068cd7ba66ce8",
+              "key": "fw/mediatek/524e09fdc7c063b899f98d94c2475f2a6df14cf417591217e74a1cd4e1a7e16e.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "f1141a3295076c0d1a558e7ed396fee7709dc47f3ae277faed7068cd7ba66ce8"
+              "sha256": "524e09fdc7c063b899f98d94c2475f2a6df14cf417591217e74a1cd4e1a7e16e"
             }
           ],
           "revision": "1.00"
@@ -18721,15 +18743,16 @@
           "packages": [
             {
               "build_id": "0000000000",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BH14NS48_1.01_adfd807c.bin",
+              "filename": "BH14NS48_1.01_50ffeb26.tar",
               "fragment": false,
-              "key": "fw/mediatek/adfd807cde847ae75315b9083be29d287f56d8a628d171eaf59d6023ee266d1c.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "adfd807cde847ae75315b9083be29d287f56d8a628d171eaf59d6023ee266d1c",
+              "key": "fw/mediatek/50ffeb26bb5e2fd5c9c65f6b755b4466db4376f6de37f6a3455c496c64b754d5.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "adfd807cde847ae75315b9083be29d287f56d8a628d171eaf59d6023ee266d1c"
+              "sha256": "50ffeb26bb5e2fd5c9c65f6b755b4466db4376f6de37f6a3455c496c64b754d5"
             }
           ],
           "revision": "1.01"
@@ -18738,15 +18761,16 @@
           "packages": [
             {
               "build_id": "1312061510",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BH14NS48_1.03_3b8faae2.bin",
+              "filename": "BH14NS48_1.03_cec6a2b5.tar",
               "fragment": false,
-              "key": "fw/mediatek/3b8faae231f30afbdd3257d9cd2b7791a005a4616391ee0f8367dfa0db51abc3.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "3b8faae231f30afbdd3257d9cd2b7791a005a4616391ee0f8367dfa0db51abc3",
+              "key": "fw/mediatek/cec6a2b5fe28072ebdad32a3aa04ab1f347a6576da5d1d1d9219e6b52a6bc037.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.03",
-              "sha256": "3b8faae231f30afbdd3257d9cd2b7791a005a4616391ee0f8367dfa0db51abc3"
+              "sha256": "cec6a2b5fe28072ebdad32a3aa04ab1f347a6576da5d1d1d9219e6b52a6bc037"
             }
           ],
           "revision": "1.03"
@@ -18771,15 +18795,16 @@
           "packages": [
             {
               "build_id": "1711281847",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH14NS50_1.01_4ef56002.bin",
+              "filename": "BH14NS50_1.01_9ffab636.tar",
               "fragment": false,
-              "key": "fw/mediatek/4ef56002dd392733d15378e4535115f24ba891d3266a7c87420df14df0a7089d.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "4ef56002dd392733d15378e4535115f24ba891d3266a7c87420df14df0a7089d",
+              "key": "fw/mediatek/9ffab6361b5213547c9c5fe8225dbc66186aec3b9102fe64bfe0a4d33de2f0bb.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "4ef56002dd392733d15378e4535115f24ba891d3266a7c87420df14df0a7089d"
+              "sha256": "9ffab6361b5213547c9c5fe8225dbc66186aec3b9102fe64bfe0a4d33de2f0bb"
             }
           ],
           "revision": "1.01"
@@ -18804,27 +18829,29 @@
           "packages": [
             {
               "build_id": "1512221504",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH14NS58_1.00_53d2cdc3.bin",
+              "filename": "BH14NS58_1.00_71cd2600.tar",
               "fragment": false,
-              "key": "fw/mediatek/53d2cdc32a2ae99864ec8fc4ea98a3a5218220aea990481f560112adaa871624.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "53d2cdc32a2ae99864ec8fc4ea98a3a5218220aea990481f560112adaa871624",
+              "key": "fw/mediatek/71cd2600b0e223423a44921bfc1a18c823fec3bbf57b309800b57066eed812d7.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "53d2cdc32a2ae99864ec8fc4ea98a3a5218220aea990481f560112adaa871624"
+              "sha256": "71cd2600b0e223423a44921bfc1a18c823fec3bbf57b309800b57066eed812d7"
             },
             {
               "build_id": "1512221504",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH14NS58_1.00_aaeea1ba.bin",
+              "filename": "BH14NS58_1.00_ed037ae7.tar",
               "fragment": false,
-              "key": "fw/mediatek/aaeea1ba97d05fae0b4de1ff1b84076f8ba897cb15b45a398f9bc4c25fe1738b.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "aaeea1ba97d05fae0b4de1ff1b84076f8ba897cb15b45a398f9bc4c25fe1738b",
+              "key": "fw/mediatek/ed037ae7f8b85f52fa6bc2fde52b9a6cd830722ac22a697235187ab85cc0611b.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "aaeea1ba97d05fae0b4de1ff1b84076f8ba897cb15b45a398f9bc4c25fe1738b"
+              "sha256": "ed037ae7f8b85f52fa6bc2fde52b9a6cd830722ac22a697235187ab85cc0611b"
             }
           ],
           "revision": "1.00"
@@ -18833,15 +18860,16 @@
           "packages": [
             {
               "build_id": "1711161557",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH14NS58_1.01_eb0e2e72.bin",
+              "filename": "BH14NS58_1.01_aebc21fb.tar",
               "fragment": false,
-              "key": "fw/mediatek/eb0e2e7275448919aa72bec63ed0cd24ca360fcb0a8347601e85c2750f0d173a.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "eb0e2e7275448919aa72bec63ed0cd24ca360fcb0a8347601e85c2750f0d173a",
+              "key": "fw/mediatek/aebc21fb5ea114dc814ec6f65ba3cec1f0e84ab97774db67d2cc27bfe5c5226d.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "eb0e2e7275448919aa72bec63ed0cd24ca360fcb0a8347601e85c2750f0d173a"
+              "sha256": "aebc21fb5ea114dc814ec6f65ba3cec1f0e84ab97774db67d2cc27bfe5c5226d"
             }
           ],
           "revision": "1.01"
@@ -18866,15 +18894,16 @@
           "packages": [
             {
               "build_id": "1210311917",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BH16NS40_1.00_ab21af69.bin",
+              "filename": "BH16NS40_1.00_c8466655.tar",
               "fragment": false,
-              "key": "fw/mediatek/ab21af6945e901c56b9f29755433cf4785e9cdc106bb123d943aea0e90d04d9e.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "ab21af6945e901c56b9f29755433cf4785e9cdc106bb123d943aea0e90d04d9e",
+              "key": "fw/mediatek/c846665543b4b3ce620536095bab126fcb0554a027e731a0a5cdcc9e02ee477d.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "ab21af6945e901c56b9f29755433cf4785e9cdc106bb123d943aea0e90d04d9e"
+              "sha256": "c846665543b4b3ce620536095bab126fcb0554a027e731a0a5cdcc9e02ee477d"
             }
           ],
           "revision": "1.00"
@@ -18883,15 +18912,16 @@
           "packages": [
             {
               "build_id": "1304042250",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BH16NS40_1.01_208a80d0.bin",
+              "filename": "BH16NS40_1.01_6278b75b.tar",
               "fragment": false,
-              "key": "fw/mediatek/208a80d0d30c1841ad0bd33d49be032dfe2110c7f50ba6298ec51851c69035b6.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "208a80d0d30c1841ad0bd33d49be032dfe2110c7f50ba6298ec51851c69035b6",
+              "key": "fw/mediatek/6278b75b74c025b2d5ceb06e0ee5e5c0e06b8a81efa876355f6eaf9a880bc817.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "208a80d0d30c1841ad0bd33d49be032dfe2110c7f50ba6298ec51851c69035b6"
+              "sha256": "6278b75b74c025b2d5ceb06e0ee5e5c0e06b8a81efa876355f6eaf9a880bc817"
             }
           ],
           "revision": "1.01"
@@ -18900,15 +18930,16 @@
           "packages": [
             {
               "build_id": "1312061535",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BH16NS40_1.02_8f5bf953.bin",
+              "filename": "BH16NS40_1.02_7e0bdf56.tar",
               "fragment": false,
-              "key": "fw/mediatek/8f5bf9536115fd6aece78d1ff6b6a7e51e3fc0d927f2ae8fd64d6121401a5dea.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "8f5bf9536115fd6aece78d1ff6b6a7e51e3fc0d927f2ae8fd64d6121401a5dea",
+              "key": "fw/mediatek/7e0bdf56f11c35ebecceae65bfaace9992a9241957e57e66ffc7ddae6d42c71b.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "8f5bf9536115fd6aece78d1ff6b6a7e51e3fc0d927f2ae8fd64d6121401a5dea"
+              "sha256": "7e0bdf56f11c35ebecceae65bfaace9992a9241957e57e66ffc7ddae6d42c71b"
             }
           ],
           "revision": "1.02"
@@ -18917,27 +18948,29 @@
           "packages": [
             {
               "build_id": "1403261115",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BH16NS40_1.03_614b41f6.bin",
+              "filename": "BH16NS40_1.03_0bae7dd2.tar",
               "fragment": false,
-              "key": "fw/mediatek/614b41f61837f84a46b73fe4da28ff9db13bf45fe291f2728a5197c67857446e.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "614b41f61837f84a46b73fe4da28ff9db13bf45fe291f2728a5197c67857446e",
+              "key": "fw/mediatek/0bae7dd2bb5abffa204969e8335d698187575eacc93c363095014ff21b659ea9.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.03",
-              "sha256": "614b41f61837f84a46b73fe4da28ff9db13bf45fe291f2728a5197c67857446e"
+              "sha256": "0bae7dd2bb5abffa204969e8335d698187575eacc93c363095014ff21b659ea9"
             },
             {
               "build_id": "1505261714",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BH16NS40_1.03_b093a736.bin",
+              "filename": "BH16NS40_1.03_395775a2.tar",
               "fragment": false,
-              "key": "fw/mediatek/b093a73656e58ee2a4367b5d92324fd7da3889f632a22b2f1be8802607cd3de4.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "b093a73656e58ee2a4367b5d92324fd7da3889f632a22b2f1be8802607cd3de4",
+              "key": "fw/mediatek/395775a23a6a78f00aff7463334f3c2cb475d7dad0fefe58ac570ee29684be09.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.03",
-              "sha256": "b093a73656e58ee2a4367b5d92324fd7da3889f632a22b2f1be8802607cd3de4"
+              "sha256": "395775a23a6a78f00aff7463334f3c2cb475d7dad0fefe58ac570ee29684be09"
             }
           ],
           "revision": "1.03"
@@ -18962,27 +18995,29 @@
           "packages": [
             {
               "build_id": "1512111436",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS40_1.02_acbe782e.bin",
+              "filename": "BH16NS40_1.02_27516427.tar",
               "fragment": false,
-              "key": "fw/mediatek/acbe782ebc3c4850a24f852b8dc2ec42059f6b131e29d96157b09505628c415b.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "acbe782ebc3c4850a24f852b8dc2ec42059f6b131e29d96157b09505628c415b",
+              "key": "fw/mediatek/27516427fa0e62900cf6191a4ec031b15362c3000395c22aeea2d95769dc443b.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "acbe782ebc3c4850a24f852b8dc2ec42059f6b131e29d96157b09505628c415b"
+              "sha256": "27516427fa0e62900cf6191a4ec031b15362c3000395c22aeea2d95769dc443b"
             },
             {
               "build_id": "1512111436",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS40_1.02_beb8330e.bin",
+              "filename": "BH16NS40_1.02_f70b8ade.tar",
               "fragment": false,
-              "key": "fw/mediatek/beb8330e79d08824a62d5eb2b91a144ebb34c9acba8d393d8b32f2b2ae3196de.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "beb8330e79d08824a62d5eb2b91a144ebb34c9acba8d393d8b32f2b2ae3196de",
+              "key": "fw/mediatek/f70b8adeab80533251462b15fe9fe695ced594f867d69f7f72208bca57f506bd.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "beb8330e79d08824a62d5eb2b91a144ebb34c9acba8d393d8b32f2b2ae3196de"
+              "sha256": "f70b8adeab80533251462b15fe9fe695ced594f867d69f7f72208bca57f506bd"
             }
           ],
           "revision": "1.02"
@@ -18991,15 +19026,16 @@
           "packages": [
             {
               "build_id": "1711201943",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS40_1.03_a5bb75b8.bin",
+              "filename": "BH16NS40_1.03_a1416c3d.tar",
               "fragment": false,
-              "key": "fw/mediatek/a5bb75b8dbec1684e596f473aa53905f9f723b2b2f9c448550cb523145f90dd3.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "a5bb75b8dbec1684e596f473aa53905f9f723b2b2f9c448550cb523145f90dd3",
+              "key": "fw/mediatek/a1416c3d5e0fa4c306aba85417fb903f8188b0519c4d660f2fb5d2ad99fa6ec3.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.03",
-              "sha256": "a5bb75b8dbec1684e596f473aa53905f9f723b2b2f9c448550cb523145f90dd3"
+              "sha256": "a1416c3d5e0fa4c306aba85417fb903f8188b0519c4d660f2fb5d2ad99fa6ec3"
             }
           ],
           "revision": "1.03"
@@ -19008,15 +19044,16 @@
           "packages": [
             {
               "build_id": "1901041338",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS40_1.04_bc4e6126.bin",
+              "filename": "BH16NS40_1.04_ca6812d2.tar",
               "fragment": false,
-              "key": "fw/mediatek/bc4e6126b880475d58c21e8639ea81f33facc3d4c8284bf6a739d8e8f6c75921.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "bc4e6126b880475d58c21e8639ea81f33facc3d4c8284bf6a739d8e8f6c75921",
+              "key": "fw/mediatek/ca6812d2965aa7d710e9308c08d6a6cbe686b90f3bc0f6dc91f8f6481ec6c10e.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.04",
-              "sha256": "bc4e6126b880475d58c21e8639ea81f33facc3d4c8284bf6a739d8e8f6c75921"
+              "sha256": "ca6812d2965aa7d710e9308c08d6a6cbe686b90f3bc0f6dc91f8f6481ec6c10e"
             }
           ],
           "revision": "1.04"
@@ -19024,19 +19061,20 @@
         {
           "packages": [
             {
-              "build_id": "2002041513",
-              "bytes": 2097152,
+              "build_id": "2005061331",
+              "bytes": 4197888,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS40_INTM_c3a18eed.bin",
+              "filename": "BH16NS40_1.05_9948ba14.tar",
               "fragment": false,
-              "key": "fw/mediatek/c3a18eed17251d1508964647e833ffdfe01b13c28dff9a717dfac6336e7c70e6.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "dd27dc3901ea0ef2e8704a54c8e0f3be44d11cbef061b202f69ef96f70522681",
+              "key": "fw/mediatek/9948ba14a87360ab861c58091f19137d5e45ab5268a38e24912b68f8f1628b6f.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
-              "revision": "INTM",
-              "sha256": "c3a18eed17251d1508964647e833ffdfe01b13c28dff9a717dfac6336e7c70e6"
+              "revision": "1.05",
+              "sha256": "9948ba14a87360ab861c58091f19137d5e45ab5268a38e24912b68f8f1628b6f"
             }
           ],
-          "revision": "INTM"
+          "revision": "1.05"
         }
       ]
     },
@@ -19058,15 +19096,16 @@
           "packages": [
             {
               "build_id": "1304042252",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BH16NS48_1.01_163fb6e0.bin",
+              "filename": "BH16NS48_1.01_3c333a83.tar",
               "fragment": false,
-              "key": "fw/mediatek/163fb6e0057d74f38e046cf9042981c137ec70c1aaa2d7b1c3ee1a62324aa146.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "163fb6e0057d74f38e046cf9042981c137ec70c1aaa2d7b1c3ee1a62324aa146",
+              "key": "fw/mediatek/3c333a83838c8314b3a0b84e530b091194ce3d4d7d0239a02a5ec304f085ab4c.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "163fb6e0057d74f38e046cf9042981c137ec70c1aaa2d7b1c3ee1a62324aa146"
+              "sha256": "3c333a83838c8314b3a0b84e530b091194ce3d4d7d0239a02a5ec304f085ab4c"
             }
           ],
           "revision": "1.01"
@@ -19075,15 +19114,16 @@
           "packages": [
             {
               "build_id": "1312061545",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BH16NS48_1.02_43c484dc.bin",
+              "filename": "BH16NS48_1.02_ee7eda1b.tar",
               "fragment": false,
-              "key": "fw/mediatek/43c484dccc37ccb36183e970c5a4f28e90d6ccb530c0efd3bd8f96943ba7dfe3.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "43c484dccc37ccb36183e970c5a4f28e90d6ccb530c0efd3bd8f96943ba7dfe3",
+              "key": "fw/mediatek/ee7eda1bb2580b6b9820e7522633011651d841749917982c11588b33f68568df.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "43c484dccc37ccb36183e970c5a4f28e90d6ccb530c0efd3bd8f96943ba7dfe3"
+              "sha256": "ee7eda1bb2580b6b9820e7522633011651d841749917982c11588b33f68568df"
             }
           ],
           "revision": "1.02"
@@ -19108,15 +19148,16 @@
           "packages": [
             {
               "build_id": "1712071200",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS50_1.01_b7a368da.bin",
+              "filename": "BH16NS50_1.01_f23f177c.tar",
               "fragment": false,
-              "key": "fw/mediatek/b7a368da0fcbe905e45a09c6523bdd6f80557ce455272238c73868aa4ae4bd41.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "b7a368da0fcbe905e45a09c6523bdd6f80557ce455272238c73868aa4ae4bd41",
+              "key": "fw/mediatek/f23f177cdb45b2036079d78dbc914bb5ddc43cddb427ee7ef38674a696714dcd.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "b7a368da0fcbe905e45a09c6523bdd6f80557ce455272238c73868aa4ae4bd41"
+              "sha256": "f23f177cdb45b2036079d78dbc914bb5ddc43cddb427ee7ef38674a696714dcd"
             }
           ],
           "revision": "1.01"
@@ -19141,15 +19182,16 @@
           "packages": [
             {
               "build_id": "1511051004",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS55_1.01_ce732330.bin",
+              "filename": "BH16NS55_1.01_b7158dc4.tar",
               "fragment": false,
-              "key": "fw/mediatek/ce732330b3cabca5f6b0cbcf1b6fc1abd4117d6fd047fe4f9330b6b25337b521.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "ce732330b3cabca5f6b0cbcf1b6fc1abd4117d6fd047fe4f9330b6b25337b521",
+              "key": "fw/mediatek/b7158dc45477061c54d4bada7beb6a06f361b1388d03f4bb8cbdc8198de37fc9.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "ce732330b3cabca5f6b0cbcf1b6fc1abd4117d6fd047fe4f9330b6b25337b521"
+              "sha256": "b7158dc45477061c54d4bada7beb6a06f361b1388d03f4bb8cbdc8198de37fc9"
             }
           ],
           "revision": "1.01"
@@ -19158,27 +19200,29 @@
           "packages": [
             {
               "build_id": "1512111440",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS55_1.02_64cff02c.bin",
+              "filename": "BH16NS55_1.02_0886a485.tar",
               "fragment": false,
-              "key": "fw/mediatek/64cff02c3db347a2100284a406687a5a911463d65808db5c5c811a4cefc4fe57.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "bdfd6f290ba8172d4c46d8c822013255043f4ad30deb8604608fa0397bddb648",
+              "key": "fw/mediatek/0886a485f724f5afdfa3c7a7052ff5a82d85b9e89d345b7ce671183f97834ae7.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "64cff02c3db347a2100284a406687a5a911463d65808db5c5c811a4cefc4fe57"
+              "sha256": "0886a485f724f5afdfa3c7a7052ff5a82d85b9e89d345b7ce671183f97834ae7"
             },
             {
               "build_id": "1512111440",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS55_1.02_bdfd6f29.bin",
+              "filename": "BH16NS55_1.02_c97afcdf.tar",
               "fragment": false,
-              "key": "fw/mediatek/bdfd6f290ba8172d4c46d8c822013255043f4ad30deb8604608fa0397bddb648.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "64cff02c3db347a2100284a406687a5a911463d65808db5c5c811a4cefc4fe57",
+              "key": "fw/mediatek/c97afcdf23812263449367ec4b12c6bd2f1f847de5fa8cab6a696fceb79b0951.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "bdfd6f290ba8172d4c46d8c822013255043f4ad30deb8604608fa0397bddb648"
+              "sha256": "c97afcdf23812263449367ec4b12c6bd2f1f847de5fa8cab6a696fceb79b0951"
             }
           ],
           "revision": "1.02"
@@ -19187,15 +19231,16 @@
           "packages": [
             {
               "build_id": "1711201704",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS55_1.03_0bfdd300.bin",
+              "filename": "BH16NS55_1.03_2ed72f34.tar",
               "fragment": false,
-              "key": "fw/mediatek/0bfdd3009ed1bc246f81aae50cfd9a5e4919c5295263e488c2a900500fe48728.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "0bfdd3009ed1bc246f81aae50cfd9a5e4919c5295263e488c2a900500fe48728",
+              "key": "fw/mediatek/2ed72f34f21fdcfe26d6b4f9c6c8172543d84035747eebba1afa13edba761fdc.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.03",
-              "sha256": "0bfdd3009ed1bc246f81aae50cfd9a5e4919c5295263e488c2a900500fe48728"
+              "sha256": "2ed72f34f21fdcfe26d6b4f9c6c8172543d84035747eebba1afa13edba761fdc"
             }
           ],
           "revision": "1.03"
@@ -19204,18 +19249,50 @@
           "packages": [
             {
               "build_id": "1901041342",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS55_1.04_394e6f8d.bin",
+              "filename": "BH16NS55_1.04_248d8542.tar",
               "fragment": false,
-              "key": "fw/mediatek/394e6f8d6319b79fed26fb296a435e4d047c382bf8434cc870f89c6913fd27d7.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "394e6f8d6319b79fed26fb296a435e4d047c382bf8434cc870f89c6913fd27d7",
+              "key": "fw/mediatek/248d8542487cdc340bbed5d3e57c1faeda0845cae2d89fa1420863bd665271aa.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.04",
-              "sha256": "394e6f8d6319b79fed26fb296a435e4d047c382bf8434cc870f89c6913fd27d7"
+              "sha256": "248d8542487cdc340bbed5d3e57c1faeda0845cae2d89fa1420863bd665271aa"
             }
           ],
           "revision": "1.04"
+        },
+        {
+          "packages": [
+            {
+              "build_id": "2006181342",
+              "bytes": 4197888,
+              "family_id": "336e449ab6a827e3",
+              "filename": "BH16NS55_1.05_49f3f301.tar",
+              "fragment": false,
+              "image_sha256": "5f3fa17d61118f8405248cf9d206e32824c2321c9bfda0739b75a8633c3a81e8",
+              "key": "fw/mediatek/49f3f3014fd3556f2c78423325967a825c5361011f970ff0edac2c7bdafef70f.tar",
+              "packageType": "mediatek-installer",
+              "patched": false,
+              "revision": "1.05",
+              "sha256": "49f3f3014fd3556f2c78423325967a825c5361011f970ff0edac2c7bdafef70f"
+            },
+            {
+              "build_id": "2004211049",
+              "bytes": 4197888,
+              "family_id": "336e449ab6a827e3",
+              "filename": "BH16NS55_1.05_d88f802b.tar",
+              "fragment": false,
+              "image_sha256": "ca7e8db8576a0ab5f5376270159c133195ba1f60d90e7e7465dae7f4dacc3532",
+              "key": "fw/mediatek/d88f802bbca29d454618e200e53a7a4c9d169cc0571a2e76b0e5e5b9f3b331b6.tar",
+              "packageType": "mediatek-installer",
+              "patched": false,
+              "revision": "1.05",
+              "sha256": "d88f802bbca29d454618e200e53a7a4c9d169cc0571a2e76b0e5e5b9f3b331b6"
+            }
+          ],
+          "revision": "1.05"
         }
       ]
     },
@@ -19237,15 +19314,16 @@
           "packages": [
             {
               "build_id": "1512221501",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS58_1.00_6d9fdb2b.bin",
+              "filename": "BH16NS58_1.00_f2ff4cdc.tar",
               "fragment": false,
-              "key": "fw/mediatek/6d9fdb2bd658165a073e6144c8938057e08d8cba7ca108274b120dd30c55328f.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "6d9fdb2bd658165a073e6144c8938057e08d8cba7ca108274b120dd30c55328f",
+              "key": "fw/mediatek/f2ff4cdc91cd993be3e2afde3184b60d505490c2d3f1a28bf94d19228f2554df.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "6d9fdb2bd658165a073e6144c8938057e08d8cba7ca108274b120dd30c55328f"
+              "sha256": "f2ff4cdc91cd993be3e2afde3184b60d505490c2d3f1a28bf94d19228f2554df"
             }
           ],
           "revision": "1.00"
@@ -19254,15 +19332,16 @@
           "packages": [
             {
               "build_id": "1711161545",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS58_1.01_ccc97e4f.bin",
+              "filename": "BH16NS58_1.01_18dec8f8.tar",
               "fragment": false,
-              "key": "fw/mediatek/ccc97e4f92e47b6fc1fab1e9baa1860020c7f104efa9ffb649321a173523adfb.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "ccc97e4f92e47b6fc1fab1e9baa1860020c7f104efa9ffb649321a173523adfb",
+              "key": "fw/mediatek/18dec8f8685014085e106ca2a45d834bf02d836f79806ee51e50b7b0d2936c10.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "ccc97e4f92e47b6fc1fab1e9baa1860020c7f104efa9ffb649321a173523adfb"
+              "sha256": "18dec8f8685014085e106ca2a45d834bf02d836f79806ee51e50b7b0d2936c10"
             }
           ],
           "revision": "1.01"
@@ -19271,51 +19350,19 @@
           "packages": [
             {
               "build_id": "1901041359",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS58_1.02_4f4e63cd.bin",
+              "filename": "BH16NS58_1.02_b325c083.tar",
               "fragment": false,
-              "key": "fw/mediatek/4f4e63cd5988f68f5729af21fe4033d0da2eeeec8f7576772f0f3a197f8eda21.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "4f4e63cd5988f68f5729af21fe4033d0da2eeeec8f7576772f0f3a197f8eda21",
+              "key": "fw/mediatek/b325c083d4c36fd06ba6704e431d9107fe5bac0ee29e69342a5a36094e737ba2.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "4f4e63cd5988f68f5729af21fe4033d0da2eeeec8f7576772f0f3a197f8eda21"
+              "sha256": "b325c083d4c36fd06ba6704e431d9107fe5bac0ee29e69342a5a36094e737ba2"
             }
           ],
           "revision": "1.02"
-        }
-      ]
-    },
-    {
-      "crossflash_group": "MT1959/desktop/JB8/board-unknown",
-      "destination": "GENERAL",
-      "embedded_models": [
-        "BH16NS60"
-      ],
-      "family": "mediatek",
-      "hardware": "HL-DT-ST BH16NS60 MT1959 JB8/JB8",
-      "key": "mediatek:HL-DT-ST BH16NS60 MT1959 JB8/JB8:GENERAL",
-      "other_candidates": [],
-      "platforms": [
-        "MT1959"
-      ],
-      "revisions": [
-        {
-          "packages": [
-            {
-              "build_id": "2002181142",
-              "bytes": 2097152,
-              "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS60_INTM_1baed51d.bin",
-              "fragment": false,
-              "key": "fw/mediatek/1baed51d34e05db345798e3820a38ae2c6598cad38d20522e476e803d1f46562.bin",
-              "packageType": "mediatek-image",
-              "patched": false,
-              "revision": "INTM",
-              "sha256": "1baed51d34e05db345798e3820a38ae2c6598cad38d20522e476e803d1f46562"
-            }
-          ],
-          "revision": "INTM"
         }
       ]
     },
@@ -19337,15 +19384,16 @@
           "packages": [
             {
               "build_id": "1804030945",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "BH16NS60_1.00_580d867c.bin",
+              "filename": "BH16NS60_1.00_eb4141ca.tar",
               "fragment": false,
-              "key": "fw/mediatek/580d867cee3d219a6e61e460c11fa33e27ca43c912d1d2dc777039a6a8f3f7e9.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "580d867cee3d219a6e61e460c11fa33e27ca43c912d1d2dc777039a6a8f3f7e9",
+              "key": "fw/mediatek/eb4141ca3caaaa7179d775cde49a2a9166ab4b80d87e9a750cf3ef2c8ee83f3b.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "580d867cee3d219a6e61e460c11fa33e27ca43c912d1d2dc777039a6a8f3f7e9"
+              "sha256": "eb4141ca3caaaa7179d775cde49a2a9166ab4b80d87e9a750cf3ef2c8ee83f3b"
             }
           ],
           "revision": "1.00"
@@ -19370,15 +19418,16 @@
           "packages": [
             {
               "build_id": "1504221517",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "7977ec490f2eb807",
-              "filename": "BP50NB40_1.00_c88a6901.bin",
+              "filename": "BP50NB40_1.00_ee71a63d.tar",
               "fragment": false,
-              "key": "fw/mediatek/c88a69013d557b9c4cf1a4d603c314585f51a258b9747c345184e866eef36306.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "c88a69013d557b9c4cf1a4d603c314585f51a258b9747c345184e866eef36306",
+              "key": "fw/mediatek/ee71a63d4dd2f07365cf7d530f03511efc0a0bf399a58a3f1ecdb04f9347ab62.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "c88a69013d557b9c4cf1a4d603c314585f51a258b9747c345184e866eef36306"
+              "sha256": "ee71a63d4dd2f07365cf7d530f03511efc0a0bf399a58a3f1ecdb04f9347ab62"
             }
           ],
           "revision": "1.00"
@@ -19403,15 +19452,16 @@
           "packages": [
             {
               "build_id": "1711231615",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "ab4e219381d5f287",
-              "filename": "BP50NB40_1.01_961acab1.bin",
+              "filename": "BP50NB40_1.01_6193041e.tar",
               "fragment": false,
-              "key": "fw/mediatek/961acab180c9a62966c54f24f3b5fa7e335941057c15613a876f4fceca010b70.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "961acab180c9a62966c54f24f3b5fa7e335941057c15613a876f4fceca010b70",
+              "key": "fw/mediatek/6193041e7efa963464619da1c5859a535d768fa177bcbf60f80cd0e024a94a44.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "961acab180c9a62966c54f24f3b5fa7e335941057c15613a876f4fceca010b70"
+              "sha256": "6193041e7efa963464619da1c5859a535d768fa177bcbf60f80cd0e024a94a44"
             }
           ],
           "revision": "1.01"
@@ -19420,15 +19470,16 @@
           "packages": [
             {
               "build_id": "1811011016",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "ab4e219381d5f287",
-              "filename": "BP50NB40_1.02_a344e289.bin",
+              "filename": "BP50NB40_1.02_ae818fcf.tar",
               "fragment": false,
-              "key": "fw/mediatek/a344e289e0b1f34bd1a5ae66f0498df9f1a485ad1416f93592e40db2fb5409c7.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "a344e289e0b1f34bd1a5ae66f0498df9f1a485ad1416f93592e40db2fb5409c7",
+              "key": "fw/mediatek/ae818fcf4fe414deadc2df4c3d40ae75b2c4ea06e659fce18fba35af3c70d019.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "a344e289e0b1f34bd1a5ae66f0498df9f1a485ad1416f93592e40db2fb5409c7"
+              "sha256": "ae818fcf4fe414deadc2df4c3d40ae75b2c4ea06e659fce18fba35af3c70d019"
             }
           ],
           "revision": "1.02"
@@ -19436,19 +19487,20 @@
         {
           "packages": [
             {
-              "build_id": "2003031607",
-              "bytes": 2097152,
+              "build_id": "2005070917",
+              "bytes": 4197888,
               "family_id": "ab4e219381d5f287",
-              "filename": "BP50NB40_INTM_92bb22b2.bin",
+              "filename": "BP50NB40_1.03_b3319dd6.tar",
               "fragment": false,
-              "key": "fw/mediatek/92bb22b2c8999bbcde4e02d785b711063cb414f40bdbe16fac862643b298610d.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "3cdbdacace5c6ed3d505bbbff65350274c5775ab871c42d130082fcf0ab56050",
+              "key": "fw/mediatek/b3319dd6b4460b478063dce43bb07007bfb9bee6aff5caa0143919db9b0fd92c.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
-              "revision": "INTM",
-              "sha256": "92bb22b2c8999bbcde4e02d785b711063cb414f40bdbe16fac862643b298610d"
+              "revision": "1.03",
+              "sha256": "b3319dd6b4460b478063dce43bb07007bfb9bee6aff5caa0143919db9b0fd92c"
             }
           ],
-          "revision": "INTM"
+          "revision": "1.03"
         }
       ]
     },
@@ -19470,15 +19522,16 @@
           "packages": [
             {
               "build_id": "1711231626",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "ab4e219381d5f287",
-              "filename": "BP55EB40_1.01_e60a4ce0.bin",
+              "filename": "BP55EB40_1.01_d9622299.tar",
               "fragment": false,
-              "key": "fw/mediatek/e60a4ce02a588d15faa2a89f1d97d80c22dd2306cf62f0219515a6e9ca5ddff9.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "e60a4ce02a588d15faa2a89f1d97d80c22dd2306cf62f0219515a6e9ca5ddff9",
+              "key": "fw/mediatek/d9622299dacf8f3ab2f1ebe50c2ac6d8eda69d2959277f93be45944937e45032.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "e60a4ce02a588d15faa2a89f1d97d80c22dd2306cf62f0219515a6e9ca5ddff9"
+              "sha256": "d9622299dacf8f3ab2f1ebe50c2ac6d8eda69d2959277f93be45944937e45032"
             }
           ],
           "revision": "1.01"
@@ -19487,15 +19540,16 @@
           "packages": [
             {
               "build_id": "1905031515",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "ab4e219381d5f287",
-              "filename": "BP55EB40_1.02_e64c4ca5.bin",
+              "filename": "BP55EB40_1.02_44f42a72.tar",
               "fragment": false,
-              "key": "fw/mediatek/e64c4ca5244594d0b7943cbedf71a9cced2ae7c3d9b98624aa84d7e3130bac8a.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "e64c4ca5244594d0b7943cbedf71a9cced2ae7c3d9b98624aa84d7e3130bac8a",
+              "key": "fw/mediatek/44f42a7255b0a6e32abefd032271bbd826371853879e8038631e28501e0c50ae.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "e64c4ca5244594d0b7943cbedf71a9cced2ae7c3d9b98624aa84d7e3130bac8a"
+              "sha256": "44f42a7255b0a6e32abefd032271bbd826371853879e8038631e28501e0c50ae"
             }
           ],
           "revision": "1.02"
@@ -19520,15 +19574,16 @@
           "packages": [
             {
               "build_id": "1711211720",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "d86c13d9d87270c5",
-              "filename": "BP60NB10_1.00_f60b037f.bin",
+              "filename": "BP60NB10_1.00_2e260a1d.tar",
               "fragment": false,
-              "key": "fw/mediatek/f60b037fb29edecff5d0d8476cc5dcfd5acf96b2b985c1d841c2b5a1a41f7da8.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "f60b037fb29edecff5d0d8476cc5dcfd5acf96b2b985c1d841c2b5a1a41f7da8",
+              "key": "fw/mediatek/2e260a1dbc66a455cf69aba73b7270e8f7f7e22a86300fc43c290466944867cd.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "f60b037fb29edecff5d0d8476cc5dcfd5acf96b2b985c1d841c2b5a1a41f7da8"
+              "sha256": "2e260a1dbc66a455cf69aba73b7270e8f7f7e22a86300fc43c290466944867cd"
             }
           ],
           "revision": "1.00"
@@ -19537,15 +19592,16 @@
           "packages": [
             {
               "build_id": "1905031534",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "d86c13d9d87270c5",
-              "filename": "BP60NB10_1.01_fb9174aa.bin",
+              "filename": "BP60NB10_1.01_c565e570.tar",
               "fragment": false,
-              "key": "fw/mediatek/fb9174aa26153911120a92d95beb8cf598f1f860344af2ccf67e98a99f4ca049.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "fb9174aa26153911120a92d95beb8cf598f1f860344af2ccf67e98a99f4ca049",
+              "key": "fw/mediatek/c565e57076adb3883f52779c2e171dde4f1f3e2fc7d2f2f91f9462399a5ba021.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "fb9174aa26153911120a92d95beb8cf598f1f860344af2ccf67e98a99f4ca049"
+              "sha256": "c565e57076adb3883f52779c2e171dde4f1f3e2fc7d2f2f91f9462399a5ba021"
             }
           ],
           "revision": "1.01"
@@ -19570,111 +19626,120 @@
           "packages": [
             {
               "build_id": "1612201528",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.00_0bd77fed.bin",
+              "filename": "BU40N_1.00_02a410b8.tar",
               "fragment": false,
-              "key": "fw/mediatek/0bd77fed4ec9df86aab9d8550f3182a8a95f4c27ee8342119b1b1f9f2c8303e0.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "822b229a9685f1e7af4e263dd4d1b6da2d361bd383b10ba93aea24235db93469",
+              "key": "fw/mediatek/02a410b8620e8a2268cf03aa53cbe9325debf5dc5271d815b22283f30afd4ad3.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "0bd77fed4ec9df86aab9d8550f3182a8a95f4c27ee8342119b1b1f9f2c8303e0"
+              "sha256": "02a410b8620e8a2268cf03aa53cbe9325debf5dc5271d815b22283f30afd4ad3"
             },
             {
               "build_id": "1612201528",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.00_221ad35b.bin",
+              "filename": "BU40N_1.00_0a47d1e6.tar",
               "fragment": false,
-              "key": "fw/mediatek/221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06",
+              "key": "fw/mediatek/0a47d1e62779f5180248b9ab5b3f3ec4b2dde183d14e205477e3f3e9894b8c33.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4"
+              "sha256": "0a47d1e62779f5180248b9ab5b3f3ec4b2dde183d14e205477e3f3e9894b8c33"
             },
             {
               "build_id": "1612201528",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.00_22edcf49.bin",
+              "filename": "BU40N_1.00_2762f7cf.tar",
               "fragment": false,
-              "key": "fw/mediatek/22edcf493f22a3e3ed66ba8b4cdd79ccc49533d9b8e7f06b6beade8cab2a9039.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "734ccb11f0b4763a27b358655a14ce60f4801cf131a936d14ee7dd86d34e2c1f",
+              "key": "fw/mediatek/2762f7cf5b60fc0b9be352e59aa6cb6f5413c6d91b1843f4048c0a29f1048884.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "22edcf493f22a3e3ed66ba8b4cdd79ccc49533d9b8e7f06b6beade8cab2a9039"
+              "sha256": "2762f7cf5b60fc0b9be352e59aa6cb6f5413c6d91b1843f4048c0a29f1048884"
             },
             {
               "build_id": "1612201528",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.00_4c2e0b2d.bin",
+              "filename": "BU40N_1.00_88a0ed80.tar",
               "fragment": false,
-              "key": "fw/mediatek/4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "79e8df06c776ed40523a5b530d1559e561fbefb71a9e981d301a92b7a6b5c964",
+              "key": "fw/mediatek/88a0ed80c03fcfcebf9ba880f153b3f5128afdb304eae612eb68f2a001901e40.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06"
+              "sha256": "88a0ed80c03fcfcebf9ba880f153b3f5128afdb304eae612eb68f2a001901e40"
             },
             {
               "build_id": "1612201528",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.00_734ccb11.bin",
+              "filename": "BU40N_1.00_b7ef4a97.tar",
               "fragment": false,
-              "key": "fw/mediatek/734ccb11f0b4763a27b358655a14ce60f4801cf131a936d14ee7dd86d34e2c1f.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "22edcf493f22a3e3ed66ba8b4cdd79ccc49533d9b8e7f06b6beade8cab2a9039",
+              "key": "fw/mediatek/b7ef4a97234093d598f2f7b5047cab8dbbbf2193a508df44f7e41c31f8b7a51f.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "734ccb11f0b4763a27b358655a14ce60f4801cf131a936d14ee7dd86d34e2c1f"
+              "sha256": "b7ef4a97234093d598f2f7b5047cab8dbbbf2193a508df44f7e41c31f8b7a51f"
             },
             {
               "build_id": "1612201528",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.00_79e8df06.bin",
+              "filename": "BU40N_1.00_d0f4cb1f.tar",
               "fragment": false,
-              "key": "fw/mediatek/79e8df06c776ed40523a5b530d1559e561fbefb71a9e981d301a92b7a6b5c964.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "b9b94841096f45005b5f12c78009bf420c840fa44e8b0d451b7b490ba04f8356",
+              "key": "fw/mediatek/d0f4cb1f910b6ae4ceeebb76c31aff55dde4ebd83004febb5f9d613499b67cb1.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "79e8df06c776ed40523a5b530d1559e561fbefb71a9e981d301a92b7a6b5c964"
+              "sha256": "d0f4cb1f910b6ae4ceeebb76c31aff55dde4ebd83004febb5f9d613499b67cb1"
             },
             {
               "build_id": "1612201528",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.00_822b229a.bin",
+              "filename": "BU40N_1.00_d3b71fe3.tar",
               "fragment": false,
-              "key": "fw/mediatek/822b229a9685f1e7af4e263dd4d1b6da2d361bd383b10ba93aea24235db93469.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "0bd77fed4ec9df86aab9d8550f3182a8a95f4c27ee8342119b1b1f9f2c8303e0",
+              "key": "fw/mediatek/d3b71fe391f8a5d37c1c406e326a4f266a0b4ba332d56e3a1769b20306d9244b.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "822b229a9685f1e7af4e263dd4d1b6da2d361bd383b10ba93aea24235db93469"
+              "sha256": "d3b71fe391f8a5d37c1c406e326a4f266a0b4ba332d56e3a1769b20306d9244b"
             },
             {
               "build_id": "1612201528",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.00_b2139fd9.bin",
+              "filename": "BU40N_1.00_e696b7bb.tar",
               "fragment": false,
-              "key": "fw/mediatek/b2139fd99d7c5b7fc5b525e53730b2f0f7108ffd2fd1ea4aab173949aa5ff44e.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "b2139fd99d7c5b7fc5b525e53730b2f0f7108ffd2fd1ea4aab173949aa5ff44e",
+              "key": "fw/mediatek/e696b7bb36ced8010b2a0b8dd0b233d97633c01ebb4ef5944d4ec8d410b1cd5b.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "b2139fd99d7c5b7fc5b525e53730b2f0f7108ffd2fd1ea4aab173949aa5ff44e"
+              "sha256": "e696b7bb36ced8010b2a0b8dd0b233d97633c01ebb4ef5944d4ec8d410b1cd5b"
             },
             {
               "build_id": "1612201528",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.00_b9b94841.bin",
+              "filename": "BU40N_1.00_ed07c986.tar",
               "fragment": false,
-              "key": "fw/mediatek/b9b94841096f45005b5f12c78009bf420c840fa44e8b0d451b7b490ba04f8356.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4",
+              "key": "fw/mediatek/ed07c986bebfeeffc1c062e52f51cad068a2bc6ef7e76132308c00513da6d6cd.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "b9b94841096f45005b5f12c78009bf420c840fa44e8b0d451b7b490ba04f8356"
+              "sha256": "ed07c986bebfeeffc1c062e52f51cad068a2bc6ef7e76132308c00513da6d6cd"
             }
           ],
           "revision": "1.00"
@@ -19683,27 +19748,29 @@
           "packages": [
             {
               "build_id": "1711301218",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.02_1bbeb535.bin",
+              "filename": "BU40N_1.02_301746da.tar",
               "fragment": false,
-              "key": "fw/mediatek/1bbeb5351dc0d69feaeefdac9ada7f3f48eed0ca4e2f879d9266679cec133396.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "1bbeb5351dc0d69feaeefdac9ada7f3f48eed0ca4e2f879d9266679cec133396",
+              "key": "fw/mediatek/301746da5807566024dc2b1c3d9e5934fb8334083d91aa63eaacfa745c970782.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "1bbeb5351dc0d69feaeefdac9ada7f3f48eed0ca4e2f879d9266679cec133396"
+              "sha256": "301746da5807566024dc2b1c3d9e5934fb8334083d91aa63eaacfa745c970782"
             },
             {
               "build_id": "1711202017",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.02_97bee5c5.bin",
+              "filename": "BU40N_1.02_3dad313f.tar",
               "fragment": false,
-              "key": "fw/mediatek/97bee5c51fbeb7980c35539bdf44e5d2c1628908721815fcee4ea2b9f22e9263.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "97bee5c51fbeb7980c35539bdf44e5d2c1628908721815fcee4ea2b9f22e9263",
+              "key": "fw/mediatek/3dad313f5ce63da25d30e10b50fb79b99e193ab67afb556b01117e032f49ccff.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "97bee5c51fbeb7980c35539bdf44e5d2c1628908721815fcee4ea2b9f22e9263"
+              "sha256": "3dad313f5ce63da25d30e10b50fb79b99e193ab67afb556b01117e032f49ccff"
             }
           ],
           "revision": "1.02"
@@ -19712,18 +19779,55 @@
           "packages": [
             {
               "build_id": "1810241934",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.03_64688690.bin",
+              "filename": "BU40N_1.03_78b44995.tar",
               "fragment": false,
-              "key": "fw/mediatek/64688690a2878c792833d9af8731004411f86d7a64ceb522a82368584d84282a.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "64688690a2878c792833d9af8731004411f86d7a64ceb522a82368584d84282a",
+              "key": "fw/mediatek/78b44995f7e723b61274b70ab137b1252b62bef7aca1f3f0fa372808c62a3c81.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.03",
-              "sha256": "64688690a2878c792833d9af8731004411f86d7a64ceb522a82368584d84282a"
+              "sha256": "78b44995f7e723b61274b70ab137b1252b62bef7aca1f3f0fa372808c62a3c81"
             }
           ],
           "revision": "1.03"
+        },
+        {
+          "packages": [
+            {
+              "build_id": "2005061142",
+              "bytes": 4197888,
+              "family_id": "309829e6c3c8f31d",
+              "filename": "BU40N_1.04_f434dc6e.tar",
+              "fragment": false,
+              "image_sha256": "5c1a47392976add3f84aa90a9a17dcf835361cecda706e6d7d388d7b92a24b69",
+              "key": "fw/mediatek/f434dc6e9b3504a7dc9a890aad039962bdf149f58a831e8f99c1730eb9d1720b.tar",
+              "packageType": "mediatek-installer",
+              "patched": false,
+              "revision": "1.04",
+              "sha256": "f434dc6e9b3504a7dc9a890aad039962bdf149f58a831e8f99c1730eb9d1720b"
+            }
+          ],
+          "revision": "1.04"
+        },
+        {
+          "packages": [
+            {
+              "build_id": "2404231347",
+              "bytes": 4197888,
+              "family_id": "309829e6c3c8f31d",
+              "filename": "BU40N_1.05_803ae4eb.tar",
+              "fragment": false,
+              "image_sha256": "fbfed0cc2d55bf823012d76cc7ac6d7fa742f059602d9d126b4866bdd8617d2d",
+              "key": "fw/mediatek/803ae4eb6ac9234c7dd31bf4f5c855cebe18726df18c40fe4616e06244df79f4.tar",
+              "packageType": "mediatek-installer",
+              "patched": false,
+              "revision": "1.05",
+              "sha256": "803ae4eb6ac9234c7dd31bf4f5c855cebe18726df18c40fe4616e06244df79f4"
+            }
+          ],
+          "revision": "1.05"
         }
       ]
     },
@@ -19745,15 +19849,16 @@
           "packages": [
             {
               "build_id": "1711201351",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_BN11_5c01c1fd.bin",
+              "filename": "BU40N_BN11_6a95bb7c.tar",
               "fragment": false,
-              "key": "fw/mediatek/5c01c1fda59f3db130bd14aa64fe97d4010376798716b16792dbffd59c488a95.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "5c01c1fda59f3db130bd14aa64fe97d4010376798716b16792dbffd59c488a95",
+              "key": "fw/mediatek/6a95bb7c3ac56cd2265fca53e5803d19e143cc6ee00cf565829bf6e7a7e60c76.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "BN11",
-              "sha256": "5c01c1fda59f3db130bd14aa64fe97d4010376798716b16792dbffd59c488a95"
+              "sha256": "6a95bb7c3ac56cd2265fca53e5803d19e143cc6ee00cf565829bf6e7a7e60c76"
             }
           ],
           "revision": "BN11"
@@ -19761,16 +19866,30 @@
         {
           "packages": [
             {
-              "build_id": "1905141415",
-              "bytes": 2097152,
+              "build_id": "1902230925",
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_BN12_c4d995f0.bin",
+              "filename": "BU40N_BN12_31c6cee8.tar",
               "fragment": false,
-              "key": "fw/mediatek/c4d995f031fe757d9823f7410f81c88ce7ba26e14b77e766792bff2e53a8b90f.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "3d3badd67d471b380e5566e747b42f7775abff7dd9fbbc2d0d21920a937b34d7",
+              "key": "fw/mediatek/31c6cee87ebe7c291199d28454d39d31841a84575a66d5641e095ce4a6a3cb27.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "BN12",
-              "sha256": "c4d995f031fe757d9823f7410f81c88ce7ba26e14b77e766792bff2e53a8b90f"
+              "sha256": "31c6cee87ebe7c291199d28454d39d31841a84575a66d5641e095ce4a6a3cb27"
+            },
+            {
+              "build_id": "1905141415",
+              "bytes": 2099712,
+              "family_id": "309829e6c3c8f31d",
+              "filename": "BU40N_BN12_f490e0fd.tar",
+              "fragment": false,
+              "image_sha256": "c4d995f031fe757d9823f7410f81c88ce7ba26e14b77e766792bff2e53a8b90f",
+              "key": "fw/mediatek/f490e0fd6b3b838057f3089aedfdff9264915fb7e3fa6864dcc548246d799748.tar",
+              "packageType": "mediatek-installer",
+              "patched": false,
+              "revision": "BN12",
+              "sha256": "f490e0fd6b3b838057f3089aedfdff9264915fb7e3fa6864dcc548246d799748"
             }
           ],
           "revision": "BN12"
@@ -19795,27 +19914,29 @@
           "packages": [
             {
               "build_id": "1705301728",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_BU10_14d86e99.bin",
+              "filename": "BU40N_BU10_994dc954.tar",
               "fragment": false,
-              "key": "fw/mediatek/14d86e9949d93126d6ec7eaa11eeaba512569f51a8ecfce9d707cb0cec6b5e24.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "14d86e9949d93126d6ec7eaa11eeaba512569f51a8ecfce9d707cb0cec6b5e24",
+              "key": "fw/mediatek/994dc954764a21b61f47d6fa51a67f6e58b892094625017c8fa6f3fd13f386ff.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "BU10",
-              "sha256": "14d86e9949d93126d6ec7eaa11eeaba512569f51a8ecfce9d707cb0cec6b5e24"
+              "sha256": "994dc954764a21b61f47d6fa51a67f6e58b892094625017c8fa6f3fd13f386ff"
             },
             {
               "build_id": "1705301728",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_BU10_58203b53.bin",
+              "filename": "BU40N_BU10_bd55468e.tar",
               "fragment": false,
-              "key": "fw/mediatek/58203b539de096786cde232ee3b0ef3fe824b20d7768a96b30f6a96bdac77bfb.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "58203b539de096786cde232ee3b0ef3fe824b20d7768a96b30f6a96bdac77bfb",
+              "key": "fw/mediatek/bd55468e06db4af186a1a46a6ecce2a849fa54f47b92156e2142bcd781b27d79.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "BU10",
-              "sha256": "58203b539de096786cde232ee3b0ef3fe824b20d7768a96b30f6a96bdac77bfb"
+              "sha256": "bd55468e06db4af186a1a46a6ecce2a849fa54f47b92156e2142bcd781b27d79"
             }
           ],
           "revision": "BU10"
@@ -19823,16 +19944,35 @@
         {
           "packages": [
             {
-              "build_id": "1902230922",
-              "bytes": 2097152,
+              "build_id": "1711201349",
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_BU12_920a89f9.bin",
+              "filename": "BU40N_BU11_cdb1ac48.tar",
               "fragment": false,
-              "key": "fw/mediatek/920a89f98b69b144290cb37dc37a7019c8ee37cf577457f0941a43395dfa7801.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "08d14869e553b84a92c4f897a120559673e75eee6d786988d038471aa2f5369a",
+              "key": "fw/mediatek/cdb1ac48a71487e5de67a860a1f0d95fad2a19a9af4fab5249635d77bf4a18ba.tar",
+              "packageType": "mediatek-installer",
+              "patched": false,
+              "revision": "BU11",
+              "sha256": "cdb1ac48a71487e5de67a860a1f0d95fad2a19a9af4fab5249635d77bf4a18ba"
+            }
+          ],
+          "revision": "BU11"
+        },
+        {
+          "packages": [
+            {
+              "build_id": "1902230922",
+              "bytes": 2099712,
+              "family_id": "309829e6c3c8f31d",
+              "filename": "BU40N_BU12_e28be7d6.tar",
+              "fragment": false,
+              "image_sha256": "920a89f98b69b144290cb37dc37a7019c8ee37cf577457f0941a43395dfa7801",
+              "key": "fw/mediatek/e28be7d6fc2b6da381a80bd1eaa7a9699b288f9055bf15daeb4ef031d3b48350.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "BU12",
-              "sha256": "920a89f98b69b144290cb37dc37a7019c8ee37cf577457f0941a43395dfa7801"
+              "sha256": "e28be7d6fc2b6da381a80bd1eaa7a9699b288f9055bf15daeb4ef031d3b48350"
             }
           ],
           "revision": "BU12"
@@ -19857,15 +19997,16 @@
           "packages": [
             {
               "build_id": "1705182012",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_CB04_78f75561.bin",
+              "filename": "BU40N_CB04_8c65ec17.tar",
               "fragment": false,
-              "key": "fw/mediatek/78f75561d474d09a4b3bd31ce346395600e2ed5d23431f6bfa02a500ccaee7d4.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "78f75561d474d09a4b3bd31ce346395600e2ed5d23431f6bfa02a500ccaee7d4",
+              "key": "fw/mediatek/8c65ec174bc480483bbd29758dcf65f8a91077f0f4dbd94d7a372108543603f7.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "CB04",
-              "sha256": "78f75561d474d09a4b3bd31ce346395600e2ed5d23431f6bfa02a500ccaee7d4"
+              "sha256": "8c65ec174bc480483bbd29758dcf65f8a91077f0f4dbd94d7a372108543603f7"
             }
           ],
           "revision": "CB04"
@@ -19874,13 +20015,13 @@
     },
     {
       "crossflash_group": "MT1959/slim/BU5/board-unknown",
-      "destination": "GENERAL",
+      "destination": "D?",
       "embedded_models": [
         "BU40N"
       ],
       "family": "mediatek",
       "hardware": "HL-DT-ST BU40N MT1959 BU5/BU3",
-      "key": "mediatek:HL-DT-ST BU40N MT1959 BU5/BU3:GENERAL",
+      "key": "mediatek:HL-DT-ST BU40N MT1959 BU5/BU3:D?",
       "other_candidates": [],
       "platforms": [
         "MT1959"
@@ -19889,19 +20030,20 @@
         {
           "packages": [
             {
-              "build_id": "1907051444",
-              "bytes": 2097152,
+              "build_id": "2012011435",
+              "bytes": 4197888,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_INTM_29ad3026.bin",
+              "filename": "BU40N_A103_91264a9f.tar",
               "fragment": false,
-              "key": "fw/mediatek/29ad302647148e270c15a5a4542aa4796ee9ba25ea9fbf9f2be9465c01c139a7.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "7d7f2465feafbcc05b74fbaff1dced8a55b19ddb1c03297a8027e261045d2e9e",
+              "key": "fw/mediatek/91264a9ff649c8077a8c29ffae4ca9cb237a529112259a26685489a0792a2603.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
-              "revision": "INTM",
-              "sha256": "29ad302647148e270c15a5a4542aa4796ee9ba25ea9fbf9f2be9465c01c139a7"
+              "revision": "A103",
+              "sha256": "91264a9ff649c8077a8c29ffae4ca9cb237a529112259a26685489a0792a2603"
             }
           ],
-          "revision": "INTM"
+          "revision": "A103"
         }
       ]
     },
@@ -19923,15 +20065,16 @@
           "packages": [
             {
               "build_id": "1801221536",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_FR07_4af842c0.bin",
+              "filename": "BU40N_FR07_1516c71e.tar",
               "fragment": false,
-              "key": "fw/mediatek/4af842c0acf4a9ff42b5554d6d1d320b245ab4973b174a8b7ccf1f941f7ab715.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "4af842c0acf4a9ff42b5554d6d1d320b245ab4973b174a8b7ccf1f941f7ab715",
+              "key": "fw/mediatek/1516c71e1147235fcdf6e4d11a7d5536c7bedf169b6d6c3927433bcd767a096c.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "FR07",
-              "sha256": "4af842c0acf4a9ff42b5554d6d1d320b245ab4973b174a8b7ccf1f941f7ab715"
+              "sha256": "1516c71e1147235fcdf6e4d11a7d5536c7bedf169b6d6c3927433bcd767a096c"
             }
           ],
           "revision": "FR07"
@@ -19956,15 +20099,16 @@
           "packages": [
             {
               "build_id": "1712221221",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.01_103b9da9.bin",
+              "filename": "BU40N_1.01_c9b5fee3.tar",
               "fragment": false,
-              "key": "fw/mediatek/103b9da94c91212df6313b150d3cf7e10c6b891a4ab65c49773e891a05f96a2e.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "103b9da94c91212df6313b150d3cf7e10c6b891a4ab65c49773e891a05f96a2e",
+              "key": "fw/mediatek/c9b5fee32fadb43b52d39756b1c80ea9b6a2380efda62aca6b1d0400375c9002.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "103b9da94c91212df6313b150d3cf7e10c6b891a4ab65c49773e891a05f96a2e"
+              "sha256": "c9b5fee32fadb43b52d39756b1c80ea9b6a2380efda62aca6b1d0400375c9002"
             }
           ],
           "revision": "1.01"
@@ -19989,15 +20133,16 @@
           "packages": [
             {
               "build_id": "1711301153",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_U101_5f9abd3f.bin",
+              "filename": "BU40N_U101_581cf2e9.tar",
               "fragment": false,
-              "key": "fw/mediatek/5f9abd3f7169b1d6525c47c5f406c1ddb13fca5b9f93fc646a1a924f13da9779.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "5f9abd3f7169b1d6525c47c5f406c1ddb13fca5b9f93fc646a1a924f13da9779",
+              "key": "fw/mediatek/581cf2e9b12886527128ae054b9aa4d7aa872c8254f0c8cac6899fd9ae70bde4.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "U101",
-              "sha256": "5f9abd3f7169b1d6525c47c5f406c1ddb13fca5b9f93fc646a1a924f13da9779"
+              "sha256": "581cf2e9b12886527128ae054b9aa4d7aa872c8254f0c8cac6899fd9ae70bde4"
             }
           ],
           "revision": "U101"
@@ -20022,15 +20167,16 @@
           "packages": [
             {
               "build_id": "1711231042",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_TK03_c328b656.bin",
+              "filename": "BU40N_TK03_6778ec47.tar",
               "fragment": false,
-              "key": "fw/mediatek/c328b6561228dc4c26f3eee901bd51af353b2f4eefb74d8be02da2c9a76606fb.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "c328b6561228dc4c26f3eee901bd51af353b2f4eefb74d8be02da2c9a76606fb",
+              "key": "fw/mediatek/6778ec47626c29d3df4ed08b4d02a50554903e027dadf9a66c2014e44551bfe0.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "TK03",
-              "sha256": "c328b6561228dc4c26f3eee901bd51af353b2f4eefb74d8be02da2c9a76606fb"
+              "sha256": "6778ec47626c29d3df4ed08b4d02a50554903e027dadf9a66c2014e44551bfe0"
             }
           ],
           "revision": "TK03"
@@ -20055,15 +20201,16 @@
           "packages": [
             {
               "build_id": "1711211006",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "900ac5feeffe13f2",
-              "filename": "BU50N_1.00_20425a8a.bin",
+              "filename": "BU50N_1.00_a1a4a463.tar",
               "fragment": false,
-              "key": "fw/mediatek/20425a8ade6bb5d24bbd76fb5d5d67e744cd49e24783be87e6a89d30dfcace95.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "20425a8ade6bb5d24bbd76fb5d5d67e744cd49e24783be87e6a89d30dfcace95",
+              "key": "fw/mediatek/a1a4a463960bba2e9fe6c57b1d459596302380a25515107bb06694be4263b695.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "20425a8ade6bb5d24bbd76fb5d5d67e744cd49e24783be87e6a89d30dfcace95"
+              "sha256": "a1a4a463960bba2e9fe6c57b1d459596302380a25515107bb06694be4263b695"
             }
           ],
           "revision": "1.00"
@@ -20088,35 +20235,19 @@
           "packages": [
             {
               "build_id": "1711211606",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "8c779fa82f683729",
-              "filename": "CH12NS40_1.01_731bcf7a.bin",
+              "filename": "CH12NS40_1.01_80ad5afc.tar",
               "fragment": false,
-              "key": "fw/mediatek/731bcf7aa48dacbcb5729f97576cf24b90d7a795a330c2ab8a801c57eb738f0e.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "731bcf7aa48dacbcb5729f97576cf24b90d7a795a330c2ab8a801c57eb738f0e",
+              "key": "fw/mediatek/80ad5afca4d76da1f3a635266e684337591f3c6f6ffa0c878cffd94ff7d7317c.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "731bcf7aa48dacbcb5729f97576cf24b90d7a795a330c2ab8a801c57eb738f0e"
+              "sha256": "80ad5afca4d76da1f3a635266e684337591f3c6f6ffa0c878cffd94ff7d7317c"
             }
           ],
           "revision": "1.01"
-        },
-        {
-          "packages": [
-            {
-              "build_id": "2003230952",
-              "bytes": 2097152,
-              "family_id": "8c779fa82f683729",
-              "filename": "CH12NS40_INTM_fc98fda6.bin",
-              "fragment": false,
-              "key": "fw/mediatek/fc98fda6431f71ebc29a3fadf572fcd09c58cc4b5bed1bf918dbc29b3616777e.bin",
-              "packageType": "mediatek-image",
-              "patched": false,
-              "revision": "INTM",
-              "sha256": "fc98fda6431f71ebc29a3fadf572fcd09c58cc4b5bed1bf918dbc29b3616777e"
-            }
-          ],
-          "revision": "INTM"
         }
       ]
     },
@@ -20138,15 +20269,16 @@
           "packages": [
             {
               "build_id": "1312061625",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "1f2fc2aafc26d8f",
-              "filename": "UH12NS30_1.01_84fecc29.bin",
+              "filename": "UH12NS30_1.01_a97335a0.tar",
               "fragment": false,
-              "key": "fw/mediatek/84fecc2930d63cd4da8aa4759f63550d1eb1a642343d29adf1e370a2a861347e.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "84fecc2930d63cd4da8aa4759f63550d1eb1a642343d29adf1e370a2a861347e",
+              "key": "fw/mediatek/a97335a0676e45d44458c2ae9b0830726c34575c9c65381446576c8e501285c0.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "84fecc2930d63cd4da8aa4759f63550d1eb1a642343d29adf1e370a2a861347e"
+              "sha256": "a97335a0676e45d44458c2ae9b0830726c34575c9c65381446576c8e501285c0"
             }
           ],
           "revision": "1.01"
@@ -20155,15 +20287,16 @@
           "packages": [
             {
               "build_id": "1403261141",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "1f2fc2aafc26d8f",
-              "filename": "UH12NS30_1.02_d98c2e11.bin",
+              "filename": "UH12NS30_1.02_33601f7f.tar",
               "fragment": false,
-              "key": "fw/mediatek/d98c2e11f400cf54133289369f19064ccabc72c69ef189f9129fc19b2d700cc8.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "d98c2e11f400cf54133289369f19064ccabc72c69ef189f9129fc19b2d700cc8",
+              "key": "fw/mediatek/33601f7fd4f92609682e1b7f46fbc99d6ff2299a0c093659f0c74b7a87c57feb.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "d98c2e11f400cf54133289369f19064ccabc72c69ef189f9129fc19b2d700cc8"
+              "sha256": "33601f7fd4f92609682e1b7f46fbc99d6ff2299a0c093659f0c74b7a87c57feb"
             }
           ],
           "revision": "1.02"
@@ -20188,18 +20321,37 @@
           "packages": [
             {
               "build_id": "1711231550",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "8c779fa82f683729",
-              "filename": "UH12NS40_1.01_fbe641e5.bin",
+              "filename": "UH12NS40_1.01_a9d75c33.tar",
               "fragment": false,
-              "key": "fw/mediatek/fbe641e5e808e8127c0196e28bc8a10ba9d8ae61bd8645affff9f259b4a6b25c.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "fbe641e5e808e8127c0196e28bc8a10ba9d8ae61bd8645affff9f259b4a6b25c",
+              "key": "fw/mediatek/a9d75c338853312dc324f106bd70ef70248d7a29e5df60cb9069c4de65043492.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "fbe641e5e808e8127c0196e28bc8a10ba9d8ae61bd8645affff9f259b4a6b25c"
+              "sha256": "a9d75c338853312dc324f106bd70ef70248d7a29e5df60cb9069c4de65043492"
             }
           ],
           "revision": "1.01"
+        },
+        {
+          "packages": [
+            {
+              "build_id": "2005080959",
+              "bytes": 4197888,
+              "family_id": "8c779fa82f683729",
+              "filename": "UH12NS40_1.03_d168f427.tar",
+              "fragment": false,
+              "image_sha256": "eeb1c948f1ed98245b7d21d03fe5e333a3349d28453690e2a60b4a8dc01765ba",
+              "key": "fw/mediatek/d168f427f4b4a83141c28275e9b269b433aece059a27b5338bf456b6c54ffe5d.tar",
+              "packageType": "mediatek-installer",
+              "patched": false,
+              "revision": "1.03",
+              "sha256": "d168f427f4b4a83141c28275e9b269b433aece059a27b5338bf456b6c54ffe5d"
+            }
+          ],
+          "revision": "1.03"
         }
       ]
     },
@@ -20221,15 +20373,16 @@
           "packages": [
             {
               "build_id": "1206161828",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "WH14NS40_1.00_8489a3a5.bin",
+              "filename": "WH14NS40_1.00_ab6e4566.tar",
               "fragment": false,
-              "key": "fw/mediatek/8489a3a5b34ea7ee6046fec6db02be825dee1205646c10ed7d11d4809c45deeb.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "8489a3a5b34ea7ee6046fec6db02be825dee1205646c10ed7d11d4809c45deeb",
+              "key": "fw/mediatek/ab6e4566f3feb68440443eef707e85131dfabfc34f7ee4c6a28a5af91eb69b3a.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "8489a3a5b34ea7ee6046fec6db02be825dee1205646c10ed7d11d4809c45deeb"
+              "sha256": "ab6e4566f3feb68440443eef707e85131dfabfc34f7ee4c6a28a5af91eb69b3a"
             }
           ],
           "revision": "1.00"
@@ -20238,15 +20391,16 @@
           "packages": [
             {
               "build_id": "1304042325",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "WH14NS40_1.01_fc3013be.bin",
+              "filename": "WH14NS40_1.01_b60b7198.tar",
               "fragment": false,
-              "key": "fw/mediatek/fc3013be680340b6a413a7aa8773cc0bdd2bd1144d3ceb2002983bacfeff8442.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "fc3013be680340b6a413a7aa8773cc0bdd2bd1144d3ceb2002983bacfeff8442",
+              "key": "fw/mediatek/b60b7198c5fec3e81bc561971827da5559f0ce6c7c59800fbb2a86bedbed739a.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "fc3013be680340b6a413a7aa8773cc0bdd2bd1144d3ceb2002983bacfeff8442"
+              "sha256": "b60b7198c5fec3e81bc561971827da5559f0ce6c7c59800fbb2a86bedbed739a"
             }
           ],
           "revision": "1.01"
@@ -20255,15 +20409,16 @@
           "packages": [
             {
               "build_id": "1312061523",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "WH14NS40_1.02_40eb760e.bin",
+              "filename": "WH14NS40_1.02_7f7dfd64.tar",
               "fragment": false,
-              "key": "fw/mediatek/40eb760e23f100d55e86e9c061c73428d4087ef712294e4dbfcefa3093837a1a.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "40eb760e23f100d55e86e9c061c73428d4087ef712294e4dbfcefa3093837a1a",
+              "key": "fw/mediatek/7f7dfd64b55f2a8fcab70dd1e2246274151406b0b7149a88372cbcbb5820cb15.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "40eb760e23f100d55e86e9c061c73428d4087ef712294e4dbfcefa3093837a1a"
+              "sha256": "7f7dfd64b55f2a8fcab70dd1e2246274151406b0b7149a88372cbcbb5820cb15"
             }
           ],
           "revision": "1.02"
@@ -20272,15 +20427,16 @@
           "packages": [
             {
               "build_id": "1403261105",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "WH14NS40_1.03_f6a5a578.bin",
+              "filename": "WH14NS40_1.03_3b8730cc.tar",
               "fragment": false,
-              "key": "fw/mediatek/f6a5a578f9b5347f6371a7ef1195ab84b1bea4d80b58c97efa23c8ddf0d6f6e9.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "f6a5a578f9b5347f6371a7ef1195ab84b1bea4d80b58c97efa23c8ddf0d6f6e9",
+              "key": "fw/mediatek/3b8730cc17bcd87295f5a7dc249f5d066874340e6e74c78428b2e48ae5f59cc3.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.03",
-              "sha256": "f6a5a578f9b5347f6371a7ef1195ab84b1bea4d80b58c97efa23c8ddf0d6f6e9"
+              "sha256": "3b8730cc17bcd87295f5a7dc249f5d066874340e6e74c78428b2e48ae5f59cc3"
             }
           ],
           "revision": "1.03"
@@ -20305,15 +20461,16 @@
           "packages": [
             {
               "build_id": "1512111503",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "WH14NS40_1.02_648a16d0.bin",
+              "filename": "WH14NS40_1.02_95e11939.tar",
               "fragment": false,
-              "key": "fw/mediatek/648a16d024eea31ef4901f3ac2180cbfffeda1161d70f9096335d8a6097445bc.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "648a16d024eea31ef4901f3ac2180cbfffeda1161d70f9096335d8a6097445bc",
+              "key": "fw/mediatek/95e11939b72caea0b58a69c8b0e8aabb36586181dc497dfcadc3129300d92a44.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "648a16d024eea31ef4901f3ac2180cbfffeda1161d70f9096335d8a6097445bc"
+              "sha256": "95e11939b72caea0b58a69c8b0e8aabb36586181dc497dfcadc3129300d92a44"
             }
           ],
           "revision": "1.02"
@@ -20322,15 +20479,16 @@
           "packages": [
             {
               "build_id": "1711211658",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "WH14NS40_1.03_de13d8d0.bin",
+              "filename": "WH14NS40_1.03_28f245f2.tar",
               "fragment": false,
-              "key": "fw/mediatek/de13d8d0fd56ffa16ef6bcffcab946e3839cefd85975d8e925dfbb4e8e881f72.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "de13d8d0fd56ffa16ef6bcffcab946e3839cefd85975d8e925dfbb4e8e881f72",
+              "key": "fw/mediatek/28f245f206937f99ffbaf8271e2e20d17ebd3affaa558269b0865a0c684e9bb5.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.03",
-              "sha256": "de13d8d0fd56ffa16ef6bcffcab946e3839cefd85975d8e925dfbb4e8e881f72"
+              "sha256": "28f245f206937f99ffbaf8271e2e20d17ebd3affaa558269b0865a0c684e9bb5"
             }
           ],
           "revision": "1.03"
@@ -20339,18 +20497,37 @@
           "packages": [
             {
               "build_id": "1901041351",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "WH14NS40_1.04_164e2475.bin",
+              "filename": "WH14NS40_1.04_79a6ce60.tar",
               "fragment": false,
-              "key": "fw/mediatek/164e2475aea287ec5759ee07eb285697b52923ead1288f24358a70fc7ed3ec32.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "164e2475aea287ec5759ee07eb285697b52923ead1288f24358a70fc7ed3ec32",
+              "key": "fw/mediatek/79a6ce60c00d1e5cc7618dc41fa8583ccfdca65f394b473035875d52719b6d19.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.04",
-              "sha256": "164e2475aea287ec5759ee07eb285697b52923ead1288f24358a70fc7ed3ec32"
+              "sha256": "79a6ce60c00d1e5cc7618dc41fa8583ccfdca65f394b473035875d52719b6d19"
             }
           ],
           "revision": "1.04"
+        },
+        {
+          "packages": [
+            {
+              "build_id": "2005061444",
+              "bytes": 4197888,
+              "family_id": "336e449ab6a827e3",
+              "filename": "WH14NS40_1.05_4700db9e.tar",
+              "fragment": false,
+              "image_sha256": "38a70ac234a1dfd67725890bdb82f1bf798262a6e345b8edc6633f5d980bfcb1",
+              "key": "fw/mediatek/4700db9ef35679194fdb1e29084c5f54a8d6e4f2cfdc5622cc96d627b795dd64.tar",
+              "packageType": "mediatek-installer",
+              "patched": false,
+              "revision": "1.05",
+              "sha256": "4700db9ef35679194fdb1e29084c5f54a8d6e4f2cfdc5622cc96d627b795dd64"
+            }
+          ],
+          "revision": "1.05"
         }
       ]
     },
@@ -20372,27 +20549,29 @@
           "packages": [
             {
               "build_id": "1312061658",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "WH16NS40_1.01_7af021b0.bin",
+              "filename": "WH16NS40_1.01_3448e30e.tar",
               "fragment": false,
-              "key": "fw/mediatek/7af021b026f8aef225b2211183885be211a66c1a4d64c9dad5c84661586144c7.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "eee6563f68a414eb1dbc9048ab0820d01003320b080988437f762ca23d727e56",
+              "key": "fw/mediatek/3448e30ed22cecb172b89b29c140a8ee993b5145177bcb12ff936e3efcdd779f.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "7af021b026f8aef225b2211183885be211a66c1a4d64c9dad5c84661586144c7"
+              "sha256": "3448e30ed22cecb172b89b29c140a8ee993b5145177bcb12ff936e3efcdd779f"
             },
             {
               "build_id": "1312061658",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "WH16NS40_1.01_eee6563f.bin",
+              "filename": "WH16NS40_1.01_b5af4a37.tar",
               "fragment": false,
-              "key": "fw/mediatek/eee6563f68a414eb1dbc9048ab0820d01003320b080988437f762ca23d727e56.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "7af021b026f8aef225b2211183885be211a66c1a4d64c9dad5c84661586144c7",
+              "key": "fw/mediatek/b5af4a37e5613a495243ca3a0824e75e2ea42436c125f397eb4badff7a5358be.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "eee6563f68a414eb1dbc9048ab0820d01003320b080988437f762ca23d727e56"
+              "sha256": "b5af4a37e5613a495243ca3a0824e75e2ea42436c125f397eb4badff7a5358be"
             }
           ],
           "revision": "1.01"
@@ -20401,27 +20580,29 @@
           "packages": [
             {
               "build_id": "1405071026",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "WH16NS40_1.02_1368766f.bin",
+              "filename": "WH16NS40_1.02_04dcc5b7.tar",
               "fragment": false,
-              "key": "fw/mediatek/1368766f8d384d0c86d4803d057b7aa1ca205542b9b6b0580e875aaa8bd015b3.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "1368766f8d384d0c86d4803d057b7aa1ca205542b9b6b0580e875aaa8bd015b3",
+              "key": "fw/mediatek/04dcc5b76217139ecea0a315542ee4415f7156c8e8fee5afcaec052aa96ea949.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "1368766f8d384d0c86d4803d057b7aa1ca205542b9b6b0580e875aaa8bd015b3"
+              "sha256": "04dcc5b76217139ecea0a315542ee4415f7156c8e8fee5afcaec052aa96ea949"
             },
             {
               "build_id": "1405071026",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "WH16NS40_1.02_7f26c559.bin",
+              "filename": "WH16NS40_1.02_a95464bc.tar",
               "fragment": false,
-              "key": "fw/mediatek/7f26c559774b87a8da10c42d5ce72b8f1af3aa369d14d64f7d880d2b20b0327a.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "7f26c559774b87a8da10c42d5ce72b8f1af3aa369d14d64f7d880d2b20b0327a",
+              "key": "fw/mediatek/a95464bc0cae7e6788380f3da6ddaabaf7be67572d88896135915858348b5745.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "7f26c559774b87a8da10c42d5ce72b8f1af3aa369d14d64f7d880d2b20b0327a"
+              "sha256": "a95464bc0cae7e6788380f3da6ddaabaf7be67572d88896135915858348b5745"
             }
           ],
           "revision": "1.02"
@@ -20446,15 +20627,16 @@
           "packages": [
             {
               "build_id": "1703101650",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "WH16NS40_1.02_87790f05.bin",
+              "filename": "WH16NS40_1.02_60fb5ba8.tar",
               "fragment": false,
-              "key": "fw/mediatek/87790f053877e3e1bdd22969d70a7b1b6ed36624bb474bfcdee6526ac6e227c0.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "87790f053877e3e1bdd22969d70a7b1b6ed36624bb474bfcdee6526ac6e227c0",
+              "key": "fw/mediatek/60fb5ba8b20548d1e005f9bfc62f1353fed7431a48f9d71bfce9ed74e22ec81a.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "87790f053877e3e1bdd22969d70a7b1b6ed36624bb474bfcdee6526ac6e227c0"
+              "sha256": "60fb5ba8b20548d1e005f9bfc62f1353fed7431a48f9d71bfce9ed74e22ec81a"
             }
           ],
           "revision": "1.02"
@@ -20463,18 +20645,37 @@
           "packages": [
             {
               "build_id": "1711211653",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "WH16NS40_1.03_3e3b227e.bin",
+              "filename": "WH16NS40_1.03_ceae0b4b.tar",
               "fragment": false,
-              "key": "fw/mediatek/3e3b227e1338b5bc601ad6b2ce02fd1d375b7ea6179b055412ea0702ce54615c.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "3e3b227e1338b5bc601ad6b2ce02fd1d375b7ea6179b055412ea0702ce54615c",
+              "key": "fw/mediatek/ceae0b4b5a2bd21ba8379c532ebb986691f69bf997785222dfac071b3a7ca9c2.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.03",
-              "sha256": "3e3b227e1338b5bc601ad6b2ce02fd1d375b7ea6179b055412ea0702ce54615c"
+              "sha256": "ceae0b4b5a2bd21ba8379c532ebb986691f69bf997785222dfac071b3a7ca9c2"
             }
           ],
           "revision": "1.03"
+        },
+        {
+          "packages": [
+            {
+              "build_id": "2005061440",
+              "bytes": 4197888,
+              "family_id": "336e449ab6a827e3",
+              "filename": "WH16NS40_1.05_d5243c7d.tar",
+              "fragment": false,
+              "image_sha256": "ffde0e55aed6484046d539a455e04dfd0765b927a57cce0af9018726fe23725f",
+              "key": "fw/mediatek/d5243c7dec241156618d22b9ed1f24e090d8f18dc147a5a55459c6bf4e6fdb21.tar",
+              "packageType": "mediatek-installer",
+              "patched": false,
+              "revision": "1.05",
+              "sha256": "d5243c7dec241156618d22b9ed1f24e090d8f18dc147a5a55459c6bf4e6fdb21"
+            }
+          ],
+          "revision": "1.05"
         }
       ]
     },
@@ -20496,15 +20697,16 @@
           "packages": [
             {
               "build_id": "1602041103",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "WH16NS48_1.D3_46b41f15.bin",
+              "filename": "WH16NS48_1.D3_6d333703.tar",
               "fragment": false,
-              "key": "fw/mediatek/46b41f15e053b66daccb024cba4380c45f791c2d0c2b8258cd23253fc5f0b22a.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "46b41f15e053b66daccb024cba4380c45f791c2d0c2b8258cd23253fc5f0b22a",
+              "key": "fw/mediatek/6d333703d09eabb7f834bf627575a67167d1c85516a36b7e88b00bf51b028a1a.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.D3",
-              "sha256": "46b41f15e053b66daccb024cba4380c45f791c2d0c2b8258cd23253fc5f0b22a"
+              "sha256": "6d333703d09eabb7f834bf627575a67167d1c85516a36b7e88b00bf51b028a1a"
             }
           ],
           "revision": "1.D3"
@@ -20529,15 +20731,16 @@
           "packages": [
             {
               "build_id": "1711201947",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "WH16NS58_1.V1_4041c0f1.bin",
+              "filename": "WH16NS58_1.V1_4a249488.tar",
               "fragment": false,
-              "key": "fw/mediatek/4041c0f122a902288ca8439888f68f7760616a0a37c366b825d6497b51157e46.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "4041c0f122a902288ca8439888f68f7760616a0a37c366b825d6497b51157e46",
+              "key": "fw/mediatek/4a249488eaba77af30377c1d02d3629ebd450f008e7f6a808f47fcacb073d13f.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.V1",
-              "sha256": "4041c0f122a902288ca8439888f68f7760616a0a37c366b825d6497b51157e46"
+              "sha256": "4a249488eaba77af30377c1d02d3629ebd450f008e7f6a808f47fcacb073d13f"
             }
           ],
           "revision": "1.V1"
@@ -20546,15 +20749,16 @@
           "packages": [
             {
               "build_id": "1711231023",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "WH16NS58_1.V2_3018997b.bin",
+              "filename": "WH16NS58_1.V2_4d8ec087.tar",
               "fragment": false,
-              "key": "fw/mediatek/3018997b63cc9a2f31618fd9b6b5c6bfe0cc921b891f4a80ac08ae3ef2b16504.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "3018997b63cc9a2f31618fd9b6b5c6bfe0cc921b891f4a80ac08ae3ef2b16504",
+              "key": "fw/mediatek/4d8ec087f90fd57896bcf3d59c4a620ceb6b4c6384bc0cde98fff1236ff7ea35.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.V2",
-              "sha256": "3018997b63cc9a2f31618fd9b6b5c6bfe0cc921b891f4a80ac08ae3ef2b16504"
+              "sha256": "4d8ec087f90fd57896bcf3d59c4a620ceb6b4c6384bc0cde98fff1236ff7ea35"
             }
           ],
           "revision": "1.V2"
@@ -20563,15 +20767,16 @@
           "packages": [
             {
               "build_id": "1802070957",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "WH16NS58_1.V5_e2406018.bin",
+              "filename": "WH16NS58_1.V5_79430d72.tar",
               "fragment": false,
-              "key": "fw/mediatek/e24060184915a9860a84ea7d0ad23fee478e6eb31af86da589f5723c8e29a1cd.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "e24060184915a9860a84ea7d0ad23fee478e6eb31af86da589f5723c8e29a1cd",
+              "key": "fw/mediatek/79430d72637fdab7be8cb3070f60f90ce5c4519f20ed4c37060cd1a82718b352.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.V5",
-              "sha256": "e24060184915a9860a84ea7d0ad23fee478e6eb31af86da589f5723c8e29a1cd"
+              "sha256": "79430d72637fdab7be8cb3070f60f90ce5c4519f20ed4c37060cd1a82718b352"
             }
           ],
           "revision": "1.V5"
@@ -20579,16 +20784,35 @@
         {
           "packages": [
             {
-              "build_id": "2203301454",
-              "bytes": 2097152,
+              "build_id": "2012021023",
+              "bytes": 4197888,
               "family_id": "336e449ab6a827e3",
-              "filename": "WH16NS58_1.V9_97b28707.bin",
+              "filename": "WH16NS58_1.V7_63b6dd64.tar",
               "fragment": false,
-              "key": "fw/mediatek/97b287072e20c9527de6f34f6d564c8edcc6afb3ecf5675c11b8262c11663061.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "569cea9bb8add8b5638fbf0f5ea47b8014f851f007b2cbef2be44737d7cdbf68",
+              "key": "fw/mediatek/63b6dd646ece890f52143478c86d0c59c8016826997eb8a35dd9f35b5d40f35d.tar",
+              "packageType": "mediatek-installer",
+              "patched": false,
+              "revision": "1.V7",
+              "sha256": "63b6dd646ece890f52143478c86d0c59c8016826997eb8a35dd9f35b5d40f35d"
+            }
+          ],
+          "revision": "1.V7"
+        },
+        {
+          "packages": [
+            {
+              "build_id": "2203301454",
+              "bytes": 4197888,
+              "family_id": "336e449ab6a827e3",
+              "filename": "WH16NS58_1.V9_ef64ae9e.tar",
+              "fragment": false,
+              "image_sha256": "97b287072e20c9527de6f34f6d564c8edcc6afb3ecf5675c11b8262c11663061",
+              "key": "fw/mediatek/ef64ae9e3f5471e0a1cd091544f577757a969cba6e2faca34d18028ecb755270.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.V9",
-              "sha256": "97b287072e20c9527de6f34f6d564c8edcc6afb3ecf5675c11b8262c11663061"
+              "sha256": "ef64ae9e3f5471e0a1cd091544f577757a969cba6e2faca34d18028ecb755270"
             }
           ],
           "revision": "1.V9"
@@ -20613,15 +20837,16 @@
           "packages": [
             {
               "build_id": "1704251756",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "WH16NS60_1.00_d1338932.bin",
+              "filename": "WH16NS60_1.00_dc21dd67.tar",
               "fragment": false,
-              "key": "fw/mediatek/d133893209392b74cb0c3c1225cc4c0e8b1d927f1f671261ecc82525405e47e0.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "d133893209392b74cb0c3c1225cc4c0e8b1d927f1f671261ecc82525405e47e0",
+              "key": "fw/mediatek/dc21dd679aea7e2070e9fac346bec6bc98172a499362d15dbc9984dfc614d0cc.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.00",
-              "sha256": "d133893209392b74cb0c3c1225cc4c0e8b1d927f1f671261ecc82525405e47e0"
+              "sha256": "dc21dd679aea7e2070e9fac346bec6bc98172a499362d15dbc9984dfc614d0cc"
             }
           ],
           "revision": "1.00"
@@ -20630,15 +20855,16 @@
           "packages": [
             {
               "build_id": "1711202000",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "WH16NS60_1.01_aea98763.bin",
+              "filename": "WH16NS60_1.01_8dd31334.tar",
               "fragment": false,
-              "key": "fw/mediatek/aea98763cad71e8cfbd8d32963a63adf429e889bd13b749e7c4a792cc5b076a2.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "aea98763cad71e8cfbd8d32963a63adf429e889bd13b749e7c4a792cc5b076a2",
+              "key": "fw/mediatek/8dd3133428a5bbc6bed7d4dbf9d2e52dd63fd9cf3bcfb3e111fde4dc3e5f90d3.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "aea98763cad71e8cfbd8d32963a63adf429e889bd13b749e7c4a792cc5b076a2"
+              "sha256": "8dd3133428a5bbc6bed7d4dbf9d2e52dd63fd9cf3bcfb3e111fde4dc3e5f90d3"
             }
           ],
           "revision": "1.01"
@@ -20647,18 +20873,37 @@
           "packages": [
             {
               "build_id": "1810291936",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "336e449ab6a827e3",
-              "filename": "WH16NS60_1.02_12c4ee6f.bin",
+              "filename": "WH16NS60_1.02_85b2042d.tar",
               "fragment": false,
-              "key": "fw/mediatek/12c4ee6fb88d4c5402e9e8fab0881a93fd1ab18e5a82bb87ecd4ef30c807cf53.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "12c4ee6fb88d4c5402e9e8fab0881a93fd1ab18e5a82bb87ecd4ef30c807cf53",
+              "key": "fw/mediatek/85b2042d550b3d84297192ebf2795b6dc9b379aa12c94846a2eecc8f77969f1f.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.02",
-              "sha256": "12c4ee6fb88d4c5402e9e8fab0881a93fd1ab18e5a82bb87ecd4ef30c807cf53"
+              "sha256": "85b2042d550b3d84297192ebf2795b6dc9b379aa12c94846a2eecc8f77969f1f"
             }
           ],
           "revision": "1.02"
+        },
+        {
+          "packages": [
+            {
+              "build_id": "2005081010",
+              "bytes": 4197888,
+              "family_id": "336e449ab6a827e3",
+              "filename": "WH16NS60_1.03_b60b4245.tar",
+              "fragment": false,
+              "image_sha256": "f1cd257b8c4bb163c7f00610abb30704ea58d93a87be385f48afeb61de239814",
+              "key": "fw/mediatek/b60b42455edc4577d64e4fb0d095975756c0f6075d8ad50d2ca9d27fff9a64e5.tar",
+              "packageType": "mediatek-installer",
+              "patched": false,
+              "revision": "1.03",
+              "sha256": "b60b42455edc4577d64e4fb0d095975756c0f6075d8ad50d2ca9d27fff9a64e5"
+            }
+          ],
+          "revision": "1.03"
         }
       ]
     },
@@ -20680,18 +20925,37 @@
           "packages": [
             {
               "build_id": "1711231646",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "ab4e219381d5f287",
-              "filename": "WP50NB40_1.01_bea3a823.bin",
+              "filename": "WP50NB40_1.01_f93a6f17.tar",
               "fragment": false,
-              "key": "fw/mediatek/bea3a823370a985afe37ce6a6aad4b67ef7af15307f622aaac1f76bc7a1dbb5c.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "bea3a823370a985afe37ce6a6aad4b67ef7af15307f622aaac1f76bc7a1dbb5c",
+              "key": "fw/mediatek/f93a6f17399eb7f032bd34c95b96d1e42c873da4bb9179d747126c6089f55f01.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "1.01",
-              "sha256": "bea3a823370a985afe37ce6a6aad4b67ef7af15307f622aaac1f76bc7a1dbb5c"
+              "sha256": "f93a6f17399eb7f032bd34c95b96d1e42c873da4bb9179d747126c6089f55f01"
             }
           ],
           "revision": "1.01"
+        },
+        {
+          "packages": [
+            {
+              "build_id": "2005070929",
+              "bytes": 4197888,
+              "family_id": "ab4e219381d5f287",
+              "filename": "WP50NB40_1.03_c17b80a5.tar",
+              "fragment": false,
+              "image_sha256": "263994abefb0b5a757d7b7b677b4e24dffb537ff124a81ad54426948a83265f1",
+              "key": "fw/mediatek/c17b80a534257bbca9137d73581efeb8aa9716896882768b0b851663994c40ce.tar",
+              "packageType": "mediatek-installer",
+              "patched": false,
+              "revision": "1.03",
+              "sha256": "c17b80a534257bbca9137d73581efeb8aa9716896882768b0b851663994c40ce"
+            }
+          ],
+          "revision": "1.03"
         }
       ]
     },
@@ -20713,15 +20977,16 @@
           "packages": [
             {
               "build_id": "0000000000",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "11e7527216405467",
-              "filename": "BH40N_B7C6_0b2cdb82.bin",
+              "filename": "BH40N_B7C6_03648576.tar",
               "fragment": false,
-              "key": "fw/mediatek/0b2cdb82ff520589d4c750fae726571798901bf41e433de0a7164f7d74927d5f.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "0b2cdb82ff520589d4c750fae726571798901bf41e433de0a7164f7d74927d5f",
+              "key": "fw/mediatek/036485763ecd4acd37840ad4f8cc69b7b319a64a47e1561e9aa1865056d2281c.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "B7C6",
-              "sha256": "0b2cdb82ff520589d4c750fae726571798901bf41e433de0a7164f7d74927d5f"
+              "sha256": "036485763ecd4acd37840ad4f8cc69b7b319a64a47e1561e9aa1865056d2281c"
             }
           ],
           "revision": "B7C6"
@@ -20746,15 +21011,16 @@
           "packages": [
             {
               "build_id": "1711291652",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BDRE_BU40N_BW41_3b9dd9b4.bin",
+              "filename": "BDRE_BU40N_BW41_a58ab588.tar",
               "fragment": false,
-              "key": "fw/mediatek/3b9dd9b4c9bd295b1b4cd9d94ce592522588e95a5569f529306b962b337d0e4b.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "3b9dd9b4c9bd295b1b4cd9d94ce592522588e95a5569f529306b962b337d0e4b",
+              "key": "fw/mediatek/a58ab588e3ab8863ae19dc7b51fd19e774a544f5c512fb972792b955a224e200.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "BW41",
-              "sha256": "3b9dd9b4c9bd295b1b4cd9d94ce592522588e95a5569f529306b962b337d0e4b"
+              "sha256": "a58ab588e3ab8863ae19dc7b51fd19e774a544f5c512fb972792b955a224e200"
             }
           ],
           "revision": "BW41"
@@ -20763,15 +21029,16 @@
           "packages": [
             {
               "build_id": "1711291655",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BDRE_BU40N_BW42_c68cd76b.bin",
+              "filename": "BDRE_BU40N_BW42_3756870e.tar",
               "fragment": false,
-              "key": "fw/mediatek/c68cd76b6ca94c077ee7c1fd4ab4ebee06056683158f2259302fd687069e5dca.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "c68cd76b6ca94c077ee7c1fd4ab4ebee06056683158f2259302fd687069e5dca",
+              "key": "fw/mediatek/3756870e94d7f28bb73fde71ca8be7ebed269be87c983f5a77d4b94e467ad97a.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "BW42",
-              "sha256": "c68cd76b6ca94c077ee7c1fd4ab4ebee06056683158f2259302fd687069e5dca"
+              "sha256": "3756870e94d7f28bb73fde71ca8be7ebed269be87c983f5a77d4b94e467ad97a"
             }
           ],
           "revision": "BW42"
@@ -20796,15 +21063,16 @@
           "packages": [
             {
               "build_id": "1711291702",
-              "bytes": 2097152,
+              "bytes": 2099712,
               "family_id": "900ac5feeffe13f2",
-              "filename": "BDRE_BU50N_BW51_d1e4d3d7.bin",
+              "filename": "BDRE_BU50N_BW51_daaf2565.tar",
               "fragment": false,
-              "key": "fw/mediatek/d1e4d3d704c6f2f8ea200d64ff39e3a1a564769dfa66798039015c615536cf4b.bin",
-              "packageType": "mediatek-image",
+              "image_sha256": "d1e4d3d704c6f2f8ea200d64ff39e3a1a564769dfa66798039015c615536cf4b",
+              "key": "fw/mediatek/daaf2565b00e923976f18c7217455a3161e8284b231a29f5cd361873468b5d4c.tar",
+              "packageType": "mediatek-installer",
               "patched": false,
               "revision": "BW51",
-              "sha256": "d1e4d3d704c6f2f8ea200d64ff39e3a1a564769dfa66798039015c615536cf4b"
+              "sha256": "daaf2565b00e923976f18c7217455a3161e8284b231a29f5cd361873468b5d4c"
             }
           ],
           "revision": "BW51"
@@ -54348,6 +54616,7 @@
       ]
     }
   ],
+  "mediatek_package_format": "freemkv-mediatek-package",
   "version": 2,
   "withdrawn": []
 }

@@ -4,7 +4,7 @@ import { promises as fs } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {
-  metadataExclusion, hasAppliedLever, lineageOf, featuresFor, modelOf, brandOf, buildEntry, buildIndex,
+  eligibleImageHashes, metadataExclusion, hasAppliedLever, lineageOf, featuresFor, modelOf, brandOf, buildEntry, buildIndex,
   buildFeaturesDoc, buildSummary, sortEntries, loadCandidates, evaluate, generate,
   isDriveRead, deMaskedSha, DE_OFFSET, hasVendorProvenance, dedupeByDeMask, loadExclusions, EXCLUSIONS,
 } from './firmware-features.mjs';
@@ -191,4 +191,15 @@ if [ "$2" = "--base" ]; then echo '${JSON.stringify(base)}'; else echo '{"engine
   const hw = await generate({ hoard: d, fw, outDir: out, hardware: new Set([shas.oem]), jobs: 1, exclusions: new Set() });
   assert.equal(hw.entries.find(e => e.sha256 === shas.oem).confidence, 'hardware-verified');
   assert.equal(JSON.parse(await fs.readFile(path.join(out, 'firmware-features.json'), 'utf8')).counts.hardware_verified, 1);
+});
+
+
+test('catalog eligibility follows final image hashes for TARs and retains legacy BIN hashes', () => {
+  const catalog = { identities: [
+    { family: 'mediatek', revisions: [{ packages: [
+      { sha256: sha('a'), image_sha256: sha('b') }, { sha256: sha('c') },
+    ] }] },
+    { family: 'pioneer', revisions: [{ packages: [{ sha256: sha('d') }] }] },
+  ] };
+  assert.deepEqual([...eligibleImageHashes(catalog)], [sha('b'), sha('c')]);
 });

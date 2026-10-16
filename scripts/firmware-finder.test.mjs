@@ -26,7 +26,11 @@ test('the real catalogue: all packages reachable, old model names listed, no raw
   const total = built.identities.reduce((n, i) => n + i.revisions.reduce((m, r) => m + r.packages.length, 0), 0);
   assert.equal(new Set(d.models.flatMap(m => m.v.flatMap(([v]) => d.versions[v].p))).size, total);
   const names = new Set(d.models.map(m => m.m.toUpperCase().replace(/[^A-Z0-9]/g, '')));
-  for (const row of [...mtk, ...pio]) assert.ok(names.has(row.model.toUpperCase().replace(/[^A-Z0-9]/g, '')), row.model);
+  for (const row of pio) assert.ok(names.has(row.model.toUpperCase().replace(/[^A-Z0-9]/g, '')), row.model);
+  // Embedded MediaTek names can be truncated; catalogue names retain the updater identity.
+  const images = new Set(rd('finder-catalog.json').identities.filter(i => i.family === 'mediatek')
+    .flatMap(i => i.revisions.flatMap(r => r.packages.map(p => p.image_sha256 ?? p.sha256))));
+  for (const row of mtk) for (const version of row.versions) assert.ok(images.has(version.sha256), row.model);
   const shown = [...d.models.flatMap(m => [m.m, ...m.v.map(v => v[1])]), ...d.identities.flatMap(i => [i.n, i.brand, i.d]),
     ...d.packages.flatMap(p => p.chips.map(c => c[0]).filter(c => c !== 'Destination GENERAL'))];
   // "GENERAL" is a Pioneer edition name ("1.53 GENERAL · SAT 8800"); nothing else raw.
@@ -197,7 +201,7 @@ test('default pick prefers the newest supported named edition over an unmodifiab
   const m = d.models.find(x => x.m === 'BU40N');
   const v = d.versions[m.v[m.o[0]][0]];
   const i = d.identities[v.i];
-  assert.equal(v.r, '1.03');
+  assert.equal(v.r, '1.05');
   assert.equal(v.mod, 1);
   assert.equal(i.brand, 'LG');
   assert.notEqual(i.g, 'Other editions');

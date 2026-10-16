@@ -120,3 +120,7 @@ The release workflow also retains the full staging archive at R2 key
 verification. `/fw/latest.tar.gz` serves that object directly with no indexing
 or site link. After successful deployment, the temporary GitHub release asset
 is deleted; the latest R2 archive is exempt from orphan pruning.
+
+Pages publishes with `--keep-existing` so QA publication cannot delete firmware
+objects still linked by the production catalogue. Orphan cleanup is a separate
+operation after production has switched catalogues.
