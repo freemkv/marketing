@@ -167,6 +167,11 @@ const realData = () => buildFinderData({
   catalog: JSON.parse(readFileSync(new URL('../src/data/finder-catalog.json', import.meta.url))),
   crossflash: JSON.parse(readFileSync(new URL('../src/data/crossflash-links.json', import.meta.url))),
 });
+const publishedPage = () => {
+  const rd = f => JSON.parse(readFileSync(new URL(`../src/data/${f}`, import.meta.url)));
+  const mtk = rd('firmware-index.json'), pio = rd('pioneer-firmware-index.json');
+  return finderPageData(buildFinderData({ catalog: rd('finder-catalog.json'), mediatek: mtk }), { legacy: [...mtk, ...pio] });
+};
 const rowOf = (d, m, n) => { const v = d.versions[m.v[n][0]]; return { r: v.r, ...d.identities[v.i] }; };
 
 test('a model on two SATs: every row carries its SAT and edition, duplicates all labelled', () => {
@@ -185,6 +190,17 @@ test('default pick: first SAT, its newest revision, a real ID over GENERAL', () 
   assert.deepEqual(pick('BDR-S11JX'), ['1.54', 'ID72', 'SAT 8800']);
   assert.deepEqual(pick('BDR-212M'), ['1.05', 'ID56', 'SAT 8F00']);
   assert.deepEqual(pick('BDR-S12JX'), ['1.05', 'ID72', 'SAT 8F01']);
+});
+
+test('default pick prefers the newest supported named edition over an unmodifiable other edition', () => {
+  const d = publishedPage();
+  const m = d.models.find(x => x.m === 'BU40N');
+  const v = d.versions[m.v[m.o[0]][0]];
+  const i = d.identities[v.i];
+  assert.equal(v.r, '1.03');
+  assert.equal(v.mod, 1);
+  assert.equal(i.brand, 'LG');
+  assert.notEqual(i.g, 'Other editions');
 });
 
 test('cross flash: freemkv-flash link targets only, headed by the drive-reported name, alphabetical', () => {

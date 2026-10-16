@@ -543,13 +543,19 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     dupes = shared(labels);
     const seen = {};
     labels = labels.map(l => { if (!dupes(l)) return l; seen[l] = (seen[l] ?? 0) + 1; return `${l} · ${seen[l]}`; });
-    // Default pick order: the first SAT (ascending, as the card lists them), its
-    // newest revision; a tie prefers a real ID over GENERAL, then list order (ID
-    // ascending). A search naming a SAT or ID narrows the rows first (find.astro
-    // matchingVersionIndex).
+    // Pioneer cards preserve their SAT-first order. Other cards recommend a
+    // package the modifier supports, then a named manufacturer/OEM edition,
+    // then the newest revision. Raw hardware text is intentionally only a final
+    // tie-breaker there: it is descriptive data, not a recommendation. A search
+    // naming a SAT or ID narrows the rows first (find.astro matchingVersionIndex).
     const realId = i => /^ID\d+$/.test(String(i.destination)) ? 1 : 0;
-    const o = rows.map((_, n) => n).sort((a, b) => String(rows[a].i.hardware).localeCompare(String(rows[b].i.hardware)) ||
-      compareRevision(versions[rows[b].v].r, versions[rows[a].v].r) || realId(rows[b].i) - realId(rows[a].i) || a - b);
+    const supported = row => versions[row.v].mod ? 1 : 0;
+    const namedEdition = row => identities[idIdx.get(row.i.key)].out.g === 'Other editions' ? 0 : 1;
+    const pioneerModel = rows[0]?.i.family === 'pioneer';
+    const o = rows.map((_, n) => n).sort((a, b) => pioneerModel
+      ? String(rows[a].i.hardware).localeCompare(String(rows[b].i.hardware)) || compareRevision(versions[rows[b].v].r, versions[rows[a].v].r) || realId(rows[b].i) - realId(rows[a].i) || a - b
+      : supported(rows[b]) - supported(rows[a]) || namedEdition(rows[b]) - namedEdition(rows[a]) || compareRevision(versions[rows[b].v].r, versions[rows[a].v].r) ||
+        realId(rows[b].i) - realId(rows[a].i) || String(rows[a].i.hardware).localeCompare(String(rows[b].i.hardware)) || a - b);
     const a = alsoSoldAs(row.m, ids);
     return { m: row.m, t: searchText([row.m, ...new Set(ids.map(identityBrand))]), v: rows.map(({ v }, n) => [v, labels[n]]), o,
       ...(a.length ? { a } : {}) };
