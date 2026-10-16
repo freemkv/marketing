@@ -23,6 +23,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run test:firmware
+        env:
+          GH_TOKEN: ${{ github.token }}
       - run: npm run build
         env:
           GH_TOKEN: ${{ github.token }}
