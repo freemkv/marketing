@@ -7,6 +7,31 @@ import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { safePath, validateManifest, extract, publish, pruneOrphans } from './firmware-release.mjs';
 const sha=b=>createHash('sha256').update(b).digest('hex');
+test('release ingests by default; only explicit --refresh re-extracts the hoard', async t => {
+ const d = await fs.mkdtemp(path.join(os.tmpdir(), 'firmware-release-mode-'));
+ t.after(() => fs.rm(d, { recursive: true, force: true }));
+ const log = path.join(d, 'calls.json');
+ const fake = path.join(d, 'fwext');
+ await fs.writeFile(fake, '#!/usr/bin/env node\n' +
+  'require("node:fs").writeFileSync(process.env.CALL_LOG, JSON.stringify(process.argv.slice(2))); process.exit(7);\n', { mode: 0o755 });
+ const script = new URL('./firmware-release.mjs', import.meta.url);
+ for (const refresh of [false, true]) {
+  const result = spawnSync(process.execPath, [script.pathname, 'release', d, path.join(d, 'stage'), path.join(d, 'custom-hoard'), ...(refresh ? ['--refresh'] : [])], {
+   encoding: 'utf8', env: { ...process.env, FWEXT: fake, FREEMKV_FW: fake, FREEMKV_CROSSFLASH: fake, CALL_LOG: log },
+  });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /failed: 7/);
+  assert.deepEqual(JSON.parse(await fs.readFile(log, 'utf8')), [refresh ? 'refresh' : 'ingest', '--hoard', path.join(d, 'custom-hoard')]);
+  await assert.rejects(fs.access(path.join(d, 'stage')));
+ }
+ await fs.rm(log);
+ const invalid = spawnSync(process.execPath, [script.pathname, 'release', d, path.join(d, 'stage'), '--refesh'], {
+  encoding: 'utf8', env: { ...process.env, FWEXT: fake, CALL_LOG: log },
+ });
+ assert.equal(invalid.status, 1);
+ assert.match(invalid.stderr, /Usage:/);
+ await assert.rejects(fs.access(log));
+});
 test('reject unsafe paths and duplicate keys',()=>{
   for(const p of ['../x','/x','x/../y','x\\y','x//y']) assert.equal(safePath(p),false);
   const o={key:'pioneer/M/H/1.01EU/fw.tar',bytes:1,sha256:'a'.repeat(64)};

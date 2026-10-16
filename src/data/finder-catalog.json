@@ -43124,8 +43124,15 @@
                 "1.03EU"
               ],
               "brand": "PIONEER",
-              "bytes": 1872384,
+              "bytes": 1943040,
               "components": [
+                {
+                  "identity_key": "pioneer:9200:ID56:1.02:kernel",
+                  "member": "components/S9200560.102.enc",
+                  "revision": "1.02",
+                  "role": "kernel",
+                  "sha256": "38f16f259b91323c970ecb97bf24c26cc60c57b344ec6b376a20eed309b13fb6"
+                },
                 {
                   "identity_key": "pioneer:9200:ID56:1.03:normal",
                   "member": "components/S9200561.103.enc",
@@ -43136,21 +43143,24 @@
               ],
               "embedded_model": "BDR-213M",
               "family_id": "57fc4212844724bb",
-              "filename": "BDR-213M_1.03_9200_ID56_2cf8587a.tar",
+              "filename": "BDR-213M_1.03_9200_ID56_e9f6bbb1.tar",
               "generated_date": "22/07/26",
               "is_uhd": false,
-              "kernel_revision": null,
-              "kernel_selection_reason": "only-newer-kernels",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/2cf8587a1b1ec9b6015720fb39a68d04ae109f011a38db259789f45a89bf0bcb.tar",
+              "kernel_revision": "1.02",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "38f16f259b91323c970ecb97bf24c26cc60c57b344ec6b376a20eed309b13fb6",
+              "key": "fw/pioneer/e9f6bbb1fc154875d968dc8c8b7a67837d48c07b9addcca6e0efbd8172cf68e3.tar",
               "modifiable": false,
               "normal_sha256": "1f1a5b382eb920651e8a7762c07bcfa1a29b21d8568d44fc2d6382cbae5d420c",
               "packageType": "pioneer-installer",
-              "receiver_reverse": null,
-              "receiver_xor_offsets": null,
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                92416,
+                488192
+              ],
               "revision": "1.03",
-              "selection": "normal-only",
-              "sha256": "2cf8587a1b1ec9b6015720fb39a68d04ae109f011a38db259789f45a89bf0bcb"
+              "selection": "curated",
+              "sha256": "e9f6bbb1fc154875d968dc8c8b7a67837d48c07b9addcca6e0efbd8172cf68e3"
             }
           ],
           "revision": "1.03"
@@ -43903,8 +43913,15 @@
                 "1.01EU"
               ],
               "brand": "PIONEER",
-              "bytes": 1848832,
+              "bytes": 1919488,
               "components": [
+                {
+                  "identity_key": "pioneer:9330:GENERAL:1.00:kernel",
+                  "member": "components/S9330000.100.enc",
+                  "revision": "1.00",
+                  "role": "kernel",
+                  "sha256": "939e649eec27aaf25d1d8f6e9c4203e8f07c83a72736ea37549a97ca65c66759"
+                },
                 {
                   "identity_key": "pioneer:9330:GENERAL:1.01:normal",
                   "member": "components/S9330001.101.enc",
@@ -43915,21 +43932,24 @@
               ],
               "embedded_model": "BDR-XD08",
               "family_id": "458d6b3a826fa946",
-              "filename": "BDR-XD08_1.01_9330_GENERAL_afeb5168.tar",
+              "filename": "BDR-XD08_1.01_9330_GENERAL_3ad0cc82.tar",
               "generated_date": "22/10/11",
               "is_uhd": false,
-              "kernel_revision": null,
-              "kernel_selection_reason": "only-newer-kernels",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/afeb5168ec30c63c8a96eb0a933e2dfe934791a0166e7d66c3f73996d319efcc.tar",
+              "kernel_revision": "1.00",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "939e649eec27aaf25d1d8f6e9c4203e8f07c83a72736ea37549a97ca65c66759",
+              "key": "fw/pioneer/3ad0cc82a2210d35fc36689670f6a2e5329a505e7b6d1a2f79239205be193670.tar",
               "modifiable": false,
               "normal_sha256": "63156fa615caf731d7791f8a97b0d5ff13e6fcfe8046e8aba9e0d0bf91b4579e",
               "packageType": "pioneer-installer",
-              "receiver_reverse": null,
-              "receiver_xor_offsets": null,
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                92416,
+                488192
+              ],
               "revision": "1.01",
-              "selection": "normal-only",
-              "sha256": "afeb5168ec30c63c8a96eb0a933e2dfe934791a0166e7d66c3f73996d319efcc"
+              "selection": "curated",
+              "sha256": "3ad0cc82a2210d35fc36689670f6a2e5329a505e7b6d1a2f79239205be193670"
             }
           ],
           "revision": "1.01"
@@ -44052,8 +44072,15 @@
                 "1.01EU"
               ],
               "brand": "PIONEER",
-              "bytes": 1848832,
+              "bytes": 1919488,
               "components": [
+                {
+                  "identity_key": "pioneer:9330:ID32:1.00:kernel",
+                  "member": "components/S9330320.100.enc",
+                  "revision": "1.00",
+                  "role": "kernel",
+                  "sha256": "c518e104d033d3b5d9a2a14bf148dd14d2ac58ab6528e1ee4a8aaa573c8a3990"
+                },
                 {
                   "identity_key": "pioneer:9330:ID32:1.01:normal",
                   "member": "components/S9330321.101.enc",
@@ -44064,21 +44091,24 @@
               ],
               "embedded_model": "BDR-AD08",
               "family_id": "458d6b3a826fa946",
-              "filename": "BDR-AD08_1.01_9330_ID32_8ad14731.tar",
+              "filename": "BDR-AD08_1.01_9330_ID32_2c986649.tar",
               "generated_date": "22/10/11",
               "is_uhd": false,
-              "kernel_revision": null,
-              "kernel_selection_reason": "only-newer-kernels",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/8ad14731d9d245cfedfb72e5693911cfc0e3b540fa47a13e9ba8a8b9ae6f81d5.tar",
+              "kernel_revision": "1.00",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "c518e104d033d3b5d9a2a14bf148dd14d2ac58ab6528e1ee4a8aaa573c8a3990",
+              "key": "fw/pioneer/2c986649d02264ae954b7ae7c513550d37a183f2e584e224aad3756fd1e3bd1f.tar",
               "modifiable": false,
               "normal_sha256": "ed9ea12185fa2e654541bda11e654d3f55a6d19c78074c1be8be1731dcca94ed",
               "packageType": "pioneer-installer",
-              "receiver_reverse": null,
-              "receiver_xor_offsets": null,
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                92416,
+                488192
+              ],
               "revision": "1.01",
-              "selection": "normal-only",
-              "sha256": "8ad14731d9d245cfedfb72e5693911cfc0e3b540fa47a13e9ba8a8b9ae6f81d5"
+              "selection": "curated",
+              "sha256": "2c986649d02264ae954b7ae7c513550d37a183f2e584e224aad3756fd1e3bd1f"
             }
           ],
           "revision": "1.01"
@@ -44201,8 +44231,15 @@
                 "1.01EU"
               ],
               "brand": "PIONEER",
-              "bytes": 1848832,
+              "bytes": 1919488,
               "components": [
+                {
+                  "identity_key": "pioneer:9330:ID35:1.00:kernel",
+                  "member": "components/S9330350.100.enc",
+                  "revision": "1.00",
+                  "role": "kernel",
+                  "sha256": "2d33ac0fd39a8a71ac392fdfb5b4930e4e45a1ce2f724e2a177816e29b8d33f5"
+                },
                 {
                   "identity_key": "pioneer:9330:ID35:1.01:normal",
                   "member": "components/S9330351.101.enc",
@@ -44213,21 +44250,24 @@
               ],
               "embedded_model": "BDR-XD08",
               "family_id": "458d6b3a826fa946",
-              "filename": "BDR-XD08_1.01_9330_ID35_de32a99a.tar",
+              "filename": "BDR-XD08_1.01_9330_ID35_bf0b7391.tar",
               "generated_date": "22/10/11",
               "is_uhd": false,
-              "kernel_revision": null,
-              "kernel_selection_reason": "only-newer-kernels",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/de32a99a8685c3024763f346c1800a1a7b7d0aea9c74bced3fc791efaf88b543.tar",
+              "kernel_revision": "1.00",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "2d33ac0fd39a8a71ac392fdfb5b4930e4e45a1ce2f724e2a177816e29b8d33f5",
+              "key": "fw/pioneer/bf0b73913a2aed7886dff9d60820ffcb1d8cba83a7e2b1b0d6e4fbacdfdff7dc.tar",
               "modifiable": false,
               "normal_sha256": "575d3efa21b8e264ba08ee6987beec91569cc7355c3fd7c092495151e1bc7121",
               "packageType": "pioneer-installer",
-              "receiver_reverse": null,
-              "receiver_xor_offsets": null,
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                92416,
+                488192
+              ],
               "revision": "1.01",
-              "selection": "normal-only",
-              "sha256": "de32a99a8685c3024763f346c1800a1a7b7d0aea9c74bced3fc791efaf88b543"
+              "selection": "curated",
+              "sha256": "bf0b73913a2aed7886dff9d60820ffcb1d8cba83a7e2b1b0d6e4fbacdfdff7dc"
             }
           ],
           "revision": "1.01"
@@ -44350,8 +44390,15 @@
                 "1.01EU"
               ],
               "brand": "PIONEER",
-              "bytes": 1848832,
+              "bytes": 1919488,
               "components": [
+                {
+                  "identity_key": "pioneer:9330:ID36:1.00:kernel",
+                  "member": "components/S9330360.100.enc",
+                  "revision": "1.00",
+                  "role": "kernel",
+                  "sha256": "525080258d3d929d4df2833e274a9f04d63b2badc9af807ab6c79cf64ff4a8ff"
+                },
                 {
                   "identity_key": "pioneer:9330:ID36:1.01:normal",
                   "member": "components/S9330361.101.enc",
@@ -44362,21 +44409,24 @@
               ],
               "embedded_model": "BDR-XD08",
               "family_id": "458d6b3a826fa946",
-              "filename": "BDR-XD08_1.01_9330_ID36_1f2d7b7f.tar",
+              "filename": "BDR-XD08_1.01_9330_ID36_de9bef4b.tar",
               "generated_date": "22/10/11",
               "is_uhd": false,
-              "kernel_revision": null,
-              "kernel_selection_reason": "only-newer-kernels",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/1f2d7b7f8fcf08e7f7bd01f8dfee554f5db5f93c6947c0569c969be07dc66691.tar",
+              "kernel_revision": "1.00",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "525080258d3d929d4df2833e274a9f04d63b2badc9af807ab6c79cf64ff4a8ff",
+              "key": "fw/pioneer/de9bef4be1a13c6c143fcc81bceaefe33168bbbcac646c9706169d66092c1723.tar",
               "modifiable": false,
               "normal_sha256": "ea8e80a88626b3a6d4bdad83f67de06a69da64c2048a53197b4d57a9290d3208",
               "packageType": "pioneer-installer",
-              "receiver_reverse": null,
-              "receiver_xor_offsets": null,
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                92416,
+                488192
+              ],
               "revision": "1.01",
-              "selection": "normal-only",
-              "sha256": "1f2d7b7f8fcf08e7f7bd01f8dfee554f5db5f93c6947c0569c969be07dc66691"
+              "selection": "curated",
+              "sha256": "de9bef4be1a13c6c143fcc81bceaefe33168bbbcac646c9706169d66092c1723"
             }
           ],
           "revision": "1.01"
@@ -44499,8 +44549,15 @@
                 "1.01EU"
               ],
               "brand": "PIONEER",
-              "bytes": 1928192,
+              "bytes": 1998848,
               "components": [
+                {
+                  "identity_key": "pioneer:9331:ID05:1.00:kernel",
+                  "member": "components/S9331050.100.enc",
+                  "revision": "1.00",
+                  "role": "kernel",
+                  "sha256": "543ae074b6e9e4e363c1756c4b0697730ed43abd0a1618d8adf822a5e68f2cd0"
+                },
                 {
                   "identity_key": "pioneer:9331:ID05:1.01:normal",
                   "member": "components/S9331051.101.enc",
@@ -44511,21 +44568,24 @@
               ],
               "embedded_model": "BDR-XD08U",
               "family_id": "458d6b3a826fa946",
-              "filename": "BDR-XD08U_1.01_9331_ID05_a3c4d880.tar",
+              "filename": "BDR-XD08U_1.01_9331_ID05_d059f9b6.tar",
               "generated_date": "22/10/11",
               "is_uhd": true,
-              "kernel_revision": null,
-              "kernel_selection_reason": "only-newer-kernels",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/a3c4d8803eca47309b5a6576dbbdee70f90e627e65069747fa9d37f13548fb33.tar",
+              "kernel_revision": "1.00",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "543ae074b6e9e4e363c1756c4b0697730ed43abd0a1618d8adf822a5e68f2cd0",
+              "key": "fw/pioneer/d059f9b6bd950930da38f1e687564ebb82abc264d059b0dcf31c66f581de1f70.tar",
               "modifiable": false,
               "normal_sha256": "2579ac81925a67b2b88029d0b94f14910a2da0dd92914a357a16dfb7a64ab6c4",
               "packageType": "pioneer-installer",
-              "receiver_reverse": null,
-              "receiver_xor_offsets": null,
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                92416,
+                488192
+              ],
               "revision": "1.01",
-              "selection": "normal-only",
-              "sha256": "a3c4d8803eca47309b5a6576dbbdee70f90e627e65069747fa9d37f13548fb33"
+              "selection": "curated",
+              "sha256": "d059f9b6bd950930da38f1e687564ebb82abc264d059b0dcf31c66f581de1f70"
             }
           ],
           "revision": "1.01"
@@ -44648,8 +44708,15 @@
                 "1.01EU"
               ],
               "brand": "PIONEER",
-              "bytes": 1928192,
+              "bytes": 1998848,
               "components": [
+                {
+                  "identity_key": "pioneer:9331:ID69:1.00:kernel",
+                  "member": "components/S9331690.100.enc",
+                  "revision": "1.00",
+                  "role": "kernel",
+                  "sha256": "c6b748d79970a04f567508dc14f392212b372b057f61435b6f17efcedcb7d267"
+                },
                 {
                   "identity_key": "pioneer:9331:ID69:1.01:normal",
                   "member": "components/S9331691.101.enc",
@@ -44660,21 +44727,24 @@
               ],
               "embedded_model": "BDR-XD08U",
               "family_id": "458d6b3a826fa946",
-              "filename": "BDR-XD08U_1.01_9331_ID69_f7833f2f.tar",
+              "filename": "BDR-XD08U_1.01_9331_ID69_83716439.tar",
               "generated_date": "22/10/11",
               "is_uhd": true,
-              "kernel_revision": null,
-              "kernel_selection_reason": "only-newer-kernels",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/f7833f2fac876b98727f295cc20310eb387a894f249086328bc62adee9ff49ce.tar",
+              "kernel_revision": "1.00",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "c6b748d79970a04f567508dc14f392212b372b057f61435b6f17efcedcb7d267",
+              "key": "fw/pioneer/837164399e321cd1270d473dd1fc06c3cf6031ea0b77b13aa5a4efb57a86508b.tar",
               "modifiable": false,
               "normal_sha256": "0223ebe3a55530b8a513029e4ac0247ce29a26baf79451b4c04073c67d1dfaf9",
               "packageType": "pioneer-installer",
-              "receiver_reverse": null,
-              "receiver_xor_offsets": null,
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                92416,
+                488192
+              ],
               "revision": "1.01",
-              "selection": "normal-only",
-              "sha256": "f7833f2fac876b98727f295cc20310eb387a894f249086328bc62adee9ff49ce"
+              "selection": "curated",
+              "sha256": "837164399e321cd1270d473dd1fc06c3cf6031ea0b77b13aa5a4efb57a86508b"
             }
           ],
           "revision": "1.01"
@@ -45005,8 +45075,15 @@
                 "1.02EU"
               ],
               "brand": "PIONEER",
-              "bytes": 1873920,
+              "bytes": 1944576,
               "components": [
+                {
+                  "identity_key": "pioneer:9400:ID56:1.01:kernel",
+                  "member": "components/S9400560.101.enc",
+                  "revision": "1.01",
+                  "role": "kernel",
+                  "sha256": "293e61bc151f9071e9717578f230392c2be399067dd0295b72bf9bde4cdec629"
+                },
                 {
                   "identity_key": "pioneer:9400:ID56:1.02:normal",
                   "member": "components/S9400561.102.enc",
@@ -45017,21 +45094,24 @@
               ],
               "embedded_model": "BDR-X13",
               "family_id": "57fc4212844724bb",
-              "filename": "BDR-X13_1.02_9400_ID56_ce2fef9f.tar",
+              "filename": "BDR-X13_1.02_9400_ID56_47d394de.tar",
               "generated_date": "22/07/26",
               "is_uhd": false,
-              "kernel_revision": null,
-              "kernel_selection_reason": "only-newer-kernels",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/ce2fef9fcaf1a2ad56e1e6d23e5f01e5e76e70b7319baf3c6c0ffc5a8fd4122c.tar",
+              "kernel_revision": "1.01",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "293e61bc151f9071e9717578f230392c2be399067dd0295b72bf9bde4cdec629",
+              "key": "fw/pioneer/47d394deb110d6e8374a837d442474034912736d7da074c8288c25ffd3f20abe.tar",
               "modifiable": false,
               "normal_sha256": "f075cb05644d142a3690c3c01b7fe2108c1589061778fe7a9b2be970bf850489",
               "packageType": "pioneer-installer",
-              "receiver_reverse": null,
-              "receiver_xor_offsets": null,
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                92416,
+                488192
+              ],
               "revision": "1.02",
-              "selection": "normal-only",
-              "sha256": "ce2fef9fcaf1a2ad56e1e6d23e5f01e5e76e70b7319baf3c6c0ffc5a8fd4122c"
+              "selection": "curated",
+              "sha256": "47d394deb110d6e8374a837d442474034912736d7da074c8288c25ffd3f20abe"
             }
           ],
           "revision": "1.02"
@@ -45155,8 +45235,15 @@
                 "1.02EU"
               ],
               "brand": "PIONEER",
-              "bytes": 1959424,
+              "bytes": 2030080,
               "components": [
+                {
+                  "identity_key": "pioneer:9401:ID29:1.01:kernel",
+                  "member": "components/S9401290.101.enc",
+                  "revision": "1.01",
+                  "role": "kernel",
+                  "sha256": "73321f786e90d910b1b8857861b9eee08cd804be1da2982fb93ecf012eca60c4"
+                },
                 {
                   "identity_key": "pioneer:9401:ID29:1.02:normal",
                   "member": "components/S9401291.102.enc",
@@ -45167,21 +45254,24 @@
               ],
               "embedded_model": "BDR-X13U",
               "family_id": "57fc4212844724bb",
-              "filename": "BDR-X13U_1.02_9401_ID29_949804fe.tar",
+              "filename": "BDR-X13U_1.02_9401_ID29_2f394071.tar",
               "generated_date": "22/07/26",
               "is_uhd": true,
-              "kernel_revision": null,
-              "kernel_selection_reason": "only-newer-kernels",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/949804fe757d13bc64070bfd8ec7ff998c65125193e9ae456eb8a158560f0cfb.tar",
+              "kernel_revision": "1.01",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "73321f786e90d910b1b8857861b9eee08cd804be1da2982fb93ecf012eca60c4",
+              "key": "fw/pioneer/2f394071fa95dab7175a8ae03461c4c42c154fa6b77c6907a96df22376b1578e.tar",
               "modifiable": false,
               "normal_sha256": "167690d0e45d85f5b82b5bd140cdf8b51c025335d42d0ddcf9956ebe2d0be65a",
               "packageType": "pioneer-installer",
-              "receiver_reverse": null,
-              "receiver_xor_offsets": null,
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                92416,
+                488192
+              ],
               "revision": "1.02",
-              "selection": "normal-only",
-              "sha256": "949804fe757d13bc64070bfd8ec7ff998c65125193e9ae456eb8a158560f0cfb"
+              "selection": "curated",
+              "sha256": "2f394071fa95dab7175a8ae03461c4c42c154fa6b77c6907a96df22376b1578e"
             }
           ],
           "revision": "1.02"

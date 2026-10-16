@@ -4,6 +4,18 @@ The existing Pages workflow accepts an optional `firmware_release` tag. A firmwa
 release uploads and publicly verifies every staged tar before building download
 links into the site. A site-only release uses the already committed catalog.
 
+## Routine updates
+
+Run `npm run firmware:release -- EXTRACTOR STAGE [V3_HOARD]` for new firmware.
+This ingests new inputs, reuses existing extraction records, rebuilds packages
+and indexes (including changed curated pairings), and stages the complete release.
+It requires `FWEXT`, or Cargo, plus `FREEMKV_CROSSFLASH` and `FREEMKV_FW` as below.
+
+Use `--refresh` only when deliberately re-extracting every stored original,
+for example after an extractor change that needs to be applied to older inputs.
+Normal releases retain the same package admission, crossflash, upload and hash
+verification checks. They still replace the complete `/fw/latest.tar.gz` archive.
+
 ## MediaTek feature data (run before `prepare`)
 
 `src/data/firmware-features.json`, `firmware-index.json` and

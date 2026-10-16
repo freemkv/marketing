@@ -270,24 +270,33 @@ function wranglerDelete(bucket, key) {
     child.on('exit', (code, signal) => code === 0 ? resolve() : reject(new Error(`Wrangler delete failed: ${code ?? signal}`)));
   });
 }
-// One local entrypoint for a candidate: refresh the hoard, stage only Flash-
+// One local entrypoint for a candidate: ingest new inputs, stage only Flash-
 // admitted packages, validate their crossflash graph, then derive modification
 // claims from outputs which Flash also admits.
-async function release(extractor, destination, hoard) {
+async function release(extractor, destination, hoard, { refresh = false } = {}) {
   if (!extractor || !destination) throw new Error('Usage: firmware-release.mjs release EXTRACTOR STAGE [V3_HOARD]');
   extractor = path.resolve(extractor);
   hoard = path.resolve(hoard ?? path.join(extractor, 'hoard'));
-  const [cmd, prefix] = fwextCommand(extractor);
-  run(cmd, [...prefix, 'refresh'], { cwd: extractor });
-  await prepare(extractor, destination, hoard);
   if (!process.env.FREEMKV_FW) throw new Error('Set FREEMKV_FW to the freemkv-fw binary');
+  crossflashCommand();
+  try { await fs.access(path.resolve(destination)); throw new Error(`${destination} already exists`); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  const [cmd, prefix] = fwextCommand(extractor);
+  run(cmd, [...prefix, refresh ? 'refresh' : 'ingest', '--hoard', hoard], { cwd: extractor });
+  await prepare(extractor, destination, hoard);
   run(process.execPath, [path.join(SITE, 'scripts/firmware-features.mjs'), hoard,
     '--fw', process.env.FREEMKV_FW, '--flash', crossflashCommand(),
     '--eligible-catalog', path.join(path.resolve(destination), 'finder-catalog.json')], { cwd: SITE });
 }
 async function main() {
   const [command,a,b,c]=process.argv.slice(2);
-  if(command==='release') return release(a,b,c);
+  if(command==='release') {
+    const args = process.argv.slice(3);
+    const refresh = args.includes('--refresh');
+    const positional = args.filter(arg => arg !== '--refresh');
+    if (positional.some(arg => arg.startsWith('--')) || positional.length < 2 || positional.length > 3)
+      throw new Error('Usage: firmware-release.mjs release EXTRACTOR STAGE [V3_HOARD] [--refresh]');
+    return release(positional[0], positional[1], positional[2], { refresh });
+  }
   if(command==='prepare' && a && b) return prepare(a,b,c);
   if(command==='extract' && a && b) return extract(a,b);
   if(command==='publish' && a) {
