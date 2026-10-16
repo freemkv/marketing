@@ -115,24 +115,16 @@ const { repo = 'https://github.com/freemkv/freemkv-firmware' } = Astro.props;
       }
     }
 
-    // A card whose every button is hidden must say so rather than render as
-    // an empty box.
+    // Hide a direct-download method when its selected release has none of its
+    // advertised assets.  Other methods (Scoop, Homebrew, package managers)
+    // stay visible, so the page never renders an empty "Download" box.
     function syncEmptyCards() {
-      document.querySelectorAll('[data-platform-card]').forEach(function (card) {
-        var links = card.querySelectorAll('a[data-asset]');
+      document.querySelectorAll('.dl-method').forEach(function (method) {
+        var links = method.querySelectorAll('a[data-asset]');
         if (!links.length) return;
-        var hidden = card.querySelectorAll('a[data-asset][data-unavailable]').length;
+        var hidden = method.querySelectorAll('a[data-asset][data-unavailable]').length;
         var empty = hidden === links.length;
-        card.toggleAttribute('data-card-empty', empty);
-        var note = card.querySelector('[data-none-note]');
-        if (!note && empty) {
-          note = document.createElement('p');
-          note.className = 'dl-none';
-          note.setAttribute('data-none-note', '');
-          note.textContent = 'Not released for this version.';
-          card.appendChild(note);
-        }
-        if (note) note.hidden = !empty;
+        method.toggleAttribute('data-method-empty', empty);
       });
     }
 
