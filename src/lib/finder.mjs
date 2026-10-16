@@ -197,7 +197,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], c
     for (const r of ident.revisions) r.packages.sort(packageOrder);
     ident.missing = ident.missing.filter(rev => !ident.revisions.some(r => r.revision === rev));
   }
-  return { identities: [...identities.values()], aliases: [...aliases.values()], crossflash: crossflash?.links ?? {} };
+  return { identities: [...identities.values()], aliases: [...aliases.values()], crossflash: crossflash?.links ?? {}, crossflashFuture: crossflash?.future ?? {} };
 }
 
 /** Same shape as the extractor's catalogue filenames: MODEL_REV_sha8.ext */
@@ -245,23 +245,26 @@ export function indexFinder(data) {
  * `freemkv-crossflash` tool's output, which runs the flasher's own offline gates
  * over every published package pair (`installed sha256 -> [target sha256]`). A
  * target identity is listed when any of this identity's packages links to it,
- * with its linked revisions (`complete`). The only unlinked revision listed is a
+ * with its available revisions (`complete`) and known adapter candidates (`future`).
+ * Future candidates require an intermediate transfer that is currently unavailable.
+ * The only otherwise unlinked revision listed is a
  * Pioneer one with no Kernel + Normal package (`complete: false`, shown as
  * missing its Kernel); any other unlinked revision is not a target and is left
  * out (e.g. a MediaTek INTM build the flasher refuses).
- * Returns [{ identity, revisions: [{ revision, complete }] }].
+ * Returns [{ identity, revisions: [{ revision, complete, future? }] }].
  */
 export function crossflashTargets(data, identity) {
   const linked = new Set(identity.revisions.flatMap(r => r.packages.flatMap(p => data.crossflash[p.sha256] ?? [])));
-  if (!linked.size) return [];
+  const future = new Set(identity.revisions.flatMap(r => r.packages.flatMap(p => data.crossflashFuture?.[p.sha256] ?? [])));
+  if (!linked.size && !future.size) return [];
   const missingKernel = (o, r) => o.family === 'pioneer' && !r.packages.some(p => p.components.includes('kernel') && p.components.includes('main'));
   return data.identities
     .filter(o => o !== identity)
     .map(o => ({ identity: o, revisions: o.revisions
-      .map(r => ({ revision: r.revision, complete: r.packages.some(p => linked.has(p.sha256)), missing: missingKernel(o, r) }))
-      .filter(r => r.complete || r.missing)
-      .map(({ revision, complete }) => ({ revision, complete })) }))
-    .filter(t => t.revisions.some(r => r.complete));
+      .map(r => ({ revision: r.revision, complete: r.packages.some(p => linked.has(p.sha256)), future: r.packages.some(p => future.has(p.sha256)), missing: missingKernel(o, r) }))
+      .filter(r => r.complete || r.future || r.missing)
+      .map(({ revision, complete, future }) => ({ revision, complete, ...(!complete && future ? { future: true } : {}) })) }))
+    .filter(t => t.revisions.some(r => r.complete || r.future));
 }
 
 export function componentsLabel(components) {
@@ -475,7 +478,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
 
   // Cross flash: [name, uhd, rows] per target model name (its display name, so every
   // 211M edition lists as "BDR-211M"), headings alphabetical; rows = [identity index,
-  // version index, incomplete] with one row per revision and edition (the card shows
+  // version index, incomplete, optional future flag] with one row per revision and edition (the card shows
   // the edition next to the revision), newest first. Every target shares the
   // source's hardware family, whatever its SAT.
   for (const { i, out } of identities) {
@@ -487,7 +490,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
       if (t.identity.uhd) g.uhd = 1;
       for (const vi of o.v) {
         const r = t.revisions.find(r => r.revision === versions[vi].r);
-        if (r) g.rows.push([n, vi, r.complete ? 0 : 1]);
+        if (r) g.rows.push([n, vi, r.complete || r.future ? 0 : 1, ...(r.future ? [1] : [])]);
       }
     }
     out.x = [...byName].sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true })).map(([name, g]) => [name, g.uhd,

@@ -93,3 +93,26 @@ test('MediaTek: linked models list each other; unlinked models list nothing', ()
   assert.deepEqual(crossflashTargets(data, by('mediatek:BH16NS55:GENERAL')), []);
   assert.ok(MTK_SHA.bu40n);
 });
+
+test('future candidates stay visible with a Future flag; available revisions take precedence', () => {
+  const links = familyLinks();
+  links.version = 2;
+  links.future = { [sha('E')]: [sha('A'), sha('F')] };
+  const data = buildFinderData({ catalog: familyCatalog(), crossflash: links });
+  const source = data.identities.find(i => i.key === 'pioneer:8510:ID19');
+  const targets = crossflashTargets(data, source);
+  assert.equal(targets.find(t => t.identity.key === 'pioneer:8A10:ID40').revisions[0].future, undefined);
+  assert.deepEqual(targets.find(t => t.identity.key === 'pioneer:9201:ID43').revisions, [{ revision: '1.05', complete: false, future: true }]);
+  assert.ok(!targets.some(t => t.identity.key === 'pioneer:8511:ID22'));
+  const page = finderPageData(data);
+  const rows = page.identities.find(i => i.n === 'BDR-UD03').x.find(([name]) => name === 'BDR-S13U')[2];
+  assert.deepEqual(rows.map(row => row.slice(2)), [[0, 1]]);
+});
+
+test('future-only graphs list targets without requiring an available link', () => {
+  const data = buildFinderData({ catalog: familyCatalog(), crossflash: {
+    format: 'freemkv-crossflash-links', version: 2, links: {}, future: { [sha('E')]: [sha('F')] },
+  } });
+  const source = data.identities.find(i => i.key === 'pioneer:8510:ID19');
+  assert.deepEqual(crossflashTargets(data, source).map(t => t.identity.key), ['pioneer:9201:ID43']);
+});

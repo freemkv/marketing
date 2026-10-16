@@ -3,6 +3,29 @@ title: Flash Changelog
 description: What's new in freemkv-flash, the drive flasher and dumper - newest first.
 ---
 
+## 0.12.5
+
+<small>2026-10-16</small>
+
+### freemkv-flash
+
+- Detect the MediaTek BOOT or application receiver and choose plaintext or
+  encrypted transfer encoding automatically in Flash and Recovery. Recheck the
+  live identity and receiver signature before writing; unknown or conflicting
+  data fails closed.
+- Add experimental MediaTek recovery without a Current image or rollback
+  backup. It selects exactly one member from a release TAR. Paired releases run
+  the INTM intermediate first, confirm the live drive identity, then detect
+  encoding again before the final image. Physical-drive recovery remains
+  unvalidated.
+- Accept explicit MediaTek release TAR packages in Flash and Recovery. Paired
+  packages preserve their declared intermediate-to-final relationship and stop
+  if the intermediate does not reach the expected identity.
+- Accept standalone BIN images for Flash and Recovery. A BIN flashes only the
+  supplied image with the usual backup and compatibility checks; it does not
+  infer or add an intermediate image. The `package` command can wrap a BIN as
+  a single-image TAR without inventing a pairing.
+
 ## 0.12.4
 
 <small>2026-10-15</small>

@@ -124,10 +124,19 @@ export async function prepare(extractor, destination, hoard) {
 }
 /** Every crossflash link must name packages of this catalogue. */
 export function checkCrossflashLinks(links, catalog) {
-  if (links?.format !== 'freemkv-crossflash-links' || links.version !== 1 || typeof links.links !== 'object') throw new Error('Invalid crossflash links');
+  const map = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+  if (links?.format !== 'freemkv-crossflash-links' || ![1, 2].includes(links.version) || !map(links.links) || ((links.version === 2 || links.future !== undefined) && !map(links.future))) throw new Error('Invalid crossflash links');
   const shas = new Set();
   for (const i of catalog.identities) for (const r of i.revisions ?? []) for (const p of r.packages ?? []) shas.add(p.sha256);
-  for (const [from, to] of Object.entries(links.links)) for (const s of [from, ...to]) if (!shas.has(s)) throw new Error(`Crossflash link names a package not in the catalogue: ${s}`);
+  for (const graph of [links.links, links.future ?? {}]) {
+    for (const [from, to] of Object.entries(graph)) {
+      if (!Array.isArray(to) || to.some(s => typeof s !== 'string')) throw new Error('Invalid crossflash targets');
+      for (const s of [from, ...to]) if (!shas.has(s)) throw new Error(`Crossflash link names a package not in the catalogue: ${s}`);
+    }
+  }
+  for (const [from, to] of Object.entries(links.future ?? {})) {
+    if (to.some(s => (links.links[from] ?? []).includes(s))) throw new Error('Crossflash pair cannot be both available and future');
+  }
 }
 const V1_MEMBERS = ['publish-manifest.json','pioneer-firmware-index.json','firmware-index.json'];
 const V2_MEMBERS = ['publish-manifest.json','finder-catalog.json','legacy-keys.json','crossflash-links.json'];

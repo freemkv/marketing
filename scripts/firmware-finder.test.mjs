@@ -149,14 +149,17 @@ test('UHD capability is attached to the selected package, not inherited from ano
 });
 
 test('all published cross-flash rows agree with the package their View button opens', () => {
-  // A row is complete exactly when one of its packages is a freemkv-flash link
-  // target from a package of the source drive.
+  // Available and Future rows carry the matching graph classification.
   const data = realData(), d = finderPageData(data);
   for (const [n, i] of d.identities.entries()) {
     const linked = new Set(data.identities[n].revisions.flatMap(r => r.packages.flatMap(p => data.crossflash[p.sha256] ?? [])));
-    for (const [name, , rows] of i.x) for (const [t, vi, incomplete] of rows) {
+    const future = new Set(data.identities[n].revisions.flatMap(r => r.packages.flatMap(p => data.crossflashFuture[p.sha256] ?? [])));
+    for (const [name, , rows] of i.x) for (const [t, vi, incomplete, pending] of rows) {
       const v = d.versions[vi];
-      assert.equal(v.p.some(p => linked.has(d.packages[p].s)), !incomplete, `${i.n} → ${name} ${v.r}`);
+      const available = v.p.some(p => linked.has(d.packages[p].s));
+      const waiting = !available && v.p.some(p => future.has(d.packages[p].s));
+      assert.equal(available || waiting, !incomplete, `${i.n} → ${name} ${v.r}`);
+      assert.equal(Boolean(pending), waiting, `${i.n} → ${name} ${v.r} Future`);
       // "Incomplete - missing kernel" is Pioneer-only and only for a revision without Kernel + Normal.
       if (incomplete) {
         assert.equal(d.identities[t].pio, 1, `${i.n} → ${name} ${v.r}`);
@@ -267,4 +270,14 @@ test('MediaTek release packages replace legacy bins and inherit final image feat
   assert.equal(packages[0].sha256, packageSha);
   assert.equal(packages[0].modifiable, true);
   assert.ok(packages[0].filename.endsWith('.tar'));
+});
+
+test('published BDR-205 to BDR-206 candidates carry Future instead of an available transfer', () => {
+  const page = realPage();
+  const installed = page.identities.find(i => i.n === 'BDR-205' && i.e === 'ID43');
+  const target = installed.x.find(([name]) => name === 'BDR-206');
+  assert.ok(target, 'known handoff mismatch stays discoverable');
+  const rows = target[2].filter(([t]) => page.identities[t].e === 'ID43');
+  assert.ok(rows.length > 0);
+  for (const row of rows) assert.deepEqual(row.slice(2), [0, 1], 'Future candidate is complete and requires an intermediate transfer');
 });

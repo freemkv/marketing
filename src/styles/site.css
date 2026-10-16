@@ -201,6 +201,7 @@ a[data-unavailable] { display: none !important; }
 .drive-cap-on { color: var(--teal-dark); border-color: color-mix(in srgb, var(--teal) 45%, transparent); background: var(--teal-tint); }
 .drive-cap-off { color: #b42318; border-color: #fecdca; background: #fef3f2; }
 /* Confidence tier badges: hardware-proven vs strict-build verified. */
+.drive-fact-future { color: #93370d; background: #fffaeb; }
 .drive-fact-verified { color: #067647; background: #ecfdf3; }
 .drive-fact-buildver { color: var(--slate); background: var(--bg-soft); }
 .drive-fact-modifiable { color: #175cd3; background: #eff8ff; }

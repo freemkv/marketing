@@ -500,6 +500,7 @@ import '../../styles/site.css';
                 return '<p class="fx-vgroup">' + escapeText(x[0]) + (x[1] ? ' (UHD)' : '') + '</p><ul class="fx-list">' +
                   x[2].map(function (row) {
                     return '<li><span class="fx-rev-num">' + escapeText(versions[row[1]].r) + '</span>' + editionHtml(identities[row[0]]) +
+                      (row[3] ? '<span class="drive-fact drive-fact-future" title="Requires an intermediate transfer that is currently unavailable">Future</span>' : '') +
                       (row[2] ? '<span class="fx-viewing">Incomplete - missing kernel</span>'
                         : '<button type="button" class="fx-dl fx-view" data-xf="' + row[0] + '" data-xv="' + row[1] + '">View</button>') + '</li>';
                   }).join('') + '</ul>';
