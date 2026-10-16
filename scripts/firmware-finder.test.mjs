@@ -245,3 +245,22 @@ test('MediaTek page data: linked models list each other; unlinked models do not'
   // These are MediaTek identities, not Pioneer.
   assert.equal(d.identities[by('BU40N')].pio, 0);
 });
+
+test('MediaTek release packages replace legacy bins and inherit final image features', () => {
+  const imageSha = '1'.repeat(64), packageSha = '2'.repeat(64);
+  const c = { format: 'freemkv-finder-catalog', version: 2,
+    mediatek_package_format: 'freemkv-mediatek-package', aliases: [], identities: [{
+      key: 'mediatek:WH16NS58:GENERAL', family: 'mediatek', hardware: 'WH16NS58', platforms: ['MT1959'],
+      revisions: [{ revision: '1.V9', packages: [{ sha256: packageSha, image_sha256: imageSha,
+        key: `fw/mediatek/${packageSha}.tar`, filename: 'WH16NS58_1.V9.tar', bytes: 4200000,
+        packageType: 'mediatek-installer' }] }],
+    }] };
+  const legacy = [{ model: 'WH16NS58', versions: [{ rev: '1.V9', sha256: imageSha, file: 'old.bin', modifiable: true }] },
+    { model: 'BH16NS40', versions: [{ rev: 'INTM', sha256: '3'.repeat(64), file: 'intm.bin' }] }];
+  const built = buildFinderData({ catalog: c, mediatek: legacy });
+  const packages = built.identities.flatMap(i => i.revisions.flatMap(r => r.packages));
+  assert.equal(packages.length, 1);
+  assert.equal(packages[0].sha256, packageSha);
+  assert.equal(packages[0].modifiable, true);
+  assert.ok(packages[0].filename.endsWith('.tar'));
+});

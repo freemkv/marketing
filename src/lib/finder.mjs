@@ -133,8 +133,8 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], c
             embeddedModel: p.embedded_model ?? null, brand: p.brand ?? null, buildId: p.build_id ?? null,
             provenance: typeof p.provenance === 'string' ? p.provenance : null,
             chipset: isPioneer ? 'Pioneer' : (src.platforms?.[0] ?? null),
-            modifiable: isPioneer ? false : Boolean(mtkBySha.get(p.sha256)?.modifiable),
-            ...(isPioneer ? {} : mediatekExtras(mtkBySha.get(p.sha256))),
+            modifiable: isPioneer ? false : Boolean(mtkBySha.get(p.image_sha256 ?? p.sha256)?.modifiable),
+            ...(isPioneer ? {} : mediatekExtras(mtkBySha.get(p.image_sha256 ?? p.sha256))),
           });
         }
       }
@@ -172,6 +172,8 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], c
     if (v.embeddedModel) addAlias(v.embeddedModel, 'firmware', [key]);
   }
   for (const m of mediatek) for (const v of m.versions ?? []) {
+    // Release packages supersede raw v1 downloads, including standalone INTM.
+    if (catalog?.mediatek_package_format === 'freemkv-mediatek-package' || (v.embeddedRev || v.rev) === 'INTM') continue;
     if (!v.file || !v.sha256 || v2Shas.has(v.sha256)) continue;
     const destination = /^[A-Z][A-Z0-9]\d{5}$/.test(v.variant || '') ? v.variant[0] : 'GENERAL';
     const hardware = m.model;
