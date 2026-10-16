@@ -699,6 +699,38 @@
       ]
     },
     {
+      "display": "BDE-PR1JAME",
+      "displays": [
+        "BDE-PR1JAME"
+      ],
+      "kind": "filename",
+      "name": "BDEPR1JAME",
+      "targets": [
+        {
+          "destination": "ID92",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDE-PR1JAME",
+      "displays": [
+        "BDE-PR1JAME"
+      ],
+      "kind": "inquiry",
+      "name": "BDEPR1JAME",
+      "targets": [
+        {
+          "destination": "ID92",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        }
+      ]
+    },
+    {
       "display": "BDE-PR1MEL",
       "displays": [
         "BDE-PR1MEL"
@@ -5027,6 +5059,76 @@
       ]
     },
     {
+      "display": "BDR-PR1AME",
+      "displays": [
+        "BDR-PR1AME"
+      ],
+      "kind": "filename",
+      "name": "BDRPR1AME",
+      "targets": [
+        {
+          "destination": "ID84",
+          "family": "pioneer",
+          "hardware": "8000",
+          "held": true
+        },
+        {
+          "destination": "ID90",
+          "family": "pioneer",
+          "hardware": "8000",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDR-PR1AME",
+      "displays": [
+        "BDR-PR1AME"
+      ],
+      "kind": "inquiry",
+      "name": "BDRPR1AME",
+      "targets": [
+        {
+          "destination": "ID90",
+          "family": "pioneer",
+          "hardware": "8000",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDR-PR1EPA",
+      "displays": [
+        "BDR-PR1EPA"
+      ],
+      "kind": "filename",
+      "name": "BDRPR1EPA",
+      "targets": [
+        {
+          "destination": "ID76",
+          "family": "pioneer",
+          "hardware": "8000",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDR-PR1EPDV",
+      "displays": [
+        "BDR-PR1EPDV"
+      ],
+      "kind": "filename",
+      "name": "BDRPR1EPDV",
+      "targets": [
+        {
+          "destination": "ID79",
+          "family": "pioneer",
+          "hardware": "1031",
+          "held": true
+        }
+      ]
+    },
+    {
       "display": "BDR-PR1EPDVPP100",
       "displays": [
         "BDR-PR1EPDVPP100"
@@ -5100,6 +5202,22 @@
       "targets": [
         {
           "destination": "ID88",
+          "family": "pioneer",
+          "hardware": "8000",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDR-PR1ZL",
+      "displays": [
+        "BDR-PR1ZL"
+      ],
+      "kind": "inquiry",
+      "name": "BDRPR1ZL",
+      "targets": [
+        {
+          "destination": "ID84",
           "family": "pioneer",
           "hardware": "8000",
           "held": true
@@ -12635,6 +12753,38 @@
       ]
     },
     {
+      "display": "BDW-PR1CPB",
+      "displays": [
+        "BDW-PR1CPB"
+      ],
+      "kind": "filename",
+      "name": "BDWPR1CPB",
+      "targets": [
+        {
+          "destination": "ID73",
+          "family": "pioneer",
+          "hardware": "8600",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDW-PR1CPB",
+      "displays": [
+        "BDW-PR1CPB"
+      ],
+      "kind": "inquiry",
+      "name": "BDWPR1CPB",
+      "targets": [
+        {
+          "destination": "ID73",
+          "family": "pioneer",
+          "hardware": "8600",
+          "held": true
+        }
+      ]
+    },
+    {
       "display": "BDW-PR1EPDVPP100",
       "displays": [
         "BDW-PR1EPDVPP100"
@@ -12662,6 +12812,70 @@
           "destination": "ID79",
           "family": "pioneer",
           "hardware": "8680",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDX-PR1M",
+      "displays": [
+        "BDX-PR1M"
+      ],
+      "kind": "filename",
+      "name": "BDXPR1M",
+      "targets": [
+        {
+          "destination": "ID79",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDX-PR1M",
+      "displays": [
+        "BDX-PR1M"
+      ],
+      "kind": "inquiry",
+      "name": "BDXPR1M",
+      "targets": [
+        {
+          "destination": "ID79",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDX-PR1MA",
+      "displays": [
+        "BDX-PR1MA"
+      ],
+      "kind": "filename",
+      "name": "BDXPR1MA",
+      "targets": [
+        {
+          "destination": "ID86",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDX-PR1MA",
+      "displays": [
+        "BDX-PR1MA"
+      ],
+      "kind": "inquiry",
+      "name": "BDXPR1MA",
+      "targets": [
+        {
+          "destination": "ID86",
+          "family": "pioneer",
+          "hardware": "8801",
           "held": true
         }
       ]
@@ -12951,6 +13165,22 @@
       ]
     },
     {
+      "display": "BH40N",
+      "displays": [
+        "BH40N"
+      ],
+      "kind": "inquiry",
+      "name": "BH40N",
+      "targets": [
+        {
+          "destination": "HP",
+          "family": "mediatek",
+          "hardware": "hp BH40N MT1939 Code/JB7",
+          "held": true
+        }
+      ]
+    },
+    {
       "display": "BP50NB40",
       "displays": [
         "BP50NB40"
@@ -13200,6 +13430,12 @@
       "kind": "inquiry",
       "name": "BW16D1HT",
       "targets": [
+        {
+          "destination": "ASUS",
+          "family": "mediatek",
+          "hardware": "ASUS BW-16D1HT MT1939 Code/JB7",
+          "held": true
+        },
         {
           "destination": "ASUS",
           "family": "mediatek",
@@ -17347,6 +17583,28 @@
       ]
     },
     {
+      "display": "PP100",
+      "displays": [
+        "PP100"
+      ],
+      "kind": "filename",
+      "name": "PP100",
+      "targets": [
+        {
+          "destination": "ID75",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        },
+        {
+          "destination": "ID76",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        }
+      ]
+    },
+    {
       "display": "PP-100",
       "displays": [
         "PP-100",
@@ -17371,6 +17629,18 @@
           "destination": "ID76",
           "family": "pioneer",
           "hardware": "8000",
+          "held": true
+        },
+        {
+          "destination": "ID75",
+          "family": "pioneer",
+          "hardware": "8801",
+          "held": true
+        },
+        {
+          "destination": "ID76",
+          "family": "pioneer",
+          "hardware": "8801",
           "held": true
         }
       ]
@@ -17721,6 +17991,22 @@
       ]
     },
     {
+      "display": "UH12NS30",
+      "displays": [
+        "UH12NS30"
+      ],
+      "kind": "inquiry",
+      "name": "UH12NS30",
+      "targets": [
+        {
+          "destination": "GENERAL",
+          "family": "mediatek",
+          "hardware": "HL-DT-ST UH12NS30 MT1939 Code/JBC5",
+          "held": true
+        }
+      ]
+    },
+    {
       "display": "UH12NS40",
       "displays": [
         "UH12NS40"
@@ -17776,6 +18062,22 @@
           "destination": "GENERAL",
           "family": "mediatek",
           "hardware": "HL-DT-ST WH16NS40 NS50",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "WH16NS48",
+      "displays": [
+        "WH16NS48"
+      ],
+      "kind": "inquiry",
+      "name": "WH16NS48",
+      "targets": [
+        {
+          "destination": "GENERAL",
+          "family": "mediatek",
+          "hardware": "HL-DT-ST WH16NS48 MT1939 Code/JB7",
           "held": true
         }
       ]
@@ -17851,7 +18153,7 @@
             {
               "build_id": "1711291725",
               "bytes": 2097152,
-              "family_id": "5c0106040dc09ba3",
+              "family_id": "8c779fa82f683729",
               "filename": "BC-12B1ST_b_3.01_8961b80b.bin",
               "fragment": false,
               "key": "fw/mediatek/8961b80b005c1b2ba7a8dbc10a4bd3fe6680bd2befcc71de95bd32de34bb4482.bin",
@@ -17868,7 +18170,7 @@
             {
               "build_id": "1902271321",
               "bytes": 2097152,
-              "family_id": "5c0106040dc09ba3",
+              "family_id": "8c779fa82f683729",
               "filename": "BC-12B1ST_b_3.11_ae0c0313.bin",
               "fragment": false,
               "key": "fw/mediatek/ae0c03138570c73d0ba8ed6d7d5e9798ee54e6c22fcb4c815a86eea3301180f6.bin",
@@ -17901,7 +18203,7 @@
             {
               "build_id": "1512091147",
               "bytes": 2097152,
-              "family_id": "5c0106040dc09ba3",
+              "family_id": "8c779fa82f683729",
               "filename": "BC-12D2HT_3.00_dd03cdae.bin",
               "fragment": false,
               "key": "fw/mediatek/dd03cdae194de03a710b5f6e88dfedf421fd20667a3cc9ec58e828bd769ab2ed.bin",
@@ -17918,7 +18220,7 @@
             {
               "build_id": "1711151926",
               "bytes": 2097152,
-              "family_id": "5c0106040dc09ba3",
+              "family_id": "8c779fa82f683729",
               "filename": "BC-12D2HT_3.01_93ea068d.bin",
               "fragment": false,
               "key": "fw/mediatek/93ea068da225140d9628c105d88d13088982c61024bf6cca03e0fe456d53a721.bin",
@@ -17935,7 +18237,7 @@
             {
               "build_id": "1902271319",
               "bytes": 2097152,
-              "family_id": "5c0106040dc09ba3",
+              "family_id": "8c779fa82f683729",
               "filename": "BC-12D2HT_3.11_9f5bc003.bin",
               "fragment": false,
               "key": "fw/mediatek/9f5bc003674065d4b5108ba45033c418cd38be4e46e5d218dc82409260c2f05c.bin",
@@ -17968,7 +18270,7 @@
             {
               "build_id": "1801111117",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BW-16D1H-U_A203_e9d8bcdd.bin",
               "fragment": false,
               "key": "fw/mediatek/e9d8bcddf85aab6627c90623efcb7a39ee97681a68b729ef58fea391bc99b33a.bin",
@@ -17985,7 +18287,7 @@
             {
               "build_id": "1901041044",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BW-16D1H-U_A204_223e7e38.bin",
               "fragment": false,
               "key": "fw/mediatek/223e7e38b85f0d27464de596d373464cb7bf77ca825b81f2351abaf8c6cefba1.bin",
@@ -17996,6 +18298,39 @@
             }
           ],
           "revision": "A204"
+        }
+      ]
+    },
+    {
+      "crossflash_group": "MT1939/desktop/Code/board-unknown",
+      "destination": "ASUS",
+      "embedded_models": [
+        "BW-16D1HT"
+      ],
+      "family": "mediatek",
+      "hardware": "ASUS BW-16D1HT MT1939 Code/JB7",
+      "key": "mediatek:ASUS BW-16D1HT MT1939 Code/JB7:ASUS",
+      "other_candidates": [],
+      "platforms": [
+        "MT1939"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "build_id": "1302051930",
+              "bytes": 2097152,
+              "family_id": "11e7527216405467",
+              "filename": "BW-16D1HT_1.01_3f436c31.bin",
+              "fragment": false,
+              "key": "fw/mediatek/3f436c31124f6b7bbe582c67370924077018eb14e768f27d9b7194904f099aa5.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.01",
+              "sha256": "3f436c31124f6b7bbe582c67370924077018eb14e768f27d9b7194904f099aa5"
+            }
+          ],
+          "revision": "1.01"
         }
       ]
     },
@@ -18018,7 +18353,7 @@
             {
               "build_id": "1703311426",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BW-16D1HT_3.01_2e243a16.bin",
               "fragment": false,
               "key": "fw/mediatek/2e243a167739d4e46ad7095db7cb5452c2980579a0cb359208945a0bbe0f3f29.bin",
@@ -18035,7 +18370,43 @@
             {
               "build_id": "1711241413",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
+              "filename": "BW-16D1HT_3.02_0d085b4c.bin",
+              "fragment": false,
+              "key": "fw/mediatek/0d085b4c854bfc03c08b2e7fde1b25096bdf888eaa65adbb28a10b529ced07ac.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "3.02",
+              "sha256": "0d085b4c854bfc03c08b2e7fde1b25096bdf888eaa65adbb28a10b529ced07ac"
+            },
+            {
+              "build_id": "1711241413",
+              "bytes": 2097152,
+              "family_id": "336e449ab6a827e3",
+              "filename": "BW-16D1HT_3.02_21e1f77e.bin",
+              "fragment": false,
+              "key": "fw/mediatek/21e1f77e0ea0bd8b8d6b324f5ae4d68070d6bb5394f83bbaa5032cedde441cc1.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "3.02",
+              "sha256": "21e1f77e0ea0bd8b8d6b324f5ae4d68070d6bb5394f83bbaa5032cedde441cc1"
+            },
+            {
+              "build_id": "1711241413",
+              "bytes": 2097152,
+              "family_id": "336e449ab6a827e3",
+              "filename": "BW-16D1HT_3.02_663c1b55.bin",
+              "fragment": false,
+              "key": "fw/mediatek/663c1b55e479f83e958b5addc430df1bfa290e5350ef9d036ca26e4acd653a82.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "3.02",
+              "sha256": "663c1b55e479f83e958b5addc430df1bfa290e5350ef9d036ca26e4acd653a82"
+            },
+            {
+              "build_id": "1711241413",
+              "bytes": 2097152,
+              "family_id": "336e449ab6a827e3",
               "filename": "BW-16D1HT_3.02_784e017f.bin",
               "fragment": false,
               "key": "fw/mediatek/784e017fbacd2250fc37ee442869db82ccc8d637d78126b570ba33c0256d1715.bin",
@@ -18043,6 +18414,42 @@
               "patched": false,
               "revision": "3.02",
               "sha256": "784e017fbacd2250fc37ee442869db82ccc8d637d78126b570ba33c0256d1715"
+            },
+            {
+              "build_id": "1711241413",
+              "bytes": 2097152,
+              "family_id": "336e449ab6a827e3",
+              "filename": "BW-16D1HT_3.02_83ea24bb.bin",
+              "fragment": false,
+              "key": "fw/mediatek/83ea24bb07b8a7a451bba1856d1db18b7f54b1823b9d148e213f25daf2e0a1d2.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "3.02",
+              "sha256": "83ea24bb07b8a7a451bba1856d1db18b7f54b1823b9d148e213f25daf2e0a1d2"
+            },
+            {
+              "build_id": "1711241413",
+              "bytes": 2097152,
+              "family_id": "336e449ab6a827e3",
+              "filename": "BW-16D1HT_3.02_afeab3e6.bin",
+              "fragment": false,
+              "key": "fw/mediatek/afeab3e66cbdf9973e3127162551f111b9d048246b5581885b99a44c38f18ee6.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "3.02",
+              "sha256": "afeab3e66cbdf9973e3127162551f111b9d048246b5581885b99a44c38f18ee6"
+            },
+            {
+              "build_id": "1711241413",
+              "bytes": 2097152,
+              "family_id": "336e449ab6a827e3",
+              "filename": "BW-16D1HT_3.02_d0019153.bin",
+              "fragment": false,
+              "key": "fw/mediatek/d00191537a8f38405bbe33bac43ac97c254f019531ef7bf998d95c2214e8807f.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "3.02",
+              "sha256": "d00191537a8f38405bbe33bac43ac97c254f019531ef7bf998d95c2214e8807f"
             }
           ],
           "revision": "3.02"
@@ -18052,7 +18459,7 @@
             {
               "build_id": "1801191558",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BW-16D1HT_3.03_1d57260b.bin",
               "fragment": false,
               "key": "fw/mediatek/1d57260bf091dc89b6ab5b3e2cc7aa1b843d89227a3a4811e6244eaba353b764.bin",
@@ -18069,7 +18476,7 @@
             {
               "build_id": "1901041014",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BW-16D1HT_3.10_37a32bfd.bin",
               "fragment": false,
               "key": "fw/mediatek/37a32bfd708b86c825877364d7e52c943d0a856ec3e5457953b61b7fa1c9a23f.bin",
@@ -18117,6 +18524,18 @@
         {
           "packages": [
             {
+              "build_id": "1406161935",
+              "bytes": 2097152,
+              "family_id": "11e7527216405467",
+              "filename": "BE14NU40_1.01_2f023084.bin",
+              "fragment": false,
+              "key": "fw/mediatek/2f02308413c86c180ec863ada97fec3f594ebd7bf144e3159e91439518e57847.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.01",
+              "sha256": "2f02308413c86c180ec863ada97fec3f594ebd7bf144e3159e91439518e57847"
+            },
+            {
               "build_id": "1408221631",
               "bytes": 2097152,
               "family_id": "11e7527216405467",
@@ -18152,7 +18571,7 @@
             {
               "build_id": "1606090920",
               "bytes": 2097152,
-              "family_id": "8c84ecac7bfe7efd",
+              "family_id": "c6031f4c104ccf7",
               "filename": "BE16NU50_1.01_9c46e697.bin",
               "fragment": false,
               "key": "fw/mediatek/9c46e6972b7950004e9746256c97b79e8e681faad1a4174b542477ad6ff5257e.bin",
@@ -18169,7 +18588,7 @@
             {
               "build_id": "1711201953",
               "bytes": 2097152,
-              "family_id": "8c84ecac7bfe7efd",
+              "family_id": "c6031f4c104ccf7",
               "filename": "BE16NU50_1.02_2b3ea41f.bin",
               "fragment": false,
               "key": "fw/mediatek/2b3ea41f87764ccc497059c9e362657df545fb169d6eeb2e78ccfbd7fafee533.bin",
@@ -18186,7 +18605,7 @@
             {
               "build_id": "2004231013",
               "bytes": 2097152,
-              "family_id": "8c84ecac7bfe7efd",
+              "family_id": "c6031f4c104ccf7",
               "filename": "BE16NU50_INTM_215488b5.bin",
               "fragment": false,
               "key": "fw/mediatek/215488b5ac20fc3ed7fe33ff5679a13a839f0729cc85d0b8bcf0fd3e4c749b23.bin",
@@ -18353,7 +18772,7 @@
             {
               "build_id": "1711281847",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH14NS50_1.01_4ef56002.bin",
               "fragment": false,
               "key": "fw/mediatek/4ef56002dd392733d15378e4535115f24ba891d3266a7c87420df14df0a7089d.bin",
@@ -18386,7 +18805,7 @@
             {
               "build_id": "1512221504",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH14NS58_1.00_53d2cdc3.bin",
               "fragment": false,
               "key": "fw/mediatek/53d2cdc32a2ae99864ec8fc4ea98a3a5218220aea990481f560112adaa871624.bin",
@@ -18394,6 +18813,18 @@
               "patched": false,
               "revision": "1.00",
               "sha256": "53d2cdc32a2ae99864ec8fc4ea98a3a5218220aea990481f560112adaa871624"
+            },
+            {
+              "build_id": "1512221504",
+              "bytes": 2097152,
+              "family_id": "336e449ab6a827e3",
+              "filename": "BH14NS58_1.00_aaeea1ba.bin",
+              "fragment": false,
+              "key": "fw/mediatek/aaeea1ba97d05fae0b4de1ff1b84076f8ba897cb15b45a398f9bc4c25fe1738b.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.00",
+              "sha256": "aaeea1ba97d05fae0b4de1ff1b84076f8ba897cb15b45a398f9bc4c25fe1738b"
             }
           ],
           "revision": "1.00"
@@ -18403,7 +18834,7 @@
             {
               "build_id": "1711161557",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH14NS58_1.01_eb0e2e72.bin",
               "fragment": false,
               "key": "fw/mediatek/eb0e2e7275448919aa72bec63ed0cd24ca360fcb0a8347601e85c2750f0d173a.bin",
@@ -18532,7 +18963,7 @@
             {
               "build_id": "1512111436",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS40_1.02_acbe782e.bin",
               "fragment": false,
               "key": "fw/mediatek/acbe782ebc3c4850a24f852b8dc2ec42059f6b131e29d96157b09505628c415b.bin",
@@ -18540,6 +18971,18 @@
               "patched": false,
               "revision": "1.02",
               "sha256": "acbe782ebc3c4850a24f852b8dc2ec42059f6b131e29d96157b09505628c415b"
+            },
+            {
+              "build_id": "1512111436",
+              "bytes": 2097152,
+              "family_id": "336e449ab6a827e3",
+              "filename": "BH16NS40_1.02_beb8330e.bin",
+              "fragment": false,
+              "key": "fw/mediatek/beb8330e79d08824a62d5eb2b91a144ebb34c9acba8d393d8b32f2b2ae3196de.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.02",
+              "sha256": "beb8330e79d08824a62d5eb2b91a144ebb34c9acba8d393d8b32f2b2ae3196de"
             }
           ],
           "revision": "1.02"
@@ -18549,7 +18992,7 @@
             {
               "build_id": "1711201943",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS40_1.03_a5bb75b8.bin",
               "fragment": false,
               "key": "fw/mediatek/a5bb75b8dbec1684e596f473aa53905f9f723b2b2f9c448550cb523145f90dd3.bin",
@@ -18566,7 +19009,7 @@
             {
               "build_id": "1901041338",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS40_1.04_bc4e6126.bin",
               "fragment": false,
               "key": "fw/mediatek/bc4e6126b880475d58c21e8639ea81f33facc3d4c8284bf6a739d8e8f6c75921.bin",
@@ -18583,7 +19026,7 @@
             {
               "build_id": "2002041513",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS40_INTM_c3a18eed.bin",
               "fragment": false,
               "key": "fw/mediatek/c3a18eed17251d1508964647e833ffdfe01b13c28dff9a717dfac6336e7c70e6.bin",
@@ -18666,7 +19109,7 @@
             {
               "build_id": "1712071200",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS50_1.01_b7a368da.bin",
               "fragment": false,
               "key": "fw/mediatek/b7a368da0fcbe905e45a09c6523bdd6f80557ce455272238c73868aa4ae4bd41.bin",
@@ -18699,7 +19142,7 @@
             {
               "build_id": "1511051004",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS55_1.01_ce732330.bin",
               "fragment": false,
               "key": "fw/mediatek/ce732330b3cabca5f6b0cbcf1b6fc1abd4117d6fd047fe4f9330b6b25337b521.bin",
@@ -18716,7 +19159,7 @@
             {
               "build_id": "1512111440",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS55_1.02_64cff02c.bin",
               "fragment": false,
               "key": "fw/mediatek/64cff02c3db347a2100284a406687a5a911463d65808db5c5c811a4cefc4fe57.bin",
@@ -18728,7 +19171,7 @@
             {
               "build_id": "1512111440",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS55_1.02_bdfd6f29.bin",
               "fragment": false,
               "key": "fw/mediatek/bdfd6f290ba8172d4c46d8c822013255043f4ad30deb8604608fa0397bddb648.bin",
@@ -18745,7 +19188,7 @@
             {
               "build_id": "1711201704",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS55_1.03_0bfdd300.bin",
               "fragment": false,
               "key": "fw/mediatek/0bfdd3009ed1bc246f81aae50cfd9a5e4919c5295263e488c2a900500fe48728.bin",
@@ -18762,7 +19205,7 @@
             {
               "build_id": "1901041342",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS55_1.04_394e6f8d.bin",
               "fragment": false,
               "key": "fw/mediatek/394e6f8d6319b79fed26fb296a435e4d047c382bf8434cc870f89c6913fd27d7.bin",
@@ -18795,7 +19238,7 @@
             {
               "build_id": "1512221501",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS58_1.00_6d9fdb2b.bin",
               "fragment": false,
               "key": "fw/mediatek/6d9fdb2bd658165a073e6144c8938057e08d8cba7ca108274b120dd30c55328f.bin",
@@ -18812,7 +19255,7 @@
             {
               "build_id": "1711161545",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS58_1.01_ccc97e4f.bin",
               "fragment": false,
               "key": "fw/mediatek/ccc97e4f92e47b6fc1fab1e9baa1860020c7f104efa9ffb649321a173523adfb.bin",
@@ -18829,7 +19272,7 @@
             {
               "build_id": "1901041359",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS58_1.02_4f4e63cd.bin",
               "fragment": false,
               "key": "fw/mediatek/4f4e63cd5988f68f5729af21fe4033d0da2eeeec8f7576772f0f3a197f8eda21.bin",
@@ -18862,7 +19305,7 @@
             {
               "build_id": "2002181142",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS60_INTM_1baed51d.bin",
               "fragment": false,
               "key": "fw/mediatek/1baed51d34e05db345798e3820a38ae2c6598cad38d20522e476e803d1f46562.bin",
@@ -18895,7 +19338,7 @@
             {
               "build_id": "1804030945",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "BH16NS60_1.00_580d867c.bin",
               "fragment": false,
               "key": "fw/mediatek/580d867cee3d219a6e61e460c11fa33e27ca43c912d1d2dc777039a6a8f3f7e9.bin",
@@ -18928,7 +19371,7 @@
             {
               "build_id": "1504221517",
               "bytes": 2097152,
-              "family_id": "f2b46b4f3ca80b5",
+              "family_id": "7977ec490f2eb807",
               "filename": "BP50NB40_1.00_c88a6901.bin",
               "fragment": false,
               "key": "fw/mediatek/c88a69013d557b9c4cf1a4d603c314585f51a258b9747c345184e866eef36306.bin",
@@ -19129,6 +19572,18 @@
               "build_id": "1612201528",
               "bytes": 2097152,
               "family_id": "309829e6c3c8f31d",
+              "filename": "BU40N_1.00_0bd77fed.bin",
+              "fragment": false,
+              "key": "fw/mediatek/0bd77fed4ec9df86aab9d8550f3182a8a95f4c27ee8342119b1b1f9f2c8303e0.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.00",
+              "sha256": "0bd77fed4ec9df86aab9d8550f3182a8a95f4c27ee8342119b1b1f9f2c8303e0"
+            },
+            {
+              "build_id": "1612201528",
+              "bytes": 2097152,
+              "family_id": "309829e6c3c8f31d",
               "filename": "BU40N_1.00_221ad35b.bin",
               "fragment": false,
               "key": "fw/mediatek/221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4.bin",
@@ -19136,6 +19591,90 @@
               "patched": false,
               "revision": "1.00",
               "sha256": "221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4"
+            },
+            {
+              "build_id": "1612201528",
+              "bytes": 2097152,
+              "family_id": "309829e6c3c8f31d",
+              "filename": "BU40N_1.00_22edcf49.bin",
+              "fragment": false,
+              "key": "fw/mediatek/22edcf493f22a3e3ed66ba8b4cdd79ccc49533d9b8e7f06b6beade8cab2a9039.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.00",
+              "sha256": "22edcf493f22a3e3ed66ba8b4cdd79ccc49533d9b8e7f06b6beade8cab2a9039"
+            },
+            {
+              "build_id": "1612201528",
+              "bytes": 2097152,
+              "family_id": "309829e6c3c8f31d",
+              "filename": "BU40N_1.00_4c2e0b2d.bin",
+              "fragment": false,
+              "key": "fw/mediatek/4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.00",
+              "sha256": "4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06"
+            },
+            {
+              "build_id": "1612201528",
+              "bytes": 2097152,
+              "family_id": "309829e6c3c8f31d",
+              "filename": "BU40N_1.00_734ccb11.bin",
+              "fragment": false,
+              "key": "fw/mediatek/734ccb11f0b4763a27b358655a14ce60f4801cf131a936d14ee7dd86d34e2c1f.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.00",
+              "sha256": "734ccb11f0b4763a27b358655a14ce60f4801cf131a936d14ee7dd86d34e2c1f"
+            },
+            {
+              "build_id": "1612201528",
+              "bytes": 2097152,
+              "family_id": "309829e6c3c8f31d",
+              "filename": "BU40N_1.00_79e8df06.bin",
+              "fragment": false,
+              "key": "fw/mediatek/79e8df06c776ed40523a5b530d1559e561fbefb71a9e981d301a92b7a6b5c964.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.00",
+              "sha256": "79e8df06c776ed40523a5b530d1559e561fbefb71a9e981d301a92b7a6b5c964"
+            },
+            {
+              "build_id": "1612201528",
+              "bytes": 2097152,
+              "family_id": "309829e6c3c8f31d",
+              "filename": "BU40N_1.00_822b229a.bin",
+              "fragment": false,
+              "key": "fw/mediatek/822b229a9685f1e7af4e263dd4d1b6da2d361bd383b10ba93aea24235db93469.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.00",
+              "sha256": "822b229a9685f1e7af4e263dd4d1b6da2d361bd383b10ba93aea24235db93469"
+            },
+            {
+              "build_id": "1612201528",
+              "bytes": 2097152,
+              "family_id": "309829e6c3c8f31d",
+              "filename": "BU40N_1.00_b2139fd9.bin",
+              "fragment": false,
+              "key": "fw/mediatek/b2139fd99d7c5b7fc5b525e53730b2f0f7108ffd2fd1ea4aab173949aa5ff44e.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.00",
+              "sha256": "b2139fd99d7c5b7fc5b525e53730b2f0f7108ffd2fd1ea4aab173949aa5ff44e"
+            },
+            {
+              "build_id": "1612201528",
+              "bytes": 2097152,
+              "family_id": "309829e6c3c8f31d",
+              "filename": "BU40N_1.00_b9b94841.bin",
+              "fragment": false,
+              "key": "fw/mediatek/b9b94841096f45005b5f12c78009bf420c840fa44e8b0d451b7b490ba04f8356.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.00",
+              "sha256": "b9b94841096f45005b5f12c78009bf420c840fa44e8b0d451b7b490ba04f8356"
             }
           ],
           "revision": "1.00"
@@ -19265,6 +19804,18 @@
               "patched": false,
               "revision": "BU10",
               "sha256": "14d86e9949d93126d6ec7eaa11eeaba512569f51a8ecfce9d707cb0cec6b5e24"
+            },
+            {
+              "build_id": "1705301728",
+              "bytes": 2097152,
+              "family_id": "309829e6c3c8f31d",
+              "filename": "BU40N_BU10_58203b53.bin",
+              "fragment": false,
+              "key": "fw/mediatek/58203b539de096786cde232ee3b0ef3fe824b20d7768a96b30f6a96bdac77bfb.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "BU10",
+              "sha256": "58203b539de096786cde232ee3b0ef3fe824b20d7768a96b30f6a96bdac77bfb"
             }
           ],
           "revision": "BU10"
@@ -19538,7 +20089,7 @@
             {
               "build_id": "1711211606",
               "bytes": 2097152,
-              "family_id": "5c0106040dc09ba3",
+              "family_id": "8c779fa82f683729",
               "filename": "CH12NS40_1.01_731bcf7a.bin",
               "fragment": false,
               "key": "fw/mediatek/731bcf7aa48dacbcb5729f97576cf24b90d7a795a330c2ab8a801c57eb738f0e.bin",
@@ -19555,7 +20106,7 @@
             {
               "build_id": "2003230952",
               "bytes": 2097152,
-              "family_id": "5c0106040dc09ba3",
+              "family_id": "8c779fa82f683729",
               "filename": "CH12NS40_INTM_fc98fda6.bin",
               "fragment": false,
               "key": "fw/mediatek/fc98fda6431f71ebc29a3fadf572fcd09c58cc4b5bed1bf918dbc29b3616777e.bin",
@@ -19566,6 +20117,56 @@
             }
           ],
           "revision": "INTM"
+        }
+      ]
+    },
+    {
+      "crossflash_group": "MT1939/desktop/Code/board-unknown",
+      "destination": "GENERAL",
+      "embedded_models": [
+        "UH12NS30"
+      ],
+      "family": "mediatek",
+      "hardware": "HL-DT-ST UH12NS30 MT1939 Code/JBC5",
+      "key": "mediatek:HL-DT-ST UH12NS30 MT1939 Code/JBC5:GENERAL",
+      "other_candidates": [],
+      "platforms": [
+        "MT1939"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "build_id": "1312061625",
+              "bytes": 2097152,
+              "family_id": "1f2fc2aafc26d8f",
+              "filename": "UH12NS30_1.01_84fecc29.bin",
+              "fragment": false,
+              "key": "fw/mediatek/84fecc2930d63cd4da8aa4759f63550d1eb1a642343d29adf1e370a2a861347e.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.01",
+              "sha256": "84fecc2930d63cd4da8aa4759f63550d1eb1a642343d29adf1e370a2a861347e"
+            }
+          ],
+          "revision": "1.01"
+        },
+        {
+          "packages": [
+            {
+              "build_id": "1403261141",
+              "bytes": 2097152,
+              "family_id": "1f2fc2aafc26d8f",
+              "filename": "UH12NS30_1.02_d98c2e11.bin",
+              "fragment": false,
+              "key": "fw/mediatek/d98c2e11f400cf54133289369f19064ccabc72c69ef189f9129fc19b2d700cc8.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.02",
+              "sha256": "d98c2e11f400cf54133289369f19064ccabc72c69ef189f9129fc19b2d700cc8"
+            }
+          ],
+          "revision": "1.02"
         }
       ]
     },
@@ -19588,7 +20189,7 @@
             {
               "build_id": "1711231550",
               "bytes": 2097152,
-              "family_id": "5c0106040dc09ba3",
+              "family_id": "8c779fa82f683729",
               "filename": "UH12NS40_1.01_fbe641e5.bin",
               "fragment": false,
               "key": "fw/mediatek/fbe641e5e808e8127c0196e28bc8a10ba9d8ae61bd8645affff9f259b4a6b25c.bin",
@@ -19705,7 +20306,7 @@
             {
               "build_id": "1512111503",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "WH14NS40_1.02_648a16d0.bin",
               "fragment": false,
               "key": "fw/mediatek/648a16d024eea31ef4901f3ac2180cbfffeda1161d70f9096335d8a6097445bc.bin",
@@ -19722,7 +20323,7 @@
             {
               "build_id": "1711211658",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "WH14NS40_1.03_de13d8d0.bin",
               "fragment": false,
               "key": "fw/mediatek/de13d8d0fd56ffa16ef6bcffcab946e3839cefd85975d8e925dfbb4e8e881f72.bin",
@@ -19739,7 +20340,7 @@
             {
               "build_id": "1901041351",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "WH14NS40_1.04_164e2475.bin",
               "fragment": false,
               "key": "fw/mediatek/164e2475aea287ec5759ee07eb285697b52923ead1288f24358a70fc7ed3ec32.bin",
@@ -19780,6 +20381,18 @@
               "patched": false,
               "revision": "1.01",
               "sha256": "7af021b026f8aef225b2211183885be211a66c1a4d64c9dad5c84661586144c7"
+            },
+            {
+              "build_id": "1312061658",
+              "bytes": 2097152,
+              "family_id": "11e7527216405467",
+              "filename": "WH16NS40_1.01_eee6563f.bin",
+              "fragment": false,
+              "key": "fw/mediatek/eee6563f68a414eb1dbc9048ab0820d01003320b080988437f762ca23d727e56.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.01",
+              "sha256": "eee6563f68a414eb1dbc9048ab0820d01003320b080988437f762ca23d727e56"
             }
           ],
           "revision": "1.01"
@@ -19797,6 +20410,18 @@
               "patched": false,
               "revision": "1.02",
               "sha256": "1368766f8d384d0c86d4803d057b7aa1ca205542b9b6b0580e875aaa8bd015b3"
+            },
+            {
+              "build_id": "1405071026",
+              "bytes": 2097152,
+              "family_id": "11e7527216405467",
+              "filename": "WH16NS40_1.02_7f26c559.bin",
+              "fragment": false,
+              "key": "fw/mediatek/7f26c559774b87a8da10c42d5ce72b8f1af3aa369d14d64f7d880d2b20b0327a.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.02",
+              "sha256": "7f26c559774b87a8da10c42d5ce72b8f1af3aa369d14d64f7d880d2b20b0327a"
             }
           ],
           "revision": "1.02"
@@ -19822,7 +20447,7 @@
             {
               "build_id": "1703101650",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "WH16NS40_1.02_87790f05.bin",
               "fragment": false,
               "key": "fw/mediatek/87790f053877e3e1bdd22969d70a7b1b6ed36624bb474bfcdee6526ac6e227c0.bin",
@@ -19839,7 +20464,7 @@
             {
               "build_id": "1711211653",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "WH16NS40_1.03_3e3b227e.bin",
               "fragment": false,
               "key": "fw/mediatek/3e3b227e1338b5bc601ad6b2ce02fd1d375b7ea6179b055412ea0702ce54615c.bin",
@@ -19850,6 +20475,39 @@
             }
           ],
           "revision": "1.03"
+        }
+      ]
+    },
+    {
+      "crossflash_group": "MT1939/desktop/Code/board-unknown",
+      "destination": "GENERAL",
+      "embedded_models": [
+        "WH16NS48"
+      ],
+      "family": "mediatek",
+      "hardware": "HL-DT-ST WH16NS48 MT1939 Code/JB7",
+      "key": "mediatek:HL-DT-ST WH16NS48 MT1939 Code/JB7:GENERAL",
+      "other_candidates": [],
+      "platforms": [
+        "MT1939"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "build_id": "1602041103",
+              "bytes": 2097152,
+              "family_id": "11e7527216405467",
+              "filename": "WH16NS48_1.D3_46b41f15.bin",
+              "fragment": false,
+              "key": "fw/mediatek/46b41f15e053b66daccb024cba4380c45f791c2d0c2b8258cd23253fc5f0b22a.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.D3",
+              "sha256": "46b41f15e053b66daccb024cba4380c45f791c2d0c2b8258cd23253fc5f0b22a"
+            }
+          ],
+          "revision": "1.D3"
         }
       ]
     },
@@ -19872,7 +20530,7 @@
             {
               "build_id": "1711201947",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "WH16NS58_1.V1_4041c0f1.bin",
               "fragment": false,
               "key": "fw/mediatek/4041c0f122a902288ca8439888f68f7760616a0a37c366b825d6497b51157e46.bin",
@@ -19889,7 +20547,7 @@
             {
               "build_id": "1711231023",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "WH16NS58_1.V2_3018997b.bin",
               "fragment": false,
               "key": "fw/mediatek/3018997b63cc9a2f31618fd9b6b5c6bfe0cc921b891f4a80ac08ae3ef2b16504.bin",
@@ -19906,7 +20564,7 @@
             {
               "build_id": "1802070957",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "WH16NS58_1.V5_e2406018.bin",
               "fragment": false,
               "key": "fw/mediatek/e24060184915a9860a84ea7d0ad23fee478e6eb31af86da589f5723c8e29a1cd.bin",
@@ -19917,6 +20575,23 @@
             }
           ],
           "revision": "1.V5"
+        },
+        {
+          "packages": [
+            {
+              "build_id": "2203301454",
+              "bytes": 2097152,
+              "family_id": "336e449ab6a827e3",
+              "filename": "WH16NS58_1.V9_97b28707.bin",
+              "fragment": false,
+              "key": "fw/mediatek/97b287072e20c9527de6f34f6d564c8edcc6afb3ecf5675c11b8262c11663061.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "1.V9",
+              "sha256": "97b287072e20c9527de6f34f6d564c8edcc6afb3ecf5675c11b8262c11663061"
+            }
+          ],
+          "revision": "1.V9"
         }
       ]
     },
@@ -19939,7 +20614,7 @@
             {
               "build_id": "1704251756",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "WH16NS60_1.00_d1338932.bin",
               "fragment": false,
               "key": "fw/mediatek/d133893209392b74cb0c3c1225cc4c0e8b1d927f1f671261ecc82525405e47e0.bin",
@@ -19956,7 +20631,7 @@
             {
               "build_id": "1711202000",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "WH16NS60_1.01_aea98763.bin",
               "fragment": false,
               "key": "fw/mediatek/aea98763cad71e8cfbd8d32963a63adf429e889bd13b749e7c4a792cc5b076a2.bin",
@@ -19973,7 +20648,7 @@
             {
               "build_id": "1810291936",
               "bytes": 2097152,
-              "family_id": "70f72c46f9603141",
+              "family_id": "336e449ab6a827e3",
               "filename": "WH16NS60_1.02_12c4ee6f.bin",
               "fragment": false,
               "key": "fw/mediatek/12c4ee6fb88d4c5402e9e8fab0881a93fd1ab18e5a82bb87ecd4ef30c807cf53.bin",
@@ -20017,6 +20692,39 @@
             }
           ],
           "revision": "1.01"
+        }
+      ]
+    },
+    {
+      "crossflash_group": "MT1939/desktop/Code/board-unknown",
+      "destination": "HP",
+      "embedded_models": [
+        "BH40N"
+      ],
+      "family": "mediatek",
+      "hardware": "hp BH40N MT1939 Code/JB7",
+      "key": "mediatek:hp BH40N MT1939 Code/JB7:HP",
+      "other_candidates": [],
+      "platforms": [
+        "MT1939"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "build_id": "0000000000",
+              "bytes": 2097152,
+              "family_id": "11e7527216405467",
+              "filename": "BH40N_B7C6_0b2cdb82.bin",
+              "fragment": false,
+              "key": "fw/mediatek/0b2cdb82ff520589d4c750fae726571798901bf41e433de0a7164f7d74927d5f.bin",
+              "packageType": "mediatek-image",
+              "patched": false,
+              "revision": "B7C6",
+              "sha256": "0b2cdb82ff520589d4c750fae726571798901bf41e433de0a7164f7d74927d5f"
+            }
+          ],
+          "revision": "B7C6"
         }
       ]
     },
@@ -23480,7 +24188,7 @@
                 488192
               ],
               "revision": "1.01",
-              "selection": "source-contained",
+              "selection": "direct-match",
               "sha256": "126f6bb56e4884d56c95502227a6f5cbf01b84f8f0fb099c7029c98fa6e6fe6c"
             }
           ],
@@ -25204,8 +25912,15 @@
                 "1.10EU"
               ],
               "brand": "PIONEER",
-              "bytes": 2698752,
+              "bytes": 2769408,
               "components": [
+                {
+                  "identity_key": "pioneer:8000:ID76:1.10:kernel",
+                  "member": "components/S8000760.110.enc",
+                  "revision": "1.10",
+                  "role": "kernel",
+                  "sha256": "0f13d48995cae5f74d90511fd86f16c8b5419f4404e08046258a8bb55eaa9bb5"
+                },
                 {
                   "identity_key": "pioneer:8000:ID76:1.10:normal",
                   "member": "components/S8000761.110.enc",
@@ -25216,21 +25931,24 @@
               ],
               "embedded_model": "PP100",
               "family_id": "cee5c9016d0174c9",
-              "filename": "PP100_1.10_8000_ID76_c3c20ae6.tar",
+              "filename": "PP100_1.10_8000_ID76_bb2cfc18.tar",
               "generated_date": "19/04/09",
               "is_uhd": false,
-              "kernel_revision": null,
-              "kernel_selection_reason": "no-kernel-for-drive",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/c3c20ae690b9dea76f274de3ff9b133e1bcf7089fd906b95274e77ac0e522651.tar",
+              "kernel_revision": "1.10",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "0f13d48995cae5f74d90511fd86f16c8b5419f4404e08046258a8bb55eaa9bb5",
+              "key": "fw/pioneer/bb2cfc18f732d2173cb3fc154f8db245ccd7544504905fad36563340f56164c7.tar",
               "modifiable": false,
               "normal_sha256": "e8482e27933da150e3a31564dfb4181a6c5f7f2a002e847082840b06385a9d04",
               "packageType": "pioneer-installer",
-              "receiver_reverse": null,
-              "receiver_xor_offsets": null,
+              "receiver_reverse": true,
+              "receiver_xor_offsets": [
+                205824,
+                726784
+              ],
               "revision": "1.10",
-              "selection": "normal-only",
-              "sha256": "c3c20ae690b9dea76f274de3ff9b133e1bcf7089fd906b95274e77ac0e522651"
+              "selection": "source-contained",
+              "sha256": "bb2cfc18f732d2173cb3fc154f8db245ccd7544504905fad36563340f56164c7"
             }
           ],
           "revision": "1.10"
@@ -25551,6 +26269,69 @@
       ]
     },
     {
+      "destination": "ID84",
+      "embedded_models": [
+        "BDR-PR1ZL"
+      ],
+      "family": "pioneer",
+      "hardware": "8000",
+      "key": "pioneer:8000:ID84",
+      "other_candidates": [],
+      "platforms": [
+        "sat"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.74"
+              ],
+              "brand": "PIONEER",
+              "bytes": 2795008,
+              "components": [
+                {
+                  "identity_key": "pioneer:8000:ID84:1.74:kernel",
+                  "member": "components/S8000840.174.enc",
+                  "revision": "1.74",
+                  "role": "kernel",
+                  "sha256": "3a56e9fa83ea70cf86de149eb5a8beca2ddd6a12bfb9cbec5ae6764a857fd0de"
+                },
+                {
+                  "identity_key": "pioneer:8000:ID84:1.74:normal",
+                  "member": "components/S8000841.174.enc",
+                  "revision": "1.74",
+                  "role": "normal",
+                  "sha256": "664ef90dd59470bef992a0015e93b828087a95c0bdd3cbfe4948b11a97977da8"
+                }
+              ],
+              "embedded_model": "BDR-PR1ZL",
+              "family_id": "cee5c9016d0174c9",
+              "filename": "BDR-PR1ZL_1.74_8000_ID84_256687ea.tar",
+              "generated_date": "19/10/02",
+              "is_uhd": false,
+              "kernel_revision": "1.74",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "3a56e9fa83ea70cf86de149eb5a8beca2ddd6a12bfb9cbec5ae6764a857fd0de",
+              "key": "fw/pioneer/256687ead5edc2f36ae2cb0ca661b9be8c9f324b048185c218bebe536b6073be.tar",
+              "modifiable": false,
+              "normal_sha256": "664ef90dd59470bef992a0015e93b828087a95c0bdd3cbfe4948b11a97977da8",
+              "packageType": "pioneer-installer",
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                205824,
+                726784
+              ],
+              "revision": "1.74",
+              "selection": "source-contained",
+              "sha256": "256687ead5edc2f36ae2cb0ca661b9be8c9f324b048185c218bebe536b6073be"
+            }
+          ],
+          "revision": "1.74"
+        }
+      ]
+    },
+    {
       "destination": "ID88",
       "embedded_models": [
         "BDR-PR1ML"
@@ -25659,6 +26440,69 @@
             }
           ],
           "revision": "1.75"
+        }
+      ]
+    },
+    {
+      "destination": "ID90",
+      "embedded_models": [
+        "BDR-PR1AME"
+      ],
+      "family": "pioneer",
+      "hardware": "8000",
+      "key": "pioneer:8000:ID90",
+      "other_candidates": [],
+      "platforms": [
+        "sat"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.06"
+              ],
+              "brand": "PIONEER",
+              "bytes": 2794496,
+              "components": [
+                {
+                  "identity_key": "pioneer:8000:ID90:1.06:kernel",
+                  "member": "components/S8000900.106.enc",
+                  "revision": "1.06",
+                  "role": "kernel",
+                  "sha256": "b313f4dbd934d84d008751589ae9b1da6d2627bae567aff55710dc075db2c072"
+                },
+                {
+                  "identity_key": "pioneer:8000:ID90:1.06:normal",
+                  "member": "components/S8000901.106.enc",
+                  "revision": "1.06",
+                  "role": "normal",
+                  "sha256": "8ecf99f71a238fc2abdd45a925f3d9c1915c994340c1bfdeaccb4ea390adccb8"
+                }
+              ],
+              "embedded_model": "BDR-PR1AME",
+              "family_id": "cee5c9016d0174c9",
+              "filename": "BDR-PR1AME_1.06_8000_ID90_b8883fb4.tar",
+              "generated_date": "19/05/07",
+              "is_uhd": false,
+              "kernel_revision": "1.06",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "b313f4dbd934d84d008751589ae9b1da6d2627bae567aff55710dc075db2c072",
+              "key": "fw/pioneer/b8883fb44d7553cae424386b6c3eb1dfdeca0d9d210bf25c9df37c291b7e9196.tar",
+              "modifiable": false,
+              "normal_sha256": "8ecf99f71a238fc2abdd45a925f3d9c1915c994340c1bfdeaccb4ea390adccb8",
+              "packageType": "pioneer-installer",
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                95232,
+                492544
+              ],
+              "revision": "1.06",
+              "selection": "source-contained",
+              "sha256": "b8883fb44d7553cae424386b6c3eb1dfdeca0d9d210bf25c9df37c291b7e9196"
+            }
+          ],
+          "revision": "1.06"
         }
       ]
     },
@@ -31867,6 +32711,69 @@
       ]
     },
     {
+      "destination": "ID73",
+      "embedded_models": [
+        "BDW-PR1CPB"
+      ],
+      "family": "pioneer",
+      "hardware": "8600",
+      "key": "pioneer:8600:ID73",
+      "other_candidates": [],
+      "platforms": [
+        "sat"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.00"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1977856,
+              "components": [
+                {
+                  "identity_key": "pioneer:8600:ID73:1.00:kernel",
+                  "member": "components/S8600730.100.enc",
+                  "revision": "1.00",
+                  "role": "kernel",
+                  "sha256": "ad7238ba43f3402dbc2f0f50c815e84c3c9bb075ba3626b9e540a5bb4f26f0c8"
+                },
+                {
+                  "identity_key": "pioneer:8600:ID73:1.00:normal",
+                  "member": "components/S8600731.100.enc",
+                  "revision": "1.00",
+                  "role": "normal",
+                  "sha256": "c1a35715245043ba6e4bad5119454cb36eadcf5d8795eda9b4ff93db56ddddef"
+                }
+              ],
+              "embedded_model": "BDW-PR1CPB",
+              "family_id": "ce31c9016c68a046",
+              "filename": "BDW-PR1CPB_1.00_8600_ID73_712e4ca5.tar",
+              "generated_date": "15/08/24",
+              "is_uhd": false,
+              "kernel_revision": "1.00",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "ad7238ba43f3402dbc2f0f50c815e84c3c9bb075ba3626b9e540a5bb4f26f0c8",
+              "key": "fw/pioneer/712e4ca5e30fadb43f151f6d6dac256b3e806007807c2fc8093403e24c4a7d2b.tar",
+              "modifiable": false,
+              "normal_sha256": "c1a35715245043ba6e4bad5119454cb36eadcf5d8795eda9b4ff93db56ddddef",
+              "packageType": "pioneer-installer",
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                209152,
+                755456
+              ],
+              "revision": "1.00",
+              "selection": "source-contained",
+              "sha256": "712e4ca5e30fadb43f151f6d6dac256b3e806007807c2fc8093403e24c4a7d2b"
+            }
+          ],
+          "revision": "1.00"
+        }
+      ]
+    },
+    {
       "destination": "ID76",
       "embedded_models": [
         "BW-16D1X-U"
@@ -35187,6 +36094,54 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.00"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1953280,
+              "components": [
+                {
+                  "identity_key": "pioneer:8801:ID36:1.00:kernel",
+                  "member": "components/S8801360.100.enc",
+                  "revision": "1.00",
+                  "role": "kernel",
+                  "sha256": "7c6d05589fe0ec3e1faaac972fb801b51121a5b9a2509209434d2a23ab5ea6fc"
+                },
+                {
+                  "identity_key": "pioneer:8801:ID36:1.00:normal",
+                  "member": "components/S8801361.100.enc",
+                  "revision": "1.00",
+                  "role": "normal",
+                  "sha256": "0ab236a72a3fa48141c857d8a68ed53e80cd4b8a48e9cb8e1de328e346789819"
+                }
+              ],
+              "embedded_model": "BDR-WX1DM",
+              "family_id": "cf3183a51bc41e42",
+              "filename": "BDR-WX1DM_1.00_8801_ID36_ed367d09.tar",
+              "generated_date": "22/10/25",
+              "is_uhd": false,
+              "kernel_revision": "1.00",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "7c6d05589fe0ec3e1faaac972fb801b51121a5b9a2509209434d2a23ab5ea6fc",
+              "key": "fw/pioneer/ed367d09bcfcec76e49c1aa61d289cf7b6cac1dd3ff9aef7ef00af63fe75b67d.tar",
+              "modifiable": false,
+              "normal_sha256": "0ab236a72a3fa48141c857d8a68ed53e80cd4b8a48e9cb8e1de328e346789819",
+              "packageType": "pioneer-installer",
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                799744,
+                174080
+              ],
+              "revision": "1.00",
+              "selection": "source-contained",
+              "sha256": "ed367d09bcfcec76e49c1aa61d289cf7b6cac1dd3ff9aef7ef00af63fe75b67d"
+            }
+          ],
+          "revision": "1.00"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
                 "1.01EU"
               ],
               "brand": "PIONEER",
@@ -36125,6 +37080,344 @@
       ]
     },
     {
+      "destination": "ID75",
+      "embedded_models": [
+        "PP100"
+      ],
+      "family": "pioneer",
+      "hardware": "8801",
+      "key": "pioneer:8801:ID75",
+      "other_candidates": [],
+      "platforms": [
+        "sat"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "2.01"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1930752,
+              "components": [
+                {
+                  "identity_key": "pioneer:8801:ID75:2.01:kernel",
+                  "member": "components/S8801750.201.enc",
+                  "revision": "2.01",
+                  "role": "kernel",
+                  "sha256": "46975e1445fd680d32335e76e885e085bc4f6ba22b722c08a6eaf11e147e0e01"
+                },
+                {
+                  "identity_key": "pioneer:8801:ID75:2.01:normal",
+                  "member": "components/S8801751.201.enc",
+                  "revision": "2.01",
+                  "role": "normal",
+                  "sha256": "c9773d500bc61f3254666318c116bdd05fd1c08f3bbed296173875a6c3afbeb1"
+                }
+              ],
+              "embedded_model": "PP100",
+              "family_id": "cf3183a51bc41e42",
+              "filename": "PP100_2.01_8801_ID75_ffa402e2.tar",
+              "generated_date": "21/11/15",
+              "is_uhd": true,
+              "kernel_revision": "2.01",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "46975e1445fd680d32335e76e885e085bc4f6ba22b722c08a6eaf11e147e0e01",
+              "key": "fw/pioneer/ffa402e28cfdff0835ab1bebf50039caa2ffd660c0c1811316483868eb3cb8ac.tar",
+              "modifiable": false,
+              "normal_sha256": "c9773d500bc61f3254666318c116bdd05fd1c08f3bbed296173875a6c3afbeb1",
+              "packageType": "pioneer-installer",
+              "receiver_reverse": true,
+              "receiver_xor_offsets": [
+                590848,
+                740352
+              ],
+              "revision": "2.01",
+              "selection": "source-contained",
+              "sha256": "ffa402e28cfdff0835ab1bebf50039caa2ffd660c0c1811316483868eb3cb8ac"
+            }
+          ],
+          "revision": "2.01"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "2.02"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1934848,
+              "components": [
+                {
+                  "identity_key": "pioneer:8801:ID75:2.02:kernel",
+                  "member": "components/S8801750.202.enc",
+                  "revision": "2.02",
+                  "role": "kernel",
+                  "sha256": "358de3c4fb91c5bee92367459f11d68c56d9d29a7ccf85e97342ab494222b8aa"
+                },
+                {
+                  "identity_key": "pioneer:8801:ID75:2.02:normal",
+                  "member": "components/S8801751.202.enc",
+                  "revision": "2.02",
+                  "role": "normal",
+                  "sha256": "b73b0cb9c0212b360464bdfd7b6da0ffbb48b839f9b936659324a9f67fed5fe5"
+                }
+              ],
+              "embedded_model": "PP100",
+              "family_id": "cf3183a51bc41e42",
+              "filename": "PP100_2.02_8801_ID75_a38d3337.tar",
+              "generated_date": "23/07/10",
+              "is_uhd": true,
+              "kernel_revision": "2.02",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "358de3c4fb91c5bee92367459f11d68c56d9d29a7ccf85e97342ab494222b8aa",
+              "key": "fw/pioneer/a38d3337f3a80e22ba35144fe9ed1be3c33ed25eb674d60b0afb8718101bee7b.tar",
+              "modifiable": false,
+              "normal_sha256": "b73b0cb9c0212b360464bdfd7b6da0ffbb48b839f9b936659324a9f67fed5fe5",
+              "packageType": "pioneer-installer",
+              "receiver_reverse": true,
+              "receiver_xor_offsets": [
+                590848,
+                740352
+              ],
+              "revision": "2.02",
+              "selection": "source-contained",
+              "sha256": "a38d3337f3a80e22ba35144fe9ed1be3c33ed25eb674d60b0afb8718101bee7b"
+            }
+          ],
+          "revision": "2.02"
+        }
+      ]
+    },
+    {
+      "destination": "ID76",
+      "embedded_models": [
+        "PP100"
+      ],
+      "family": "pioneer",
+      "hardware": "8801",
+      "key": "pioneer:8801:ID76",
+      "other_candidates": [],
+      "platforms": [
+        "sat"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.00"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1924608,
+              "components": [
+                {
+                  "identity_key": "pioneer:8801:ID76:1.00:kernel",
+                  "member": "components/S8801760.100.enc",
+                  "revision": "1.00",
+                  "role": "kernel",
+                  "sha256": "c44bade551141b98334422e0b0206f01cd72a17b6601b98608931222dc850c64"
+                },
+                {
+                  "identity_key": "pioneer:8801:ID76:1.00:normal",
+                  "member": "components/S8801761.100.enc",
+                  "revision": "1.00",
+                  "role": "normal",
+                  "sha256": "aba7861cd2787e35d09887ff211a5e920fa28314ab8e5361268f203595cbf020"
+                }
+              ],
+              "embedded_model": "PP100",
+              "family_id": "cf3183a51bc41e42",
+              "filename": "PP100_1.00_8801_ID76_5e16c2d6.tar",
+              "generated_date": "18/11/30",
+              "is_uhd": true,
+              "kernel_revision": "1.00",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "c44bade551141b98334422e0b0206f01cd72a17b6601b98608931222dc850c64",
+              "key": "fw/pioneer/5e16c2d62f00cf2b1457353c9e0c15c2d6a545ef672468d8f3d80dc33ea1f9b2.tar",
+              "modifiable": false,
+              "normal_sha256": "aba7861cd2787e35d09887ff211a5e920fa28314ab8e5361268f203595cbf020",
+              "packageType": "pioneer-installer",
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                414720,
+                493824
+              ],
+              "revision": "1.00",
+              "selection": "source-contained",
+              "sha256": "5e16c2d62f00cf2b1457353c9e0c15c2d6a545ef672468d8f3d80dc33ea1f9b2"
+            }
+          ],
+          "revision": "1.00"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "2.02"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1934848,
+              "components": [
+                {
+                  "identity_key": "pioneer:8801:ID76:2.02:kernel",
+                  "member": "components/S8801760.202.enc",
+                  "revision": "2.02",
+                  "role": "kernel",
+                  "sha256": "2ec84621e0a0b4a1ba7cb0f35fa5cf4ae331fd8d4f9975f8c7f93d7c4f0cba24"
+                },
+                {
+                  "identity_key": "pioneer:8801:ID76:2.02:normal",
+                  "member": "components/S8801761.202.enc",
+                  "revision": "2.02",
+                  "role": "normal",
+                  "sha256": "69b04e1edc85f2091d2ab3713dec406b8403dc74e7d402f35f906f2f9eefd651"
+                }
+              ],
+              "embedded_model": "PP100",
+              "family_id": "cf3183a51bc41e42",
+              "filename": "PP100_2.02_8801_ID76_15a514a9.tar",
+              "generated_date": "23/07/10",
+              "is_uhd": true,
+              "kernel_revision": "2.02",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "2ec84621e0a0b4a1ba7cb0f35fa5cf4ae331fd8d4f9975f8c7f93d7c4f0cba24",
+              "key": "fw/pioneer/15a514a94c0e3dbf6f091642a043cc2a2ca353b7ffc63fe60b960d2417e01c3b.tar",
+              "modifiable": false,
+              "normal_sha256": "69b04e1edc85f2091d2ab3713dec406b8403dc74e7d402f35f906f2f9eefd651",
+              "packageType": "pioneer-installer",
+              "receiver_reverse": true,
+              "receiver_xor_offsets": [
+                590848,
+                740352
+              ],
+              "revision": "2.02",
+              "selection": "source-contained",
+              "sha256": "15a514a94c0e3dbf6f091642a043cc2a2ca353b7ffc63fe60b960d2417e01c3b"
+            }
+          ],
+          "revision": "2.02"
+        }
+      ]
+    },
+    {
+      "destination": "ID79",
+      "embedded_models": [
+        "BDX-PR1M"
+      ],
+      "family": "pioneer",
+      "hardware": "8801",
+      "key": "pioneer:8801:ID79",
+      "other_candidates": [],
+      "platforms": [
+        "sat"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.05"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1950208,
+              "components": [
+                {
+                  "identity_key": "pioneer:8801:ID79:1.05:normal",
+                  "member": "components/S8801791.105.enc",
+                  "revision": "1.05",
+                  "role": "normal",
+                  "sha256": "d0f27264133652df342487a04fca6b6ca11032f11f4e30c49856841eb716aec2"
+                }
+              ],
+              "embedded_model": "BDX-PR1M",
+              "family_id": "31ce81c2dbb0fdb",
+              "filename": "BDX-PR1M_1.05_8801_ID79_228a8733.tar",
+              "generated_date": "22/03/11",
+              "is_uhd": true,
+              "kernel_revision": null,
+              "kernel_selection_reason": "no-kernel-for-drive",
+              "kernel_sha256": null,
+              "key": "fw/pioneer/228a8733a469e8e9d543252a871e6a2f6edaa0d04b86a3194f0b9e0ec77b5dd2.tar",
+              "modifiable": false,
+              "normal_sha256": "d0f27264133652df342487a04fca6b6ca11032f11f4e30c49856841eb716aec2",
+              "packageType": "pioneer-installer",
+              "receiver_reverse": null,
+              "receiver_xor_offsets": null,
+              "revision": "1.05",
+              "selection": "normal-only",
+              "sha256": "228a8733a469e8e9d543252a871e6a2f6edaa0d04b86a3194f0b9e0ec77b5dd2"
+            }
+          ],
+          "revision": "1.05"
+        }
+      ]
+    },
+    {
+      "destination": "ID86",
+      "embedded_models": [
+        "BDX-PR1MA"
+      ],
+      "family": "pioneer",
+      "hardware": "8801",
+      "key": "pioneer:8801:ID86",
+      "other_candidates": [],
+      "platforms": [
+        "sat"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.04"
+              ],
+              "brand": "PIONEER",
+              "bytes": 2024960,
+              "components": [
+                {
+                  "identity_key": "pioneer:8801:ID86:1.04:kernel",
+                  "member": "components/S8801860.104.enc",
+                  "revision": "1.04",
+                  "role": "kernel",
+                  "sha256": "756f2b7fe5629304776dfed9a3a706e41a090a5c96a4921155f930a097ae3c61"
+                },
+                {
+                  "identity_key": "pioneer:8801:ID86:1.04:normal",
+                  "member": "components/S8801861.104.enc",
+                  "revision": "1.04",
+                  "role": "normal",
+                  "sha256": "e5b7ac4333411b3476bfab4b326abca1ff6373551b25bb625b8909cdcd1332c5"
+                }
+              ],
+              "embedded_model": "BDX-PR1MA",
+              "family_id": "31ce81c2dbb0fdb",
+              "filename": "BDX-PR1MA_1.04_8801_ID86_354b578e.tar",
+              "generated_date": "21/11/17",
+              "is_uhd": true,
+              "kernel_revision": "1.04",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "756f2b7fe5629304776dfed9a3a706e41a090a5c96a4921155f930a097ae3c61",
+              "key": "fw/pioneer/354b578e3423b397025552b51fd4b0b43b7b2ed3f14047b0bea82ccdbe2b0ab4.tar",
+              "modifiable": false,
+              "normal_sha256": "e5b7ac4333411b3476bfab4b326abca1ff6373551b25bb625b8909cdcd1332c5",
+              "packageType": "pioneer-installer",
+              "receiver_reverse": true,
+              "receiver_xor_offsets": [
+                489216,
+                209664
+              ],
+              "revision": "1.04",
+              "selection": "source-contained",
+              "sha256": "354b578e3423b397025552b51fd4b0b43b7b2ed3f14047b0bea82ccdbe2b0ab4"
+            }
+          ],
+          "revision": "1.04"
+        }
+      ]
+    },
+    {
       "destination": "ID87",
       "embedded_models": [
         "BDE-PR1MEL"
@@ -36145,8 +37438,15 @@
                 "1.02EU"
               ],
               "brand": "PIONEER",
-              "bytes": 1864192,
+              "bytes": 1934848,
               "components": [
+                {
+                  "identity_key": "pioneer:8801:ID87:1.02:kernel",
+                  "member": "components/S8801870.102.enc",
+                  "revision": "1.02",
+                  "role": "kernel",
+                  "sha256": "07f959e9b618d063df45330d713d54e557e448131fe085fa882e8a59383762c0"
+                },
                 {
                   "identity_key": "pioneer:8801:ID87:1.02:normal",
                   "member": "components/S8801871.102.enc",
@@ -36157,21 +37457,24 @@
               ],
               "embedded_model": "BDE-PR1MEL",
               "family_id": "31ce81c2dbb0fdb",
-              "filename": "BDE-PR1MEL_1.02_8801_ID87_4b32e9c0.tar",
+              "filename": "BDE-PR1MEL_1.02_8801_ID87_819eb348.tar",
               "generated_date": "20/10/08",
               "is_uhd": true,
-              "kernel_revision": null,
-              "kernel_selection_reason": "no-kernel-for-drive",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/4b32e9c04e23063d22dcaa6b6acf10fff19e809f9411c2f564c166e81bfe1025.tar",
+              "kernel_revision": "1.02",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "07f959e9b618d063df45330d713d54e557e448131fe085fa882e8a59383762c0",
+              "key": "fw/pioneer/819eb34851bb7190add3b01543807040cafe9ffffba6c31f12e3d375c94f2628.tar",
               "modifiable": false,
               "normal_sha256": "55b5e7a8d9e6ab4d29ba96af190512cb513d37166cc2c0b0d4e52f963262448a",
               "packageType": "pioneer-installer",
-              "receiver_reverse": null,
-              "receiver_xor_offsets": null,
+              "receiver_reverse": true,
+              "receiver_xor_offsets": [
+                379648,
+                825088
+              ],
               "revision": "1.02",
-              "selection": "normal-only",
-              "sha256": "4b32e9c04e23063d22dcaa6b6acf10fff19e809f9411c2f564c166e81bfe1025"
+              "selection": "direct-match",
+              "sha256": "819eb34851bb7190add3b01543807040cafe9ffffba6c31f12e3d375c94f2628"
             }
           ],
           "revision": "1.02"
@@ -36195,6 +37498,7 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.05",
                 "1.05EU"
               ],
               "brand": "PIONEER",
@@ -36302,6 +37606,117 @@
             }
           ],
           "revision": "1.03"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.04"
+              ],
+              "brand": "PIONEER",
+              "bytes": 2026496,
+              "components": [
+                {
+                  "identity_key": "pioneer:8801:ID89:1.04:kernel",
+                  "member": "components/S8801890.104.enc",
+                  "revision": "1.04",
+                  "role": "kernel",
+                  "sha256": "ca491cd54f86b90ad4e28a20d30cc6325726f3f4d6d545cb5549c775eb33945c"
+                },
+                {
+                  "identity_key": "pioneer:8801:ID89:1.04:normal",
+                  "member": "components/S8801891.104.enc",
+                  "revision": "1.04",
+                  "role": "normal",
+                  "sha256": "605ca887b510577b8e9f1a589df9d991a2b931b68e14d56a07109b886b08dfe1"
+                }
+              ],
+              "embedded_model": "BDX-PR1MLA",
+              "family_id": "31ce81c2dbb0fdb",
+              "filename": "BDX-PR1MLA_1.04_8801_ID89_13d89487.tar",
+              "generated_date": "21/11/17",
+              "is_uhd": true,
+              "kernel_revision": "1.04",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "ca491cd54f86b90ad4e28a20d30cc6325726f3f4d6d545cb5549c775eb33945c",
+              "key": "fw/pioneer/13d89487a90c0e49dab81015f4f18e57e870092d4e73f9a4449559cde4578b9e.tar",
+              "modifiable": false,
+              "normal_sha256": "605ca887b510577b8e9f1a589df9d991a2b931b68e14d56a07109b886b08dfe1",
+              "packageType": "pioneer-installer",
+              "receiver_reverse": true,
+              "receiver_xor_offsets": [
+                391168,
+                836608
+              ],
+              "revision": "1.04",
+              "selection": "source-contained",
+              "sha256": "13d89487a90c0e49dab81015f4f18e57e870092d4e73f9a4449559cde4578b9e"
+            }
+          ],
+          "revision": "1.04"
+        }
+      ]
+    },
+    {
+      "destination": "ID92",
+      "embedded_models": [
+        "BDE-PR1JAME"
+      ],
+      "family": "pioneer",
+      "hardware": "8801",
+      "key": "pioneer:8801:ID92",
+      "other_candidates": [],
+      "platforms": [
+        "sat"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.01"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1925120,
+              "components": [
+                {
+                  "identity_key": "pioneer:8801:ID92:1.01:kernel",
+                  "member": "components/S8801920.101.enc",
+                  "revision": "1.01",
+                  "role": "kernel",
+                  "sha256": "05fc3aaa7f86ecb69107b75d5c1ec4ea5dbd23b6671673327ccb4c6b9cf1448b"
+                },
+                {
+                  "identity_key": "pioneer:8801:ID92:1.01:normal",
+                  "member": "components/S8801921.101.enc",
+                  "revision": "1.01",
+                  "role": "normal",
+                  "sha256": "0a3954c01e54510eea5c870fe633fd0532d2415744e5a860962acfd06bb7430c"
+                }
+              ],
+              "embedded_model": "BDE-PR1JAME",
+              "family_id": "cf3183a51bc41e42",
+              "filename": "BDE-PR1JAME_1.01_8801_ID92_424d43dc.tar",
+              "generated_date": "18/10/03",
+              "is_uhd": true,
+              "kernel_revision": "1.01",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "05fc3aaa7f86ecb69107b75d5c1ec4ea5dbd23b6671673327ccb4c6b9cf1448b",
+              "key": "fw/pioneer/424d43dcd33e38c7755d96302de5dd30562204505e0392e0150b9b74aab751a7.tar",
+              "modifiable": false,
+              "normal_sha256": "0a3954c01e54510eea5c870fe633fd0532d2415744e5a860962acfd06bb7430c",
+              "packageType": "pioneer-installer",
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                583680,
+                464640
+              ],
+              "revision": "1.01",
+              "selection": "source-contained",
+              "sha256": "424d43dcd33e38c7755d96302de5dd30562204505e0392e0150b9b74aab751a7"
+            }
+          ],
+          "revision": "1.01"
         }
       ]
     },
@@ -36401,39 +37816,6 @@
               "revision": "1.14",
               "selection": "curated",
               "sha256": "349da8b41479735437872a898556c9bc9ddca135ddac0ef90a0684949f96dfb6"
-            },
-            {
-              "advertised_versions": [
-                "1.14"
-              ],
-              "brand": "PIONEER",
-              "bytes": 1932800,
-              "components": [
-                {
-                  "identity_key": "pioneer:8A10:GENERAL:1.14:normal",
-                  "member": "components/S8A10001.114.enc",
-                  "revision": "1.14",
-                  "role": "normal",
-                  "sha256": "8e02ed7244d8de7564f6e0606ba803f8614a6e2b87b5e24f7ee344cdcea71141"
-                }
-              ],
-              "embedded_model": "BDR-UD04",
-              "family_id": "b4b142ad333aeb2",
-              "filename": "BDR-UD04_1.14_8A10_GENERAL_8cacfc8e.tar",
-              "generated_date": "20/06/15",
-              "is_uhd": true,
-              "kernel_revision": null,
-              "kernel_selection_reason": "release-history-break",
-              "kernel_sha256": null,
-              "key": "fw/pioneer/8cacfc8e265cfb056b5c2d75fb58901965347300c769014c54c07a3339282d4b.tar",
-              "modifiable": false,
-              "normal_sha256": "8e02ed7244d8de7564f6e0606ba803f8614a6e2b87b5e24f7ee344cdcea71141",
-              "packageType": "pioneer-installer",
-              "receiver_reverse": null,
-              "receiver_xor_offsets": null,
-              "revision": "1.14",
-              "selection": "normal-only",
-              "sha256": "8cacfc8e265cfb056b5c2d75fb58901965347300c769014c54c07a3339282d4b"
             }
           ],
           "revision": "1.14"

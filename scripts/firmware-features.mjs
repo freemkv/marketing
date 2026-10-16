@@ -305,9 +305,9 @@ export async function loadCandidates(hoard, exclusions = new Set()) {
   return { candidates: [...seen.values()].filter(Boolean), excluded };
 }
 
-function runFw(fw, args) {
+function runTool(tool, args) {
   return new Promise(resolve => {
-    const p = spawn(fw, args, { stdio: ['ignore', 'pipe', 'pipe'] });
+    const p = spawn(tool, args, { stdio: ['ignore', 'pipe', 'pipe'] });
     let out = '';
     p.stdout.on('data', d => (out += d));
     p.on('error', e => resolve({ code: -1, out: '', error: e }));
@@ -317,7 +317,7 @@ function runFw(fw, args) {
 const parse = s => { try { return JSON.parse(s); } catch { return null; } };
 
 // Runs the engine for one candidate. `run(args)` is injectable for tests.
-export async function evaluate(cand, run, tmp, hardware = new Set()) {
+export async function evaluate(cand, run, tmp, hardware = new Set(), flash = null) {
   const raw = await fs.readFile(cand.file);
   if (isDriveRead(raw)) return { reason: 'drive-read' };
   if ((await run(['verify', cand.file])).code !== 0) return { reason: 'integrity' };
@@ -325,7 +325,14 @@ export async function evaluate(cand, run, tmp, hardware = new Set()) {
   const c = await run(['create', '--json', cand.file, path.join(tmp, `${cand.sha.slice(0, 16)}.out.bin`)]);
   const create = parse(c.out);
   if (!create?.model || !create?.rev) return { reason: 'no-identity' };
-  const modifiable = c.code === 0 && hasAppliedLever(create);
+  let modifiable = c.code === 0 && hasAppliedLever(create);
+  // A feature is advertised only when the exact generated image is accepted
+  // by the same offline admission gate used by freemkv-flash.
+  if (modifiable && flash) {
+    const output = path.join(tmp, `${cand.sha.slice(0, 16)}.out.bin`);
+    const admitted = await flash(['--why', cand.file, output]);
+    modifiable = admitted.code === 0 && admitted.out.trim() === 'admitted';
+  }
   let base = null;
   if (modifiable) {
     const b = await run(['create', '--base', '--json', cand.file, path.join(tmp, `${cand.sha.slice(0, 16)}.base.bin`)]);
@@ -335,15 +342,18 @@ export async function evaluate(cand, run, tmp, hardware = new Set()) {
   return { entry, masked: deMaskedSha(raw), vendor: !!cand.vendor, sha: cand.sha };
 }
 
-export async function generate({ hoard, fw, outDir, hardware = new Set(), jobs = 8, exclusions, log = () => {} }) {
+export async function generate({ hoard, fw, flash, outDir, eligible = null, hardware = new Set(), jobs = 8, exclusions, log = () => {} }) {
   const { candidates, excluded } = await loadCandidates(hoard, exclusions ?? await loadExclusions());
+  const admitted = eligible ? candidates.filter(candidate => eligible.has(candidate.sha)) : candidates;
+  if (eligible) excluded['not-flash-admitted'] = candidates.length - admitted.length;
   const tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'firmware-features-'));
   try {
-    const run = args => runFw(fw, args);
-    const results = new Array(candidates.length);
+    const run = args => runTool(fw, args);
+    const flashRun = flash ? args => runTool(flash, args) : null;
+    const results = new Array(admitted.length);
     let next = 0;
     await Promise.all(Array.from({ length: jobs }, async () => {
-      while (next < candidates.length) { const i = next++; results[i] = await evaluate(candidates[i], run, tmp, hardware); }
+      while (next < admitted.length) { const i = next++; results[i] = await evaluate(admitted[i], run, tmp, hardware, flashRun); }
     }));
     for (const r of results) if (r.reason) excluded[r.reason] = (excluded[r.reason] ?? 0) + 1;
     const { kept, dropped } = dedupeByDeMask(results.filter(r => r.entry));
@@ -362,20 +372,24 @@ export async function generate({ hoard, fw, outDir, hardware = new Set(), jobs =
 }
 
 async function main(argv) {
-  const a = { jobs: 8, outDir: path.join(SITE, 'src/data'), fw: process.env.FREEMKV_FW };
-  let hardwareFile, hoard;
+  const a = { jobs: 8, outDir: path.join(SITE, 'src/data'), fw: process.env.FREEMKV_FW, flash: process.env.FREEMKV_CROSSFLASH };
+  let hardwareFile, eligibleCatalog, hoard;
   for (let i = 0; i < argv.length; i++) {
     const x = argv[i];
     if (x === '--fw') a.fw = argv[++i];
+    else if (x === '--flash') a.flash = argv[++i];
     else if (x === '--out-dir') a.outDir = path.resolve(argv[++i]);
     else if (x === '--hardware-verified') hardwareFile = argv[++i];
+    else if (x === '--eligible-catalog') eligibleCatalog = argv[++i];
     else if (x === '--jobs') a.jobs = Number(argv[++i]);
     else if (x.startsWith('-')) throw new Error(`unknown option ${x}`);
     else hoard = x;
   }
-  if (!hoard || !a.fw) throw new Error('usage: firmware-features.mjs <hoard> --fw <freemkv-fw> [--out-dir D] [--hardware-verified FILE] [--jobs N]  (or FREEMKV_FW=...)');
+  if (!hoard || !a.fw || !a.flash) throw new Error('usage: firmware-features.mjs <hoard> --fw <freemkv-fw> --flash <freemkv-crossflash> [--out-dir D] [--hardware-verified FILE] [--jobs N]');
   const hardware = new Set(hardwareFile ? await readJson(hardwareFile) : []);
-  await generate({ hoard: path.resolve(hoard), fw: a.fw, outDir: a.outDir, hardware, jobs: a.jobs, log: m => console.log(m) });
+  const catalog = eligibleCatalog ? await readJson(eligibleCatalog) : null;
+  const eligible = catalog ? new Set((catalog.identities ?? []).filter(i => i.family === 'mediatek').flatMap(i => (i.revisions ?? []).flatMap(r => r.packages ?? []).map(p => p.sha256))) : null;
+  await generate({ hoard: path.resolve(hoard), fw: a.fw, flash: a.flash, outDir: a.outDir, eligible, hardware, jobs: a.jobs, log: m => console.log(m) });
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   main(process.argv.slice(2)).catch(e => { console.error(e.message); process.exit(1); });

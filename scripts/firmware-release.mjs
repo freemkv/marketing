@@ -130,7 +130,7 @@ export function checkCrossflashLinks(links, catalog) {
   for (const [from, to] of Object.entries(links.links)) for (const s of [from, ...to]) if (!shas.has(s)) throw new Error(`Crossflash link names a package not in the catalogue: ${s}`);
 }
 const V1_MEMBERS = ['publish-manifest.json','pioneer-firmware-index.json','firmware-index.json'];
-const V2_MEMBERS = ['publish-manifest.json','finder-catalog.json','legacy-keys.json'];
+const V2_MEMBERS = ['publish-manifest.json','finder-catalog.json','legacy-keys.json','crossflash-links.json'];
 // Strict streaming ustar extraction: no links, PAX, devices, traversal or overwrites.
 export async function extract(archive, directory) {
   await fs.mkdir(directory); const seen = new Set();
@@ -270,8 +270,24 @@ function wranglerDelete(bucket, key) {
     child.on('exit', (code, signal) => code === 0 ? resolve() : reject(new Error(`Wrangler delete failed: ${code ?? signal}`)));
   });
 }
+// One local entrypoint for a candidate: refresh the hoard, stage only Flash-
+// admitted packages, validate their crossflash graph, then derive modification
+// claims from outputs which Flash also admits.
+async function release(extractor, destination, hoard) {
+  if (!extractor || !destination) throw new Error('Usage: firmware-release.mjs release EXTRACTOR STAGE [V3_HOARD]');
+  extractor = path.resolve(extractor);
+  hoard = path.resolve(hoard ?? path.join(extractor, 'hoard'));
+  const [cmd, prefix] = fwextCommand(extractor);
+  run(cmd, [...prefix, 'refresh'], { cwd: extractor });
+  await prepare(extractor, destination, hoard);
+  if (!process.env.FREEMKV_FW) throw new Error('Set FREEMKV_FW to the freemkv-fw binary');
+  run(process.execPath, [path.join(SITE, 'scripts/firmware-features.mjs'), hoard,
+    '--fw', process.env.FREEMKV_FW, '--flash', crossflashCommand(),
+    '--eligible-catalog', path.join(path.resolve(destination), 'finder-catalog.json')], { cwd: SITE });
+}
 async function main() {
   const [command,a,b,c]=process.argv.slice(2);
+  if(command==='release') return release(a,b,c);
   if(command==='prepare' && a && b) return prepare(a,b,c);
   if(command==='extract' && a && b) return extract(a,b);
   if(command==='publish' && a) {
@@ -288,10 +304,10 @@ async function main() {
     const orphans=await pruneOrphans(keep,{listPage:cfListPage(fetch),deleteKey:(key,bucket)=>wranglerDelete(bucket,key)});
     if(orphans.length) console.log(`Deleted ${orphans.length} orphan R2 object${orphans.length===1?'':'s'}`);
     // Only expose links to the build after every public object verifies.
-    const files=manifest.format===V2?['finder-catalog.json','legacy-keys.json']:['pioneer-firmware-index.json','firmware-index.json'];
+    const files=manifest.format===V2?['finder-catalog.json','legacy-keys.json','crossflash-links.json']:['pioneer-firmware-index.json','firmware-index.json'];
     for(const file of files) await fs.copyFile(path.join(a,file),path.join(SITE,'src/data',file));
     return;
   }
-  throw new Error('Usage: firmware-release.mjs prepare EXTRACTOR STAGE [V3_HOARD] | extract ARCHIVE STAGE | publish STAGE');
+  throw new Error('Usage: firmware-release.mjs release EXTRACTOR STAGE [V3_HOARD] | prepare EXTRACTOR STAGE [V3_HOARD] | extract ARCHIVE STAGE | publish STAGE');
 }
 if(process.argv[1] && realpathSync(process.argv[1])===realpathSync(fileURLToPath(import.meta.url))) main().catch(e=>{console.error(e.message);process.exitCode=1;});

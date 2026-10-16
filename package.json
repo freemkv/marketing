@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "firmware:prepare": "node scripts/firmware-release.mjs prepare",
+    "firmware:release": "node scripts/firmware-release.mjs release",
     "test:firmware": "node --test scripts/*.test.mjs"
   },
   "dependencies": {

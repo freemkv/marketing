@@ -17,7 +17,7 @@ description: What's new in freemkv-flash, the drive flasher and dumper - newest 
   crossflashed back.
 - Pioneer drives whose OEM receiver uses the two-part Kernel transfer now send
   the header and key first, followed by the body at the receiver-selected
-  offset. The prior ordering could reject a valid 2.05 → 2.06 update.
+  offset. The prior ordering could reject a valid BDR-205 → BDR-206 update.
 - Update to `pioneer-optical 0.15.2` and `mediatek-optical 0.7.1`, both
   firmware-backed releases used by the flashing path.
 

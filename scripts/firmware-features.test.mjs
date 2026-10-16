@@ -90,6 +90,18 @@ test('modifiable: create succeeds with an applied lever; otherwise listed as sto
   const partial = (await evaluate({ sha: sha('b'), file }, noBase, os.tmpdir())).entry;
   assert.equal(partial.modifiable, true);
   assert.equal(partial.confidence, null);
+  // The website must not advertise a generated image that Flash refuses.
+  const refused = (await evaluate(
+    { sha: sha('b'), file }, noBase, os.tmpdir(), new Set(),
+    async args => ({ code: 0, out: args[0] === '--why' ? 'refused\n' : '' }),
+  )).entry;
+  assert.equal(refused.modifiable, false);
+  assert.deepEqual(refused.features, []);
+  const admitted = (await evaluate(
+    { sha: sha('b'), file }, noBase, os.tmpdir(), new Set(),
+    async () => ({ code: 0, out: 'admitted\n' }),
+  )).entry;
+  assert.equal(admitted.modifiable, true);
   // No identity in the report (e.g. an engine error): not listed.
   const createFails = async args => ({ code: args[0] === 'verify' ? 0 : 1, out: '' });
   assert.deepEqual(await evaluate({ sha: sha('b'), file }, createFails, os.tmpdir()), { reason: 'no-identity' });
