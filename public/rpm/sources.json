@@ -25,53 +25,53 @@
     "sha256": "281c4abede9c45864f6b1ea52dd1f5d95b451adee20646955dbb9bcd32f908fe"
   },
   {
-    "file": "freemkv-flash-0.12.5-1.aarch64.rpm",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.12.5/freemkv-flash-aarch64.rpm",
-    "sha256": "3e41df09b69c3f75ebb99f0b90ed7fe830698321b0cd593ffc6785bcbcbad081"
+    "file": "freemkv-flash-0.13.0-1.aarch64.rpm",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.13.0/freemkv-flash-aarch64.rpm",
+    "sha256": "df452a07071091cb96bcbe10eaffe2210c11c7d1d2fdf57a7ca6ff4021cc3d90"
   },
   {
-    "file": "freemkv-flash-0.12.5-1.armv7hl.rpm",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.12.5/freemkv-flash-armv7hl.rpm",
-    "sha256": "9de34f8fdf1ee623e6825006c76dd8a8af9e1cf8994151f864c141aaa0106e0e"
+    "file": "freemkv-flash-0.13.0-1.armv7hl.rpm",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.13.0/freemkv-flash-armv7hl.rpm",
+    "sha256": "2750dc0e7b9244ff464ce78e6642e1a1fa66ab56fb43f3162d9bec5f939f09b9"
   },
   {
-    "file": "freemkv-flash-0.12.5-1.x86_64.rpm",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.12.5/freemkv-flash-x86_64.rpm",
-    "sha256": "6eabd5c2135bf0c7b195b67bcddb9e2488a43670a624cfbdac6b32e0f4e54efc"
+    "file": "freemkv-flash-0.13.0-1.x86_64.rpm",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.13.0/freemkv-flash-x86_64.rpm",
+    "sha256": "89c3314e973ba8324241d09a107b2e4f0ccaf7b61c20ffa17633117356fdc3df"
   },
   {
-    "file": "freemkv-flash-gui-0.12.5-1.aarch64.rpm",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.12.5/freemkv-flash-gui-aarch64.rpm",
-    "sha256": "bd89b4fe66fa446b28534fa971b8518a7e1066af5c404592840954ffcee01e17"
+    "file": "freemkv-flash-gui-0.13.0-1.aarch64.rpm",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.13.0/freemkv-flash-gui-aarch64.rpm",
+    "sha256": "d5370413e541219c1a08005ed92b9e988a8c8e8dfb8f14303a93678e6fe912cf"
   },
   {
-    "file": "freemkv-flash-gui-0.12.5-1.x86_64.rpm",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.12.5/freemkv-flash-gui-x86_64.rpm",
-    "sha256": "8f0f1b74f4b9424b966c71bc8da7484479e7dee8be59c99295d7c53744317341"
+    "file": "freemkv-flash-gui-0.13.0-1.x86_64.rpm",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.13.0/freemkv-flash-gui-x86_64.rpm",
+    "sha256": "750607fb05f99fe0cd8cf819a1c33c33810757cf7125e1070490ff6b8f3b3c49"
   },
   {
-    "file": "freemkv-fw-0.12.5-1.aarch64.rpm",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.12.5/freemkv-fw-aarch64.rpm",
-    "sha256": "5f788f0d3a7a421caf0a90725993be9e17602a3f700a8b2fbd75c88b6727707d"
+    "file": "freemkv-fw-0.13.0-1.aarch64.rpm",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.13.0/freemkv-fw-aarch64.rpm",
+    "sha256": "5becacb77169b7b9927421d85608c089fc90f5d338f5246b1610cb7082d79956"
   },
   {
-    "file": "freemkv-fw-0.12.5-1.armv7hl.rpm",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.12.5/freemkv-fw-armv7hl.rpm",
-    "sha256": "6311b06f2143fd731da12af4665c34cb5fb5ba1d7da5ae400905f091713b9ea1"
+    "file": "freemkv-fw-0.13.0-1.armv7hl.rpm",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.13.0/freemkv-fw-armv7hl.rpm",
+    "sha256": "a1d050d38972996db7252c33dd50260e6ee9cb356bc413038b1a665e74a2cdd8"
   },
   {
-    "file": "freemkv-fw-0.12.5-1.x86_64.rpm",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.12.5/freemkv-fw-x86_64.rpm",
-    "sha256": "4ead757115c3816ba716a30caccbcf642d678f0416bc980570edd05639b77247"
+    "file": "freemkv-fw-0.13.0-1.x86_64.rpm",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.13.0/freemkv-fw-x86_64.rpm",
+    "sha256": "8dd8abc802ac53f4d50cc99735c079b986ed6449e28dd00b9eddd72e4d1c846b"
   },
   {
-    "file": "freemkv-fw-gui-0.12.5-1.aarch64.rpm",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.12.5/freemkv-fw-gui-aarch64.rpm",
-    "sha256": "55401d2480deed569e1ad1da6f2ad98b67e3d0b1c34dd45e5affc69f05a3c473"
+    "file": "freemkv-fw-gui-0.13.0-1.aarch64.rpm",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.13.0/freemkv-fw-gui-aarch64.rpm",
+    "sha256": "0371d862f83c0ed00f7c2488e8826a5c540be03e12a9aa70b81f70ad8a7a20d4"
   },
   {
-    "file": "freemkv-fw-gui-0.12.5-1.x86_64.rpm",
-    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.12.5/freemkv-fw-gui-x86_64.rpm",
-    "sha256": "fc5cb683a5f514371fdde1e9a42ac13f9d3c78c4f06aa37c7770d2b03dc77e75"
+    "file": "freemkv-fw-gui-0.13.0-1.x86_64.rpm",
+    "url": "https://github.com/freemkv/freemkv-firmware/releases/download/v0.13.0/freemkv-fw-gui-x86_64.rpm",
+    "sha256": "1fbd642ea5b2a291329073b620d96b713dd976e1e7f7518d3c8d0722162ecff4"
   }
 ]
