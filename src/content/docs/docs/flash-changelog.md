@@ -3,6 +3,32 @@ title: Flash Changelog
 description: What's new in freemkv-flash, the drive flasher and dumper - newest first.
 ---
 
+## 0.13.0
+
+<small>2026-10-16</small>
+
+### freemkv-flash
+
+- Bind normal MediaTek Flash stages to the detected receiver's library transfer
+  plan. Revalidate that receiver before writing and detect it again after INTM;
+  the app no longer selects encrypted transfer independently.
+- Select the MediaTek PREPARE dialect from the running BOOT or application
+  receiver's entry signatures. Preserve data-out direction for empty PREPARE
+  commands and collect bounded read-only diagnostics after recovery failure.
+- Use released `mediatek-optical 0.8.0` and `pioneer-optical 0.16.0`.
+- In explicit MediaTek Recovery, log a failed PREPARE and proceed once with the
+  selected firmware. Normal Flash still stops on PREPARE failure; firmware-data
+  failures stop both paths without retries. Recovery still requires protected
+  readback and confirmed target startup. Physical-drive validation is pending.
+- Prepare Pioneer Normal encoding for the Kernel that receives it: the incoming
+  Kernel in paired updates, or the installed Kernel for Normal-only updates.
+
+### freemkv-flash GUI
+
+- Keep every tab and its controls accessible when the selected drive's profile
+  is unsupported or could not be read. Operations perform their own live checks
+  and report refusals; normal classification no longer prevents Recovery.
+
 ## 0.12.5
 
 <small>2026-10-16</small>
