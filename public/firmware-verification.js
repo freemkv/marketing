@@ -66,6 +66,9 @@ if (detail && config) {
   }
   function setBusy(value) {
     busy = value;
+    form.setAttribute('aria-busy', String(value));
+    form.querySelector('[data-step="email"] button').textContent = value && step === 'email' ? 'Sending…' : 'Send code';
+    form.querySelector('[data-step="code"] button').textContent = value && step === 'code' ? 'Checking…' : 'Continue';
     dialog.querySelectorAll('button:not(.fw-close)').forEach(button => { button.disabled = value; });
   }
   async function status(version) {
