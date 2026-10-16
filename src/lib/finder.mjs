@@ -439,7 +439,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
         ...(best.features?.length ? { features: best.features.map(f => ({ name: f.name, ok: f.ok })) } : {}) });
       v.push(versions.length - 1);
     }
-    return { i, out: { n: '', brand: identityBrand(i), d: destinationLabel(i), g: versionGroup(i), pio: i.family === 'pioneer' ? 1 : 0,
+    return { i, out: { key: i.key, n: '', brand: identityBrand(i), d: destinationLabel(i), g: versionGroup(i), pio: i.family === 'pioneer' ? 1 : 0,
       h: i.family === 'pioneer' ? hardwareLabel(i) : '', e: editionLabel(i), v } };
   });
 

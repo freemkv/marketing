@@ -242,6 +242,40 @@ import '../../styles/site.css';
           var curModel = null;
           var curRevIdx = 0;
           var revActiveIdx = -1;
+          var restoringLocation = false;
+
+          function updateLocation() {
+            if (restoringLocation) return;
+            var url = new URL(window.location.href);
+            if (curModel) {
+              var version = versions[curModel.v[curRevIdx][0]];
+              url.searchParams.set('drive', curModel.m);
+              url.searchParams.set('firmware', identities[version.i].key);
+              url.searchParams.set('revision', version.r);
+            } else {
+              ['drive', 'firmware', 'revision'].forEach(function (key) { url.searchParams.delete(key); });
+            }
+            if (url.href !== window.location.href) window.history.pushState(null, '', url);
+          }
+
+          function restoreLocation() {
+            restoringLocation = true;
+            try {
+              var params = new URL(window.location.href).searchParams;
+              var vi = versions.findIndex(function (v) {
+                return identities[v.i].key === params.get('firmware') && v.r === params.get('revision');
+              });
+              var model = findModel(params.get('drive'));
+              if (!model || !model.v.some(function (v) { return v[0] === vi; })) {
+                model = models.find(function (d) { return d.v.some(function (v) { return v[0] === vi; }); });
+              }
+              closeList();
+              if (vi >= 0 && model) {
+                searchInput.value = model.m;
+                selectModel(model, '', model.v.findIndex(function (v) { return v[0] === vi; }));
+              } else { searchInput.value = ''; resetSelection(); }
+            } finally { restoringLocation = false; }
+          }
 
           function compact(text) {
             return String(text || '').toUpperCase().replace(/[^A-Z0-9]+/g, '');
@@ -358,6 +392,7 @@ import '../../styles/site.css';
 
           function resetSelection() {
             curModel = null;
+            updateLocation();
             document.getElementById('modify-next-step').hidden = true;
             document.getElementById('modify-feature-note').hidden = true;
             revRow.classList.add('is-hidden');
@@ -420,6 +455,7 @@ import '../../styles/site.css';
           }
 
           function render() {
+            updateLocation();
             var d = curModel;
             if (!d) {
               detail.innerHTML = '';
@@ -635,7 +671,8 @@ import '../../styles/site.css';
             if (!e.target.closest('[data-combo]')) { closeList(); closeRevList(); }
           });
 
-          resetSelection();
+          window.addEventListener('popstate', restoreLocation);
+          restoreLocation();
         })();
       </script>
     </main>
