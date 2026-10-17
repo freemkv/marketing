@@ -5024,6 +5024,14 @@
     },
     {
       "basis": "projection",
+      "key": "pioneer/BDR-PR1AME/SAT%208000/1.05/f4813c704d4a5e42591dbba70d2a6087efc6a8ea0a68e706d416ee184831cdb9.tar",
+      "model": "BDR-PR1AME",
+      "new_key": "fw/pioneer/f4813c704d4a5e42591dbba70d2a6087efc6a8ea0a68e706d416ee184831cdb9.tar",
+      "sha256": "f4813c704d4a5e42591dbba70d2a6087efc6a8ea0a68e706d416ee184831cdb9",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
       "key": "pioneer/BDR-PR1AME/SAT%208000/1.06/b8883fb44d7553cae424386b6c3eb1dfdeca0d9d210bf25c9df37c291b7e9196.tar",
       "model": "BDR-PR1AME",
       "new_key": "fw/pioneer/b8883fb44d7553cae424386b6c3eb1dfdeca0d9d210bf25c9df37c291b7e9196.tar",

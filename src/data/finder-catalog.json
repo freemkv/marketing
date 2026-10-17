@@ -5097,6 +5097,22 @@
       ]
     },
     {
+      "display": "BDR-PR1AME",
+      "displays": [
+        "BDR-PR1AME"
+      ],
+      "kind": "release",
+      "name": "BDRPR1AME",
+      "targets": [
+        {
+          "destination": "ID90",
+          "family": "pioneer",
+          "hardware": "8000",
+          "held": true
+        }
+      ]
+    },
+    {
       "display": "BDR-PR1EPA",
       "displays": [
         "BDR-PR1EPA"
@@ -26724,6 +26740,54 @@
         "sat"
       ],
       "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.05"
+              ],
+              "brand": "PIONEER",
+              "bytes": 2791936,
+              "components": [
+                {
+                  "identity_key": "pioneer:8000:ID90:1.05:kernel",
+                  "member": "components/S8000900.105.enc",
+                  "revision": "1.05",
+                  "role": "kernel",
+                  "sha256": "64fab71fd89b3923121d980f727dd5fb8c1e1f1a8bfb32507f1d0115f331035e"
+                },
+                {
+                  "identity_key": "pioneer:8000:ID90:1.05:normal",
+                  "member": "components/S8000901.105.enc",
+                  "revision": "1.05",
+                  "role": "normal",
+                  "sha256": "0d7822d52916ad65f7b7231451bfda04e2877a49168f923a6157fa3bdee97bbd"
+                }
+              ],
+              "embedded_model": "BDR-PR1AME",
+              "family_id": "cee5c9016d0174c9",
+              "filename": "BDR-PR1AME_1.05_8000_ID90_f4813c70.tar",
+              "generated_date": "18/09/18",
+              "is_uhd": false,
+              "kernel_revision": "1.05",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "64fab71fd89b3923121d980f727dd5fb8c1e1f1a8bfb32507f1d0115f331035e",
+              "key": "fw/pioneer/f4813c704d4a5e42591dbba70d2a6087efc6a8ea0a68e706d416ee184831cdb9.tar",
+              "modifiable": false,
+              "normal_sha256": "0d7822d52916ad65f7b7231451bfda04e2877a49168f923a6157fa3bdee97bbd",
+              "packageType": "pioneer-installer",
+              "receiver_reverse": true,
+              "receiver_xor_offsets": [
+                95232,
+                492544
+              ],
+              "revision": "1.05",
+              "selection": "source-contained",
+              "sha256": "f4813c704d4a5e42591dbba70d2a6087efc6a8ea0a68e706d416ee184831cdb9"
+            }
+          ],
+          "revision": "1.05"
+        },
         {
           "packages": [
             {
