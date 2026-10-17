@@ -7,6 +7,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { createGunzip } from 'node:zlib';
 import { firmwareObjectFetcher } from './firmware-object-fetch.mjs';
 import { LATEST_ARCHIVE_KEY } from '../src/lib/firmware-archive.mjs';
+import { crossflashGraph, seedCrossflashCache } from './firmware-crossflash-cache.mjs';
 
 const PUBLIC_BASE = 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -96,7 +97,7 @@ export function fwextCommand(extractor, env = process.env) {
 }
 // v2: `fwext publish-catalog` validates every package and writes the stage
 // (finder-catalog.json, publish-manifest.json v2, legacy-keys.json, payloads/fw/...).
-export async function prepare(extractor, destination, hoard) {
+export async function prepare(extractor, destination, hoard, { fullUpload = false } = {}) {
   extractor = path.resolve(extractor); destination = path.resolve(destination);
   hoard = path.resolve(hoard ?? path.join(extractor, 'hoard'));
   try { await fs.access(destination); throw new Error(`${destination} already exists`); } catch (e) { if (e.code !== 'ENOENT') throw e; }
@@ -114,13 +115,36 @@ export async function prepare(extractor, destination, hoard) {
     const raw = await fs.readFile(path.join(destination, 'payloads', o.key));
     if (raw.length !== o.bytes || hash(raw) !== o.sha256) throw new Error('Payload hash/size mismatch');
   }
-  const links = spawnSync(crossflashCommand(), [path.join(destination, 'payloads', 'fw')], { encoding: 'utf8', maxBuffer: 1 << 28, stdio: ['ignore', 'pipe', 'inherit'] });
-  if (links.status !== 0) throw new Error('freemkv-crossflash failed');
-  checkCrossflashLinks(JSON.parse(links.stdout), catalog);
-  await fs.writeFile(path.join(destination, 'crossflash-links.json'), links.stdout);
-  // ustar deliberately excludes PAX records, links and platform metadata.
-  run('tar',['--format=ustar','-czf',`${destination}.tar.gz`,'-C',destination,...V2_MEMBERS,'payloads'],{env:{...process.env,COPYFILE_DISABLE:'1'}});
-  console.log(`Prepared ${manifest.objects.length} objects: ${destination}.tar.gz`);
+  const { graph } = await crossflashGraph({ engine: crossflashCommand(), root: path.join(destination, 'payloads'), objects: manifest.objects,
+    cacheFile: process.env.FIRMWARE_CROSSFLASH_CACHE ?? path.join(hoard, 'cache', 'website-crossflash.json') });
+  checkCrossflashLinks(graph, catalog);
+  await fs.writeFile(path.join(destination, 'crossflash-links.json'), JSON.stringify(graph, null, 2));
+  const baseline = fullUpload ? { format: 'freemkv-finder-catalog', version: 2, identities: [] } : await json(path.join(SITE, 'src/data/finder-catalog.json'));
+  await transportArchive(destination, `${destination}.tar.gz`, baseline);
+}
+// The transport carries the full desired inventory but only changed payloads.
+// CI retrieves every omitted object from the fixed bucket and verifies its bytes
+// before deploying, then builds the complete latest archive there.
+export async function transportArchive(directory, archive, baseline) {
+  const manifest = validateManifest(await json(path.join(directory, 'publish-manifest.json')));
+  if (manifest.format !== V2) throw new Error('Delta transport requires v2');
+  const previous = new Map(catalogPackages(baseline).map(o => [o.key, o]));
+  const included = manifest.objects.filter(o => {
+    const old = previous.get(o.key);
+    return !old || old.sha256 !== o.sha256 || old.bytes !== o.bytes;
+  }).map(o => o.key).sort();
+  await fs.writeFile(path.join(directory, 'transport.json'), JSON.stringify({ format: 'freemkv-firmware-delta-v1', included }));
+  run('tar', ['--format=ustar', '-czf', archive, '-C', directory, ...V2_MEMBERS, 'transport.json', ...included.map(key => `payloads/${key}`)], {env:{...process.env,COPYFILE_DISABLE:'1'}});
+  console.log(`Prepared ${included.length} changed payloads (${manifest.objects.length} total): ${archive}`);
+  return included;
+}
+export async function fullArchive(directory, archive) {
+  const manifest = validateManifest(await json(path.join(directory, 'publish-manifest.json')));
+  for (const o of manifest.objects) {
+    const raw = await fs.readFile(path.join(directory, 'payloads', o.key));
+    if (raw.length !== o.bytes || hash(raw) !== o.sha256) throw new Error('Full archive payload mismatch');
+  }
+  run('tar', ['--format=ustar', '-czf', archive, '-C', directory, ...(manifest.format === V2 ? V2_MEMBERS : V1_MEMBERS), ...manifest.objects.map(o => `payloads/${o.key}`)], {env:{...process.env,COPYFILE_DISABLE:'1'}});
 }
 /** Every crossflash link must name packages of this catalogue. */
 export function checkCrossflashLinks(links, catalog) {
@@ -162,7 +186,7 @@ export async function extract(archive, directory) {
         const size=parseInt(sizeText,8), checksum=[...h].reduce((s,b,i)=>s+(i>=148&&i<156?32:b),0);
         const type=h[156];
         if (checksum!==parseInt(checksumText,8) || !safePath(name) || seen.has(name) || ![0,48,53].includes(type) || size>64*1024*1024) throw new Error('Unsafe tar member');
-        if (!(name==='payloads' || name.startsWith('payloads/pioneer/') || [...V1_MEMBERS,...V2_MEMBERS].includes(name) || name==='payloads/pioneer' || name==='payloads/MT1939' || name==='payloads/MT1959' || /^payloads\/(MT1939|MT1959)\/[A-Za-z0-9._%-]+\.bin$/.test(name) || name==='payloads/fw' || /^payloads\/fw\/[a-z]+$/.test(name) || V2_KEY.test(name.slice('payloads/'.length)))) throw new Error('Unexpected tar member');
+        if (!(name==='transport.json' || name==='payloads' || name.startsWith('payloads/pioneer/') || [...V1_MEMBERS,...V2_MEMBERS].includes(name) || name==='payloads/pioneer' || name==='payloads/MT1939' || name==='payloads/MT1959' || /^payloads\/(MT1939|MT1959)\/[A-Za-z0-9._%-]+\.bin$/.test(name) || name==='payloads/fw' || /^payloads\/fw\/[a-z]+$/.test(name) || V2_KEY.test(name.slice('payloads/'.length)))) throw new Error('Unexpected tar member');
         seen.add(name); const target=path.join(directory,name);
         if (type===53) { if(size) throw new Error('Directory data'); await fs.mkdir(target,{recursive:true}); }
         else { await fs.mkdir(path.dirname(target),{recursive:true}); handle=await fs.open(target,'wx'); remaining=size; padding=(512-size%512)%512; if(!remaining){await handle.close();handle=null;} }
@@ -174,6 +198,11 @@ export async function extract(archive, directory) {
 export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Promise(resolve=>setTimeout(resolve,ms))) {
   const manifest=validateManifest(await json(path.join(directory,'publish-manifest.json')));
   const objects=new Map(manifest.objects.map(o=>[o.key,o]));
+  let transport;
+  try { transport = await json(path.join(directory, 'transport.json')); } catch(e) { if(e.code !== 'ENOENT') throw e; }
+  if (transport && (manifest.format !== V2 || transport.format !== 'freemkv-firmware-delta-v1' || !Array.isArray(transport.included) || new Set(transport.included).size !== transport.included.length || transport.included.some(key => !objects.has(key)))) throw new Error('Invalid delta transport');
+  const included = transport ? new Set(transport.included) : new Set(objects.keys());
+  const verifiedReuse = new Set();
   if (manifest.format===V2) {
     const catalog=await json(path.join(directory,'finder-catalog.json'));
     await checkWithdrawals(catalog);
@@ -205,9 +234,31 @@ export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Pr
   }
   // Validate everything before the first external write.
   for (const o of objects.values()) {
+    if (!included.has(o.key)) continue;
     const raw=await fs.readFile(path.join(directory,'payloads',o.key));
     if (raw.length!==o.bytes || hash(raw)!==o.sha256) throw new Error('Payload hash/size mismatch');
   }
+  const reused = [...objects.values()].filter(o => !included.has(o.key));
+  let reuseCursor = 0, reuseFailure = null;
+  await Promise.all(Array.from({length:Math.min(4,reused.length)}, async () => {
+    while (!reuseFailure && reuseCursor < reused.length) {
+      const o = reused[reuseCursor++];
+      try {
+        // Omitted payloads may only come from our fixed object store. Full hash
+        // verification is mandatory, including when the bucket is private.
+        const response = await fetcher(`${PUBLIC_BASE}/${o.key}`, {headers:{'User-Agent':'curl/8.7.1'},signal:AbortSignal.timeout(60000)});
+        if (!response.ok) { await response.body?.cancel(); throw new Error(`Reused firmware unavailable: ${o.key}`); }
+        const raw = Buffer.from(await response.arrayBuffer());
+        if (raw.length !== o.bytes || hash(raw) !== o.sha256) throw new Error(`Reused firmware hash/size mismatch: ${o.key}`);
+        const file = path.join(directory, 'payloads', o.key);
+        await fs.mkdir(path.dirname(file), {recursive:true});
+        await fs.writeFile(file, raw);
+        verifiedReuse.add(o.key);
+        if (verifiedReuse.size % 25 === 0 || verifiedReuse.size === reused.length) console.log(`Fetched and verified ${verifiedReuse.size}/${reused.length} reused objects`);
+      } catch(e) { reuseFailure ??= e; }
+    }
+  }));
+  if (reuseFailure) throw reuseFailure;
   // Manifest keys are URL-ready paths produced by segment(). Pinned Wrangler
   // decodes their percent escapes on PUT; public URLs use them exactly once.
   async function publicMatches(o) {
@@ -223,7 +274,7 @@ export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Pr
     while (!failure && cursor<pending.length) {
       const o=pending[cursor++];
       try {
-        if (!await publicMatches(o)) {
+        if (!verifiedReuse.has(o.key) && !await publicMatches(o)) {
           await upload(o,path.join(directory,'payloads',o.key));
           let verified=false;
           for (let attempt=0;attempt<4;attempt++) {
@@ -282,7 +333,7 @@ function wranglerDelete(bucket, key) {
 // One local entrypoint for a candidate: ingest new inputs, stage only Flash-
 // admitted packages, validate their crossflash graph, then derive modification
 // claims from outputs which Flash also admits.
-async function release(extractor, destination, hoard, { refresh = false } = {}) {
+async function release(extractor, destination, hoard, { refresh = false, fullUpload = false } = {}) {
   if (!extractor || !destination) throw new Error('Usage: firmware-release.mjs release EXTRACTOR STAGE [V3_HOARD]');
   extractor = path.resolve(extractor);
   hoard = path.resolve(hoard ?? path.join(extractor, 'hoard'));
@@ -291,7 +342,7 @@ async function release(extractor, destination, hoard, { refresh = false } = {}) 
   try { await fs.access(path.resolve(destination)); throw new Error(`${destination} already exists`); } catch (e) { if (e.code !== 'ENOENT') throw e; }
   const [cmd, prefix] = fwextCommand(extractor);
   run(cmd, [...prefix, refresh ? 'refresh' : 'ingest', '--hoard', hoard], { cwd: extractor });
-  await prepare(extractor, destination, hoard);
+  await prepare(extractor, destination, hoard, { fullUpload });
   run(process.execPath, [path.join(SITE, 'scripts/firmware-features.mjs'), hoard,
     '--fw', process.env.FREEMKV_FW, '--flash', crossflashCommand(),
     '--eligible-catalog', path.join(path.resolve(destination), 'finder-catalog.json')], { cwd: SITE });
@@ -301,13 +352,26 @@ async function main() {
   if(command==='release') {
     const args = process.argv.slice(3);
     const refresh = args.includes('--refresh');
-    const positional = args.filter(arg => arg !== '--refresh');
+    const fullUpload = args.includes('--full-upload');
+    const positional = args.filter(arg => !['--refresh', '--full-upload'].includes(arg));
     if (positional.some(arg => arg.startsWith('--')) || positional.length < 2 || positional.length > 3)
       throw new Error('Usage: firmware-release.mjs release EXTRACTOR STAGE [V3_HOARD] [--refresh]');
-    return release(positional[0], positional[1], positional[2], { refresh });
+    return release(positional[0], positional[1], positional[2], { refresh, fullUpload });
   }
-  if(command==='prepare' && a && b) return prepare(a,b,c);
+  if(command==='prepare' && a && b) {
+    const args = process.argv.slice(3), fullUpload = args.includes('--full-upload');
+    const positional = args.filter(arg => arg !== '--full-upload');
+    if (positional.some(arg => arg.startsWith('--')) || positional.length < 2 || positional.length > 3) throw new Error('Usage: firmware-release.mjs prepare EXTRACTOR STAGE [V3_HOARD] [--full-upload]');
+    return prepare(positional[0],positional[1],positional[2],{fullUpload});
+  }
+  if(command==='seed-crossflash-cache' && a && b) {
+    const manifest = validateManifest(await json(path.join(a, 'publish-manifest.json')));
+    const graph = await json(path.join(a, 'crossflash-links.json'));
+    checkCrossflashLinks(graph, await json(path.join(a, 'finder-catalog.json')));
+    return seedCrossflashCache({ file: b, engine: crossflashCommand(), root: path.join(a, 'payloads'), objects: manifest.objects, graph });
+  }
   if(command==='extract' && a && b) return extract(a,b);
+  if(command==='archive' && a && b) return fullArchive(a,b);
   if(command==='publish' && a) {
     if(!process.env.CLOUDFLARE_ACCOUNT_ID || !process.env.CLOUDFLARE_API_TOKEN) throw new Error('Explicit Cloudflare account and token required');
     await publish(a,(o,file)=>new Promise((resolve,reject)=>{

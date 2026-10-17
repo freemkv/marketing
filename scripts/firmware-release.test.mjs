@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
-import { safePath, validateManifest, extract, publish, pruneOrphans } from './firmware-release.mjs';
+import { safePath, validateManifest, extract, publish, pruneOrphans, transportArchive, fullArchive } from './firmware-release.mjs';
 const sha=b=>createHash('sha256').update(b).digest('hex');
 test('release ingests by default; only explicit --refresh re-extracts the hoard', async t => {
  const d = await fs.mkdtemp(path.join(os.tmpdir(), 'firmware-release-mode-'));
@@ -190,7 +190,7 @@ const out=a[a.indexOf('--out')+1];fs.cpSync(${JSON.stringify(template)},out,{rec
 `);await fs.chmod(fake,0o755);
  const fakeLinks=path.join(root,'freemkv-crossflash');
  await fs.writeFile(fakeLinks,`#!/usr/bin/env node
-process.stdout.write(JSON.stringify({format:'freemkv-crossflash-links',version:1,links:{}}));
+process.stdout.write(JSON.stringify({format:'freemkv-crossflash-links',version:2,links:{},future:{}}));
 `);await fs.chmod(fakeLinks,0o755);
  const previousLinks=process.env.FREEMKV_CROSSFLASH;process.env.FREEMKV_CROSSFLASH=fakeLinks;t.after(()=>{if(previousLinks===undefined)delete process.env.FREEMKV_CROSSFLASH;else process.env.FREEMKV_CROSSFLASH=previousLinks;});
  await fs.mkdir(path.join(root,'extractor'));const stage=path.join(root,'stage');const previous=process.env.FWEXT;process.env.FWEXT=fake;t.after(()=>{if(previous===undefined)delete process.env.FWEXT;else process.env.FWEXT=previous;});
@@ -206,4 +206,37 @@ test('pruning retains the unlisted latest archive',async()=>{
  const deleted=[];
  assert.deepEqual(await pruneOrphans(new Set(),{listPage:async()=>({objects:[{key:'releases/latest.tar.gz'},{key:'fw/pioneer/old.tar'}],truncated:false}),deleteKey:async key=>deleted.push(key)}),['fw/pioneer/old.tar']);
  assert.deepEqual(deleted,['fw/pioneer/old.tar']);
+});
+
+test('one new firmware transports one payload; CI hydrates and retains a complete standalone archive',async t=>{
+ const {d,objects,catalog,bytes}=await stageV2(t);
+ await fs.writeFile(path.join(d,'crossflash-links.json'),JSON.stringify({format:'freemkv-crossflash-links',version:2,links:{},future:{}}));
+ const baseline=structuredClone(catalog);baseline.identities.pop();
+ const archive=d+'.delta.tgz',out=d+'-ci',full=d+'.full.tgz',complete=d+'-complete';
+ for(const p of [archive,full,out,complete])t.after(()=>fs.rm(p,{recursive:true,force:true}));
+ assert.deepEqual(await transportArchive(d,archive,baseline),[objects[1].key]);
+ await extract(archive,out);
+ await assert.rejects(fs.access(path.join(out,'payloads',objects[0].key)));
+ const uploaded=[],reads=new Map();let newReady=false;
+ const fetcher=async url=>{
+   const key=url.split('.r2.dev/')[1];reads.set(key,(reads.get(key)??0)+1);
+   return key===objects[0].key || newReady ? new Response(bytes.get(key)) : new Response('',{status:404});
+ };
+ assert.equal(await publish(out,async o=>{uploaded.push(o.key);newReady=true;},fetcher,async()=>{}),2);
+ assert.deepEqual(uploaded,[objects[1].key]);assert.equal(reads.get(objects[0].key),1);
+ // Unlisted staging files and delta metadata must never enter latest.tar.gz.
+ await fs.writeFile(path.join(out,'payloads','private-not-in-manifest'),'secret');
+ await fullArchive(out,full);await extract(full,complete);
+ await assert.rejects(fs.access(path.join(complete,'transport.json')));
+ await assert.rejects(fs.access(path.join(complete,'payloads','private-not-in-manifest')));
+ for(const o of objects)assert.deepEqual(await fs.readFile(path.join(complete,'payloads',o.key)),bytes.get(o.key));
+});
+test('missing, corrupt or invalid reused firmware stops a delta before any upload',async t=>{
+ const {d,objects}=await stageV2(t);
+ await fs.writeFile(path.join(d,'transport.json'),JSON.stringify({format:'freemkv-firmware-delta-v1',included:[objects[1].key]}));
+ for(const response of [()=>new Response('',{status:404}),()=>new Response('corrupt')]) {
+   await assert.rejects(publish(d,async()=>assert.fail('must not write'),async()=>response()),/Reused firmware/);
+ }
+ await fs.writeFile(path.join(d,'transport.json'),JSON.stringify({format:'freemkv-firmware-delta-v1',included:['../bad']}));
+ await assert.rejects(publish(d,async()=>assert.fail('must not write'),async()=>assert.fail('must not fetch')),/Invalid delta/);
 });

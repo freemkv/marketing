@@ -64,8 +64,9 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
+          node scripts/firmware-release.mjs archive "$RUNNER_TEMP/firmware-stage" "$RUNNER_TEMP/firmware-download/firmware-full.tar.gz"
           python -m pip install boto3==1.43.109
-          python scripts/firmware-archive-upload.py "$RUNNER_TEMP/firmware-download/firmware-assets.tar.gz"
+          python scripts/firmware-archive-upload.py "$RUNNER_TEMP/firmware-download/firmware-full.tar.gz"
       - name: Withdraw proven-invalid firmware objects
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
