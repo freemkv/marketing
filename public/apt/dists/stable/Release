@@ -2,21 +2,21 @@ Origin: freemkv
 Label: freemkv
 Suite: stable
 Codename: stable
-Date: Fri, 16 Oct 2026 22:56:01 GMT
+Date: Mon, 19 Oct 2026 23:03:29 GMT
 Architectures: amd64 arm64 armhf
 Components: main
 Description: freemkv packages (https://freemkv.org/apt)
 MD5Sum:
- df028d9554a80e64393e0128e153efa2             5123 main/binary-amd64/Packages
- 77da6adcb51a0aad9efe652a6e11a468             1740 main/binary-amd64/Packages.gz
- 2840b84b85c73dcc3be35ec9a8643a17             5206 main/binary-arm64/Packages
- 77a06574b6d99d50d20504f055b2c7ed             1788 main/binary-arm64/Packages.gz
- 5cc6ad3fbd5aef40185fe92a47b0172a             2332 main/binary-armhf/Packages
- f15313693f7449f9cff0d6bc901a850d             1053 main/binary-armhf/Packages.gz
+ 80c93726b96d3a17c16632b264a84d64             5124 main/binary-amd64/Packages
+ 09e910eeab48074c7aa89bd8880a4939             1742 main/binary-amd64/Packages.gz
+ c59d2ab2e5dfebf7df7a29f3cdad6e1f             5207 main/binary-arm64/Packages
+ b8cdc0c093e8d38ca5737e74d57d48c2             1791 main/binary-arm64/Packages.gz
+ ee4e2ce541211bd8e7dbae9a5e18c82f             2332 main/binary-armhf/Packages
+ 7a780d1f90d952ab9536d3cf7e495fc6             1053 main/binary-armhf/Packages.gz
 SHA256:
- 62fdee10e4d996ad20652f0972f6e957d2eaed1fc789de23527fd55ee878cb3b             5123 main/binary-amd64/Packages
- bffc5937203825cfd806737a7371316feed32f4f19bc4d22cf464c61e197e58d             1740 main/binary-amd64/Packages.gz
- f1cb3d20845bf8ccde884cc3938ffc31483bbe24938e1bf6433ee9370437d7ff             5206 main/binary-arm64/Packages
- 2ecc5bb4590f2936635845e8e0fa6f60f55d177e2a1f2c27e1d4f7a29aaa73ee             1788 main/binary-arm64/Packages.gz
- ce2681e19abdcf606a9c38746c2ced035a45361f3feed325f4d0efed3554521d             2332 main/binary-armhf/Packages
- e34c48a33ada08b7656a623e4f038be5089538b7ee2158188f8a3aebc0042fc5             1053 main/binary-armhf/Packages.gz
+ c2d93a0d3e25a504782fc84a5d051efb3075415ca6e01e2dbc63567ee80d5314             5124 main/binary-amd64/Packages
+ 9c927d76a72b67c7122c59d959a1020016d2c909c6718f5f6c338a204694f80c             1742 main/binary-amd64/Packages.gz
+ 212588fdb379e5438009775f32c85e3a3502c702860ba92e1fe1aa6fdaa7dca1             5207 main/binary-arm64/Packages
+ 8a0847e0cc2030c60573ec3a7a12dc61683d31571f35d5886af2f7f83e4dc684             1791 main/binary-arm64/Packages.gz
+ 7669d402341e05af312c8c948c1fdb3812a3a6b2e1515748878f1507e462b5b6             2332 main/binary-armhf/Packages
+ 680c871d4d2f91ed24fd7944423ed66781f1a3822af25f5c0afc90af09c912a0             1053 main/binary-armhf/Packages.gz

@@ -40,48 +40,48 @@ Description: Rip DVD, Blu-ray and UHD discs without re-encoding (command line)
  interface; install the freemkv package for the desktop app.
 
 Package: freemkv-flash
-Version: 0.13.0
+Version: 0.13.1
 Architecture: arm64
 Section: utils
 Priority: optional
 Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
-Installed-Size: 3956
+Installed-Size: 5556
 Conflicts: freemkv-flash-gui
 Replaces: freemkv-flash-gui
 Homepage: https://freemkv.org/firmware/flash/
-Filename: pool/main/freemkv-flash/freemkv-flash_0.13.0_arm64.deb
-Size: 1591426
-MD5sum: 460b84aef8120e6033115df430e39e41
-SHA1: a328e08bc5409e4972af43ffc59cbce34a5a75e3
-SHA256: 44694c8c733dc3ec1d21b0f860102c9e3d0acde4c557ea09a6daf4267ff779ca
+Filename: pool/main/freemkv-flash/freemkv-flash_0.13.1_arm64.deb
+Size: 3212990
+MD5sum: 17de3fe4367cb4e6b715fe9a1b97e528
+SHA1: 4d1737fce18865fc8d7ea68c648677318bb2acce
+SHA256: d61ce729a3e420b24eaf7a2aeb02a39dd72153757b757dfa82189cc753ae8542
 Description: freemkv drive firmware flasher and dumper (command line)
  Reads, backs up and flashes optical-drive firmware (MediaTek MT19xx and
  Renesas; Pioneer live writes gated). info and dump are read-only; flash
  writes and can brick a drive given the wrong image.
 
 Package: freemkv-flash-gui
-Version: 0.13.0
+Version: 0.13.1
 Architecture: arm64
 Section: utils
 Priority: optional
 Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
-Installed-Size: 23284
+Installed-Size: 26484
 Depends: libadwaita-1-0 (>= 1.4~beta), libc6 (>= 2.39), libgcc-s1 (>= 4.2), libglib2.0-0t64 (>= 2.54.0), libgtk-4-1 (>= 4.9.2), libgl1, libegl1, libxkbcommon0, libxkbcommon-x11-0, libwayland-client0, libwayland-egl1, libx11-6, libxcursor1, libxi6, libxrandr2
 Recommends: libvulkan1, xdg-desktop-portal
 Conflicts: freemkv-flash
 Replaces: freemkv-flash
 Homepage: https://freemkv.org/firmware/flash/
-Filename: pool/main/freemkv-flash-gui/freemkv-flash-gui_0.13.0_arm64.deb
-Size: 8431074
-MD5sum: 124d387fd66cf0ade5306f8ccbaa1fda
-SHA1: 18d495a090f304aa0c549cd8be583e2c5d689a06
-SHA256: 2a69f6ef1cbc42ccbdc444e8a43ba876e8e5412389e6d3dd050a017a54171bfc
+Filename: pool/main/freemkv-flash-gui/freemkv-flash-gui_0.13.1_arm64.deb
+Size: 11865282
+MD5sum: df2c29784a1207aaca1c4a8c2f9150d8
+SHA1: acd03787bcd49c1fc72db4b5e2a6b9d7afe850b4
+SHA256: 97354cb81ef11d8d8ae8469b6bf7b55a236da8fcfacd3638012c1688ac178766
 Description: freemkv Flash desktop app
  Minimal desktop app for freemkv-flash: drive info, dump and flash. Also
  installs the freemkv-flash command-line tool.
 
 Package: freemkv-fw
-Version: 0.13.0
+Version: 0.13.1
 Architecture: arm64
 Section: utils
 Priority: optional
@@ -90,33 +90,33 @@ Installed-Size: 1828
 Conflicts: freemkv-fw-gui
 Replaces: freemkv-fw-gui
 Homepage: https://freemkv.org/firmware/modify/
-Filename: pool/main/freemkv-fw/freemkv-fw_0.13.0_arm64.deb
-Size: 696340
-MD5sum: 970f5cdd1f4cf09b887d8d0eca101c13
-SHA1: 2ce4c946cd6c47acf0221d131ab4edc2233e4955
-SHA256: 891f76b64e0606fbb7211f9f5e97e9ee1eeca1d4175dac40c9d94973a5ec3578
+Filename: pool/main/freemkv-fw/freemkv-fw_0.13.1_arm64.deb
+Size: 696776
+MD5sum: 71098abb3f53cf09a793425f723f67c8
+SHA1: cb5c4f6aff7900f1fb9f03c9d69c57742aedce6f
+SHA256: 5a8f9bbe04aec9f40ae9a9b85f530e75cdd6fe6287226f5d15c6f16365f5cebd
 Description: freemkv drive firmware modifier (command line)
  Builds and verifies modified optical-drive firmware images offline
  (MediaTek MT19xx integrity tables). It does not touch a drive itself;
  pair it with freemkv-flash to write one.
 
 Package: freemkv-fw-gui
-Version: 0.13.0
+Version: 0.13.1
 Architecture: arm64
 Section: utils
 Priority: optional
 Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
-Installed-Size: 18532
+Installed-Size: 18596
 Depends: libc6 (>= 2.39), libgcc-s1 (>= 4.2), libgl1, libegl1, libxkbcommon0, libxkbcommon-x11-0, libwayland-client0, libwayland-egl1, libx11-6, libxcursor1, libxi6, libxrandr2
 Recommends: libvulkan1, xdg-desktop-portal
 Conflicts: freemkv-fw
 Replaces: freemkv-fw
 Homepage: https://freemkv.org/firmware/modify/
-Filename: pool/main/freemkv-fw-gui/freemkv-fw-gui_0.13.0_arm64.deb
-Size: 6564692
-MD5sum: e9bb48c009819ad05dc206967cac384e
-SHA1: 9eb6ecccc4488be28e7bac1a9cdc2328e25b32fe
-SHA256: 05b57fcb8f9535a3c2f7e0fc9815aff67b9587b840101a855e4aa21f87c414a8
+Filename: pool/main/freemkv-fw-gui/freemkv-fw-gui_0.13.1_arm64.deb
+Size: 6565764
+MD5sum: a0cff86097a24fe7e10ffb46ee7b49a1
+SHA1: 7f61343c34b035b85b662621c6ffc6f3c74b60d7
+SHA256: b7d9dfef00d4660e2d3533426cadd76f3ca9fa5636e6aa3cef14920dd574a59b
 Description: freemkv Modify desktop app
  Minimal desktop app for freemkv-fw: create, verify, sign and probe. Also
  installs the freemkv-fw command-line tool.
