@@ -99,8 +99,9 @@ service binding, and a new private R2 bucket binding named
    remain private with no public domain.
 3. Deploy the updated `workers/firmware-email.mjs` to the existing private
    email service Worker. Set its `REPORT_TO` secret to the maintainer's inbox;
-   retain its existing `EMAIL` sender binding. Redeploy Pages after the new
-   D1 table, R2 binding and secret are active.
+   retain its existing `EMAIL` sender binding. Change the recipient later by
+   updating only `REPORT_TO`; the desktop app needs no update. Redeploy Pages
+   after the new D1 table, R2 binding and secret are active.
 
 The app opens `/flash-report/approve/`, where the user chooses this session or
 all saved history. The app uploads a ZIP only after that approval. The email
