@@ -88,6 +88,13 @@ The private `/api/flash-reports/` Pages Functions use the existing
 service binding, and a new private R2 bucket binding named
 `FLASH_REPORTS_BUCKET`. Before enabling the desktop Submit Report button:
 
+Maintainers can run **Configure private flash reports** in GitHub Actions to
+perform the setup below with the repository's Cloudflare credentials. It refuses
+public custom domains, disables the bucket's public development URL, installs
+the retention rule and additive schema, configures bindings and the private
+notification worker, and sets the documented maintainer recipient. Run **Deploy
+site to Pages** afterward so the Pages Functions receive the updated bindings.
+
 1. Create the private R2 bucket and its **90-day delete lifecycle rule** for
    `flash-reports/`. Keep both the R2 public development URL and custom domains
    disabled:
