@@ -81,6 +81,33 @@ Deployment is automatic via GitHub Actions (`.github/workflows/pages.yml`):
 3. Release badges resolve published GitHub releases during the build. Deploy
    documentation for a new tool release after that release is published.
 
+### Flash report intake (desktop app 0.13.4)
+
+The private `/api/flash-reports/` Pages Functions use the existing
+`FIRMWARE_VERIFICATIONS` D1 binding, the existing `FIRMWARE_EMAIL_SERVICE`
+service binding, and a new private R2 bucket binding named
+`FLASH_REPORTS_BUCKET`. Before enabling the desktop Submit Report button:
+
+1. Apply `migrations/0002_flash_reports.sql` to the D1 database bound as
+   `FIRMWARE_VERIFICATIONS`. Add a Pages secret named `FLASH_REPORT_SECRET`
+   containing at least 32 random characters.
+2. Create a private R2 bucket named `freemkv-flash-reports` and bind it to the
+   Pages project as `FLASH_REPORTS_BUCKET`. Give that bucket a **90-day delete
+   lifecycle rule** for the `flash-reports/` prefix, for example:
+   `npx wrangler r2 bucket lifecycle add freemkv-flash-reports reports-90d flash-reports/ --expire-days 90`.
+   The download endpoint also refuses access after 90 days. The bucket must
+   remain private with no public domain.
+3. Deploy the updated `workers/firmware-email.mjs` to the existing private
+   email service Worker. Set its `REPORT_TO` secret to the maintainer's inbox;
+   retain its existing `EMAIL` sender binding. Redeploy Pages after the new
+   D1 table, R2 binding and secret are active.
+
+The app opens `/flash-report/approve/`, where the user chooses this session or
+all saved history. The app uploads a ZIP only after that approval. The email
+contains a private download link, and the server never lists reports publicly.
+Run `node --test scripts/flash-reports.test.mjs` to exercise approval, upload,
+download and expiry locally with in-memory bindings.
+
 ### Release badges and announcements
 
 Builds resolve the app and firmware tools from each repository’s GitHub latest

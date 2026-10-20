@@ -7,7 +7,21 @@ export default {
     try {
       const text = await request.text();
       if (text.length > 4096) return new Response(null, {status: 413});
-      const {email, code, label} = JSON.parse(text);
+      const report = JSON.parse(text);
+      const {email, code, label} = report;
+      if (report.type === 'flash-report') {
+        if (!env.REPORT_TO || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(env.REPORT_TO) ||
+            typeof report.report_id !== 'string' || !/^[0-9a-f-]{36}$/.test(report.report_id) ||
+            !['session', 'all'].includes(report.scope) || typeof report.url !== 'string' ||
+            !/^https:\/\/freemkv\.org\/api\/flash-reports\/download\/[0-9a-f-]{36}\?token=[0-9a-f]{64}$/.test(report.url)) {
+          return new Response(null, {status: 400});
+        }
+        const result = await env.EMAIL.send({to: env.REPORT_TO, from: 'noreply@freemkv.org',
+          subject: `freemkv flash report ${report.report_id}`,
+          text: `A ${report.scope === 'all' ? 'full history' : 'session'} flash report was submitted.\n\nDownload: ${report.url}\n\nThe upload expires after 90 days.`});
+        if (!result?.messageId) return new Response(null, {status: 503});
+        return Response.json({sent: true});
+      }
       if (typeof email !== 'string' || email.length > 254 || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email) ||
         typeof code !== 'string' || !/^\d{6}$/.test(code) || typeof label !== 'string' || label.length > 1000) {
         return new Response(null, {status: 400});
