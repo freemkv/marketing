@@ -4,11 +4,11 @@ CL=src/content/docs/docs/changelog.md
 
 [ -n "${HOOK:-}" ] || { echo "::warning::DISCORD_RELEASE_WEBHOOK unset — skipping"; exit 0; }
 
-# Version = the dispatch input if given, else the newest "## x.y.z"
+# Version = the release-ready/vX.Y.Z tag or dispatch input, else the newest "## x.y.z"
 # heading. Anchor is the dotless slug github-slugger emits (1.6.11 ->
 # 1611), matching the live page.
 if [ -n "${VER_INPUT:-}" ]; then
-  VER="$VER_INPUT"
+  VER="${VER_INPUT#release-ready/v}"
 else
   VER=$(grep -m1 -E '^## [0-9]+\.[0-9]+\.[0-9]+$' "$CL" | sed 's/^## //')
 fi
