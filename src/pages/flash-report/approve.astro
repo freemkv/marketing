@@ -1,0 +1,63 @@
+---
+const title = 'Submit flash report · freemkv';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <title>{title}</title>
+    <link rel="icon" href="/favicon.svg" />
+    <style>
+      :root{font:16px/1.5 system-ui,sans-serif;color:#18202b;background:#f7f8fa}
+      main{max-width:640px;margin:8vh auto;padding:32px;background:white;border:1px solid #e1e5ea;border-radius:12px}
+      h1{margin-top:0;font-size:1.65rem} p{color:#495463} fieldset{border:0;padding:0;margin:24px 0}
+      label{display:block;padding:14px;margin:8px 0;border:1px solid #c8d0da;border-radius:8px;cursor:pointer}
+      label:has(input:checked){border-color:#2563eb;background:#eff6ff} input{margin-right:8px}
+      button{border:0;border-radius:8px;background:#2563eb;color:white;padding:11px 18px;font:inherit;cursor:pointer}
+      button:disabled{opacity:.5;cursor:wait} #message{min-height:1.5em}
+    </style>
+  </head>
+  <body><main>
+    <h1>Submit a flash report</h1>
+    <p>Choose which saved diagnostics to share. The desktop app will package and upload them after you approve here.</p>
+    <form id="approval">
+      <fieldset>
+        <label><input type="radio" name="scope" value="session" checked /> This app session</label>
+        <label><input type="radio" name="scope" value="all" /> All saved flash history on this computer</label>
+      </fieldset>
+      <button type="submit">Approve and upload</button>
+    </form>
+    <p id="message" role="status" aria-live="polite"></p>
+    <p>Reports are private and deleted after 90 days. A report may contain drive identifiers, file paths, and firmware details.</p>
+  </main>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id'), token = params.get('token');
+    const form = document.querySelector('#approval');
+    const message = document.querySelector('#message');
+    if (!/^[0-9a-f-]{36}$/.test(id || '') || !/^[0-9a-f]{64}$/.test(token || '')) {
+      form.hidden = true; message.textContent = 'This report request is invalid. Return to the desktop app and try again.';
+    } else {
+      // Remove the approval capability from browser history and referrers.
+      history.replaceState({}, '', location.pathname);
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const button = form.querySelector('button'); button.disabled = true;
+        message.textContent = 'Approving…';
+        try {
+          const scope = form.querySelector('input[name="scope"]:checked').value;
+          const response = await fetch(`/api/flash-reports/requests/${id}/approve`, {
+            method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({token, scope}),
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || 'Approval failed');
+          form.hidden = true;
+          message.textContent = 'Approved. Return to the desktop app; it will upload the report automatically.';
+        } catch (error) { message.textContent = error.message; button.disabled = false; }
+      });
+    }
+  </script>
+  </body>
+</html>

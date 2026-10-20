@@ -181,6 +181,25 @@ test('private native email service delivers the fixed code message without API c
   assert.equal((await f.call({action: 'request', target: 'b', email: 'other@example.com', token: 'good'})).status, 503);
 });
 
+test('private email service sends a flash report link only to the configured maintainer', async () => {
+  const sent = [];
+  const env = {REPORT_TO: 'maintainer@example.com', EMAIL: {send: async message => {
+    sent.push(message); return {messageId: 'report-message'};
+  }}};
+  const report_id = '01234567-89ab-4cde-8fab-0123456789ab';
+  const url = `https://freemkv.org/api/flash-reports/download/${report_id}?token=${'a'.repeat(64)}`;
+  const send = body => emailWorker.fetch(new Request('https://internal/', {method: 'POST',
+    body: JSON.stringify({type: 'flash-report', report_id, scope: 'session', url, ...body})}), env);
+  assert.equal((await send({})).status, 200);
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].to, 'maintainer@example.com');
+  assert.match(sent[0].text, /session flash report/);
+  assert.match(sent[0].text, /expires after 90 days/);
+  assert.equal((await send({url: url.replace('freemkv.org', 'other.example')})).status, 400);
+  assert.equal((await send({scope: 'invalid'})).status, 400);
+  assert.equal(sent.length, 1);
+});
+
 test('unknown/unsupported routes, other origins, missing setup, oversized and invalid requests fail closed', async () => {
   const f = fixture();
   assert.equal((await f.call({action: 'counts', scopes: [{target: 'missing'}]})).status, 400);

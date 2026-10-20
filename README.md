@@ -81,6 +81,58 @@ Deployment is automatic via GitHub Actions (`.github/workflows/pages.yml`):
 3. Release badges resolve published GitHub releases during the build. Deploy
    documentation for a new tool release after that release is published.
 
+### Flash report intake (desktop app 0.13.4)
+
+The private `/api/flash-reports/` Pages Functions use the existing
+`FIRMWARE_VERIFICATIONS` D1 binding, the existing `FIRMWARE_EMAIL_SERVICE`
+service binding, and a new private R2 bucket binding named
+`FLASH_REPORTS_BUCKET`. Before enabling the desktop Submit Report button:
+
+Maintainers can run **Configure private flash reports** in GitHub Actions to
+perform the setup below with the repository's Cloudflare credentials. It refuses
+public custom domains, disables the bucket's public development URL, installs
+the retention rule and additive schema, configures bindings and the private
+notification worker, and sets the documented maintainer recipient. Run **Deploy
+site to Pages** afterward so the Pages Functions receive the updated bindings.
+
+1. Create the private R2 bucket and its **90-day delete lifecycle rule** for
+   `flash-reports/`. Keep both the R2 public development URL and custom domains
+   disabled:
+
+   ```sh
+   npx wrangler r2 bucket create freemkv-flash-reports
+   npx wrangler r2 bucket lifecycle add freemkv-flash-reports reports-90d flash-reports/ --expire-days 90
+   ```
+
+2. Apply the report table to both D1 databases already bound as
+   `FIRMWARE_VERIFICATIONS` in Pages preview and production:
+
+   ```sh
+   npx wrangler d1 execute freemkv-firmware-verifications-preview --remote --file=migrations/0002_flash_reports.sql
+   npx wrangler d1 execute freemkv-firmware-verifications --remote --file=migrations/0002_flash_reports.sql
+   ```
+
+3. Set `CLOUDFLARE_ACCOUNT_ID` to the account containing the `freemkv` Pages
+   project. Run `node scripts/flash-report-pages-setup.mjs` to inspect the
+   bindings, then run it with `--apply` to bind `FLASH_REPORTS_BUCKET` in both
+   environments and create separate random `FLASH_REPORT_SECRET` values. The
+   setup script leaves existing secrets and bindings in place on a repeat run.
+4. Deploy the updated `workers/firmware-email.mjs` with
+   `node scripts/firmware-email-setup.mjs --apply`. Set its `REPORT_TO` secret to
+   the maintainer's inbox with
+   `npx wrangler secret put REPORT_TO --name freemkv-verification-email`; enter
+   `matthew@pq.io` when prompted. The existing `EMAIL` sender binding remains
+   in place. Change the recipient later by updating only this Worker secret;
+   the desktop app needs no update.
+5. Deploy Pages after the D1 table, R2 binding and Pages secret are active.
+   The download endpoint independently refuses access after 90 days.
+
+The app opens `/flash-report/approve/`, where the user chooses this session or
+all saved history. The app uploads a ZIP only after that approval. The email
+contains a private download link, and the server never lists reports publicly.
+Run `node --test scripts/flash-reports.test.mjs` to exercise approval, upload,
+download and expiry locally with in-memory bindings.
+
 ### Release badges and announcements
 
 Builds resolve the app and firmware tools from each repository’s GitHub latest
