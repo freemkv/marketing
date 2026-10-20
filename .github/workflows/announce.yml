@@ -1,10 +1,14 @@
 name: Announce release on Discord
 
-# Production deployments announce directly in pages.yml; this is the manual fallback.
-# Each version is claimed once with a durable Git tag before sending.
+# A release announces DEAD LAST: freemkv's release-orchestrate pushes
+# release-ready/vX.Y.Z here only after every tag build, the site deploy and the
+# download checks are green. Deploying the site never announces. Dispatch is the
+# manual fallback. Each version is claimed once with a durable Git tag before sending.
 # Manual dispatch uses the same duplicate guard. A failed/ambiguous send
 # leaves its claim in place for explicit operator review (never auto-retry).
 on:
+  push:
+    tags: ['release-ready/v*']
   workflow_dispatch:
     inputs:
       version:
@@ -30,6 +34,6 @@ jobs:
       - name: Post the newest changelog entry to Discord
         env:
           HOOK: ${{ secrets.DISCORD_RELEASE_WEBHOOK }}
-          VER_INPUT: ${{ github.event.inputs.version }}
+          VER_INPUT: ${{ github.event_name == 'push' && github.ref_name || github.event.inputs.version }}
           GH_TOKEN: ${{ github.token }}
         run: bash scripts/announce-release.sh
