@@ -172,6 +172,9 @@ import '../../styles/site.css';
                   spellcheck="false"
                 />
                 <ul class="picker-options" id="drive-options" role="listbox" aria-label="Drive models" hidden></ul>
+                <div class="picker-scroll-hint" aria-hidden="true">
+                  <span>More results</span><span class="picker-scroll-hint-action">Scroll <span>↓</span></span>
+                </div>
               </div>
             </div>
             <div class="picker-row rev-row is-hidden" id="rev-row">
@@ -227,6 +230,7 @@ import '../../styles/site.css';
           var revOptions = document.getElementById('rev-options');
           var detail = document.getElementById('drive-detail');
           if (!searchInput || !optionsList || !revInput || !revOptions || !detail) return;
+          var searchCombo = searchInput.closest('[data-combo]');
           // Versions are picked from the card's list; the revision dropdown is gone.
           revRow.hidden = true;
           revRow.style.display = 'none';
@@ -340,7 +344,15 @@ import '../../styles/site.css';
           function closeList() {
             optionsList.hidden = true;
             searchInput.setAttribute('aria-expanded', 'false');
+            searchCombo.classList.remove('has-scroll-hint', 'is-at-end');
             activeIdx = -1;
+          }
+
+          function updateScrollHint() {
+            var hasMore = optionsList.scrollHeight > optionsList.clientHeight + 1;
+            var atEnd = !hasMore || optionsList.scrollTop + optionsList.clientHeight >= optionsList.scrollHeight - 2;
+            searchCombo.classList.toggle('has-scroll-hint', hasMore);
+            searchCombo.classList.toggle('is-at-end', atEnd);
           }
 
           function addOption(d) {
@@ -369,7 +381,10 @@ import '../../styles/site.css';
             optionsList.hidden = false;
             searchInput.setAttribute('aria-expanded', 'true');
             activeIdx = -1;
+            requestAnimationFrame(updateScrollHint);
           }
+
+          optionsList.addEventListener('scroll', updateScrollHint, { passive: true });
 
           function setActive(idx) {
             var opts = optionsList.querySelectorAll('.picker-option');
