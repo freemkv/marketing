@@ -25,6 +25,17 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm install --no-save --package-lock=false wrangler@4.143.0
+      - name: Verify production account owns the existing site
+        run: |
+          node --input-type=module <<'JS'
+          const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/pages/projects/freemkv`, {
+            headers: {Authorization: `Bearer ${process.env.CLOUDFLARE_API_TOKEN}`}, signal: AbortSignal.timeout(30000),
+          });
+          const data = await response.json();
+          if (!response.ok || !data.success || data.result.name !== 'freemkv' ||
+              !data.result.domains?.includes('freemkv.org')) throw new Error('Configured account does not own the existing freemkv.org Pages project; refusing all changes');
+          console.log('Verified: configured account serves freemkv.org from the existing freemkv Pages project.');
+          JS
       - name: Create private bucket if absent
         run: |
           node --input-type=module <<'JS'
