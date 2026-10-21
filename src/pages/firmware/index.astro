@@ -45,7 +45,7 @@ import pioneerIndex from '../../data/pioneer-firmware-index.json';
 const hostedModels = [...firmwareIndex, ...pioneerIndex].filter((d) => d.ready).length;
 
 const parity = [
-  { name: 'Back up & restore', detail: 'Normal Flash requires a fresh backup. Recovery uses a supplied firmware reference or an explicit drive read, without saving a backup.' },
+  { name: 'Back up & restore', detail: 'Flash saves a backup when possible and asks before continuing when it cannot. Recovery uses a current firmware reference without saving a backup.' },
   { name: 'Checked flashing', detail: 'Inputs are validated before writing. Completion checks depend on the drive protocol; Recovery checks readiness and normal identity without readback.' },
   { name: 'Firmware downgrades', detail: 'Supported paths can install older firmware; compatible hardware, image pairs and protocol checks still matter.' },
   { name: 'UHD & Blu-ray unlock', detail: 'Unrestricted opens the drive to read every disc type, including Ultra HD Blu-ray.' },
