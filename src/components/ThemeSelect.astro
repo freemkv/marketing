@@ -1,0 +1,15 @@
+<label class="theme-picker">
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="13" rx="2"/><path d="M8 21h8m-4-5v5"/></svg>
+  <select aria-label="Color theme" data-theme-select>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="system" selected>System</option>
+  </select>
+</label>
+
+<style>
+  .theme-picker { display: inline-flex; align-items: center; gap: 0.35rem; color: var(--slate, var(--sl-color-text)); flex: none; }
+  .theme-picker select { font: inherit; font-size: 0.875rem; color: inherit; background: var(--surface, var(--sl-color-bg-nav)); border: 1px solid var(--line, var(--sl-color-gray-5)); border-radius: 8px; padding: 0.4rem 0.25rem 0.4rem 0.5rem; min-height: 2.25rem; cursor: pointer; }
+  .theme-picker select:hover { border-color: var(--teal-dark, var(--sl-color-accent)); }
+  .theme-picker select:focus-visible { outline: 2px solid var(--teal-dark, var(--sl-color-accent)); outline-offset: 3px; }
+</style>
