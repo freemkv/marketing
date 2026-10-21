@@ -1,0 +1,5 @@
+---
+import { initializeTheme } from '../lib/theme.mjs';
+const script = `(${initializeTheme.toString()})(window);`;
+---
+<script is:inline set:html={script} />

@@ -9,7 +9,7 @@ AACS-protected Blu-ray and 4K UHD discs still need [decryption keys](/docs/decry
 
 Unlocked drives remove restrictions that can prevent freemkv from accessing a disc. There are two paths, depending on your drive:
 
-- **[Pioneer (beta)](#pioneer-drives-beta):** nothing to install or flash. freemkv automatically unlocks supported drives using their original OEM firmware.
+- **[Pioneer](#pioneer-drives):** nothing to install or flash. freemkv automatically unlocks supported drives using their original OEM firmware.
 - **[MediaTek](#mediatek-based-drives):** updated firmware is required. Follow the steps below to prepare your drive.
 
 ### MediaTek-based drives
@@ -27,16 +27,18 @@ Already running supported freemkv firmware? You can use it directly.
 The large majority of consumer Blu-ray drives use a **MediaTek** chipset, and freemkv supports them. This covers **~200 drive + firmware combinations**, including:
 
 - **LG**: most LG Blu-ray writers. In Windows your drive may show up as **"HL-DT-ST"**; that's LG (Hitachi-LG Data Storage), not a different brand. This is the most common family by far.
-- **ASUS**: the MediaTek-based BW-16 models (e.g. BW-16D1HT) and the BC-12 series. These are often LG hardware under an ASUS badge. Note that the externally similar **BW-16D1X-U** is a *rebadged Pioneer* drive on a different chipset — see [Pioneer drives (beta)](#pioneer-drives-beta) below.
+- **ASUS**: the MediaTek-based BW-16 models (e.g. BW-16D1HT) and the BC-12 series. These are often LG hardware under an ASUS badge. Note that the externally similar **BW-16D1X-U** is a *rebadged Pioneer* drive on a different chipset — see [Pioneer drives](#pioneer-drives) below.
 - **HP**: a handful of rebadged BD-RE / BD-RW models.
 
 If you own an LG, ASUS, or HP Blu-ray drive from roughly **2012-2020**, it's very likely supported.
 
 <span id="work-in-progress"></span>
 
-### Pioneer drives (beta)
+<span id="pioneer-drives-beta" aria-hidden="true"></span>
 
-**Pioneer beta support is now available in freemkv 1.8.3.** Compatible Pioneer and Pioneer-based drives work with their original **OEM firmware**. No firmware modification or flashing is required.
+### Pioneer drives
+
+Compatible Pioneer and Pioneer-based drives work with their original **OEM firmware**. No firmware modification or flashing is required.
 
 [Download the latest freemkv](/download/) to try it. [Share your drive profile](#help-us-add-your-drive) to help us expand coverage.
 

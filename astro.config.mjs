@@ -69,13 +69,6 @@ export default defineConfig({
           attrs: { type: 'application/ld+json' },
           content: graph(websiteNode(), orgNode(), appNode()),
         },
-        // Default to the light theme on first visit (clean, neutral) — the
-        // theme toggle still works and persists the user's choice thereafter.
-        {
-          tag: 'script',
-          content:
-            "try{if(!localStorage.getItem('starlight-theme'))localStorage.setItem('starlight-theme','light')}catch(e){}",
-        },
       ],
       customCss: ['./src/styles/custom.css'],
       // Override the header social icons to add a live GitHub star count
@@ -83,6 +76,8 @@ export default defineConfig({
       components: {
         // Per-page TechArticle JSON-LD (extends the default <head>).
         Head: './src/components/Head.astro',
+        ThemeProvider: './src/components/ThemeHead.astro',
+        ThemeSelect: './src/components/ThemeSelect.astro',
         SocialIcons: './src/components/SocialIcons.astro',
       },
       // LLM-facing endpoints are plain Astro routes built from the docs
