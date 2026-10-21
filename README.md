@@ -135,6 +135,14 @@ download and expiry locally with in-memory bindings.
 
 ### Release badges and announcements
 
+Public changelogs describe customer impact, required actions and limitations.
+Keep build machinery, CI, test counts, refactors and other development notes in
+commits or internal documentation. App history lives in
+`src/content/docs/docs/changelog.md`. Flash and Modify history is reviewed in
+`src/data/flash-changelog.md`; the build renders only published versions into
+the Flash Changelog page. A new stable release without reviewed notes fails the
+build. GitHub supplies release metadata, not the changelog body.
+
 Builds resolve the app and firmware tools from each repository’s GitHub latest
 stable release, including the publication date. GitHub API failures stop the
 build rather than publishing stale defaults. CI supplies `GH_TOKEN`; local

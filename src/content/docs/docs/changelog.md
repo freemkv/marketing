@@ -9,7 +9,7 @@ What's new across freemkv — the command line, the desktop app, and the
 freemkv-library server (autorip before 1.8.0) — newest first. Every release ships all three together under
 one version number.
 
-For the full technical detail behind a release, see the per-component notes:
+Release downloads are also available on GitHub:
 [freemkv releases](https://github.com/freemkv/freemkv/releases).
 
 ## 1.8.5
@@ -22,7 +22,7 @@ For the full technical detail behind a release, see the per-component notes:
 - USB drives: a drive that hits a read error is left alone to recover instead of being sent more commands until it stops responding, and its tray always unlocks, so **Eject** works without power-cycling the drive.
 - Library: ejecting and re-inserting a disc after a drive error or a **Stop** starts it again. A disc that already finished is never ripped twice.
 - Library: errors say what went wrong, with an error code, instead of "an unexpected error occurred".
-- Security: updated the zip library for RUSTSEC-2026-0367, -0368 and -0369.
+- Security: improve protection when handling ZIP archives.
 
 ## 1.8.4
 
@@ -55,10 +55,6 @@ For the full technical detail behind a release, see the per-component notes:
 ### Added
 
 - **Pioneer runtime unlocking (beta).** freemkv automatically unlocks supported Pioneer and Pioneer-based drives in RAM, without flashing firmware. The CLI, app, and Library use the same unlock flow and can read the disc Volume ID. Speed and region controls are not yet available for Pioneer drives.
-
-### Changed
-
-- Release checks now verify download links, checksums, and package manifests before the release is considered complete.
 
 ## 1.8.2
 
@@ -149,11 +145,6 @@ For the full technical detail behind a release, see the per-component notes:
 - Publish direct `.flatpak` downloads on GitHub Releases, independently of Flathub acceptance.
 - Add installation instructions and download links for both formats.
 
-### Quality and maintenance
-
-- Expand subtitle regression tests and add FFmpeg checks for subtitle clearing, audio/video content and timing.
-- Add media known-answer tests and Linux/macOS/Windows output comparisons.
-
 ## 1.7.6
 
 <small>2026-09-26</small>
@@ -189,7 +180,6 @@ For the full technical detail behind a release, see the per-component notes:
   over quota and unlicensed are told apart, and only the outcomes where retrying can help are
   retried. The tracker link in the AACS-failure message is clickable.
 
-_This release aligns all components to 1.7.6._
 
 ## 1.7.5
 
@@ -212,10 +202,8 @@ _This release aligns all components to 1.7.6._
   encryption disabled at power-on even when it was configured to leave it on,
   and a second one where changing the encryption setting with no disc loaded
   would stop the drive answering further freemkv commands until it was
-  power-cycled. Validated end-to-end on an LG BU40N: a 4K disc returned every
-  sampled unit unwrapped, and the key resolved normally.
+  power-cycled.
 
-_This release aligns all components to 1.7.5._
 
 ## 1.7.4
 
@@ -235,14 +223,11 @@ _This release aligns all components to 1.7.5._
   the disc simply isn't in the database or is listed but still needs a VID to be
   usable, and the lookup now shows the disc hash so a report can be matched up.
 
-**New / Maintenance**
+**Improved**
 
 - More resilient keydb downloading: a slow-but-progressing download is no longer
   killed by an absolute deadline (rolling-idle timeout).
-- Security and quality hardening: OpenSSF Scorecard, REUSE compliance, and
-  provenance-ready CI across the components.
 
-_This release aligns all components to 1.7.4._
 
 ## 1.7.3
 
@@ -254,7 +239,7 @@ _This release aligns all components to 1.7.4._
   Blu-rays that use multiple angles for the main feature were having the wrong
   title (or no title) picked, because the disc's stream table was read at the
   wrong place for a multi-angle playlist. 1.7.3 locates it correctly, so autorip
-  and the CLI pick the real main feature. Validated against a 92-disc UHD corpus.
+  and the CLI pick the real main feature.
 
 **New**
 
@@ -265,7 +250,6 @@ _This release aligns all components to 1.7.4._
   Works on a drive, an ISO, or a folder. See
   https://freemkv.org/docs/troubleshooting/#sharing-a-profile-share
 
-_This release aligns all components to 1.7.3._
 
 ## 1.7.2
 
@@ -290,7 +274,6 @@ _This release aligns all components to 1.7.3._
   modify support, so drives you flash with freemkv firmware work end-to-end with
   the 1.7.2 app.
 
-_This release aligns all components to 1.7.2._
 
 ## 1.7.1
 
@@ -304,7 +287,6 @@ _This release aligns all components to 1.7.2._
   again, so LibreDrive-based Blu-ray and UHD ripping works on these drives as it
   did before.
 
-_This release aligns all components to 1.7.1._
 
 ## 1.7.0
 
@@ -335,7 +317,6 @@ _This release aligns all components to 1.7.1._
   buffer pool (advisory GHSA-j8ww-f5fg-9pmh). No shipped feature could trigger
   it.
 
-_This release aligns all components to 1.7.0._
 
 ## 1.6.14
 
@@ -345,7 +326,6 @@ _This release aligns all components to 1.7.0._
 
 - The web dashboard no longer briefly hangs while scanning a large library.
 
-_This release aligns all components to 1.6.14._
 
 ## 1.6.13
 
@@ -358,7 +338,6 @@ _This release aligns all components to 1.6.14._
   would like to help us add support for it, re-run the command and share the
   profile it prints.
 
-_This release aligns all components to 1.6.13._
 
 ## 1.6.12
 
@@ -373,7 +352,6 @@ _This release aligns all components to 1.6.13._
 - If the disc or drive state changes underneath a rip, freemkv now reacquires
   the drive and restarts the pass instead of failing the read.
 
-_This release aligns all components to 1.6.12._
 
 ## 1.6.11
 
@@ -391,7 +369,6 @@ _This release aligns all components to 1.6.12._
 - Fixed a rare case where a disc could get stuck endlessly retrying a failed
   mux step instead of being marked as failed and moving on.
 
-_This release aligns all components to 1.6.11._
 
 ## 1.6.10
 
@@ -414,7 +391,6 @@ _This release aligns all components to 1.6.11._
 - **Automatic per-episode TV ripping** — insert a series disc and every episode comes out as its own `Show S01E02 - Title.mkv`, filed into `TV/Show (Year)/Season NN/`, with no operator step. Episodes are matched to TMDB and numbered correctly even when a season is split across several discs.
 - **Manual Rename** — file a disc under any exact name you type, with no TMDB match required, so an alternate cut (e.g. a “Super Duper Cut”) no longer collides with an already-ripped title.
 
-_This release aligns all components to 1.6.9; only autorip changed._
 
 ## 1.6.8
 
@@ -425,7 +401,6 @@ _This release aligns all components to 1.6.9; only autorip changed._
 - The **Rip** notification now arrives the moment the drive is free, so you can load the next disc while the mux keeps running in the background — instead of only arriving once the mux had finished
 - The Ripper tab's "still working in the background" banner now also shows while a file is being moved, not just while muxing
 
-_This release aligns all components to 1.6.8; only autorip changed._
 
 ## 1.6.7
 
@@ -437,7 +412,6 @@ _This release aligns all components to 1.6.8; only autorip changed._
 - A title that is being moved is no longer listed twice in the Move card
 - A failed webhook now logs the real reason (e.g. the connection was reset) instead of a generic "uncategorized error"
 
-_This release aligns all components to 1.6.7; only autorip changed._
 
 ## 1.6.6
 
@@ -446,7 +420,6 @@ _This release aligns all components to 1.6.7; only autorip changed._
 **Autorip**
 - Webhooks can now point at your LAN (e.g. a Home Assistant automation) — the private-address guard no longer blocks them
 
-_This release aligns all components to 1.6.6; only autorip changed._
 
 ## 1.6.5
 
@@ -498,7 +471,6 @@ _This release aligns all components to 1.6.6; only autorip changed._
 - `--share` now requires an explicit yes — a bare Enter declines
 - A failed settings save no longer leaves a plaintext token on disk
 - Disc-supplied text can no longer smuggle control characters into logs
-- Hardened the disc-emulator test tool against malicious profiles
 
 ## 1.6.4
 
