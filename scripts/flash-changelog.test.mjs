@@ -34,6 +34,27 @@ test('keeps flash blocks, drops engine-only blocks, headings and releases', () =
   assert.match(out, /## 0\.0\.1/);
 });
 
+test('includes the published tag even when its changelog heading still says Unreleased', () => {
+  const source = `## [0.14.0] - Unreleased
+- Future flash GUI changes.
+
+## [0.13.4] - Unreleased
+### freemkv-flash
+- Prepare Recovery before confirmation.
+- Preserve detailed Flash diagnostics.
+
+## [0.13.3] - 2026-10-19
+- Prior flash release.
+`;
+  const out = flashChangelog(source, { version: '0.13.4', date: 'October 20, 2026' });
+  assert.match(out, /^## 0\.13\.4\n\n<small>October 20, 2026<\/small>/m);
+  assert.match(out, /Prepare Recovery before confirmation/);
+  assert.match(out, /Preserve detailed Flash diagnostics/);
+  assert.match(out, /^## 0\.13\.3/m);
+  assert.doesNotMatch(out, /0\.14\.0|Future flash|Unreleased/);
+  assert.doesNotMatch(flashChangelog(source), /0\.13\.4|0\.14\.0/);
+});
+
 test('the main site changelog carries no firmware release sections', () => {
   const cl = readFileSync(new URL('../src/content/docs/docs/changelog.md', import.meta.url), 'utf8');
   assert.doesNotMatch(cl, /^## Firmware/m);

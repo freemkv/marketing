@@ -3,6 +3,142 @@ title: Flash Changelog
 description: What's new in freemkv-flash, the drive flasher and dumper - newest first.
 ---
 
+## 0.13.4
+
+<small>October 20, 2026</small>
+
+### Development
+
+- Start Linux GUI release builds in parallel with the archive matrix, consolidate
+  native codegen checks, and avoid duplicate promotion-PR test runs. Keep coverage
+  on QA/main and optimize image/crypto dependencies in the debug test profile.
+- Advance a scoped virtual clock for in-memory flash golden fixtures instead of
+  spending real time on hardware settle waits. Preserve real hardware timing.
+
+### freemkv Modify
+
+- Add shared boot settings to the desktop Create form and repeatable CLI
+  `--default FEATURE=VALUE` options. Apply these choices on every boot without
+  overlaying saved drive settings. Runtime changes remain available.
+- Add Reset to defaults: unrestricted access On; HRL, encryption, speed, and
+  region use OEM behavior. Region choices are OEM behavior or region-free.
+
+### freemkv-flash
+
+- Prepare Recovery before confirmation and show its receiver, transfer layout,
+  and any temporary Kernel/restoration passes. Preparation cannot write firmware.
+- Keep detailed Flash/Recovery errors and exportable in-memory diagnostics
+  available when file logging fails.
+- Simplify Flash and Recovery results to a current progress line, a concise
+  result, and View Log / Submit Report actions. Place Recovery's warning at the
+  top and its archive image selector beside the firmware file it belongs to.
+- Derive Pioneer BD or DVR update entry from decoded installed Kernel evidence,
+  including the PR1AME 1.05 case, instead of the product name. Keep live
+  identity and receiver compatibility checks before any write.
+- Clear a previous Flash or Recovery result when its selected inputs change.
+- Apply Pioneer Kernel generation downgrade preparation in Recovery. When the
+  installed receiver rejects a target `0xFF` or `0x00` marker, write and verify
+  a temporary `0x01` Kernel, then restore and verify the pristine OEM Kernel.
+  Select each Kernel transfer layout from the loader active for that pass.
+  Cover the reported WX1DM `0000` to S12JX 1.03 case with the supplied files.
+- Derive MediaTek header and body transfer encoding separately from receiver
+  code. INTM to 1.V9 now prepares an encrypted header with a plaintext body and
+  preserves the boot region. Validate the descriptor and programmed ranges
+  before transfer; do not retry a rejected write with a different encoding.
+- Preflight every known stage before an intermediate write, then revalidate the
+  physical receiver at each handoff. Keep Current-file evidence distinct from
+  live reads, and represent unavailable installed firmware explicitly.
+- Move Pioneer Flash and Recovery sequencing into one optical executor, including
+  startup settings, downgrade preparation, transfer layout, and OEM restoration.
+- Bind Pioneer OEM identities to their firmware headers, including PLEXTOR and
+  TEAC variants, and compare revisions using INQUIRY's four-byte field width.
+- Require target identity and verification evidence for completion. Report
+  unreadable regions as limited verification, retain the failed phase and any
+  temporary firmware state, and avoid automatic probing after an uncertain write.
+
+## 0.13.3
+
+<small>2026-10-19</small>
+
+### freemkv-flash
+
+- Flash now attempts the live A0 startup-word transaction even when the
+  installed Normal code does not match the static writer fingerprint. An A0
+  command or verification failure stops before firmware transfer with an
+  explicit error. This fixes the BDR-207M 1.60 to BDR-PR1ML 1.30 preflight
+  refusal reported with 0.13.2.
+- In Pioneer Recovery, read startup word `0x9F` through A0 while Normal firmware
+  is running, set it to the target firmware's selected value, and verify the
+  result before update entry and firmware transfer. Use the same target-value
+  selection and guarded transaction as Flash.
+- Stop before firmware transfer if the A0 read, change, or verification fails.
+  Recovery from an already-running Kernel loader still transfers firmware
+  without A0, since that command belongs to Normal firmware.
+- Add Rust tests for write ordering, failed parameter writes, loader-mode
+  behavior, A0 rejection in Flash, and the BDR-207M 1.60 to BDR-PR1ML 1.30
+  target value (`FF01`).
+- Use pioneer-optical 0.16.2 for the shared Flash and Recovery migration.
+
+## 0.13.2
+
+<small>2026-10-19</small>
+
+### freemkv-flash
+
+- Before a Pioneer Flash using a recognized native parameter surface, read the
+  startup word, set it to the target firmware's recognized requirement or neutral
+  FFFF, and verify it before entering update mode. This also handles the reverse
+  transition without storing historical values or resetting other settings.
+- Stop before firmware transfer if the setting cannot be read, changed or
+  verified. Restore the attempt-local original only before update commands have
+  been attempted; never blindly restore or retry after an uncertain transfer.
+- Poll REQUEST SENSE after Pioneer Flash/Recovery finish, and report the last
+  readiness/identity state when return to Normal cannot be verified.
+- Keep Recovery from an already-0000 loader on its firmware-write path; do not
+  send unsupported A0 settings writes or attempt raw persistent-memory erases.
+- Use pioneer-optical 0.16.1 for shared startup selection and transaction logic.
+
+The supplied S12JX/WX1DM packages are covered by offline preparation and mock
+Flash tests in both directions. Physical SJ recovery followed by WX flashing
+remains a user-drive validation step, not a claimed test result.
+
+## 0.13.1
+
+<small>2026-10-19</small>
+
+### freemkv-flash
+
+- Complete paired MediaTek Flash transitions through restricted INTM receivers:
+  analyze the validated intermediate just installed when live code detection
+  is unavailable, and recheck its live identity and build metadata before entry.
+- Honor Recovery's explicit Current firmware file, with separate Current and
+  target TAR-member selection. Reject a stale original firmware reference when
+  INTM is running. Do not guess encoding or use the target as Current.
+- Keep verification reads on the physical drive. When protected readback is
+  unavailable after a paired stage or Recovery, require target application
+  startup and build metadata, and report incomplete byte verification clearly.
+  Transfer failures, programming faults and readback mismatches remain fatal.
+- Detect Pioneer protocols from vendor identity and the read-only hardware
+  response, without a product-name allowlist. Publisher and unfamiliar model
+  names now reach the probe; the vendor name alone does not authorize backup
+  or firmware writes.
+- Restore structurally valid Pioneer backups with zeroed Normal signatures by
+  signing an in-memory transfer copy for its receiving Kernel. Preserve decoded
+  firmware and original files; keep integrity and receiver checks mandatory.
+  Invalid nonzero signatures still fail with actionable guidance.
+- Accept receiver-decoded reverse-layout Pioneer backups, including WX1DM
+  1.01; retain checksum, authentication and exact round-trip validation.
+  Explain which backup validation failed instead of a combined mismatch error.
+
+### freemkv-flash GUI
+
+- Allow selecting an optional Current reference and its TAR member for MediaTek
+  Recovery; explain that INTM is Current and 1.V9 is the target.
+- Show selected firmware origin in Flash, Recovery and confirmation: green
+  "OEM likely", orange "User provided", or neutral "Origin unknown".
+  Explain that captured firmware and transfer-generated signatures do not prove
+  an original OEM release, and that origin does not establish compatibility.
+
 ## 0.13.0
 
 <small>2026-10-16</small>

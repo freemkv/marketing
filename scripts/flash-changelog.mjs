@@ -18,7 +18,7 @@ import { fetchRelease } from '../src/lib/releases.mjs';
 export const FLASH_TOPIC =
   /flash|dump|backup|recover|read ?back|restor|preflight|crossflash|pioneer|drive (information|info|list|name)|production record|\bregion|quiet|pureread|inspect|compar|desktop app|\bgui\b|\bcli\b|installer|\.deb|appimage|homebrew|scoop/i;
 
-const VERSION_HEADING = /^## \[(\d+\.\d+\.\d+)\](?: - (\d{4}-\d{2}-\d{2}))?\s*$/;
+const VERSION_HEADING = /^## \[(\d+\.\d+\.\d+)\](?: - (\d{4}-\d{2}-\d{2}|Unreleased))?\s*$/;
 
 function splitBlocks(lines) {
   // -> [{ heading } | { text }] ; continuation/indented/blank lines stay with their block.
@@ -45,13 +45,18 @@ function splitBlocks(lines) {
   return out;
 }
 
-export function flashChangelog(source) {
+export function flashChangelog(source, release = {}) {
   const sections = [];
   let cur = null;
   for (const line of source.split('\n')) {
     if (/^## /.test(line)) {
       const m = VERSION_HEADING.exec(line);
-      cur = m ? { version: m[1], date: m[2], lines: [] } : null;
+      // A published tag may retain an Unreleased heading. Only the exact
+      // published version gets its release date; future work stays excluded.
+      const published = m && m[1] === release.version;
+      cur = m && (m[2] !== 'Unreleased' || published)
+        ? { version: m[1], date: m[2] === 'Unreleased' ? release.date : m[2], lines: [] }
+        : null;
       if (cur) sections.push(cur);
     } else if (cur) {
       cur.lines.push(line);
@@ -92,13 +97,14 @@ export function flashChangelog(source) {
 }
 
 export async function generate() {
-  const { tag } = await fetchRelease('freemkv-firmware');
+  const release = await fetchRelease('freemkv-firmware');
+  const { tag } = release;
   const url = `https://raw.githubusercontent.com/freemkv/freemkv-firmware/${tag}/CHANGELOG.md`;
   const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
   if (!res.ok) throw new Error(`flash changelog: ${url}: HTTP ${res.status}`);
   const out = resolve(dirname(fileURLToPath(import.meta.url)), '../src/content/docs/docs/flash-changelog.md');
   mkdirSync(dirname(out), { recursive: true });
-  writeFileSync(out, flashChangelog(await res.text()));
+  writeFileSync(out, flashChangelog(await res.text(), release));
   console.log(`flash changelog: wrote ${out} from ${tag}`);
 }
 
