@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { promises as fs } from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -16,7 +15,10 @@ async function* files(dir) {
 
 // With Turnstile enabled the site must not expose the public bucket origin anywhere.
 test('protected build ships no public R2 bucket URL', { timeout: 300000 }, async t => {
-  const out = await fs.mkdtemp(path.join(os.tmpdir(), 'freemkv-protected-'));
+  // Astro renames generated assets, so output must share its cache filesystem.
+  const cache = path.join(SITE, '.astro');
+  await fs.mkdir(cache, { recursive: true });
+  const out = await fs.mkdtemp(path.join(cache, 'protected-build-'));
   t.after(() => fs.rm(out, { recursive: true, force: true }));
   const r = spawnSync(path.join(SITE, 'node_modules/.bin/astro'), ['build', '--outDir', out], { cwd: SITE, encoding: 'utf8',
     env: { ...process.env, PUBLIC_FIRMWARE_TURNSTILE_SITEKEY: '1x00000000000000000000AA' } });
