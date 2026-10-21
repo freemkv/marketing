@@ -175,9 +175,19 @@ freemkv-flash flash <device> -i firmware.bin --execute --i-understand-risk
 freemkv-flash flash <device> -i firmware.bin --backup preflash.bin --execute --i-understand-risk
 ```
 
-Normal Flash retains compatibility checks and requires a fresh pre-flash backup
-before writing. Backup failure stops the operation. Inputs include supported MTK
-images and older backup archives, and Pioneer envelopes or envelope packages.
+Normal Flash retains compatibility checks and attempts to save a fresh backup
+before writing. If a backup cannot be made, the app asks whether to proceed.
+Many MediaTek firmwares cannot be backed up; the app explains this restriction.
+Choose **No** to stop, or **Yes** to continue to the separate final Flash
+confirmation. Inputs include supported MTK images and older backup archives,
+and Pioneer envelopes or envelope packages.
+
+In the desktop app, select the firmware currently installed as **Current firmware**.
+For MediaTek drives, a file is required and **Read from drive** is hidden. Backends
+that support automatic acquisition select **Read from drive** by default. Flash and
+Recovery use the same selection layout. A paired Current TAR also needs its exact
+member; choose the member that is currently running, including INTM if applicable.
+The CLI equivalent is `--current FILE`, with `--current-member MEMBER` when needed.
 Completion checks depend on the backend; do not assume every protocol supports
 byte-for-byte firmware readback. Eject any disc and close the empty tray first.
 
