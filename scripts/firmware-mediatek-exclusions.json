@@ -1,5 +1,17 @@
 [
   {
+    "sha256": "822b229a9685f1e7af4e263dd4d1b6da2d361bd383b10ba93aea24235db93469",
+    "model": "BU40N",
+    "revision": "1.00",
+    "reason": "Generated freemkv 0.6.0 firmware with a repointed 0x3C handler; not OEM"
+  },
+  {
+    "sha256": "b9b94841096f45005b5f12c78009bf420c840fa44e8b0d451b7b490ba04f8356",
+    "model": "BU40N",
+    "revision": "1.00",
+    "reason": "Generated freemkv 0.6.0 readaacs_gated firmware; not OEM"
+  },
+  {
     "sha256": "0b2cdb82ff520589d4c750fae726571798901bf41e433de0a7164f7d74927d5f",
     "model": "BH40N",
     "revision": "B7C6",

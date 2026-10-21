@@ -7,6 +7,7 @@ import {
   eligibleImageHashes, metadataExclusion, hasAppliedLever, lineageOf, featuresFor, modelOf, brandOf, buildEntry, buildIndex,
   buildFeaturesDoc, buildSummary, sortEntries, loadCandidates, evaluate, generate,
   isDriveRead, deMaskedSha, DE_OFFSET, hasVendorProvenance, dedupeByDeMask, loadExclusions, EXCLUSIONS,
+  isFreemkvFirmware,
 } from './firmware-features.mjs';
 
 const sha = c => c.repeat(64);
@@ -16,6 +17,20 @@ const create = (over = {}) => ({
   levers: [lever('Identity', 'Applied'), lever('Speed', 'Applied'), lever('RawRead', { SignatureNotFound: { detail: 'x' } })], ...over,
 });
 const base = { base_facts: { handler_va: 1, boot_stub_va: 2, boot_init_site: 3, de_off: 4, speed_gate: 5, region_emitter: 6, ake_gate: 7, uhd_stub_va: 8, bd_stub_va: 9, hrl_sites: 1 } };
+
+test('freemkv bytes are excluded even when metadata says OEM and the file is renamed', async t => {
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'freemkv-patched-'));
+  t.after(() => fs.rm(dir, { recursive: true, force: true }));
+  const file = path.join(dir, 'LG-BU40N-1.00.bin');
+  const image = Buffer.alloc(0x200000, 0xff);
+  assert.equal(isFreemkvFirmware(image), false);
+  image.write('freemkv 0.6.0', 0x153a00);
+  await fs.writeFile(file, image);
+  assert.equal(isFreemkvFirmware(image), true);
+  assert.equal(metadataExclusion({ mediatek: { patched: false } }), null);
+  const run = () => { throw new Error('patched input must be rejected before running tools'); };
+  assert.deepEqual(await evaluate({ sha: sha('a'), file }, run, dir), { reason: 'freemkv-patched' });
+});
 
 test('eligibility: patched, omnidrive, fragment and listed exclusions are excluded; unMK counts as OEM', () => {
   const img = (mediatek = {}) => ({ sha256: sha('a'), mediatek });

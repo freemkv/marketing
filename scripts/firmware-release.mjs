@@ -53,11 +53,17 @@ export function catalogPackages(catalog) {
   return catalog.identities.flatMap(i => (i.revisions ?? []).flatMap(r => r.packages ?? []));
 }
 export function rejectWithdrawn(catalog, withdrawals) {
-  const rejected = new Set(withdrawals.map(row => row.normalSha256));
+  const rejected = new Set(withdrawals.map(row => row.normalSha256 ?? row.imageSha256));
   const versions = Array.isArray(catalog)
-    ? catalog.flatMap(model => (model.versions ?? []).map(v => v.normalSha256))
-    : catalogPackages(catalog).map(p => p.normal_sha256);
-  if (versions.some(sha => sha && rejected.has(sha))) throw new Error('Catalog contains withdrawn truncated firmware');
+    ? catalog.flatMap(model => (model.versions ?? []).flatMap(v => [v.normalSha256, v.sha256]))
+    : catalogPackages(catalog).flatMap(p => [p.normal_sha256, p.image_sha256, p.sha256]);
+  if (versions.some(sha => sha && rejected.has(sha))) throw new Error('Catalog contains withdrawn firmware');
+}
+export function validateWithdrawal(row) {
+  const pioneer = row?.normalSha256 && row.key?.startsWith('pioneer/') && row.key.endsWith('.tar');
+  const mediatek = row?.imageSha256 && (/^(MT1939|MT1959)\/[A-Za-z0-9._%-]+\.bin$/.test(row.key) || /^fw\/mediatek\/[a-f0-9]{64}\.tar$/.test(row.key));
+  if (!safePath(row?.key) || !(pioneer || mediatek) || !/^[a-f0-9]{64}$/.test(row.normalSha256 ?? row.imageSha256)) throw new Error('Invalid withdrawal receipt');
+  return row;
 }
 async function checkWithdrawals(catalog) {
   rejectWithdrawn(catalog, await json(path.join(SITE,'scripts/firmware-withdrawals.json')));

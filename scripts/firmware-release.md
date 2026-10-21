@@ -36,12 +36,16 @@ and the `freemkv-fw` binary (`--fw` or env `FREEMKV_FW`; build with
 `src/data`), `--jobs`, and `--hardware-verified allowlist.json` (JSON array of
 sha256 proven on hardware; default none, so everything is `build-verified`).
 
-An image is listed when it is not MK-patched, no source name contains
+An image is listed when it is not MK- or freemkv-patched, no source name contains
 "omnidrive", it is not a fragment, and `freemkv-fw create --json` reports its
 model and revision. Every such image is published: one where `create` applies at
 least one lever is `modifiable` (the Finder shows the Modifiable pill and leads
 to the modify page); any other leads to the flash page, like Pioneer. Flags
 follow engine lineage (see the header of the script).
+The generator checks firmware bytes for the embedded freemkv identity even if
+an old hoard index says `patched: false`. Withdrawn MediaTek images and their
+legacy BIN and current TAR keys are recorded in `firmware-withdrawals.json`;
+they cannot re-enter a release and are removed by the deployment workflow.
 Review the diff before committing: counts, base_facts and r2 keys come straight
 from the engine. Tests: `node --test scripts/*.test.mjs`.
 

@@ -13,6 +13,29 @@ const legacyKeys = {format:'freemkv-firmware-legacy-keys',version:1,keys:[
 ]};
 const allowed = downloadAllowlist({catalog:catalog(),mediatek:mediatek(),pioneer:pioneer(),legacyKeys});
 
+test('published BU40N 1.00 downloads retain OEM bytes and exclude freemkv outputs and aliases', () => {
+ const read = file => JSON.parse(readFileSync(new URL('../src/data/' + file, import.meta.url), 'utf8'));
+ const current = read('finder-catalog.json');
+ const allow = downloadAllowlist({catalog:current,mediatek:read('firmware-index.json'),pioneer:read('pioneer-firmware-index.json'),legacyKeys:read('legacy-keys.json')});
+ const rejected = [
+  ['822b229a9685f1e7af4e263dd4d1b6da2d361bd383b10ba93aea24235db93469','02a410b8620e8a2268cf03aa53cbe9325debf5dc5271d815b22283f30afd4ad3'],
+  ['b9b94841096f45005b5f12c78009bf420c840fa44e8b0d451b7b490ba04f8356','d0f4cb1f910b6ae4ceeebb76c31aff55dde4ebd83004febb5f9d613499b67cb1'],
+ ];
+ for (const [image,pkg] of rejected) {
+  assert.equal(resolveDownload(allow,{package:image}),null);
+  assert.equal(resolveDownload(allow,{package:pkg}),null);
+  assert.equal(resolveDownload(allow,{file:`MT1959/BU40N_1.00_${image.slice(0,8)}.bin`}),null);
+ }
+ const clean = current.identities.flatMap(i => i.revisions.flatMap(r => r.packages))
+  .find(p => p.image_sha256 === '221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4');
+ assert.ok(clean,'clean OEM BU40N 1.00 must remain published');
+ assert.equal(clean.revision,'1.00');
+ assert.equal(clean.patched,false);
+ assert.equal(resolveDownload(allow,{package:clean.sha256})?.key,clean.key);
+ const stock = read('firmware-index.json').find(m => m.model === 'BU40N').versions.find(v => v.sha256 === clean.image_sha256);
+ assert.equal(stock.modifiable,true);
+});
+
 test('a curated replacement removes the superseded UD04 package identity', () => {
  const read = (file) => JSON.parse(readFileSync(new URL('../src/data/' + file, import.meta.url), 'utf8'));
  const allow = downloadAllowlist({catalog:read('finder-catalog.json'),legacyKeys:read('legacy-keys.json')});

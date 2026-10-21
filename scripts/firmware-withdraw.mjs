@@ -1,12 +1,12 @@
 // Withdraw proven-invalid published objects, including historical aliases.
 import {readFile} from 'node:fs/promises';
 import {spawnSync} from 'node:child_process';
-import {safePath} from './firmware-release.mjs';
+import {validateWithdrawal} from './firmware-release.mjs';
 import {firmwareObjectFetcher} from './firmware-object-fetch.mjs';
 const fetchObject=firmwareObjectFetcher();
 const rows=JSON.parse(await readFile(new URL('./firmware-withdrawals.json',import.meta.url),'utf8'));
 for(const row of rows){
-  if(!safePath(row.key)||!row.key.startsWith('pioneer/')||!row.key.endsWith('.tar')||!/^[a-f0-9]{64}$/.test(row.normalSha256))throw new Error('Invalid withdrawal receipt');
+  validateWithdrawal(row);
 }
 for(const row of rows){
   const result=spawnSync('./node_modules/.bin/wrangler',['r2','object','delete',`freemkv-firmware/${row.key}`,'--remote'],{stdio:'inherit'});

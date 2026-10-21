@@ -107,6 +107,20 @@ test('withdrawn Normal hashes cannot re-enter a prepared or published catalog', 
   assert.doesNotThrow(()=>rejectWithdrawn([{versions:[{normalSha256:'b'.repeat(64)}]}],[{normalSha256:'a'.repeat(64)}]));
 });
 
+test('withdrawn MediaTek images cannot return as legacy BINs or packaged TARs', async () => {
+ const {rejectWithdrawn,validateWithdrawal}=await import('./firmware-release.mjs');
+ const image='a'.repeat(64), pkg='b'.repeat(64);
+ const receipt={key:`fw/mediatek/${pkg}.tar`,imageSha256:image,reason:'freemkv output'};
+ assert.doesNotThrow(()=>validateWithdrawal(receipt));
+ assert.doesNotThrow(()=>validateWithdrawal({...receipt,key:'MT1959/BU40N_1.00_aaaaaaaa.bin'}));
+ assert.throws(()=>validateWithdrawal({...receipt,key:'private/file.bin'}),/Invalid withdrawal/);
+ assert.throws(()=>validateWithdrawal({...receipt,key:`fw/mediatek/${pkg}.tar/../x`}),/Invalid withdrawal/);
+ assert.throws(()=>rejectWithdrawn([{versions:[{sha256:image}]}],[receipt]),/withdrawn/);
+ const catalog={format:'freemkv-finder-catalog',version:2,identities:[{revisions:[{packages:[{sha256:pkg,image_sha256:image}]}]}]};
+ assert.throws(()=>rejectWithdrawn(catalog,[receipt]),/withdrawn/);
+ assert.doesNotThrow(()=>rejectWithdrawn(catalog,[{...receipt,imageSha256:'c'.repeat(64)}]));
+});
+
 // ---- manifest v2: content-addressed fw/<family>/<sha256>.<ext> ----
 const {checkStageV2,rejectWithdrawn,prepare,V2_KEY}=await import('./firmware-release.mjs');
 async function stageV2(t,{withdrawn=false}={}) {

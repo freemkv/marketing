@@ -1,5 +1,5 @@
 {
- "note": "Per-firmware feature availability over the full 121-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from `freemkv-fw create --base --json`; per-feature `ok` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (93 images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, 25 images). Regenerate with scripts/firmware-features.mjs — do not hand-edit.",
+ "note": "Per-firmware feature availability over the full 119-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from `freemkv-fw create --base --json`; per-feature `ok` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (93 images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, 25 images). Regenerate with scripts/firmware-features.mjs — do not hand-edit.",
  "flags": [
   "Speed",
   "Region",
@@ -10,10 +10,10 @@
   "Bus"
  ],
  "counts": {
-  "total": 121,
+  "total": 119,
   "base_only": 0,
   "feature_bearing": 118,
-  "stock_only": 3,
+  "stock_only": 1,
   "hardware_verified": 0,
   "build_verified": 114
  },
@@ -4491,28 +4491,6 @@
    "lineage": "MT1959-lineage"
   },
   {
-   "sha256": "822b229a9685f1e7af4e263dd4d1b6da2d361bd383b10ba93aea24235db93469",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BU40N_822b229a9685f1e7.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "LG",
-   "vendor": "HL-DT-ST",
-   "model": "BU40N",
-   "rev": "1.00",
-   "media": "BD/UHD",
-   "variant": "N000103",
-   "modifiable": false,
-   "base_ok": false,
-   "base_only": false,
-   "confidence": null,
-   "advertised": "stock",
-   "features": [],
-   "base_facts": null,
-   "r2_key": "MT1959/BU40N_1.00_822b229a.bin",
-   "lineage": null
-  },
-  {
    "sha256": "b2139fd99d7c5b7fc5b525e53730b2f0f7108ffd2fd1ea4aab173949aa5ff44e",
    "bytes": 2097152,
    "src": "/tmp/corpus_dw/MT1959_BU40N_b2139fd99d7c5b7f.bin",
@@ -4580,28 +4558,6 @@
    },
    "r2_key": "MT1959/BU40N_1.00_b2139fd9.bin",
    "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "b9b94841096f45005b5f12c78009bf420c840fa44e8b0d451b7b490ba04f8356",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BU40N_b9b94841096f4500.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "LG",
-   "vendor": "HL-DT-ST",
-   "model": "BU40N",
-   "rev": "1.00",
-   "media": "BD/UHD",
-   "variant": "N000103",
-   "modifiable": false,
-   "base_ok": false,
-   "base_only": false,
-   "confidence": null,
-   "advertised": "stock",
-   "features": [],
-   "base_facts": null,
-   "r2_key": "MT1959/BU40N_1.00_b9b94841.bin",
-   "lineage": null
   },
   {
    "sha256": "103b9da94c91212df6313b150d3cf7e10c6b891a4ab65c49773e891a05f96a2e",

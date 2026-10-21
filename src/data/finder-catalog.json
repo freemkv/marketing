@@ -19764,19 +19764,6 @@
               "build_id": "1612201528",
               "bytes": 2099712,
               "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.00_02a410b8.tar",
-              "fragment": false,
-              "image_sha256": "822b229a9685f1e7af4e263dd4d1b6da2d361bd383b10ba93aea24235db93469",
-              "key": "fw/mediatek/02a410b8620e8a2268cf03aa53cbe9325debf5dc5271d815b22283f30afd4ad3.tar",
-              "packageType": "mediatek-installer",
-              "patched": false,
-              "revision": "1.00",
-              "sha256": "02a410b8620e8a2268cf03aa53cbe9325debf5dc5271d815b22283f30afd4ad3"
-            },
-            {
-              "build_id": "1612201528",
-              "bytes": 2099712,
-              "family_id": "309829e6c3c8f31d",
               "filename": "BU40N_1.00_0a47d1e6.tar",
               "fragment": false,
               "image_sha256": "4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06",
@@ -19824,19 +19811,6 @@
               "patched": false,
               "revision": "1.00",
               "sha256": "b7ef4a97234093d598f2f7b5047cab8dbbbf2193a508df44f7e41c31f8b7a51f"
-            },
-            {
-              "build_id": "1612201528",
-              "bytes": 2099712,
-              "family_id": "309829e6c3c8f31d",
-              "filename": "BU40N_1.00_d0f4cb1f.tar",
-              "fragment": false,
-              "image_sha256": "b9b94841096f45005b5f12c78009bf420c840fa44e8b0d451b7b490ba04f8356",
-              "key": "fw/mediatek/d0f4cb1f910b6ae4ceeebb76c31aff55dde4ebd83004febb5f9d613499b67cb1.tar",
-              "packageType": "mediatek-installer",
-              "patched": false,
-              "revision": "1.00",
-              "sha256": "d0f4cb1f910b6ae4ceeebb76c31aff55dde4ebd83004febb5f9d613499b67cb1"
             },
             {
               "build_id": "1612201528",

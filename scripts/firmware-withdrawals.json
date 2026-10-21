@@ -1,5 +1,25 @@
 [
   {
+    "key": "MT1959/BU40N_1.00_822b229a.bin",
+    "imageSha256": "822b229a9685f1e7af4e263dd4d1b6da2d361bd383b10ba93aea24235db93469",
+    "reason": "Generated freemkv 0.6.0 firmware was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/02a410b8620e8a2268cf03aa53cbe9325debf5dc5271d815b22283f30afd4ad3.tar",
+    "imageSha256": "822b229a9685f1e7af4e263dd4d1b6da2d361bd383b10ba93aea24235db93469",
+    "reason": "Package contains generated freemkv 0.6.0 firmware, not OEM"
+  },
+  {
+    "key": "MT1959/BU40N_1.00_b9b94841.bin",
+    "imageSha256": "b9b94841096f45005b5f12c78009bf420c840fa44e8b0d451b7b490ba04f8356",
+    "reason": "Generated freemkv 0.6.0 readaacs_gated firmware was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/d0f4cb1f910b6ae4ceeebb76c31aff55dde4ebd83004febb5f9d613499b67cb1.tar",
+    "imageSha256": "b9b94841096f45005b5f12c78009bf420c840fa44e8b0d451b7b490ba04f8356",
+    "reason": "Package contains generated freemkv 0.6.0 readaacs_gated firmware, not OEM"
+  },
+  {
     "key": "pioneer/BDR-S06/SAT%201030/1.04EU/c83acc0281d669b63ecb55ca611de021d96f1221c374ad000b44731ce061587e.tar",
     "normalSha256": "c7655b9b4db452231834aeb994f47eb8794b1a33c8bd5f2f5a0fea50475ab7be",
     "reason": "Truncated source ZIP envelope: incomplete deflate stream and invalid CRC"

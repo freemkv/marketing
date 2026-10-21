@@ -58,6 +58,9 @@ export const isDriveRead = bytes =>
   bytes.length >= BOOT_MIRROR + BOOT_PAGE_LEN &&
   bytes.subarray(0, BOOT_PAGE_LEN).equals(bytes.subarray(BOOT_MIRROR, BOOT_MIRROR + BOOT_PAGE_LEN));
 
+// freemkv keeps the OEM build code; inspect the embedded handler identity too.
+export const isFreemkvFirmware = bytes => bytes.includes(Buffer.from('freemkv'));
+
 // The downgrade-enable byte is outside the integrity table; images that differ
 // only there are the same firmware.
 export const DE_OFFSET = 0x1EC056;
@@ -319,6 +322,7 @@ const parse = s => { try { return JSON.parse(s); } catch { return null; } };
 // Runs the engine for one candidate. `run(args)` is injectable for tests.
 export async function evaluate(cand, run, tmp, hardware = new Set(), flash = null) {
   const raw = await fs.readFile(cand.file);
+  if (isFreemkvFirmware(raw)) return { reason: 'freemkv-patched' };
   if (isDriveRead(raw)) return { reason: 'drive-read' };
   if ((await run(['verify', cand.file])).code !== 0) return { reason: 'integrity' };
   // freemkv-fw reports the lever outcomes even when it refuses to modify.

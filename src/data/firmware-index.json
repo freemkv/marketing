@@ -3096,23 +3096,6 @@
         "embeddedRev": "1.00",
         "advertisedVersion": "",
         "hardware": "",
-        "file": "MT1959/BU40N_1.00_822b229a.bin",
-        "sha256": "822b229a9685f1e7af4e263dd4d1b6da2d361bd383b10ba93aea24235db93469",
-        "brand": "LG",
-        "chipset": "MT1959",
-        "media": "BD/UHD",
-        "variant": "N000103",
-        "confidence": null,
-        "baseOnly": false,
-        "advertised": "stock",
-        "modifiable": false,
-        "features": []
-      },
-      {
-        "rev": "1.00",
-        "embeddedRev": "1.00",
-        "advertisedVersion": "",
-        "hardware": "",
         "file": "MT1959/BU40N_1.00_b2139fd9.bin",
         "sha256": "b2139fd99d7c5b7fc5b525e53730b2f0f7108ffd2fd1ea4aab173949aa5ff44e",
         "brand": "LG",
@@ -3160,23 +3143,6 @@
             "ok": true
           }
         ]
-      },
-      {
-        "rev": "1.00",
-        "embeddedRev": "1.00",
-        "advertisedVersion": "",
-        "hardware": "",
-        "file": "MT1959/BU40N_1.00_b9b94841.bin",
-        "sha256": "b9b94841096f45005b5f12c78009bf420c840fa44e8b0d451b7b490ba04f8356",
-        "brand": "LG",
-        "chipset": "MT1959",
-        "media": "BD/UHD",
-        "variant": "N000103",
-        "confidence": null,
-        "baseOnly": false,
-        "advertised": "stock",
-        "modifiable": false,
-        "features": []
       },
       {
         "rev": "1.01",
