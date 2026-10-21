@@ -4,6 +4,9 @@ export function initializeTheme(win) {
   const document = win.document;
   const media = win.matchMedia('(prefers-color-scheme: dark)');
   const key = 'starlight-theme';
+  const modes = ['system', 'light', 'dark'];
+  const names = { system: 'System', light: 'Light', dark: 'Dark' };
+  const next = () => modes[(modes.indexOf(preference) + 1) % modes.length];
   const parse = value => value === 'light' || value === 'dark' ? value : 'system';
   const load = () => {
     try { return parse(win.localStorage.getItem(key)); }
@@ -14,7 +17,12 @@ export function initializeTheme(win) {
     const resolved = preference === 'system' ? (media.matches ? 'dark' : 'light') : preference;
     document.documentElement.dataset.theme = resolved;
     document.documentElement.style.colorScheme = resolved;
-    document.querySelectorAll('[data-theme-select]').forEach(select => { select.value = preference; });
+    document.querySelectorAll('[data-theme-toggle]').forEach(button => {
+      button.dataset.themePreference = preference;
+      const label = `Color theme: ${names[preference]}. Switch to ${names[next()]}.`;
+      button.setAttribute('aria-label', label);
+      button.setAttribute('title', label);
+    });
   };
   const set = (value, persist = true) => {
     preference = parse(value);
@@ -25,8 +33,8 @@ export function initializeTheme(win) {
     sync();
   };
   win.freemkvTheme = { sync, set, get preference() { return preference; } };
-  document.addEventListener('change', event => {
-    if (event.target?.matches?.('[data-theme-select]')) set(event.target.value);
+  document.addEventListener('click', event => {
+    if (event.target?.closest?.('[data-theme-toggle]')) set(next());
   });
   media.addEventListener('change', () => { if (preference === 'system') sync(); });
   win.addEventListener('storage', event => {
