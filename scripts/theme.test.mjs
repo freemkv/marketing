@@ -4,14 +4,18 @@ import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import { initializeTheme } from '../src/lib/theme.mjs';
 
+function button() {
+  return { dataset: {}, attributes: {}, setAttribute(name, value) { this.attributes[name] = value; } };
+}
+
 function browser({ stored, dark = false, blocked = false } = {}) {
   const data = new Map(stored === undefined ? [] : [['starlight-theme', stored]]);
   const documentEvents = new Map(), windowEvents = new Map(), mediaEvents = new Map();
-  const selects = [{ value: 'system' }, { value: 'system' }];
+  const buttons = [button(), button()];
   const media = { matches: dark, addEventListener: (name, callback) => mediaEvents.set(name, callback) };
   const document = {
     documentElement: { dataset: {}, style: {} },
-    querySelectorAll: () => selects,
+    querySelectorAll: () => buttons,
     addEventListener: (name, callback) => documentEvents.set(name, callback),
   };
   const win = { document, matchMedia: () => media,
@@ -21,7 +25,8 @@ function browser({ stored, dark = false, blocked = false } = {}) {
       return { getItem: key => data.get(key) ?? null, setItem: (key, value) => data.set(key, value) };
     },
   };
-  return { win, document, selects, data, media, documentEvents, windowEvents, mediaEvents };
+  const click = () => documentEvents.get('click')({ target: { closest: selector => selector === '[data-theme-toggle]' ? buttons[0] : null } });
+  return { win, document, buttons, data, media, documentEvents, windowEvents, mediaEvents, click };
 }
 
 for (const dark of [false, true]) test(`first visit follows the system (${dark ? 'dark' : 'light'})`, () => {
@@ -29,7 +34,7 @@ for (const dark of [false, true]) test(`first visit follows the system (${dark ?
   assert.equal(b.win.freemkvTheme.preference, 'system');
   assert.equal(b.document.documentElement.dataset.theme, dark ? 'dark' : 'light');
   assert.equal(b.document.documentElement.style.colorScheme, dark ? 'dark' : 'light');
-  assert.deepEqual(b.selects.map(s => s.value), ['system', 'system']);
+  assert.deepEqual(b.buttons.map(s => s.dataset.themePreference), ['system', 'system']);
   assert.equal(b.data.size, 0, 'visiting must not save an artificial explicit preference');
 });
 
@@ -45,21 +50,48 @@ test('explicit choices persist across page loads and ignore system changes', () 
   assert.equal(next.data.get('starlight-theme'), 'light');
 });
 
-test('returning to System follows OS changes and synchronizes all selectors', () => {
-  const b = browser({ stored: 'light', dark: true }); initializeTheme(b.win);
-  b.documentEvents.get('change')({ target: { matches: () => true, value: 'system' } });
+test('returning to System follows OS changes and synchronizes all buttons', () => {
+  const b = browser({ stored: 'dark', dark: true }); initializeTheme(b.win);
+  b.click();
   assert.equal(b.data.get('starlight-theme'), '');
   assert.equal(b.document.documentElement.dataset.theme, 'dark');
   b.media.matches = false; b.mediaEvents.get('change')();
   assert.equal(b.document.documentElement.dataset.theme, 'light');
-  assert.deepEqual(b.selects.map(s => s.value), ['system', 'system']);
+  assert.deepEqual(b.buttons.map(s => s.dataset.themePreference), ['system', 'system']);
+});
+
+test('icon clicks cycle System, Light, Dark, System with matching accessible labels', () => {
+  const b = browser({ dark: true }); initializeTheme(b.win);
+  for (const [mode, next, resolved, saved] of [
+    ['system', 'Light', 'dark', undefined],
+    ['light', 'Dark', 'light', 'light'],
+    ['dark', 'System', 'dark', 'dark'],
+    ['system', 'Light', 'dark', ''],
+  ]) {
+    assert.equal(b.win.freemkvTheme.preference, mode);
+    assert.equal(b.document.documentElement.dataset.theme, resolved);
+    assert.equal(b.data.get('starlight-theme'), saved);
+    for (const control of b.buttons) {
+      assert.equal(control.dataset.themePreference, mode);
+      assert.equal(control.attributes['aria-label'], `Color theme: ${mode[0].toUpperCase() + mode.slice(1)}. Switch to ${next}.`);
+      assert.equal(control.attributes.title, control.attributes['aria-label']);
+    }
+    b.click();
+  }
+});
+
+test('unrelated clicks do not change the preference', () => {
+  const b = browser(); initializeTheme(b.win);
+  for (const target of [{}, { closest: () => null }, null]) b.documentEvents.get('click')({ target });
+  assert.equal(b.win.freemkvTheme.preference, 'system');
+  assert.equal(b.data.size, 0);
 });
 
 test('blocked storage does not break initialization or changing the theme', () => {
   const b = browser({ blocked: true, dark: true });
   assert.doesNotThrow(() => initializeTheme(b.win));
   assert.equal(b.document.documentElement.dataset.theme, 'dark');
-  assert.doesNotThrow(() => b.win.freemkvTheme.set('light'));
+  assert.doesNotThrow(() => b.click());
   assert.equal(b.document.documentElement.dataset.theme, 'light');
 });
 
@@ -82,15 +114,16 @@ test('cross-tab changes and cleared storage update the current page', () => {
 });
 
 test('the head script is self-contained and idempotent before markup exists', () => {
-  const b = browser({ stored: 'dark' }); b.selects.length = 0;
+  const b = browser({ stored: 'dark' }); b.buttons.length = 0;
   runInNewContext(`(${initializeTheme.toString()})(window)`, { window: b.win });
   const controller = b.win.freemkvTheme;
-  b.selects.push({ value: 'system' }); b.documentEvents.get('DOMContentLoaded')();
-  assert.equal(b.selects[0].value, 'dark');
+  b.buttons.push(button()); b.documentEvents.get('DOMContentLoaded')();
+  assert.equal(b.buttons[0].dataset.themePreference, 'dark');
   initializeTheme(b.win); assert.equal(b.win.freemkvTheme, controller);
+  b.click(); assert.equal(b.win.freemkvTheme.preference, 'system', 'initializing twice must not advance twice');
 });
 
-test('marketing and docs share a header selector and preference provider', () => {
+test('marketing and docs share an icon button and preference provider', () => {
   for (const path of ['index', 'download', 'firmware/index', 'firmware/find', 'firmware/flash', 'firmware/modify']) {
     const page = readFileSync(new URL(`../src/pages/${path}.astro`, import.meta.url), 'utf8');
     assert.match(page, /<head>[\s\S]*?<ThemeHead\s*\/>[\s\S]*?<\/head>/);
@@ -100,6 +133,10 @@ test('marketing and docs share a header selector and preference provider', () =>
   assert.match(config, /ThemeProvider: '\.\/src\/components\/ThemeHead.astro'/);
   assert.match(config, /ThemeSelect: '\.\/src\/components\/ThemeSelect.astro'/);
   assert.doesNotMatch(config, /localStorage\.setItem\('starlight-theme','light'\)/);
+  const component = readFileSync(new URL('../src/components/ThemeSelect.astro', import.meta.url), 'utf8');
+  assert.match(component, /<button type="button"[^>]*data-theme-toggle/);
+  assert.doesNotMatch(component, /<select|<option/);
+  for (const mode of ['system', 'light', 'dark']) assert.match(component, new RegExp(`data-theme-icon="${mode}"`));
 });
 
 test('Flash and Pioneer support pages drop Beta copy and retain the old anchor', () => {
