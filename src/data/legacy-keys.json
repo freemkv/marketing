@@ -8362,6 +8362,14 @@
     },
     {
       "basis": "projection",
+      "key": "pioneer/BDR-UD02D/SAT%208410/1.00/0bc0cd7a85ddd14d8a90357f5c144e3cf0d44572316c3cd9017a74c0d1802011.tar",
+      "model": "BDR-UD02D",
+      "new_key": "fw/pioneer/0bc0cd7a85ddd14d8a90357f5c144e3cf0d44572316c3cd9017a74c0d1802011.tar",
+      "sha256": "0bc0cd7a85ddd14d8a90357f5c144e3cf0d44572316c3cd9017a74c0d1802011",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
       "key": "pioneer/BDR-UD03/SAT%208510/1.03/202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48.tar",
       "model": "BDR-UD03",
       "new_key": "fw/pioneer/202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48.tar",
