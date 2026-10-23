@@ -26,7 +26,7 @@ const title = 'Submit flash report · freemkv';
   <body><main>
     <div style="display:flex;justify-content:flex-end"><ThemeSelect /></div>
     <h1>Submit a flash report</h1>
-    <p>Choose which saved diagnostics to share. The desktop app will package and upload them after you approve here.</p>
+    <p>Choose which saved diagnostic history to share. If you selected Submit Dump or Submit Backup in the desktop app, the upload also includes that selected firmware file. The desktop app will package and upload the files after you approve here.</p>
     <form id="approval">
       <fieldset>
         <label><input type="radio" name="scope" value="session" checked /> This app session</label>
@@ -35,7 +35,7 @@ const title = 'Submit flash report · freemkv';
       <button type="submit">Approve and upload</button>
     </form>
     <p id="message" role="status" aria-live="polite"></p>
-    <p>Reports are private and deleted after 90 days. A report may contain drive identifiers, file paths, and firmware details.</p>
+    <p>Reports are private and deleted after 90 days. The ZIP includes diagnostic logs and events for your chosen history scope. It may also include a complete drive dump or backup, drive identifiers, and file paths.</p>
   </main>
   <script>
     const params = new URLSearchParams(location.search);

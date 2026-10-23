@@ -3,6 +3,58 @@ title: Flash Changelog
 description: What's new in freemkv Flash and Modify - newest first.
 ---
 
+## 0.14.2
+
+<small>2026-10-22</small>
+
+### freemkv Flash
+
+- Include servo coefficient evidence when matching Pioneer hardware families, including boards that previously skipped it. This separates firmware patterns formerly grouped together, including SAT 8000 versus 8680.
+- Use pioneer-optical 1.0.1 for both firmware selection and receiver family gates.
+- Report flash failure milestones and localized error outcomes consistently across frontends.
+
+### freemkv Modify
+
+- Preserve specific integrity-verification guidance and report background worker failures in diagnostic logs.
+
+## 0.14.1
+
+<small>2026-10-21</small>
+
+### freemkv Flash
+
+- Ask whether to proceed when a backup cannot be made, including the normal read restrictions on many MediaTek drives. Choosing Yes still requires final confirmation before flashing.
+- Require a Current firmware file when the drive cannot provide its installed firmware automatically. Flash and Recovery show the same controls for the selected drive.
+- Translate operation forms, confirmations, results and error guidance in all 29 UI languages. Diagnostic logs remain in English.
+- Show concise errors with a next step, while keeping command details and full failure causes in diagnostic logs.
+- Put View Log, Save Log and Submit Report together in one row, and remove repeated operation labels above the tabs.
+
+### freemkv Modify
+
+- Add a saved language preference and translated controls, startup settings, results and error guidance in 29 languages. Diagnostic logs remain in English.
+- Restore missing Raw Read patching and HRL/encryption startup options when modifying WH16NS58 1.V9 firmware.
+
+## 0.14.0
+
+<small>2026-10-21</small>
+
+### freemkv Flash
+
+- Add a saved language preference and initial translations for common controls and menus in 29 languages. Translation of operation details and error messages is still in progress.
+- Show the correct application version in macOS app information.
+- Fix misleading Pioneer errors for unrecognized MediaTek TAR files. Invalid packages now report a package error before any write.
+- Let MediaTek Flash use a selected Current firmware file when the drive blocks automatic detection. Read from drive remains the default; failed detection now explains how to select the installed firmware.
+- Give Flash and Recovery matching firmware-selection layouts, with Read from drive selected by default in both desktop forms.
+- Make MediaTek Recovery consistently use the Current firmware file you select and report when it does not match the drive.
+- Clearly distinguish a blocked precheck from a failed update, and show when no firmware was written.
+- Explain incompatible hardware using the installed and target firmware models, with technical identifiers kept in diagnostics.
+- Make Pioneer previews clear that passing package checks still requires a drive compatibility check before writing.
+
+### freemkv Modify
+
+- Fix firmware creation and editing startup settings for WH16NS58 1.V9 and other affected firmware.
+- Explain when an input is already modified and a clean OEM firmware file is required.
+
 ## 0.13.4
 
 <small>2026-10-20</small>
