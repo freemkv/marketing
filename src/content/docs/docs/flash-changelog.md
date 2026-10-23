@@ -3,6 +3,17 @@ title: Flash Changelog
 description: What's new in freemkv Flash and Modify - newest first.
 ---
 
+## 0.14.3
+
+<small>2026-10-23</small>
+
+### freemkv Flash
+
+- Allow raw dump attempts on Pioneer REC drives and other valid Pioneer hardware identities previously reported as Unknown. Actual read coverage depends on the drive; unreadable regions remain recorded in the dump.
+- Offer Save raw dump when an OEM backup is unavailable or a backup attempt fails.
+- Submit a completed dump or backup with diagnostic logs and session history using Submit Dump or Submit Backup. Uploads require browser approval.
+- Recognize 32 additional Pioneer SAT firmware images when reconstructing OEM backups. ATA, SCSI and REC OEM backup construction is not yet supported.
+
 ## 0.14.2
 
 <small>2026-10-22</small>
