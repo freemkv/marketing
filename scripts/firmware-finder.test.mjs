@@ -281,3 +281,16 @@ test('published BDR-205 to BDR-206 candidates carry Future instead of an availab
   assert.ok(rows.length > 0);
   for (const row of rows) assert.deepEqual(row.slice(2), [0, 1], 'Future candidate is complete and requires an intermediate transfer');
 });
+
+
+test('Pioneer servo families keep PR1EPDV out of the SAT 8000 crossflash search', () => {
+  const data = realData();
+  const epson = data.identities.find(i => i.key === 'pioneer:8680:ID79');
+  const bdr207 = data.identities.find(i => i.key === 'pioneer:8000:ID60');
+  assert.ok(epson, 'published PR1EPDV identity');
+  assert.ok(bdr207, 'published BDR-207M identity');
+  assert.ok(epson.revisions.some(r => r.revision === '1.01'));
+  assert.ok(bdr207.revisions.some(r => r.revision === '1.60'));
+  assert.ok(!crossflashTargets(data, epson).some(t => t.identity.hardware === '8000'));
+  assert.ok(!crossflashTargets(data, bdr207).some(t => t.identity.key === epson.key));
+});
