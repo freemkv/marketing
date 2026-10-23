@@ -294,3 +294,12 @@ test('Pioneer servo families keep PR1EPDV out of the SAT 8000 crossflash search'
   assert.ok(!crossflashTargets(data, epson).some(t => t.identity.hardware === '8000'));
   assert.ok(!crossflashTargets(data, bdr207).some(t => t.identity.key === epson.key));
 });
+
+test('compressed S08 servo data restores S11JX SAT 8800 compatibility without admitting SAT 8801', () => {
+  const data = realData();
+  const s08 = data.identities.find(i => i.key === 'pioneer:8301:ID43');
+  assert.ok(s08, 'published BDR-S08 identity');
+  const targets = crossflashTargets(data, s08).map(t => t.identity.key);
+  assert.ok(targets.includes('pioneer:8800:ID72'), 'S11JX SAT 8800 is available');
+  assert.ok(!targets.includes('pioneer:8801:ID72'), 'different SAT 8801 hardware remains excluded');
+});
