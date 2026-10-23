@@ -140,7 +140,7 @@ gh workflow run pages.yml --repo freemkv/marketing --ref qa -f firmware_release=
 gh run list --repo freemkv/marketing --workflow pages.yml
 ```
 
-Publication uses four concurrent upload/verification workers and a pinned
+Publication uses eight concurrent upload/verification workers and a pinned
 Wrangler 4.143.0 installed once by CI. Objects already publicly matching the
 manifest's complete SHA-256 and size are skipped, allowing safe workflow reruns.
 After upload, public verification retries four times for transient visibility
@@ -148,10 +148,10 @@ failures; any persistent failure prevents deployment. The workflow timeout is
 30 minutes.
 Publication naming keeps source paths and embedded identities unchanged. It expands complete model lists and explicit OEM suffix notation, restores product-prefix separators, and uses identical Normal payloads within the same source label as evidence for synthetic images. Model-specific branches were removed from the installer. Hash-bound SOURCE_PROVENANCE.json receipts capture the two legacy DVR source-label ambiguities; a versioned receipt copy is internal/pioneer-source-provenance.json. These receipts are private research metadata and never enter public installer tars.
 
-The release workflow assembles and retains the full staging archive at R2 key
+After Pages deployment, a separate maintenance job assembles and retains the full staging archive at R2 key
 `releases/latest.tar.gz`, using multipart upload and complete downloaded SHA-256
 verification. `/fw/latest.tar.gz` serves that object directly with no indexing
-or site link. After successful deployment, the temporary GitHub release asset
+or site link. After successful archive retention, the temporary GitHub release asset
 is deleted; the latest R2 archive is exempt from orphan pruning.
 
 The full archive includes all manifest payloads and excludes transport metadata
@@ -162,3 +162,5 @@ STAGE FULL.tar.gz`.
 Pages publishes with `--keep-existing` so QA publication cannot delete firmware
 objects still linked by the production catalogue. Orphan cleanup is a separate
 operation after production has switched catalogues.
+
+Site deployment depends on complete per-object SHA-256 verification, not on full-archive retention. The archive job independently materializes the verified inventory and serializes writers across all branches with `firmware-archive-latest`; it never cancels an active archive upload. Pages concurrency is scoped to each deployment branch, so preview maintenance cannot hold up production. A failed archive job remains visible as a failed workflow and can be rerun without rolling back a verified site.

@@ -68,9 +68,9 @@ test('MediaTek restoration participates in the same verified transaction',async 
  await fs.writeFile(path.join(d,'firmware-index.json'),JSON.stringify([{model:'BU40N',versions:[{file:o.key,sha256:o.sha256}]}]));
  let count=0;assert.equal(await publish(d,async()=>{count++},async url=>new Response(url.includes('MT1939')?b:Buffer.from('firmware'))),2);assert.equal(count,0);
 });
-test('uploads at most four objects together and retries public visibility',async t=>{
+test('uploads at most eight objects together and retries public visibility',async t=>{
  const {d,b,o}=await fixture(t); const objects=[],versions=[];
- for(let i=0;i<6;i++) {
+ for(let i=0;i<10;i++) {
   const item={...o,key:`pioneer/M/H/1.0${i}/fw.tar`};objects.push(item);versions.push({file:item.key,sha256:item.sha256,bytes:item.bytes});
   await fs.mkdir(path.dirname(path.join(d,'payloads',item.key)),{recursive:true});await fs.writeFile(path.join(d,'payloads',item.key),b);
  }
@@ -84,7 +84,7 @@ test('uploads at most four objects together and retries public visibility',async
   const n=(reads.get(key)||0)+1;reads.set(key,n);
   return n===1?new Response('',{status:503}):new Response(b);
  };
- assert.equal(await publish(d,upload,fetcher,async()=>{}),6);assert.equal(uploads,6);assert.equal(max,4);
+ assert.equal(await publish(d,upload,fetcher,async()=>{}),10);assert.equal(uploads,10);assert.equal(max,8);
 });
 test('public URL uses prepared percent-encoded path exactly once',async t=>{
  const {d,b,o}=await fixture(t),key='pioneer/M/SAT%208A10/1.01EU/fw.tar';

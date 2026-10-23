@@ -7551,6 +7551,54 @@
       ]
     },
     {
+      "display": "BDR-UD02D",
+      "displays": [
+        "BDR-UD02D"
+      ],
+      "kind": "inquiry",
+      "name": "BDRUD02D",
+      "targets": [
+        {
+          "destination": "ID84",
+          "family": "pioneer",
+          "hardware": "8410",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDR-UD02D",
+      "displays": [
+        "BDR-UD02D"
+      ],
+      "kind": "release",
+      "name": "BDRUD02D",
+      "targets": [
+        {
+          "destination": "ID84",
+          "family": "pioneer",
+          "hardware": "8410",
+          "held": true
+        }
+      ]
+    },
+    {
+      "display": "BDR-UD02D",
+      "displays": [
+        "BDR-UD02D"
+      ],
+      "kind": "retail",
+      "name": "BDRUD02D",
+      "targets": [
+        {
+          "destination": "ID84",
+          "family": "pioneer",
+          "hardware": "8410",
+          "held": true
+        }
+      ]
+    },
+    {
       "display": "BDR-UD03",
       "displays": [
         "BDR-UD03"
@@ -31460,6 +31508,70 @@
             }
           ],
           "revision": "1.51"
+        }
+      ]
+    },
+    {
+      "destination": "ID84",
+      "embedded_models": [
+        "BDR-UD02D"
+      ],
+      "family": "pioneer",
+      "hardware": "8410",
+      "key": "pioneer:8410:ID84",
+      "other_candidates": [],
+      "platforms": [
+        "sat"
+      ],
+      "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.00"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1959424,
+              "components": [
+                {
+                  "identity_key": "pioneer:8410:ID84:1.00:kernel",
+                  "member": "components/S8410840.100.enc",
+                  "revision": "1.00",
+                  "role": "kernel",
+                  "sha256": "7e1104a2843825aea6d03bde6359d94254f3cea192e576450f3f94c4afcee824"
+                },
+                {
+                  "identity_key": "pioneer:8410:ID84:1.00:normal",
+                  "member": "components/S8410841.100.enc",
+                  "revision": "1.00",
+                  "role": "normal",
+                  "sha256": "a37a4f222e2fa7e225f6451b30eb2e459f1933ab38c81a4d7967c10d77bc1373"
+                }
+              ],
+              "embedded_model": "BDR-UD02D",
+              "family_id": "b16a18364597665e",
+              "family_scheme": "pioneer.hardware.v2",
+              "filename": "BDR-UD02D_1.00_8410_ID84_0bc0cd7a.tar",
+              "generated_date": "13/03/21",
+              "is_uhd": false,
+              "kernel_revision": "1.00",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "7e1104a2843825aea6d03bde6359d94254f3cea192e576450f3f94c4afcee824",
+              "key": "fw/pioneer/0bc0cd7a85ddd14d8a90357f5c144e3cf0d44572316c3cd9017a74c0d1802011.tar",
+              "modifiable": false,
+              "normal_sha256": "a37a4f222e2fa7e225f6451b30eb2e459f1933ab38c81a4d7967c10d77bc1373",
+              "packageType": "pioneer-installer",
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                92416,
+                488192
+              ],
+              "revision": "1.00",
+              "selection": "source-contained",
+              "sha256": "0bc0cd7a85ddd14d8a90357f5c144e3cf0d44572316c3cd9017a74c0d1802011"
+            }
+          ],
+          "revision": "1.00"
         }
       ]
     },

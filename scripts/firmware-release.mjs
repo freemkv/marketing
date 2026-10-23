@@ -246,7 +246,7 @@ export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Pr
   }
   const reused = [...objects.values()].filter(o => !included.has(o.key));
   let reuseCursor = 0, reuseFailure = null;
-  await Promise.all(Array.from({length:Math.min(4,reused.length)}, async () => {
+  await Promise.all(Array.from({length:Math.min(8,reused.length)}, async () => {
     while (!reuseFailure && reuseCursor < reused.length) {
       const o = reused[reuseCursor++];
       try {
@@ -294,7 +294,7 @@ export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Pr
       } catch(e) { failure ??= e; }
     }
   }
-  await Promise.all(Array.from({length:Math.min(4,pending.length)},()=>worker()));
+  await Promise.all(Array.from({length:Math.min(8,pending.length)},()=>worker()));
   if(failure) throw failure;
   return manifest.objects.length;
 }
