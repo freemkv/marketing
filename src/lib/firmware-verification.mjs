@@ -35,14 +35,23 @@ async function session(request, env, now) {
   return env.FIRMWARE_VERIFICATIONS.prepare('SELECT person FROM firmware_verification_sessions WHERE token_mac = ? AND expires > ?').bind(token, now).first();
 }
 async function counts(db, scope) {
+  if (!scope.source) {
+    return (await db.prepare(`SELECT COUNT(DISTINCT person) AS count FROM firmware_confirmations
+      WHERE target = ? OR source = ?`).bind(scope.target, scope.target).first()).count;
+  }
   return (await db.prepare(`SELECT COUNT(DISTINCT person) AS count FROM firmware_confirmations
     WHERE target = ? AND (? = '' OR source = ?)`).bind(scope.target, scope.source, scope.source).first()).count;
 }
 async function ownReports(db, person, scope, catalog) {
-  const {results} = await db.prepare(`SELECT source FROM firmware_confirmations
-    WHERE person = ? AND target = ? AND (? = '' OR source = ?) ORDER BY source`)
-    .bind(person, scope.target, scope.source, scope.source).all();
-  return results.map(({source}) => ({source, label: source && catalog.has(source) ? catalog.get(source).label : ''}));
+  const {results} = await (scope.source
+    ? db.prepare(`SELECT target, source FROM firmware_confirmations
+        WHERE person = ? AND target = ? AND source = ? ORDER BY target, source`)
+      .bind(person, scope.target, scope.source)
+    : db.prepare(`SELECT target, source FROM firmware_confirmations
+        WHERE person = ? AND (target = ? OR source = ?) ORDER BY target, source`)
+      .bind(person, scope.target, scope.target)).all();
+  return results.map(({target, source}) => ({target, source,
+    label: source ? `${catalog.get(source)?.label ?? source} → ${catalog.get(target)?.label ?? target}` : ''}));
 }
 async function rate(db, key, bucket, limit) {
   const row = await db.prepare(`INSERT INTO firmware_verification_limits(key, bucket, count) VALUES (?, ?, 1)

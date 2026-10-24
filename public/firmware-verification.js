@@ -76,12 +76,12 @@ if (detail && config) {
       const data = await api({action: 'status', ...scope});
       if (version !== opening || !dialog.open) return;
       actions.replaceChildren();
-      const operation = (label, action, source) => {
+      const operation = (label, action, source, target = scope.target) => {
         const button = document.createElement('button'); button.type = 'button'; button.className = 'btn btn-primary'; button.textContent = label;
         button.addEventListener('click', async () => {
           if (busy) return;
           setBusy(true); errorBox.hidden = true;
-          try { await api({action, target: scope.target, source}); dialog.close(); await refresh(); }
+          try { await api({action, target, source}); dialog.close(); await refresh(); }
           catch (error) { if (error.status === 401) show('email'); else fail(error); }
           finally { setBusy(false); }
         });
@@ -90,7 +90,7 @@ if (detail && config) {
       if (!data.reports.length) operation('Verify', 'add', scope.source);
       else for (const report of data.reports) operation(
         data.reports.length > 1 || (report.source && !scope.source) ? `Remove ${report.label || 'verification'}` : 'Remove my verification',
-        'remove', report.source);
+        'remove', report.source, report.target);
       show('actions'); actions.querySelector('button')?.focus();
     } catch (error) {
       if (version !== opening || !dialog.open) return;

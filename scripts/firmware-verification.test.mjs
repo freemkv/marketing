@@ -87,6 +87,23 @@ test('counts deduplicate email across direct and directed crossflash reports; re
   assert.equal(await f.count('a', 'b'), 0, 'reverse route is independent');
 });
 
+test('existing crossflash reports support both roots without verifying reverse routes or duplicating people', async () => {
+  const f = fixture(), cookie = await f.login();
+  await f.call({action: 'add', target: 'b', source: 'a'}, cookie);
+  assert.equal(await f.count('a'), 1);
+  assert.equal(await f.count('b'), 1);
+  assert.equal(await f.count('a', 'b'), 0);
+  const reports = (await f.call({action: 'status', target: 'a'}, cookie)).data.reports;
+  assert.deepEqual(reports, [{target: 'b', source: 'a', label: 'Drive A 1.00 → Drive B 2.00'}]);
+  await f.call({action: 'add', target: 'a'}, cookie);
+  assert.equal(await f.count('a'), 1);
+  await f.call({action: 'remove', target: reports[0].target, source: reports[0].source}, cookie);
+  assert.equal(await f.count('a'), 1, 'independent direct confirmation survives route removal');
+  assert.equal(await f.count('b'), 0);
+  await f.call({action: 'remove', target: 'a'}, cookie);
+  assert.equal(await f.count('a'), 0);
+});
+
 test('email code authenticates only once, does not itself create a report, and private email is not stored', async () => {
   const f = fixture(), code = await f.requestCode('person@example.com');
   const results = await Promise.all([f.call({action: 'authenticate', ...code}), f.call({action: 'authenticate', ...code})]);
