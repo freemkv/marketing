@@ -35,23 +35,14 @@ async function session(request, env, now) {
   return env.FIRMWARE_VERIFICATIONS.prepare('SELECT person FROM firmware_verification_sessions WHERE token_mac = ? AND expires > ?').bind(token, now).first();
 }
 async function counts(db, scope) {
-  if (!scope.source) {
-    return (await db.prepare(`SELECT COUNT(DISTINCT person) AS count FROM firmware_confirmations
-      WHERE target = ? OR source = ?`).bind(scope.target, scope.target).first()).count;
-  }
   return (await db.prepare(`SELECT COUNT(DISTINCT person) AS count FROM firmware_confirmations
     WHERE target = ? AND (? = '' OR source = ?)`).bind(scope.target, scope.source, scope.source).first()).count;
 }
 async function ownReports(db, person, scope, catalog) {
-  const {results} = await (scope.source
-    ? db.prepare(`SELECT target, source FROM firmware_confirmations
-        WHERE person = ? AND target = ? AND source = ? ORDER BY target, source`)
-      .bind(person, scope.target, scope.source)
-    : db.prepare(`SELECT target, source FROM firmware_confirmations
-        WHERE person = ? AND (target = ? OR source = ?) ORDER BY target, source`)
-      .bind(person, scope.target, scope.target)).all();
-  return results.map(({target, source}) => ({target, source,
-    label: source ? `${catalog.get(source)?.label ?? source} → ${catalog.get(target)?.label ?? target}` : ''}));
+  const {results} = await db.prepare(`SELECT source FROM firmware_confirmations
+    WHERE person = ? AND target = ? AND (? = '' OR source = ?) ORDER BY source`)
+    .bind(person, scope.target, scope.source, scope.source).all();
+  return results.map(({source}) => ({source, label: source && catalog.has(source) ? catalog.get(source).label : ''}));
 }
 async function rate(db, key, bucket, limit) {
   const row = await db.prepare(`INSERT INTO firmware_verification_limits(key, bucket, count) VALUES (?, ?, 1)
@@ -184,8 +175,10 @@ export async function firmwareVerification(request, env, catalog, {fetcher = fet
     if (!owner) throw new Refusal('Confirm your email to continue.', 401);
     if (body.action === 'status') return json({reports: await ownReports(db, owner.person, scope, catalog)});
     if (body.action === 'add') {
-      await db.prepare(`INSERT INTO firmware_confirmations(person, target, source, confirmed_at)
-        VALUES (?, ?, ?, ?) ON CONFLICT(person, target, source) DO NOTHING`).bind(owner.person, scope.target, scope.source, time).run();
+      const insert = (target, source) => db.prepare(`INSERT INTO firmware_confirmations(person, target, source, confirmed_at)
+        VALUES (?, ?, ?, ?) ON CONFLICT(person, target, source) DO NOTHING`).bind(owner.person, target, source, time);
+      // The source confirmation survives removing this directed crossflash.
+      await db.batch([insert(scope.target, scope.source), ...(scope.source ? [insert(scope.source, '')] : [])]);
     } else if (body.action === 'remove') {
       await db.prepare('DELETE FROM firmware_confirmations WHERE person = ? AND target = ? AND source = ?')
         .bind(owner.person, scope.target, scope.source).run();
