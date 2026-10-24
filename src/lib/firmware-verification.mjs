@@ -175,8 +175,10 @@ export async function firmwareVerification(request, env, catalog, {fetcher = fet
     if (!owner) throw new Refusal('Confirm your email to continue.', 401);
     if (body.action === 'status') return json({reports: await ownReports(db, owner.person, scope, catalog)});
     if (body.action === 'add') {
-      await db.prepare(`INSERT INTO firmware_confirmations(person, target, source, confirmed_at)
-        VALUES (?, ?, ?, ?) ON CONFLICT(person, target, source) DO NOTHING`).bind(owner.person, scope.target, scope.source, time).run();
+      const insert = (target, source) => db.prepare(`INSERT INTO firmware_confirmations(person, target, source, confirmed_at)
+        VALUES (?, ?, ?, ?) ON CONFLICT(person, target, source) DO NOTHING`).bind(owner.person, target, source, time);
+      // The source confirmation survives removing this directed crossflash.
+      await db.batch([insert(scope.target, scope.source), ...(scope.source ? [insert(scope.source, '')] : [])]);
     } else if (body.action === 'remove') {
       await db.prepare('DELETE FROM firmware_confirmations WHERE person = ? AND target = ? AND source = ?')
         .bind(owner.person, scope.target, scope.source).run();

@@ -87,6 +87,37 @@ test('counts deduplicate email across direct and directed crossflash reports; re
   assert.equal(await f.count('a', 'b'), 0, 'reverse route is independent');
 });
 
+test('crossflash independently confirms its source and removal only removes the selected confirmation', async () => {
+  const f = fixture(), cookie = await f.login();
+  await f.call({action: 'add', target: 'b', source: 'a'}, cookie);
+  await f.call({action: 'add', target: 'b', source: 'a'}, cookie);
+  assert.equal(await f.count('a'), 1);
+  assert.equal(await f.count('b'), 1);
+  assert.equal(await f.count('a', 'b'), 0);
+  assert.deepEqual((await f.call({action: 'status', target: 'a'}, cookie)).data.reports, [{source: '', label: ''}]);
+  await f.call({action: 'remove', target: 'b', source: 'a'}, cookie);
+  assert.equal(await f.count('a'), 1, 'source remains verified after crossflash removal');
+  assert.equal(await f.count('b', 'a'), 0);
+  assert.equal(await f.count('b'), 0);
+  await f.call({action: 'add', target: 'b', source: 'a'}, cookie);
+  await f.call({action: 'remove', target: 'a'}, cookie);
+  assert.equal(await f.count('a'), 0, 'source can be removed independently');
+  assert.equal(await f.count('b', 'a'), 1, 'removing source leaves crossflash intact');
+});
+
+test('historical source backfill deduplicates and never resurrects explicitly removed confirmations', () => {
+  const db = new D1().sqlite;
+  db.exec("INSERT INTO firmware_confirmations VALUES ('p','b','a',10), ('p','c','a',20), ('q','b','a',30)");
+  const sql = readFileSync(new URL('../migrations/0003_crossflash_source_confirmations.sql', import.meta.url), 'utf8');
+  db.exec(sql);
+  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM firmware_confirmations WHERE target='a' AND source=''").get().n, 2);
+  assert.equal(db.prepare("SELECT confirmed_at AS t FROM firmware_confirmations WHERE person='p' AND target='a' AND source=''").get().t, 10);
+  db.exec("DELETE FROM firmware_confirmations WHERE person='p' AND target='a' AND source=''");
+  db.exec(sql);
+  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM firmware_confirmations WHERE target='a' AND source=''").get().n, 1);
+  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM firmware_confirmations WHERE source='a'").get().n, 3);
+});
+
 test('email code authenticates only once, does not itself create a report, and private email is not stored', async () => {
   const f = fixture(), code = await f.requestCode('person@example.com');
   const results = await Promise.all([f.call({action: 'authenticate', ...code}), f.call({action: 'authenticate', ...code})]);
