@@ -3,6 +3,16 @@
 Customer-visible changes to freemkv Flash and freemkv Modify, newest first.
 Versions are independent of the freemkv ripping applications.
 
+## [0.14.5] - 2026-10-24
+
+### freemkv Flash
+
+- Let Recovery explicitly bypass a confirmed Pioneer family mismatch with a translated risk warning and a fresh five-digit confirmation. The override applies to one Recovery attempt; regular Flash continues to enforce the family check.
+- Identify Pioneer and MediaTek drives from validated protocol responses, including supported OEM-branded hardware, while preserving transport errors and unsupported-command details.
+- Verify Pioneer firmware through exact Kernel and Normal readbacks and startup evidence, and report each result separately.
+- During Recovery, an unsupported-media readiness response can proceed to the existing target identity and exact readback checks. The response alone never counts as verification, and normal Flash readiness checks are unchanged.
+- Separate exact content, filename, version direction and hardware-family evidence in firmware comparisons.
+
 ## [0.14.4] - 2026-10-23
 
 ### freemkv Flash

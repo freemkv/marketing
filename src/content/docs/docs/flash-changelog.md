@@ -3,6 +3,31 @@ title: Flash Changelog
 description: What's new in freemkv Flash and Modify - newest first.
 ---
 
+## 0.14.5
+
+<small>2026-10-24</small>
+
+### freemkv Flash
+
+- Let Recovery explicitly bypass a confirmed Pioneer family mismatch with a translated risk warning and a fresh five-digit confirmation. The override applies to one Recovery attempt; regular Flash continues to enforce the family check.
+- Identify Pioneer and MediaTek drives from validated protocol responses, including supported OEM-branded hardware, while preserving transport errors and unsupported-command details.
+- Verify Pioneer firmware through exact Kernel and Normal readbacks and startup evidence, and report each result separately.
+- During Recovery, an unsupported-media readiness response can proceed to the existing target identity and exact readback checks. The response alone never counts as verification, and normal Flash readiness checks are unchanged.
+- Separate exact content, filename, version direction and hardware-family evidence in firmware comparisons.
+
+## 0.14.4
+
+<small>2026-10-23</small>
+
+### freemkv Flash
+
+- Show CLI drive information in grouped, aligned sections using the same identity and capability fields as the GUI. Keep native transport traces in diagnostic logs instead of flooding the terminal.
+- Accept standalone BIN files and TAR packages for MediaTek in both Flash and Recovery. Pioneer updates continue to require TAR packages. File pickers and validation now share the same backend format rules.
+- Use pioneer-optical 1.0.2 to analyze compressed and uncompressed firmware consistently for hardware families, UHD capability and Kernel ABI requirements.
+- Track Pioneer FE9F interface setup as a family signal, including explicit zero-valued register initialization writes.
+- Restore matching between BDR-S08 and BDR-S11JX SAT 8800 firmware whose equivalent servo rows were stored in different regions or orders. Distinct SAT 8801 board evidence remains separate.
+- Reject unresolved compressed firmware evidence instead of scanning compressed bytes as instructions. Hardware-family catalogs use the new `pioneer.hardware.v3` scheme.
+
 ## 0.14.3
 
 <small>2026-10-23</small>
