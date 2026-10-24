@@ -7,6 +7,7 @@ Versions are independent of the freemkv ripping applications.
 
 ### freemkv Flash
 
+- Show CLI drive information in grouped, aligned sections using the same identity and capability fields as the GUI. Keep native transport traces in diagnostic logs instead of flooding the terminal.
 - Accept standalone BIN files and TAR packages for MediaTek in both Flash and Recovery. Pioneer updates continue to require TAR packages. File pickers and validation now share the same backend format rules.
 - Use pioneer-optical 1.0.2 to analyze compressed and uncompressed firmware consistently for hardware families, UHD capability and Kernel ABI requirements.
 - Track Pioneer FE9F interface setup as a family signal, including explicit zero-valued register initialization writes.
