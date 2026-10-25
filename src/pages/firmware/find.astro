@@ -14,7 +14,7 @@ import pioneerIndex from '../../data/pioneer-firmware-index.json';
 import mediatekIndex from '../../data/firmware-index.json';
 import finderCatalog from '../../data/finder-catalog.json';
 import crossflashLinks from '../../data/crossflash-links.json';
-import { buildFinderData, finderPageData, modelVersionSummary } from '../../lib/finder.mjs';
+import { buildFinderData, finderPageData, modelVersionSummary, crossflashSummary } from '../../lib/finder.mjs';
 
 const title = 'Find your drive firmware — freemkv';
 const description =
@@ -31,6 +31,7 @@ const firmwareBaseUrl = protectedDownloads ? '' : 'https://pub-10fe57a98db44568a
 const finderData = buildFinderData({ catalog: finderCatalog, mediatek: mediatekIndex, crossflash: crossflashLinks });
 const finder = finderPageData(finderData, { legacy: pioneerIndex, keys: !protectedDownloads });
 const { total: hostedTotal, byChip: hostedByChip } = modelVersionSummary(finder);
+const crossflashes = crossflashSummary(finderData, finder);
 import '../../styles/site.css';
 ---
 
@@ -153,6 +154,10 @@ import '../../styles/site.css';
               <span class="stat-pill"><strong>{n}</strong> {chip}</span>
             ))}
           </div>
+          <div class="hero-stat-pills" aria-label="Crossflash availability">
+            <span class="stat-pill" title="Allowed routes between different drive models, including source and target firmware versions. Each direction counts separately."><strong>{crossflashes.total.toLocaleString('en-US')}</strong> Crossflashes</span>
+            <span class="stat-pill" title="Allowed routes from non-UHD firmware to UHD-capable firmware, including source and target versions."><strong>{crossflashes.uhd.toLocaleString('en-US')}</strong> UHD upgrade paths</span>
+          </div>
         </div>
       </section>
 
@@ -160,8 +165,9 @@ import '../../styles/site.css';
       <section class="block">
         <div class="section-inner">
           <div class="picker">
+            <p class="block-note" id="drive-search-help">Select your current drive to see available firmware, including crossflash options.</p>
             <div class="picker-row">
-              <label class="picker-label" for="drive-search">Drive model</label>
+              <label class="picker-label" for="drive-search">Your existing drive</label>
               <div class="combo" data-combo>
                 <input
                   class="picker-input"
@@ -170,6 +176,7 @@ import '../../styles/site.css';
                   role="combobox"
                   aria-expanded="false"
                   aria-controls="drive-options"
+                  aria-describedby="drive-search-help"
                   aria-autocomplete="list"
                   placeholder="e.g. BU40N"
                   autocomplete="off"

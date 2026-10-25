@@ -297,6 +297,26 @@ export function modelVersionSummary(page) {
   return { total, byChip: Object.entries(byChip).sort((a, b) => b[1] - a[1]) };
 }
 
+// Directed version-to-version routes, using only the flasher's admitted links.
+// Package variants and retail aliases do not multiply a route. Future and
+// incomplete candidates are deliberately absent from this graph.
+export function crossflashSummary(data, page) {
+  const names = new Map(page.identities.map(i => [i.key, compact(i.n)]));
+  const packages = new Map();
+  for (const i of data.identities) for (const r of i.revisions) for (const p of r.packages) {
+    packages.set(p.sha256, { i, r, p });
+  }
+  const routes = new Set(), uhd = new Set();
+  for (const [sha, source] of packages) for (const targetSha of data.crossflash[sha] ?? []) {
+    const target = packages.get(targetSha);
+    if (!target || source.i.key === target.i.key || names.get(source.i.key) === names.get(target.i.key)) continue;
+    const key = JSON.stringify([source.i.key, source.r.revision, target.i.key, target.r.revision]);
+    routes.add(key);
+    if (!source.p.uhd && target.p.uhd) uhd.add(key);
+  }
+  return { total: routes.size, uhd: uhd.size };
+}
+
 export function hostedSummary(data) {
   const byChip = {};
   let total = 0;

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildFinderData, crossflashTargets, finderPageData } from '../src/lib/finder.mjs';
+import { buildFinderData, crossflashTargets, finderPageData, crossflashSummary } from '../src/lib/finder.mjs';
 import { catalog, mediatekFamilyCatalog, mediatekFamilyLinks, MTK_SHA } from './fixtures/finder-catalog.mjs';
 
 // The finder does not decide crossflash: it lists freemkv-flash's links
@@ -33,6 +33,23 @@ const familyLinks = () => ({ format: 'freemkv-crossflash-links', version: 1, lin
   [sha('E')]: [sha('A'), sha('C')],
   [sha('A')]: [sha('E')],
 } });
+
+test('statistics count directed source/target versions without aliases, variants, or future candidates', () => {
+  const cat = familyCatalog(), links = familyLinks();
+  // A second package for the same source version adds no route; a new version does.
+  cat.identities[3].revisions[0].packages.push(pkg(sha('J'), '1.03', 'BDR-UD03', { kn: true }));
+  cat.identities[3].revisions.push({ revision: '1.14', packages: [pkg(sha('K'), '1.14', 'BDR-UD03', { kn: true })] });
+  links.links[sha('J')] = [sha('A'), sha('C'), sha('Z')]; // missing target ignored
+  links.links[sha('K')] = [sha('A')];
+  links.future = { [sha('E')]: [sha('F')] };
+  cat.aliases.push({ display: 'Retail alias', kind: 'retail', targets: [{ family: 'pioneer', hardware: '8510', destination: 'ID19' }] });
+  const data = buildFinderData({ catalog: cat, crossflash: links });
+  const page = finderPageData(data);
+  assert.deepEqual(crossflashSummary(data, page), { total: 4, uhd: 2 });
+  // Another edition with the same displayed model is an update, not a crossflash.
+  page.identities.find(i => i.key === 'pioneer:8591:ID22').n = page.identities.find(i => i.key === 'pioneer:8510:ID19').n;
+  assert.deepEqual(crossflashSummary(data, page), { total: 3, uhd: 2 });
+});
 
 test('targets are the linked identities; a revision is complete when it has a linked package', () => {
   const data = buildFinderData({ catalog: familyCatalog(), crossflash: familyLinks() });
