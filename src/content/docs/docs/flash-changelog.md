@@ -3,6 +3,17 @@ title: Flash Changelog
 description: What's new in freemkv Flash and Modify - newest first.
 ---
 
+## 0.15.0
+
+<small>2026-10-24</small>
+
+### freemkv Flash
+
+- Keep prepared recovery firmware through confirmation and check the connected drive again before writing.
+- Show reading, writing, restart and verification progress across supported drives.
+- Explain incomplete firmware and operation failures in the selected language, including whether anything was written and what to do next.
+- Verify Pioneer updates through firmware readback and startup while reporting Kernel, Normal and startup results separately.
+
 ## 0.14.5
 
 <small>2026-10-24</small>
