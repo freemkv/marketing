@@ -33,8 +33,8 @@ test('private email worker deployment uploads its report metadata module depende
   assert.equal(result.applied, true);
   assert.ok(uploaded);
   const metadata = JSON.parse(await uploaded.get('metadata').text());
-  assert.equal(metadata.main_module, 'firmware-email.mjs');
-  const main = await uploaded.get('firmware-email.mjs').text();
+  assert.equal(metadata.main_module, 'workers/firmware-email.mjs');
+  const main = await uploaded.get('workers/firmware-email.mjs').text();
   const dependency = await uploaded.get('src/lib/firmware-report-inputs.mjs').text();
   assert.match(main, /\.\.\/src\/lib\/firmware-report-inputs\.mjs/);
   assert.match(dependency, /export function firmwareInputText/);

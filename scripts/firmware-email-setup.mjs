@@ -29,11 +29,11 @@ export async function provisionEmail({token, apply = false, fetcher = fetch}) {
   if (!domain && apply) domain = await api(`/zones/${zone.id}/email/sending/subdomains`, 'POST', {name: 'freemkv.org'});
   if (apply) {
     const body = new FormData();
-    body.set('metadata', new Blob([JSON.stringify({main_module: 'firmware-email.mjs', compatibility_date: '2026-10-16',
+    body.set('metadata', new Blob([JSON.stringify({main_module: 'workers/firmware-email.mjs', compatibility_date: '2026-10-16',
       bindings: [{name: 'EMAIL', type: 'send_email', allowed_sender_addresses: ['noreply@freemkv.org']}],
       observability: {enabled: false}})], {type: 'application/json'}));
-    body.set('firmware-email.mjs', new Blob([await readFile(new URL('../workers/firmware-email.mjs', import.meta.url), 'utf8')],
-      {type: 'application/javascript+module'}), 'firmware-email.mjs');
+    body.set('workers/firmware-email.mjs', new Blob([await readFile(new URL('../workers/firmware-email.mjs', import.meta.url), 'utf8')],
+      {type: 'application/javascript+module'}), 'workers/firmware-email.mjs');
     body.set('src/lib/firmware-report-inputs.mjs', new Blob([await readFile(new URL('../src/lib/firmware-report-inputs.mjs', import.meta.url), 'utf8')],
       {type: 'application/javascript+module'}), 'src/lib/firmware-report-inputs.mjs');
     await api(`${base}/workers/scripts/${service}`, 'PUT', body);
