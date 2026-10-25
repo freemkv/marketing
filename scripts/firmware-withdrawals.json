@@ -43,5 +43,30 @@
     "key": "pioneer/BDR-S06J/SAT%201030/1.04EU/dabad12b0cf5d1838770921e2682717b489b2b589f100ec2c5b37d2064324e5b.tar",
     "normalSha256": "c7655b9b4db452231834aeb994f47eb8794b1a33c8bd5f2f5a0fea50475ab7be",
     "reason": "Truncated source ZIP envelope: incomplete deflate stream and invalid CRC"
+  },
+  {
+    "key": "pioneer/BDR-TD05/SAT%208211/1.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+    "normalSha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908",
+    "reason": "Corrupt TD05 2.02 firmware-pack envelope: invalid signature and unrecoverable 48-byte tail; replaced by intact Fujitsu original f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca"
+  },
+  {
+    "key": "pioneer/BDR-TD05/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+    "normalSha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908",
+    "reason": "Corrupt TD05 2.02 firmware-pack envelope: invalid signature and unrecoverable 48-byte tail; replaced by intact Fujitsu original f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca"
+  },
+  {
+    "key": "pioneer/BDR-TD05E1020474/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+    "normalSha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908",
+    "reason": "Corrupt TD05 2.02 firmware-pack envelope: invalid signature and unrecoverable 48-byte tail; replaced by intact Fujitsu original f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca"
+  },
+  {
+    "key": "pioneer/BDR-TD05FUJITSU/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+    "normalSha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908",
+    "reason": "Corrupt TD05 2.02 firmware-pack envelope: invalid signature and unrecoverable 48-byte tail; replaced by intact Fujitsu original f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca"
+  },
+  {
+    "key": "fw/pioneer/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+    "normalSha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908",
+    "reason": "Corrupt TD05 2.02 firmware-pack envelope: invalid signature and unrecoverable 48-byte tail; replaced by intact Fujitsu original f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca"
   }
 ]
