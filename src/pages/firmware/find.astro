@@ -114,7 +114,7 @@ import '../../styles/site.css';
       .origin-legend { display: flex; flex-wrap: wrap; gap: 0.6rem 1.5rem; max-width: 640px; margin: 1.5rem auto 0; color: var(--muted); font-size: 0.75rem; }
       .origin-legend p { display: flex; align-items: center; gap: 0.5rem; margin: 0; }
       .fw-status { display: inline-grid; grid-template-columns: 5.2rem 6.4rem; align-items: center; gap: 0.5rem; }
-      .fw-status .fw-verification { grid-column: 2; grid-row: 1; width: 100%; text-align: center; }
+      .fw-status .fw-verification { grid-column: 2; grid-row: 1; justify-self: start; width: auto; text-align: center; }
       .fw-status .fw-origin-pill { grid-column: 1; grid-row: 1; justify-self: start; }
       .fw-origin-pill { display: inline-flex; align-items: center; padding: 0.15rem 0.5rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 0.7rem; font-weight: 500; line-height: 1.4; white-space: nowrap; }
       .fw-verification { background: var(--surface); color: var(--muted); border: 1px solid #dbe3e8; cursor: pointer; font: inherit; font-size: 0.7rem; font-weight: 600; line-height: 1.4; border-radius: 0.35rem; padding: 0.15rem 0.45rem; white-space: nowrap; }
@@ -122,6 +122,12 @@ import '../../styles/site.css';
       .fw-verification.is-verified { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
       .fw-verification[hidden] { display: none; }
       .fw-verification:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+      @media (hover: hover) and (pointer: fine) {
+        .fx-list .fw-verification.is-unconfirmed { opacity: 0; pointer-events: none; }
+        .fx-list li:hover .fw-verification.is-unconfirmed,
+        .fx-list li:focus-within .fw-verification.is-unconfirmed,
+        .fx-list .fw-verification.is-unconfirmed:focus-visible { opacity: 1; pointer-events: auto; }
+      }
       .fw-verify-dialog { width: min(26rem, calc(100% - 2rem)); border: 1px solid var(--line); border-radius: 1rem; padding: 1.5rem; color: var(--slate); background: var(--surface); }
       .fw-verify-dialog::backdrop { background: rgb(15 23 42 / 45%); }
       .fw-verify-dialog h2 { margin: 0 2rem 0.6rem 0; font-size: 1.15rem; }
