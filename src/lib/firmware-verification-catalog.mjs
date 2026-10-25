@@ -1,8 +1,18 @@
-// Content identity, independent of the TAR filename/hash and catalogue order.
+const sha256 = value => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value);
+
+// FW2 keys identify the firmware bytes, independently of catalogue names,
+// revision labels, package containers and catalogue order.
 export function verificationKey(identity, revision, pkg) {
-  const content = pkg.imageSha256 || (pkg.normalSha256 && [pkg.kernelSha256 || '', pkg.normalSha256].join(':'));
-  if (!content) return null;
-  return ['fw1', encodeURIComponent(identity.key), encodeURIComponent(revision), content].join('|');
+  const family = identity.family || (identity.key?.startsWith('mediatek:') ? 'mediatek'
+    : identity.key?.startsWith('pioneer:') ? 'pioneer' : '');
+  if (family === 'mediatek') {
+    const image = pkg.imageSha256 || (pkg.packageType === 'mediatek-image' ? pkg.sha256 : null);
+    return sha256(image) ? `fw2|mediatek|${image}` : null;
+  }
+  if (family === 'pioneer' && sha256(pkg.normalSha256) && (!pkg.kernelSha256 || sha256(pkg.kernelSha256))) {
+    return `fw2|pioneer|${pkg.kernelSha256 || ''}:${pkg.normalSha256}`;
+  }
+  return null;
 }
 
 export function verificationCatalog(page) {
