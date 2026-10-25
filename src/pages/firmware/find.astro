@@ -66,12 +66,37 @@ import '../../styles/site.css';
       .fx-list .fx-view, .fx-list .fx-viewing { flex: 0 0 4rem; text-align: left; }
       .fx-list .fx-incomplete { flex: 1 1 auto; }
       .fx-vgroup { margin: 0.9rem 0 0.2rem; font-size: 0.8rem; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.05em; }
-      .origin-details { margin-top: 1rem; overflow-wrap: anywhere; }
-      .origin-details summary { cursor: pointer; font-weight: 600; }
-      .origin-details section { margin-top: 1rem; }
-      .origin-details h4 { margin: 1rem 0 0.3rem; }
-      .origin-details dd { margin: 0 0 0.65rem; }
-      .origin-details code { font-size: 0.75rem; word-break: break-all; }
+      .drive-caps { gap: 0.25rem; }
+      .drive-caps-label { font-size: 0.65rem; letter-spacing: 0.03em; }
+      .drive-cap { font-size: 0.72rem; padding: 0.16rem 0.4rem; border-width: 1px; white-space: nowrap; }
+      .fw-file-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-top: 0.4rem; }
+      .fw-file-row .fx-file { margin: 0; min-width: 0; }
+      .origin-trigger { flex: none; border: 0; padding: 0; background: none; color: var(--muted); font: inherit; font-size: 0.8rem; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+      .origin-trigger:hover { color: var(--teal-dark); }
+      .origin-trigger:focus-visible, .origin-close:focus-visible { outline: 2px solid var(--teal-dark); outline-offset: 4px; }
+      .origin-dialog { width: min(640px, calc(100% - 24px)); max-height: min(80vh, 760px); padding: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--ink); font-family: var(--font); font-size: 13px; line-height: 1.5; box-shadow: 0 24px 80px rgb(0 0 0 / 25%); }
+      .origin-dialog::backdrop { background: rgb(0 0 0 / 50%); }
+      body:has(.origin-dialog[open]) { overflow: hidden; }
+      .origin-dialog-header { position: sticky; top: 0; z-index: 1; display: flex; align-items: start; justify-content: space-between; gap: 1rem; padding: 18px 20px; background: var(--surface); border-bottom: 1px solid var(--line); }
+      .origin-dialog h2 { margin: 0; font-size: 16px; font-weight: 650; line-height: 1.4; }
+      .origin-dialog-subtitle { margin: 3px 0 0; font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+      .origin-close { width: 28px; height: 28px; flex: none; border: 0; border-radius: 6px; background: var(--bg-soft); color: var(--muted); font: inherit; font-size: 20px; line-height: 1; cursor: pointer; }
+      .origin-dialog-body { padding: 18px 20px 20px; overflow-wrap: anywhere; }
+      .origin-dialog h3 { margin: 20px 0 8px; color: var(--muted); font-size: 11px; font-weight: 650; letter-spacing: 0.05em; text-transform: uppercase; }
+      .origin-dialog h3:first-child { margin-top: 0; }
+      .origin-file { margin: 0 0 10px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; }
+      .origin-file-name { margin: 0 0 8px; font-size: 13px; font-weight: 600; line-height: 1.45; }
+      .origin-file-name strong { font-weight: 600; }
+      .origin-meta { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+      .origin-hashes { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 5px 8px; margin: 0; align-items: baseline; }
+      .origin-hashes dt { color: var(--muted); font-size: 11px; }
+      .origin-hashes dd { margin: 0; min-width: 0; }
+      body.page-find .origin-hashes code { display: block; padding: 0; background: none; color: var(--slate); font-family: var(--mono); font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; white-space: normal; user-select: all; }
+      .origin-role { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 6px; font-size: 12px; font-weight: 600; }
+      .origin-category { color: var(--muted); font-size: 11px; font-weight: 400; }
+      .origin-alternates { margin: 12px 0 18px; }
+      .origin-alternates summary { color: var(--muted); cursor: pointer; font-size: 12px; }
+      .origin-alternates[open] summary { margin-bottom: 10px; }
       .fx-file { margin: 0.4rem 0 0; font-size: 0.8rem; color: var(--muted); overflow-wrap: anywhere; }
       .fx-h { margin: 1.3rem 0 0.4rem; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal-dark); }
       .fx-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; font-size: 0.92rem; }
@@ -86,6 +111,9 @@ import '../../styles/site.css';
       .fx-table th, .fx-table td { text-align: left; padding: 0.3rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
       .fx-sha { font-size: 0.72rem; word-break: break-all; }
       .fx-note { margin: 0.4rem 0 0; font-size: 0.8rem; color: var(--muted); }
+      .origin-legend { display: flex; flex-wrap: wrap; gap: 0.6rem 1.5rem; max-width: 640px; margin: 1.5rem auto 0; color: var(--muted); font-size: 0.75rem; }
+      .origin-legend p { display: flex; align-items: center; gap: 0.5rem; margin: 0; }
+      .fw-origin-pill { display: inline-flex; align-items: center; padding: 0.15rem 0.5rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 0.7rem; font-weight: 500; line-height: 1.4; white-space: nowrap; }
       .fw-verification { background: var(--surface); color: var(--muted); border: 1px solid #dbe3e8; cursor: pointer; font: inherit; font-size: 0.7rem; font-weight: 600; line-height: 1.4; border-radius: 0.35rem; padding: 0.15rem 0.45rem; white-space: nowrap; }
       .fx-list .drive-fact-future { font-size: 0.7rem; line-height: 1.4; border: 1px solid transparent; padding: 0.15rem 0.45rem; border-radius: 0.35rem; }
       .fw-verification.is-verified { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
@@ -225,6 +253,11 @@ import '../../styles/site.css';
             levers are structurally verified across the corpus.
           </p>
 
+          <div class="origin-legend" aria-label="Firmware source legend">
+            <p><span class="fw-origin-pill">OEM</span><span>From original OEM updater</span></p>
+            <p><span class="fw-origin-pill">Community</span><span>OEM firmware but provided by backup or other means</span></p>
+          </div>
+
           <p class="block-note">
             Don't see your drive listed, or want to help us add one? Drop by <a href="https://discord.gg/yu7xMGTyek">Discord</a>.
           </p>
@@ -237,6 +270,13 @@ import '../../styles/site.css';
         </div>
       </section>
 
+      <dialog class="origin-dialog" id="origin-dialog" aria-labelledby="origin-dialog-title">
+        <header class="origin-dialog-header">
+          <div><h2 id="origin-dialog-title">Origin Details</h2><p class="origin-dialog-subtitle" id="origin-dialog-subtitle"></p></div>
+          <button type="button" class="origin-close" aria-label="Close details" autofocus>×</button>
+        </header>
+        <div class="origin-dialog-body" id="origin-dialog-body"></div>
+      </dialog>
       {protectedDownloads && <div id="firmware-download-config" data-sitekey={firmwareDownloadSitekey} hidden />}
       {protectedDownloads && <script is:inline type="module" src="/firmware-download.js"></script>}
       <div id="firmware-verification-config" data-sitekey={firmwareDownloadSitekey} hidden />
@@ -273,35 +313,38 @@ import '../../styles/site.css';
             function fileInfo(file) {
               if (!file) return '<p>Not recorded.</p>';
               var aliases = (file.filenames || []).filter(function(n) { return n !== file.filename; });
-              return '<p><strong>' + escapeText(file.filename || 'Not recorded') + '</strong></p>' +
-                (aliases.length ? '<p>Also recorded as: ' + aliases.map(escapeText).join(', ') + '</p>' : '') +
-                '<dl><dt>SHA-256</dt><dd><code>' + escapeText(file.sha256 || 'Not recorded') + '</code></dd>' +
+              return '<p class="origin-file-name"><strong>' + escapeText(file.filename || 'Not recorded') + '</strong></p>' +
+                (aliases.length ? '<p class="origin-meta">Also recorded as: ' + aliases.map(escapeText).join(', ') + '</p>' : '') +
+                '<dl class="origin-hashes"><dt>SHA-256</dt><dd><code>' + escapeText(file.sha256 || 'Not recorded') + '</code></dd>' +
                 '<dt>MD5</dt><dd><code>' + escapeText(file.md5 || 'Not recorded') + '</code></dd></dl>';
             }
             function sourceInfo(source) {
               var links = (source.file.urls || []).filter(function(url) { return /^https?:\/\//i.test(url); });
-              return fileInfo(source.file) + '<p>Contains: ' + source.roles.map(escapeText).join(', ') + '</p>' +
-                links.map(function(url) { return '<p><a href="' + escapeText(url) + '" rel="noopener noreferrer">Recorded source</a></p>'; }).join('');
+              return '<section class="origin-file">' + fileInfo(source.file) + '<p class="origin-meta">Contains: ' + source.roles.map(escapeText).join(', ') + '</p>' +
+                links.map(function(url) { return '<p class="origin-meta"><a href="' + escapeText(url) + '" rel="noopener noreferrer">Recorded source</a></p>'; }).join('') + '</section>';
             }
             var preferred = originals.filter(function(source) { return primary[source.file.sha256]; });
             var others = originals.filter(function(source) { return !primary[source.file.sha256]; });
-            var body = preferred.length ? '<h4>' + (preferred.length > 1 ? 'Original files' : 'Original file') + '</h4>' + preferred.map(sourceInfo).join('') : '<p>Original file: Not recorded.</p>';
-            if (others.length) body += '<details><summary>Other recorded originals (' + others.length + ')</summary>' +
-              others.map(function(source) { return '<section>' + sourceInfo(source) + '</section>'; }).join('') + '</details>';
-            body += origins.map(function(origin) {
-              return '<section><h4>' + roleName(origin) + '</h4><p>' + (origin.category === 'dump' ? 'Approved dump' : 'OEM') + '</p>' + fileInfo(origin.firmware) + '</section>';
+            var body = preferred.length ? '<h3>' + (preferred.length > 1 ? 'Original files' : 'Original file') + '</h3>' + preferred.map(sourceInfo).join('') : '<p>Original file: Not recorded.</p>';
+            if (others.length) body += '<details class="origin-alternates"><summary>Other recorded originals (' + others.length + ')</summary>' +
+              others.map(sourceInfo).join('') + '</details>';
+            body += '<h3>Extracted firmware</h3>' + origins.map(function(origin) {
+              return '<section class="origin-file"><p class="origin-role">' + roleName(origin) + '<span class="origin-category">' + (origin.category === 'dump' ? 'Community' + (origin.source_kind === 'unmk-restored' ? ' · unMK-restored' : origin.source_kind === 'de' ? ' · DE' : '') : 'OEM') + '</span></p>' + fileInfo(origin.firmware) + '</section>';
             }).join('');
-            return '<details class="origin-details"><summary>Origin Details</summary>' + body + '</details>';
+            return '<button type="button" class="origin-trigger" data-origin-open aria-haspopup="dialog" aria-controls="origin-dialog">Details</button><template class="origin-template">' + body + '</template>';
           }
           function verificationBox(version, source) {
-            if (!version.verification || (source && !source.verification)) return '';
+            var origins = packages[version.p[0]].origin || [];
+            var kind = origins.some(function(o) { return o.category === 'dump'; }) ? 'Community' : origins.length && origins.every(function(o) { return o.category === 'oem'; }) ? 'OEM' : '';
+            var badge = kind ? '<span class="fw-origin-pill" title="' + (kind === 'OEM' ? 'From vendor original files' : 'OEM firmware provided by backup or other means') + '">' + kind + '</span>' : '';
+            if (!version.verification || (source && !source.verification)) return badge;
             var id = identities[version.i];
             var label = id.brand + ' ' + id.n + ' ' + version.r + (id.e ? ' ' + id.e : '');
             return '<button type="button" class="fw-verification" data-verification-target="' + escapeText(version.verification) +
               '" data-verification-source="' + escapeText(source ? source.verification || '' : '') +
               '" data-verification-label="' + escapeText(label) + '"' +
               (source ? ' data-verification-from="' + escapeText(identities[source.i].n + ' ' + source.r + (identities[source.i].e ? ' ' + identities[source.i].e : '')) + '"' : '') +
-              ' hidden disabled aria-label="Community verification for ' + escapeText(label) + '">…</button>';
+              ' hidden disabled aria-label="Community verification for ' + escapeText(label) + '">…</button>' + badge;
           }
 
           var filtered = [];
@@ -578,7 +621,7 @@ import '../../styles/site.css';
 
             var bodyHtml =
               download(p, '<span class="dl-main">Download ' + escapeText(ver.r) + '</span>', 'btn btn-primary dl-btn drive-fw-btn') +
-              '<p class="fx-file">' + escapeText(p.f) + (p.b ? ' · ' + escapeText(p.b) : '') + '</p>' + originDetails(p) +
+              '<div class="fw-file-row"><p class="fx-file">' + escapeText(p.f) + (p.b ? ' · ' + escapeText(p.b) : '') + '</p>' + originDetails(p) + '</div>' +
               '';
 
             var list = '';
@@ -685,7 +728,20 @@ import '../../styles/site.css';
             selectModel(pick, '', revIdx);
             scrollToCard();
           }
+          var originDialog = document.getElementById('origin-dialog');
+          originDialog.querySelector('.origin-close').addEventListener('click', function () { originDialog.close(); });
+          originDialog.addEventListener('click', function (e) {
+            var rect = originDialog.getBoundingClientRect();
+            if (e.target === originDialog && (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom)) originDialog.close();
+          });
           detail.addEventListener('click', function (e) {
+            var originButton = e.target.closest('[data-origin-open]');
+            if (originButton) {
+              document.getElementById('origin-dialog-body').innerHTML = originButton.nextElementSibling.innerHTML;
+              document.getElementById('origin-dialog-subtitle').textContent = originButton.closest('.fw-file-row').querySelector('.fx-file').textContent;
+              originDialog.showModal();
+              return;
+            }
             var b = e.target.closest('[data-xf]');
             if (b) showIdentity(Number(b.dataset.xf), b.dataset.xv != null ? Number(b.dataset.xv) : null);
             var v = e.target.closest('[data-view]');
