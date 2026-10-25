@@ -4,10 +4,13 @@
 // from the firmware-extractor hoard plus the freemkv-fw modify engine. Run it BEFORE
 // `firmware-release.mjs prepare` (see scripts/firmware-release.md).
 //
-//   node scripts/firmware-features.mjs <hoard> [--fw /path/to/freemkv-fw]
+//   node scripts/firmware-features.mjs <hoard> --fw /path/to/freemkv-fw
+//        --flash /path/to/freemkv-crossflash --eligible-catalog src/data/finder-catalog.json
 //        [--out-dir src/data] [--hardware-verified allowlist.json] [--jobs 8]
 //
-// The binary may also come from FREEMKV_FW. `--hardware-verified` names a JSON
+// The binaries may also come from FREEMKV_FW and FREEMKV_CROSSFLASH.
+// `--eligible-catalog` keeps only hashes in the existing MediaTek catalogue.
+// `--hardware-verified` names a JSON
 // array of sha256 hashes proven on real hardware; by default there is none, so
 // every entry is "build-verified". Nothing is hardware-proven by this script.
 import { promises as fs } from 'node:fs';
@@ -396,7 +399,7 @@ async function main(argv) {
     else if (x.startsWith('-')) throw new Error(`unknown option ${x}`);
     else hoard = x;
   }
-  if (!hoard || !a.fw || !a.flash) throw new Error('usage: firmware-features.mjs <hoard> --fw <freemkv-fw> --flash <freemkv-crossflash> [--out-dir D] [--hardware-verified FILE] [--jobs N]');
+  if (!hoard || !a.fw || !a.flash) throw new Error('usage: firmware-features.mjs <hoard> --fw <freemkv-fw> --flash <freemkv-crossflash> [--eligible-catalog FILE] [--out-dir D] [--hardware-verified FILE] [--jobs N]');
   const hardware = new Set(hardwareFile ? await readJson(hardwareFile) : []);
   const catalog = eligibleCatalog ? await readJson(eligibleCatalog) : null;
   const eligible = catalog ? eligibleImageHashes(catalog) : null;

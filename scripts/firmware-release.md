@@ -27,21 +27,25 @@ whenever the hoard or the freemkv-fw engine changes, before `prepare` (which
 reads `firmware-index.json` as a legacy input):
 
 ```
-node scripts/firmware-features.mjs /path/to/firmware-extractor/hoard --fw /path/to/freemkv-fw
+node scripts/firmware-features.mjs /path/to/firmware-extractor/hoard --fw /path/to/freemkv-fw \
+  --flash /path/to/freemkv-crossflash --eligible-catalog src/data/finder-catalog.json
 ```
 
 Inputs: the firmware-extractor hoard (`index/identities.json`, `index/sources.json`, `images/...`)
-and the `freemkv-fw` binary (`--fw` or env `FREEMKV_FW`; build with
-`cargo build --release` in freemkv-firmware). Optional: `--out-dir` (default
+the `freemkv-fw` binary (`--fw` or env `FREEMKV_FW`), and the
+`freemkv-crossflash` binary (`--flash` or env `FREEMKV_CROSSFLASH`; build with
+`cargo build --release -p freemkv-flash --bin freemkv-crossflash`).
+`--eligible-catalog` limits output to MediaTek image hashes already in the
+catalogue, preserving the site's allowlist. Optional: `--out-dir` (default
 `src/data`), `--jobs`, and `--hardware-verified allowlist.json` (JSON array of
 sha256 proven on hardware; default none, so everything is `build-verified`).
 
-An image is listed when it is not MK- or freemkv-patched, no source name contains
-"omnidrive", it is not a fragment, and `freemkv-fw create --json` reports its
-model and revision. Every such image is published: one where `create` applies at
-least one lever is `modifiable` (the Finder shows the Modifiable pill and leads
-to the modify page); any other leads to the flash page, like Pioneer. Flags
-follow engine lineage (see the header of the script).
+An already allowlisted image is listed when it is not MK- or freemkv-patched, no
+source name contains "omnidrive", it is not a fragment, and `freemkv-fw create
+--json` reports its model and revision. Every listed image is published: one
+where `create` applies at least one lever is `modifiable` (the Finder shows the
+Modifiable pill and leads to the modify page); any other leads to the flash
+page, like Pioneer. Flags follow engine lineage (see the header of the script).
 The generator checks firmware bytes for the embedded freemkv identity even if
 an old hoard index says `patched: false`. Withdrawn MediaTek images and their
 legacy BIN and current TAR keys are recorded in `firmware-withdrawals.json`;
@@ -63,6 +67,14 @@ It runs the flasher's own offline gates and writes `crossflash-links.json`
 stage; `prepare` checks every link names a catalogue package. The finder lists
 exactly these links, so it never re-implements the crossflash rule. Diagnose
 one pair with `freemkv-crossflash --why <installed> <target>`.
+
+The graph records `evaluated_packages`, including packages with no admitted
+routes. The production finder build requires this inventory to match every
+release package in the catalog. Replacing, adding or removing a package without
+regenerating the graph stops the build; filtering old edges is insufficient.
+The graph and catalog must come from the same completed `prepare` stage.
+After publication, verify the full archive as well as the finder and individual
+downloads: a site-only deployment does not refresh `/fw/latest.tar.gz`.
 
 The complete graph cache lives at `<hoard>/cache/website-crossflash.json`
 (`FIRMWARE_CROSSFLASH_CACHE` overrides it). It is bound to the SHA-256 of the
