@@ -43,5 +43,320 @@
     "key": "pioneer/BDR-S06J/SAT%201030/1.04EU/dabad12b0cf5d1838770921e2682717b489b2b589f100ec2c5b37d2064324e5b.tar",
     "normalSha256": "c7655b9b4db452231834aeb994f47eb8794b1a33c8bd5f2f5a0fea50475ab7be",
     "reason": "Truncated source ZIP envelope: incomplete deflate stream and invalid CRC"
+  },
+  {
+    "key": "pioneer/BDR-TD05/SAT%208211/1.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+    "normalSha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908",
+    "reason": "Corrupt TD05 2.02 firmware-pack envelope: invalid signature and unrecoverable 48-byte tail; replaced by intact Fujitsu original f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca"
+  },
+  {
+    "key": "pioneer/BDR-TD05/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+    "normalSha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908",
+    "reason": "Corrupt TD05 2.02 firmware-pack envelope: invalid signature and unrecoverable 48-byte tail; replaced by intact Fujitsu original f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca"
+  },
+  {
+    "key": "pioneer/BDR-TD05E1020474/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+    "normalSha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908",
+    "reason": "Corrupt TD05 2.02 firmware-pack envelope: invalid signature and unrecoverable 48-byte tail; replaced by intact Fujitsu original f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca"
+  },
+  {
+    "key": "pioneer/BDR-TD05FUJITSU/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+    "normalSha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908",
+    "reason": "Corrupt TD05 2.02 firmware-pack envelope: invalid signature and unrecoverable 48-byte tail; replaced by intact Fujitsu original f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca"
+  },
+  {
+    "key": "fw/pioneer/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+    "normalSha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908",
+    "reason": "Corrupt TD05 2.02 firmware-pack envelope: invalid signature and unrecoverable 48-byte tail; replaced by intact Fujitsu original f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca"
+  },
+  {
+    "key": "fw/pioneer/65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce.tar",
+    "normalSha256": "10424c2ba3709e79f9e8d12fa7e363d9efc003c9631ab391021aa5c4e2bfede3",
+    "reason": "Corrupt TD05 1.01 firmware-pack envelope: invalid signature and unrecoverable 48-byte tail; replaced by intact original f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6"
+  },
+  {
+    "key": "pioneer/BDR-TD05/SAT%208211/1.01/65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce.tar",
+    "normalSha256": "10424c2ba3709e79f9e8d12fa7e363d9efc003c9631ab391021aa5c4e2bfede3",
+    "reason": "Corrupt TD05 1.01 firmware-pack envelope: invalid signature and unrecoverable 48-byte tail; replaced by intact original f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6"
+  },
+  {
+    "key": "fw/pioneer/979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db.tar",
+    "normalSha256": "1e2adf2d1dc2589606006b933da6e3a09615a607c1863729997acd7d4f95499d",
+    "reason": "Corrupt Pioneer package 979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db has invalid signature or unrecovered firmware tail; replaced with verified original 12275961c6c465d14c2ad06d05d0492f41a4c612fadfa14b70963d7f82ca02cc"
+  },
+  {
+    "key": "pioneer/BDR-TD04/SAT%201040/1.01/979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db.tar",
+    "normalSha256": "1e2adf2d1dc2589606006b933da6e3a09615a607c1863729997acd7d4f95499d",
+    "reason": "Corrupt Pioneer package 979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db has invalid signature or unrecovered firmware tail; replaced with verified original 12275961c6c465d14c2ad06d05d0492f41a4c612fadfa14b70963d7f82ca02cc"
+  },
+  {
+    "key": "fw/pioneer/36f2d43e941898796a37e1eefc68710dc10e71456bf346c1a03a7f944fa5b1d8.tar",
+    "normalSha256": "8733b946d15818bd0c0d49922eb0bb8f1c75383dd24709c0e5fe93b5562d155f",
+    "reason": "Corrupt Pioneer package 36f2d43e941898796a37e1eefc68710dc10e71456bf346c1a03a7f944fa5b1d8 has invalid signature or unrecovered firmware tail; replaced with verified original 75178b261f471ec260789cc9f9575e43883f321db24066370164194b5c9a8dec"
+  },
+  {
+    "key": "pioneer/BDC-TD04/SAT%201041/1.01/36f2d43e941898796a37e1eefc68710dc10e71456bf346c1a03a7f944fa5b1d8.tar",
+    "normalSha256": "8733b946d15818bd0c0d49922eb0bb8f1c75383dd24709c0e5fe93b5562d155f",
+    "reason": "Corrupt Pioneer package 36f2d43e941898796a37e1eefc68710dc10e71456bf346c1a03a7f944fa5b1d8 has invalid signature or unrecovered firmware tail; replaced with verified original 75178b261f471ec260789cc9f9575e43883f321db24066370164194b5c9a8dec"
+  },
+  {
+    "key": "fw/pioneer/202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48.tar",
+    "normalSha256": "7a97691fa0ed3ecc53ecc7cdda65db674f80cd7a0ee1c6455c536239bd43e560",
+    "reason": "Corrupt Pioneer package 202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48 has invalid signature or unrecovered firmware tail; replaced with verified original 18b57472eeac46db8437ab4e3745035d463ee39b5fdca2f56b00a0959d049d84"
+  },
+  {
+    "key": "pioneer/BDR-UD03/SAT%208510/1.03/202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48.tar",
+    "normalSha256": "7a97691fa0ed3ecc53ecc7cdda65db674f80cd7a0ee1c6455c536239bd43e560",
+    "reason": "Corrupt Pioneer package 202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48 has invalid signature or unrecovered firmware tail; replaced with verified original 18b57472eeac46db8437ab4e3745035d463ee39b5fdca2f56b00a0959d049d84"
+  },
+  {
+    "key": "fw/pioneer/a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53.tar",
+    "normalSha256": "e89128bdee1c9d25f3c1db0a2631de485b62b2e4890eed80a3a4f05a50dbdc1a",
+    "reason": "Corrupt Pioneer package a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53 has invalid signature or unrecovered firmware tail; replaced with verified original 38f4712cf11dd380f33e1811c578f335a790db1a423d60945d603c36b85f28d6"
+  },
+  {
+    "key": "pioneer/BDC-TD05/SAT%208291/1.01/a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53.tar",
+    "normalSha256": "e89128bdee1c9d25f3c1db0a2631de485b62b2e4890eed80a3a4f05a50dbdc1a",
+    "reason": "Corrupt Pioneer package a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53 has invalid signature or unrecovered firmware tail; replaced with verified original 38f4712cf11dd380f33e1811c578f335a790db1a423d60945d603c36b85f28d6"
+  },
+  {
+    "key": "fw/mediatek/1206ed98cff08c8a428f369858303be5f3f328f0287def60ebe7ffd952b728cb.tar",
+    "imageSha256": "2e243a167739d4e46ad7095db7cb5452c2980579a0cb359208945a0bbe0f3f29",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/0b4ec4a86ef5502443c4a48b739d2e9c08ef6a6ba74733c0bad4c8783c1ff810.tar",
+    "imageSha256": "663c1b55e479f83e958b5addc430df1bfa290e5350ef9d036ca26e4acd653a82",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/1bcd0e883b915e5f6a2dc72ee803642f4a65ccc8d0befa72f683f4de89097b02.tar",
+    "imageSha256": "d00191537a8f38405bbe33bac43ac97c254f019531ef7bf998d95c2214e8807f",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/1c0a0fba097a48f45399243169be2c823876c92bd430e3c9dcc56938d885f5e3.tar",
+    "imageSha256": "21e1f77e0ea0bd8b8d6b324f5ae4d68070d6bb5394f83bbaa5032cedde441cc1",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/470bf70ca7f873a3d1340607f7de3c64ad76c026639c915437ea592e1643634b.tar",
+    "imageSha256": "afeab3e66cbdf9973e3127162551f111b9d048246b5581885b99a44c38f18ee6",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/552e975c941e7b92ca646529abdcdb0b7b080d5dd25dd28494ad20ce6dede0a6.tar",
+    "imageSha256": "0d085b4c854bfc03c08b2e7fde1b25096bdf888eaa65adbb28a10b529ced07ac",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/b7158dc45477061c54d4bada7beb6a06f361b1388d03f4bb8cbdc8198de37fc9.tar",
+    "imageSha256": "ce732330b3cabca5f6b0cbcf1b6fc1abd4117d6fd047fe4f9330b6b25337b521",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/c97afcdf23812263449367ec4b12c6bd2f1f847de5fa8cab6a696fceb79b0951.tar",
+    "imageSha256": "64cff02c3db347a2100284a406687a5a911463d65808db5c5c811a4cefc4fe57",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/0a47d1e62779f5180248b9ab5b3f3ec4b2dde183d14e205477e3f3e9894b8c33.tar",
+    "imageSha256": "4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/2762f7cf5b60fc0b9be352e59aa6cb6f5413c6d91b1843f4048c0a29f1048884.tar",
+    "imageSha256": "734ccb11f0b4763a27b358655a14ce60f4801cf131a936d14ee7dd86d34e2c1f",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/88a0ed80c03fcfcebf9ba880f153b3f5128afdb304eae612eb68f2a001901e40.tar",
+    "imageSha256": "79e8df06c776ed40523a5b530d1559e561fbefb71a9e981d301a92b7a6b5c964",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/b7ef4a97234093d598f2f7b5047cab8dbbbf2193a508df44f7e41c31f8b7a51f.tar",
+    "imageSha256": "22edcf493f22a3e3ed66ba8b4cdd79ccc49533d9b8e7f06b6beade8cab2a9039",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/d3b71fe391f8a5d37c1c406e326a4f266a0b4ba332d56e3a1769b20306d9244b.tar",
+    "imageSha256": "0bd77fed4ec9df86aab9d8550f3182a8a95f4c27ee8342119b1b1f9f2c8303e0",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/e696b7bb36ced8010b2a0b8dd0b233d97633c01ebb4ef5944d4ec8d410b1cd5b.tar",
+    "imageSha256": "b2139fd99d7c5b7fc5b525e53730b2f0f7108ffd2fd1ea4aab173949aa5ff44e",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/pioneer/6dd6f7b702006545822c43f3ee3ec2672509d6e73da6ef780171e92c9ede66a9.tar",
+    "normalSha256": "c55b30ab2c94b7bb50ff356fcbb45377ab14ba02f6ceae696fc1d3ecef92091b",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/9ea9452c2df7a5acd35f27689b65c5e4a78a2c33038b4b4277f246d164b9c3ac.tar",
+    "normalSha256": "886808693f722dfd24858965edef155a57d7ff02ab8a29b4dfb259b2d2277b57",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/a05887c4612692837137c5c6583db637959801880f1184a62dcafbb0af93b181.tar",
+    "normalSha256": "2d1a289d11051c216b7d72d2957635aadf642650913fce88e0db686b2fd7ff83",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/a9781092d856e7980a8994e126e818c4dc232ea5465ceb126388e9d2139c0ec0.tar",
+    "normalSha256": "872503623210a08f1d708e42416d442649e7b7af6a6e8c71b98e6888abd554c8",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/c4ed0a8ab1ea804a324ca4d655eb0d9634aed24c7c03f600ba0a9c321093aced.tar",
+    "normalSha256": "29996e476cab1613a04ca3353936f74c95846c7b08d7ef90ed044721a9b74861",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/2e3c3732df51c8f7b9acd7b41bb48247c204331f112ea5d903dd180626a6b070.tar",
+    "normalSha256": "7c128ae41440fb9ac33d968e96cd1222d940edae5fbd6a10bd48698e30f615c4",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/abd216a14ca476afdea1c958956b770fb89e578899324a4e565a60c6675192f6.tar",
+    "normalSha256": "703a9296711f9bd12cd407736c6d869022362bc601eb1d10bbbd4a33c7448c03",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/75c1afe6a2b7587192a7e5af76a4dc709369a1c734346dc0fd6dbc6204971a2c.tar",
+    "normalSha256": "326fe7eaf5995cabc95cf8b85f9f2dd9e49578934928d0bf672f9940a6c87770",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/33f709091130f09cee305579cdb588f50c919d9ac4dd4e72ba6d6a574a664adc.tar",
+    "normalSha256": "ba6e66e7b033092e0a77f9ae4a3e9408a8c1793c2e89d94e86c88886c1d4a49d",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/2d1ed2820b46dddd1379507d59c874485dd3b3834b6b3e837493435bd94e26a2.tar",
+    "normalSha256": "678d122936a81d494577d508d1e4b6eb385deb62c3e5b4efb5574228a193f0d8",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/58cc77b68169dd720dd2d7894f7769777b76baa10fcdd518930872088c53de46.tar",
+    "normalSha256": "bb95a4dc7befae6ede0ae199c46540a64f648869a7d99b24509a43b5e2794f42",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/b82cff7c52c222afb77897b364312d3d127a43ce8bdcc82ee0eef6109d7d080e.tar",
+    "normalSha256": "1a6929cdf0a0b7000b62a73a09b8af33f6a33b0589e012a35733d4801aa7d316",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/13ef71711ad1b43db33d875f45ae167375976cd78d7b776ba0729f14f71d5bba.tar",
+    "normalSha256": "5c2ad360dee1f5a14e5f435082d4933807f479986dfe2fed4d819600f7bc5601",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/c79e803bc7f78dd3262b3290689b381c94c13b181bc65f5651547f7010f893ee.tar",
+    "normalSha256": "87552592a68d3c071fbb728e4825af1d35ab9af5393465d9e676b4b799044007",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/e11eb320d67731b8a28cfd322892bb7dd0d417d49dad227378e70218fd02259b.tar",
+    "normalSha256": "862a56d838d496c9f113258f15b2835edd5c17ed037ba6e3a883f2a8bc32935a",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/08fd740f5c66fce9343ffc2c9b0eebd2080a99c5e262bd90bd320991cf84603f.tar",
+    "normalSha256": "c5ad632ded3e4a2fb8d231ad6044687253e84ac100ba90b80ab7e290d97bd94c",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/17c6a258c1deea661f2fab6ce20770dded9c1859888628c351161b1fd43702f6.tar",
+    "normalSha256": "914e40c26b09e3c8946ab38742b9fee59dc9f266d4bc2daf442cab50e51baa1b",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/c02b7291346852f930a4691d9689eadd6b2a4991d9a300ed8e6cc0664569da71.tar",
+    "normalSha256": "953c3f1084698f20f37991457dc2af69ba1c1ec56b478eac9a0e6b98b0002632",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/e2eadf6baf2dc078857e5f12230e32ebe5cd4f5d6237a2b5e00c73ed1425322c.tar",
+    "normalSha256": "c63df47d8d8b575b42f3a9cf5e5d749d82b6b771374f567b6fd358f8a165827b",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/17ce1e1001c1025f1c07c339eae3d01ae5426b65b3224c655769ed614bf5e40c.tar",
+    "normalSha256": "0dbf0753a89e3e623a89a02b397ecde0229ea62c84e16f909b1961967f0508d5",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/cb6b2d88f52f99378960f6170c07cb3de5bb79b6bec17e78b02901f5e84bd35b.tar",
+    "normalSha256": "6fcead9945a84d4c9ba84b252b1375878bca6bd563edab0cf9b934d8032e650b",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/BH16NS55_1.01_ce732330.bin",
+    "imageSha256": "ce732330b3cabca5f6b0cbcf1b6fc1abd4117d6fd047fe4f9330b6b25337b521",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/BH16NS55_1.02_64cff02c.bin",
+    "imageSha256": "64cff02c3db347a2100284a406687a5a911463d65808db5c5c811a4cefc4fe57",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/BU40N_1.00_0bd77fed.bin",
+    "imageSha256": "0bd77fed4ec9df86aab9d8550f3182a8a95f4c27ee8342119b1b1f9f2c8303e0",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BU40N_1.00_22edcf49.bin",
+    "imageSha256": "22edcf493f22a3e3ed66ba8b4cdd79ccc49533d9b8e7f06b6beade8cab2a9039",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BU40N_1.00_4c2e0b2d.bin",
+    "imageSha256": "4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BU40N_1.00_734ccb11.bin",
+    "imageSha256": "734ccb11f0b4763a27b358655a14ce60f4801cf131a936d14ee7dd86d34e2c1f",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BU40N_1.00_b2139fd9.bin",
+    "imageSha256": "b2139fd99d7c5b7fc5b525e53730b2f0f7108ffd2fd1ea4aab173949aa5ff44e",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BW-16D1HT_3.01_2e243a16.bin",
+    "imageSha256": "2e243a167739d4e46ad7095db7cb5452c2980579a0cb359208945a0bbe0f3f29",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/BW-16D1HT_3.02_0d085b4c.bin",
+    "imageSha256": "0d085b4c854bfc03c08b2e7fde1b25096bdf888eaa65adbb28a10b529ced07ac",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BW-16D1HT_3.02_21e1f77e.bin",
+    "imageSha256": "21e1f77e0ea0bd8b8d6b324f5ae4d68070d6bb5394f83bbaa5032cedde441cc1",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BW-16D1HT_3.02_663c1b55.bin",
+    "imageSha256": "663c1b55e479f83e958b5addc430df1bfa290e5350ef9d036ca26e4acd653a82",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BW-16D1HT_3.02_afeab3e6.bin",
+    "imageSha256": "afeab3e66cbdf9973e3127162551f111b9d048246b5581885b99a44c38f18ee6",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BW-16D1HT_3.02_d0019153.bin",
+    "imageSha256": "d00191537a8f38405bbe33bac43ac97c254f019531ef7bf998d95c2214e8807f",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
   }
 ]

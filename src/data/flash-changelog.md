@@ -3,10 +3,37 @@
 Customer-visible changes to freemkv Flash and freemkv Modify, newest first.
 Versions are independent of the freemkv ripping applications.
 
+## [0.15.1] - Unreleased
+
+### freemkv Flash
+
+- Give clearer guidance for corrupt firmware files and updates whose required settings have not been validated.
+- Distinguish the factory product code from the installed firmware model, and label the factory test date accurately in drive details.
+
+## [0.15.0] - 2026-10-24
+
+### freemkv Flash
+
+- Keep prepared recovery firmware through confirmation and check the connected drive again before writing.
+- Show reading, writing, restart and verification progress across supported drives.
+- Explain incomplete firmware and operation failures in the selected language, including whether anything was written and what to do next.
+- Verify Pioneer updates through firmware readback and startup while reporting Kernel, Normal and startup results separately.
+
+## [0.14.5] - 2026-10-24
+
+### freemkv Flash
+
+- Let Recovery explicitly bypass a confirmed Pioneer family mismatch with a translated risk warning and a fresh five-digit confirmation. The override applies to one Recovery attempt; regular Flash continues to enforce the family check.
+- Identify Pioneer and MediaTek drives from validated protocol responses, including supported OEM-branded hardware, while preserving transport errors and unsupported-command details.
+- Verify Pioneer firmware through exact Kernel and Normal readbacks and startup evidence, and report each result separately.
+- During Recovery, an unsupported-media readiness response can proceed to the existing target identity and exact readback checks. The response alone never counts as verification, and normal Flash readiness checks are unchanged.
+- Separate exact content, filename, version direction and hardware-family evidence in firmware comparisons.
+
 ## [0.14.4] - 2026-10-23
 
 ### freemkv Flash
 
+- Show CLI drive information in grouped, aligned sections using the same identity and capability fields as the GUI. Keep native transport traces in diagnostic logs instead of flooding the terminal.
 - Accept standalone BIN files and TAR packages for MediaTek in both Flash and Recovery. Pioneer updates continue to require TAR packages. File pickers and validation now share the same backend format rules.
 - Use pioneer-optical 1.0.2 to analyze compressed and uncompressed firmware consistently for hardware families, UHD capability and Kernel ABI requirements.
 - Track Pioneer FE9F interface setup as a family signal, including explicit zero-valued register initialization writes.

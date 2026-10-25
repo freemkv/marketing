@@ -5,6 +5,7 @@
 // Names (retail, OEM labels, drive-reported strings) are aliases that point at
 // one or more identities. A drive only takes firmware for its own identity;
 // other IDs on the same hardware are listed as cross-flash targets.
+import { publicOriginDetails } from './firmware-origin.mjs';
 import { verificationKey } from './firmware-verification-catalog.mjs';
 
 export const DISCORD_URL = 'https://discord.gg/yu7xMGTyek';
@@ -78,6 +79,17 @@ function pushUnique(list, value) {
  *    already in the v2 catalog are skipped, the rest are adapted so nothing
  *    currently downloadable disappears (e.g. MediaTek files without hoard bytes).
  */
+export function validateCrossflashCoverage(catalog, crossflash) {
+  // The flasher scans release packages (.tar); legacy raw images are not
+  // crossflash inputs and must never be presented as evaluated packages.
+  const expected = [...new Set(catalog.identities.flatMap(i => i.revisions.flatMap(r => r.packages
+    .filter(p => !p.key || p.key.endsWith('.tar')).map(p => p.sha256))))].sort();
+  const actual = crossflash?.evaluated_packages;
+  if (!Array.isArray(actual) || actual.length !== expected.length || [...actual].sort().some((s, n) => s !== expected[n])) {
+    throw new Error('Crossflash graph does not cover the current firmware catalog. Regenerate it with the flasher before publishing.');
+  }
+}
+
 export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], crossflash = null } = {}) {
   const identities = new Map();
   const aliases = new Map(); // compact|kind -> alias
@@ -87,7 +99,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], c
   function identity(key, init) {
     if (!identities.has(key)) identities.set(key, {
       key, family: init.family, hardware: init.hardware, destination: init.destination || 'GENERAL',
-      platforms: [], embeddedModels: [], brands: [], revisions: [], candidates: [], missing: [],
+      platforms: [], embeddedModels: [], primaryModels: [], brands: [], revisions: [], candidates: [], missing: [],
       uhd: false,
     });
     return identities.get(key);
@@ -118,7 +130,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], c
     for (const src of catalog.identities) {
       const ident = identity(src.key, { family: src.family, hardware: src.hardware, destination: src.destination });
       for (const p of src.platforms ?? []) pushUnique(ident.platforms, p);
-      for (const m of src.embedded_models ?? []) pushUnique(ident.embeddedModels, m);
+      for (const m of src.embedded_models ?? []) { pushUnique(ident.embeddedModels, m); pushUnique(ident.primaryModels, m); }
       for (const r of src.revisions ?? []) {
         if (!r.packages?.length) { pushUnique(ident.missing, r.revision); continue; }
         for (const p of r.packages) {
@@ -133,6 +145,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], c
             kernelSha256: p.kernel_sha256 ?? null, imageSha256: p.image_sha256 ?? null,
             advertisedVersions: [...(p.advertised_versions ?? [])], generatedDate: p.generated_date ?? null,
             embeddedModel: p.embedded_model ?? null, brand: p.brand ?? null, buildId: p.build_id ?? null,
+            originDetails: p.origin_details ?? [], recommended: p.recommended === true,
             provenance: typeof p.provenance === 'string' ? p.provenance : null,
             chipset: isPioneer ? 'Pioneer' : (src.platforms?.[0] ?? null),
             modifiable: isPioneer ? false : Boolean(mtkBySha.get(p.image_sha256 ?? p.sha256)?.modifiable),
@@ -219,9 +232,19 @@ function safeDecode(s) {
   try { return decodeURIComponent(s); } catch { return s; }
 }
 
+function originRank(pkg) {
+  const origins = pkg.originDetails ?? [];
+  const dump = origins.some(o => o.category === 'dump') ? 1 : 0;
+  const names = origins.flatMap(o => o.originals ?? []).map(o => String(o.filename ?? '').toLowerCase());
+  const container = names.some(n => n.endsWith('.exe')) ? 0 : names.some(n => /\.(zip|rar|7z)$/.test(n)) ? 1 : 2;
+  return [dump, container];
+}
 function packageOrder(a, b) {
+  const ar = originRank(a), br = originRank(b);
+  if (a.recommended !== b.recommended) return Number(Boolean(b.recommended)) - Number(Boolean(a.recommended));
+
   const ka = PIONEER_KERNEL_FIRST[a.selection] ?? 6, kb = PIONEER_KERNEL_FIRST[b.selection] ?? 6;
-  return ka - kb || String(a.sha256).localeCompare(String(b.sha256));
+  return ka - kb || ar[0] - br[0] || ar[1] - br[1] || String(a.sha256).localeCompare(String(b.sha256));
 }
 
 /** Build lookup tables once; searches then stay cheap for thousands of rows. */
@@ -297,6 +320,26 @@ export function modelVersionSummary(page) {
   return { total, byChip: Object.entries(byChip).sort((a, b) => b[1] - a[1]) };
 }
 
+// Directed version-to-version routes, using only the flasher's admitted links.
+// Package variants and retail aliases do not multiply a route. Future and
+// incomplete candidates are deliberately absent from this graph.
+export function crossflashSummary(data, page) {
+  const names = new Map(page.identities.map(i => [i.key, compact(i.n)]));
+  const packages = new Map();
+  for (const i of data.identities) for (const r of i.revisions) for (const p of r.packages) {
+    packages.set(p.sha256, { i, r, p });
+  }
+  const routes = new Set(), uhd = new Set();
+  for (const [sha, source] of packages) for (const targetSha of data.crossflash[sha] ?? []) {
+    const target = packages.get(targetSha);
+    if (!target || source.i.key === target.i.key || names.get(source.i.key) === names.get(target.i.key)) continue;
+    const key = JSON.stringify([source.i.key, source.r.revision, target.i.key, target.r.revision]);
+    routes.add(key);
+    if (!source.p.uhd && target.p.uhd) uhd.add(key);
+  }
+  return { total: routes.size, uhd: uhd.size };
+}
+
 export function hostedSummary(data) {
   const byChip = {};
   let total = 0;
@@ -317,7 +360,6 @@ export function hostedSummary(data) {
 // reports (INQUIRY), then the retail name, then old site/download names. One rule
 // for search entries, card titles and Cross Flash headings. File/release names are
 // search terms only.
-const MEDIA_PREFIX = /^(?:BD-?RE|BD-?RW|BD-?ROM|BD-?R|DVD-?RW|DVD-?RAM|DVD-?ROM|BDDVDRW|CDDVDW|DVDRW)\s+(?=\S)/i;
 const NAME_RANK = { inquiry: 0, retail: 1, legacy: 2, 'release-note': 3, oem: 4 };
 const OEM_NAMES = { ASUS: 'ASUS', BUFFALO: 'Buffalo', HP: 'HP', TDK: 'TDK', TEAC: 'TEAC', MEMOREX: 'Memorex', MEDION: 'Medion', SONYDT: 'Sony' };
 
@@ -395,11 +437,8 @@ function chips(identity, pkg) {
   }
   const chip = pkg.chipset || identity.platforms.find(p => /^MT/.test(p));
   if (chip) out.push([chip]);
-  if (pkg.modifiable) out.push(['Modifiable', 'drive-fact-modifiable', 'freemkv-fw can modify this image']);
   if (pkg.media) out.push([pkg.media]);
-  if (pkg.variant) out.push([pkg.variant, 'drive-fact-variant', 'Region/SKU code']);
   if (pkg.confidence === 'hardware-verified') out.push(['Hardware-verified', 'drive-fact-verified', 'Proven on real hardware']);
-  else if (pkg.confidence === 'build-verified') out.push(['Build-verified', 'drive-fact-buildver', 'Strict build + KAT verified; not yet flashed & tested on hardware']);
   return out;
 }
 
@@ -431,7 +470,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     for (const r of i.revisions) {
       const p = r.packages.map(pkg => {
         packages.push({ s: pkg.sha256, f: String(pkg.filename ?? '').replace(/_GENERAL(?=_)/, ''), ...(keys ? { k: pkg.file ?? pkg.key } : {}), b: bytesLabel(pkg.bytes),
-          built: pkg.generatedDate || '', contents: contentsLabel(pkg), chips: chips(i, pkg) });
+          variant: pkg.variant || '', origin: publicOriginDetails(pkg.originDetails ?? []), built: pkg.generatedDate || '', contents: contentsLabel(pkg), chips: chips(i, pkg) });
         return packages.length - 1;
       });
       const best = r.packages[0];
@@ -456,16 +495,25 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
   for (const row of legacy) {
     // A package gains a new hash when its Kernel changes; its Normal does not.
     const ks = [...new Set((row.versions ?? []).map(v => shaKey.get(v.sha256) ?? normalKey.get(v.normalSha256)).filter(Boolean))];
-    addName(row.model, NAME_RANK.legacy, ks);
+    const isProtocolAlias = ks.length && ks.every(k => {
+      const i = data.identities[idIdx.get(k)];
+      return i.primaryModels?.length && i.embeddedModels.some(m => compact(m) === compact(row.model)) && !i.primaryModels.some(m => compact(m) === compact(row.model));
+    });
+    if (!isProtocolAlias) addName(row.model, NAME_RANK.legacy, ks);
   }
   const terms = new Map(data.identities.map(i => [i.key, [hardwareLabel(i), i.hardware, destinationLabel(i), identityBrand(i), ...i.platforms, ...i.embeddedModels]]));
   for (const a of data.aliases) {
     const ks = a.targets.filter(k => idIdx.has(k));
     for (const k of ks) terms.get(k).push(a.display);
-    // Drive-reported names lead with the media type ("BDRE BU40N" on HP
-    // units); the model is what follows.
-    const display = a.kind === 'inquiry' ? String(a.display).replace(MEDIA_PREFIX, '') : a.display;
-    if (a.kind in NAME_RANK) addName(display, NAME_RANK[a.kind], ks);
+    // Drive models are already normalized by the protocol identity API.
+    const display = a.display;
+    const protocolAlias = ks.length && ks.every(k => {
+      const i=data.identities[idIdx.get(k)];
+      return i.primaryModels?.length && i.embeddedModels.some(m=>compact(m)===compact(display)) && !i.primaryModels.some(m=>compact(m)===compact(display));
+    });
+    const brandedDuplicate = a.kind === 'oem' && ks.length && ks.every(k =>
+      data.identities[idIdx.get(k)].primaryModels?.some(m => compact(display) !== compact(m) && compact(display).endsWith(compact(m))));
+    if (a.kind in NAME_RANK && !brandedDuplicate && !protocolAlias) addName(display, NAME_RANK[a.kind], ks);
   }
   // Every identity needs at least one listed name.
   const named = new Set([...names.values()].flatMap(r => [...r.keys]));
@@ -564,7 +612,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
       : supported(rows[b]) - supported(rows[a]) || namedEdition(rows[b]) - namedEdition(rows[a]) || compareRevision(versions[rows[b].v].r, versions[rows[a].v].r) ||
         realId(rows[b].i) - realId(rows[a].i) || String(rows[a].i.hardware).localeCompare(String(rows[b].i.hardware)) || a - b);
     const a = alsoSoldAs(row.m, ids);
-    return { m: row.m, t: searchText([row.m, ...new Set(ids.map(identityBrand))]), v: rows.map(({ v }, n) => [v, labels[n]]), o,
+    return { m: row.m, t: searchText([row.m, ...new Set(ids.map(identityBrand)), ...ids.flatMap(i => terms.get(i.key) ?? [])]), v: rows.map(({ v }, n) => [v, labels[n]]), o,
       ...(a.length ? { a } : {}) };
   });
   return { packages, versions, identities: identities.map(x => x.out), models };

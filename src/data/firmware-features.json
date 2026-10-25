@@ -1,5 +1,5 @@
 {
- "note": "Per-firmware feature availability over the full 119-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from `freemkv-fw create --base --json`; per-feature `ok` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (93 images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, 25 images). Regenerate with scripts/firmware-features.mjs — do not hand-edit.",
+ "note": "Per-firmware feature availability over the full 106-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from `freemkv-fw create --base --json`; per-feature `ok` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (80 images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, 25 images). Regenerate with scripts/firmware-features.mjs — do not hand-edit.",
  "flags": [
   "Speed",
   "Region",
@@ -10,21 +10,21 @@
   "Bus"
  ],
  "counts": {
-  "total": 119,
+  "total": 106,
   "base_only": 0,
-  "feature_bearing": 118,
+  "feature_bearing": 105,
   "stock_only": 1,
   "hardware_verified": 0,
-  "build_verified": 114
+  "build_verified": 101
  },
  "per_flag": {
-  "Speed": 93,
-  "Region-free": 118,
-  "UHD": 93,
-  "BD": 93,
-  "HRL Bypass": 118,
-  "AKE Bypass": 118,
-  "Bus Decrypt": 118
+  "Speed": 80,
+  "Region-free": 105,
+  "UHD": 80,
+  "BD": 80,
+  "HRL Bypass": 105,
+  "AKE Bypass": 105,
+  "Bus Decrypt": 105
  },
  "images": [
   {
@@ -1791,10 +1791,10 @@
     "de_off": 2015318,
     "speed_gate": 101090,
     "region_emitter": 1329766,
-    "ake_gate": 0,
+    "ake_gate": 1485066,
     "uhd_stub_va": 0,
-    "bd_stub_va": 0,
-    "hrl_sites": 0
+    "bd_stub_va": 66908,
+    "hrl_sites": 1
    },
    "r2_key": "MT1959/BC-12B1ST_3.01_8961b80b.bin",
    "lineage": "MT1959-lineage"
@@ -1860,10 +1860,10 @@
     "de_off": 2015318,
     "speed_gate": 101090,
     "region_emitter": 1329858,
-    "ake_gate": 0,
+    "ake_gate": 1485158,
     "uhd_stub_va": 0,
-    "bd_stub_va": 0,
-    "hrl_sites": 0
+    "bd_stub_va": 66908,
+    "hrl_sites": 1
    },
    "r2_key": "MT1959/BC-12B1ST_3.11_ae0c0313.bin",
    "lineage": "MT1959-lineage"
@@ -1931,7 +1931,7 @@
     "region_emitter": 1330286,
     "ake_gate": 1485478,
     "uhd_stub_va": 0,
-    "bd_stub_va": 99240,
+    "bd_stub_va": 99224,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BC-12D2HT_3.00_dd03cdae.bin",
@@ -1998,10 +1998,10 @@
     "de_off": 2015318,
     "speed_gate": 101090,
     "region_emitter": 1329766,
-    "ake_gate": 0,
+    "ake_gate": 1485066,
     "uhd_stub_va": 0,
-    "bd_stub_va": 0,
-    "hrl_sites": 0
+    "bd_stub_va": 66908,
+    "hrl_sites": 1
    },
    "r2_key": "MT1959/BC-12D2HT_3.01_93ea068d.bin",
    "lineage": "MT1959-lineage"
@@ -2067,10 +2067,10 @@
     "de_off": 2015318,
     "speed_gate": 101090,
     "region_emitter": 1329858,
-    "ake_gate": 0,
+    "ake_gate": 1485158,
     "uhd_stub_va": 0,
-    "bd_stub_va": 0,
-    "hrl_sites": 0
+    "bd_stub_va": 66908,
+    "hrl_sites": 1
    },
    "r2_key": "MT1959/BC-12D2HT_3.11_9f5bc003.bin",
    "lineage": "MT1959-lineage"
@@ -2138,7 +2138,7 @@
     "region_emitter": 1167672,
     "ake_gate": 1284406,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405936,
+    "bd_stub_va": 1405900,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BE16NU50_1.01_9c46e697.bin",
@@ -2207,7 +2207,7 @@
     "region_emitter": 1167360,
     "ake_gate": 1284210,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405768,
+    "bd_stub_va": 1405732,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BE16NU50_1.02_2b3ea41f.bin",
@@ -2345,7 +2345,7 @@
     "region_emitter": 1166780,
     "ake_gate": 1283630,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405156,
+    "bd_stub_va": 1405120,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BH14NS50_1.01_4ef56002.bin",
@@ -2414,7 +2414,7 @@
     "region_emitter": 1168278,
     "ake_gate": 1285142,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1407540,
+    "bd_stub_va": 1407504,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BH14NS58_1.00_53d2cdc3.bin",
@@ -2483,7 +2483,7 @@
     "region_emitter": 1167998,
     "ake_gate": 1284986,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1407460,
+    "bd_stub_va": 1407424,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BH14NS58_1.01_eb0e2e72.bin",
@@ -2552,7 +2552,7 @@
     "region_emitter": 1166960,
     "ake_gate": 1283694,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405188,
+    "bd_stub_va": 1405152,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BH16NS40_1.02_acbe782e.bin",
@@ -2621,7 +2621,7 @@
     "region_emitter": 1166640,
     "ake_gate": 1283490,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405012,
+    "bd_stub_va": 1404976,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BH16NS40_1.03_a5bb75b8.bin",
@@ -2690,7 +2690,7 @@
     "region_emitter": 1166768,
     "ake_gate": 1283618,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405156,
+    "bd_stub_va": 1405120,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BH16NS40_1.04_bc4e6126.bin",
@@ -2757,10 +2757,10 @@
     "de_off": 2015318,
     "speed_gate": 101122,
     "region_emitter": 1167536,
-    "ake_gate": 0,
+    "ake_gate": 1284394,
     "uhd_stub_va": 0,
-    "bd_stub_va": 0,
-    "hrl_sites": 0
+    "bd_stub_va": 1781896,
+    "hrl_sites": 1
    },
    "r2_key": "MT1959/BH16NS40_1.05_dd27dc39.bin",
    "lineage": "MT1959-lineage"
@@ -2828,148 +2828,10 @@
     "region_emitter": 1166640,
     "ake_gate": 1283490,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405012,
+    "bd_stub_va": 1404976,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BH16NS50_1.01_b7a368da.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "ce732330b3cabca5f6b0cbcf1b6fc1abd4117d6fd047fe4f9330b6b25337b521",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BH16NS55_ce732330b3cabca5.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "LG",
-   "vendor": "HL-DT-ST",
-   "model": "BH16NS55",
-   "rev": "1.01",
-   "media": "BD/UHD",
-   "variant": "N000500",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1403964,
-    "boot_stub_va": 1404752,
-    "boot_init_site": 1311210,
-    "de_off": 2015318,
-    "speed_gate": 101122,
-    "region_emitter": 1166912,
-    "ake_gate": 1283646,
-    "uhd_stub_va": 0,
-    "bd_stub_va": 1405140,
-    "hrl_sites": 1
-   },
-   "r2_key": "MT1959/BH16NS55_1.01_ce732330.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "64cff02c3db347a2100284a406687a5a911463d65808db5c5c811a4cefc4fe57",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BH16NS55_64cff02c3db347a2.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "LG",
-   "vendor": "HL-DT-ST",
-   "model": "BH16NS55",
-   "rev": "1.02",
-   "media": "BD/UHD",
-   "variant": "N001200",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1404012,
-    "boot_stub_va": 1404800,
-    "boot_init_site": 1311258,
-    "de_off": 2015318,
-    "speed_gate": 101122,
-    "region_emitter": 1166960,
-    "ake_gate": 1283694,
-    "uhd_stub_va": 0,
-    "bd_stub_va": 1405188,
-    "hrl_sites": 1
-   },
-   "r2_key": "MT1959/BH16NS55_1.02_64cff02c.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -3035,7 +2897,7 @@
     "region_emitter": 1166960,
     "ake_gate": 1283694,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405188,
+    "bd_stub_va": 1405152,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BH16NS55_1.02_bdfd6f29.bin",
@@ -3104,7 +2966,7 @@
     "region_emitter": 1166640,
     "ake_gate": 1283490,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405012,
+    "bd_stub_va": 1404976,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BH16NS55_1.03_0bfdd300.bin",
@@ -3173,7 +3035,7 @@
     "region_emitter": 1166768,
     "ake_gate": 1283618,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405156,
+    "bd_stub_va": 1405120,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BH16NS55_1.04_394e6f8d.bin",
@@ -3240,10 +3102,10 @@
     "de_off": 2015318,
     "speed_gate": 101122,
     "region_emitter": 1167540,
-    "ake_gate": 0,
+    "ake_gate": 1284398,
     "uhd_stub_va": 0,
-    "bd_stub_va": 0,
-    "hrl_sites": 0
+    "bd_stub_va": 1781876,
+    "hrl_sites": 1
    },
    "r2_key": "MT1959/BH16NS55_1.05_5f3fa17d.bin",
    "lineage": "MT1959-lineage"
@@ -3309,10 +3171,10 @@
     "de_off": 2015318,
     "speed_gate": 101122,
     "region_emitter": 1167508,
-    "ake_gate": 0,
+    "ake_gate": 1284366,
     "uhd_stub_va": 0,
-    "bd_stub_va": 0,
-    "hrl_sites": 0
+    "bd_stub_va": 1781896,
+    "hrl_sites": 1
    },
    "r2_key": "MT1959/BH16NS55_1.05_ca7e8db8.bin",
    "lineage": "MT1959-lineage"
@@ -3380,7 +3242,7 @@
     "region_emitter": 1168126,
     "ake_gate": 1284990,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1407388,
+    "bd_stub_va": 1407352,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BH16NS58_1.00_6d9fdb2b.bin",
@@ -3449,7 +3311,7 @@
     "region_emitter": 1167862,
     "ake_gate": 1284850,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1407324,
+    "bd_stub_va": 1407288,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BH16NS58_1.01_ccc97e4f.bin",
@@ -3518,7 +3380,7 @@
     "region_emitter": 1167982,
     "ake_gate": 1284970,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1407452,
+    "bd_stub_va": 1407416,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BH16NS58_1.02_4f4e63cd.bin",
@@ -3586,8 +3448,8 @@
     "speed_gate": 113410,
     "region_emitter": 1147896,
     "ake_gate": 1266420,
-    "uhd_stub_va": 1389488,
-    "bd_stub_va": 1389544,
+    "uhd_stub_va": 1389452,
+    "bd_stub_va": 1389508,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BH16NS60_1.00_580d867c.bin",
@@ -3656,7 +3518,7 @@
     "region_emitter": 1170734,
     "ake_gate": 1287254,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1406852,
+    "bd_stub_va": 1406816,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BP50NB40_1.00_c88a6901.bin",
@@ -3725,7 +3587,7 @@
     "region_emitter": 1145026,
     "ake_gate": 1261658,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1382268,
+    "bd_stub_va": 1382232,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BP50NB40_1.01_961acab1.bin",
@@ -3794,7 +3656,7 @@
     "region_emitter": 1145498,
     "ake_gate": 1262122,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1382740,
+    "bd_stub_va": 1382704,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BP50NB40_1.02_a344e289.bin",
@@ -3932,7 +3794,7 @@
     "region_emitter": 1145026,
     "ake_gate": 1261658,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1382268,
+    "bd_stub_va": 1382232,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BP55EB40_1.01_e60a4ce0.bin",
@@ -4001,7 +3863,7 @@
     "region_emitter": 1145522,
     "ake_gate": 1262146,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1382764,
+    "bd_stub_va": 1382728,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BP55EB40_1.02_e64c4ca5.bin",
@@ -4069,8 +3931,8 @@
     "speed_gate": 113584,
     "region_emitter": 1153252,
     "ake_gate": 1271684,
-    "uhd_stub_va": 1393864,
-    "bd_stub_va": 1393920,
+    "uhd_stub_va": 1393828,
+    "bd_stub_va": 1393884,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BP60NB10_1.00_f60b037f.bin",
@@ -4138,80 +4000,11 @@
     "speed_gate": 113584,
     "region_emitter": 1153580,
     "ake_gate": 1272004,
-    "uhd_stub_va": 1394168,
-    "bd_stub_va": 1394224,
+    "uhd_stub_va": 1394132,
+    "bd_stub_va": 1394188,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BP60NB10_1.01_fb9174aa.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "0bd77fed4ec9df86aab9d8550f3182a8a95f4c27ee8342119b1b1f9f2c8303e0",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BU40N_0bd77fed4ec9df86.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "LG",
-   "vendor": "HL-DT-ST",
-   "model": "BU40N",
-   "rev": "1.00",
-   "media": "BD/UHD",
-   "variant": "N000103",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1390952,
-    "boot_stub_va": 1391740,
-    "boot_init_site": 1299496,
-    "de_off": 2015318,
-    "speed_gate": 113442,
-    "region_emitter": 1153168,
-    "ake_gate": 1271188,
-    "uhd_stub_va": 1392096,
-    "bd_stub_va": 1392152,
-    "hrl_sites": 3
-   },
-   "r2_key": "MT1959/BU40N_1.00_0bd77fed.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -4276,287 +4069,11 @@
     "speed_gate": 113442,
     "region_emitter": 1153168,
     "ake_gate": 1271188,
-    "uhd_stub_va": 1392096,
-    "bd_stub_va": 1392152,
+    "uhd_stub_va": 1392060,
+    "bd_stub_va": 1392116,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_1.00_221ad35b.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "22edcf493f22a3e3ed66ba8b4cdd79ccc49533d9b8e7f06b6beade8cab2a9039",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BU40N_22edcf493f22a3e3.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "LG",
-   "vendor": "HL-DT-ST",
-   "model": "BU40N",
-   "rev": "1.00",
-   "media": "BD/UHD",
-   "variant": "N000103",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1390952,
-    "boot_stub_va": 1391740,
-    "boot_init_site": 1299496,
-    "de_off": 2015318,
-    "speed_gate": 113442,
-    "region_emitter": 1153168,
-    "ake_gate": 1271188,
-    "uhd_stub_va": 1392096,
-    "bd_stub_va": 1392152,
-    "hrl_sites": 3
-   },
-   "r2_key": "MT1959/BU40N_1.00_22edcf49.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BU40N_4c2e0b2d87ba5935.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "LG",
-   "vendor": "HL-DT-ST",
-   "model": "BU40N",
-   "rev": "1.00",
-   "media": "BD/UHD",
-   "variant": "N000103",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1390952,
-    "boot_stub_va": 1391740,
-    "boot_init_site": 1299496,
-    "de_off": 2015318,
-    "speed_gate": 113442,
-    "region_emitter": 1153168,
-    "ake_gate": 1271188,
-    "uhd_stub_va": 1392096,
-    "bd_stub_va": 1392152,
-    "hrl_sites": 3
-   },
-   "r2_key": "MT1959/BU40N_1.00_4c2e0b2d.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "734ccb11f0b4763a27b358655a14ce60f4801cf131a936d14ee7dd86d34e2c1f",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BU40N_734ccb11f0b4763a.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "LG",
-   "vendor": "HL-DT-ST",
-   "model": "BU40N",
-   "rev": "1.00",
-   "media": "BD/UHD",
-   "variant": "N000103",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1390952,
-    "boot_stub_va": 1391740,
-    "boot_init_site": 1299496,
-    "de_off": 2015318,
-    "speed_gate": 113442,
-    "region_emitter": 1153168,
-    "ake_gate": 1271188,
-    "uhd_stub_va": 1392096,
-    "bd_stub_va": 1392152,
-    "hrl_sites": 3
-   },
-   "r2_key": "MT1959/BU40N_1.00_734ccb11.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "b2139fd99d7c5b7fc5b525e53730b2f0f7108ffd2fd1ea4aab173949aa5ff44e",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BU40N_b2139fd99d7c5b7f.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "LG",
-   "vendor": "HL-DT-ST",
-   "model": "BU40N",
-   "rev": "1.00",
-   "media": "BD/UHD",
-   "variant": "N000103",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1390952,
-    "boot_stub_va": 1391740,
-    "boot_init_site": 1299496,
-    "de_off": 2015318,
-    "speed_gate": 113442,
-    "region_emitter": 1153168,
-    "ake_gate": 1271188,
-    "uhd_stub_va": 1392096,
-    "bd_stub_va": 1392152,
-    "hrl_sites": 3
-   },
-   "r2_key": "MT1959/BU40N_1.00_b2139fd9.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -4621,8 +4138,8 @@
     "speed_gate": 113442,
     "region_emitter": 1151978,
     "ake_gate": 1270324,
-    "uhd_stub_va": 1392000,
-    "bd_stub_va": 1392056,
+    "uhd_stub_va": 1391964,
+    "bd_stub_va": 1392020,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_1.01_103b9da9.bin",
@@ -4690,8 +4207,8 @@
     "speed_gate": 113442,
     "region_emitter": 1153180,
     "ake_gate": 1271696,
-    "uhd_stub_va": 1393268,
-    "bd_stub_va": 1393324,
+    "uhd_stub_va": 1393232,
+    "bd_stub_va": 1393288,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_1.02_1bbeb535.bin",
@@ -4759,8 +4276,8 @@
     "speed_gate": 113442,
     "region_emitter": 1153152,
     "ake_gate": 1271668,
-    "uhd_stub_va": 1393236,
-    "bd_stub_va": 1393292,
+    "uhd_stub_va": 1393200,
+    "bd_stub_va": 1393256,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_1.02_97bee5c5.bin",
@@ -4828,8 +4345,8 @@
     "speed_gate": 113442,
     "region_emitter": 1153668,
     "ake_gate": 1272184,
-    "uhd_stub_va": 1393764,
-    "bd_stub_va": 1393820,
+    "uhd_stub_va": 1393728,
+    "bd_stub_va": 1393784,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_1.03_64688690.bin",
@@ -4896,10 +4413,10 @@
     "de_off": 2015318,
     "speed_gate": 113442,
     "region_emitter": 1154292,
-    "ake_gate": 0,
-    "uhd_stub_va": 0,
-    "bd_stub_va": 0,
-    "hrl_sites": 0
+    "ake_gate": 1272816,
+    "uhd_stub_va": 66932,
+    "bd_stub_va": 1376816,
+    "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_1.04_5c1a4739.bin",
    "lineage": "MT1959-lineage"
@@ -4965,10 +4482,10 @@
     "de_off": 2015318,
     "speed_gate": 113442,
     "region_emitter": 1158492,
-    "ake_gate": 0,
-    "uhd_stub_va": 0,
-    "bd_stub_va": 0,
-    "hrl_sites": 0
+    "ake_gate": 1276940,
+    "uhd_stub_va": 66932,
+    "bd_stub_va": 1380940,
+    "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_1.05_fbfed0cc.bin",
    "lineage": "MT1959-lineage"
@@ -5104,8 +4621,8 @@
     "speed_gate": 113442,
     "region_emitter": 1147186,
     "ake_gate": 1265732,
-    "uhd_stub_va": 1387744,
-    "bd_stub_va": 1387800,
+    "uhd_stub_va": 1387708,
+    "bd_stub_va": 1387764,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_BN11_5c01c1fd.bin",
@@ -5173,8 +4690,8 @@
     "speed_gate": 113442,
     "region_emitter": 1147618,
     "ake_gate": 1266164,
-    "uhd_stub_va": 1388184,
-    "bd_stub_va": 1388240,
+    "uhd_stub_va": 1388148,
+    "bd_stub_va": 1388204,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_BN12_3d3badd6.bin",
@@ -5242,8 +4759,8 @@
     "speed_gate": 113442,
     "region_emitter": 1147638,
     "ake_gate": 1266184,
-    "uhd_stub_va": 1388208,
-    "bd_stub_va": 1388264,
+    "uhd_stub_va": 1388172,
+    "bd_stub_va": 1388228,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_BN12_c4d995f0.bin",
@@ -5311,8 +4828,8 @@
     "speed_gate": 113442,
     "region_emitter": 1154142,
     "ake_gate": 1272644,
-    "uhd_stub_va": 1395184,
-    "bd_stub_va": 1395240,
+    "uhd_stub_va": 1395148,
+    "bd_stub_va": 1395204,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_BU10_14d86e99.bin",
@@ -5380,8 +4897,8 @@
     "speed_gate": 113442,
     "region_emitter": 1153990,
     "ake_gate": 1272572,
-    "uhd_stub_va": 1395180,
-    "bd_stub_va": 1395236,
+    "uhd_stub_va": 1395144,
+    "bd_stub_va": 1395200,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_BU11_08d14869.bin",
@@ -5449,8 +4966,8 @@
     "speed_gate": 113442,
     "region_emitter": 1154478,
     "ake_gate": 1273060,
-    "uhd_stub_va": 1395684,
-    "bd_stub_va": 1395740,
+    "uhd_stub_va": 1395648,
+    "bd_stub_va": 1395704,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_BU12_920a89f9.bin",
@@ -5518,8 +5035,8 @@
     "speed_gate": 113486,
     "region_emitter": 1152698,
     "ake_gate": 1270744,
-    "uhd_stub_va": 1393100,
-    "bd_stub_va": 1393156,
+    "uhd_stub_va": 1393064,
+    "bd_stub_va": 1393120,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_BW41_3b9dd9b4.bin",
@@ -5587,8 +5104,8 @@
     "speed_gate": 113486,
     "region_emitter": 1152698,
     "ake_gate": 1270744,
-    "uhd_stub_va": 1393100,
-    "bd_stub_va": 1393156,
+    "uhd_stub_va": 1393064,
+    "bd_stub_va": 1393120,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_BW42_c68cd76b.bin",
@@ -5657,7 +5174,7 @@
     "region_emitter": 1144902,
     "ake_gate": 1261878,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1381948,
+    "bd_stub_va": 1381912,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BU40N_CB04_78f75561.bin",
@@ -5725,8 +5242,8 @@
     "speed_gate": 113442,
     "region_emitter": 1153074,
     "ake_gate": 1271632,
-    "uhd_stub_va": 1393472,
-    "bd_stub_va": 1393528,
+    "uhd_stub_va": 1393436,
+    "bd_stub_va": 1393492,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_FR07_4af842c0.bin",
@@ -5794,8 +5311,8 @@
     "speed_gate": 113442,
     "region_emitter": 1152998,
     "ake_gate": 1271712,
-    "uhd_stub_va": 1393916,
-    "bd_stub_va": 1393972,
+    "uhd_stub_va": 1393880,
+    "bd_stub_va": 1393936,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_TK03_c328b656.bin",
@@ -5863,8 +5380,8 @@
     "speed_gate": 113442,
     "region_emitter": 1154114,
     "ake_gate": 1272732,
-    "uhd_stub_va": 1395340,
-    "bd_stub_va": 1395396,
+    "uhd_stub_va": 1395304,
+    "bd_stub_va": 1395360,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU40N_U101_5f9abd3f.bin",
@@ -5932,8 +5449,8 @@
     "speed_gate": 113442,
     "region_emitter": 1153152,
     "ake_gate": 1271668,
-    "uhd_stub_va": 1393236,
-    "bd_stub_va": 1393292,
+    "uhd_stub_va": 1393200,
+    "bd_stub_va": 1393256,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU50N_1.00_20425a8a.bin",
@@ -6001,8 +5518,8 @@
     "speed_gate": 113486,
     "region_emitter": 1152330,
     "ake_gate": 1270288,
-    "uhd_stub_va": 1392548,
-    "bd_stub_va": 1392604,
+    "uhd_stub_va": 1392512,
+    "bd_stub_va": 1392568,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/BU50N_BW51_d1e4d3d7.bin",
@@ -6071,7 +5588,7 @@
     "region_emitter": 1165442,
     "ake_gate": 1282278,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1404340,
+    "bd_stub_va": 1404304,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BW-16D1H_A203_e9d8bcdd.bin",
@@ -6140,286 +5657,10 @@
     "region_emitter": 1165558,
     "ake_gate": 1282394,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1404468,
+    "bd_stub_va": 1404432,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BW-16D1H_A204_223e7e38.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "2e243a167739d4e46ad7095db7cb5452c2980579a0cb359208945a0bbe0f3f29",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BW-16D1HT_2e243a167739d4e4.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "ASUS",
-   "vendor": "ASUS",
-   "model": "BW-16D1HT",
-   "rev": "3.01",
-   "media": "BD/UHD",
-   "variant": "W001800",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1403084,
-    "boot_stub_va": 1403872,
-    "boot_init_site": 1310734,
-    "de_off": 2015318,
-    "speed_gate": 101122,
-    "region_emitter": 1165570,
-    "ake_gate": 1282278,
-    "uhd_stub_va": 0,
-    "bd_stub_va": 1404260,
-    "hrl_sites": 1
-   },
-   "r2_key": "MT1959/BW-16D1HT_3.01_2e243a16.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "0d085b4c854bfc03c08b2e7fde1b25096bdf888eaa65adbb28a10b529ced07ac",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BW-16D1HT_0d085b4c854bfc03.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "ASUS",
-   "vendor": "ASUS",
-   "model": "BW-16D1HT",
-   "rev": "3.02",
-   "media": "BD/UHD",
-   "variant": "W001800",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1403092,
-    "boot_stub_va": 1403880,
-    "boot_init_site": 1310738,
-    "de_off": 2015318,
-    "speed_gate": 101122,
-    "region_emitter": 1165574,
-    "ake_gate": 1282282,
-    "uhd_stub_va": 0,
-    "bd_stub_va": 1404268,
-    "hrl_sites": 1
-   },
-   "r2_key": "MT1959/BW-16D1HT_3.02_0d085b4c.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "21e1f77e0ea0bd8b8d6b324f5ae4d68070d6bb5394f83bbaa5032cedde441cc1",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BW-16D1HT_21e1f77e0ea0bd8b.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "ASUS",
-   "vendor": "ASUS",
-   "model": "BW-16D1HT",
-   "rev": "3.02",
-   "media": "BD/UHD",
-   "variant": "W001800",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1403092,
-    "boot_stub_va": 1403880,
-    "boot_init_site": 1310738,
-    "de_off": 2015318,
-    "speed_gate": 101122,
-    "region_emitter": 1165574,
-    "ake_gate": 1282282,
-    "uhd_stub_va": 0,
-    "bd_stub_va": 1404268,
-    "hrl_sites": 1
-   },
-   "r2_key": "MT1959/BW-16D1HT_3.02_21e1f77e.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "663c1b55e479f83e958b5addc430df1bfa290e5350ef9d036ca26e4acd653a82",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BW-16D1HT_663c1b55e479f83e.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "ASUS",
-   "vendor": "ASUS",
-   "model": "BW-16D1HT",
-   "rev": "3.02",
-   "media": "BD/UHD",
-   "variant": "W001800",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1403092,
-    "boot_stub_va": 1403880,
-    "boot_init_site": 1310738,
-    "de_off": 2015318,
-    "speed_gate": 101122,
-    "region_emitter": 1165574,
-    "ake_gate": 1282282,
-    "uhd_stub_va": 0,
-    "bd_stub_va": 1404268,
-    "hrl_sites": 1
-   },
-   "r2_key": "MT1959/BW-16D1HT_3.02_663c1b55.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -6485,148 +5726,10 @@
     "region_emitter": 1165574,
     "ake_gate": 1282282,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1404268,
+    "bd_stub_va": 1404232,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BW-16D1HT_3.02_784e017f.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "afeab3e66cbdf9973e3127162551f111b9d048246b5581885b99a44c38f18ee6",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BW-16D1HT_afeab3e66cbdf997.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "ASUS",
-   "vendor": "ASUS",
-   "model": "BW-16D1HT",
-   "rev": "3.02",
-   "media": "BD/UHD",
-   "variant": "W001800",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1403092,
-    "boot_stub_va": 1403880,
-    "boot_init_site": 1310738,
-    "de_off": 2015318,
-    "speed_gate": 101122,
-    "region_emitter": 1165574,
-    "ake_gate": 1282282,
-    "uhd_stub_va": 0,
-    "bd_stub_va": 1404268,
-    "hrl_sites": 1
-   },
-   "r2_key": "MT1959/BW-16D1HT_3.02_afeab3e6.bin",
-   "lineage": "MT1959-lineage"
-  },
-  {
-   "sha256": "d00191537a8f38405bbe33bac43ac97c254f019531ef7bf998d95c2214e8807f",
-   "bytes": 2097152,
-   "src": "/tmp/corpus_dw/MT1959_BW-16D1HT_d00191537a8f3840.bin",
-   "engine": "MT1959",
-   "chip": "MT1959",
-   "brand": "ASUS",
-   "vendor": "ASUS",
-   "model": "BW-16D1HT",
-   "rev": "3.02",
-   "media": "BD/UHD",
-   "variant": "W001800",
-   "modifiable": true,
-   "base_ok": true,
-   "base_only": false,
-   "confidence": "build-verified",
-   "advertised": "features",
-   "features": [
-    {
-     "key": "Speed",
-     "name": "Speed",
-     "ok": true
-    },
-    {
-     "key": "Region",
-     "name": "Region-free",
-     "ok": true
-    },
-    {
-     "key": "UHD",
-     "name": "UHD",
-     "ok": true
-    },
-    {
-     "key": "BD",
-     "name": "BD",
-     "ok": true
-    },
-    {
-     "key": "HRL",
-     "name": "HRL Bypass",
-     "ok": true
-    },
-    {
-     "key": "AKE",
-     "name": "AKE Bypass",
-     "ok": true
-    },
-    {
-     "key": "Bus",
-     "name": "Bus Decrypt",
-     "ok": true
-    }
-   ],
-   "base_facts": {
-    "handler_va": 1403092,
-    "boot_stub_va": 1403880,
-    "boot_init_site": 1310738,
-    "de_off": 2015318,
-    "speed_gate": 101122,
-    "region_emitter": 1165574,
-    "ake_gate": 1282282,
-    "uhd_stub_va": 0,
-    "bd_stub_va": 1404268,
-    "hrl_sites": 1
-   },
-   "r2_key": "MT1959/BW-16D1HT_3.02_d0019153.bin",
    "lineage": "MT1959-lineage"
   },
   {
@@ -6692,7 +5795,7 @@
     "region_emitter": 1165318,
     "ake_gate": 1282154,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1404212,
+    "bd_stub_va": 1404176,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BW-16D1HT_3.03_1d57260b.bin",
@@ -6761,7 +5864,7 @@
     "region_emitter": 1165438,
     "ake_gate": 1282274,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1404348,
+    "bd_stub_va": 1404312,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/BW-16D1HT_3.10_37a32bfd.bin",
@@ -6828,10 +5931,10 @@
     "de_off": 2015318,
     "speed_gate": 101090,
     "region_emitter": 1335444,
-    "ake_gate": 0,
+    "ake_gate": 1491070,
     "uhd_stub_va": 0,
-    "bd_stub_va": 0,
-    "hrl_sites": 0
+    "bd_stub_va": 66908,
+    "hrl_sites": 1
    },
    "r2_key": "MT1959/CH12NS40_1.01_731bcf7a.bin",
    "lineage": "MT1959-lineage"
@@ -6897,10 +6000,10 @@
     "de_off": 2015318,
     "speed_gate": 101090,
     "region_emitter": 1334948,
-    "ake_gate": 0,
+    "ake_gate": 1490574,
     "uhd_stub_va": 0,
-    "bd_stub_va": 0,
-    "hrl_sites": 0
+    "bd_stub_va": 66908,
+    "hrl_sites": 1
    },
    "r2_key": "MT1959/UH12NS40_1.01_fbe641e5.bin",
    "lineage": "MT1959-lineage"
@@ -6968,7 +6071,7 @@
     "region_emitter": 1167112,
     "ake_gate": 1283846,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405340,
+    "bd_stub_va": 1405304,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/WH14NS40_1.02_648a16d0.bin",
@@ -7037,7 +6140,7 @@
     "region_emitter": 1166780,
     "ake_gate": 1283630,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405156,
+    "bd_stub_va": 1405120,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/WH14NS40_1.03_de13d8d0.bin",
@@ -7106,7 +6209,7 @@
     "region_emitter": 1166908,
     "ake_gate": 1283758,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405292,
+    "bd_stub_va": 1405256,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/WH14NS40_1.04_164e2475.bin",
@@ -7244,7 +6347,7 @@
     "region_emitter": 1166960,
     "ake_gate": 1283694,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405188,
+    "bd_stub_va": 1405152,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/WH16NS40_1.02_87790f05.bin",
@@ -7313,7 +6416,7 @@
     "region_emitter": 1166640,
     "ake_gate": 1283490,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1405012,
+    "bd_stub_va": 1404976,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/WH16NS40_1.03_3e3b227e.bin",
@@ -7451,7 +6554,7 @@
     "region_emitter": 1168748,
     "ake_gate": 1285888,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1416588,
+    "bd_stub_va": 1416552,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/WH16NS58_1.V1_4041c0f1.bin",
@@ -7520,7 +6623,7 @@
     "region_emitter": 1168924,
     "ake_gate": 1286064,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1416772,
+    "bd_stub_va": 1416736,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/WH16NS58_1.V2_3018997b.bin",
@@ -7589,7 +6692,7 @@
     "region_emitter": 1169600,
     "ake_gate": 1286740,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1417444,
+    "bd_stub_va": 1417408,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/WH16NS58_1.V5_e2406018.bin",
@@ -7656,10 +6759,10 @@
     "de_off": 2015318,
     "speed_gate": 101122,
     "region_emitter": 1171068,
-    "ake_gate": 0,
+    "ake_gate": 1288216,
     "uhd_stub_va": 0,
-    "bd_stub_va": 0,
-    "hrl_sites": 0
+    "bd_stub_va": 1778560,
+    "hrl_sites": 1
    },
    "r2_key": "MT1959/WH16NS58_1.V7_569cea9b.bin",
    "lineage": "MT1959-lineage"
@@ -7725,10 +6828,10 @@
     "de_off": 2015318,
     "speed_gate": 101122,
     "region_emitter": 1171228,
-    "ake_gate": 0,
+    "ake_gate": 1288392,
     "uhd_stub_va": 0,
-    "bd_stub_va": 0,
-    "hrl_sites": 0
+    "bd_stub_va": 1778540,
+    "hrl_sites": 1
    },
    "r2_key": "MT1959/WH16NS58_1.V9_97b28707.bin",
    "lineage": "MT1959-lineage"
@@ -7795,8 +6898,8 @@
     "speed_gate": 113410,
     "region_emitter": 1148104,
     "ake_gate": 1266512,
-    "uhd_stub_va": 1389564,
-    "bd_stub_va": 1389620,
+    "uhd_stub_va": 1389528,
+    "bd_stub_va": 1389584,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/WH16NS60_1.00_d1338932.bin",
@@ -7864,8 +6967,8 @@
     "speed_gate": 113410,
     "region_emitter": 1147896,
     "ake_gate": 1266420,
-    "uhd_stub_va": 1389488,
-    "bd_stub_va": 1389544,
+    "uhd_stub_va": 1389452,
+    "bd_stub_va": 1389508,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/WH16NS60_1.01_aea98763.bin",
@@ -7933,8 +7036,8 @@
     "speed_gate": 113410,
     "region_emitter": 1147960,
     "ake_gate": 1266484,
-    "uhd_stub_va": 1389568,
-    "bd_stub_va": 1389624,
+    "uhd_stub_va": 1389532,
+    "bd_stub_va": 1389588,
     "hrl_sites": 3
    },
    "r2_key": "MT1959/WH16NS60_1.02_12c4ee6f.bin",
@@ -8072,7 +7175,7 @@
     "region_emitter": 1145026,
     "ake_gate": 1261658,
     "uhd_stub_va": 0,
-    "bd_stub_va": 1382268,
+    "bd_stub_va": 1382232,
     "hrl_sites": 1
    },
    "r2_key": "MT1959/WP50NB40_1.01_bea3a823.bin",

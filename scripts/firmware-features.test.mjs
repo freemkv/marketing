@@ -181,12 +181,12 @@ test('end to end over a fixture hoard with a fake engine; no binaries needed', a
   const d = await fs.mkdtemp(path.join(os.tmpdir(), 'fwfeat-')); t.after(() => fs.rm(d, { recursive: true, force: true }));
   await fs.mkdir(path.join(d, 'index')); await fs.mkdir(path.join(d, 'images'));
   const shas = { oem: sha('1'), patched: sha('2'), omni: sha('3'), frag: sha('4'), zero: sha('5') };
-  const images = Object.entries(shas).map(([k, s]) => ({ sha256: s, path: `images/${k}.bin`, mediatek: { patched: k === 'patched', fragment: k === 'frag' } }));
+  const images = Object.entries(shas).map(([k, s]) => ({ sha256: s, path: `images/${k}.bin`, sources: [s], mediatek: { patched: k === 'patched', fragment: k === 'frag' } }));
   for (const [k] of Object.entries(shas)) await fs.writeFile(path.join(d, 'images', `${k}.bin`), k);
   await fs.writeFile(path.join(d, 'index/identities.json'), JSON.stringify({ identities: [{ family: 'mediatek', images }, { family: 'pioneer', images: [{ sha256: sha('9'), path: 'x', mediatek: {} }] }] }));
   await fs.writeFile(path.join(d, 'index/sources.json'), JSON.stringify({ sources: [
-    { extraction: { image: shas.omni }, names: ['OmniDrive_fw.bin'] },
-    { extraction: { image: shas.oem }, names: ['BH16NS40_1.02.bin'] },
+    { sha256: shas.omni, extraction: { image: null }, names: ['OmniDrive_fw.bin'] },
+    { sha256: shas.oem, extraction: { image: null }, names: ['BH16NS40_1.02.bin'] },
     { extraction: { image: null }, names: ['ignored'] },
   ] }));
   const { candidates, excluded } = await loadCandidates(d);

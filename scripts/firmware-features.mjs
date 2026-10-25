@@ -4,10 +4,13 @@
 // from the firmware-extractor hoard plus the freemkv-fw modify engine. Run it BEFORE
 // `firmware-release.mjs prepare` (see scripts/firmware-release.md).
 //
-//   node scripts/firmware-features.mjs <hoard> [--fw /path/to/freemkv-fw]
+//   node scripts/firmware-features.mjs <hoard> --fw /path/to/freemkv-fw
+//        --flash /path/to/freemkv-crossflash --eligible-catalog src/data/finder-catalog.json
 //        [--out-dir src/data] [--hardware-verified allowlist.json] [--jobs 8]
 //
-// The binary may also come from FREEMKV_FW. `--hardware-verified` names a JSON
+// The binaries may also come from FREEMKV_FW and FREEMKV_CROSSFLASH.
+// `--eligible-catalog` keeps only hashes in the existing MediaTek catalogue.
+// `--hardware-verified` names a JSON
 // array of sha256 hashes proven on real hardware; by default there is none, so
 // every entry is "build-verified". Nothing is hardware-proven by this script.
 import { promises as fs } from 'node:fs';
@@ -289,17 +292,16 @@ export async function loadCandidates(hoard, exclusions = new Set()) {
   const sources = (await readJson(path.join(hoard, 'index/sources.json'))).sources;
   const names = new Map();
   for (const s of sources) {
-    const k = s.extraction?.image;
-    if (!k) continue;
-    if (!names.has(k)) names.set(k, []);
-    names.get(k).push(...(s.names ?? []));
+    names.set(s.sha256, [...(s.names ?? []), ...(s.inbound_paths ?? []),
+      ...(s.legacy_paths ?? []), ...(s.evidence ?? []).map(e => e.ref ?? '')]);
   }
   const seen = new Map(), excluded = {};
   for (const id of ids) {
     if (id.family !== 'mediatek') continue;
     for (const image of id.images ?? []) {
       if (seen.has(image.sha256)) continue;
-      const imageNames = names.get(image.sha256) ?? [];
+      const imageNames = [...new Set([image.sha256, ...(image.sources ?? [])]
+        .flatMap(sha => names.get(sha) ?? []))];
       const why = metadataExclusion(image, imageNames, exclusions);
       if (why) { excluded[why] = (excluded[why] ?? 0) + 1; seen.set(image.sha256, null); continue; }
       seen.set(image.sha256, { sha: image.sha256, file: path.join(hoard, image.path), vendor: hasVendorProvenance(imageNames) });
@@ -396,7 +398,7 @@ async function main(argv) {
     else if (x.startsWith('-')) throw new Error(`unknown option ${x}`);
     else hoard = x;
   }
-  if (!hoard || !a.fw || !a.flash) throw new Error('usage: firmware-features.mjs <hoard> --fw <freemkv-fw> --flash <freemkv-crossflash> [--out-dir D] [--hardware-verified FILE] [--jobs N]');
+  if (!hoard || !a.fw || !a.flash) throw new Error('usage: firmware-features.mjs <hoard> --fw <freemkv-fw> --flash <freemkv-crossflash> [--eligible-catalog FILE] [--out-dir D] [--hardware-verified FILE] [--jobs N]');
   const hardware = new Set(hardwareFile ? await readJson(hardwareFile) : []);
   const catalog = eligibleCatalog ? await readJson(eligibleCatalog) : null;
   const eligible = catalog ? eligibleImageHashes(catalog) : null;

@@ -1,42 +1,22 @@
 // A browser challenge authorizes one download; Origin alone is not authorization.
 // Keep this handler separate from the Pages adapter so rejection paths are tested.
-import { buildFinderData } from './finder.mjs';
 
 const VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 export const DOWNLOAD_ACTION = 'firmware-download';
 
 const SHA256 = /^[a-f0-9]{64}$/;
-/**
- * Exact download allowlist from the published catalogues:
- *  bySha:  package sha256 -> {key (R2 object key, decoded), filename}
- *  byFile: legacy catalogue `file` paths (v1 site keys, legacy-keys.json) -> sha256
- * Built with the same normalisation the finder uses, so every Download button
- * the page renders resolves here and nothing else does.
- */
-export function downloadAllowlist({ catalog = null, mediatek = [], pioneer = [], legacyKeys = null } = {}) {
-  const data = buildFinderData({ catalog, mediatek, pioneer });
+/** Downloads are identified only by a package hash in the authoritative catalog. */
+export function downloadAllowlist({ catalog = null } = {}) {
   const bySha = new Map();
-  for (const identity of data.identities) for (const revision of identity.revisions) for (const p of revision.packages)
-    if (SHA256.test(p.sha256) && p.key && !bySha.has(p.sha256)) bySha.set(p.sha256, { key: p.key, filename: p.filename });
-  const byFile = new Map();
-  for (const row of [...mediatek, ...pioneer]) for (const v of row.versions ?? [])
-    if (v.file && bySha.has(v.sha256)) byFile.set(v.file, v.sha256);
-  for (const row of legacyKeys?.keys ?? []) {
-    const entry = bySha.get(row.sha256);
-    // A legacy key only resolves to the bytes it was published with.
-    if (entry && typeof row.key === 'string' && (!row.new_key || row.new_key === entry.key || !entry.key.startsWith('fw/'))) byFile.set(row.key, row.sha256);
+  for (const identity of catalog?.identities ?? []) for (const revision of identity.revisions ?? []) for (const p of revision.packages ?? []) {
+    if (SHA256.test(p.sha256) && p.key && !bySha.has(p.sha256)) bySha.set(p.sha256, {key:p.key,filename:p.filename});
   }
-  return { bySha, byFile };
+  return { bySha };
 }
 
 export function resolveDownload(allowlist, payload) {
-  if (!payload || typeof payload !== 'object') return null;
-  if (typeof payload.package === 'string') return SHA256.test(payload.package) ? allowlist.bySha.get(payload.package) ?? null : null;
-  if (typeof payload.file === 'string') {
-    const sha = allowlist.byFile.get(payload.file);
-    return sha ? allowlist.bySha.get(sha) ?? null : null;
-  }
-  return null;
+  if (!payload || typeof payload !== 'object' || typeof payload.package !== 'string' || !SHA256.test(payload.package)) return null;
+  return allowlist.bySha.get(payload.package) ?? null;
 }
 
 function contentDisposition(filename) {

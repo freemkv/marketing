@@ -1,3 +1,5 @@
+import {verificationHashParts} from './firmware-verification-hashes.js';
+
 const endpoint = '/api/firmware-verification';
 const detail = document.getElementById('drive-detail');
 const config = document.getElementById('firmware-verification-config');
@@ -43,7 +45,7 @@ if (detail && config) {
   dialog.className = 'fw-verify-dialog';
   dialog.setAttribute('aria-labelledby', 'fw-verify-title');
   dialog.innerHTML = `<button type="button" class="fw-close" aria-label="Close">×</button>
-    <h2 id="fw-verify-title">Firmware verification</h2><p class="fw-scope"></p>
+    <h2 id="fw-verify-title">Firmware verification</h2><p class="fw-scope"></p><div class="fw-hashes" hidden></div>
     <form><div data-step="email"><label for="fw-verify-email">Email</label>
       <input id="fw-verify-email" type="email" autocomplete="email" maxlength="254" required>
       <div class="fw-challenge"></div><button type="submit" class="btn btn-primary">Send code</button></div>
@@ -54,8 +56,29 @@ if (detail && config) {
   document.body.appendChild(dialog);
   const form = dialog.querySelector('form'), email = dialog.querySelector('#fw-verify-email'), code = dialog.querySelector('#fw-verify-code');
   const errorBox = dialog.querySelector('.fw-error'), actions = dialog.querySelector('.fw-actions');
+  const hashes = dialog.querySelector('.fw-hashes');
   let scope, challenge, step = 'email', busy = false, opening = 0, loading, cancelChallenge;
   const fail = error => { errorBox.textContent = error.message || 'Please try again.'; errorBox.hidden = false; };
+  function renderHashes() {
+    hashes.replaceChildren();
+    function add(title, key) {
+      const parts = verificationHashParts(key);
+      if (!parts.length) return;
+      const section = document.createElement('section');
+      const heading = document.createElement('strong'); heading.textContent = title;
+      section.appendChild(heading);
+      for (const [label, digest] of parts) {
+        const row = document.createElement('p');
+        const name = document.createElement('span'); name.textContent = label;
+        const code = document.createElement('code'); code.textContent = digest;
+        row.append(name, code); section.appendChild(row);
+      }
+      hashes.appendChild(section);
+    }
+    add(scope.source ? 'Crossflash target' : 'Firmware being verified', scope.target);
+    if (scope.source) add('Crossflash source', scope.source);
+    hashes.hidden = hashes.childElementCount === 0;
+  }
   function show(next) {
     step = next; errorBox.hidden = true;
     dialog.querySelectorAll('[data-step]').forEach(element => { element.hidden = element.dataset.step !== next; });
@@ -148,6 +171,7 @@ if (detail && config) {
     event.preventDefault(); scope = scopeOf(button); const version = ++opening;
     dialog.querySelector('.fw-scope').textContent = button.dataset.verificationFrom
       ? `${button.dataset.verificationFrom} → ${button.dataset.verificationLabel}` : button.dataset.verificationLabel;
+    renderHashes();
     actions.replaceChildren(); show('actions'); dialog.showModal(); await status(version);
   });
 }
