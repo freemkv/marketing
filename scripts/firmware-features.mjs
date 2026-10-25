@@ -93,20 +93,8 @@ export const appliedLevers = report => (report?.levers ?? []).filter(l => l.outc
 export const hasAppliedLever = report => appliedLevers(report).length > 0;
 
 // ---------------------------------------------------------------------------
-// Lever / engine -> lineage -> 7 advertised flags.
-//
-// The site advertises per ENGINE LINEAGE (firmware CHANGELOG [0.8.1]), not per
-// image lever outcome:
-//   MT1959-lineage: all 7 flags (Speed, Region, UHD, BD, HRL, AKE, Bus).
-//   MT1939-classic: Region, HRL, AKE, Bus only; Speed/UHD/BD are architecturally
-//                   absent.
-// Lineage is derived from the engine and the Speed lever:
-//   engine MT1959                                     -> MT1959-lineage
-//   engine MT1939, Speed lever Applied/AlreadyPresent -> MT1959-lineage
-//   engine MT1939, Speed lever anything else          -> MT1939-classic
-// (MT1939 images that carry the Speed gate are the 1959 code lineage; classic
-// MT1939 firmware has no Speed gate, so the lever reports SignatureNotFound.)
-// This reproduces the committed data for all 124 distinct images.
+// Per-image capabilities come from the same boot_settings.supported values
+// consumed by Modify. Lineage is metadata only and never grants a feature.
 // ---------------------------------------------------------------------------
 export const FLAGS = [
   { key: 'Speed', name: 'Speed' },
@@ -117,16 +105,20 @@ export const FLAGS = [
   { key: 'AKE', name: 'AKE Bypass' },
   { key: 'Bus', name: 'Bus Decrypt' },
 ];
-const CLASSIC_FLAGS = new Set(['Region', 'HRL', 'AKE', 'Bus']);
 export const LINEAGE_NEW = 'MT1959-lineage', LINEAGE_CLASSIC = 'MT1939-classic';
-
 export function lineageOf(engine, levers = []) {
   if (engine === 'MT1959') return LINEAGE_NEW;
   const speed = levers.find(l => l.id === 'Speed');
   return speed && (speed.outcome === 'Applied' || speed.outcome === 'AlreadyPresent') ? LINEAGE_NEW : LINEAGE_CLASSIC;
 }
-export function featuresFor(lineage) {
-  return FLAGS.map(f => ({ key: f.key, name: f.name, ok: lineage === LINEAGE_NEW || CLASSIC_FLAGS.has(f.key) }));
+const CAPABILITY = { Speed: 'speed', Region: 'region', UHD: 'unrestricted', BD: 'unrestricted', HRL: 'hrl', AKE: 'encryption', Bus: 'encryption' };
+export function featuresFor(report) {
+  for (const key of new Set(Object.values(CAPABILITY))) {
+    if (typeof report?.boot_settings?.[key]?.supported !== 'boolean') {
+      throw new Error(`Modify capability report is missing boot_settings.${key}.supported`);
+    }
+  }
+  return FLAGS.map(f => ({ ...f, ok: report.boot_settings[CAPABILITY[f.key]].supported }));
 }
 
 // ---------------------------------------------------------------------------
@@ -190,7 +182,8 @@ export function buildEntry({ sha, bytes, create, modifiable = true, base = null,
     base_only: false,
     confidence: !bf ? null : hardwareVerified ? 'hardware-verified' : 'build-verified',
     advertised: modifiable ? 'features' : 'stock',
-    features: modifiable ? featuresFor(lineage) : [],
+    features: modifiable ? featuresFor(create) : [],
+    boot_support: modifiable ? Object.fromEntries(Object.entries(create.boot_settings).map(([key, value]) => [key, value.supported])) : null,
     base_facts: bf && {
       handler_va: bf.handler_va, boot_stub_va: bf.boot_stub_va, boot_init_site: bf.boot_init_site,
       de_off: bf.de_off, speed_gate: bf.speed_gate, region_emitter: bf.region_emitter,
@@ -211,13 +204,11 @@ export function sortEntries(entries) {
 // ---------------------------------------------------------------------------
 const SCRIPT = 'scripts/firmware-features.mjs';
 export function buildFeaturesDoc(entries) {
-  const lin = l => entries.filter(e => e.lineage === l).length;
-  const nNew = lin(LINEAGE_NEW), nClassic = lin(LINEAGE_CLASSIC);
   const perFlag = Object.fromEntries(FLAGS.map(f => [f.name, entries.filter(e => e.features.find(x => x.key === f.key)?.ok).length]));
   const modifiable = entries.filter(e => e.modifiable).length;
   const hw = entries.filter(e => e.confidence === 'hardware-verified').length;
   return {
-    note: `Per-firmware feature availability over the full ${entries.length}-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from \`freemkv-fw modify --base --json\`; per-feature \`ok\` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (${nNew} images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, ${nClassic} images). Regenerate with ${SCRIPT} — do not hand-edit.`,
+    note: `Per-firmware feature availability over the full ${entries.length}-entry eligible corpus. Each image's feature bits come from \`freemkv-fw modify --json\` boot_settings.supported, the same capability report used by Modify. Hardware family, engine lineage and native media support never imply an available modification. Regenerate with ${SCRIPT} — do not hand-edit.`,
     flags: FLAGS.map(f => f.key),
     counts: { total: entries.length, base_only: 0, feature_bearing: modifiable, stock_only: entries.length - modifiable, hardware_verified: hw, build_verified: entries.filter(e => e.confidence === 'build-verified').length },
     per_flag: perFlag,
@@ -254,7 +245,7 @@ export function buildSummary(doc) {
   const lines = [
     '# freemkv firmware feature advertisement — summary',
     '',
-    `Regenerated by \`${SCRIPT}\` over the ${counts.total}-entry OEM corpus. Per-feature availability is by ENGINE LINEAGE per the firmware CHANGELOG [0.8.1] (MT1959-lineage: all 7 flags · MT1939-classic: Region/HRL/AKE/Bus only — Speed/UHD/BD architecturally absent). Do not hand-edit.`,
+    `Regenerated by \`${SCRIPT}\` over the ${counts.total}-entry eligible corpus. Per-feature availability is taken from each exact image's Modify boot-settings capability report. Lineage does not grant features. Do not hand-edit.`,
     '',
     `- images: **${counts.total}**   modifiable: **${counts.feature_bearing}**   stock only (flash as-is): **${counts.stock_only}**`,
     `- hardware-verified: **${counts.hardware_verified}**   build-verified: **${counts.build_verified}**`,

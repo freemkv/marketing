@@ -1,5 +1,5 @@
 {
- "note": "Per-firmware feature availability over the full 100-entry OEM corpus. Identity/chipset/media/base_facts are machine-derived from `freemkv-fw modify --base --json`; per-feature `ok` bits are set by ENGINE LINEAGE (golden KAT) per the firmware CHANGELOG [0.8.1]: MT1959-lineage advertises all 7 flags (74 images); MT1939-classic advertises Region/HRL/AKE/Bus only (Speed/UHD/BD architecturally absent, 25 images). Regenerate with scripts/firmware-features.mjs — do not hand-edit.",
+ "note": "Per-firmware feature availability over the full 100-entry eligible corpus. Each image's feature bits come from `freemkv-fw modify --json` boot_settings.supported, the same capability report used by Modify. Hardware family, engine lineage and native media support never imply an available modification. Regenerate with scripts/firmware-features.mjs — do not hand-edit.",
  "flags": [
   "Speed",
   "Region",
@@ -18,13 +18,13 @@
   "build_verified": 95
  },
  "per_flag": {
-  "Speed": 74,
-  "Region-free": 99,
-  "UHD": 74,
-  "BD": 74,
-  "HRL Bypass": 99,
-  "AKE Bypass": 99,
-  "Bus Decrypt": 99
+  "Speed": 73,
+  "Region-free": 73,
+  "UHD": 26,
+  "BD": 26,
+  "HRL Bypass": 73,
+  "AKE Bypass": 73,
+  "Bus Decrypt": 73
  },
  "images": [
   {
@@ -53,7 +53,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -68,19 +68,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1740616,
     "boot_stub_va": 1741396,
@@ -122,7 +129,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -137,19 +144,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": null,
    "r2_key": "MT1939/BE14NU40_1.01_2f023084.bin",
    "lineage": "MT1939-classic"
@@ -180,7 +194,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -195,19 +209,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1749784,
     "boot_stub_va": 1750564,
@@ -249,7 +270,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -264,19 +285,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1736784,
     "boot_stub_va": 1737564,
@@ -318,7 +346,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -333,19 +361,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1743592,
     "boot_stub_va": 1744372,
@@ -387,7 +422,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -402,19 +437,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1743664,
     "boot_stub_va": 1744444,
@@ -456,7 +498,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -471,19 +513,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1740100,
     "boot_stub_va": 1740880,
@@ -525,7 +574,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -540,19 +589,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1744080,
     "boot_stub_va": 1744860,
@@ -594,7 +650,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -609,19 +665,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1747012,
     "boot_stub_va": 1747792,
@@ -663,7 +726,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -678,19 +741,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1741028,
     "boot_stub_va": 1741808,
@@ -732,7 +802,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -747,19 +817,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1743496,
     "boot_stub_va": 1744276,
@@ -801,7 +878,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -816,19 +893,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1743568,
     "boot_stub_va": 1744348,
@@ -870,7 +954,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -885,19 +969,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1743944,
     "boot_stub_va": 1744724,
@@ -939,7 +1030,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -954,19 +1045,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1744644,
     "boot_stub_va": 1745424,
@@ -1008,7 +1106,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -1023,19 +1121,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1746736,
     "boot_stub_va": 1747516,
@@ -1077,7 +1182,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -1092,19 +1197,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1746784,
     "boot_stub_va": 1747564,
@@ -1138,6 +1250,7 @@
    "confidence": null,
    "advertised": "stock",
    "features": [],
+   "boot_support": null,
    "base_facts": null,
    "r2_key": "MT1939/BW-16D1HT_1.01_3f436c31.bin",
    "lineage": null
@@ -1168,7 +1281,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -1183,19 +1296,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": null,
    "r2_key": "MT1939/UH12NS30_1.01_84fecc29.bin",
    "lineage": "MT1939-classic"
@@ -1226,7 +1346,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -1241,19 +1361,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": null,
    "r2_key": "MT1939/UH12NS30_1.02_d98c2e11.bin",
    "lineage": "MT1939-classic"
@@ -1284,7 +1411,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -1299,19 +1426,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1736784,
     "boot_stub_va": 1737564,
@@ -1353,7 +1487,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -1368,19 +1502,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1743592,
     "boot_stub_va": 1744372,
@@ -1422,7 +1563,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -1437,19 +1578,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1743664,
     "boot_stub_va": 1744444,
@@ -1491,7 +1639,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -1506,19 +1654,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1743992,
     "boot_stub_va": 1744772,
@@ -1560,7 +1715,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -1575,19 +1730,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1743568,
     "boot_stub_va": 1744348,
@@ -1629,7 +1791,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -1644,19 +1806,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 1743896,
     "boot_stub_va": 1744676,
@@ -1698,7 +1867,7 @@
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
@@ -1713,19 +1882,26 @@
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": null,
    "r2_key": "MT1939/WH16NS48_1.D3_46b41f15.bin",
    "lineage": "MT1939-classic"
@@ -1761,12 +1937,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -1784,6 +1960,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 98396,
     "boot_stub_va": 99184,
@@ -1830,12 +2013,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -1853,6 +2036,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 98396,
     "boot_stub_va": 99184,
@@ -1899,12 +2089,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -1922,6 +2112,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 98336,
     "boot_stub_va": 99124,
@@ -1968,12 +2165,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -1991,6 +2188,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 98396,
     "boot_stub_va": 99184,
@@ -2037,12 +2241,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -2060,6 +2264,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 98396,
     "boot_stub_va": 99184,
@@ -2106,12 +2317,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -2129,6 +2340,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1404760,
     "boot_stub_va": 1405548,
@@ -2175,12 +2393,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -2198,6 +2416,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1404592,
     "boot_stub_va": 1405380,
@@ -2244,12 +2469,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -2267,6 +2492,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1403980,
     "boot_stub_va": 1404768,
@@ -2313,12 +2545,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -2336,6 +2568,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1406364,
     "boot_stub_va": 1407152,
@@ -2382,12 +2621,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -2405,6 +2644,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1406284,
     "boot_stub_va": 1407072,
@@ -2451,12 +2697,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -2474,6 +2720,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1404012,
     "boot_stub_va": 1404800,
@@ -2520,12 +2773,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -2543,6 +2796,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1403836,
     "boot_stub_va": 1404624,
@@ -2589,12 +2849,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -2612,6 +2872,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1403980,
     "boot_stub_va": 1404768,
@@ -2658,12 +2925,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -2681,6 +2948,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 98420,
     "boot_stub_va": 99208,
@@ -2727,12 +3001,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -2750,6 +3024,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1403836,
     "boot_stub_va": 1404624,
@@ -2796,12 +3077,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -2819,6 +3100,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1404012,
     "boot_stub_va": 1404800,
@@ -2865,12 +3153,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -2888,6 +3176,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1403836,
     "boot_stub_va": 1404624,
@@ -2934,12 +3229,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -2957,6 +3252,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1403980,
     "boot_stub_va": 1404768,
@@ -3003,12 +3305,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -3026,6 +3328,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 98420,
     "boot_stub_va": 99208,
@@ -3072,12 +3381,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -3095,6 +3404,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 98420,
     "boot_stub_va": 99208,
@@ -3141,12 +3457,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -3164,6 +3480,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1406212,
     "boot_stub_va": 1407000,
@@ -3210,12 +3533,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -3233,6 +3556,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1406148,
     "boot_stub_va": 1406936,
@@ -3279,12 +3609,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -3302,6 +3632,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1406276,
     "boot_stub_va": 1407064,
@@ -3371,6 +3708,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1388344,
     "boot_stub_va": 1389132,
@@ -3417,12 +3761,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -3440,6 +3784,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1405676,
     "boot_stub_va": 1406464,
@@ -3486,12 +3837,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -3509,6 +3860,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1381092,
     "boot_stub_va": 1381880,
@@ -3555,12 +3913,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -3578,6 +3936,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1381564,
     "boot_stub_va": 1382352,
@@ -3624,12 +3989,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -3647,6 +4012,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1381092,
     "boot_stub_va": 1381880,
@@ -3693,12 +4065,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -3716,6 +4088,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1381588,
     "boot_stub_va": 1382376,
@@ -3785,6 +4164,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1392720,
     "boot_stub_va": 1393508,
@@ -3854,6 +4240,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1393024,
     "boot_stub_va": 1393812,
@@ -3923,6 +4316,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1390952,
     "boot_stub_va": 1391740,
@@ -3992,6 +4392,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1390856,
     "boot_stub_va": 1391644,
@@ -4061,6 +4468,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1392124,
     "boot_stub_va": 1392912,
@@ -4130,6 +4544,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1392092,
     "boot_stub_va": 1392880,
@@ -4199,6 +4620,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1392620,
     "boot_stub_va": 1393408,
@@ -4268,6 +4696,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 110752,
     "boot_stub_va": 111540,
@@ -4337,6 +4772,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 110752,
     "boot_stub_va": 111540,
@@ -4406,6 +4848,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1386600,
     "boot_stub_va": 1387388,
@@ -4475,6 +4924,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1387040,
     "boot_stub_va": 1387828,
@@ -4544,6 +5000,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1387064,
     "boot_stub_va": 1387852,
@@ -4613,6 +5076,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1394040,
     "boot_stub_va": 1394828,
@@ -4682,6 +5152,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1394036,
     "boot_stub_va": 1394824,
@@ -4751,6 +5228,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1394540,
     "boot_stub_va": 1395328,
@@ -4820,6 +5304,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1391956,
     "boot_stub_va": 1392744,
@@ -4889,6 +5380,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1391956,
     "boot_stub_va": 1392744,
@@ -4935,12 +5433,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -4958,6 +5456,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1380772,
     "boot_stub_va": 1381560,
@@ -5027,6 +5532,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1392328,
     "boot_stub_va": 1393116,
@@ -5096,6 +5608,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1392772,
     "boot_stub_va": 1393560,
@@ -5165,6 +5684,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1394196,
     "boot_stub_va": 1394984,
@@ -5234,6 +5760,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1392092,
     "boot_stub_va": 1392880,
@@ -5303,6 +5836,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1391404,
     "boot_stub_va": 1392192,
@@ -5349,12 +5889,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -5372,6 +5912,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1403164,
     "boot_stub_va": 1403952,
@@ -5418,12 +5965,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -5441,6 +5988,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1403292,
     "boot_stub_va": 1404080,
@@ -5487,12 +6041,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -5510,6 +6064,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1403092,
     "boot_stub_va": 1403880,
@@ -5556,12 +6117,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -5579,6 +6140,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1403036,
     "boot_stub_va": 1403824,
@@ -5625,12 +6193,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -5648,6 +6216,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1403172,
     "boot_stub_va": 1403960,
@@ -5694,12 +6269,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -5717,6 +6292,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 98396,
     "boot_stub_va": 99184,
@@ -5763,12 +6345,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -5786,6 +6368,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 98396,
     "boot_stub_va": 99184,
@@ -5832,12 +6421,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -5855,6 +6444,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1404164,
     "boot_stub_va": 1404952,
@@ -5901,12 +6497,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -5924,6 +6520,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1403980,
     "boot_stub_va": 1404768,
@@ -5970,12 +6573,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -5993,6 +6596,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1404116,
     "boot_stub_va": 1404904,
@@ -6039,12 +6649,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -6062,6 +6672,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1404012,
     "boot_stub_va": 1404800,
@@ -6108,12 +6725,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -6131,6 +6748,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1403836,
     "boot_stub_va": 1404624,
@@ -6177,12 +6801,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -6200,6 +6824,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1415412,
     "boot_stub_va": 1416200,
@@ -6246,12 +6877,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -6269,6 +6900,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1415596,
     "boot_stub_va": 1416384,
@@ -6315,12 +6953,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -6338,6 +6976,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1416268,
     "boot_stub_va": 1417056,
@@ -6384,12 +7029,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -6407,6 +7052,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 98420,
     "boot_stub_va": 99208,
@@ -6453,12 +7105,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -6476,6 +7128,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 98420,
     "boot_stub_va": 99208,
@@ -6545,6 +7204,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1388420,
     "boot_stub_va": 1389208,
@@ -6614,6 +7280,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1388344,
     "boot_stub_va": 1389132,
@@ -6683,6 +7356,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": true,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1388424,
     "boot_stub_va": 1389212,
@@ -6719,39 +7399,46 @@
     {
      "key": "Speed",
      "name": "Speed",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Region",
      "name": "Region-free",
-     "ok": true
+     "ok": false
     },
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
      "name": "HRL Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "AKE",
      "name": "AKE Bypass",
-     "ok": true
+     "ok": false
     },
     {
      "key": "Bus",
      "name": "Bus Decrypt",
-     "ok": true
+     "ok": false
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": false,
+    "encryption": false,
+    "speed": false,
+    "region": false
+   },
    "base_facts": {
     "handler_va": 110724,
     "boot_stub_va": 111512,
@@ -6798,12 +7485,12 @@
     {
      "key": "UHD",
      "name": "UHD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "BD",
      "name": "BD",
-     "ok": true
+     "ok": false
     },
     {
      "key": "HRL",
@@ -6821,6 +7508,13 @@
      "ok": true
     }
    ],
+   "boot_support": {
+    "unrestricted": false,
+    "hrl": true,
+    "encryption": true,
+    "speed": true,
+    "region": true
+   },
    "base_facts": {
     "handler_va": 1381092,
     "boot_stub_va": 1381880,

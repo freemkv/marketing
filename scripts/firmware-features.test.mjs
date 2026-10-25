@@ -12,8 +12,10 @@ import {
 
 const sha = c => c.repeat(64);
 const lever = (id, outcome) => ({ id, label: id, outcome, facts: {} });
+const support = (values = {}) => Object.fromEntries(Object.entries({ unrestricted: true, hrl: true, encryption: true, speed: true, region: true, ...values }).map(([key, supported]) => [key, { value: 'oem', supported }]));
 const create = (over = {}) => ({
   engine: 'MT1939', vendor: 'HL-DT-ST', model: 'BD-RE  BH16NS40', rev: '1.02', vendor_specific: 'N000201', media: 'BD',
+  boot_settings: support(),
   levers: [lever('Identity', 'Applied'), lever('Speed', 'Applied'), lever('RawRead', { SignatureNotFound: { detail: 'x' } })], ...over,
 });
 const base = { base_facts: { handler_va: 1, boot_stub_va: 2, boot_init_site: 3, de_off: 4, speed_gate: 5, region_emitter: 6, ake_gate: 7, uhd_stub_va: 8, bd_stub_va: 9, hrl_sites: 1 } };
@@ -124,16 +126,16 @@ test('modifiable: modify succeeds with an applied lever; otherwise listed as sto
   assert.deepEqual(await evaluate({ sha: sha('b'), file }, verifyFails, os.tmpdir()), { reason: 'integrity' });
 });
 
-test('lever/engine -> lineage -> 7 flags', () => {
+test('per-image supported controls determine features independently of lineage', () => {
   const k = f => f.map(x => `${x.key}:${x.ok ? 1 : 0}`).join(',');
   assert.equal(lineageOf('MT1959', []), 'MT1959-lineage');
   assert.equal(lineageOf('MT1939', [lever('Speed', 'Applied')]), 'MT1959-lineage');
   assert.equal(lineageOf('MT1939', [lever('Speed', 'AlreadyPresent')]), 'MT1959-lineage');
   assert.equal(lineageOf('MT1939', [lever('Speed', { SignatureNotFound: {} })]), 'MT1939-classic');
   assert.equal(lineageOf('MT1939', []), 'MT1939-classic');
-  assert.equal(k(featuresFor('MT1959-lineage')), 'Speed:1,Region:1,UHD:1,BD:1,HRL:1,AKE:1,Bus:1');
-  assert.equal(k(featuresFor('MT1939-classic')), 'Speed:0,Region:1,UHD:0,BD:0,HRL:1,AKE:1,Bus:1');
-  assert.deepEqual(featuresFor('MT1959-lineage').map(f => f.name), ['Speed', 'Region-free', 'UHD', 'BD', 'HRL Bypass', 'AKE Bypass', 'Bus Decrypt']);
+  assert.equal(k(featuresFor(create())), 'Speed:1,Region:1,UHD:1,BD:1,HRL:1,AKE:1,Bus:1');
+  assert.equal(k(featuresFor(create({ boot_settings: support({ unrestricted: false, speed: false }) }))), 'Speed:0,Region:1,UHD:0,BD:0,HRL:1,AKE:1,Bus:1');
+  assert.deepEqual(featuresFor(create()).map(f => f.name), ['Speed', 'Region-free', 'UHD', 'BD', 'HRL Bypass', 'AKE Bypass', 'Bus Decrypt']);
 });
 
 test('model, brand and entry shape', () => {
@@ -146,7 +148,7 @@ test('model, brand and entry shape', () => {
   assert.equal(brandOf(sha('a'), 'HL-DT-ST'), 'LG');
   assert.equal(brandOf('c328b656' + '0'.repeat(56), 'HL-DT-ST'), 'dynabook');
   const e = buildEntry({ sha: sha('c'), bytes: 10, create: create(), base });
-  assert.deepEqual(Object.keys(e), ['sha256', 'bytes', 'src', 'engine', 'chip', 'brand', 'vendor', 'model', 'rev', 'media', 'variant', 'modifiable', 'base_ok', 'base_only', 'confidence', 'advertised', 'features', 'base_facts', 'r2_key', 'lineage']);
+  assert.deepEqual(Object.keys(e), ['sha256', 'bytes', 'src', 'engine', 'chip', 'brand', 'vendor', 'model', 'rev', 'media', 'variant', 'modifiable', 'base_ok', 'base_only', 'confidence', 'advertised', 'features', 'boot_support', 'base_facts', 'r2_key', 'lineage']);
   assert.equal(e.r2_key, 'MT1939/BH16NS40_1.02_cccccccc.bin');
   assert.equal(e.src, `/tmp/corpus_dw/MT1939_BH16NS40_${'c'.repeat(16)}.bin`);
   assert.equal(e.confidence, 'build-verified');
@@ -155,7 +157,7 @@ test('model, brand and entry shape', () => {
 
 test('documents: counts, per_flag, index grouping and summary', () => {
   const a = buildEntry({ sha: sha('a'), bytes: 1, create: create(), base });
-  const b = buildEntry({ sha: sha('b'), bytes: 1, create: create({ model: 'BD-RE  BH14NS40', rev: '1.00', levers: [lever('Identity', 'Applied'), lever('Speed', { SignatureNotFound: {} })] }), base });
+  const b = buildEntry({ sha: sha('b'), bytes: 1, create: create({ model: 'BD-RE  BH14NS40', rev: '1.00', boot_settings: support({ unrestricted: false, speed: false }), levers: [lever('Identity', 'Applied'), lever('Speed', { SignatureNotFound: {} })] }), base });
   const c = buildEntry({ sha: sha('d'), bytes: 1, create: create({ model: 'BD-RE  WH16NS60', rev: '1.00' }), modifiable: false });
   const doc = buildFeaturesDoc(sortEntries([a, b, c]));
   assert.equal(doc.counts.total, 3);
@@ -165,7 +167,7 @@ test('documents: counts, per_flag, index grouping and summary', () => {
   assert.equal(doc.counts.hardware_verified, 0);
   assert.deepEqual(doc.per_flag, { Speed: 1, 'Region-free': 2, UHD: 1, BD: 1, 'HRL Bypass': 2, 'AKE Bypass': 2, 'Bus Decrypt': 2 });
   assert.match(doc.note, /3-entry/);
-  assert.match(doc.note, /\(1 images\); MT1939-classic.*, 1 images\)/);
+  assert.match(doc.note, /boot_settings.supported/);
   assert.deepEqual(doc.images.map(i => i.model), ['BH14NS40', 'BH16NS40', 'WH16NS60']);
   const idx = buildIndex(doc.images);
   assert.deepEqual(idx.map(g => g.model), ['BH14NS40', 'BH16NS40', 'WH16NS60']);
@@ -195,7 +197,7 @@ test('end to end over a fixture hoard with a fake engine; no binaries needed', a
   const fw = path.join(d, 'fake-fw.sh');
   await fs.writeFile(fw, `#!/bin/sh
 case "$*" in *${shas.zero}*|*zero.bin*) L='[{"id":"Speed","label":"Speed","outcome":"AlreadyPresent","facts":{}}]';; *) L='[{"id":"Speed","label":"Speed","outcome":"Applied","facts":{}}]';; esac
-if [ "$2" = "--base" ]; then echo '${JSON.stringify(base)}'; else echo '{"engine":"MT1939","vendor":"HL-DT-ST","model":"BD-RE  BH16NS40","rev":"1.02","vendor_specific":"N000201","media":"BD","levers":'"$L"'}'; fi
+if [ "$2" = "--base" ]; then echo '${JSON.stringify(base)}'; else echo '{"engine":"MT1939","vendor":"HL-DT-ST","model":"BD-RE  BH16NS40","rev":"1.02","vendor_specific":"N000201","media":"BD","boot_settings":${JSON.stringify(support())},"levers":'"$L"'}'; fi
 `, { mode: 0o755 });
   const out = path.join(d, 'out');
   const res = await generate({ hoard: d, fw, outDir: out, jobs: 2, exclusions: new Set() });
@@ -218,3 +220,11 @@ test('catalog eligibility follows final image hashes for TARs and retains legacy
   ] };
   assert.deepEqual([...eligibleImageHashes(catalog)], [sha('b'), sha('c')]);
 });
+
+ test('WH16NS58 1.V9 cannot advertise UHD or BD when combined Unrestricted is unsupported', () => {
+  const report = create({ engine: 'MT1959', model: 'WH16NS58', rev: '1.V9', boot_settings: support({ unrestricted: false }) });
+  const entry = buildEntry({ sha: '97b287072e20c9527de6f34f6d564c8edcc6afb3ecf5675c11b8262c11663061', bytes: 2097152, create: report, base });
+  assert.deepEqual(entry.features.filter(f => f.ok).map(f => f.key), ['Speed', 'Region', 'HRL', 'AKE', 'Bus']);
+  assert.equal(entry.boot_support.unrestricted, false);
+  assert.throws(() => featuresFor({ engine: 'MT1959' }), /missing boot_settings/);
+ });
