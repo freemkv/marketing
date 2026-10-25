@@ -8300,16 +8300,9 @@
     {
       "basis": "site",
       "key": "pioneer/BDR-TD05/SAT%208211/1.01/6158e9feac480044255746c5a5236f4270cefd6b1146e19ffb8d63bd2a7af767.tar",
-      "new_key": null,
-      "sha256": "6158e9feac480044255746c5a5236f4270cefd6b1146e19ffb8d63bd2a7af767",
-      "status": "missing-package"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/BDR-TD05/SAT%208211/1.01/65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce.tar",
+      "new_key": "fw/pioneer/f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6.tar",
       "model": "BDR-TD05",
-      "new_key": "fw/pioneer/65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce.tar",
-      "sha256": "65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce",
+      "sha256": "f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6",
       "status": "published"
     },
     {

@@ -14,5 +14,36 @@
   "replacement_filename": "BDR-TD05_2.02_8211_ID72_f0ad07ab.tar",
   "asset_tag": "firmware-td05-corrected-20261024",
   "source": "Intact Fujitsu E1020474 original; mathematical encrypted signature verified, no unrecovered tail",
-  "live_tested": false
+  "live_tested": false,
+  "replacements": [
+    {
+      "bad_package_sha256": "d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610",
+      "bad_normal_sha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908",
+      "withdraw_keys": [
+        "pioneer/BDR-TD05/SAT%208211/1.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+        "pioneer/BDR-TD05/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+        "pioneer/BDR-TD05E1020474/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+        "pioneer/BDR-TD05FUJITSU/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+        "fw/pioneer/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar"
+      ],
+      "replacement_sha256": "f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca",
+      "replacement_normal_sha256": "9a21cbbb0783536cf90bf5193746a7a55b460377a13d44759dda90fef3599a19",
+      "replacement_key": "fw/pioneer/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
+      "replacement_filename": "BDR-TD05_2.02_8211_ID72_f0ad07ab.tar",
+      "asset_tag": "firmware-td05-corrected-20261024"
+    },
+    {
+      "bad_package_sha256": "65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce",
+      "bad_normal_sha256": "10424c2ba3709e79f9e8d12fa7e363d9efc003c9631ab391021aa5c4e2bfede3",
+      "withdraw_keys": [
+        "fw/pioneer/65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce.tar",
+        "pioneer/BDR-TD05/SAT%208211/1.01/65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce.tar"
+      ],
+      "replacement_sha256": "f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6",
+      "replacement_normal_sha256": "ec9baac91c2e9bde9a23ee0f38d0bd3a4996c582ed294dd71b1c01c89a240417",
+      "replacement_key": "fw/pioneer/f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6.tar",
+      "replacement_filename": "BDR-TD05_1.01_8211_ID01_f3743900.tar",
+      "asset_tag": "firmware-td05-corrected-20261024"
+    }
+  ]
 }
