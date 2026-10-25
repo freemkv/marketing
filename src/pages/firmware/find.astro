@@ -111,6 +111,9 @@ import '../../styles/site.css';
       .fx-table th, .fx-table td { text-align: left; padding: 0.3rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
       .fx-sha { font-size: 0.72rem; word-break: break-all; }
       .fx-note { margin: 0.4rem 0 0; font-size: 0.8rem; color: var(--muted); }
+      .origin-legend { display: flex; flex-wrap: wrap; gap: 0.6rem 1.5rem; max-width: 640px; margin: 1.5rem auto 0; color: var(--muted); font-size: 0.75rem; }
+      .origin-legend p { display: flex; align-items: center; gap: 0.5rem; margin: 0; }
+      .fw-origin-pill { display: inline-flex; align-items: center; padding: 0.15rem 0.5rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 0.7rem; font-weight: 500; line-height: 1.4; white-space: nowrap; }
       .fw-verification { background: var(--surface); color: var(--muted); border: 1px solid #dbe3e8; cursor: pointer; font: inherit; font-size: 0.7rem; font-weight: 600; line-height: 1.4; border-radius: 0.35rem; padding: 0.15rem 0.45rem; white-space: nowrap; }
       .fx-list .drive-fact-future { font-size: 0.7rem; line-height: 1.4; border: 1px solid transparent; padding: 0.15rem 0.45rem; border-radius: 0.35rem; }
       .fw-verification.is-verified { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
@@ -250,6 +253,11 @@ import '../../styles/site.css';
             levers are structurally verified across the corpus.
           </p>
 
+          <div class="origin-legend" aria-label="Firmware source legend">
+            <p><span class="fw-origin-pill">OEM</span><span>From original OEM updater</span></p>
+            <p><span class="fw-origin-pill">Community</span><span>OEM firmware but provided by backup or other means</span></p>
+          </div>
+
           <p class="block-note">
             Don't see your drive listed, or want to help us add one? Drop by <a href="https://discord.gg/yu7xMGTyek">Discord</a>.
           </p>
@@ -321,19 +329,22 @@ import '../../styles/site.css';
             if (others.length) body += '<details class="origin-alternates"><summary>Other recorded originals (' + others.length + ')</summary>' +
               others.map(sourceInfo).join('') + '</details>';
             body += '<h3>Extracted firmware</h3>' + origins.map(function(origin) {
-              return '<section class="origin-file"><p class="origin-role">' + roleName(origin) + '<span class="origin-category">' + (origin.category === 'dump' ? 'Approved dump' : 'OEM') + '</span></p>' + fileInfo(origin.firmware) + '</section>';
+              return '<section class="origin-file"><p class="origin-role">' + roleName(origin) + '<span class="origin-category">' + (origin.category === 'dump' ? 'Community' + (origin.source_kind === 'unmk-restored' ? ' · unMK-restored' : origin.source_kind === 'de' ? ' · DE' : '') : 'OEM') + '</span></p>' + fileInfo(origin.firmware) + '</section>';
             }).join('');
             return '<button type="button" class="origin-trigger" data-origin-open aria-haspopup="dialog" aria-controls="origin-dialog">Details</button><template class="origin-template">' + body + '</template>';
           }
           function verificationBox(version, source) {
-            if (!version.verification || (source && !source.verification)) return '';
+            var origins = packages[version.p[0]].origin || [];
+            var kind = origins.some(function(o) { return o.category === 'dump'; }) ? 'Community' : origins.length && origins.every(function(o) { return o.category === 'oem'; }) ? 'OEM' : '';
+            var badge = kind ? '<span class="fw-origin-pill" title="' + (kind === 'OEM' ? 'From vendor original files' : 'OEM firmware provided by backup or other means') + '">' + kind + '</span>' : '';
+            if (!version.verification || (source && !source.verification)) return badge;
             var id = identities[version.i];
             var label = id.brand + ' ' + id.n + ' ' + version.r + (id.e ? ' ' + id.e : '');
             return '<button type="button" class="fw-verification" data-verification-target="' + escapeText(version.verification) +
               '" data-verification-source="' + escapeText(source ? source.verification || '' : '') +
               '" data-verification-label="' + escapeText(label) + '"' +
               (source ? ' data-verification-from="' + escapeText(identities[source.i].n + ' ' + source.r + (identities[source.i].e ? ' ' + identities[source.i].e : '')) + '"' : '') +
-              ' hidden disabled aria-label="Community verification for ' + escapeText(label) + '">…</button>';
+              ' hidden disabled aria-label="Community verification for ' + escapeText(label) + '">…</button>' + badge;
           }
 
           var filtered = [];
