@@ -29,7 +29,10 @@ if (detail && config) {
       for (const button of buttons) {
         const count = values.get(JSON.stringify(scopeOf(button)));
         if (!Number.isSafeInteger(count) || count < 0) throw new Error('Counts unavailable.');
-        button.textContent = count ? `Verified - ${count}` : 'Not Verified';
+        button.textContent = count ? `✓ ${count}` : 'Worked for you?';
+        button.title = count ? `${count} successful flash confirmation${count === 1 ? '' : 's'}` : 'Confirm this firmware worked on your drive';
+        button.setAttribute('aria-label', `${button.title}: ${button.dataset.verificationLabel}`);
+        button.classList.toggle('is-unconfirmed', count === 0);
         button.classList.toggle('is-verified', count > 0);
         button.disabled = false; button.hidden = false;
       }
