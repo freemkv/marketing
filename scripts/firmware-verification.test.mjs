@@ -190,13 +190,16 @@ test('private email service sends a flash report link only to the configured mai
   const url = `https://freemkv.org/api/flash-reports/download/${report_id}?token=${'a'.repeat(64)}`;
   const send = body => emailWorker.fetch(new Request('https://internal/', {method: 'POST',
     body: JSON.stringify({type: 'flash-report', report_id, scope: 'session', url, ...body})}), env);
-  assert.equal((await send({})).status, 200);
+  assert.equal((await send({description: 'First line\r\nSecond line\u0000\n<plain text>'})).status, 200);
   assert.equal(sent.length, 1);
   assert.equal(sent[0].to, 'maintainer@example.com');
   assert.match(sent[0].text, /session flash report/);
+  assert.match(sent[0].text, /Description:\nFirst line\nSecond line\n<plain text>/);
   assert.match(sent[0].text, /expires after 90 days/);
   assert.equal((await send({url: url.replace('freemkv.org', 'other.example')})).status, 400);
   assert.equal((await send({scope: 'invalid'})).status, 400);
+  assert.equal((await send({description: ' \n '})).status, 400);
+  assert.equal((await send({description: 'x'.repeat(16 * 1024 + 1)})).status, 400);
   assert.equal(sent.length, 1);
 });
 

@@ -59,6 +59,11 @@ jobs:
         run: |
           npx wrangler d1 execute freemkv-firmware-verifications-preview --remote --file=migrations/0002_flash_reports.sql
           npx wrangler d1 execute freemkv-firmware-verifications --remote --file=migrations/0002_flash_reports.sql
+          for database in freemkv-firmware-verifications-preview freemkv-firmware-verifications; do
+            if ! npx wrangler d1 execute "$database" --remote --command='SELECT description FROM flash_report_requests LIMIT 0' >/dev/null 2>&1; then
+              npx wrangler d1 execute "$database" --remote --file=migrations/0003_flash_report_description.sql
+            fi
+          done
       - name: Configure Pages report bindings
         run: node scripts/flash-report-pages-setup.mjs --apply
       - name: Deploy private notification worker

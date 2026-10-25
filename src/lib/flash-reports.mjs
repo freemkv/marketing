@@ -98,12 +98,33 @@ export async function pollRequest({request, env, params}, now = Date.now()) {
   return reply({scope: record.scope, upload_token: upload});
 }
 
+// New clients attach the user-written description after browser approval and
+// before the ZIP upload. Older clients remain valid and leave this field blank.
+export async function saveDescription({request, env, params}, now = Date.now()) {
+  if (request.method !== 'PUT') return refuse('Use PUT.', 405);
+  if (!configured(env)) return refuse('Report submission is unavailable.', 503);
+  const record = await authorized(request, env, params.id, 'upload_hash');
+  if (!record || !['approved', 'uploaded'].includes(record.state) || record.upload_expires < now || record.notified) return refuse('Upload expired or invalid.', 403);
+  if (request.headers.get('Content-Length') && Number(request.headers.get('Content-Length')) > 100 * 1024) return refuse('Description too large.', 413);
+  let data;
+  try {
+    const bytes = await boundedBytes(request, 100 * 1024);
+    if (!bytes) return refuse('Description too large.', 413);
+    data = JSON.parse(new TextDecoder('utf-8', {fatal: true}).decode(bytes));
+  } catch { return refuse('Invalid description.'); }
+  if (typeof data?.description !== 'string' || new TextEncoder().encode(data.description).byteLength > 16 * 1024 || !data.description.trim()) return refuse('A report description is required.');
+  const updated = await db(env).prepare(`UPDATE flash_report_requests SET description = ?
+    WHERE id = ? AND state IN ('approved', 'uploaded') AND notified = 0`).bind(data.description, params.id).run();
+  if (updated.meta?.changes !== 1) return refuse('Upload expired or invalid.', 403);
+  return reply({saved: true});
+}
+
 async function notify(env, record, downloadToken, request) {
   const url = new URL(`/api/flash-reports/download/${record.id}`, request.url);
   url.searchParams.set('token', downloadToken);
   const response = await env.FIRMWARE_EMAIL_SERVICE.fetch('https://firmware-email.internal/', {
     method: 'POST', headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({type: 'flash-report', report_id: record.id, url: url.toString(), scope: record.scope}),
+    body: JSON.stringify({type: 'flash-report', report_id: record.id, url: url.toString(), scope: record.scope, description: record.description || ''}),
   });
   if (!response.ok || !(await response.json()).sent) throw new Error('Email delivery failed');
   await db(env).prepare("UPDATE flash_report_requests SET notified = 1, upload_hash = '' WHERE id = ? AND notified = 0").bind(record.id).run();
