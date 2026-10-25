@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { validateOriginDetails } from '../src/lib/firmware-origin.mjs';
+import { validateOriginDetails, publicOriginDetails } from '../src/lib/firmware-origin.mjs';
 const sha = 'a'.repeat(64), file = {filename:'vendor.exe',sha256:sha,md5:'b'.repeat(32),bytes:3};
 const origin = () => ({category:'oem',originals:[{...file}],firmware:{...file,filename:'firmware.bin'}});
 const catalog = (details) => ({identities:[{revisions:[{packages:[{filename:'firmware.tar',image_sha256:sha,origin_details:details}]}]}]});
@@ -40,4 +40,25 @@ test('Origin Details deduplicates shared originals and shows both extracted Pion
   assert.ok(!separate.includes('Other sources for these components'));
   const hostile=render(escape,{origin:[{...kernel,originals:[{...original,filename:'<img src=x onerror=alert(1)>'}]}]});
   assert.ok(!hostile.includes('<img'));assert.ok(hostile.includes('&lt;img'));
+});
+
+
+test('public Community provenance drops restoration prefixes without changing hashes or internal records', async () => {
+  const {readFile} = await import('node:fs/promises');
+  const data = JSON.parse(await readFile(new URL('../src/data/finder-catalog.json', import.meta.url), 'utf8'));
+  const details = data.identities.flatMap(i=>i.revisions.flatMap(r=>r.packages.flatMap(p=>p.origin_details)));
+  const affected = details.filter(d=>d.source_kind==='unmk-restored');
+  assert.ok(affected.length > 0);
+  for (const entry of affected) {
+    const before = JSON.stringify(entry), output = publicOriginDetails([entry])[0];
+    assert.doesNotMatch(JSON.stringify(output), /unmk/i);
+    assert.equal(output.category,'dump');
+    assert.equal(output.firmware.sha256,entry.firmware.sha256);
+    assert.equal(output.firmware.md5,entry.firmware.md5);
+    assert.equal(JSON.stringify(entry),before);
+  }
+  const entry={...origin(),category:'dump',source_kind:'unmk-restored',originals:[{...file,filename:'unMK_BU40N_1.03_64688690.bin',filenames:['unMK_BU40N_1.03_64688690.bin','BU40N_1.03_64688690.bin']}]};
+  const output=publicOriginDetails([entry])[0];
+  assert.equal(output.originals[0].filename,'BU40N_1.03_64688690.bin');
+  assert.deepEqual(output.originals[0].filenames,['BU40N_1.03_64688690.bin']);
 });

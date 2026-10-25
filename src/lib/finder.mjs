@@ -5,6 +5,7 @@
 // Names (retail, OEM labels, drive-reported strings) are aliases that point at
 // one or more identities. A drive only takes firmware for its own identity;
 // other IDs on the same hardware are listed as cross-flash targets.
+import { publicOriginDetails } from './firmware-origin.mjs';
 import { verificationKey } from './firmware-verification-catalog.mjs';
 
 export const DISCORD_URL = 'https://discord.gg/yu7xMGTyek';
@@ -469,7 +470,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     for (const r of i.revisions) {
       const p = r.packages.map(pkg => {
         packages.push({ s: pkg.sha256, f: String(pkg.filename ?? '').replace(/_GENERAL(?=_)/, ''), ...(keys ? { k: pkg.file ?? pkg.key } : {}), b: bytesLabel(pkg.bytes),
-          variant: pkg.variant || '', origin: pkg.originDetails ?? [], built: pkg.generatedDate || '', contents: contentsLabel(pkg), chips: chips(i, pkg) });
+          variant: pkg.variant || '', origin: publicOriginDetails(pkg.originDetails ?? []), built: pkg.generatedDate || '', contents: contentsLabel(pkg), chips: chips(i, pkg) });
         return packages.length - 1;
       });
       const best = r.packages[0];
