@@ -13,7 +13,12 @@ export async function provisionEmail({token, apply = false, fetcher = fetch}) {
       headers: {Authorization: `Bearer ${token}`, ...(!form ? {'Content-Type': 'application/json'} : {})},
       ...(body ? {body: form ? body : JSON.stringify(body)} : {}), signal: AbortSignal.timeout(30000)});
     const data = await response.json();
-    if (!response.ok || !data.success) throw new Error(`Cloudflare email setup failed (${response.status}; codes ${(data.errors || []).map(e => e.code).join(',')}).`);
+    if (!response.ok || !data.success) {
+      const details = [...(data.errors || []), ...(data.messages || [])]
+        .map(({code, message}) => [code && `#${code}`, message].filter(Boolean).join(' '))
+        .filter(Boolean).join('; ');
+      throw new Error(`Cloudflare email setup failed (${response.status}): ${details || 'no error details returned'}`);
+    }
     return data.result;
   }
   const zones = await api('/zones?name=freemkv.org');
@@ -24,11 +29,13 @@ export async function provisionEmail({token, apply = false, fetcher = fetch}) {
   if (!domain && apply) domain = await api(`/zones/${zone.id}/email/sending/subdomains`, 'POST', {name: 'freemkv.org'});
   if (apply) {
     const body = new FormData();
-    body.set('metadata', new Blob([JSON.stringify({main_module: 'firmware-email.mjs', compatibility_date: '2026-10-16',
+    body.set('metadata', new Blob([JSON.stringify({main_module: 'workers/firmware-email.mjs', compatibility_date: '2026-10-16',
       bindings: [{name: 'EMAIL', type: 'send_email', allowed_sender_addresses: ['noreply@freemkv.org']}],
       observability: {enabled: false}})], {type: 'application/json'}));
-    body.set('firmware-email.mjs', new Blob([await readFile(new URL('../workers/firmware-email.mjs', import.meta.url), 'utf8')],
-      {type: 'application/javascript+module'}), 'firmware-email.mjs');
+    body.set('workers/firmware-email.mjs', new Blob([await readFile(new URL('../workers/firmware-email.mjs', import.meta.url), 'utf8')],
+      {type: 'application/javascript+module'}), 'workers/firmware-email.mjs');
+    body.set('src/lib/firmware-report-inputs.mjs', new Blob([await readFile(new URL('../src/lib/firmware-report-inputs.mjs', import.meta.url), 'utf8')],
+      {type: 'application/javascript+module'}), 'src/lib/firmware-report-inputs.mjs');
     await api(`${base}/workers/scripts/${service}`, 'PUT', body);
     await api(`${base}/workers/scripts/${service}/subdomain`, 'POST', {enabled: false, previews_enabled: false});
   }

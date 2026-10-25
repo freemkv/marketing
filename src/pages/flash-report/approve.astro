@@ -26,7 +26,7 @@ const title = 'Submit flash report · freemkv';
   <body><main>
     <div style="display:flex;justify-content:flex-end"><ThemeSelect /></div>
     <h1>Submit a flash report</h1>
-    <p>Choose which saved diagnostic history to share. If you selected Submit Dump or Submit Backup in the desktop app, the upload also includes that selected firmware file. The desktop app will package and upload the files after you approve here.</p>
+    <p>Choose which saved diagnostic history to share. Reports from version 0.15.2 also include the exact Current and Target firmware files used in the selected history, and any available pre-update capture. If you selected Submit Dump or Submit Backup, that file is included too. The desktop app will package and upload these files after you approve here.</p>
     <form id="approval">
       <fieldset>
         <label><input type="radio" name="scope" value="session" checked /> This app session</label>

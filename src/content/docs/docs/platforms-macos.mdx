@@ -16,7 +16,7 @@ freemkv comes in two builds for macOS. **Install one or the other**; both are th
 
 - macOS 11 or later.
 - An Apple Silicon (`aarch64`) or Intel (`x86_64`) Mac. Homebrew picks the right build.
-- [Homebrew](https://brew.sh). On macOS, freemkv installs through Homebrew only.
+- [Homebrew](https://brew.sh) for Apple Silicon, or a direct download for Intel Macs.
 - An optical drive. See [OEM (stock) drives](/docs/drives-oem/) and [Unlocked drives](/docs/drives-unlocked/) for drive support.
 
 ## Install
@@ -44,11 +44,30 @@ The `freemkv` cask and `freemkv-cli` formula both provide `freemkv`, so uninstal
 
 <a id="apple-could-not-verify-freemkv-on-first-launch"></a>
 
-## Why Homebrew only
+### Intel direct download
 
-freemkv is ad-hoc signed, not notarized by Apple (notarization needs a paid Apple Developer Program membership). macOS blocks such an app when it is downloaded in a browser. Homebrew installs it without that block, and checks every download against a pinned SHA-256 from the [tap](https://github.com/freemkv/homebrew-tap), so it is the supported way to install freemkv on a Mac.
+On the [Download page](/download/), choose **Intel x86_64** under the app or CLI section.
+
+- **App:** extract `freemkv-x86_64-macos.zip` and move `freemkv.app` to Applications.
+- **CLI:** download `freemkv-cli-x86_64-macos`, then run:
+
+```bash
+cd ~/Downloads
+chmod +x freemkv-cli-x86_64-macos
+./freemkv-cli-x86_64-macos --version
+```
+
+You can rename the CLI binary to `freemkv` and put it in a directory on your PATH. Homebrew also remains available on Intel Macs.
+
+<a id="why-homebrew-only"></a>
+
+## Opening a downloaded build
+
+freemkv is ad-hoc signed, not notarized by Apple. If macOS blocks a downloaded app or CLI, try opening it, then go to **System Settings → Privacy & Security → Open Anyway** and confirm if you trust the download. Homebrew avoids this browser-download security prompt and verifies downloads against a pinned SHA-256 from the [tap](https://github.com/freemkv/homebrew-tap).
 
 ## Update or remove
+
+For a direct download, replace the app or CLI binary with the latest download to update, or delete it to remove.
 
 | Installation | Update | Remove |
 |---|---|---|
@@ -123,7 +142,7 @@ The installer applies this setting automatically. No SMB or copy-buffer tuning i
 
 ## Troubleshooting
 
-- **macOS blocks the app or CLI:** install through Homebrew; see [Why Homebrew only](#why-homebrew-only).
+- **macOS blocks the app or CLI:** see [Opening a downloaded build](#opening-a-downloaded-build), or install through Homebrew.
 - **The disc disappears from Finder:** freemkv unmounts it to take exclusive drive access.
 - **No drive is available:** check the connection, close other disc software and review [Drive access](#drive-access).
 - **Library moves slowly to a network share:** see [Slow moves to a network share](#slow-moves-to-a-network-share) and update the native login service.

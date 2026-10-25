@@ -87,7 +87,7 @@ test('exclusions file: every row is sha-bound with a reason', async t => {
   await assert.rejects(loadExclusions(bad), /not a JSON array/);
 });
 
-test('modifiable: create succeeds with an applied lever; otherwise listed as stock', async () => {
+test('modifiable: modify succeeds with an applied lever; otherwise listed as stock', async () => {
   assert.equal(hasAppliedLever(create()), true);
   const none = create({ levers: [lever('Identity', 'AlreadyPresent'), lever('Speed', { SignatureNotFound: {} })] });
   assert.equal(hasAppliedLever(none), false);

@@ -3,7 +3,22 @@
 Customer-visible changes to freemkv Flash and freemkv Modify, newest first.
 Versions are independent of the freemkv ripping applications.
 
-## [0.15.1] - Unreleased
+## [0.15.2] - 2026-10-25
+
+### freemkv Modify
+
+- Allocate injected MediaTek code outside integrity metadata and preserve integrity-table descriptors and unused slots. This fixes the reproduced WH16NS58 1.V9 corruption during modification.
+- Modify now signs and verifies generated firmware automatically. The CLI command is `freemkv-fw modify INPUT [OUTPUT]`; existing `create` scripts remain compatible.
+- Treat an already-enabled modification as a successful no-op, and apply the classic MediaTek HRL change independently when raw-read patching is unavailable.
+
+### freemkv Flash
+
+- Reject overwritten MediaTek integrity-table metadata before flashing, even when stored region hashes match.
+- Include the exact firmware inputs used by an update in diagnostic archives and maintainer emails, with filenames and SHA-256 hashes. Missing inputs are recorded explicitly.
+- Check for a newer stable release at startup and explain confirmed updates. Failed update checks leave normal use available; automated reports pause until the app is updated.
+- After a verified flash without an attachment, ask whether a diagnostic report is needed. Report submissions require a description, which is included in the maintainer email.
+
+## [0.15.1] - 2026-10-25
 
 ### freemkv Flash
 
