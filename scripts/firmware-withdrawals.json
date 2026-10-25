@@ -118,5 +118,485 @@
     "key": "pioneer/BDC-TD05/SAT%208291/1.01/a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53.tar",
     "normalSha256": "e89128bdee1c9d25f3c1db0a2631de485b62b2e4890eed80a3a4f05a50dbdc1a",
     "reason": "Corrupt Pioneer package a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53 has invalid signature or unrecovered firmware tail; replaced with verified original 38f4712cf11dd380f33e1811c578f335a790db1a423d60945d603c36b85f28d6"
+  },
+  {
+    "key": "fw/mediatek/c49f9c92ccabec7bc02a9401ab48ec83d992e2dee6c7649d4a198fe0d17ea83e.tar",
+    "imageSha256": "dd03cdae194de03a710b5f6e88dfedf421fd20667a3cc9ec58e828bd769ab2ed",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/e562e34b81d919bb8b39e5395a381d84438de83b4fedab16c3bf609a32adf55f.tar",
+    "imageSha256": "223e7e38b85f0d27464de596d373464cb7bf77ca825b81f2351abaf8c6cefba1",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "fw/mediatek/5bf6ef3c96c178e48ab36b7882ed7f83d33e9b1ea489cf1238694be205d065cf.tar",
+    "imageSha256": "3f436c31124f6b7bbe582c67370924077018eb14e768f27d9b7194904f099aa5",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/1206ed98cff08c8a428f369858303be5f3f328f0287def60ebe7ffd952b728cb.tar",
+    "imageSha256": "2e243a167739d4e46ad7095db7cb5452c2980579a0cb359208945a0bbe0f3f29",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/0b4ec4a86ef5502443c4a48b739d2e9c08ef6a6ba74733c0bad4c8783c1ff810.tar",
+    "imageSha256": "663c1b55e479f83e958b5addc430df1bfa290e5350ef9d036ca26e4acd653a82",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/1bcd0e883b915e5f6a2dc72ee803642f4a65ccc8d0befa72f683f4de89097b02.tar",
+    "imageSha256": "d00191537a8f38405bbe33bac43ac97c254f019531ef7bf998d95c2214e8807f",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/1c0a0fba097a48f45399243169be2c823876c92bd430e3c9dcc56938d885f5e3.tar",
+    "imageSha256": "21e1f77e0ea0bd8b8d6b324f5ae4d68070d6bb5394f83bbaa5032cedde441cc1",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/470bf70ca7f873a3d1340607f7de3c64ad76c026639c915437ea592e1643634b.tar",
+    "imageSha256": "afeab3e66cbdf9973e3127162551f111b9d048246b5581885b99a44c38f18ee6",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/552e975c941e7b92ca646529abdcdb0b7b080d5dd25dd28494ad20ce6dede0a6.tar",
+    "imageSha256": "0d085b4c854bfc03c08b2e7fde1b25096bdf888eaa65adbb28a10b529ced07ac",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/9d9d7a5efa04ca20c5180ab1e86862d76a75327999fa02c0e84ae4f9465e9f14.tar",
+    "imageSha256": "83ea24bb07b8a7a451bba1856d1db18b7f54b1823b9d148e213f25daf2e0a1d2",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/80192d4e2c25cdbab7597e99fcea57325d6d8a8c587db53c135e9f6df24f3839.tar",
+    "imageSha256": "9c46e6972b7950004e9746256c97b79e8e681faad1a4174b542477ad6ff5257e",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/ed037ae7f8b85f52fa6bc2fde52b9a6cd830722ac22a697235187ab85cc0611b.tar",
+    "imageSha256": "aaeea1ba97d05fae0b4de1ff1b84076f8ba897cb15b45a398f9bc4c25fe1738b",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/f70b8adeab80533251462b15fe9fe695ced594f867d69f7f72208bca57f506bd.tar",
+    "imageSha256": "beb8330e79d08824a62d5eb2b91a144ebb34c9acba8d393d8b32f2b2ae3196de",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/ca6812d2965aa7d710e9308c08d6a6cbe686b90f3bc0f6dc91f8f6481ec6c10e.tar",
+    "imageSha256": "bc4e6126b880475d58c21e8639ea81f33facc3d4c8284bf6a739d8e8f6c75921",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "fw/mediatek/b7158dc45477061c54d4bada7beb6a06f361b1388d03f4bb8cbdc8198de37fc9.tar",
+    "imageSha256": "ce732330b3cabca5f6b0cbcf1b6fc1abd4117d6fd047fe4f9330b6b25337b521",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/0886a485f724f5afdfa3c7a7052ff5a82d85b9e89d345b7ce671183f97834ae7.tar",
+    "imageSha256": "bdfd6f290ba8172d4c46d8c822013255043f4ad30deb8604608fa0397bddb648",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/c97afcdf23812263449367ec4b12c6bd2f1f847de5fa8cab6a696fceb79b0951.tar",
+    "imageSha256": "64cff02c3db347a2100284a406687a5a911463d65808db5c5c811a4cefc4fe57",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/248d8542487cdc340bbed5d3e57c1faeda0845cae2d89fa1420863bd665271aa.tar",
+    "imageSha256": "394e6f8d6319b79fed26fb296a435e4d047c382bf8434cc870f89c6913fd27d7",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "fw/mediatek/eb4141ca3caaaa7179d775cde49a2a9166ab4b80d87e9a750cf3ef2c8ee83f3b.tar",
+    "imageSha256": "580d867cee3d219a6e61e460c11fa33e27ca43c912d1d2dc777039a6a8f3f7e9",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "fw/mediatek/ae818fcf4fe414deadc2df4c3d40ae75b2c4ea06e659fce18fba35af3c70d019.tar",
+    "imageSha256": "a344e289e0b1f34bd1a5ae66f0498df9f1a485ad1416f93592e40db2fb5409c7",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "fw/mediatek/44f42a7255b0a6e32abefd032271bbd826371853879e8038631e28501e0c50ae.tar",
+    "imageSha256": "e64c4ca5244594d0b7943cbedf71a9cced2ae7c3d9b98624aa84d7e3130bac8a",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "fw/mediatek/c565e57076adb3883f52779c2e171dde4f1f3e2fc7d2f2f91f9462399a5ba021.tar",
+    "imageSha256": "fb9174aa26153911120a92d95beb8cf598f1f860344af2ccf67e98a99f4ca049",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "fw/mediatek/0a47d1e62779f5180248b9ab5b3f3ec4b2dde183d14e205477e3f3e9894b8c33.tar",
+    "imageSha256": "4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/2762f7cf5b60fc0b9be352e59aa6cb6f5413c6d91b1843f4048c0a29f1048884.tar",
+    "imageSha256": "734ccb11f0b4763a27b358655a14ce60f4801cf131a936d14ee7dd86d34e2c1f",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/88a0ed80c03fcfcebf9ba880f153b3f5128afdb304eae612eb68f2a001901e40.tar",
+    "imageSha256": "79e8df06c776ed40523a5b530d1559e561fbefb71a9e981d301a92b7a6b5c964",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/b7ef4a97234093d598f2f7b5047cab8dbbbf2193a508df44f7e41c31f8b7a51f.tar",
+    "imageSha256": "22edcf493f22a3e3ed66ba8b4cdd79ccc49533d9b8e7f06b6beade8cab2a9039",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/d3b71fe391f8a5d37c1c406e326a4f266a0b4ba332d56e3a1769b20306d9244b.tar",
+    "imageSha256": "0bd77fed4ec9df86aab9d8550f3182a8a95f4c27ee8342119b1b1f9f2c8303e0",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/e696b7bb36ced8010b2a0b8dd0b233d97633c01ebb4ef5944d4ec8d410b1cd5b.tar",
+    "imageSha256": "b2139fd99d7c5b7fc5b525e53730b2f0f7108ffd2fd1ea4aab173949aa5ff44e",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "fw/mediatek/ed07c986bebfeeffc1c062e52f51cad068a2bc6ef7e76132308c00513da6d6cd.tar",
+    "imageSha256": "221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/78b44995f7e723b61274b70ab137b1252b62bef7aca1f3f0fa372808c62a3c81.tar",
+    "imageSha256": "64688690a2878c792833d9af8731004411f86d7a64ceb522a82368584d84282a",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "fw/mediatek/f490e0fd6b3b838057f3089aedfdff9264915fb7e3fa6864dcc548246d799748.tar",
+    "imageSha256": "c4d995f031fe757d9823f7410f81c88ce7ba26e14b77e766792bff2e53a8b90f",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "fw/mediatek/994dc954764a21b61f47d6fa51a67f6e58b892094625017c8fa6f3fd13f386ff.tar",
+    "imageSha256": "14d86e9949d93126d6ec7eaa11eeaba512569f51a8ecfce9d707cb0cec6b5e24",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/bd55468e06db4af186a1a46a6ecce2a849fa54f47b92156e2142bcd781b27d79.tar",
+    "imageSha256": "58203b539de096786cde232ee3b0ef3fe824b20d7768a96b30f6a96bdac77bfb",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/1516c71e1147235fcdf6e4d11a7d5536c7bedf169b6d6c3927433bcd767a096c.tar",
+    "imageSha256": "4af842c0acf4a9ff42b5554d6d1d320b245ab4973b174a8b7ccf1f941f7ab715",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "fw/mediatek/95e11939b72caea0b58a69c8b0e8aabb36586181dc497dfcadc3129300d92a44.tar",
+    "imageSha256": "648a16d024eea31ef4901f3ac2180cbfffeda1161d70f9096335d8a6097445bc",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/79a6ce60c00d1e5cc7618dc41fa8583ccfdca65f394b473035875d52719b6d19.tar",
+    "imageSha256": "164e2475aea287ec5759ee07eb285697b52923ead1288f24358a70fc7ed3ec32",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "fw/mediatek/3448e30ed22cecb172b89b29c140a8ee993b5145177bcb12ff936e3efcdd779f.tar",
+    "imageSha256": "eee6563f68a414eb1dbc9048ab0820d01003320b080988437f762ca23d727e56",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/a95464bc0cae7e6788380f3da6ddaabaf7be67572d88896135915858348b5745.tar",
+    "imageSha256": "7f26c559774b87a8da10c42d5ce72b8f1af3aa369d14d64f7d880d2b20b0327a",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/60fb5ba8b20548d1e005f9bfc62f1353fed7431a48f9d71bfce9ed74e22ec81a.tar",
+    "imageSha256": "87790f053877e3e1bdd22969d70a7b1b6ed36624bb474bfcdee6526ac6e227c0",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/dc21dd679aea7e2070e9fac346bec6bc98172a499362d15dbc9984dfc614d0cc.tar",
+    "imageSha256": "d133893209392b74cb0c3c1225cc4c0e8b1d927f1f671261ecc82525405e47e0",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/mediatek/85b2042d550b3d84297192ebf2795b6dc9b379aa12c94846a2eecc8f77969f1f.tar",
+    "imageSha256": "12c4ee6fb88d4c5402e9e8fab0881a93fd1ab18e5a82bb87ecd4ef30c807cf53",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "fw/pioneer/6dd6f7b702006545822c43f3ee3ec2672509d6e73da6ef780171e92c9ede66a9.tar",
+    "normalSha256": "c55b30ab2c94b7bb50ff356fcbb45377ab14ba02f6ceae696fc1d3ecef92091b",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/9ea9452c2df7a5acd35f27689b65c5e4a78a2c33038b4b4277f246d164b9c3ac.tar",
+    "normalSha256": "886808693f722dfd24858965edef155a57d7ff02ab8a29b4dfb259b2d2277b57",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/a05887c4612692837137c5c6583db637959801880f1184a62dcafbb0af93b181.tar",
+    "normalSha256": "2d1a289d11051c216b7d72d2957635aadf642650913fce88e0db686b2fd7ff83",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/a9781092d856e7980a8994e126e818c4dc232ea5465ceb126388e9d2139c0ec0.tar",
+    "normalSha256": "872503623210a08f1d708e42416d442649e7b7af6a6e8c71b98e6888abd554c8",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/c4ed0a8ab1ea804a324ca4d655eb0d9634aed24c7c03f600ba0a9c321093aced.tar",
+    "normalSha256": "29996e476cab1613a04ca3353936f74c95846c7b08d7ef90ed044721a9b74861",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/2e3c3732df51c8f7b9acd7b41bb48247c204331f112ea5d903dd180626a6b070.tar",
+    "normalSha256": "7c128ae41440fb9ac33d968e96cd1222d940edae5fbd6a10bd48698e30f615c4",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/abd216a14ca476afdea1c958956b770fb89e578899324a4e565a60c6675192f6.tar",
+    "normalSha256": "703a9296711f9bd12cd407736c6d869022362bc601eb1d10bbbd4a33c7448c03",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/75c1afe6a2b7587192a7e5af76a4dc709369a1c734346dc0fd6dbc6204971a2c.tar",
+    "normalSha256": "326fe7eaf5995cabc95cf8b85f9f2dd9e49578934928d0bf672f9940a6c87770",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/33f709091130f09cee305579cdb588f50c919d9ac4dd4e72ba6d6a574a664adc.tar",
+    "normalSha256": "ba6e66e7b033092e0a77f9ae4a3e9408a8c1793c2e89d94e86c88886c1d4a49d",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/2d1ed2820b46dddd1379507d59c874485dd3b3834b6b3e837493435bd94e26a2.tar",
+    "normalSha256": "678d122936a81d494577d508d1e4b6eb385deb62c3e5b4efb5574228a193f0d8",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/58cc77b68169dd720dd2d7894f7769777b76baa10fcdd518930872088c53de46.tar",
+    "normalSha256": "bb95a4dc7befae6ede0ae199c46540a64f648869a7d99b24509a43b5e2794f42",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/b82cff7c52c222afb77897b364312d3d127a43ce8bdcc82ee0eef6109d7d080e.tar",
+    "normalSha256": "1a6929cdf0a0b7000b62a73a09b8af33f6a33b0589e012a35733d4801aa7d316",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/13ef71711ad1b43db33d875f45ae167375976cd78d7b776ba0729f14f71d5bba.tar",
+    "normalSha256": "5c2ad360dee1f5a14e5f435082d4933807f479986dfe2fed4d819600f7bc5601",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/c79e803bc7f78dd3262b3290689b381c94c13b181bc65f5651547f7010f893ee.tar",
+    "normalSha256": "87552592a68d3c071fbb728e4825af1d35ab9af5393465d9e676b4b799044007",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/e11eb320d67731b8a28cfd322892bb7dd0d417d49dad227378e70218fd02259b.tar",
+    "normalSha256": "862a56d838d496c9f113258f15b2835edd5c17ed037ba6e3a883f2a8bc32935a",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/08fd740f5c66fce9343ffc2c9b0eebd2080a99c5e262bd90bd320991cf84603f.tar",
+    "normalSha256": "c5ad632ded3e4a2fb8d231ad6044687253e84ac100ba90b80ab7e290d97bd94c",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/17c6a258c1deea661f2fab6ce20770dded9c1859888628c351161b1fd43702f6.tar",
+    "normalSha256": "914e40c26b09e3c8946ab38742b9fee59dc9f266d4bc2daf442cab50e51baa1b",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/c02b7291346852f930a4691d9689eadd6b2a4991d9a300ed8e6cc0664569da71.tar",
+    "normalSha256": "953c3f1084698f20f37991457dc2af69ba1c1ec56b478eac9a0e6b98b0002632",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/e2eadf6baf2dc078857e5f12230e32ebe5cd4f5d6237a2b5e00c73ed1425322c.tar",
+    "normalSha256": "c63df47d8d8b575b42f3a9cf5e5d749d82b6b771374f567b6fd358f8a165827b",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/17ce1e1001c1025f1c07c339eae3d01ae5426b65b3224c655769ed614bf5e40c.tar",
+    "normalSha256": "0dbf0753a89e3e623a89a02b397ecde0229ea62c84e16f909b1961967f0508d5",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "fw/pioneer/cb6b2d88f52f99378960f6170c07cb3de5bb79b6bec17e78b02901f5e84bd35b.tar",
+    "normalSha256": "6fcead9945a84d4c9ba84b252b1375878bca6bd563edab0cf9b934d8032e650b",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/BC-12D2HT_3.00_dd03cdae.bin",
+    "imageSha256": "dd03cdae194de03a710b5f6e88dfedf421fd20667a3cc9ec58e828bd769ab2ed",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/BE16NU50_1.01_9c46e697.bin",
+    "imageSha256": "9c46e6972b7950004e9746256c97b79e8e681faad1a4174b542477ad6ff5257e",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/BH16NS40_1.04_bc4e6126.bin",
+    "imageSha256": "bc4e6126b880475d58c21e8639ea81f33facc3d4c8284bf6a739d8e8f6c75921",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "MT1959/BH16NS55_1.01_ce732330.bin",
+    "imageSha256": "ce732330b3cabca5f6b0cbcf1b6fc1abd4117d6fd047fe4f9330b6b25337b521",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/BH16NS55_1.02_64cff02c.bin",
+    "imageSha256": "64cff02c3db347a2100284a406687a5a911463d65808db5c5c811a4cefc4fe57",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/BH16NS55_1.02_bdfd6f29.bin",
+    "imageSha256": "bdfd6f290ba8172d4c46d8c822013255043f4ad30deb8604608fa0397bddb648",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/BH16NS55_1.04_394e6f8d.bin",
+    "imageSha256": "394e6f8d6319b79fed26fb296a435e4d047c382bf8434cc870f89c6913fd27d7",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "MT1959/BH16NS60_1.00_580d867c.bin",
+    "imageSha256": "580d867cee3d219a6e61e460c11fa33e27ca43c912d1d2dc777039a6a8f3f7e9",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "MT1959/BP50NB40_1.02_a344e289.bin",
+    "imageSha256": "a344e289e0b1f34bd1a5ae66f0498df9f1a485ad1416f93592e40db2fb5409c7",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "MT1959/BP55EB40_1.02_e64c4ca5.bin",
+    "imageSha256": "e64c4ca5244594d0b7943cbedf71a9cced2ae7c3d9b98624aa84d7e3130bac8a",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "MT1959/BP60NB10_1.01_fb9174aa.bin",
+    "imageSha256": "fb9174aa26153911120a92d95beb8cf598f1f860344af2ccf67e98a99f4ca049",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "MT1959/BU40N_1.00_0bd77fed.bin",
+    "imageSha256": "0bd77fed4ec9df86aab9d8550f3182a8a95f4c27ee8342119b1b1f9f2c8303e0",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BU40N_1.00_221ad35b.bin",
+    "imageSha256": "221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/BU40N_1.00_22edcf49.bin",
+    "imageSha256": "22edcf493f22a3e3ed66ba8b4cdd79ccc49533d9b8e7f06b6beade8cab2a9039",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BU40N_1.00_4c2e0b2d.bin",
+    "imageSha256": "4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BU40N_1.00_734ccb11.bin",
+    "imageSha256": "734ccb11f0b4763a27b358655a14ce60f4801cf131a936d14ee7dd86d34e2c1f",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BU40N_1.00_b2139fd9.bin",
+    "imageSha256": "b2139fd99d7c5b7fc5b525e53730b2f0f7108ffd2fd1ea4aab173949aa5ff44e",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BU40N_1.03_64688690.bin",
+    "imageSha256": "64688690a2878c792833d9af8731004411f86d7a64ceb522a82368584d84282a",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "MT1959/BU40N_BN12_c4d995f0.bin",
+    "imageSha256": "c4d995f031fe757d9823f7410f81c88ce7ba26e14b77e766792bff2e53a8b90f",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "MT1959/BU40N_BU10_14d86e99.bin",
+    "imageSha256": "14d86e9949d93126d6ec7eaa11eeaba512569f51a8ecfce9d707cb0cec6b5e24",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/BU40N_FR07_4af842c0.bin",
+    "imageSha256": "4af842c0acf4a9ff42b5554d6d1d320b245ab4973b174a8b7ccf1f941f7ab715",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "MT1959/BW-16D1H_A204_223e7e38.bin",
+    "imageSha256": "223e7e38b85f0d27464de596d373464cb7bf77ca825b81f2351abaf8c6cefba1",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "MT1939/BW-16D1HT_1.01_3f436c31.bin",
+    "imageSha256": "3f436c31124f6b7bbe582c67370924077018eb14e768f27d9b7194904f099aa5",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/BW-16D1HT_3.01_2e243a16.bin",
+    "imageSha256": "2e243a167739d4e46ad7095db7cb5452c2980579a0cb359208945a0bbe0f3f29",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/BW-16D1HT_3.02_0d085b4c.bin",
+    "imageSha256": "0d085b4c854bfc03c08b2e7fde1b25096bdf888eaa65adbb28a10b529ced07ac",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BW-16D1HT_3.02_21e1f77e.bin",
+    "imageSha256": "21e1f77e0ea0bd8b8d6b324f5ae4d68070d6bb5394f83bbaa5032cedde441cc1",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BW-16D1HT_3.02_663c1b55.bin",
+    "imageSha256": "663c1b55e479f83e958b5addc430df1bfa290e5350ef9d036ca26e4acd653a82",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BW-16D1HT_3.02_afeab3e6.bin",
+    "imageSha256": "afeab3e66cbdf9973e3127162551f111b9d048246b5581885b99a44c38f18ee6",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/BW-16D1HT_3.02_d0019153.bin",
+    "imageSha256": "d00191537a8f38405bbe33bac43ac97c254f019531ef7bf998d95c2214e8807f",
+    "reason": "OmniDrive third-party modification was incorrectly published as OEM"
+  },
+  {
+    "key": "MT1959/WH14NS40_1.02_648a16d0.bin",
+    "imageSha256": "648a16d024eea31ef4901f3ac2180cbfffeda1161d70f9096335d8a6097445bc",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/WH14NS40_1.04_164e2475.bin",
+    "imageSha256": "164e2475aea287ec5759ee07eb285697b52923ead1288f24358a70fc7ed3ec32",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
+  },
+  {
+    "key": "MT1959/WH16NS40_1.02_87790f05.bin",
+    "imageSha256": "87790f053877e3e1bdd22969d70a7b1b6ed36624bb474bfcdee6526ac6e227c0",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/WH16NS60_1.00_d1338932.bin",
+    "imageSha256": "d133893209392b74cb0c3c1225cc4c0e8b1d927f1f671261ecc82525405e47e0",
+    "reason": "Modified, reconstructed or unverified source lacks explicit dump publication approval"
+  },
+  {
+    "key": "MT1959/WH16NS60_1.02_12c4ee6f.bin",
+    "imageSha256": "12c4ee6fb88d4c5402e9e8fab0881a93fd1ab18e5a82bb87ecd4ef30c807cf53",
+    "reason": "MK or restored-from-MK source lacks an independent OEM original"
   }
 ]

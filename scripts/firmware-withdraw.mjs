@@ -8,11 +8,15 @@ const rows=JSON.parse(await readFile(new URL('./firmware-withdrawals.json',impor
 for(const row of rows){
   validateWithdrawal(row);
 }
-for(const row of rows){
+let cursor=0;
+await Promise.all(Array.from({length:Math.min(8,rows.length)},async()=>{
+ while(cursor<rows.length){
+  const row=rows[cursor++];
   const result=spawnSync('./node_modules/.bin/wrangler',['r2','object','delete',`freemkv-firmware/${row.key}`,'--remote'],{stdio:'inherit'});
   if(result.error||result.status!==0)throw new Error(`Withdrawal failed: ${row.key}`);
   const response=await fetchObject(`https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev/${row.key}`,{headers:{'User-Agent':'curl/8.0'},signal:AbortSignal.timeout(60000)});
   await response.body?.cancel();
   if(response.status!==404)throw new Error(`Withdrawn object still public: ${row.key} (${response.status})`);
-}
+ }
+}));
 console.log(`Withdrew ${rows.length} proven-invalid firmware objects`);

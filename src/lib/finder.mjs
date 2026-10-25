@@ -144,6 +144,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], c
             kernelSha256: p.kernel_sha256 ?? null, imageSha256: p.image_sha256 ?? null,
             advertisedVersions: [...(p.advertised_versions ?? [])], generatedDate: p.generated_date ?? null,
             embeddedModel: p.embedded_model ?? null, brand: p.brand ?? null, buildId: p.build_id ?? null,
+            originDetails: p.origin_details ?? [], recommended: p.recommended === true,
             provenance: typeof p.provenance === 'string' ? p.provenance : null,
             chipset: isPioneer ? 'Pioneer' : (src.platforms?.[0] ?? null),
             modifiable: isPioneer ? false : Boolean(mtkBySha.get(p.image_sha256 ?? p.sha256)?.modifiable),
@@ -230,9 +231,19 @@ function safeDecode(s) {
   try { return decodeURIComponent(s); } catch { return s; }
 }
 
+function originRank(pkg) {
+  const origins = pkg.originDetails ?? [];
+  const dump = origins.some(o => o.category === 'dump') ? 1 : 0;
+  const names = origins.flatMap(o => o.originals ?? []).map(o => String(o.filename ?? '').toLowerCase());
+  const container = names.some(n => n.endsWith('.exe')) ? 0 : names.some(n => /\.(zip|rar|7z)$/.test(n)) ? 1 : 2;
+  return [dump, container];
+}
 function packageOrder(a, b) {
+  const ar = originRank(a), br = originRank(b);
+  if (a.recommended !== b.recommended) return Number(Boolean(b.recommended)) - Number(Boolean(a.recommended));
+
   const ka = PIONEER_KERNEL_FIRST[a.selection] ?? 6, kb = PIONEER_KERNEL_FIRST[b.selection] ?? 6;
-  return ka - kb || String(a.sha256).localeCompare(String(b.sha256));
+  return ka - kb || ar[0] - br[0] || ar[1] - br[1] || String(a.sha256).localeCompare(String(b.sha256));
 }
 
 /** Build lookup tables once; searches then stay cheap for thousands of rows. */
@@ -348,7 +359,6 @@ export function hostedSummary(data) {
 // reports (INQUIRY), then the retail name, then old site/download names. One rule
 // for search entries, card titles and Cross Flash headings. File/release names are
 // search terms only.
-const MEDIA_PREFIX = /^(?:BD-?RE|BD-?RW|BD-?ROM|BD-?R|DVD-?RW|DVD-?RAM|DVD-?ROM|BDDVDRW|CDDVDW|DVDRW)\s+(?=\S)/i;
 const NAME_RANK = { inquiry: 0, retail: 1, legacy: 2, 'release-note': 3, oem: 4 };
 const OEM_NAMES = { ASUS: 'ASUS', BUFFALO: 'Buffalo', HP: 'HP', TDK: 'TDK', TEAC: 'TEAC', MEMOREX: 'Memorex', MEDION: 'Medion', SONYDT: 'Sony' };
 
@@ -426,11 +436,8 @@ function chips(identity, pkg) {
   }
   const chip = pkg.chipset || identity.platforms.find(p => /^MT/.test(p));
   if (chip) out.push([chip]);
-  if (pkg.modifiable) out.push(['Modifiable', 'drive-fact-modifiable', 'freemkv-fw can modify this image']);
   if (pkg.media) out.push([pkg.media]);
-  if (pkg.variant) out.push([pkg.variant, 'drive-fact-variant', 'Region/SKU code']);
   if (pkg.confidence === 'hardware-verified') out.push(['Hardware-verified', 'drive-fact-verified', 'Proven on real hardware']);
-  else if (pkg.confidence === 'build-verified') out.push(['Build-verified', 'drive-fact-buildver', 'Strict build + KAT verified; not yet flashed & tested on hardware']);
   return out;
 }
 
@@ -462,7 +469,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     for (const r of i.revisions) {
       const p = r.packages.map(pkg => {
         packages.push({ s: pkg.sha256, f: String(pkg.filename ?? '').replace(/_GENERAL(?=_)/, ''), ...(keys ? { k: pkg.file ?? pkg.key } : {}), b: bytesLabel(pkg.bytes),
-          built: pkg.generatedDate || '', contents: contentsLabel(pkg), chips: chips(i, pkg) });
+          variant: pkg.variant || '', origin: pkg.originDetails ?? [], built: pkg.generatedDate || '', contents: contentsLabel(pkg), chips: chips(i, pkg) });
         return packages.length - 1;
       });
       const best = r.packages[0];
@@ -493,9 +500,8 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
   for (const a of data.aliases) {
     const ks = a.targets.filter(k => idIdx.has(k));
     for (const k of ks) terms.get(k).push(a.display);
-    // Drive-reported names lead with the media type ("BDRE BU40N" on HP
-    // units); the model is what follows.
-    const display = a.kind === 'inquiry' ? String(a.display).replace(MEDIA_PREFIX, '') : a.display;
+    // Drive models are already normalized by the protocol identity API.
+    const display = a.display;
     if (a.kind in NAME_RANK) addName(display, NAME_RANK[a.kind], ks);
   }
   // Every identity needs at least one listed name.
