@@ -205,9 +205,8 @@ a[data-unavailable] { display: none !important; }
 .drive-caps { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin: 0 0 1rem; }
 .drive-caps-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
 .drive-cap { font-size: 0.78rem; font-weight: 600; border: 1.5px solid var(--line); border-radius: 999px; padding: 0.2rem 0.65rem; }
-/* Feature availability tint: green when this drive supports it, red/muted when not. */
+/* Only available modifications are rendered. */
 .drive-cap-on { color: var(--teal-dark); border-color: color-mix(in srgb, var(--teal) 45%, transparent); background: var(--teal-tint); }
-.drive-cap-off { color: #b42318; border-color: #fecdca; background: #fef3f2; }
 /* Confidence tier badges: hardware-proven vs strict-build verified. */
 .drive-fact-future { color: #93370d; background: #fffaeb; }
 .drive-fact-verified { color: #067647; background: #ecfdf3; }

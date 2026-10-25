@@ -310,3 +310,14 @@ test('compressed S08 servo data restores S11JX SAT 8800 compatibility without ad
   assert.ok(targets.includes('pioneer:8800:ID72'), 'S11JX SAT 8800 is available');
   assert.ok(!targets.includes('pioneer:8801:ID72'), 'different SAT 8801 hardware remains excluded');
 });
+
+ test('finder sends only available modification pills and omits an empty feature group', () => {
+  const built = data();
+  const pkg = built.identities.find(i => i.family === 'mediatek').revisions[0].packages[0];
+  pkg.modifiable = true;
+  pkg.features = [{ name: 'Speed', ok: true }, { name: 'UHD', ok: false }, { name: 'BD', ok: false }];
+  const version = page => page.versions.find(v => v.p.some(p => page.packages[p].s === pkg.sha256));
+  assert.deepEqual(version(finderPageData(built)).features, [{ name: 'Speed', ok: true }]);
+  pkg.features = [{ name: 'UHD', ok: false }];
+  assert.equal('features' in version(finderPageData(built)), false);
+ });

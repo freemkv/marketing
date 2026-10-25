@@ -475,7 +475,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
       });
       const best = r.packages[0];
       versions.push({ i: n, r: r.revision, p, verification: verificationKey(i, r.revision, best), ...(best.modifiable ? { mod: 1 } : {}), ...(best.baseOnly ? { baseOnly: 1 } : {}),
-        ...(best.features?.length ? { features: best.features.map(f => ({ name: f.name, ok: f.ok })) } : {}) });
+        ...(best.features?.some(f => f.ok) ? { features: best.features.filter(f => f.ok).map(f => ({ name: f.name, ok: true })) } : {}) });
       v.push(versions.length - 1);
     }
     return { i, out: { key: i.key, n: '', brand: identityBrand(i), d: destinationLabel(i), g: versionGroup(i), pio: i.family === 'pioneer' ? 1 : 0,
