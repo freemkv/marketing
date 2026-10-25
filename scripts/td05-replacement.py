@@ -40,7 +40,7 @@ for item in replacements:
         status, _ = request(bad_key, 'DELETE')
         assert status in (200, 204, 404), f'Could not remove {bad_key}: HTTP {status}'
         assert request(bad_key)[0] == 404, f'Corrupt object remains available: {bad_key}'
-    print(f"Corrupt TD05 {item['replacement_filename'].split('_')[1]} objects removed and verified absent", flush=True)
+    print(f"Corrupt firmware package {item['bad_package_sha256'][:8]} objects removed and verified absent", flush=True)
 
     key = item['replacement_key']
     expected = item['replacement_sha256']
@@ -56,4 +56,4 @@ for item in replacements:
             assert status in (200,201,204), f'Upload failed: HTTP {status}'
     status, actual=request(key)
     assert status==200 and digest(actual)==expected, 'replacement full-object SHA-256 readback failed'
-    print(f"Correct TD05 {item['replacement_filename'].split('_')[1]} object uploaded and full SHA-256 readback verified", flush=True)
+    print(f"Correct replacement {item['replacement_sha256'][:8]} object uploaded and full SHA-256 readback verified", flush=True)

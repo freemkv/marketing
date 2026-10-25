@@ -381,18 +381,18 @@
     },
     {
       "basis": "projection",
-      "key": "pioneer/BDC-TD04/SAT%201041/1.01/36f2d43e941898796a37e1eefc68710dc10e71456bf346c1a03a7f944fa5b1d8.tar",
+      "key": "pioneer/BDC-TD04/SAT%201041/1.01/75178b261f471ec260789cc9f9575e43883f321db24066370164194b5c9a8dec.tar",
       "model": "BDC-TD04",
-      "new_key": "fw/pioneer/36f2d43e941898796a37e1eefc68710dc10e71456bf346c1a03a7f944fa5b1d8.tar",
-      "sha256": "36f2d43e941898796a37e1eefc68710dc10e71456bf346c1a03a7f944fa5b1d8",
+      "new_key": "fw/pioneer/75178b261f471ec260789cc9f9575e43883f321db24066370164194b5c9a8dec.tar",
+      "sha256": "75178b261f471ec260789cc9f9575e43883f321db24066370164194b5c9a8dec",
       "status": "published"
     },
     {
       "basis": "projection+site",
-      "key": "pioneer/BDC-TD05/SAT%208291/1.01/a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53.tar",
+      "key": "pioneer/BDC-TD05/SAT%208291/1.01/38f4712cf11dd380f33e1811c578f335a790db1a423d60945d603c36b85f28d6.tar",
       "model": "BDC-TD05",
-      "new_key": "fw/pioneer/a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53.tar",
-      "sha256": "a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53",
+      "new_key": "fw/pioneer/38f4712cf11dd380f33e1811c578f335a790db1a423d60945d603c36b85f28d6.tar",
+      "sha256": "38f4712cf11dd380f33e1811c578f335a790db1a423d60945d603c36b85f28d6",
       "status": "published"
     },
     {
@@ -8283,10 +8283,10 @@
     },
     {
       "basis": "projection+site",
-      "key": "pioneer/BDR-TD04/SAT%201040/1.01/979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db.tar",
+      "key": "pioneer/BDR-TD04/SAT%201040/1.01/12275961c6c465d14c2ad06d05d0492f41a4c612fadfa14b70963d7f82ca02cc.tar",
       "model": "BDR-TD04",
-      "new_key": "fw/pioneer/979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db.tar",
-      "sha256": "979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db",
+      "new_key": "fw/pioneer/12275961c6c465d14c2ad06d05d0492f41a4c612fadfa14b70963d7f82ca02cc.tar",
+      "sha256": "12275961c6c465d14c2ad06d05d0492f41a4c612fadfa14b70963d7f82ca02cc",
       "status": "published"
     },
     {
@@ -8331,10 +8331,10 @@
     },
     {
       "basis": "projection",
-      "key": "pioneer/BDR-UD03/SAT%208510/1.03/202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48.tar",
+      "key": "pioneer/BDR-UD03/SAT%208510/1.03/18b57472eeac46db8437ab4e3745035d463ee39b5fdca2f56b00a0959d049d84.tar",
       "model": "BDR-UD03",
-      "new_key": "fw/pioneer/202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48.tar",
-      "sha256": "202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48",
+      "new_key": "fw/pioneer/18b57472eeac46db8437ab4e3745035d463ee39b5fdca2f56b00a0959d049d84.tar",
+      "sha256": "18b57472eeac46db8437ab4e3745035d463ee39b5fdca2f56b00a0959d049d84",
       "status": "published"
     },
     {
