@@ -24,7 +24,7 @@ const firmwareRepo = 'https://github.com/freemkv/freemkv-firmware';
 const firmwareReleases = `${firmwareRepo}/releases`;
 
 // One box per install method, as on /download/. Every app download carries the
-// CLI; macOS is Homebrew only (not notarized). Asset names follow
+// CLI; macOS offers Homebrew for Apple Silicon and Intel downloads. Asset names follow
 // freemkv-firmware's release.yml.
 const tool = 'freemkv-fw';
 const platforms = [
@@ -55,9 +55,18 @@ const platforms = [
     methods: [
       {
         title: 'Homebrew',
-        hint: 'Apple Silicon or Intel',
+        hint: 'Apple Silicon',
         commands: [`brew install freemkv/tap/${tool}-gui`],
-        note: 'Installs the app and the command line (or <code>brew install freemkv/tap/' + tool + '</code> for the command line only). Not notarized, so macOS installs go through Homebrew only.',
+        note: 'Installs the app and the command line (or <code>brew install freemkv/tap/' + tool + '</code> for the command line only).',
+      },
+      {
+        title: 'Download',
+        hint: 'Intel Mac',
+        builds: [
+          { key: 'macos-x86_64', main: 'App', arch: 'Intel x86_64', label: 'App .zip · includes the command line', file: `${tool}-gui-macos-x86_64.zip` },
+          { main: 'CLI', arch: 'Intel x86_64', label: 'Command line binary', file: `${tool}-cli-x86_64-macos`, secondary: true },
+        ],
+        note: 'Extract the app ZIP and move the app to Applications. For CLI setup and macOS security prompts, see the <a href="/docs/firmware-tools/#intel-direct-download">Mac install guide</a>.',
       },
     ],
   },

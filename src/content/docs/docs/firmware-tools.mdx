@@ -19,6 +19,8 @@ your drive, and for the command ABI the firmware they build actually implements.
 
 ## Install on macOS
 
+For Apple Silicon, install with Homebrew:
+
 ```bash
 brew update
 brew install freemkv/tap/freemkv-flash freemkv/tap/freemkv-fw
@@ -29,6 +31,23 @@ If already installed, use `brew upgrade` with the same package names. Run
 rather than a previously downloaded `./freemkv-flash-…` executable. For a drive that
 appears in `list` but fails to open in `info`, see
 [macOS firmware-tool troubleshooting](/docs/troubleshooting/#firmware-tools-list-works-but-info-reports-e1006).
+
+### Intel direct download
+
+Download the **Intel x86_64** app or CLI from [Flash](/firmware/flash/) or [Modify](/firmware/modify/).
+
+- **App:** extract the ZIP and move the app to Applications. The app includes the command line.
+- **CLI:** make the downloaded binary executable and run it from Terminal, for example:
+
+```bash
+cd ~/Downloads
+chmod +x freemkv-flash-cli-x86_64-macos
+./freemkv-flash-cli-x86_64-macos --version
+```
+
+For Modify, use `freemkv-fw-cli-x86_64-macos` instead. You can rename the binary to `freemkv-flash` or `freemkv-fw` and put it in a directory on your PATH. Replace the downloaded app or binary with a newer download to update. Homebrew also remains available on Intel Macs.
+
+The tools are not notarized by Apple. If macOS blocks a downloaded app or CLI, try opening it, then go to **System Settings → Privacy & Security → Open Anyway** and confirm if you trust the download.
 
 ## freemkv-fw
 

@@ -73,9 +73,17 @@ const appPlatforms = [
     methods: [
       {
         title: 'Homebrew',
-        hint: 'Apple Silicon or Intel',
+        hint: 'Apple Silicon',
         commands: ['brew install --cask freemkv/tap/freemkv'],
-        note: 'Installs the app and the <code>freemkv</code> command. freemkv is not notarized, so on macOS it installs through Homebrew only, which skips the security prompt a browser download would hit.',
+        note: 'Installs the app and the <code>freemkv</code> command.',
+      },
+      {
+        title: 'Download',
+        hint: 'Intel Mac',
+        builds: [
+          { key: 'macos-x64', arch: 'Intel x86_64', label: 'App .zip · includes every CLI command', file: 'freemkv-x86_64-macos.zip' },
+        ],
+        note: 'Extract the ZIP and move freemkv.app to Applications. For macOS security prompts, see the <a href="/docs/platforms-macos/#opening-a-downloaded-build">Mac install guide</a>.',
       },
     ],
   },
@@ -157,8 +165,16 @@ const cliPlatforms = [
     methods: [
       {
         title: 'Homebrew',
-        hint: 'Apple Silicon or Intel',
+        hint: 'Apple Silicon',
         commands: ['brew install freemkv/tap/freemkv-cli'],
+      },
+      {
+        title: 'Download',
+        hint: 'Intel Mac',
+        builds: [
+          { key: 'macos-x64', arch: 'Intel x86_64', label: 'Command line binary', file: 'freemkv-cli-x86_64-macos' },
+        ],
+        note: 'For setup and macOS security prompts, see the <a href="/docs/platforms-macos/#intel-direct-download">Mac install guide</a>.',
       },
     ],
   },
