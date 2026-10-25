@@ -18,7 +18,7 @@ test('every catalogue package is reachable from a listed model name', () => {
   assert.equal(hostedSummary(data()).total, all.length);
 });
 
-test('the real catalogue: all packages reachable, old model names listed, no raw labels', () => {
+test('the real catalogue: all packages reachable, old model names searchable, no raw labels', () => {
   const rd = f => JSON.parse(readFileSync(new URL(`../src/data/${f}`, import.meta.url)));
   const mtk = rd('firmware-index.json'), pio = rd('pioneer-firmware-index.json');
   const built = buildFinderData({ catalog: rd('finder-catalog.json'), mediatek: mtk });
@@ -26,7 +26,14 @@ test('the real catalogue: all packages reachable, old model names listed, no raw
   const total = built.identities.reduce((n, i) => n + i.revisions.reduce((m, r) => m + r.packages.length, 0), 0);
   assert.equal(new Set(d.models.flatMap(m => m.v.flatMap(([v]) => d.versions[v].p))).size, total);
   const names = new Set(d.models.map(m => m.m.toUpperCase().replace(/[^A-Z0-9]/g, '')));
-  for (const row of pio) assert.ok(names.has(row.model.toUpperCase().replace(/[^A-Z0-9]/g, '')), row.model);
+  const searchable = d.models.map(m => m.t).join(' ');
+  for (const row of pio) assert.ok(names.has(row.model.toUpperCase().replace(/[^A-Z0-9]/g, '')) || searchable.includes(row.model.toLowerCase().replace(/[^a-z0-9]/g, '')), row.model);
+  for (const name of ['BDR-206PA','BDR-206PB']) {
+    const row=d.models.find(m=>m.m===name);assert.ok(row);assert.ok(row.t.includes('epson'));assert.ok(row.t.includes('pp100'));
+    assert.ok(!d.models.some(m=>m.m==='Epson '+name));
+  }
+  assert.ok(!d.models.some(m=>m.m==='PP100'||m.m==='PP-100'));
+  assert.equal(d.identities.find(i=>i.key==='pioneer:1030:ID20').n,'BDR-206PA');
   // Embedded MediaTek names can be truncated; catalogue names retain the updater identity.
   const images = new Set(rd('finder-catalog.json').identities.filter(i => i.family === 'mediatek')
     .flatMap(i => i.revisions.flatMap(r => r.packages.map(p => p.image_sha256 ?? p.sha256))));

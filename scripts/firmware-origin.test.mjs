@@ -36,7 +36,8 @@ test('Origin Details deduplicates shared originals and shows both extracted Pion
   const separate=render(escape,{origin:[kernel,{...normal,originals:[{...original,sha256:'d'.repeat(64),filename:'main.zip'}]}]});
   assert.ok(separate.includes('<h3>Original files</h3>'));
   assert.ok(separate.includes('<strong>main.zip</strong>'));
-  assert.ok(!separate.includes('Other recorded originals'));
+  assert.ok(separate.includes('Contains: Kernel .enc only'));
+  assert.ok(!separate.includes('Other sources for these components'));
   const hostile=render(escape,{origin:[{...kernel,originals:[{...original,filename:'<img src=x onerror=alert(1)>'}]}]});
   assert.ok(!hostile.includes('<img'));assert.ok(hostile.includes('&lt;img'));
 });
