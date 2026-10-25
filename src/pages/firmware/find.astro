@@ -626,10 +626,10 @@ import '../../styles/site.css';
                 '<span class="drive-cap drive-cap-on">Save / Reset</span>' +
                 '<span class="drive-cap-note">Base only — unlock flags pending hardware validation</span>' +
                 '</div>';
-            } else if (canModify && ver.features) {
+            } else if (canModify && ver.features?.some(f => f.ok)) {
               capsHtml = '<div class="drive-caps"><span class="drive-caps-label">Modifyable:</span>' +
-                ver.features.map(function (f) {
-                  return '<span class="drive-cap ' + (f.ok ? 'drive-cap-on' : 'drive-cap-off') + '">' + escapeText(f.name) + '</span>';
+                ver.features.filter(function (f) { return f.ok; }).map(function (f) {
+                  return '<span class="drive-cap drive-cap-on">' + escapeText(f.name) + '</span>';
                 }).join('') + '</div>';
             }
 
