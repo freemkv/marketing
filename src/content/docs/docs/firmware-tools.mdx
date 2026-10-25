@@ -19,6 +19,8 @@ your drive, and for the command ABI the firmware they build actually implements.
 
 ## Install on macOS
 
+For Apple Silicon, install with Homebrew:
+
 ```bash
 brew update
 brew install freemkv/tap/freemkv-flash freemkv/tap/freemkv-fw
@@ -30,26 +32,44 @@ rather than a previously downloaded `./freemkv-flash-…` executable. For a driv
 appears in `list` but fails to open in `info`, see
 [macOS firmware-tool troubleshooting](/docs/troubleshooting/#firmware-tools-list-works-but-info-reports-e1006).
 
+### Intel direct download
+
+Download the **Intel x86_64** app or CLI from [Flash](/firmware/flash/) or [Modify](/firmware/modify/).
+
+- **App:** extract the ZIP and move the app to Applications. The app includes the command line.
+- **CLI:** make the downloaded binary executable and run it from Terminal, for example:
+
+```bash
+cd ~/Downloads
+chmod +x freemkv-flash-cli-x86_64-macos
+./freemkv-flash-cli-x86_64-macos --version
+```
+
+For Modify, use `freemkv-fw-cli-x86_64-macos` instead. You can rename the binary to `freemkv-flash` or `freemkv-fw` and put it in a directory on your PATH. Replace the downloaded app or binary with a newer download to update. Homebrew also remains available on Intel Macs.
+
+The tools are not notarized by Apple. If macOS blocks a downloaded app or CLI, try opening it, then go to **System Settings → Privacy & Security → Open Anyway** and confirm if you trust the download.
+
 ## freemkv-fw
 
 `freemkv-fw` turns a base MediaTek firmware image into freemkv firmware, and checks whether a
 file or a live drive is already freemkv.
 
-### create
+### modify
 
 ```bash
-freemkv-fw create <input.bin> [output.freemkv.bin]     # default output: <input-stem>.freemkv.bin
-freemkv-fw create <input.bin> --json                   # machine-readable per-capability report
-freemkv-fw create <input.bin> --audit                  # verify every applied patch actually landed
-freemkv-fw create <input.bin> --in-place               # rewrite the input image instead of writing a new file
-freemkv-fw create <input.bin> --base                   # strict base build: all-or-nothing, refuses without a full freemkv base
+freemkv-fw modify <input> [output]       # default output: <input-stem>.freemkv.bin
+freemkv-fw modify <input> --json         # machine-readable per-capability report
+freemkv-fw modify <input> --audit        # verify every applied patch actually landed
+freemkv-fw modify <input> --in-place     # rewrite the input image instead of writing a new file
+freemkv-fw modify <input> --base         # strict base build: all-or-nothing, refuses without a full freemkv base
 ```
 
 Accepts BIN images or website TAR packages and returns the same format. For a paired
 TAR, Modify changes only the final firmware and preserves the intermediate (INTM)
 image and its extraction-derived pairing.
 
-Takes one stock (OEM) image and produces one freemkv image. It **auto-detects the chipset**
+Takes one stock (OEM) image and produces one freemkv image. The CLI's canonical command is
+`freemkv-fw modify`; it **auto-detects the chipset**
 (MediaTek MT1959 or MT1939) from the image, then applies **every capability that drive supports
 and reports each one individually** — by default it is never all-or-nothing (`--base` is the
 strict exception, used by the publish pipeline). A capability whose signature
@@ -63,8 +83,8 @@ capability comes back as one of four states:
 | **n/a** | out of scope for this drive (e.g. UHD on a DVD-only drive) |
 | **skipped** | in scope, but the signature wasn't found on this image (nothing is written) |
 
-Running `create` on freemkv firmware again is **idempotent**: every capability reports *already
-set* and the output is byte-identical to the input. `--audit` (also `create --audit`) re-derives
+Running `modify` on freemkv firmware again is **idempotent**: every capability reports *already
+set* and the output is byte-identical to the input. `--audit` (also `modify --audit`) re-derives
 the exact expected patch bytes and confirms each applied capability actually landed at its hook
 site — an automated correctness check, no drive required. Unrestricted is enabled by
 default where supported; other features start at OEM settings — see
@@ -82,7 +102,7 @@ default where supported; other features start at OEM settings — see
 
 These map to the **features** in the [command reference](#command-reference) below, each an
 independent setting. Which capabilities apply to a given image depends on the chipset and
-generation, so `create` reports them per image rather than assuming — a DVD-only drive has no Unrestricted
+generation, so `modify` reports them per image rather than assuming — a DVD-only drive has no Unrestricted
 gate, for example. Every feature except `Unrestricted` (armed by default) ships at OEM, and
 the rest stay stock until deliberately armed; settings live in RAM and revert on power-off unless **saved** to
 flash. Every build is **statically verified** (integrity re-signs, structural audit passes); the
@@ -111,14 +131,8 @@ Probes a live freemkv drive. With no flags it prints the drive's freemkv identit
 reads a memory range, and `--full` captures every readable flash and RAM region, one
 `<prefix>-<address>.bin` file per region. Read-only.
 
-### sign
-
-```bash
-freemkv-fw sign <image.bin> [-o <out.bin>] [--in-place]    # default output: <stem>.signed.bin
-```
-
-Recomputes and writes back the digest of every active integrity region in an image, after
-you have edited it by hand. `--family` forces the chipset, as for `verify`.
+When `modify` writes the changed firmware image, it automatically recomputes and verifies the
+active integrity data. There is no separate signing step in the normal workflow.
 
 ## freemkv-flash
 
@@ -284,7 +298,7 @@ The full discriminator is the 4-byte prefix **`3C 0E C0 DE`**: standard opcode +
 every optical drive already answers, and the drive stays **100% OEM** until that exact prefix
 shows up.
 
-`freemkv-fw create` wires these features into the firmware image it builds, and
+`freemkv-fw modify` wires these features into the firmware image it builds, and
 `freemkv-fw verify /dev/…` sends the **Identity** command to test a live drive.
 
 ### Grammar: `verb [feature] [state]`

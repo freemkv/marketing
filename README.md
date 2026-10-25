@@ -81,7 +81,7 @@ Deployment is automatic via GitHub Actions (`.github/workflows/pages.yml`):
 3. Release badges resolve published GitHub releases during the build. Deploy
    documentation for a new tool release after that release is published.
 
-### Flash report intake (desktop app 0.13.4)
+### Flash report intake (desktop app 0.15.2)
 
 The private `/api/flash-reports/` Pages Functions use the existing
 `FIRMWARE_VERIFICATIONS` D1 binding, the existing `FIRMWARE_EMAIL_SERVICE`
@@ -112,6 +112,11 @@ site to Pages** afterward so the Pages Functions receive the updated bindings.
    npx wrangler d1 execute freemkv-firmware-verifications --remote --file=migrations/0002_flash_reports.sql
    ```
 
+   The setup workflow also applies the additive description and firmware input
+   metadata migrations. Pages deployments check for the metadata column and
+   apply `migrations/0005_flash_report_firmware_inputs.sql` before deploying
+   updated report endpoints.
+
 3. Set `CLOUDFLARE_ACCOUNT_ID` to the account containing the `freemkv` Pages
    project. Run `node scripts/flash-report-pages-setup.mjs` to inspect the
    bindings, then run it with `--apply` to bind `FLASH_REPORTS_BUCKET` in both
@@ -128,8 +133,11 @@ site to Pages** afterward so the Pages Functions receive the updated bindings.
    The download endpoint independently refuses access after 90 days.
 
 The app opens `/flash-report/approve/`, where the user chooses this session or
-all saved history. The app uploads a ZIP only after that approval. The email
-contains a private download link, and the server never lists reports publicly.
+all saved history. Version 0.15.2 also includes the exact current and target
+firmware files used in selected operations, plus any available pre-update
+capture. The private report email names those files, their hashes and sizes,
+and their ZIP paths. The app uploads a ZIP only after approval, and the server
+never lists reports publicly.
 Run `node --test scripts/flash-reports.test.mjs` to exercise approval, upload,
 download and expiry locally with in-memory bindings.
 

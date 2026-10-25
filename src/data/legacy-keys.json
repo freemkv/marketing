@@ -2221,6 +2221,14 @@
       "status": "published"
     },
     {
+      "basis": "projection",
+      "key": "pioneer/BDR-208M/SAT%208301/1.10/1b4fe3ac56f75b55dbe389b75c1622eb357e5748c7c235789859242536ff59bc.tar",
+      "model": "BDR-208M",
+      "new_key": "fw/pioneer/1b4fe3ac56f75b55dbe389b75c1622eb357e5748c7c235789859242536ff59bc.tar",
+      "sha256": "1b4fe3ac56f75b55dbe389b75c1622eb357e5748c7c235789859242536ff59bc",
+      "status": "published"
+    },
+    {
       "basis": "projection+site",
       "key": "pioneer/BDR-208M/SAT%208301/1.40EU/ba574503d503c44780e518fc43e5cb3fa9eebb4ceb01fa85c40320da33514d75.tar",
       "model": "BDR-208M",

@@ -49194,6 +49194,123 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.10"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1945088,
+              "components": [
+                {
+                  "identity_key": "pioneer:8301:ID60:0000:kernel",
+                  "member": "components/S8301600.000.enc",
+                  "revision": "0000",
+                  "role": "kernel",
+                  "sha256": "99fcf5ecb8b0b04abdda81ac690ad39062416014d296e253f8b4de98e0b8baa8"
+                },
+                {
+                  "identity_key": "pioneer:8301:ID60:1.10:normal",
+                  "member": "components/S8301601.110.enc",
+                  "revision": "1.10",
+                  "role": "normal",
+                  "sha256": "eb0dfe13b9e65a9a485af5bf12ea979af4a782ce65818cd41ab717234608963a"
+                }
+              ],
+              "embedded_model": "BDR-208M",
+              "family_id": "fb569dabb1303547",
+              "family_scheme": "pioneer.hardware.v4",
+              "filename": "BDR-208M_1.10_8301_ID60_1b4fe3ac.tar",
+              "generated_date": "12/08/22",
+              "is_uhd": false,
+              "kernel_revision": "0000",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "99fcf5ecb8b0b04abdda81ac690ad39062416014d296e253f8b4de98e0b8baa8",
+              "key": "fw/pioneer/1b4fe3ac56f75b55dbe389b75c1622eb357e5748c7c235789859242536ff59bc.tar",
+              "modifiable": false,
+              "normal_sha256": "eb0dfe13b9e65a9a485af5bf12ea979af4a782ce65818cd41ab717234608963a",
+              "origin_details": [
+                {
+                  "approval": {
+                    "allow_hoard": true,
+                    "allow_publish": true,
+                    "approved_at": "2026-10-25",
+                    "approved_by": "matthew"
+                  },
+                  "category": "dump",
+                  "firmware": {
+                    "bytes": 70144,
+                    "filename": "S8301600.000.enc",
+                    "md5": "49a2435ee41d328afe1210b08a5df9e0",
+                    "role": "kernel",
+                    "sha256": "99fcf5ecb8b0b04abdda81ac690ad39062416014d296e253f8b4de98e0b8baa8"
+                  },
+                  "originals": [
+                    {
+                      "bytes": 1945088,
+                      "filename": "BD-RW___BDR-208M_1.10.candidate.tar",
+                      "filenames": [
+                        "BD-RW___BDR-208M_1.10.candidate.tar"
+                      ],
+                      "md5": "6b77afb1c8ee5fb0e5f626ebac52d3e7",
+                      "sha256": "1b4fe3ac56f75b55dbe389b75c1622eb357e5748c7c235789859242536ff59bc",
+                      "urls": []
+                    }
+                  ],
+                  "source_kind": "drive-dump"
+                },
+                {
+                  "approval": {
+                    "allow_hoard": true,
+                    "allow_publish": true,
+                    "approved_at": "2026-10-25",
+                    "approved_by": "matthew"
+                  },
+                  "category": "dump",
+                  "firmware": {
+                    "bytes": 1872896,
+                    "filename": "S8301601.110",
+                    "md5": "fb9ecbfda48208f088ec43e22f0c7f99",
+                    "role": "normal",
+                    "sha256": "eb0dfe13b9e65a9a485af5bf12ea979af4a782ce65818cd41ab717234608963a"
+                  },
+                  "originals": [
+                    {
+                      "bytes": 1945088,
+                      "filename": "BD-RW___BDR-208M_1.10.candidate.tar",
+                      "filenames": [
+                        "BD-RW___BDR-208M_1.10.candidate.tar"
+                      ],
+                      "md5": "6b77afb1c8ee5fb0e5f626ebac52d3e7",
+                      "sha256": "1b4fe3ac56f75b55dbe389b75c1622eb357e5748c7c235789859242536ff59bc",
+                      "urls": []
+                    }
+                  ],
+                  "source_kind": "drive-dump"
+                }
+              ],
+              "packageType": "pioneer-installer",
+              "product_identity": {
+                "model": "BDR-208M",
+                "product": "BD-RW   BDR-208M",
+                "product_suffix": "",
+                "revision": "1.10",
+                "vendor": "PIONEER"
+              },
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                92416,
+                488192
+              ],
+              "recommended": true,
+              "revision": "1.10",
+              "selection": "source-contained",
+              "sha256": "1b4fe3ac56f75b55dbe389b75c1622eb357e5748c7c235789859242536ff59bc"
+            }
+          ],
+          "revision": "1.10"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
                 "1.40EU"
               ],
               "brand": "PIONEER",
