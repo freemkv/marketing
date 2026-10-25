@@ -744,7 +744,7 @@
         "destination": "ID01",
         "embeddedModel": "BDC-TD05",
         "embeddedRev": "1.01",
-        "file": "pioneer/BDC-TD05/SAT%208291/1.01/a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53.tar",
+        "file": "pioneer/BDC-TD05/SAT%208291/1.01/38f4712cf11dd380f33e1811c578f335a790db1a423d60945d603c36b85f28d6.tar",
         "generatedDate": "12/12/20",
         "hardware": "SAT 8291",
         "kernelRev": null,
@@ -753,11 +753,11 @@
         "kernelVersion2": "0000",
         "model": "BDC-TD05",
         "modifiable": false,
-        "normalSha256": "e89128bdee1c9d25f3c1db0a2631de485b62b2e4890eed80a3a4f05a50dbdc1a",
+        "normalSha256": "612d204899fb7c88c7b2d47022fb9dfcfbb95ce16e30b377da40ed4f40737eb7",
         "packageType": "pioneer-installer",
         "rev": "1.01",
         "selection": "normal-only",
-        "sha256": "a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53"
+        "sha256": "38f4712cf11dd380f33e1811c578f335a790db1a423d60945d603c36b85f28d6"
       }
     ]
   },
@@ -17783,7 +17783,7 @@
         "destination": "ID01",
         "embeddedModel": "BDR-TD04",
         "embeddedRev": "1.01",
-        "file": "pioneer/BDR-TD04/SAT%201040/1.01/979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db.tar",
+        "file": "pioneer/BDR-TD04/SAT%201040/1.01/12275961c6c465d14c2ad06d05d0492f41a4c612fadfa14b70963d7f82ca02cc.tar",
         "generatedDate": "12/11/05",
         "hardware": "SAT 1040",
         "kernelRev": null,
@@ -17792,11 +17792,11 @@
         "kernelVersion2": "0002",
         "model": "BDR-TD04",
         "modifiable": false,
-        "normalSha256": "1e2adf2d1dc2589606006b933da6e3a09615a607c1863729997acd7d4f95499d",
+        "normalSha256": "ff6dbac35aa954dc1f5102bb52cce7baf0ae7b3b6648852c6e923e341459b3a8",
         "packageType": "pioneer-installer",
         "rev": "1.01",
         "selection": "normal-only",
-        "sha256": "979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db"
+        "sha256": "12275961c6c465d14c2ad06d05d0492f41a4c612fadfa14b70963d7f82ca02cc"
       }
     ]
   },

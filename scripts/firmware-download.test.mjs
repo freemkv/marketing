@@ -47,6 +47,25 @@ test('TD05 1.01 serves only the verified replacement and withdraws corrupt alias
  assert.equal(resolveDownload(allow,{file:'pioneer/BDR-TD05/SAT%208211/1.01/6158e9feac480044255746c5a5236f4270cefd6b1146e19ffb8d63bd2a7af767.tar'})?.key,`fw/pioneer/${good}.tar`);
 });
 
+test('audited Pioneer corrupt packages are withdrawn and corrected originals route by content hash', () => {
+ const read = file => JSON.parse(readFileSync(new URL('../src/data/' + file, import.meta.url), 'utf8'));
+ const allow = downloadAllowlist({catalog:read('finder-catalog.json'),pioneer:read('pioneer-firmware-index.json'),legacyKeys:read('legacy-keys.json')});
+ const pairs = [
+  ['979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db','12275961c6c465d14c2ad06d05d0492f41a4c612fadfa14b70963d7f82ca02cc','pioneer/BDR-TD04/SAT%201040/1.01/'],
+  ['36f2d43e941898796a37e1eefc68710dc10e71456bf346c1a03a7f944fa5b1d8','75178b261f471ec260789cc9f9575e43883f321db24066370164194b5c9a8dec','pioneer/BDC-TD04/SAT%201041/1.01/'],
+  ['202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48','18b57472eeac46db8437ab4e3745035d463ee39b5fdca2f56b00a0959d049d84','pioneer/BDR-UD03/SAT%208510/1.03/'],
+  ['a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53','38f4712cf11dd380f33e1811c578f335a790db1a423d60945d603c36b85f28d6','pioneer/BDC-TD05/SAT%208291/1.01/'],
+ ];
+ for (const [bad,good,path] of pairs) {
+  assert.equal(resolveDownload(allow,{package:bad}),null,bad);
+  assert.equal(resolveDownload(allow,{file:`${path}${bad}.tar`}),null,bad);
+  assert.equal(resolveDownload(allow,{package:good})?.key,`fw/pioneer/${good}.tar`,good);
+  assert.equal(resolveDownload(allow,{file:`${path}${good}.tar`})?.key,`fw/pioneer/${good}.tar`,good);
+ }
+ const graph=read('crossflash-links.json');
+ assert.equal(JSON.stringify(graph).includes(pairs[2][0]),false,'withdrawn UD03 package must not retain crossflash edges');
+});
+
 test('a curated replacement removes the superseded UD04 package identity', () => {
  const read = (file) => JSON.parse(readFileSync(new URL('../src/data/' + file, import.meta.url), 'utf8'));
  const allow = downloadAllowlist({catalog:read('finder-catalog.json'),legacyKeys:read('legacy-keys.json')});
