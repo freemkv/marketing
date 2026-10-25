@@ -8321,43 +8321,11 @@
       "status": "published"
     },
     {
-      "basis": "projection",
-      "key": "pioneer/BDR-TD05/SAT%208211/1.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
-      "model": "BDR-TD05",
-      "new_key": "fw/pioneer/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
-      "sha256": "d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610",
-      "status": "published"
-    },
-    {
       "basis": "projection+site",
       "key": "pioneer/BDR-TD05/SAT%208211/1.02EU/9d3154482b028422f7051e04983b34ab852e08e26effca2aa41d68ed23431897.tar",
       "model": "BDR-TD05",
       "new_key": "fw/pioneer/9d3154482b028422f7051e04983b34ab852e08e26effca2aa41d68ed23431897.tar",
       "sha256": "9d3154482b028422f7051e04983b34ab852e08e26effca2aa41d68ed23431897",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/BDR-TD05/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
-      "model": "BDR-TD05",
-      "new_key": "fw/pioneer/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
-      "sha256": "d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/BDR-TD05E1020474/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
-      "model": "BDR-TD05E1020474",
-      "new_key": "fw/pioneer/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
-      "sha256": "d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/BDR-TD05FUJITSU/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
-      "model": "BDR-TD05FUJITSU",
-      "new_key": "fw/pioneer/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
-      "sha256": "d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610",
       "status": "published"
     },
     {

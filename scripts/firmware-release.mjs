@@ -60,7 +60,7 @@ export function rejectWithdrawn(catalog, withdrawals) {
   if (versions.some(sha => sha && rejected.has(sha))) throw new Error('Catalog contains withdrawn firmware');
 }
 export function validateWithdrawal(row) {
-  const pioneer = row?.normalSha256 && row.key?.startsWith('pioneer/') && row.key.endsWith('.tar');
+  const pioneer = row?.normalSha256 && (row.key?.startsWith('pioneer/') || /^fw\/pioneer\/[a-f0-9]{64}\.tar$/.test(row.key)) && row.key.endsWith('.tar');
   const mediatek = row?.imageSha256 && (/^(MT1939|MT1959)\/[A-Za-z0-9._%-]+\.bin$/.test(row.key) || /^fw\/mediatek\/[a-f0-9]{64}\.tar$/.test(row.key));
   if (!safePath(row?.key) || !(pioneer || mediatek) || !/^[a-f0-9]{64}$/.test(row.normalSha256 ?? row.imageSha256)) throw new Error('Invalid withdrawal receipt');
   return row;

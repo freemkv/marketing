@@ -29352,27 +29352,27 @@
                   "member": "components/S8211721.202.enc",
                   "revision": "2.02",
                   "role": "normal",
-                  "sha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908"
+                  "sha256": "9a21cbbb0783536cf90bf5193746a7a55b460377a13d44759dda90fef3599a19"
                 }
               ],
               "embedded_model": "BDR-TD05",
-              "family_id": null,
+              "family_id": "3e3415a49f245a2f",
               "family_scheme": "pioneer.hardware.v3",
-              "filename": "BDR-TD05_2.02_8211_ID72_d0b7a633.tar",
+              "filename": "BDR-TD05_2.02_8211_ID72_f0ad07ab.tar",
               "generated_date": "15/09/04",
               "is_uhd": false,
               "kernel_revision": null,
               "kernel_selection_reason": "no-kernel-for-drive",
               "kernel_sha256": null,
-              "key": "fw/pioneer/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+              "key": "fw/pioneer/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
               "modifiable": false,
-              "normal_sha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908",
+              "normal_sha256": "9a21cbbb0783536cf90bf5193746a7a55b460377a13d44759dda90fef3599a19",
               "packageType": "pioneer-installer",
               "receiver_reverse": null,
               "receiver_xor_offsets": null,
               "revision": "2.02",
               "selection": "normal-only",
-              "sha256": "d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610"
+              "sha256": "f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca"
             }
           ],
           "revision": "2.02"
