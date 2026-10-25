@@ -54,7 +54,32 @@ jobs:
       - name: Enforce private access and 90-day deletion
         run: |
           npx wrangler r2 bucket dev-url disable freemkv-flash-reports
-          npx wrangler r2 bucket lifecycle add freemkv-flash-reports reports-90d flash-reports/ --expire-days 90 --force
+          node --input-type=module <<'JS'
+          const endpoint = `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/r2/buckets/freemkv-flash-reports/lifecycle`;
+          const headers = {Authorization: `Bearer ${process.env.CLOUDFLARE_API_TOKEN}`, 'Content-Type': 'application/json'};
+          const expected = {id: 'reports-90d', enabled: true, conditions: {prefix: 'flash-reports/'},
+            deleteObjectsTransition: {condition: {maxAge: 90 * 24 * 60 * 60, type: 'Age'}}};
+          const matches = rule => rule?.id === expected.id && rule.enabled === true
+            && rule.conditions?.prefix === expected.conditions.prefix
+            && rule.deleteObjectsTransition?.condition?.type === 'Age'
+            && rule.deleteObjectsTransition.condition.maxAge === expected.deleteObjectsTransition.condition.maxAge;
+          async function getRules() {
+            const response = await fetch(endpoint, {headers, signal: AbortSignal.timeout(30000)});
+            const data = await response.json();
+            if (!response.ok || !data.success || (data.result?.rules != null && !Array.isArray(data.result.rules))) throw new Error('Could not inspect report bucket lifecycle rules');
+            return data.result?.rules ?? [];
+          }
+          let rules = await getRules();
+          if (!rules.some(matches)) {
+            const updatedRules = [...rules.filter(rule => rule.id !== expected.id), expected];
+            const response = await fetch(endpoint, {method: 'PUT', headers, body: JSON.stringify({rules: updatedRules}), signal: AbortSignal.timeout(30000)});
+            const data = await response.json();
+            if (!response.ok || !data.success) throw new Error('Could not set the report bucket 90-day lifecycle rule');
+            rules = await getRules();
+          }
+          if (!rules.some(matches)) throw new Error('Report bucket 90-day lifecycle rule did not verify');
+          console.log('Verified the private report bucket expires flash-reports/ objects after 90 days.');
+          JS
       - name: Apply additive report schema
         run: |
           npx wrangler d1 execute freemkv-firmware-verifications-preview --remote --file=migrations/0002_flash_reports.sql
