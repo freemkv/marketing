@@ -1,3 +1,4 @@
+import { validateOriginDetails } from '../src/lib/firmware-origin.mjs';
 // Prepare locally; publish only in an explicitly requested release workflow.
 import { createHash } from 'node:crypto';
 import { promises as fs, createReadStream, realpathSync } from 'node:fs';
@@ -8,6 +9,7 @@ import { createGunzip } from 'node:zlib';
 import { firmwareObjectFetcher } from './firmware-object-fetch.mjs';
 import { LATEST_ARCHIVE_KEY } from '../src/lib/firmware-archive.mjs';
 import { crossflashGraph, seedCrossflashCache } from './firmware-crossflash-cache.mjs';
+import { validateCrossflashCoverage } from '../src/lib/finder.mjs';
 
 const PUBLIC_BASE = 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -60,7 +62,7 @@ export function rejectWithdrawn(catalog, withdrawals) {
   if (versions.some(sha => sha && rejected.has(sha))) throw new Error('Catalog contains withdrawn firmware');
 }
 export function validateWithdrawal(row) {
-  const pioneer = row?.normalSha256 && row.key?.startsWith('pioneer/') && row.key.endsWith('.tar');
+  const pioneer = row?.normalSha256 && (row.key?.startsWith('pioneer/') || /^fw\/pioneer\/[a-f0-9]{64}\.tar$/.test(row.key)) && row.key.endsWith('.tar');
   const mediatek = row?.imageSha256 && (/^(MT1939|MT1959)\/[A-Za-z0-9._%-]+\.bin$/.test(row.key) || /^fw\/mediatek\/[a-f0-9]{64}\.tar$/.test(row.key));
   if (!safePath(row?.key) || !(pioneer || mediatek) || !/^[a-f0-9]{64}$/.test(row.normalSha256 ?? row.imageSha256)) throw new Error('Invalid withdrawal receipt');
   return row;
@@ -115,6 +117,7 @@ export async function prepare(extractor, destination, hoard, { fullUpload = fals
   const manifest = validateManifest(await json(path.join(destination, 'publish-manifest.json')));
   if (manifest.format !== V2) throw new Error('fwext produced an unexpected manifest format');
   const catalog = await json(path.join(destination, 'finder-catalog.json'));
+  validateOriginDetails(catalog);
   await checkWithdrawals(catalog);
   checkStageV2(manifest, catalog, await json(path.join(destination, 'legacy-keys.json')));
   for (const o of manifest.objects) {
@@ -156,6 +159,7 @@ export async function fullArchive(directory, archive) {
 export function checkCrossflashLinks(links, catalog) {
   const map = value => value !== null && typeof value === 'object' && !Array.isArray(value);
   if (links?.format !== 'freemkv-crossflash-links' || ![1, 2].includes(links.version) || !map(links.links) || ((links.version === 2 || links.future !== undefined) && !map(links.future))) throw new Error('Invalid crossflash links');
+  if (links.evaluated_packages !== undefined) validateCrossflashCoverage(catalog, links);
   const shas = new Set();
   for (const i of catalog.identities) for (const r of i.revisions ?? []) for (const p of r.packages ?? []) shas.add(p.sha256);
   for (const graph of [links.links, links.future ?? {}]) {
@@ -379,6 +383,7 @@ async function main() {
   if(command==='extract' && a && b) return extract(a,b);
   if(command==='archive' && a && b) return fullArchive(a,b);
   if(command==='publish' && a) {
+    validateOriginDetails(await json(path.join(a, 'finder-catalog.json')));
     if(!process.env.CLOUDFLARE_ACCOUNT_ID || !process.env.CLOUDFLARE_API_TOKEN) throw new Error('Explicit Cloudflare account and token required');
     await publish(a,(o,file)=>new Promise((resolve,reject)=>{
       const child=spawn(path.join(SITE,'node_modules/.bin/wrangler'),['r2','object','put',`freemkv-firmware/${o.key}`,'--file',file,'--content-type',contentType(o.key),'--remote'],{stdio:'inherit',env:process.env});

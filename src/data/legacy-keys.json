@@ -381,18 +381,18 @@
     },
     {
       "basis": "projection",
-      "key": "pioneer/BDC-TD04/SAT%201041/1.01/36f2d43e941898796a37e1eefc68710dc10e71456bf346c1a03a7f944fa5b1d8.tar",
+      "key": "pioneer/BDC-TD04/SAT%201041/1.01/75178b261f471ec260789cc9f9575e43883f321db24066370164194b5c9a8dec.tar",
       "model": "BDC-TD04",
-      "new_key": "fw/pioneer/36f2d43e941898796a37e1eefc68710dc10e71456bf346c1a03a7f944fa5b1d8.tar",
-      "sha256": "36f2d43e941898796a37e1eefc68710dc10e71456bf346c1a03a7f944fa5b1d8",
+      "new_key": "fw/pioneer/75178b261f471ec260789cc9f9575e43883f321db24066370164194b5c9a8dec.tar",
+      "sha256": "75178b261f471ec260789cc9f9575e43883f321db24066370164194b5c9a8dec",
       "status": "published"
     },
     {
       "basis": "projection+site",
-      "key": "pioneer/BDC-TD05/SAT%208291/1.01/a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53.tar",
+      "key": "pioneer/BDC-TD05/SAT%208291/1.01/38f4712cf11dd380f33e1811c578f335a790db1a423d60945d603c36b85f28d6.tar",
       "model": "BDC-TD05",
-      "new_key": "fw/pioneer/a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53.tar",
-      "sha256": "a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53",
+      "new_key": "fw/pioneer/38f4712cf11dd380f33e1811c578f335a790db1a423d60945d603c36b85f28d6.tar",
+      "sha256": "38f4712cf11dd380f33e1811c578f335a790db1a423d60945d603c36b85f28d6",
       "status": "published"
     },
     {
@@ -1578,6 +1578,22 @@
       "model": "BDR-206MBK1",
       "new_key": "fw/pioneer/d23fb08c900288d0c2d4b54f8ef8fdde571e56832d1e6493676a7aea47c99c78.tar",
       "sha256": "d23fb08c900288d0c2d4b54f8ef8fdde571e56832d1e6493676a7aea47c99c78",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDR-206PA/SAT%201030/2.02/17392c970aa586fa546eeb25829edb10ba5a93d34bb312ac96b7515cb4931a6c.tar",
+      "model": "BDR-206PA",
+      "new_key": "fw/pioneer/17392c970aa586fa546eeb25829edb10ba5a93d34bb312ac96b7515cb4931a6c.tar",
+      "sha256": "17392c970aa586fa546eeb25829edb10ba5a93d34bb312ac96b7515cb4931a6c",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDR-206PA/SAT%201030/2.02/9f0d192c8017732e22abfe840b7ed376c0eb6c09eeec18e4c2204c36f3fcf2c4.tar",
+      "model": "BDR-206PA",
+      "new_key": "fw/pioneer/9f0d192c8017732e22abfe840b7ed376c0eb6c09eeec18e4c2204c36f3fcf2c4.tar",
+      "sha256": "9f0d192c8017732e22abfe840b7ed376c0eb6c09eeec18e4c2204c36f3fcf2c4",
       "status": "published"
     },
     {
@@ -8283,10 +8299,10 @@
     },
     {
       "basis": "projection+site",
-      "key": "pioneer/BDR-TD04/SAT%201040/1.01/979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db.tar",
+      "key": "pioneer/BDR-TD04/SAT%201040/1.01/12275961c6c465d14c2ad06d05d0492f41a4c612fadfa14b70963d7f82ca02cc.tar",
       "model": "BDR-TD04",
-      "new_key": "fw/pioneer/979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db.tar",
-      "sha256": "979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db",
+      "new_key": "fw/pioneer/12275961c6c465d14c2ad06d05d0492f41a4c612fadfa14b70963d7f82ca02cc.tar",
+      "sha256": "12275961c6c465d14c2ad06d05d0492f41a4c612fadfa14b70963d7f82ca02cc",
       "status": "published"
     },
     {
@@ -8300,16 +8316,16 @@
     {
       "basis": "site",
       "key": "pioneer/BDR-TD05/SAT%208211/1.01/6158e9feac480044255746c5a5236f4270cefd6b1146e19ffb8d63bd2a7af767.tar",
-      "new_key": null,
-      "sha256": "6158e9feac480044255746c5a5236f4270cefd6b1146e19ffb8d63bd2a7af767",
-      "status": "missing-package"
+      "new_key": "fw/pioneer/f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6.tar",
+      "sha256": "f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6",
+      "status": "published"
     },
     {
       "basis": "projection",
-      "key": "pioneer/BDR-TD05/SAT%208211/1.01/65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce.tar",
+      "key": "pioneer/BDR-TD05/SAT%208211/1.01/f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6.tar",
       "model": "BDR-TD05",
-      "new_key": "fw/pioneer/65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce.tar",
-      "sha256": "65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce",
+      "new_key": "fw/pioneer/f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6.tar",
+      "sha256": "f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6",
       "status": "published"
     },
     {
@@ -8322,10 +8338,10 @@
     },
     {
       "basis": "projection",
-      "key": "pioneer/BDR-TD05/SAT%208211/1.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+      "key": "pioneer/BDR-TD05/SAT%208211/1.02/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
       "model": "BDR-TD05",
-      "new_key": "fw/pioneer/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
-      "sha256": "d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610",
+      "new_key": "fw/pioneer/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
+      "sha256": "f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca",
       "status": "published"
     },
     {
@@ -8338,26 +8354,26 @@
     },
     {
       "basis": "projection",
-      "key": "pioneer/BDR-TD05/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+      "key": "pioneer/BDR-TD05/SAT%208211/2.02/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
       "model": "BDR-TD05",
-      "new_key": "fw/pioneer/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
-      "sha256": "d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610",
+      "new_key": "fw/pioneer/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
+      "sha256": "f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca",
       "status": "published"
     },
     {
       "basis": "projection",
-      "key": "pioneer/BDR-TD05E1020474/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+      "key": "pioneer/BDR-TD05E1020474/SAT%208211/2.02/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
       "model": "BDR-TD05E1020474",
-      "new_key": "fw/pioneer/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
-      "sha256": "d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610",
+      "new_key": "fw/pioneer/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
+      "sha256": "f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca",
       "status": "published"
     },
     {
       "basis": "projection",
-      "key": "pioneer/BDR-TD05FUJITSU/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+      "key": "pioneer/BDR-TD05FUJITSU/SAT%208211/2.02/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
       "model": "BDR-TD05FUJITSU",
-      "new_key": "fw/pioneer/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
-      "sha256": "d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610",
+      "new_key": "fw/pioneer/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
+      "sha256": "f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca",
       "status": "published"
     },
     {
@@ -8370,10 +8386,10 @@
     },
     {
       "basis": "projection",
-      "key": "pioneer/BDR-UD03/SAT%208510/1.03/202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48.tar",
+      "key": "pioneer/BDR-UD03/SAT%208510/1.03/18b57472eeac46db8437ab4e3745035d463ee39b5fdca2f56b00a0959d049d84.tar",
       "model": "BDR-UD03",
-      "new_key": "fw/pioneer/202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48.tar",
-      "sha256": "202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48",
+      "new_key": "fw/pioneer/18b57472eeac46db8437ab4e3745035d463ee39b5fdca2f56b00a0959d049d84.tar",
+      "sha256": "18b57472eeac46db8437ab4e3745035d463ee39b5fdca2f56b00a0959d049d84",
       "status": "published"
     },
     {
@@ -12925,38 +12941,6 @@
       "status": "published"
     },
     {
-      "basis": "projection",
-      "key": "pioneer/DVR-105/ATA%200004/1.30/6dd6f7b702006545822c43f3ee3ec2672509d6e73da6ef780171e92c9ede66a9.tar",
-      "model": "DVR-105",
-      "new_key": "fw/pioneer/6dd6f7b702006545822c43f3ee3ec2672509d6e73da6ef780171e92c9ede66a9.tar",
-      "sha256": "6dd6f7b702006545822c43f3ee3ec2672509d6e73da6ef780171e92c9ede66a9",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-105/ATA%200004/1.30/9ea9452c2df7a5acd35f27689b65c5e4a78a2c33038b4b4277f246d164b9c3ac.tar",
-      "model": "DVR-105",
-      "new_key": "fw/pioneer/9ea9452c2df7a5acd35f27689b65c5e4a78a2c33038b4b4277f246d164b9c3ac.tar",
-      "sha256": "9ea9452c2df7a5acd35f27689b65c5e4a78a2c33038b4b4277f246d164b9c3ac",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-105/ATA%200004/1.30/a05887c4612692837137c5c6583db637959801880f1184a62dcafbb0af93b181.tar",
-      "model": "DVR-105",
-      "new_key": "fw/pioneer/a05887c4612692837137c5c6583db637959801880f1184a62dcafbb0af93b181.tar",
-      "sha256": "a05887c4612692837137c5c6583db637959801880f1184a62dcafbb0af93b181",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-105/ATA%200004/1.30/a9781092d856e7980a8994e126e818c4dc232ea5465ceb126388e9d2139c0ec0.tar",
-      "model": "DVR-105",
-      "new_key": "fw/pioneer/a9781092d856e7980a8994e126e818c4dc232ea5465ceb126388e9d2139c0ec0.tar",
-      "sha256": "a9781092d856e7980a8994e126e818c4dc232ea5465ceb126388e9d2139c0ec0",
-      "status": "published"
-    },
-    {
       "basis": "projection+site",
       "key": "pioneer/DVR-105/ATA%200004/1.30/b48b1c9cab1695b51dfde8e18bb64eea846d3c87614ca69ca027ed1d17f6d08b.tar",
       "model": "DVR-105",
@@ -12965,27 +12949,11 @@
       "status": "published"
     },
     {
-      "basis": "projection",
-      "key": "pioneer/DVR-105/ATA%200004/1.30/c4ed0a8ab1ea804a324ca4d655eb0d9634aed24c7c03f600ba0a9c321093aced.tar",
-      "model": "DVR-105",
-      "new_key": "fw/pioneer/c4ed0a8ab1ea804a324ca4d655eb0d9634aed24c7c03f600ba0a9c321093aced.tar",
-      "sha256": "c4ed0a8ab1ea804a324ca4d655eb0d9634aed24c7c03f600ba0a9c321093aced",
-      "status": "published"
-    },
-    {
       "basis": "projection+site",
       "key": "pioneer/DVR-105/ATA%200004/1.33/238d6b88688c7805a142ddc69d04fe20d6f33a7887a8fb64f58b90a4072f86df.tar",
       "model": "DVR-105",
       "new_key": "fw/pioneer/238d6b88688c7805a142ddc69d04fe20d6f33a7887a8fb64f58b90a4072f86df.tar",
       "sha256": "238d6b88688c7805a142ddc69d04fe20d6f33a7887a8fb64f58b90a4072f86df",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-105/ATA%200004/1.33/2e3c3732df51c8f7b9acd7b41bb48247c204331f112ea5d903dd180626a6b070.tar",
-      "model": "DVR-105",
-      "new_key": "fw/pioneer/2e3c3732df51c8f7b9acd7b41bb48247c204331f112ea5d903dd180626a6b070.tar",
-      "sha256": "2e3c3732df51c8f7b9acd7b41bb48247c204331f112ea5d903dd180626a6b070",
       "status": "published"
     },
     {
@@ -13037,27 +13005,11 @@
       "status": "published"
     },
     {
-      "basis": "projection",
-      "key": "pioneer/DVR-107D/ATA%200007/1.05/abd216a14ca476afdea1c958956b770fb89e578899324a4e565a60c6675192f6.tar",
-      "model": "DVR-107D",
-      "new_key": "fw/pioneer/abd216a14ca476afdea1c958956b770fb89e578899324a4e565a60c6675192f6.tar",
-      "sha256": "abd216a14ca476afdea1c958956b770fb89e578899324a4e565a60c6675192f6",
-      "status": "published"
-    },
-    {
       "basis": "projection+site",
       "key": "pioneer/DVR-107D/ATA%200007/1.09/79bcd4fe0ce44318127dcf5d7748081893328d3bf52ea18ac8c54aa6d6b0addb.tar",
       "model": "DVR-107D",
       "new_key": "fw/pioneer/79bcd4fe0ce44318127dcf5d7748081893328d3bf52ea18ac8c54aa6d6b0addb.tar",
       "sha256": "79bcd4fe0ce44318127dcf5d7748081893328d3bf52ea18ac8c54aa6d6b0addb",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-107D/ATA%200007/1.10/75c1afe6a2b7587192a7e5af76a4dc709369a1c734346dc0fd6dbc6204971a2c.tar",
-      "model": "DVR-107D",
-      "new_key": "fw/pioneer/75c1afe6a2b7587192a7e5af76a4dc709369a1c734346dc0fd6dbc6204971a2c.tar",
-      "sha256": "75c1afe6a2b7587192a7e5af76a4dc709369a1c734346dc0fd6dbc6204971a2c",
       "status": "published"
     },
     {
@@ -13112,14 +13064,6 @@
       "new_key": null,
       "sha256": "2f9dbf227e526c9ee8c8142250bf23fc4418181c02e4906ff96d9b1e1654b183",
       "status": "missing-package"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-107D/ATA%200007/1.13/33f709091130f09cee305579cdb588f50c919d9ac4dd4e72ba6d6a574a664adc.tar",
-      "model": "DVR-107D",
-      "new_key": "fw/pioneer/33f709091130f09cee305579cdb588f50c919d9ac4dd4e72ba6d6a574a664adc.tar",
-      "sha256": "33f709091130f09cee305579cdb588f50c919d9ac4dd4e72ba6d6a574a664adc",
-      "status": "published"
     },
     {
       "basis": "projection",
@@ -13184,14 +13128,6 @@
       "status": "published"
     },
     {
-      "basis": "projection",
-      "key": "pioneer/DVR-107D/ATA%200007/1.16/2d1ed2820b46dddd1379507d59c874485dd3b3834b6b3e837493435bd94e26a2.tar",
-      "model": "DVR-107D",
-      "new_key": "fw/pioneer/2d1ed2820b46dddd1379507d59c874485dd3b3834b6b3e837493435bd94e26a2.tar",
-      "sha256": "2d1ed2820b46dddd1379507d59c874485dd3b3834b6b3e837493435bd94e26a2",
-      "status": "published"
-    },
-    {
       "basis": "projection+site",
       "key": "pioneer/DVR-107D/ATA%200007/1.16/614e43ee1ccc11148d4480f1aee5b37bdffb389c4d39ffe159d3c22b9e84184f.tar",
       "model": "DVR-107D",
@@ -13212,14 +13148,6 @@
       "model": "DVR-107D",
       "new_key": "fw/pioneer/f3808b891815ed23beb322964428f4eef0a5ca3e3ff6a73fd9959174f0659ba3.tar",
       "sha256": "f3808b891815ed23beb322964428f4eef0a5ca3e3ff6a73fd9959174f0659ba3",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-107D/ATA%200007/1.18/58cc77b68169dd720dd2d7894f7769777b76baa10fcdd518930872088c53de46.tar",
-      "model": "DVR-107D",
-      "new_key": "fw/pioneer/58cc77b68169dd720dd2d7894f7769777b76baa10fcdd518930872088c53de46.tar",
-      "sha256": "58cc77b68169dd720dd2d7894f7769777b76baa10fcdd518930872088c53de46",
       "status": "published"
     },
     {
@@ -13293,14 +13221,6 @@
       "status": "published"
     },
     {
-      "basis": "projection",
-      "key": "pioneer/DVR-107D/ATA%200007/1.21/b82cff7c52c222afb77897b364312d3d127a43ce8bdcc82ee0eef6109d7d080e.tar",
-      "model": "DVR-107D",
-      "new_key": "fw/pioneer/b82cff7c52c222afb77897b364312d3d127a43ce8bdcc82ee0eef6109d7d080e.tar",
-      "sha256": "b82cff7c52c222afb77897b364312d3d127a43ce8bdcc82ee0eef6109d7d080e",
-      "status": "published"
-    },
-    {
       "basis": "site",
       "key": "pioneer/DVR-107D/ATA%200007/1.21/d04e61447c2e043e0974f7c267c7c341aef9628932147f6441d34c29ccb38bc5.tar",
       "new_key": null,
@@ -13336,38 +13256,6 @@
       "model": "DVR-107D",
       "new_key": "fw/pioneer/ffa600a775ea44f19a789485b0ef0bf4c82e4447eee9fc2f21926c526d7f1d48.tar",
       "sha256": "ffa600a775ea44f19a789485b0ef0bf4c82e4447eee9fc2f21926c526d7f1d48",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-107XL/ATA%200007/1.13/13ef71711ad1b43db33d875f45ae167375976cd78d7b776ba0729f14f71d5bba.tar",
-      "model": "DVR-107XL",
-      "new_key": "fw/pioneer/13ef71711ad1b43db33d875f45ae167375976cd78d7b776ba0729f14f71d5bba.tar",
-      "sha256": "13ef71711ad1b43db33d875f45ae167375976cd78d7b776ba0729f14f71d5bba",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-107XL/ATA%200007/1.16/c79e803bc7f78dd3262b3290689b381c94c13b181bc65f5651547f7010f893ee.tar",
-      "model": "DVR-107XL",
-      "new_key": "fw/pioneer/c79e803bc7f78dd3262b3290689b381c94c13b181bc65f5651547f7010f893ee.tar",
-      "sha256": "c79e803bc7f78dd3262b3290689b381c94c13b181bc65f5651547f7010f893ee",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-107XL/ATA%200007/1.18/e11eb320d67731b8a28cfd322892bb7dd0d417d49dad227378e70218fd02259b.tar",
-      "model": "DVR-107XL",
-      "new_key": "fw/pioneer/e11eb320d67731b8a28cfd322892bb7dd0d417d49dad227378e70218fd02259b.tar",
-      "sha256": "e11eb320d67731b8a28cfd322892bb7dd0d417d49dad227378e70218fd02259b",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-107XL/ATA%200007/1.21/08fd740f5c66fce9343ffc2c9b0eebd2080a99c5e262bd90bd320991cf84603f.tar",
-      "model": "DVR-107XL",
-      "new_key": "fw/pioneer/08fd740f5c66fce9343ffc2c9b0eebd2080a99c5e262bd90bd320991cf84603f.tar",
-      "sha256": "08fd740f5c66fce9343ffc2c9b0eebd2080a99c5e262bd90bd320991cf84603f",
       "status": "published"
     },
     {
@@ -13419,14 +13307,6 @@
       "status": "published"
     },
     {
-      "basis": "projection",
-      "key": "pioneer/DVR-108/ATA%200008/1.14/17c6a258c1deea661f2fab6ce20770dded9c1859888628c351161b1fd43702f6.tar",
-      "model": "DVR-108",
-      "new_key": "fw/pioneer/17c6a258c1deea661f2fab6ce20770dded9c1859888628c351161b1fd43702f6.tar",
-      "sha256": "17c6a258c1deea661f2fab6ce20770dded9c1859888628c351161b1fd43702f6",
-      "status": "published"
-    },
-    {
       "basis": "projection+site",
       "key": "pioneer/DVR-108/ATA%200008/1.14/463e78a0659b3088721b105f5ef189dc857307b0aeae897c90e4c670c4f84033.tar",
       "model": "DVR-108",
@@ -13464,14 +13344,6 @@
       "model": "DVR-108",
       "new_key": "fw/pioneer/a680c7e76e2bccb136c52c0ff84224f6ad4e090acbe11f7330729f1e72b45f64.tar",
       "sha256": "a680c7e76e2bccb136c52c0ff84224f6ad4e090acbe11f7330729f1e72b45f64",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-108/ATA%200008/1.18/c02b7291346852f930a4691d9689eadd6b2a4991d9a300ed8e6cc0664569da71.tar",
-      "model": "DVR-108",
-      "new_key": "fw/pioneer/c02b7291346852f930a4691d9689eadd6b2a4991d9a300ed8e6cc0664569da71.tar",
-      "sha256": "c02b7291346852f930a4691d9689eadd6b2a4991d9a300ed8e6cc0664569da71",
       "status": "published"
     },
     {
@@ -13656,22 +13528,6 @@
       "model": "DVR-108BK",
       "new_key": "fw/pioneer/574acfcb5597eb1192395745c31a139c5efc4c93c192960467c53dc7d9030df0.tar",
       "sha256": "574acfcb5597eb1192395745c31a139c5efc4c93c192960467c53dc7d9030df0",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-108XL/ATA%200008/1.14/e2eadf6baf2dc078857e5f12230e32ebe5cd4f5d6237a2b5e00c73ed1425322c.tar",
-      "model": "DVR-108XL",
-      "new_key": "fw/pioneer/e2eadf6baf2dc078857e5f12230e32ebe5cd4f5d6237a2b5e00c73ed1425322c.tar",
-      "sha256": "e2eadf6baf2dc078857e5f12230e32ebe5cd4f5d6237a2b5e00c73ed1425322c",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-108XL/ATA%200008/1.18/17ce1e1001c1025f1c07c339eae3d01ae5426b65b3224c655769ed614bf5e40c.tar",
-      "model": "DVR-108XL",
-      "new_key": "fw/pioneer/17ce1e1001c1025f1c07c339eae3d01ae5426b65b3224c655769ed614bf5e40c.tar",
-      "sha256": "17ce1e1001c1025f1c07c339eae3d01ae5426b65b3224c655769ed614bf5e40c",
       "status": "published"
     },
     {
@@ -14864,14 +14720,6 @@
       "model": "DVR-K06",
       "new_key": "fw/pioneer/843189275cd20eb4c15c42c29f5c13666b99d4ff9dd498da910d739b843dbb4d.tar",
       "sha256": "843189275cd20eb4c15c42c29f5c13666b99d4ff9dd498da910d739b843dbb4d",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/DVR-K12D/ATA%200052/1.10/cb6b2d88f52f99378960f6170c07cb3de5bb79b6bec17e78b02901f5e84bd35b.tar",
-      "model": "DVR-K12D",
-      "new_key": "fw/pioneer/cb6b2d88f52f99378960f6170c07cb3de5bb79b6bec17e78b02901f5e84bd35b.tar",
-      "sha256": "cb6b2d88f52f99378960f6170c07cb3de5bb79b6bec17e78b02901f5e84bd35b",
       "status": "published"
     },
     {

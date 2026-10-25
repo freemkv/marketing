@@ -100,6 +100,8 @@ export async function crossflashGraph({ engine, root, objects, cacheFile, concur
     for (const kind of ['links', 'future']) for (const targets of Object.values(graph[kind])) targets.sort();
   }
   if (await engineHash(engine) !== fingerprint) throw new Error('Crossflash executable changed during validation');
+  graph.evaluated_packages = [...new Set(entries.map(o => o.sha256))].sort();
+  graph.engine_sha256 = fingerprint;
   const body = { format: FORMAT, engine: fingerprint, inventory: entries, graph };
   await saveCrossflashCache(cacheFile, body);
   return { graph, evaluated };

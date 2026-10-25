@@ -1,0 +1,109 @@
+{
+  "bad_package_sha256": "d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610",
+  "bad_normal_sha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908",
+  "withdraw_keys": [
+    "pioneer/BDR-TD05/SAT%208211/1.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+    "pioneer/BDR-TD05/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+    "pioneer/BDR-TD05E1020474/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+    "pioneer/BDR-TD05FUJITSU/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+    "fw/pioneer/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar"
+  ],
+  "replacement_sha256": "f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca",
+  "replacement_normal_sha256": "9a21cbbb0783536cf90bf5193746a7a55b460377a13d44759dda90fef3599a19",
+  "replacement_key": "fw/pioneer/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
+  "replacement_filename": "BDR-TD05_2.02_8211_ID72_f0ad07ab.tar",
+  "asset_tag": "firmware-td05-corrected-20261024",
+  "source": "Intact Fujitsu E1020474 original; mathematical encrypted signature verified, no unrecovered tail",
+  "live_tested": false,
+  "replacements": [
+    {
+      "bad_package_sha256": "d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610",
+      "bad_normal_sha256": "3d3751b307342ebf5f32edaf46fb907535f3c55b8bc598398b0ece2aa9435908",
+      "withdraw_keys": [
+        "pioneer/BDR-TD05/SAT%208211/1.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+        "pioneer/BDR-TD05/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+        "pioneer/BDR-TD05E1020474/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+        "pioneer/BDR-TD05FUJITSU/SAT%208211/2.02/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar",
+        "fw/pioneer/d0b7a633a54996a046ce868492b0cc6876bc056017fbec72a3ec0c24a2e67610.tar"
+      ],
+      "replacement_sha256": "f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca",
+      "replacement_normal_sha256": "9a21cbbb0783536cf90bf5193746a7a55b460377a13d44759dda90fef3599a19",
+      "replacement_key": "fw/pioneer/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
+      "replacement_filename": "BDR-TD05_2.02_8211_ID72_f0ad07ab.tar",
+      "asset_tag": "firmware-td05-corrected-20261024"
+    },
+    {
+      "bad_package_sha256": "65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce",
+      "bad_normal_sha256": "10424c2ba3709e79f9e8d12fa7e363d9efc003c9631ab391021aa5c4e2bfede3",
+      "withdraw_keys": [
+        "fw/pioneer/65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce.tar",
+        "pioneer/BDR-TD05/SAT%208211/1.01/65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce.tar"
+      ],
+      "replacement_sha256": "f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6",
+      "replacement_normal_sha256": "ec9baac91c2e9bde9a23ee0f38d0bd3a4996c582ed294dd71b1c01c89a240417",
+      "replacement_key": "fw/pioneer/f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6.tar",
+      "replacement_filename": "BDR-TD05_1.01_8211_ID01_f3743900.tar",
+      "asset_tag": "firmware-td05-corrected-20261024"
+    },
+    {
+      "bad_package_sha256": "979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db",
+      "bad_normal_sha256": "1e2adf2d1dc2589606006b933da6e3a09615a607c1863729997acd7d4f95499d",
+      "withdraw_keys": [
+        "fw/pioneer/979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db.tar",
+        "pioneer/BDR-TD04/SAT%201040/1.01/979ae08ba31100be0541d931d4d1a6f4600604589f6092724b4981eff5afd6db.tar"
+      ],
+      "replacement_sha256": "12275961c6c465d14c2ad06d05d0492f41a4c612fadfa14b70963d7f82ca02cc",
+      "replacement_normal_sha256": "ff6dbac35aa954dc1f5102bb52cce7baf0ae7b3b6648852c6e923e341459b3a8",
+      "replacement_key": "fw/pioneer/12275961c6c465d14c2ad06d05d0492f41a4c612fadfa14b70963d7f82ca02cc.tar",
+      "replacement_filename": "BDR-TD04_1.01_1040_ID01_12275961.tar",
+      "asset_tag": "firmware-td05-corrected-20261024",
+      "replacement_model": "BDR-TD04",
+      "replacement_revision": "1.01"
+    },
+    {
+      "bad_package_sha256": "36f2d43e941898796a37e1eefc68710dc10e71456bf346c1a03a7f944fa5b1d8",
+      "bad_normal_sha256": "8733b946d15818bd0c0d49922eb0bb8f1c75383dd24709c0e5fe93b5562d155f",
+      "withdraw_keys": [
+        "fw/pioneer/36f2d43e941898796a37e1eefc68710dc10e71456bf346c1a03a7f944fa5b1d8.tar",
+        "pioneer/BDC-TD04/SAT%201041/1.01/36f2d43e941898796a37e1eefc68710dc10e71456bf346c1a03a7f944fa5b1d8.tar"
+      ],
+      "replacement_sha256": "75178b261f471ec260789cc9f9575e43883f321db24066370164194b5c9a8dec",
+      "replacement_normal_sha256": "3ab8dba217db53f3caaae8ec655728a92d1235cb047537d9729f580a02de73c6",
+      "replacement_key": "fw/pioneer/75178b261f471ec260789cc9f9575e43883f321db24066370164194b5c9a8dec.tar",
+      "replacement_filename": "BDC-TD04_1.01_1041_ID01_75178b26.tar",
+      "asset_tag": "firmware-td05-corrected-20261024",
+      "replacement_model": "BDC-TD04",
+      "replacement_revision": "1.01"
+    },
+    {
+      "bad_package_sha256": "202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48",
+      "bad_normal_sha256": "7a97691fa0ed3ecc53ecc7cdda65db674f80cd7a0ee1c6455c536239bd43e560",
+      "withdraw_keys": [
+        "fw/pioneer/202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48.tar",
+        "pioneer/BDR-UD03/SAT%208510/1.03/202bd6f7991814bc5da1e1bb9556e91a26759316999145f5815a5e53d2425f48.tar"
+      ],
+      "replacement_sha256": "18b57472eeac46db8437ab4e3745035d463ee39b5fdca2f56b00a0959d049d84",
+      "replacement_normal_sha256": "6042da6069fec90d0e8052613f3f2d6e8ebb7e0d41dc770a5cf4c601f3960d4e",
+      "replacement_key": "fw/pioneer/18b57472eeac46db8437ab4e3745035d463ee39b5fdca2f56b00a0959d049d84.tar",
+      "replacement_filename": "BDR-UD03_1.03_8510_ID19_18b57472.tar",
+      "asset_tag": "firmware-td05-corrected-20261024",
+      "replacement_model": "BDR-UD03",
+      "replacement_revision": "1.03"
+    },
+    {
+      "bad_package_sha256": "a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53",
+      "bad_normal_sha256": "e89128bdee1c9d25f3c1db0a2631de485b62b2e4890eed80a3a4f05a50dbdc1a",
+      "withdraw_keys": [
+        "fw/pioneer/a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53.tar",
+        "pioneer/BDC-TD05/SAT%208291/1.01/a828eb89fd4cb6ef07554da5e1c35bb1ba7bcc2c10fa2667e56ec4496d700d53.tar"
+      ],
+      "replacement_sha256": "38f4712cf11dd380f33e1811c578f335a790db1a423d60945d603c36b85f28d6",
+      "replacement_normal_sha256": "612d204899fb7c88c7b2d47022fb9dfcfbb95ce16e30b377da40ed4f40737eb7",
+      "replacement_key": "fw/pioneer/38f4712cf11dd380f33e1811c578f335a790db1a423d60945d603c36b85f28d6.tar",
+      "replacement_filename": "BDC-TD05_1.01_8291_ID01_38f4712c.tar",
+      "asset_tag": "firmware-td05-corrected-20261024",
+      "replacement_model": "BDC-TD05",
+      "replacement_revision": "1.01"
+    }
+  ]
+}

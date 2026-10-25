@@ -133,6 +133,11 @@ async function stageV2(t,{withdrawn=false}={}) {
  const catalog={format:'freemkv-finder-catalog',version:2,aliases:[],withdrawn:[],identities:[
   {key:'pioneer:9201:ID43',family:'pioneer',hardware:'9201',destination:'ID43',revisions:[{revision:'1.02',packages:[{...objects[0],normal_sha256:normal}]}],other_candidates:[]},
   {key:'mediatek:BU40N:GENERAL',family:'mediatek',hardware:'BU40N',destination:'GENERAL',revisions:[{revision:'1.00',packages:[objects[1]]}],other_candidates:[]}]};
+ const originFile = (hash, filename) => ({ filename, sha256: hash, md5: 'a'.repeat(32), bytes: 1 });
+ for (const ident of catalog.identities) for (const rev of ident.revisions) for (const pkg of rev.packages) {
+   if (!pkg.normal_sha256) pkg.image_sha256 = pkg.sha256;
+   pkg.origin_details = [{category:'oem',originals:[originFile('d'.repeat(64),'vendor.exe')],firmware:originFile(pkg.normal_sha256 ?? pkg.image_sha256,'firmware.bin')}];
+ }
  const legacy={format:'freemkv-firmware-legacy-keys',version:1,keys:[{key:`pioneer/BDR-S13U/SAT%209201/1.02EU/${t1}.tar`,sha256:t1,new_key:objects[0].key,status:'published'},
   {key:'MT1939/OLD.bin','sha256':'7'.repeat(64),new_key:null,status:'missing-bytes'}]};
  for(const [o,b] of [[objects[0],tarBytes],[objects[1],binBytes]]){await fs.mkdir(path.dirname(path.join(d,'payloads',o.key)),{recursive:true});await fs.writeFile(path.join(d,'payloads',o.key),b);}
