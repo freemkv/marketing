@@ -29,6 +29,8 @@ export async function provisionEmail({token, apply = false, fetcher = fetch}) {
       observability: {enabled: false}})], {type: 'application/json'}));
     body.set('firmware-email.mjs', new Blob([await readFile(new URL('../workers/firmware-email.mjs', import.meta.url), 'utf8')],
       {type: 'application/javascript+module'}), 'firmware-email.mjs');
+    body.set('src/lib/firmware-report-inputs.mjs', new Blob([await readFile(new URL('../src/lib/firmware-report-inputs.mjs', import.meta.url), 'utf8')],
+      {type: 'application/javascript+module'}), 'src/lib/firmware-report-inputs.mjs');
     await api(`${base}/workers/scripts/${service}`, 'PUT', body);
     await api(`${base}/workers/scripts/${service}/subdomain`, 'POST', {enabled: false, previews_enabled: false});
   }
