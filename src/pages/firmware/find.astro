@@ -113,6 +113,9 @@ import '../../styles/site.css';
       .fx-note { margin: 0.4rem 0 0; font-size: 0.8rem; color: var(--muted); }
       .origin-legend { display: flex; flex-wrap: wrap; gap: 0.6rem 1.5rem; max-width: 640px; margin: 1.5rem auto 0; color: var(--muted); font-size: 0.75rem; }
       .origin-legend p { display: flex; align-items: center; gap: 0.5rem; margin: 0; }
+      .fw-status { display: inline-grid; grid-template-columns: 6.4rem auto; align-items: center; gap: 0.5rem; }
+      .fw-status .fw-verification { width: 100%; text-align: center; }
+      .fw-status .fw-origin-pill { grid-column: 2; justify-self: start; }
       .fw-origin-pill { display: inline-flex; align-items: center; padding: 0.15rem 0.5rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 0.7rem; font-weight: 500; line-height: 1.4; white-space: nowrap; }
       .fw-verification { background: var(--surface); color: var(--muted); border: 1px solid #dbe3e8; cursor: pointer; font: inherit; font-size: 0.7rem; font-weight: 600; line-height: 1.4; border-radius: 0.35rem; padding: 0.15rem 0.45rem; white-space: nowrap; }
       .fx-list .drive-fact-future { font-size: 0.7rem; line-height: 1.4; border: 1px solid transparent; padding: 0.15rem 0.45rem; border-radius: 0.35rem; }
@@ -325,13 +328,13 @@ import '../../styles/site.css';
             }
             function sourceInfo(source) {
               var links = (source.file.urls || []).filter(function(url) { return /^https?:\/\//i.test(url); });
-              return '<section class="origin-file">' + fileInfo(source.file) + '<p class="origin-meta">Contains: ' + source.roles.map(escapeText).join(', ') + '</p>' +
+              return '<section class="origin-file">' + fileInfo(source.file) + '<p class="origin-meta">Contains: ' + source.roles.map(escapeText).join(', ') + (source.roles.length === 1 && origins.length > 1 ? ' only' : '') + '</p>' +
                 links.map(function(url) { return '<p class="origin-meta"><a href="' + escapeText(url) + '" rel="noopener noreferrer">Recorded source</a></p>'; }).join('') + '</section>';
             }
             var preferred = originals.filter(function(source) { return primary[source.file.sha256]; });
             var others = originals.filter(function(source) { return !primary[source.file.sha256]; });
             var body = preferred.length ? '<h3>' + (preferred.length > 1 ? 'Original files' : 'Original file') + '</h3>' + preferred.map(sourceInfo).join('') : '<p>Original file: Not recorded.</p>';
-            if (others.length) body += '<details class="origin-alternates"><summary>Other recorded originals (' + others.length + ')</summary>' +
+            if (others.length) body += '<details class="origin-alternates"><summary>Other sources for these components (' + others.length + ')</summary>' +
               others.map(sourceInfo).join('') + '</details>';
             body += '<h3>Extracted firmware</h3>' + origins.map(function(origin) {
               return '<section class="origin-file"><p class="origin-role">' + roleName(origin) + '<span class="origin-category">' + (origin.category === 'dump' ? 'Community' + (origin.source_kind === 'unmk-restored' ? ' · unMK-restored' : origin.source_kind === 'de' ? ' · DE' : '') : 'OEM') + '</span></p>' + fileInfo(origin.firmware) + '</section>';
@@ -345,11 +348,11 @@ import '../../styles/site.css';
             if (!version.verification || (source && !source.verification)) return badge;
             var id = identities[version.i];
             var label = id.brand + ' ' + id.n + ' ' + version.r + (id.e ? ' ' + id.e : '');
-            return '<button type="button" class="fw-verification" data-verification-target="' + escapeText(version.verification) +
+            return '<span class="fw-status"><button type="button" class="fw-verification" data-verification-target="' + escapeText(version.verification) +
               '" data-verification-source="' + escapeText(source ? source.verification || '' : '') +
               '" data-verification-label="' + escapeText(label) + '"' +
               (source ? ' data-verification-from="' + escapeText(identities[source.i].n + ' ' + source.r + (identities[source.i].e ? ' ' + identities[source.i].e : '')) + '"' : '') +
-              ' hidden disabled aria-label="Community verification for ' + escapeText(label) + '">…</button>' + badge;
+              ' hidden disabled aria-label="Community verification for ' + escapeText(label) + '">…</button>' + badge + '</span>';
           }
 
           var filtered = [];
@@ -695,7 +698,8 @@ import '../../styles/site.css';
               }).join('');
             }
 
-            var name = ident.brand && compact(d.m).indexOf(compact(ident.brand)) !== 0 ? ident.brand + ' ' + d.m : d.m;
+            var modelName = ident.n || d.m;
+            var name = ident.brand && compact(modelName).indexOf(compact(ident.brand)) !== 0 ? ident.brand + ' ' + modelName : modelName;
             detail.innerHTML =
               '<div class="drive-detail-head">' +
               '<h3 class="card-title drive-title">' + escapeText(name) + '</h3>' +

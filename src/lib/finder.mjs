@@ -98,7 +98,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], c
   function identity(key, init) {
     if (!identities.has(key)) identities.set(key, {
       key, family: init.family, hardware: init.hardware, destination: init.destination || 'GENERAL',
-      platforms: [], embeddedModels: [], brands: [], revisions: [], candidates: [], missing: [],
+      platforms: [], embeddedModels: [], primaryModels: [], brands: [], revisions: [], candidates: [], missing: [],
       uhd: false,
     });
     return identities.get(key);
@@ -129,7 +129,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], c
     for (const src of catalog.identities) {
       const ident = identity(src.key, { family: src.family, hardware: src.hardware, destination: src.destination });
       for (const p of src.platforms ?? []) pushUnique(ident.platforms, p);
-      for (const m of src.embedded_models ?? []) pushUnique(ident.embeddedModels, m);
+      for (const m of src.embedded_models ?? []) { pushUnique(ident.embeddedModels, m); pushUnique(ident.primaryModels, m); }
       for (const r of src.revisions ?? []) {
         if (!r.packages?.length) { pushUnique(ident.missing, r.revision); continue; }
         for (const p of r.packages) {
@@ -494,7 +494,11 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
   for (const row of legacy) {
     // A package gains a new hash when its Kernel changes; its Normal does not.
     const ks = [...new Set((row.versions ?? []).map(v => shaKey.get(v.sha256) ?? normalKey.get(v.normalSha256)).filter(Boolean))];
-    addName(row.model, NAME_RANK.legacy, ks);
+    const isProtocolAlias = ks.length && ks.every(k => {
+      const i = data.identities[idIdx.get(k)];
+      return i.primaryModels?.length && i.embeddedModels.some(m => compact(m) === compact(row.model)) && !i.primaryModels.some(m => compact(m) === compact(row.model));
+    });
+    if (!isProtocolAlias) addName(row.model, NAME_RANK.legacy, ks);
   }
   const terms = new Map(data.identities.map(i => [i.key, [hardwareLabel(i), i.hardware, destinationLabel(i), identityBrand(i), ...i.platforms, ...i.embeddedModels]]));
   for (const a of data.aliases) {
@@ -502,7 +506,13 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     for (const k of ks) terms.get(k).push(a.display);
     // Drive models are already normalized by the protocol identity API.
     const display = a.display;
-    if (a.kind in NAME_RANK) addName(display, NAME_RANK[a.kind], ks);
+    const protocolAlias = ks.length && ks.every(k => {
+      const i=data.identities[idIdx.get(k)];
+      return i.primaryModels?.length && i.embeddedModels.some(m=>compact(m)===compact(display)) && !i.primaryModels.some(m=>compact(m)===compact(display));
+    });
+    const brandedDuplicate = a.kind === 'oem' && ks.length && ks.every(k =>
+      data.identities[idIdx.get(k)].primaryModels?.some(m => compact(display) !== compact(m) && compact(display).endsWith(compact(m))));
+    if (a.kind in NAME_RANK && !brandedDuplicate && !protocolAlias) addName(display, NAME_RANK[a.kind], ks);
   }
   // Every identity needs at least one listed name.
   const named = new Set([...names.values()].flatMap(r => [...r.keys]));
@@ -601,7 +611,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
       : supported(rows[b]) - supported(rows[a]) || namedEdition(rows[b]) - namedEdition(rows[a]) || compareRevision(versions[rows[b].v].r, versions[rows[a].v].r) ||
         realId(rows[b].i) - realId(rows[a].i) || String(rows[a].i.hardware).localeCompare(String(rows[b].i.hardware)) || a - b);
     const a = alsoSoldAs(row.m, ids);
-    return { m: row.m, t: searchText([row.m, ...new Set(ids.map(identityBrand))]), v: rows.map(({ v }, n) => [v, labels[n]]), o,
+    return { m: row.m, t: searchText([row.m, ...new Set(ids.map(identityBrand)), ...ids.flatMap(i => terms.get(i.key) ?? [])]), v: rows.map(({ v }, n) => [v, labels[n]]), o,
       ...(a.length ? { a } : {}) };
   });
   return { packages, versions, identities: identities.map(x => x.out), models };
