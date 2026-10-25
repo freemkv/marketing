@@ -15,3 +15,17 @@ export function validateOriginDetails(catalog) {
     }
   }
 }
+
+// Public names omit internal restoration tooling; the source ledger stays intact.
+export function publicOriginDetails(details = []) {
+  const filename = value => String(value ?? '').replace(/^unmk[_ -]+/i, '');
+  const file = value => {
+    const {source_kind, ...rest} = value;
+    return {...rest, filename: filename(value.filename),
+      ...(value.filenames ? {filenames: [...new Set(value.filenames.map(filename))]} : {}),
+      ...(source_kind && source_kind !== 'unmk-restored' ? {source_kind} : {})};
+  };
+  return details.map(({source_kind, originals, firmware, ...rest}) => ({...rest,
+    ...(source_kind && source_kind !== 'unmk-restored' ? {source_kind} : {}),
+    originals: originals.map(file), firmware: file(firmware)}));
+}
