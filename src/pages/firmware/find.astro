@@ -165,8 +165,9 @@ import '../../styles/site.css';
       <section class="block">
         <div class="section-inner">
           <div class="picker">
+            <p class="block-note" id="drive-search-help">Select your current drive to see available firmware, including crossflash options.</p>
             <div class="picker-row">
-              <label class="picker-label" for="drive-search">Drive model</label>
+              <label class="picker-label" for="drive-search">Your existing drive</label>
               <div class="combo" data-combo>
                 <input
                   class="picker-input"
@@ -175,6 +176,7 @@ import '../../styles/site.css';
                   role="combobox"
                   aria-expanded="false"
                   aria-controls="drive-options"
+                  aria-describedby="drive-search-help"
                   aria-autocomplete="list"
                   placeholder="e.g. BU40N"
                   autocomplete="off"
