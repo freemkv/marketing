@@ -67,7 +67,7 @@ import '../../styles/site.css';
       .fx-list .fx-incomplete { flex: 1 1 auto; }
       .fx-vgroup { margin: 0.9rem 0 0.2rem; font-size: 0.8rem; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.05em; }
       .drive-caps { gap: 0.25rem; }
-      .drive-caps-label { font-size: 0.65rem; letter-spacing: 0.03em; }
+      .drive-caps-label { flex-basis: 100%; margin-bottom: 0.15rem; font-size: 0.65rem; letter-spacing: 0.03em; }
       .drive-cap { font-size: 0.72rem; padding: 0.16rem 0.4rem; border-width: 1px; white-space: nowrap; }
       .fw-file-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-top: 0.4rem; }
       .fw-file-row .fx-file { margin: 0; min-width: 0; }
@@ -113,9 +113,9 @@ import '../../styles/site.css';
       .fx-note { margin: 0.4rem 0 0; font-size: 0.8rem; color: var(--muted); }
       .origin-legend { display: flex; flex-wrap: wrap; gap: 0.6rem 1.5rem; max-width: 640px; margin: 1.5rem auto 0; color: var(--muted); font-size: 0.75rem; }
       .origin-legend p { display: flex; align-items: center; gap: 0.5rem; margin: 0; }
-      .fw-status { display: inline-grid; grid-template-columns: 6.4rem auto; align-items: center; gap: 0.5rem; }
-      .fw-status .fw-verification { width: 100%; text-align: center; }
-      .fw-status .fw-origin-pill { grid-column: 2; justify-self: start; }
+      .fw-status { display: inline-grid; grid-template-columns: 5.2rem 6.4rem; align-items: center; gap: 0.5rem; }
+      .fw-status .fw-verification { grid-column: 2; grid-row: 1; width: 100%; text-align: center; }
+      .fw-status .fw-origin-pill { grid-column: 1; grid-row: 1; justify-self: start; }
       .fw-origin-pill { display: inline-flex; align-items: center; padding: 0.15rem 0.5rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 0.7rem; font-weight: 500; line-height: 1.4; white-space: nowrap; }
       .fw-verification { background: var(--surface); color: var(--muted); border: 1px solid #dbe3e8; cursor: pointer; font: inherit; font-size: 0.7rem; font-weight: 600; line-height: 1.4; border-radius: 0.35rem; padding: 0.15rem 0.45rem; white-space: nowrap; }
       .fx-list .drive-fact-future { font-size: 0.7rem; line-height: 1.4; border: 1px solid transparent; padding: 0.15rem 0.45rem; border-radius: 0.35rem; }
@@ -348,11 +348,11 @@ import '../../styles/site.css';
             if (!version.verification || (source && !source.verification)) return badge;
             var id = identities[version.i];
             var label = id.brand + ' ' + id.n + ' ' + version.r + (id.e ? ' ' + id.e : '');
-            return '<span class="fw-status"><button type="button" class="fw-verification" data-verification-target="' + escapeText(version.verification) +
+            return '<span class="fw-status">' + badge + '<button type="button" class="fw-verification" data-verification-target="' + escapeText(version.verification) +
               '" data-verification-source="' + escapeText(source ? source.verification || '' : '') +
               '" data-verification-label="' + escapeText(label) + '"' +
               (source ? ' data-verification-from="' + escapeText(identities[source.i].n + ' ' + source.r + (identities[source.i].e ? ' ' + identities[source.i].e : '')) + '"' : '') +
-              ' hidden disabled aria-label="Community verification for ' + escapeText(label) + '">…</button>' + badge + '</span>';
+              ' hidden disabled aria-label="Community verification for ' + escapeText(label) + '">…</button></span>';
           }
 
           var filtered = [];

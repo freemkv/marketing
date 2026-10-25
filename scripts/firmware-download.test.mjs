@@ -13,7 +13,7 @@ const legacyKeys = {format:'freemkv-firmware-legacy-keys',version:1,keys:[
 ]};
 const allowed = downloadAllowlist({catalog:catalog(),mediatek:mediatek(),pioneer:pioneer(),legacyKeys});
 
-test('BU40N downloads exclude OmniDrive, MK restoration, DE and freemkv images', () => {
+test('BU40N downloads retain approved DE and unMK dumps and exclude OmniDrive and patched images', () => {
  const read = file => JSON.parse(readFileSync(new URL('../src/data/' + file, import.meta.url), 'utf8'));
  const current = read('finder-catalog.json');
  const allow = downloadAllowlist({catalog:current,mediatek:read('firmware-index.json'),pioneer:read('pioneer-firmware-index.json'),legacyKeys:read('legacy-keys.json')});
@@ -26,11 +26,17 @@ test('BU40N downloads exclude OmniDrive, MK restoration, DE and freemkv images',
   assert.equal(resolveDownload(allow,{package:pkg}),null);
   assert.equal(resolveDownload(allow,{file:`MT1959/BU40N_1.00_${image.slice(0,8)}.bin`}),null);
  }
- const forbidden = ['221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4',
-   '4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06',
-   '64688690a2878c792833d9af8731004411f86d7a64ceb522a82368584d84282a'];
+ const forbidden = ['4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06'];
  const packages = current.identities.flatMap(i => i.revisions.flatMap(r => r.packages));
  for (const hash of forbidden) assert.ok(!packages.some(p => p.image_sha256 === hash));
+ for (const [hash,kind] of [['221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4','de'],['64688690a2878c792833d9af8731004411f86d7a64ceb522a82368584d84282a','unmk-restored']]) {
+  const approved=packages.find(p=>p.image_sha256===hash);
+  assert.ok(approved,'approved '+kind+' must remain available');
+  const origin=approved.origin_details.find(o=>o.firmware.sha256===hash);
+  assert.equal(origin.category,'dump');assert.equal(origin.source_kind,kind);
+  assert.equal(origin.approval.allow_hoard,true);assert.equal(origin.approval.allow_publish,true);
+  assert.equal(resolveDownload(allow,{package:approved.sha256})?.key,approved.key);
+ }
  const clean = packages.find(p => p.image_sha256 === '5c1a47392976add3f84aa90a9a17dcf835361cecda706e6d7d388d7b92a24b69');
  assert.ok(clean, 'vendor BU40N 1.04 must remain available');
  assert.equal(resolveDownload(allow,{package:clean.sha256})?.key,clean.key);
