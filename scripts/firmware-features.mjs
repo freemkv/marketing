@@ -292,17 +292,16 @@ export async function loadCandidates(hoard, exclusions = new Set()) {
   const sources = (await readJson(path.join(hoard, 'index/sources.json'))).sources;
   const names = new Map();
   for (const s of sources) {
-    const k = s.extraction?.image;
-    if (!k) continue;
-    if (!names.has(k)) names.set(k, []);
-    names.get(k).push(...(s.names ?? []));
+    names.set(s.sha256, [...(s.names ?? []), ...(s.inbound_paths ?? []),
+      ...(s.legacy_paths ?? []), ...(s.evidence ?? []).map(e => e.ref ?? '')]);
   }
   const seen = new Map(), excluded = {};
   for (const id of ids) {
     if (id.family !== 'mediatek') continue;
     for (const image of id.images ?? []) {
       if (seen.has(image.sha256)) continue;
-      const imageNames = names.get(image.sha256) ?? [];
+      const imageNames = [...new Set([image.sha256, ...(image.sources ?? [])]
+        .flatMap(sha => names.get(sha) ?? []))];
       const why = metadataExclusion(image, imageNames, exclusions);
       if (why) { excluded[why] = (excluded[why] ?? 0) + 1; seen.set(image.sha256, null); continue; }
       seen.set(image.sha256, { sha: image.sha256, file: path.join(hoard, image.path), vendor: hasVendorProvenance(imageNames) });

@@ -13,7 +13,7 @@ const legacyKeys = {format:'freemkv-firmware-legacy-keys',version:1,keys:[
 ]};
 const allowed = downloadAllowlist({catalog:catalog(),mediatek:mediatek(),pioneer:pioneer(),legacyKeys});
 
-test('published BU40N 1.00 downloads retain OEM bytes and exclude freemkv outputs and aliases', () => {
+test('BU40N downloads exclude OmniDrive, MK restoration, DE and freemkv images', () => {
  const read = file => JSON.parse(readFileSync(new URL('../src/data/' + file, import.meta.url), 'utf8'));
  const current = read('finder-catalog.json');
  const allow = downloadAllowlist({catalog:current,mediatek:read('firmware-index.json'),pioneer:read('pioneer-firmware-index.json'),legacyKeys:read('legacy-keys.json')});
@@ -26,14 +26,15 @@ test('published BU40N 1.00 downloads retain OEM bytes and exclude freemkv output
   assert.equal(resolveDownload(allow,{package:pkg}),null);
   assert.equal(resolveDownload(allow,{file:`MT1959/BU40N_1.00_${image.slice(0,8)}.bin`}),null);
  }
- const clean = current.identities.flatMap(i => i.revisions.flatMap(r => r.packages))
-  .find(p => p.image_sha256 === '221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4');
- assert.ok(clean,'clean OEM BU40N 1.00 must remain published');
- assert.equal(clean.revision,'1.00');
- assert.equal(clean.patched,false);
+ const forbidden = ['221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4',
+   '4c2e0b2d87ba593579ab63584c2f0cc140a1d9d61dca3bdcac893c50b04fbc06',
+   '64688690a2878c792833d9af8731004411f86d7a64ceb522a82368584d84282a'];
+ const packages = current.identities.flatMap(i => i.revisions.flatMap(r => r.packages));
+ for (const hash of forbidden) assert.ok(!packages.some(p => p.image_sha256 === hash));
+ const clean = packages.find(p => p.image_sha256 === '5c1a47392976add3f84aa90a9a17dcf835361cecda706e6d7d388d7b92a24b69');
+ assert.ok(clean, 'vendor BU40N 1.04 must remain available');
  assert.equal(resolveDownload(allow,{package:clean.sha256})?.key,clean.key);
- const stock = read('firmware-index.json').find(m => m.model === 'BU40N').versions.find(v => v.sha256 === clean.image_sha256);
- assert.equal(stock.modifiable,true);
+
 });
 
 test('TD05 1.01 serves only the verified replacement and withdraws corrupt aliases', () => {
@@ -44,7 +45,7 @@ test('TD05 1.01 serves only the verified replacement and withdraws corrupt alias
  assert.equal(resolveDownload(allow,{package:bad}),null);
  assert.equal(resolveDownload(allow,{file:`pioneer/BDR-TD05/SAT%208211/1.01/${bad}.tar`}),null);
  assert.equal(resolveDownload(allow,{package:good})?.key,`fw/pioneer/${good}.tar`);
- assert.equal(resolveDownload(allow,{file:'pioneer/BDR-TD05/SAT%208211/1.01/6158e9feac480044255746c5a5236f4270cefd6b1146e19ffb8d63bd2a7af767.tar'})?.key,`fw/pioneer/${good}.tar`);
+ assert.equal(resolveDownload(allow,{file:'pioneer/BDR-TD05/SAT%208211/1.01/6158e9feac480044255746c5a5236f4270cefd6b1146e19ffb8d63bd2a7af767.tar'}),null);
 });
 
 test('audited Pioneer corrupt packages are withdrawn and corrected originals route by content hash', () => {
@@ -60,7 +61,7 @@ test('audited Pioneer corrupt packages are withdrawn and corrected originals rou
   assert.equal(resolveDownload(allow,{package:bad}),null,bad);
   assert.equal(resolveDownload(allow,{file:`${path}${bad}.tar`}),null,bad);
   assert.equal(resolveDownload(allow,{package:good})?.key,`fw/pioneer/${good}.tar`,good);
-  assert.equal(resolveDownload(allow,{file:`${path}${good}.tar`})?.key,`fw/pioneer/${good}.tar`,good);
+  assert.equal(resolveDownload(allow,{file:`${path}${good}.tar`}),null,good);
  }
  const graph=read('crossflash-links.json');
  assert.equal(JSON.stringify(graph).includes(pairs[2][0]),false,'withdrawn UD03 package must not retain crossflash edges');
@@ -92,16 +93,17 @@ test('downloads by package sha256 only after server verification, named from the
  assert.equal(r.headers.get('content-disposition'),`attachment; filename="BDR-S13U_1.02_${pkg.slice(0,8)}.tar"; filename*=UTF-8''BDR-S13U_1.02_${pkg.slice(0,8)}.tar`);
  assert.equal(r.headers.get('access-control-allow-origin'),null);
 });
-test('legacy file keys resolve through the site index and legacy-keys.json to the same bytes',async()=>{
- for(const [legacy,read] of [[legacyFile,`fw/pioneer/${pkg}.tar`],[`pioneer/BDR-S13U/SAT%209201/1.02/${pkg}.tar`,`fw/pioneer/${pkg}.tar`],
-   [`pioneer/BDR-UD04/SAT%208A10/1.14EU/${V1_ONLY_SHA}.tar`,`pioneer/BDR-UD04/SAT 8A10/1.14EU/${V1_ONLY_SHA}.tar`],
-   ['MT1959/BW-16D1HT_3.02.bin','MT1959/BW-16D1HT_3.02.bin'],['MT1959/BU40N_1.00.bin',`fw/mediatek/${SHA.bu40}.bin`]]){
-  const f=fixture(), r=await f.run(f.request({file:legacy,token:'valid'}));
-  assert.equal(r.status,200,legacy);assert.deepEqual(f.seen.reads,[read]);
+test('filename download requests are rejected even for currently approved files',async()=>{
+ for (const file of [legacyFile, `fw/pioneer/${pkg}.tar`, 'MT1959/BU40N_1.00.bin']) {
+  const f=fixture();assert.equal((await f.run(f.request({file,token:'valid'}))).status,404);
+  assert.equal(f.seen.verified,0);assert.deepEqual(f.seen.reads,[]);
  }
- const f=fixture(); const r=await f.run(f.request({package:SHA.bu40,token:'valid'}));
- assert.equal(r.headers.get('content-type'),'application/octet-stream');
- assert.match(r.headers.get('content-disposition'),/filename="BU40N_1.00_/);
+});
+test('legacy indexes cannot re-admit firmware absent from the authoritative catalog', async () => {
+ for (const payload of [{package:V1_ONLY_SHA},{package:MTK_ONLY_SHA},{file:'MT1959/BW-16D1HT_3.02.bin'}]) {
+  const f=fixture();assert.equal((await f.run(f.request({...payload,token:'valid'}))).status,404);
+  assert.equal(f.seen.verified,0);assert.deepEqual(f.seen.reads,[]);
+ }
 });
 test('legacy key pointing at different bytes, unknown hashes and malformed packages are rejected before verification',async()=>{
  for(const payload of [{file:'pioneer/WRONG/x.tar'},{package:'f'.repeat(63)},{package:'0'.repeat(64)},{package:pkg.toUpperCase()},{package:[pkg]},{file:`fw/pioneer/${pkg}.tar`}]){

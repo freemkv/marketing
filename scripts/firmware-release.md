@@ -119,8 +119,23 @@ their existing `MT1939/`/`MT1959/` keys (legacy status `missing-bytes`); keep
 those objects. Do not push main until the firmware release is ready: an
 ordinary main push deploys immediately.
 
-v1 staged archives (`freemkv-firmware-publish-v1`) can still be extracted and
-published.
+The publication CLI requires complete `origin_details` in the authoritative v2
+catalog. Legacy filename-based download requests are rejected; the API accepts
+only an approved package SHA-256. The remaining legacy key map is migration audit
+metadata and does not grant download access.
+
+Every component must be OEM or an exact-hash approved dump. MK, OmniDrive,
+reconstructed, downgrade-enabled and otherwise unverified sources are excluded
+unless a dump has explicit publication approval. An old FreeMKV publication is
+not independent OEM provenance. Firmware bytes are deduplicated by SHA-256;
+original containers retain their separate filenames and hashes. `fwext` emits
+the recommended package using pairing completeness, OEM origin and updater
+provenance; the website does not choose by hash ordering.
+
+The Find page expands **Origin Details** with SHA-256 and MD5 for the original
+EXE/archive and all extracted BINs or Pioneer Kernel/Normal envelopes. Displayed
+hashes are calculated from the exact held bytes. Missing or mismatched component
+provenance blocks release preparation and site builds.
 
 Create a draft GitHub release containing the staging archive named exactly
 `firmware-assets.tar.gz`. Dispatch the Pages workflow from the isolated release

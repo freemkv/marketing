@@ -1,3 +1,4 @@
+import { validateOriginDetails } from '../src/lib/firmware-origin.mjs';
 // Prepare locally; publish only in an explicitly requested release workflow.
 import { createHash } from 'node:crypto';
 import { promises as fs, createReadStream, realpathSync } from 'node:fs';
@@ -116,6 +117,7 @@ export async function prepare(extractor, destination, hoard, { fullUpload = fals
   const manifest = validateManifest(await json(path.join(destination, 'publish-manifest.json')));
   if (manifest.format !== V2) throw new Error('fwext produced an unexpected manifest format');
   const catalog = await json(path.join(destination, 'finder-catalog.json'));
+  validateOriginDetails(catalog);
   await checkWithdrawals(catalog);
   checkStageV2(manifest, catalog, await json(path.join(destination, 'legacy-keys.json')));
   for (const o of manifest.objects) {
@@ -381,6 +383,7 @@ async function main() {
   if(command==='extract' && a && b) return extract(a,b);
   if(command==='archive' && a && b) return fullArchive(a,b);
   if(command==='publish' && a) {
+    validateOriginDetails(await json(path.join(a, 'finder-catalog.json')));
     if(!process.env.CLOUDFLARE_ACCOUNT_ID || !process.env.CLOUDFLARE_API_TOKEN) throw new Error('Explicit Cloudflare account and token required');
     await publish(a,(o,file)=>new Promise((resolve,reject)=>{
       const child=spawn(path.join(SITE,'node_modules/.bin/wrangler'),['r2','object','put',`freemkv-firmware/${o.key}`,'--file',file,'--content-type',contentType(o.key),'--remote'],{stdio:'inherit',env:process.env});
