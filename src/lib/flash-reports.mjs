@@ -1,3 +1,4 @@
+import {firmwareInputs} from './firmware-report-inputs.mjs';
 // Private diagnostic report intake for the desktop flash app. The browser
 // authorizes scope; the app uploads the resulting ZIP with a one-use token.
 const MAX_ZIP = 50 * 1024 * 1024;
@@ -113,8 +114,10 @@ export async function saveDescription({request, env, params}, now = Date.now()) 
     data = JSON.parse(new TextDecoder('utf-8', {fatal: true}).decode(bytes));
   } catch { return refuse('Invalid description.'); }
   if (typeof data?.description !== 'string' || new TextEncoder().encode(data.description).byteLength > 16 * 1024 || !data.description.trim()) return refuse('A report description is required.');
-  const updated = await db(env).prepare(`UPDATE flash_report_requests SET description = ?
-    WHERE id = ? AND state IN ('approved', 'uploaded') AND notified = 0`).bind(data.description, params.id).run();
+  let inputs;
+  try { inputs = firmwareInputs(data.firmware_inputs); } catch { return refuse('Invalid firmware input metadata.'); }
+  const updated = await db(env).prepare(`UPDATE flash_report_requests SET description = ?, firmware_inputs_json = ?
+    WHERE id = ? AND state IN ('approved', 'uploaded') AND notified = 0`).bind(data.description, JSON.stringify(inputs), params.id).run();
   if (updated.meta?.changes !== 1) return refuse('Upload expired or invalid.', 403);
   return reply({saved: true});
 }
@@ -124,7 +127,7 @@ async function notify(env, record, downloadToken, request) {
   url.searchParams.set('token', downloadToken);
   const response = await env.FIRMWARE_EMAIL_SERVICE.fetch('https://firmware-email.internal/', {
     method: 'POST', headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({type: 'flash-report', report_id: record.id, url: url.toString(), scope: record.scope, description: record.description || ''}),
+    body: JSON.stringify({type: 'flash-report', report_id: record.id, url: url.toString(), scope: record.scope, description: record.description || '', firmware_inputs: firmwareInputs(JSON.parse(record.firmware_inputs_json || '[]'))}),
   });
   if (!response.ok || !(await response.json()).sent) throw new Error('Email delivery failed');
   await db(env).prepare("UPDATE flash_report_requests SET notified = 1, upload_hash = '' WHERE id = ? AND notified = 0").bind(record.id).run();

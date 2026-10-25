@@ -1,3 +1,4 @@
+import {firmwareInputText} from '../src/lib/firmware-report-inputs.mjs';
 // Private service binding only: no public route, workers.dev or preview URL.
 // Pages owns CAPTCHA, rate limits and one-use challenges. This service can only
 // send their fixed verification message from the restricted sender binding.
@@ -24,9 +25,10 @@ export default {
         const safeDescription = description
           .replace(/\r\n?/g, '\n')
           .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '');
+        const inputs = firmwareInputText(report.firmware_inputs);
         const result = await env.EMAIL.send({to: env.REPORT_TO, from: 'noreply@freemkv.org',
           subject: `freemkv flash report ${report.report_id}`,
-          text: `A ${report.scope === 'all' ? 'full history' : 'session'} flash report was submitted.\n\nDescription:\n${safeDescription}\n\nDownload: ${report.url}\n\nThe upload expires after 90 days.`});
+          text: `A ${report.scope === 'all' ? 'full history' : 'session'} flash report was submitted.\n\nDescription:\n${safeDescription}\n\n${inputs}\n\nDownload: ${report.url}\n\nThe upload expires after 90 days.`});
         if (!result?.messageId) return new Response(null, {status: 503});
         return Response.json({sent: true});
       }

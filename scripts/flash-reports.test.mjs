@@ -20,11 +20,11 @@ function fixture() {
             rows.set(args[0], {id: args[0], poll_hash: args[1], approval_hash: args[2], state: 'pending', created_at: args[3], request_expires: args[4], ip_hash: args[5], notified: 0});
             return {meta: {changes: 1}};
           }
-          const r = rows.get(sql.includes('SET notified') ? args[0] : sql.includes('SET upload_hash') ? args[1] : sql.includes('SET description') ? args[1] : sql.includes('SET scope') ? args[3] : args[5]);
+          const r = rows.get(sql.includes('SET notified') ? args[0] : sql.includes('SET upload_hash') ? args[1] : sql.includes('SET description') ? args[2] : sql.includes('SET scope') ? args[3] : args[5]);
           if (sql.includes('SET scope')) {
             if (r.state !== 'pending' || r.request_expires < args[4]) return {meta: {changes: 0}};
             Object.assign(r, {scope: args[0], state: 'approved', upload_hash: args[1], upload_expires: args[2], approval_hash: ''});
-          } else if (sql.includes('SET description')) { r.description = args[0]; }
+          } else if (sql.includes('SET description')) { r.description = args[0]; r.firmware_inputs_json = args[1]; }
           else if (sql.includes('SET upload_hash')) r.upload_hash = args[0];
           else if (sql.includes('SET state =')) {
             if (r.state !== 'approved') return {meta: {changes: 0}};
@@ -79,6 +79,9 @@ test('browser scope approval, required description, notification retry and priva
   assert.equal((await saveDescription('x'.repeat(16 * 1024 + 1))).status, 400);
   assert.equal((await saveDescription(description)).status, 200);
   assert.equal(rows.get(id).description, description);
+  const firmware = [{operation:'abc123',role:'target',filename:'patched.signed.bin',available:true,
+    bytes:2097152,sha256:'a'.repeat(64),archive_path:`firmware/${'a'.repeat(64)}/patched.signed.bin`}];
+  assert.equal((await saveDescriptionRequest(env,id,upload_token,description,now+160,firmware)).status,200);
   f.failEmail();
   const upload = new Request(`${base}/api/flash-reports/requests/${id}/bundle`, {method: 'PUT',
     headers: {Authorization: `Bearer ${upload_token}`, 'Content-Type': 'application/zip',
@@ -92,6 +95,8 @@ test('browser scope approval, required description, notification retry and priva
   assert.equal(emails.length, 2);
   assert.equal(emails[0].description, description);
   assert.equal(emails[1].description, description);
+  assert.deepEqual(emails[0].firmware_inputs, firmware);
+  assert.deepEqual(emails[1].firmware_inputs, firmware);
   assert.equal(rows.get(id).notified, 1);
   assert.equal(objects.size, 1);
   const link = emails[1].url;
@@ -130,8 +135,8 @@ test('legacy blank-description uploads and downloads remain compatible', async (
   assert.deepEqual(new Uint8Array(await downloaded.arrayBuffer()), zip);
 });
 
-function saveDescriptionRequest(env, id, token, description, now) {
+function saveDescriptionRequest(env, id, token, description, now, firmware_inputs) {
   return saveDescription({request: new Request(`https://freemkv.org/api/flash-reports/requests/${id}/description`, {
-    method: 'PUT', headers: {Authorization: `Bearer ${token}`, 'Content-Type': 'application/json'}, body: JSON.stringify({description}),
+    method: 'PUT', headers: {Authorization: `Bearer ${token}`, 'Content-Type': 'application/json'}, body: JSON.stringify({description,firmware_inputs}),
   }), env, params: {id}}, now);
 }
