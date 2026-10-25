@@ -13,7 +13,12 @@ export async function provisionEmail({token, apply = false, fetcher = fetch}) {
       headers: {Authorization: `Bearer ${token}`, ...(!form ? {'Content-Type': 'application/json'} : {})},
       ...(body ? {body: form ? body : JSON.stringify(body)} : {}), signal: AbortSignal.timeout(30000)});
     const data = await response.json();
-    if (!response.ok || !data.success) throw new Error(`Cloudflare email setup failed (${response.status}; codes ${(data.errors || []).map(e => e.code).join(',')}).`);
+    if (!response.ok || !data.success) {
+      const details = [...(data.errors || []), ...(data.messages || [])]
+        .map(({code, message}) => [code && `#${code}`, message].filter(Boolean).join(' '))
+        .filter(Boolean).join('; ');
+      throw new Error(`Cloudflare email setup failed (${response.status}): ${details || 'no error details returned'}`);
+    }
     return data.result;
   }
   const zones = await api('/zones?name=freemkv.org');
