@@ -26,12 +26,14 @@ test('unchanged bytes reuse complete graph; one addition checks only both direct
   const calls = [];
   const result = await crossflashGraph({...f,run:async args => {calls.push(args); return JSON.stringify({status:args[2].includes(f.objects[0].sha256)?'yes':'soft_no'});}});
   assert.equal(calls.length,2); assert.equal(result.evaluated,2);
+  assert.deepEqual(result.graph.evaluated_packages, f.objects.map(o => o.sha256).sort());
   assert.deepEqual(result.graph.links[f.objects[0].sha256],[f.objects[1].sha256]);
   assert.deepEqual(result.graph.future[f.objects[1].sha256],[f.objects[0].sha256]);
   const hit = await crossflashGraph({...f,run:async()=>assert.fail('unchanged graph must not run engine')});
   assert.deepEqual(hit.graph,result.graph);
   const removed = await crossflashGraph({...f,objects:[f.objects[0]],run:async()=>assert.fail('removal needs no new pairs')});
   assert.deepEqual(removed.graph.links,{}); assert.deepEqual(removed.graph.future,{});
+  assert.deepEqual(removed.graph.evaluated_packages, [f.objects[0].sha256]);
 });
 test('engine changes invalidate all cached decisions', async t => {
   const f = await fixture(t); await seedCrossflashCache({...f,file:f.cacheFile});

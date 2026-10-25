@@ -3,6 +3,15 @@ title: Flash Changelog
 description: What's new in freemkv Flash and Modify - newest first.
 ---
 
+## 0.15.1
+
+<small>October 25, 2026</small>
+
+### freemkv Flash
+
+- Give clearer guidance for corrupt firmware files and updates whose required settings have not been validated.
+- Distinguish the factory product code from the installed firmware model, and label the factory test date accurately in drive details.
+
 ## 0.15.0
 
 <small>2026-10-24</small>

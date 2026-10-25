@@ -14,7 +14,7 @@ import pioneerIndex from '../../data/pioneer-firmware-index.json';
 import mediatekIndex from '../../data/firmware-index.json';
 import finderCatalog from '../../data/finder-catalog.json';
 import crossflashLinks from '../../data/crossflash-links.json';
-import { buildFinderData, finderPageData, modelVersionSummary, crossflashSummary } from '../../lib/finder.mjs';
+import { buildFinderData, finderPageData, modelVersionSummary, crossflashSummary, validateCrossflashCoverage } from '../../lib/finder.mjs';
 
 const title = 'Find your drive firmware — freemkv';
 const description =
@@ -28,6 +28,7 @@ const firmwareDownloadSitekey = import.meta.env.PUBLIC_FIRMWARE_TURNSTILE_SITEKE
 const protectedDownloads = Boolean(firmwareDownloadSitekey);
 const firmwareBaseUrl = protectedDownloads ? '' : 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 
+validateCrossflashCoverage(finderCatalog, crossflashLinks);
 const finderData = buildFinderData({ catalog: finderCatalog, mediatek: mediatekIndex, crossflash: crossflashLinks });
 const finder = finderPageData(finderData, { legacy: pioneerIndex, keys: !protectedDownloads });
 const { total: hostedTotal, byChip: hostedByChip } = modelVersionSummary(finder);

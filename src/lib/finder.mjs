@@ -78,6 +78,17 @@ function pushUnique(list, value) {
  *    already in the v2 catalog are skipped, the rest are adapted so nothing
  *    currently downloadable disappears (e.g. MediaTek files without hoard bytes).
  */
+export function validateCrossflashCoverage(catalog, crossflash) {
+  // The flasher scans release packages (.tar); legacy raw images are not
+  // crossflash inputs and must never be presented as evaluated packages.
+  const expected = [...new Set(catalog.identities.flatMap(i => i.revisions.flatMap(r => r.packages
+    .filter(p => !p.key || p.key.endsWith('.tar')).map(p => p.sha256))))].sort();
+  const actual = crossflash?.evaluated_packages;
+  if (!Array.isArray(actual) || actual.length !== expected.length || [...actual].sort().some((s, n) => s !== expected[n])) {
+    throw new Error('Crossflash graph does not cover the current firmware catalog. Regenerate it with the flasher before publishing.');
+  }
+}
+
 export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], crossflash = null } = {}) {
   const identities = new Map();
   const aliases = new Map(); // compact|kind -> alias

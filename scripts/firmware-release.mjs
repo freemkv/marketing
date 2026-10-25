@@ -8,6 +8,7 @@ import { createGunzip } from 'node:zlib';
 import { firmwareObjectFetcher } from './firmware-object-fetch.mjs';
 import { LATEST_ARCHIVE_KEY } from '../src/lib/firmware-archive.mjs';
 import { crossflashGraph, seedCrossflashCache } from './firmware-crossflash-cache.mjs';
+import { validateCrossflashCoverage } from '../src/lib/finder.mjs';
 
 const PUBLIC_BASE = 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -156,6 +157,7 @@ export async function fullArchive(directory, archive) {
 export function checkCrossflashLinks(links, catalog) {
   const map = value => value !== null && typeof value === 'object' && !Array.isArray(value);
   if (links?.format !== 'freemkv-crossflash-links' || ![1, 2].includes(links.version) || !map(links.links) || ((links.version === 2 || links.future !== undefined) && !map(links.future))) throw new Error('Invalid crossflash links');
+  if (links.evaluated_packages !== undefined) validateCrossflashCoverage(catalog, links);
   const shas = new Set();
   for (const i of catalog.identities) for (const r of i.revisions ?? []) for (const p of r.packages ?? []) shas.add(p.sha256);
   for (const graph of [links.links, links.future ?? {}]) {
