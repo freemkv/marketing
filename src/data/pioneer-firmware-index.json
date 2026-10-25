@@ -17807,7 +17807,7 @@
     "versions": [
       {
         "brand": "PIONEER",
-        "bytes": 1872384,
+        "bytes": 1943040,
         "chipset": "Pioneer",
         "components": [
           "main"
@@ -17819,16 +17819,16 @@
         "generatedDate": "12/12/20",
         "hardware": "SAT 8211",
         "kernelRev": null,
-        "kernelSha256": null,
+        "kernelSha256": "b3ca0de4f691a284a370fe63ae31cbdd988accae13d97ec00a08d9658175365f",
         "kernelVersion": "ID01",
         "kernelVersion2": "0000",
         "model": "BDR-TD05",
         "modifiable": false,
-        "normalSha256": "10424c2ba3709e79f9e8d12fa7e363d9efc003c9631ab391021aa5c4e2bfede3",
+        "normalSha256": "ec9baac91c2e9bde9a23ee0f38d0bd3a4996c582ed294dd71b1c01c89a240417",
         "packageType": "pioneer-installer",
         "rev": "1.01",
         "selection": "normal-only",
-        "sha256": "6158e9feac480044255746c5a5236f4270cefd6b1146e19ffb8d63bd2a7af767"
+        "sha256": "f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6"
       },
       {
         "brand": "PIONEER",

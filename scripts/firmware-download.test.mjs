@@ -36,6 +36,17 @@ test('published BU40N 1.00 downloads retain OEM bytes and exclude freemkv output
  assert.equal(stock.modifiable,true);
 });
 
+test('TD05 1.01 serves only the verified replacement and withdraws corrupt aliases', () => {
+ const read = file => JSON.parse(readFileSync(new URL('../src/data/' + file, import.meta.url), 'utf8'));
+ const allow = downloadAllowlist({catalog:read('finder-catalog.json'),pioneer:read('pioneer-firmware-index.json'),legacyKeys:read('legacy-keys.json')});
+ const bad = '65c461e7a96702fc620296974ed0dc0b3447752de4985afdd68287db003ff4ce';
+ const good = 'f3743900baf231b95a653757878531f756b7e35eb50663c962eec498c9121de6';
+ assert.equal(resolveDownload(allow,{package:bad}),null);
+ assert.equal(resolveDownload(allow,{file:`pioneer/BDR-TD05/SAT%208211/1.01/${bad}.tar`}),null);
+ assert.equal(resolveDownload(allow,{package:good})?.key,`fw/pioneer/${good}.tar`);
+ assert.equal(resolveDownload(allow,{file:'pioneer/BDR-TD05/SAT%208211/1.01/6158e9feac480044255746c5a5236f4270cefd6b1146e19ffb8d63bd2a7af767.tar'})?.key,`fw/pioneer/${good}.tar`);
+});
+
 test('a curated replacement removes the superseded UD04 package identity', () => {
  const read = (file) => JSON.parse(readFileSync(new URL('../src/data/' + file, import.meta.url), 'utf8'));
  const allow = downloadAllowlist({catalog:read('finder-catalog.json'),legacyKeys:read('legacy-keys.json')});
