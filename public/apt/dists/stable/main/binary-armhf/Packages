@@ -19,40 +19,40 @@ Description: Rip DVD, Blu-ray and UHD discs without re-encoding (command line)
  interface; install the freemkv package for the desktop app.
 
 Package: freemkv-flash
-Version: 0.15.1
+Version: 0.15.3
 Architecture: armhf
 Section: utils
 Priority: optional
 Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
-Installed-Size: 7460
+Installed-Size: 7560
 Conflicts: freemkv-flash-gui
 Replaces: freemkv-flash-gui
 Homepage: https://freemkv.org/firmware/flash/
-Filename: pool/main/freemkv-flash/freemkv-flash_0.15.1_armhf.deb
-Size: 3629310
-MD5sum: 56ca38527331f47891f977934fc91027
-SHA1: e05375091d437fbace607b7b75ec5a377bd1da42
-SHA256: 1c35dfcf36ab0d86503ee485a9a0a7f17b4185efa7597e21abfe7b3422246372
+Filename: pool/main/freemkv-flash/freemkv-flash_0.15.3_armhf.deb
+Size: 3658476
+MD5sum: 141dcb1ebc7e6e9b03400bd1844965fe
+SHA1: be24a91e29505cc133ea9c52c6e8f1700517c3c4
+SHA256: 7572c662fea4b57974349282cae7e78e229784f2c6c615750926ab54b78ab35c
 Description: freemkv drive firmware flasher and dumper (command line)
  Reads, backs up and flashes optical-drive firmware (MediaTek MT19xx and
  Renesas; Pioneer live writes gated). info and dump are read-only; flash
  writes and can brick a drive given the wrong image.
 
 Package: freemkv-fw
-Version: 0.15.1
+Version: 0.15.3
 Architecture: armhf
 Section: utils
 Priority: optional
 Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
-Installed-Size: 3432
+Installed-Size: 3500
 Conflicts: freemkv-fw-gui
 Replaces: freemkv-fw-gui
 Homepage: https://freemkv.org/firmware/modify/
-Filename: pool/main/freemkv-fw/freemkv-fw_0.15.1_armhf.deb
-Size: 1001880
-MD5sum: ba38a3b873653f794d77475d75919705
-SHA1: 0f35605d8399602cc5363c038b5f75ba7b6b822d
-SHA256: cfcecfa7f1333fc1ffc8e477f1f6b4800a0f9fd25bae25c321a7ebb28a2a16d0
+Filename: pool/main/freemkv-fw/freemkv-fw_0.15.3_armhf.deb
+Size: 1017798
+MD5sum: 5e4b9b40fccd6e48ca579918cc87eebf
+SHA1: e283a99d2870c23daa823753bd2a01b4cbdeec7e
+SHA256: b988cb17246ca02fa0ce2fb4f6d65da3424abaa1fc760689a6f1ad1144c7f67d
 Description: freemkv drive firmware modifier (command line)
  Builds and verifies modified optical-drive firmware images offline
  (MediaTek MT19xx integrity tables). It does not touch a drive itself;
