@@ -337,7 +337,7 @@ import '../../styles/site.css';
             if (others.length) body += '<details class="origin-alternates"><summary>Other sources for these components (' + others.length + ')</summary>' +
               others.map(sourceInfo).join('') + '</details>';
             body += '<h3>Extracted firmware</h3>' + origins.map(function(origin) {
-              return '<section class="origin-file"><p class="origin-role">' + roleName(origin) + '<span class="origin-category">' + (origin.category === 'dump' ? 'Community' + (origin.source_kind === 'unmk-restored' ? ' · unMK-restored' : origin.source_kind === 'de' ? ' · DE' : '') : 'OEM') + '</span></p>' + fileInfo(origin.firmware) + '</section>';
+              return '<section class="origin-file"><p class="origin-role">' + roleName(origin) + '<span class="origin-category">' + (origin.category === 'dump' ? 'Community' + (origin.source_kind === 'de' ? ' · DE' : '') : 'OEM') + '</span></p>' + fileInfo(origin.firmware) + '</section>';
             }).join('');
             return '<button type="button" class="origin-trigger" data-origin-open aria-haspopup="dialog" aria-controls="origin-dialog">Details</button><template class="origin-template">' + body + '</template>';
           }
