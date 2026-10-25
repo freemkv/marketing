@@ -33,6 +33,10 @@ test('Origin Details deduplicates shared originals and shows both extracted Pion
   assert.equal((html.match(/<strong>vendor.exe<\/strong>/g)||[]).length,1);
   assert.ok(html.includes('Kernel .enc'));assert.ok(html.includes('Normal .enc'));
   assert.equal((html.match(/<dt>MD5<\/dt>/g)||[]).length,3);
+  const separate=render(escape,{origin:[kernel,{...normal,originals:[{...original,sha256:'d'.repeat(64),filename:'main.zip'}]}]});
+  assert.ok(separate.includes('<h4>Original files</h4>'));
+  assert.ok(separate.includes('<strong>main.zip</strong>'));
+  assert.ok(!separate.includes('Other recorded originals'));
   const hostile=render(escape,{origin:[{...kernel,originals:[{...original,filename:'<img src=x onerror=alert(1)>'}]}]});
   assert.ok(!hostile.includes('<img'));assert.ok(hostile.includes('&lt;img'));
 });

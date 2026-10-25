@@ -257,12 +257,13 @@ import '../../styles/site.css';
 
           var models = finder.models, versions = finder.versions, identities = finder.identities, packages = finder.packages;
           function originDetails(p) {
-            var origins = p.origin || [], originals = [], seen = {};
+            var origins = p.origin || [], originals = [], seen = {}, primary = {};
             function roleName(origin) {
               var role = origin.firmware && origin.firmware.role;
               return role === 'kernel' ? 'Kernel .enc' : role === 'normal' ? 'Normal .enc' : role === 'intermediate' ? 'Intermediate BIN' : 'Firmware BIN';
             }
             origins.forEach(function(origin) {
+              if (origin.originals && origin.originals.length) primary[origin.originals[0].sha256] = true;
               (origin.originals || []).forEach(function(file) {
                 if (!seen[file.sha256]) { seen[file.sha256] = { file: file, roles: [] }; originals.push(seen[file.sha256]); }
                 var roles = seen[file.sha256].roles, role = roleName(origin);
@@ -282,9 +283,11 @@ import '../../styles/site.css';
               return fileInfo(source.file) + '<p>Contains: ' + source.roles.map(escapeText).join(', ') + '</p>' +
                 links.map(function(url) { return '<p><a href="' + escapeText(url) + '" rel="noopener noreferrer">Recorded source</a></p>'; }).join('');
             }
-            var body = originals.length ? '<h4>Original file</h4>' + sourceInfo(originals[0]) : '<p>Original file: Not recorded.</p>';
-            if (originals.length > 1) body += '<details><summary>Other recorded originals (' + (originals.length - 1) + ')</summary>' +
-              originals.slice(1).map(function(source) { return '<section>' + sourceInfo(source) + '</section>'; }).join('') + '</details>';
+            var preferred = originals.filter(function(source) { return primary[source.file.sha256]; });
+            var others = originals.filter(function(source) { return !primary[source.file.sha256]; });
+            var body = preferred.length ? '<h4>' + (preferred.length > 1 ? 'Original files' : 'Original file') + '</h4>' + preferred.map(sourceInfo).join('') : '<p>Original file: Not recorded.</p>';
+            if (others.length) body += '<details><summary>Other recorded originals (' + others.length + ')</summary>' +
+              others.map(function(source) { return '<section>' + sourceInfo(source) + '</section>'; }).join('') + '</details>';
             body += origins.map(function(origin) {
               return '<section><h4>' + roleName(origin) + '</h4><p>' + (origin.category === 'dump' ? 'Approved dump' : 'OEM') + '</p>' + fileInfo(origin.firmware) + '</section>';
             }).join('');
