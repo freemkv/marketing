@@ -41,7 +41,11 @@ const cards = [
 // freemkv-flash backup/verify/restore) — never add a capability the tools lack.
 // Keep the feature wording in step with modify.astro's fwCapabilities.
 import firmwareIndex from '../../data/firmware-index.json';
+import modifyCapabilities from '../../data/firmware-capabilities.json';
+import { validateCapabilityCoverage } from '../../lib/firmware-capabilities.mjs';
 import pioneerIndex from '../../data/pioneer-firmware-index.json';
+import finderCatalog from '../../data/finder-catalog.json';
+validateCapabilityCoverage(finderCatalog, modifyCapabilities, firmwareIndex);
 const hostedModels = [...firmwareIndex, ...pioneerIndex].filter((d) => d.ready).length;
 
 const parity = [

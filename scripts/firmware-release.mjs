@@ -1,3 +1,4 @@
+import { validateCapabilityCoverage } from '../src/lib/firmware-capabilities.mjs';
 import { validateOriginDetails } from '../src/lib/firmware-origin.mjs';
 // Prepare locally; publish only in an explicitly requested release workflow.
 import { createHash } from 'node:crypto';
@@ -106,6 +107,7 @@ export function fwextCommand(extractor, env = process.env) {
 // v2: `fwext publish-catalog` validates every package and writes the stage
 // (finder-catalog.json, publish-manifest.json v2, legacy-keys.json, payloads/fw/...).
 export async function prepare(extractor, destination, hoard, { fullUpload = false } = {}) {
+  if (!process.env.FREEMKV_FW) throw new Error('Set FREEMKV_FW to the Modify capability producer');
   extractor = path.resolve(extractor); destination = path.resolve(destination);
   hoard = path.resolve(hoard ?? path.join(extractor, 'hoard'));
   try { await fs.access(destination); throw new Error(`${destination} already exists`); } catch (e) { if (e.code !== 'ENOENT') throw e; }
@@ -128,6 +130,10 @@ export async function prepare(extractor, destination, hoard, { fullUpload = fals
     cacheFile: process.env.FIRMWARE_CROSSFLASH_CACHE ?? path.join(hoard, 'cache', 'website-crossflash.json') });
   checkCrossflashLinks(graph, catalog);
   await fs.writeFile(path.join(destination, 'crossflash-links.json'), JSON.stringify(graph, null, 2));
+  run(process.execPath, [path.join(SITE, 'scripts/firmware-features.mjs'), hoard,
+    '--fw', process.env.FREEMKV_FW, '--flash', crossflashCommand(),
+    '--eligible-catalog', path.join(destination, 'finder-catalog.json'), '--out-dir', destination], { cwd: SITE });
+  await checkStageCapabilities(destination, catalog);
   const baseline = fullUpload ? { format: 'freemkv-finder-catalog', version: 2, identities: [] } : await json(path.join(SITE, 'src/data/finder-catalog.json'));
   await transportArchive(destination, `${destination}.tar.gz`, baseline);
 }
@@ -173,7 +179,12 @@ export function checkCrossflashLinks(links, catalog) {
   }
 }
 const V1_MEMBERS = ['publish-manifest.json','pioneer-firmware-index.json','firmware-index.json'];
-const V2_MEMBERS = ['publish-manifest.json','finder-catalog.json','legacy-keys.json','crossflash-links.json'];
+const CAPABILITY_FILES = ['firmware-capabilities.json', 'firmware-index.json', 'firmware-features.json', 'firmware-features-summary.md'];
+const V2_MEMBERS = ['publish-manifest.json','finder-catalog.json','legacy-keys.json','crossflash-links.json', ...CAPABILITY_FILES];
+export async function checkStageCapabilities(directory, catalog) {
+  return validateCapabilityCoverage(catalog, await json(path.join(directory, 'firmware-capabilities.json')),
+    await json(path.join(directory, 'firmware-index.json')));
+}
 // Strict streaming ustar extraction: no links, PAX, devices, traversal or overwrites.
 export async function extract(archive, directory) {
   await fs.mkdir(directory); const seen = new Set();
@@ -217,6 +228,7 @@ export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Pr
     const catalog=await json(path.join(directory,'finder-catalog.json'));
     await checkWithdrawals(catalog);
     checkStageV2(manifest,catalog,await json(path.join(directory,'legacy-keys.json')));
+    await checkStageCapabilities(directory, catalog);
   } else {
     // v1 staged archives (pre content-addressing) remain publishable.
     const pioneer=await json(path.join(directory,'pioneer-firmware-index.json'));
@@ -353,9 +365,6 @@ async function release(extractor, destination, hoard, { refresh = false, fullUpl
   const [cmd, prefix] = fwextCommand(extractor);
   run(cmd, [...prefix, refresh ? 'refresh' : 'ingest', '--hoard', hoard], { cwd: extractor });
   await prepare(extractor, destination, hoard, { fullUpload });
-  run(process.execPath, [path.join(SITE, 'scripts/firmware-features.mjs'), hoard,
-    '--fw', process.env.FREEMKV_FW, '--flash', crossflashCommand(),
-    '--eligible-catalog', path.join(path.resolve(destination), 'finder-catalog.json')], { cwd: SITE });
 }
 async function main() {
   const [command,a,b,c]=process.argv.slice(2);
@@ -397,7 +406,7 @@ async function main() {
     const orphans=process.argv.includes('--keep-existing') ? [] : await pruneOrphans(keep,{listPage:cfListPage(fetch),deleteKey:(key,bucket)=>wranglerDelete(bucket,key)});
     if(orphans.length) console.log(`Deleted ${orphans.length} orphan R2 object${orphans.length===1?'':'s'}`);
     // Only expose links to the build after every public object verifies.
-    const files=manifest.format===V2?['finder-catalog.json','legacy-keys.json','crossflash-links.json']:['pioneer-firmware-index.json','firmware-index.json'];
+    const files=manifest.format===V2?['finder-catalog.json','legacy-keys.json','crossflash-links.json', ...CAPABILITY_FILES]:['pioneer-firmware-index.json','firmware-index.json'];
     for(const file of files) await fs.copyFile(path.join(a,file),path.join(SITE,'src/data',file));
     return;
   }

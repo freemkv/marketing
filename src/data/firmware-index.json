@@ -33,12 +33,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -86,12 +86,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -146,12 +146,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -199,12 +199,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -252,12 +252,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -307,7 +307,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -322,17 +322,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -413,7 +413,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -428,17 +428,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       }
@@ -478,12 +478,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -531,12 +531,65 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
+        "rev": "1.04",
+        "embeddedRev": "1.04",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1959/BE16NU50_1.04_7dcc99d2.bin",
+        "sha256": "7dcc99d276008cf2cfc6214eb0f4b88ec5eb3937f21bb1853b53f2b8d42ea6c8",
+        "brand": "LG",
+        "chipset": "MT1959",
+        "media": "BD/UHD",
+        "variant": "N006300",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": true
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": true
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": true
           },
           {
             "key": "HRL",
@@ -586,7 +639,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -601,17 +654,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -639,7 +692,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -654,17 +707,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -692,7 +745,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -707,17 +760,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       }
@@ -752,7 +805,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -767,17 +820,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -805,7 +858,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -820,17 +873,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -858,7 +911,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -873,17 +926,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       }
@@ -923,12 +976,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -983,12 +1036,65 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
+        "rev": "1.00",
+        "embeddedRev": "1.00",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1959/BH14NS58_1.00_aaeea1ba.bin",
+        "sha256": "aaeea1ba97d05fae0b4de1ff1b84076f8ba897cb15b45a398f9bc4c25fe1738b",
+        "brand": "LG",
+        "chipset": "MT1959",
+        "media": "BD/UHD",
+        "variant": "N001204",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": true
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": true
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1036,12 +1142,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1091,7 +1197,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -1106,17 +1212,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -1144,7 +1250,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -1159,17 +1265,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -1197,7 +1303,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -1212,17 +1318,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -1255,12 +1361,65 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
+        "rev": "1.02",
+        "embeddedRev": "1.02",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1959/BH16NS40_1.02_beb8330e.bin",
+        "sha256": "beb8330e79d08824a62d5eb2b91a144ebb34c9acba8d393d8b32f2b2ae3196de",
+        "brand": "LG",
+        "chipset": "MT1959",
+        "media": "BD/UHD",
+        "variant": "N001200",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": true
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": true
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1303,7 +1462,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -1318,17 +1477,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -1361,12 +1520,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1409,7 +1568,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -1424,17 +1583,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -1467,12 +1626,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1520,12 +1679,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1575,7 +1734,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -1590,17 +1749,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -1628,7 +1787,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -1643,17 +1802,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       }
@@ -1693,12 +1852,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1753,12 +1912,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1806,12 +1965,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1859,12 +2018,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1912,12 +2071,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1965,12 +2124,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -2025,12 +2184,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -2078,12 +2237,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -2131,12 +2290,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -2218,6 +2377,66 @@
     ]
   },
   {
+    "brand": "HP",
+    "model": "BH40N",
+    "ready": true,
+    "versions": [
+      {
+        "rev": "B7C6",
+        "embeddedRev": "B7C6",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1939/BH40N_B7C6_0b2cdb82.bin",
+        "sha256": "0b2cdb82ff520589d4c750fae726571798901bf41e433de0a7164f7d74927d5f",
+        "brand": "HP",
+        "chipset": "MT1939",
+        "media": "BD/UHD",
+        "variant": "P166800",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": false
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": false
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": false
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      }
+    ]
+  },
+  {
     "brand": "LG",
     "model": "BP50NB40",
     "ready": true,
@@ -2251,12 +2470,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -2304,12 +2523,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -2357,12 +2576,65 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
+        "rev": "1.03",
+        "embeddedRev": "1.03",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1959/BP50NB40_1.03_3cdbdaca.bin",
+        "sha256": "3cdbdacace5c6ed3d505bbbff65350274c5775ab871c42d130082fcf0ab56050",
+        "brand": "LG",
+        "chipset": "MT1959",
+        "media": "BD/UHD",
+        "variant": "N009800",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": true
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": true
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": true
           },
           {
             "key": "HRL",
@@ -2417,12 +2689,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -2470,12 +2742,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -2986,6 +3258,59 @@
         ]
       },
       {
+        "rev": "A103",
+        "embeddedRev": "A103",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1959/BU40N_A103_7d7f2465.bin",
+        "sha256": "7d7f2465feafbcc05b74fbaff1dced8a55b19ddb1c03297a8027e261045d2e9e",
+        "brand": "LG",
+        "chipset": "MT1959",
+        "media": "BD/UHD",
+        "variant": "D003600",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": true
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": true
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": true
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
         "rev": "BN11",
         "embeddedRev": "BN11",
         "advertisedVersion": "",
@@ -3151,6 +3476,59 @@
         "hardware": "",
         "file": "MT1959/BU40N_BU10_14d86e99.bin",
         "sha256": "14d86e9949d93126d6ec7eaa11eeaba512569f51a8ecfce9d707cb0cec6b5e24",
+        "brand": "Buffalo",
+        "chipset": "MT1959",
+        "media": "BD/UHD",
+        "variant": "O077703",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": true
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": true
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": true
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
+        "rev": "BU10",
+        "embeddedRev": "BU10",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1959/BU40N_BU10_58203b53.bin",
+        "sha256": "58203b539de096786cde232ee3b0ef3fe824b20d7768a96b30f6a96bdac77bfb",
         "brand": "Buffalo",
         "chipset": "MT1959",
         "media": "BD/UHD",
@@ -3438,12 +3816,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -3770,12 +4148,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -3823,12 +4201,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -3900,12 +4278,65 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
+        "rev": "3.02",
+        "embeddedRev": "3.02",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1959/BW-16D1HT_3.02_83ea24bb.bin",
+        "sha256": "83ea24bb07b8a7a451bba1856d1db18b7f54b1823b9d148e213f25daf2e0a1d2",
+        "brand": "ASUS",
+        "chipset": "MT1959",
+        "media": "BD/UHD",
+        "variant": "W001800",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": true
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": true
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": true
           },
           {
             "key": "HRL",
@@ -3953,12 +4384,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -4006,12 +4437,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -4066,12 +4497,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -4239,12 +4670,65 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
+        "rev": "1.03",
+        "embeddedRev": "1.03",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1959/UH12NS40_1.03_eeb1c948.bin",
+        "sha256": "eeb1c948f1ed98245b7d21d03fe5e333a3349d28453690e2a60b4a8dc01765ba",
+        "brand": "LG",
+        "chipset": "MT1959",
+        "media": "BD",
+        "variant": "N001800",
+        "confidence": null,
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": true
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": true
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": true
           },
           {
             "key": "HRL",
@@ -4294,7 +4778,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -4309,17 +4793,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -4347,7 +4831,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -4362,17 +4846,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -4400,7 +4884,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -4415,17 +4899,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -4458,12 +4942,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -4511,12 +4995,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -4559,7 +5043,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -4574,17 +5058,17 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -4617,12 +5101,65 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
+        "rev": "1.05",
+        "embeddedRev": "1.05",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1959/WH14NS40_1.05_38a70ac2.bin",
+        "sha256": "38a70ac234a1dfd67725890bdb82f1bf798262a6e345b8edc6633f5d980bfcb1",
+        "brand": "LG",
+        "chipset": "MT1959",
+        "media": "BD/UHD",
+        "variant": "N003900",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": true
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": true
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": true
           },
           {
             "key": "HRL",
@@ -4672,7 +5209,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -4687,17 +5224,70 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
+        "rev": "1.01",
+        "embeddedRev": "1.01",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1939/WH16NS40_1.01_eee6563f.bin",
+        "sha256": "eee6563f68a414eb1dbc9048ab0820d01003320b080988437f762ca23d727e56",
+        "brand": "LG",
+        "chipset": "MT1939",
+        "media": "BD",
+        "variant": "N0002A0",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
             "ok": false
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": false
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": false
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
           }
         ]
       },
@@ -4725,7 +5315,7 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
@@ -4740,17 +5330,70 @@
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
+        "rev": "1.02",
+        "embeddedRev": "1.02",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1939/WH16NS40_1.02_7f26c559.bin",
+        "sha256": "7f26c559774b87a8da10c42d5ce72b8f1af3aa369d14d64f7d880d2b20b0327a",
+        "brand": "LG",
+        "chipset": "MT1939",
+        "media": "BD",
+        "variant": "N0010A0",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
             "ok": false
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": false
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": false
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
           }
         ]
       },
@@ -4783,12 +5426,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -4836,12 +5479,65 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
+        "rev": "1.05",
+        "embeddedRev": "1.05",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1959/WH16NS40_1.05_ffde0e55.bin",
+        "sha256": "ffde0e55aed6484046d539a455e04dfd0765b927a57cce0af9018726fe23725f",
+        "brand": "LG",
+        "chipset": "MT1959",
+        "media": "BD",
+        "variant": "N003900",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": true
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": true
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": true
           },
           {
             "key": "HRL",
@@ -4956,12 +5652,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -5009,12 +5705,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -5062,12 +5758,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -5115,12 +5811,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -5168,12 +5864,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -5377,7 +6073,7 @@
           {
             "key": "Speed",
             "name": "Speed",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Region",
@@ -5447,12 +6143,65 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
+      },
+      {
+        "rev": "1.03",
+        "embeddedRev": "1.03",
+        "advertisedVersion": "",
+        "hardware": "",
+        "file": "MT1959/WP50NB40_1.03_263994ab.bin",
+        "sha256": "263994abefb0b5a757d7b7b677b4e24dffb537ff124a81ad54426948a83265f1",
+        "brand": "LG",
+        "chipset": "MT1959",
+        "media": "BD/UHD",
+        "variant": "N009800",
+        "confidence": "build-verified",
+        "baseOnly": false,
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": true
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": true
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": true
           },
           {
             "key": "HRL",
