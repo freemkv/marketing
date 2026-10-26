@@ -38,6 +38,13 @@ reports it available and the generated output passes Flash admission. Lineage,
 model, silicon label and native disc support do not grant modification features.
 Software build checks do not establish physical drive validation.
 
+Production deployment additionally checks the capability producer against the
+latest stable freemkv-firmware release. Its exact executable SHA-256 must match
+a published standalone Modify CLI asset; a locally rebuilt binary with the same
+version is insufficient. Generate production capability data with the released
+executable after the app release. Dev CI may validate development data without
+publishing it. Missing release metadata or checksums stop deployment.
+
 For a site-only capability refresh against the existing published inventory:
 
 ```
