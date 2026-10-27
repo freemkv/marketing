@@ -12165,6 +12165,22 @@
     },
     {
       "basis": "projection",
+      "key": "pioneer/BDX-PR1AME/SAT%208801/1.00/b8530a9f8f64f982591c2e99c9dc793110288899c6fdd5c3b591187e772d085b.tar",
+      "model": "BDX-PR1AME",
+      "new_key": "fw/pioneer/b8530a9f8f64f982591c2e99c9dc793110288899c6fdd5c3b591187e772d085b.tar",
+      "sha256": "b8530a9f8f64f982591c2e99c9dc793110288899c6fdd5c3b591187e772d085b",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDX-PR1M/SAT%208801/1.03/92427336f4c22323f4e9fdc12c243847c25c6c26098400bc2d96662454010143.tar",
+      "model": "BDX-PR1M",
+      "new_key": "fw/pioneer/92427336f4c22323f4e9fdc12c243847c25c6c26098400bc2d96662454010143.tar",
+      "sha256": "92427336f4c22323f4e9fdc12c243847c25c6c26098400bc2d96662454010143",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
       "key": "pioneer/BDX-PR1M/SAT%208801/1.05/228a8733a469e8e9d543252a871e6a2f6edaa0d04b86a3194f0b9e0ec77b5dd2.tar",
       "model": "BDX-PR1M",
       "new_key": "fw/pioneer/228a8733a469e8e9d543252a871e6a2f6edaa0d04b86a3194f0b9e0ec77b5dd2.tar",
@@ -12177,6 +12193,14 @@
       "model": "BDX-PR1MA-L",
       "new_key": "fw/pioneer/c6905e2c8550fe9280024bbbaa96414eaffc77cf757b60746b4586b9589a6d03.tar",
       "sha256": "c6905e2c8550fe9280024bbbaa96414eaffc77cf757b60746b4586b9589a6d03",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDX-PR1MA/SAT%208801/1.03/7460dae256786952283c6298fd0a92293de89eed2eaa1f69f23c937090d978be.tar",
+      "model": "BDX-PR1MA",
+      "new_key": "fw/pioneer/7460dae256786952283c6298fd0a92293de89eed2eaa1f69f23c937090d978be.tar",
+      "sha256": "7460dae256786952283c6298fd0a92293de89eed2eaa1f69f23c937090d978be",
       "status": "published"
     },
     {
@@ -12217,6 +12241,14 @@
       "model": "BDX-PR1MLA",
       "new_key": "fw/pioneer/13d89487a90c0e49dab81015f4f18e57e870092d4e73f9a4449559cde4578b9e.tar",
       "sha256": "13d89487a90c0e49dab81015f4f18e57e870092d4e73f9a4449559cde4578b9e",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDX-PR1UAME/SAT%208801/2.05/8b0e0f24d515ea1c0d74190b0f324c322f81434b6a24731949b39faa8314c4d5.tar",
+      "model": "BDX-PR1UAME",
+      "new_key": "fw/pioneer/8b0e0f24d515ea1c0d74190b0f324c322f81434b6a24731949b39faa8314c4d5.tar",
+      "sha256": "8b0e0f24d515ea1c0d74190b0f324c322f81434b6a24731949b39faa8314c4d5",
       "status": "published"
     },
     {
