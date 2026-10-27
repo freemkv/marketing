@@ -53,6 +53,16 @@ jobs:
       - name: Validate staged archive
         if: inputs.firmware_release != ''
         run: node scripts/firmware-release.mjs extract "$RUNNER_TEMP/firmware-download/firmware-assets.tar.gz" "$RUNNER_TEMP/firmware-stage"
+      - name: Require capabilities from the deployed Modify release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FIRMWARE_RELEASE: ${{ inputs.firmware_release }}
+        run: |
+          if [ -n "$FIRMWARE_RELEASE" ]; then
+            node scripts/check-released-modify.mjs "$RUNNER_TEMP/firmware-stage/firmware-capabilities.json"
+          else
+            node scripts/check-released-modify.mjs src/data/firmware-capabilities.json
+          fi
       - name: Install pinned firmware uploader
         run: npm install --no-save --package-lock=false wrangler@4.143.0
       - name: Upload and verify firmware before exposing download links
