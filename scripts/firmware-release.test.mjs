@@ -144,9 +144,24 @@ async function stageV2(t,{withdrawn=false}={}) {
  await fs.writeFile(path.join(d,'publish-manifest.json'),JSON.stringify({format:'freemkv-firmware-publish-v2',objects}));
  await fs.writeFile(path.join(d,'finder-catalog.json'),JSON.stringify(catalog));
  await fs.writeFile(path.join(d,'legacy-keys.json'),JSON.stringify(legacy));
- await fs.writeFile(path.join(d,'firmware-index.json'),'[]');
+ const settings=Object.fromEntries(['unrestricted','hrl','encryption','speed','region'].map(key=>[key,{supported:false,choices:[]}]));
+ const capabilities={schema:1,producer:{tool:'freemkv-fw',version:'0.15.4',sha256:'a'.repeat(64)},images:[{schema:1,input_sha256:b1,producer_version:'0.15.4',producer_sha256:'a'.repeat(64),status:'unchanged',output_sha256:b1,flash_admitted:false,report:{boot_settings:settings}}]};
+ await fs.writeFile(path.join(d,'firmware-capabilities.json'),JSON.stringify(capabilities));
+ await fs.writeFile(path.join(d,'firmware-index.json'),JSON.stringify([{model:'BU40N',versions:[{sha256:b1,modifiable:false,features:[]}]}]));
+ await fs.writeFile(path.join(d,'firmware-features.json'),'{}');
+ await fs.writeFile(path.join(d,'firmware-features-summary.md'),'# Test capabilities\n');
  return {d,objects,catalog,legacy,bytes:new Map([[objects[0].key,tarBytes],[objects[1].key,binBytes]])};
 }
+test('publish rejects missing or stale Modify evidence before uploading anything',async t=>{
+ for(const stale of [false,true]){
+  const {d}=await stageV2(t);let uploads=0;
+  const file=path.join(d,'firmware-capabilities.json');
+  if(stale){const data=JSON.parse(await fs.readFile(file,'utf8'));data.images[0].producer_sha256='b'.repeat(64);await fs.writeFile(file,JSON.stringify(data));}
+  else await fs.rm(file);
+  await assert.rejects(publish(d,async()=>{uploads++;},async()=>{throw new Error('unexpected fetch');}),stale?/Stale or mismatched/:/ENOENT/);
+  assert.equal(uploads,0);
+ }
+});
 test('v2 manifest accepts only content-addressed keys matching their hash, once per package',()=>{
  const h='a'.repeat(64),o={key:`fw/pioneer/${h}.tar`,sha256:h,bytes:1,filename:'M_1.00_aaaaaaaa.tar',content_type:'application/x-tar'};
  const v=objects=>validateManifest({format:'freemkv-firmware-publish-v2',objects});
@@ -213,7 +228,18 @@ process.stdout.write(JSON.stringify({format:'freemkv-crossflash-links',version:2
 `);await fs.chmod(fakeLinks,0o755);
  const previousLinks=process.env.FREEMKV_CROSSFLASH;process.env.FREEMKV_CROSSFLASH=fakeLinks;t.after(()=>{if(previousLinks===undefined)delete process.env.FREEMKV_CROSSFLASH;else process.env.FREEMKV_CROSSFLASH=previousLinks;});
  await fs.mkdir(path.join(root,'extractor'));const stage=path.join(root,'stage');const previous=process.env.FWEXT;process.env.FWEXT=fake;t.after(()=>{if(previous===undefined)delete process.env.FWEXT;else process.env.FWEXT=previous;});
- await prepare(path.join(root,'extractor'),stage,path.join(root,'hoard'));
+ const fixture=await stageV2(t), packageHash=fixture.objects[1].sha256;
+ const hoard=path.join(root,'hoard');await fs.mkdir(path.join(hoard,'index'),{recursive:true});
+ await fs.writeFile(path.join(hoard,'image.bin'),fixture.bytes.get(fixture.objects[1].key));
+ await fs.writeFile(path.join(hoard,'index/identities.json'),JSON.stringify({identities:[{family:'mediatek',images:[{sha256:packageHash,path:'image.bin',category:'oem'}]}]}));
+ const fakeFw=path.join(root,'freemkv-fw');
+ const settings=Object.fromEntries(['unrestricted','hrl','encryption','speed','region'].map(key=>[key,{supported:false,choices:[]}]));
+ const capability={schema:1,input_sha256:packageHash,producer_version:'0.15.4',status:'unchanged',output_sha256:packageHash,identity:{chip:'MT1959',vendor:'HL-DT-ST',model:'BD-RE BU40N',revision:'1.00',variant:''},report:{engine:'MT1959',chip:'MT1959',vendor:'HL-DT-ST',model:'BD-RE BU40N',rev:'1.00',media:'BD/UHD',vendor_specific:'',levers:[],boot_settings:settings}};
+ await fs.writeFile(fakeFw,`#!/usr/bin/env node
+process.stdout.write(process.argv[2]==='--version'?'freemkv-fw 0.15.4':process.argv[2]==='--help'?'  capabilities  Preview modifications':JSON.stringify(${JSON.stringify(capability)}));
+`);await fs.chmod(fakeFw,0o755);
+ const previousFw=process.env.FREEMKV_FW;process.env.FREEMKV_FW=fakeFw;t.after(()=>{if(previousFw===undefined)delete process.env.FREEMKV_FW;else process.env.FREEMKV_FW=previousFw;});
+ await prepare(path.join(root,'extractor'),stage,hoard);
  const args=JSON.parse(await fs.readFile(log,'utf8'));
  assert.deepEqual(args.slice(0,5),['publish-catalog','--hoard',path.join(root,'hoard'),'--out',stage]);
  for(const flag of ['--legacy-pioneer','--flasher','--withdrawals']) assert.ok(args.includes(flag));

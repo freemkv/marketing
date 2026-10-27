@@ -19,6 +19,7 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { FEATURE_SETTING } from '../src/lib/firmware-capabilities.mjs';
 
 const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -111,7 +112,7 @@ export function lineageOf(engine, levers = []) {
   const speed = levers.find(l => l.id === 'Speed');
   return speed && (speed.outcome === 'Applied' || speed.outcome === 'AlreadyPresent') ? LINEAGE_NEW : LINEAGE_CLASSIC;
 }
-const CAPABILITY = { Speed: 'speed', Region: 'region', UHD: 'unrestricted', BD: 'unrestricted', HRL: 'hrl', AKE: 'encryption', Bus: 'encryption' };
+const CAPABILITY = FEATURE_SETTING;
 export function featuresFor(report) {
   for (const key of new Set(Object.values(CAPABILITY))) {
     if (typeof report?.boot_settings?.[key]?.supported !== 'boolean') {
@@ -340,6 +341,10 @@ export async function evaluate(cand, run, tmp, hardware = new Set(), flash = nul
 }
 
 export async function generate({ hoard, fw, flash, outDir, eligible = null, hardware = new Set(), jobs = 8, exclusions, log = () => {} }) {
+  if (eligible) {
+    const { generatePublished } = await import('./firmware-published-capabilities.mjs');
+    return generatePublished({ hoard, fw, flash, outDir, eligible, hardware, log });
+  }
   const { candidates, excluded } = await loadCandidates(hoard, exclusions ?? await loadExclusions());
   const admitted = eligible ? candidates.filter(candidate => eligible.has(candidate.sha)) : candidates;
   if (eligible) excluded['not-flash-admitted'] = candidates.length - admitted.length;

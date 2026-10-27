@@ -19,39 +19,54 @@ for example after an extractor change that needs to be applied to older inputs.
 Normal releases retain the same package admission, crossflash, upload and hash
 verification checks. They still replace the complete `/fw/latest.tar.gz` archive.
 
-## MediaTek feature data (run before `prepare`)
+## MediaTek capability data
 
-`src/data/firmware-features.json`, `firmware-index.json` and
-`firmware-features-summary.md` are generated, never hand-edited. Regenerate them
-whenever the hoard or the freemkv-fw engine changes, before `prepare` (which
-reads `firmware-index.json` as a legacy input):
+`prepare` queries the real Modify planner for every exact final MediaTek image
+hash in its staged catalog. It builds and structurally audits every supported
+output, compares its hash with the preview, and asks Flash to admit the result.
+No image is silently dropped when modification is unavailable.
+
+The stage carries `firmware-capabilities.json`, `firmware-index.json`,
+`firmware-features.json` and `firmware-features-summary.md` with its catalog and
+crossflash graph. The capability records bind both the input hash and the actual
+Modify executable hash, including different builds of the same version. Missing,
+duplicate, stale or inconsistent records stop preparation/publication. The Find
+and Firmware page builds enforce the same coverage contract.
+
+A feature is shown only when the exact image's real boot-settings capability
+reports it available and the generated output passes Flash admission. Lineage,
+model, silicon label and native disc support do not grant modification features.
+Software build checks do not establish physical drive validation.
+
+Production deployment additionally checks the capability producer against the
+latest stable freemkv-firmware release. Its exact executable SHA-256 must match
+a published standalone Modify CLI asset; a locally rebuilt binary with the same
+version is insufficient. Generate production capability data with the released
+executable after the app release. Dev CI may validate development data without
+publishing it. Missing release metadata or checksums stop deployment.
+
+For a site-only capability refresh against the existing published inventory:
 
 ```
 node scripts/firmware-features.mjs /path/to/firmware-extractor/hoard --fw /path/to/freemkv-fw \
   --flash /path/to/freemkv-crossflash --eligible-catalog src/data/finder-catalog.json
 ```
 
-Inputs: the firmware-extractor hoard (`index/identities.json`, `index/sources.json`, `images/...`)
-the `freemkv-fw` binary (`--fw` or env `FREEMKV_FW`), and the
-`freemkv-crossflash` binary (`--flash` or env `FREEMKV_CROSSFLASH`; build with
-`cargo build --release -p freemkv-flash --bin freemkv-crossflash`).
-`--eligible-catalog` limits output to MediaTek image hashes already in the
-catalogue, preserving the site's allowlist. Optional: `--out-dir` (default
-`src/data`), `--jobs`, and `--hardware-verified allowlist.json` (JSON array of
-sha256 proven on hardware; default none, so everything is `build-verified`).
+This updates generated files in `src/data`. Use `--out-dir` to stage elsewhere.
+Review the diff and run `npm run test:firmware` and `npm run build`. Do not
+hand-edit the generated feature bits or capability records.
 
-An already allowlisted image is listed when it is not MK- or freemkv-patched, no
-source name contains "omnidrive", it is not a fragment, and `freemkv-fw create
---json` reports its model and revision. Every listed image is published: one
-where `create` applies at least one lever is `modifiable` (the Finder shows the
-Modifiable pill and leads to the modify page); any other leads to the flash
-page, like Pioneer. Flags follow engine lineage (see the header of the script).
-The generator checks firmware bytes for the embedded freemkv identity even if
-an old hoard index says `patched: false`. Withdrawn MediaTek images and their
-legacy BIN and current TAR keys are recorded in `firmware-withdrawals.json`;
-they cannot re-enter a release and are removed by the deployment workflow.
-Review the diff before committing: counts, base_facts and r2 keys come straight
-from the engine. Tests: `node --test scripts/*.test.mjs`.
+Released Modify 0.15.3 predates the `capabilities` command. For that interface,
+the generator runs the released `modify --json --audit` executable and probes
+each advertised boot-setting choice with its real dry-run command. A refused
+input remains listed with its hash-bound hoard identity, the refusal reason and
+no modification features. Hoard identity supplies labels only. Newer released
+versions use their native `capabilities` report and compare it with an audited
+build as above. Both paths retain the exact released executable checksum.
+
+The MediaTek `media` marker is not shown as a physical BD/UHD badge. It does not
+establish hardware capability. BD/UHD modification pills come only from the
+released modifier's per-image `unrestricted.supported` result and Flash admission.
 
 Prepare from the firmware-extractor hoard (no upload):
 
@@ -60,7 +75,7 @@ node scripts/firmware-release.mjs prepare /path/to/firmware-extractor /tmp/firmw
 node --test scripts/*.test.mjs
 ```
 
-`prepare` also needs `FREEMKV_CROSSFLASH`: the `freemkv-crossflash` binary from
+`prepare` requires `FREEMKV_FW` and `FREEMKV_CROSSFLASH`: the `freemkv-crossflash` binary from
 freemkv-firmware (`cargo build --release -p freemkv-flash --bin freemkv-crossflash`).
 It runs the flasher's own offline gates and writes `crossflash-links.json`
 (installed sha256 -> target sha256s) into the
@@ -106,7 +121,7 @@ stage; `prepare` then re-validates it (manifest v2, catalogue/object/filename
 agreement, withdrawn Normal hashes, every legacy key resolving to the same
 bytes, payload hashes) and creates `/tmp/firmware-assets.tar.gz` containing
 `publish-manifest.json` (v2), `finder-catalog.json`, `legacy-keys.json`,
-`crossflash-links.json`, `transport.json` and only new/changed
+`crossflash-links.json`, the four capability/feature files above, `transport.json` and only new/changed
 `payloads/fw/<family>/<sha256>.<tar|bin>` objects. Objects are
 content-addressed, so each package is uploaded once whatever its names.
 

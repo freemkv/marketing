@@ -12,6 +12,8 @@ import { graph, websiteNode, orgNode, webPageNode, breadcrumbNode } from '../../
 import FirmwareNavDropdown from '../../components/FirmwareNavDropdown.astro';
 import pioneerIndex from '../../data/pioneer-firmware-index.json';
 import mediatekIndex from '../../data/firmware-index.json';
+import modifyCapabilities from '../../data/firmware-capabilities.json';
+import { validateCapabilityCoverage } from '../../lib/firmware-capabilities.mjs';
 import finderCatalog from '../../data/finder-catalog.json';
 import { validateOriginDetails } from '../../lib/firmware-origin.mjs';
 import crossflashLinks from '../../data/crossflash-links.json';
@@ -29,6 +31,7 @@ const firmwareDownloadSitekey = import.meta.env.PUBLIC_FIRMWARE_TURNSTILE_SITEKE
 const protectedDownloads = Boolean(firmwareDownloadSitekey);
 const firmwareBaseUrl = protectedDownloads ? '' : 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 
+validateCapabilityCoverage(finderCatalog, modifyCapabilities, mediatekIndex);
 validateOriginDetails(finderCatalog);
 validateCrossflashCoverage(finderCatalog, crossflashLinks);
 const finderData = buildFinderData({ catalog: finderCatalog, mediatek: mediatekIndex, crossflash: crossflashLinks });
