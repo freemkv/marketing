@@ -236,7 +236,7 @@ process.stdout.write(JSON.stringify({format:'freemkv-crossflash-links',version:2
  const settings=Object.fromEntries(['unrestricted','hrl','encryption','speed','region'].map(key=>[key,{supported:false,choices:[]}]));
  const capability={schema:1,input_sha256:packageHash,producer_version:'0.15.4',status:'unchanged',output_sha256:packageHash,identity:{chip:'MT1959',vendor:'HL-DT-ST',model:'BD-RE BU40N',revision:'1.00',variant:''},report:{engine:'MT1959',chip:'MT1959',vendor:'HL-DT-ST',model:'BD-RE BU40N',rev:'1.00',media:'BD/UHD',vendor_specific:'',levers:[],boot_settings:settings}};
  await fs.writeFile(fakeFw,`#!/usr/bin/env node
-process.stdout.write(process.argv[2]==='--version'?'freemkv-fw 0.15.4':JSON.stringify(${JSON.stringify(capability)}));
+process.stdout.write(process.argv[2]==='--version'?'freemkv-fw 0.15.4':process.argv[2]==='--help'?'  capabilities  Preview modifications':JSON.stringify(${JSON.stringify(capability)}));
 `);await fs.chmod(fakeFw,0o755);
  const previousFw=process.env.FREEMKV_FW;process.env.FREEMKV_FW=fakeFw;t.after(()=>{if(previousFw===undefined)delete process.env.FREEMKV_FW;else process.env.FREEMKV_FW=previousFw;});
  await prepare(path.join(root,'extractor'),stage,hoard);

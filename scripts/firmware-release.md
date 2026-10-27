@@ -56,6 +56,18 @@ This updates generated files in `src/data`. Use `--out-dir` to stage elsewhere.
 Review the diff and run `npm run test:firmware` and `npm run build`. Do not
 hand-edit the generated feature bits or capability records.
 
+Released Modify 0.15.3 predates the `capabilities` command. For that interface,
+the generator runs the released `modify --json --audit` executable and probes
+each advertised boot-setting choice with its real dry-run command. A refused
+input remains listed with its hash-bound hoard identity, the refusal reason and
+no modification features. Hoard identity supplies labels only. Newer released
+versions use their native `capabilities` report and compare it with an audited
+build as above. Both paths retain the exact released executable checksum.
+
+The MediaTek `media` marker is not shown as a physical BD/UHD badge. It does not
+establish hardware capability. BD/UHD modification pills come only from the
+released modifier's per-image `unrestricted.supported` result and Flash admission.
+
 Prepare from the firmware-extractor hoard (no upload):
 
 ```

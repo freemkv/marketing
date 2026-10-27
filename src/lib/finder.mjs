@@ -437,7 +437,8 @@ function chips(identity, pkg) {
   }
   const chip = pkg.chipset || identity.platforms.find(p => /^MT/.test(p));
   if (chip) out.push([chip]);
-  if (pkg.media) out.push([pkg.media]);
+  // The modifier's media marker is not evidence of physical UHD support.
+  // Modification availability is shown separately from its exact-image report.
   if (pkg.confidence === 'hardware-verified') out.push(['Hardware-verified', 'drive-fact-verified', 'Proven on real hardware']);
   return out;
 }

@@ -9,6 +9,13 @@ const page = (opts = {}) => finderPageData(data(), { legacy: [...mediatek(), ...
 const model = (d, name) => d.models.find(m => m.m === name);
 const labels = (d, name) => model(d, name).v.map(v => v[1]);
 
+test('MediaTek media markers do not become physical BD/UHD capability badges', () => {
+  const d = page();
+  const bu40 = model(d, 'BU40N');
+  const pkg = d.packages[d.versions[bu40.v[0][0]].p[0]];
+  assert.ok(!pkg.chips.some(chip => /^(BD|UHD|BD\/UHD)$/.test(chip[0])));
+});
+
 test('every catalogue package is reachable from a listed model name', () => {
   const d = page();
   const reachable = new Set(d.models.flatMap(m => m.v.flatMap(([v]) => d.versions[v].p.map(p => d.packages[p].s))));
