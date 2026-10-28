@@ -12245,6 +12245,14 @@
     },
     {
       "basis": "projection",
+      "key": "pioneer/BDX-PR1UAME/SAT%208801/1.02/d4af452add057bc4c7a6d07e79708ef943a42f52b361725b36565a1cd23c389e.tar",
+      "model": "BDX-PR1UAME",
+      "new_key": "fw/pioneer/d4af452add057bc4c7a6d07e79708ef943a42f52b361725b36565a1cd23c389e.tar",
+      "sha256": "d4af452add057bc4c7a6d07e79708ef943a42f52b361725b36565a1cd23c389e",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
       "key": "pioneer/BDX-PR1UAME/SAT%208801/2.05/8b0e0f24d515ea1c0d74190b0f324c322f81434b6a24731949b39faa8314c4d5.tar",
       "model": "BDX-PR1UAME",
       "new_key": "fw/pioneer/8b0e0f24d515ea1c0d74190b0f324c322f81434b6a24731949b39faa8314c4d5.tar",
