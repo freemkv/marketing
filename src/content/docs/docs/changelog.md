@@ -12,6 +12,28 @@ one version number.
 Release downloads are also available on GitHub:
 [freemkv releases](https://github.com/freemkv/freemkv/releases).
 
+## 1.8.6
+
+<small>2026-10-29</small>
+
+### Changed
+
+- App: freemkv now opens on a ready screen listing your drives instead of scanning a disc at launch. To open the disc straight away as before, set **At startup** in Settings, where you can also pick a **Preferred drive**.
+- Library: remux jobs queued before the upgrade may wait in **Review**; press **Remux** to run them again. Finished rips are not affected.
+
+### Added
+
+- App: optional TMDB key for TV episode names in disc order. A file that already exists is never replaced.
+- App: a film or episodes preset based on what's on the disc.
+
+### Fixed
+
+- Decrypted folder backups now keep the disc's menus and navigation, the same as ISO backups.
+- A disc with slightly damaged file-system data still backs up instead of stopping with an error.
+- Library: resumed jobs keep the output format you chose.
+- MediaTek drives: unlocking no longer retries needlessly while the drive restarts.
+- Decrypted ISO backups that take several passes or are resumed no longer mix old and new file names on the disc image. If the key file can't be renamed, you're told that VLC may treat the copy as encrypted.
+
 ## 1.8.5
 
 <small>2026-10-20</small>
