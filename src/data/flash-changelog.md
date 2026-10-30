@@ -3,6 +3,23 @@
 Customer-visible changes to freemkv Flash and freemkv Modify, newest first.
 Versions are independent of the freemkv ripping applications.
 
+## [0.15.4] - 2026-10-30
+
+### freemkv Flash
+
+- Add a narrowly qualified BDR-UD02D 1.00 to BDR-UD04 1.14 route. Flash checks
+  the exact firmware, original-hardware evidence and live calibration before
+  offering the write. Other UD02/UD04 combinations remain unsupported.
+- Recognize additional complete Pioneer factory records and improve OEM backup
+  capture guidance when a raw drive dump cannot be reconstructed as a flashable
+  backup.
+
+### freemkv Modify
+
+- Expand exact-image MediaTek modification support and report available features
+  and boot settings for each firmware image. Experimental MT1939 UHD conversion
+  is not included in this release.
+
 ## [0.15.3] - 2026-10-25
 
 ### freemkv Flash
