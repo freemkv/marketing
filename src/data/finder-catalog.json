@@ -34879,6 +34879,127 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.00"
+              ],
+              "brand": "PIONEER",
+              "bytes": 2440704,
+              "components": [
+                {
+                  "identity_key": "pioneer:1031:ID79:0000:kernel",
+                  "member": "components/S1031790.000.enc",
+                  "revision": "0000",
+                  "role": "kernel",
+                  "sha256": "095bb55ab887cb61dfcf56bb0f1f1f9c5dd1057173d273289ce4b19e150bac48"
+                },
+                {
+                  "identity_key": "pioneer:1031:ID79:1.00:normal",
+                  "member": "components/S1031791.100.enc",
+                  "revision": "1.00",
+                  "role": "normal",
+                  "sha256": "87ac34cf4f848d2179750b86268c3b20d016caa6fa978e944a9285537c6e74ab"
+                }
+              ],
+              "embedded_model": "BDR-PR1EPDVPP100",
+              "family_id": "bb6dfef113c537d5",
+              "family_scheme": "pioneer.hardware.v4",
+              "filename": "BDR-PR1EPDVPP100_1.00_1031_ID79_d511103d.tar",
+              "generated_date": "13/01/16",
+              "is_uhd": false,
+              "kernel_revision": "0000",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "095bb55ab887cb61dfcf56bb0f1f1f9c5dd1057173d273289ce4b19e150bac48",
+              "key": "fw/pioneer/d511103dbceca2cc57c75003ce4b650134e511c47afd6e2d1810478fa9e68a38.tar",
+              "modifiable": false,
+              "normal_sha256": "87ac34cf4f848d2179750b86268c3b20d016caa6fa978e944a9285537c6e74ab",
+              "origin_details": [
+                {
+                  "approval": {
+                    "allow_hoard": true,
+                    "allow_publish": true,
+                    "approved_at": "2026-10-27",
+                    "approved_by": "matthew"
+                  },
+                  "category": "dump",
+                  "firmware": {
+                    "bytes": 70144,
+                    "filename": "S1031790.000.enc",
+                    "md5": "ad6594673d1977d13ed4282de751c61c",
+                    "member": "components/S1031790.000.enc",
+                    "role": "kernel",
+                    "sha256": "095bb55ab887cb61dfcf56bb0f1f1f9c5dd1057173d273289ce4b19e150bac48"
+                  },
+                  "originals": [
+                    {
+                      "bytes": 2440704,
+                      "filename": "BDR-PR1EPDVPP100_1.00.candidate.tar",
+                      "filenames": [
+                        "BDR-PR1EPDVPP100_1.00.candidate.tar"
+                      ],
+                      "md5": "06ce7990b9b79097849bcd3b9cb56f20",
+                      "sha256": "d511103dbceca2cc57c75003ce4b650134e511c47afd6e2d1810478fa9e68a38",
+                      "urls": []
+                    }
+                  ],
+                  "reconstruction": null,
+                  "source_kind": "drive-dump"
+                },
+                {
+                  "approval": {
+                    "allow_hoard": true,
+                    "allow_publish": true,
+                    "approved_at": "2026-10-27",
+                    "approved_by": "matthew"
+                  },
+                  "category": "dump",
+                  "firmware": {
+                    "bytes": 2368512,
+                    "filename": "S1031791.100.enc",
+                    "md5": "1ea51b0dfa59b4bfc4e5a1a38be6507b",
+                    "member": "components/S1031791.100.enc",
+                    "role": "normal",
+                    "sha256": "87ac34cf4f848d2179750b86268c3b20d016caa6fa978e944a9285537c6e74ab"
+                  },
+                  "originals": [
+                    {
+                      "bytes": 2440704,
+                      "filename": "BDR-PR1EPDVPP100_1.00.candidate.tar",
+                      "filenames": [
+                        "BDR-PR1EPDVPP100_1.00.candidate.tar"
+                      ],
+                      "md5": "06ce7990b9b79097849bcd3b9cb56f20",
+                      "sha256": "d511103dbceca2cc57c75003ce4b650134e511c47afd6e2d1810478fa9e68a38",
+                      "urls": []
+                    }
+                  ],
+                  "reconstruction": null,
+                  "source_kind": "drive-dump"
+                }
+              ],
+              "packageType": "pioneer-installer",
+              "product_identity": {
+                "model": "BDR-PR1EPDVPP100",
+                "product": "BDR-PR1EPDVPP100",
+                "product_suffix": "",
+                "revision": "1.00",
+                "vendor": "PIONEER"
+              },
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                92416,
+                488192
+              ],
+              "recommended": true,
+              "revision": "1.00",
+              "selection": "source-contained",
+              "sha256": "d511103dbceca2cc57c75003ce4b650134e511c47afd6e2d1810478fa9e68a38"
+            }
+          ],
+          "revision": "1.00"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
                 "1.01",
                 "2.02"
               ],
@@ -70274,6 +70395,157 @@
             }
           ],
           "revision": "2.02"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "3.01"
+              ],
+              "brand": "SXLT",
+              "bytes": 2004992,
+              "components": [
+                {
+                  "identity_key": "pioneer:8801:ID75:0000:kernel",
+                  "member": "components/kernel.enc",
+                  "revision": "0000",
+                  "role": "kernel",
+                  "sha256": "54e3604dca7f8270c748658f44dc141d27cc962f69018f73931fe0db43d1397e"
+                },
+                {
+                  "identity_key": "pioneer:8801:ID75:3.01:normal",
+                  "member": "components/normal.enc",
+                  "revision": "3.01",
+                  "role": "normal",
+                  "sha256": "94620ba93d1d52acfee11ac5daf47425c7d67174b7bf123c6561998c3cf37267"
+                }
+              ],
+              "embedded_model": "PP100",
+              "family_id": "4fd81a20211cf4cb",
+              "family_scheme": "pioneer.hardware.v4",
+              "filename": "BDE-PR1EP_3.01_8801_ID75_0109105c.tar",
+              "generated_date": "26/01/15",
+              "is_uhd": false,
+              "kernel_revision": "0000",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "54e3604dca7f8270c748658f44dc141d27cc962f69018f73931fe0db43d1397e",
+              "key": "fw/pioneer/0109105c14b1c44cd1463f6931b49adc960461eb323e9216ff2c6e5ff85dbc6d.tar",
+              "modifiable": false,
+              "normal_sha256": "94620ba93d1d52acfee11ac5daf47425c7d67174b7bf123c6561998c3cf37267",
+              "origin_details": [
+                {
+                  "approval": {
+                    "allow_hoard": true,
+                    "allow_publish": true,
+                    "approved_at": "2026-10-27",
+                    "approved_by": "matthew"
+                  },
+                  "category": "dump",
+                  "firmware": {
+                    "bytes": 70144,
+                    "filename": "kernel.enc",
+                    "md5": "4bc0a0c9ebc4e4a4f4900589efe2cb16",
+                    "member": "components/kernel.enc",
+                    "role": "kernel",
+                    "sha256": "54e3604dca7f8270c748658f44dc141d27cc962f69018f73931fe0db43d1397e"
+                  },
+                  "originals": [
+                    {
+                      "bytes": 17269526,
+                      "filename": "BDE-PR1EP__PP100_3.01.dump.bin",
+                      "filenames": [
+                        "BDE-PR1EP__PP100_3.01.dump.bin"
+                      ],
+                      "md5": "a416b4db0b3e4f78efb3f34a058b103e",
+                      "sha256": "8247fde9397d5a315da050a2a2edd66b350ea537a44953b75fc2bd51aeec41c4",
+                      "urls": []
+                    }
+                  ],
+                  "reconstruction": {
+                    "capture_sha256": "8247fde9397d5a315da050a2a2edd66b350ea537a44953b75fc2bd51aeec41c4",
+                    "generated_sources": [
+                      {
+                        "bytes": 2004992,
+                        "filename": "BDE-PR1EP_PP100_3.01.reconstructed.tar",
+                        "filenames": [
+                          "BDE-PR1EP_PP100_3.01.reconstructed.tar"
+                        ],
+                        "md5": "3b1b4816b97839a416b2fdf981bf2a19",
+                        "sha256": "0109105c14b1c44cd1463f6931b49adc960461eb323e9216ff2c6e5ff85dbc6d",
+                        "urls": []
+                      }
+                    ],
+                    "method": "kernel-derived-envelope-reconstruction"
+                  },
+                  "source_kind": "drive-dump"
+                },
+                {
+                  "approval": {
+                    "allow_hoard": true,
+                    "allow_publish": true,
+                    "approved_at": "2026-10-27",
+                    "approved_by": "matthew"
+                  },
+                  "category": "dump",
+                  "firmware": {
+                    "bytes": 1932544,
+                    "filename": "normal.enc",
+                    "md5": "eae386af4d265389e49f6cf2106cf902",
+                    "member": "components/normal.enc",
+                    "role": "normal",
+                    "sha256": "94620ba93d1d52acfee11ac5daf47425c7d67174b7bf123c6561998c3cf37267"
+                  },
+                  "originals": [
+                    {
+                      "bytes": 17269526,
+                      "filename": "BDE-PR1EP__PP100_3.01.dump.bin",
+                      "filenames": [
+                        "BDE-PR1EP__PP100_3.01.dump.bin"
+                      ],
+                      "md5": "a416b4db0b3e4f78efb3f34a058b103e",
+                      "sha256": "8247fde9397d5a315da050a2a2edd66b350ea537a44953b75fc2bd51aeec41c4",
+                      "urls": []
+                    }
+                  ],
+                  "reconstruction": {
+                    "capture_sha256": "8247fde9397d5a315da050a2a2edd66b350ea537a44953b75fc2bd51aeec41c4",
+                    "generated_sources": [
+                      {
+                        "bytes": 2004992,
+                        "filename": "BDE-PR1EP_PP100_3.01.reconstructed.tar",
+                        "filenames": [
+                          "BDE-PR1EP_PP100_3.01.reconstructed.tar"
+                        ],
+                        "md5": "3b1b4816b97839a416b2fdf981bf2a19",
+                        "sha256": "0109105c14b1c44cd1463f6931b49adc960461eb323e9216ff2c6e5ff85dbc6d",
+                        "urls": []
+                      }
+                    ],
+                    "method": "kernel-derived-envelope-reconstruction"
+                  },
+                  "source_kind": "drive-dump"
+                }
+              ],
+              "packageType": "pioneer-installer",
+              "product_identity": {
+                "model": "BDE-PR1EP",
+                "product": "BDE-PR1EP  PP100",
+                "product_suffix": "PP100",
+                "revision": "3.01",
+                "vendor": "SXLT"
+              },
+              "receiver_reverse": true,
+              "receiver_xor_offsets": [
+                865107,
+                776224
+              ],
+              "recommended": true,
+              "revision": "3.01",
+              "selection": "source-contained",
+              "sha256": "0109105c14b1c44cd1463f6931b49adc960461eb323e9216ff2c6e5ff85dbc6d"
+            }
+          ],
+          "revision": "3.01"
         }
       ]
     },

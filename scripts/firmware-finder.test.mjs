@@ -163,17 +163,20 @@ test('UHD capability is attached to the selected package, not inherited from ano
 });
 
 test('all published cross-flash rows agree with the package their View button opens', () => {
-  // Available and Future rows carry the matching graph classification.
+  // Available, Future and conditional Hardware check rows carry the matching graph classification.
   const data = realData(), d = finderPageData(data);
   for (const [n, i] of d.identities.entries()) {
     const linked = new Set(data.identities[n].revisions.flatMap(r => r.packages.flatMap(p => data.crossflash[p.sha256] ?? [])));
     const future = new Set(data.identities[n].revisions.flatMap(r => r.packages.flatMap(p => data.crossflashFuture[p.sha256] ?? [])));
-    for (const [name, , rows] of i.x) for (const [t, vi, incomplete, pending] of rows) {
+    const conditional = new Set(data.identities[n].revisions.flatMap(r => r.packages.flatMap(p => data.crossflashConditional[p.sha256] ?? [])));
+    for (const [name, , rows] of i.x) for (const [t, vi, incomplete, status] of rows) {
       const v = d.versions[vi];
       const available = v.p.some(p => linked.has(d.packages[p].s));
       const waiting = !available && v.p.some(p => future.has(d.packages[p].s));
-      assert.equal(available || waiting, !incomplete, `${i.n} → ${name} ${v.r}`);
-      assert.equal(Boolean(pending), waiting, `${i.n} → ${name} ${v.r} Future`);
+      const hardwareCheck = !available && !waiting && v.p.some(p => conditional.has(d.packages[p].s));
+      assert.equal(available || waiting || hardwareCheck, !incomplete, `${i.n} → ${name} ${v.r}`);
+      assert.equal(status === 1, waiting, `${i.n} → ${name} ${v.r} Future`);
+      assert.equal(status === 2, hardwareCheck, `${i.n} → ${name} ${v.r} Hardware check`);
       // "Incomplete - missing kernel" is Pioneer-only and only for a revision without Kernel + Normal.
       if (incomplete) {
         assert.equal(d.identities[t].pio, 1, `${i.n} → ${name} ${v.r}`);

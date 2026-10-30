@@ -1,5 +1,5 @@
 {
-  "note": "Exact-image capabilities from freemkv-fw 0.15.3; every published MediaTek hash was queried and every supported output built, audited and checked by Flash. Unsupported inputs are retained explicitly.",
+  "note": "Exact-image capabilities from freemkv-fw 0.15.4; every published MediaTek hash was queried and every supported output built, audited and checked by Flash. Unsupported inputs are retained explicitly.",
   "flags": [
     "Speed",
     "Region",
@@ -12,19 +12,19 @@
   "counts": {
     "total": 114,
     "base_only": 0,
-    "feature_bearing": 106,
-    "stock_only": 8,
+    "feature_bearing": 113,
+    "stock_only": 1,
     "hardware_verified": 0,
-    "build_verified": 102
+    "build_verified": 108
   },
   "per_flag": {
-    "Speed": 77,
-    "Region-free": 77,
-    "UHD": 27,
-    "BD": 27,
-    "HRL Bypass": 77,
-    "AKE Bypass": 77,
-    "Bus Decrypt": 77
+    "Speed": 109,
+    "Region-free": 108,
+    "UHD": 84,
+    "BD": 84,
+    "HRL Bypass": 108,
+    "AKE Bypass": 108,
+    "Bus Decrypt": 108
   },
   "images": [
     {
@@ -48,12 +48,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -68,29 +68,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1740616,
-        "boot_stub_va": 1741396,
+        "boot_stub_va": 1741368,
         "boot_init_site": 1657218,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -101,7 +101,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BE14NU40_1.00_01c6a76a.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -193,12 +193,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -213,40 +213,40 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1749784,
-        "boot_stub_va": 1750564,
+        "boot_stub_va": 1750536,
         "boot_init_site": 1666170,
         "de_off": 2015318,
         "speed_gate": 0,
         "region_emitter": 1405896,
-        "ake_gate": 0,
+        "ake_gate": 1574464,
         "uhd_stub_va": 0,
         "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BE14NU40_1.01_7ff91816.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -271,12 +271,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -291,29 +291,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1736784,
-        "boot_stub_va": 1737564,
+        "boot_stub_va": 1737536,
         "boot_init_site": 1653404,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -324,7 +324,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BH14NS40_1.00_d8ab861b.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -349,12 +349,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -369,29 +369,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1743592,
-        "boot_stub_va": 1744372,
+        "boot_stub_va": 1744344,
         "boot_init_site": 1660074,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -402,7 +402,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BH14NS40_1.01_007ac6bf.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -427,12 +427,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -447,29 +447,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1743664,
-        "boot_stub_va": 1744444,
+        "boot_stub_va": 1744416,
         "boot_init_site": 1660146,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -480,7 +480,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BH14NS40_1.02_6a96f726.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -505,12 +505,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -525,29 +525,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1740100,
-        "boot_stub_va": 1740880,
+        "boot_stub_va": 1740852,
         "boot_init_site": 1656706,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -558,7 +558,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BH14NS48_1.00_f1141a32.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -583,12 +583,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -603,29 +603,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1744080,
-        "boot_stub_va": 1744860,
+        "boot_stub_va": 1744832,
         "boot_init_site": 1660640,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -636,7 +636,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BH14NS48_1.01_adfd807c.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -661,12 +661,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -681,29 +681,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1747012,
-        "boot_stub_va": 1747792,
+        "boot_stub_va": 1747764,
         "boot_init_site": 1663480,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -714,7 +714,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BH14NS48_1.03_3b8faae2.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -739,12 +739,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -759,29 +759,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1741028,
-        "boot_stub_va": 1741808,
+        "boot_stub_va": 1741780,
         "boot_init_site": 1657602,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -792,7 +792,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BH16NS40_1.00_ab21af69.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -817,12 +817,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -837,29 +837,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1743496,
-        "boot_stub_va": 1744276,
+        "boot_stub_va": 1744248,
         "boot_init_site": 1659978,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -870,7 +870,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BH16NS40_1.01_208a80d0.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -895,12 +895,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -915,29 +915,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1743568,
-        "boot_stub_va": 1744348,
+        "boot_stub_va": 1744320,
         "boot_init_site": 1660050,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -948,7 +948,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BH16NS40_1.02_8f5bf953.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -973,12 +973,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -993,29 +993,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1743944,
-        "boot_stub_va": 1744724,
+        "boot_stub_va": 1744696,
         "boot_init_site": 1660426,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1026,7 +1026,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BH16NS40_1.03_614b41f6.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -1051,12 +1051,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -1071,29 +1071,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1744644,
-        "boot_stub_va": 1745424,
+        "boot_stub_va": 1745396,
         "boot_init_site": 1660926,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1104,7 +1104,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BH16NS40_1.03_b093a736.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -1129,12 +1129,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -1149,29 +1149,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1746736,
-        "boot_stub_va": 1747516,
+        "boot_stub_va": 1747488,
         "boot_init_site": 1663222,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1182,7 +1182,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BH16NS48_1.01_163fb6e0.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -1207,12 +1207,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -1227,29 +1227,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1746784,
-        "boot_stub_va": 1747564,
+        "boot_stub_va": 1747536,
         "boot_init_site": 1663270,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1260,7 +1260,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BH16NS48_1.02_43c484dc.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -1285,12 +1285,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -1305,29 +1305,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1735528,
-        "boot_stub_va": 1736308,
+        "boot_stub_va": 1736280,
         "boot_init_site": 1652210,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1338,7 +1338,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/BH40N_B7C6_0b2cdb82.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -1522,12 +1522,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -1542,29 +1542,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1736784,
-        "boot_stub_va": 1737564,
+        "boot_stub_va": 1737536,
         "boot_init_site": 1653404,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1575,7 +1575,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/WH14NS40_1.00_8489a3a5.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -1600,12 +1600,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -1620,29 +1620,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1743592,
-        "boot_stub_va": 1744372,
+        "boot_stub_va": 1744344,
         "boot_init_site": 1660074,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1653,7 +1653,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/WH14NS40_1.01_fc3013be.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -1678,12 +1678,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -1698,29 +1698,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1743664,
-        "boot_stub_va": 1744444,
+        "boot_stub_va": 1744416,
         "boot_init_site": 1660146,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1731,7 +1731,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/WH14NS40_1.02_40eb760e.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -1756,12 +1756,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -1776,29 +1776,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1743992,
-        "boot_stub_va": 1744772,
+        "boot_stub_va": 1744744,
         "boot_init_site": 1660470,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1809,7 +1809,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/WH14NS40_1.03_f6a5a578.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -1834,12 +1834,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -1854,29 +1854,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1743568,
-        "boot_stub_va": 1744348,
+        "boot_stub_va": 1744320,
         "boot_init_site": 1660050,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1887,7 +1887,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/WH16NS40_1.01_7af021b0.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -1912,12 +1912,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -1932,29 +1932,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1743568,
-        "boot_stub_va": 1744348,
+        "boot_stub_va": 1744320,
         "boot_init_site": 1660050,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1965,7 +1965,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/WH16NS40_1.01_eee6563f.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -1990,12 +1990,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -2010,29 +2010,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1743896,
-        "boot_stub_va": 1744676,
+        "boot_stub_va": 1744648,
         "boot_init_site": 1660374,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -2043,7 +2043,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/WH16NS40_1.02_1368766f.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -2068,12 +2068,12 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
@@ -2088,29 +2088,29 @@
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
         "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
       "base_facts": {
         "handler_va": 1743896,
-        "boot_stub_va": 1744676,
+        "boot_stub_va": 1744648,
         "boot_init_site": 1660374,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -2121,7 +2121,7 @@
         "hrl_sites": 1
       },
       "r2_key": "MT1939/WH16NS40_1.02_7f26c559.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -2223,12 +2223,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -2247,7 +2247,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2255,14 +2255,14 @@
       },
       "base_facts": {
         "handler_va": 98396,
-        "boot_stub_va": 99184,
+        "boot_stub_va": 99156,
         "boot_init_site": 1550504,
         "de_off": 2015318,
         "speed_gate": 101090,
         "region_emitter": 1329766,
         "ake_gate": 1485066,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1630300,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BC-12B1ST_3.01_8961b80b.bin",
@@ -2301,12 +2301,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -2325,7 +2325,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2333,14 +2333,14 @@
       },
       "base_facts": {
         "handler_va": 98396,
-        "boot_stub_va": 99184,
+        "boot_stub_va": 99156,
         "boot_init_site": 1550596,
         "de_off": 2015318,
         "speed_gate": 101090,
         "region_emitter": 1329858,
         "ake_gate": 1485158,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1630404,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BC-12B1ST_3.11_ae0c0313.bin",
@@ -2379,12 +2379,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -2403,7 +2403,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2411,14 +2411,14 @@
       },
       "base_facts": {
         "handler_va": 98336,
-        "boot_stub_va": 99124,
+        "boot_stub_va": 99096,
         "boot_init_site": 1550680,
         "de_off": 2015318,
         "speed_gate": 101090,
         "region_emitter": 1330286,
         "ake_gate": 1485478,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1630404,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BC-12D2HT_3.00_dd03cdae.bin",
@@ -2457,12 +2457,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -2481,7 +2481,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2489,14 +2489,14 @@
       },
       "base_facts": {
         "handler_va": 98396,
-        "boot_stub_va": 99184,
+        "boot_stub_va": 99156,
         "boot_init_site": 1550504,
         "de_off": 2015318,
         "speed_gate": 101090,
         "region_emitter": 1329766,
         "ake_gate": 1485066,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1630300,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BC-12D2HT_3.01_93ea068d.bin",
@@ -2535,12 +2535,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -2559,7 +2559,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2567,14 +2567,14 @@
       },
       "base_facts": {
         "handler_va": 98396,
-        "boot_stub_va": 99184,
+        "boot_stub_va": 99156,
         "boot_init_site": 1550596,
         "de_off": 2015318,
         "speed_gate": 101090,
         "region_emitter": 1329858,
         "ake_gate": 1485158,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1630404,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BC-12D2HT_3.11_9f5bc003.bin",
@@ -2613,12 +2613,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -2637,7 +2637,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2645,14 +2645,14 @@
       },
       "base_facts": {
         "handler_va": 1404760,
-        "boot_stub_va": 1405548,
+        "boot_stub_va": 1405520,
         "boot_init_site": 1311970,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1167672,
         "ake_gate": 1284406,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1405900,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BE16NU50_1.01_9c46e697.bin",
@@ -2691,12 +2691,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -2715,7 +2715,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2723,14 +2723,14 @@
       },
       "base_facts": {
         "handler_va": 1404592,
-        "boot_stub_va": 1405380,
+        "boot_stub_va": 1405352,
         "boot_init_site": 1311826,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1167360,
         "ake_gate": 1284210,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1405732,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BE16NU50_1.02_2b3ea41f.bin",
@@ -2748,20 +2748,73 @@
       "vendor": "HL-DT-ST",
       "model": "BE16NU50",
       "rev": "1.04",
-      "media": "",
+      "media": "BD/UHD",
       "variant": "N006300",
-      "modifiable": false,
-      "base_ok": false,
+      "modifiable": true,
+      "base_ok": true,
       "base_only": false,
-      "confidence": null,
-      "advertised": "stock",
-      "features": [],
-      "boot_support": null,
-      "base_facts": null,
+      "confidence": "build-verified",
+      "advertised": "features",
+      "features": [
+        {
+          "key": "Speed",
+          "name": "Speed",
+          "ok": true
+        },
+        {
+          "key": "Region",
+          "name": "Region-free",
+          "ok": true
+        },
+        {
+          "key": "UHD",
+          "name": "UHD",
+          "ok": true
+        },
+        {
+          "key": "BD",
+          "name": "BD",
+          "ok": true
+        },
+        {
+          "key": "HRL",
+          "name": "HRL Bypass",
+          "ok": true
+        },
+        {
+          "key": "AKE",
+          "name": "AKE Bypass",
+          "ok": true
+        },
+        {
+          "key": "Bus",
+          "name": "Bus Decrypt",
+          "ok": true
+        }
+      ],
+      "boot_support": {
+        "unrestricted": true,
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
+      },
+      "base_facts": {
+        "handler_va": 98420,
+        "boot_stub_va": 99180,
+        "boot_init_site": 1312730,
+        "de_off": 2015318,
+        "speed_gate": 101122,
+        "region_emitter": 0,
+        "ake_gate": 0,
+        "uhd_stub_va": 0,
+        "bd_stub_va": 0,
+        "hrl_sites": 0
+      },
       "r2_key": "MT1959/BE16NU50_1.04_7dcc99d2.bin",
-      "lineage": null,
-      "capability_status": "unsupported",
-      "unavailable_reason": "This operation did not write firmware to the drive. This firmware does not have enough safe space for the requested modifications. No output firmware was saved."
+      "lineage": "MT1959-lineage",
+      "capability_status": "supported",
+      "unavailable_reason": null
     },
     {
       "sha256": "4ef56002dd392733d15378e4535115f24ba891d3266a7c87420df14df0a7089d",
@@ -2794,12 +2847,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -2818,7 +2871,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2826,14 +2879,14 @@
       },
       "base_facts": {
         "handler_va": 1403980,
-        "boot_stub_va": 1404768,
+        "boot_stub_va": 1404740,
         "boot_init_site": 1311246,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1166780,
         "ake_gate": 1283630,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1405120,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH14NS50_1.01_4ef56002.bin",
@@ -2872,12 +2925,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -2896,7 +2949,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2904,14 +2957,14 @@
       },
       "base_facts": {
         "handler_va": 1406364,
-        "boot_stub_va": 1407152,
+        "boot_stub_va": 1407124,
         "boot_init_site": 1313598,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1168278,
         "ake_gate": 1285142,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1407504,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH14NS58_1.00_53d2cdc3.bin",
@@ -2950,12 +3003,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -2974,7 +3027,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2982,14 +3035,14 @@
       },
       "base_facts": {
         "handler_va": 1406364,
-        "boot_stub_va": 1407152,
+        "boot_stub_va": 1407124,
         "boot_init_site": 1313598,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1168278,
         "ake_gate": 1285142,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1407504,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH14NS58_1.00_aaeea1ba.bin",
@@ -3028,12 +3081,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -3052,7 +3105,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -3060,14 +3113,14 @@
       },
       "base_facts": {
         "handler_va": 1406284,
-        "boot_stub_va": 1407072,
+        "boot_stub_va": 1407044,
         "boot_init_site": 1313542,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1167998,
         "ake_gate": 1284986,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1407424,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH14NS58_1.01_eb0e2e72.bin",
@@ -3106,12 +3159,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -3130,7 +3183,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -3138,14 +3191,14 @@
       },
       "base_facts": {
         "handler_va": 1404012,
-        "boot_stub_va": 1404800,
+        "boot_stub_va": 1404772,
         "boot_init_site": 1311258,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1166960,
         "ake_gate": 1283694,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1405152,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH16NS40_1.02_acbe782e.bin",
@@ -3184,12 +3237,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -3208,7 +3261,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -3216,14 +3269,14 @@
       },
       "base_facts": {
         "handler_va": 1404012,
-        "boot_stub_va": 1404800,
+        "boot_stub_va": 1404772,
         "boot_init_site": 1311258,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1166960,
         "ake_gate": 1283694,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1405152,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH16NS40_1.02_beb8330e.bin",
@@ -3262,12 +3315,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -3286,7 +3339,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -3294,14 +3347,14 @@
       },
       "base_facts": {
         "handler_va": 1403836,
-        "boot_stub_va": 1404624,
+        "boot_stub_va": 1404596,
         "boot_init_site": 1311106,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1166640,
         "ake_gate": 1283490,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1404976,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH16NS40_1.03_a5bb75b8.bin",
@@ -3340,12 +3393,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -3364,7 +3417,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -3372,14 +3425,14 @@
       },
       "base_facts": {
         "handler_va": 1403980,
-        "boot_stub_va": 1404768,
+        "boot_stub_va": 1404740,
         "boot_init_site": 1311234,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1166768,
         "ake_gate": 1283618,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1405120,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH16NS40_1.04_bc4e6126.bin",
@@ -3418,12 +3471,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -3442,7 +3495,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -3450,14 +3503,14 @@
       },
       "base_facts": {
         "handler_va": 98420,
-        "boot_stub_va": 99208,
+        "boot_stub_va": 99180,
         "boot_init_site": 1312010,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1167536,
         "ake_gate": 1284394,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1782136,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH16NS40_1.05_dd27dc39.bin",
@@ -3496,12 +3549,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -3520,7 +3573,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -3528,14 +3581,14 @@
       },
       "base_facts": {
         "handler_va": 1403836,
-        "boot_stub_va": 1404624,
+        "boot_stub_va": 1404596,
         "boot_init_site": 1311106,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1166640,
         "ake_gate": 1283490,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1404976,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH16NS50_1.01_b7a368da.bin",
@@ -3574,12 +3627,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -3598,7 +3651,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -3606,14 +3659,14 @@
       },
       "base_facts": {
         "handler_va": 1404012,
-        "boot_stub_va": 1404800,
+        "boot_stub_va": 1404772,
         "boot_init_site": 1311258,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1166960,
         "ake_gate": 1283694,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1405152,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH16NS55_1.02_bdfd6f29.bin",
@@ -3652,12 +3705,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -3676,7 +3729,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -3684,14 +3737,14 @@
       },
       "base_facts": {
         "handler_va": 1403836,
-        "boot_stub_va": 1404624,
+        "boot_stub_va": 1404596,
         "boot_init_site": 1311106,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1166640,
         "ake_gate": 1283490,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1404976,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH16NS55_1.03_0bfdd300.bin",
@@ -3730,12 +3783,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -3754,7 +3807,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -3762,14 +3815,14 @@
       },
       "base_facts": {
         "handler_va": 1403980,
-        "boot_stub_va": 1404768,
+        "boot_stub_va": 1404740,
         "boot_init_site": 1311234,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1166768,
         "ake_gate": 1283618,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1405120,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH16NS55_1.04_394e6f8d.bin",
@@ -3808,12 +3861,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -3832,7 +3885,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -3840,14 +3893,14 @@
       },
       "base_facts": {
         "handler_va": 98420,
-        "boot_stub_va": 99208,
+        "boot_stub_va": 99180,
         "boot_init_site": 1312014,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1167540,
         "ake_gate": 1284398,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1782116,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH16NS55_1.05_5f3fa17d.bin",
@@ -3886,12 +3939,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -3910,7 +3963,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -3918,14 +3971,14 @@
       },
       "base_facts": {
         "handler_va": 98420,
-        "boot_stub_va": 99208,
+        "boot_stub_va": 99180,
         "boot_init_site": 1311982,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1167508,
         "ake_gate": 1284366,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1782136,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH16NS55_1.05_ca7e8db8.bin",
@@ -3964,12 +4017,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -3988,7 +4041,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -3996,14 +4049,14 @@
       },
       "base_facts": {
         "handler_va": 1406212,
-        "boot_stub_va": 1407000,
+        "boot_stub_va": 1406972,
         "boot_init_site": 1313446,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1168126,
         "ake_gate": 1284990,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1407352,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH16NS58_1.00_6d9fdb2b.bin",
@@ -4042,12 +4095,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -4066,7 +4119,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -4074,14 +4127,14 @@
       },
       "base_facts": {
         "handler_va": 1406148,
-        "boot_stub_va": 1406936,
+        "boot_stub_va": 1406908,
         "boot_init_site": 1313406,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1167862,
         "ake_gate": 1284850,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1407288,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH16NS58_1.01_ccc97e4f.bin",
@@ -4120,12 +4173,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -4144,7 +4197,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -4152,14 +4205,14 @@
       },
       "base_facts": {
         "handler_va": 1406276,
-        "boot_stub_va": 1407064,
+        "boot_stub_va": 1407036,
         "boot_init_site": 1313526,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1167982,
         "ake_gate": 1284970,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1407416,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BH16NS58_1.02_4f4e63cd.bin",
@@ -4230,14 +4283,14 @@
       },
       "base_facts": {
         "handler_va": 1388344,
-        "boot_stub_va": 1389132,
+        "boot_stub_va": 1389104,
         "boot_init_site": 1295274,
         "de_off": 2015318,
         "speed_gate": 113410,
         "region_emitter": 1147896,
         "ake_gate": 1266420,
-        "uhd_stub_va": 1389452,
-        "bd_stub_va": 1389508,
+        "uhd_stub_va": 1389460,
+        "bd_stub_va": 1389520,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BH16NS60_1.00_580d867c.bin",
@@ -4276,12 +4329,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -4300,7 +4353,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -4308,14 +4361,14 @@
       },
       "base_facts": {
         "handler_va": 1405676,
-        "boot_stub_va": 1406464,
+        "boot_stub_va": 1406436,
         "boot_init_site": 1314658,
         "de_off": 2015318,
         "speed_gate": 101282,
         "region_emitter": 1170734,
         "ake_gate": 1287254,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1406816,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BP50NB40_1.00_c88a6901.bin",
@@ -4354,12 +4407,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -4378,7 +4431,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -4386,14 +4439,14 @@
       },
       "base_facts": {
         "handler_va": 1381092,
-        "boot_stub_va": 1381880,
+        "boot_stub_va": 1381852,
         "boot_init_site": 1288942,
         "de_off": 2015318,
         "speed_gate": 113586,
         "region_emitter": 1145026,
         "ake_gate": 1261658,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1382232,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BP50NB40_1.01_961acab1.bin",
@@ -4432,12 +4485,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -4456,7 +4509,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -4464,14 +4517,14 @@
       },
       "base_facts": {
         "handler_va": 1381564,
-        "boot_stub_va": 1382352,
+        "boot_stub_va": 1382324,
         "boot_init_site": 1289406,
         "de_off": 2015318,
         "speed_gate": 113586,
         "region_emitter": 1145498,
         "ake_gate": 1262122,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1382704,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BP50NB40_1.02_a344e289.bin",
@@ -4489,20 +4542,73 @@
       "vendor": "HL-DT-ST",
       "model": "BP50NB40",
       "rev": "1.03",
-      "media": "",
+      "media": "BD/UHD",
       "variant": "N009800",
-      "modifiable": false,
-      "base_ok": false,
+      "modifiable": true,
+      "base_ok": true,
       "base_only": false,
-      "confidence": null,
-      "advertised": "stock",
-      "features": [],
-      "boot_support": null,
-      "base_facts": null,
+      "confidence": "build-verified",
+      "advertised": "features",
+      "features": [
+        {
+          "key": "Speed",
+          "name": "Speed",
+          "ok": true
+        },
+        {
+          "key": "Region",
+          "name": "Region-free",
+          "ok": true
+        },
+        {
+          "key": "UHD",
+          "name": "UHD",
+          "ok": true
+        },
+        {
+          "key": "BD",
+          "name": "BD",
+          "ok": true
+        },
+        {
+          "key": "HRL",
+          "name": "HRL Bypass",
+          "ok": true
+        },
+        {
+          "key": "AKE",
+          "name": "AKE Bypass",
+          "ok": true
+        },
+        {
+          "key": "Bus",
+          "name": "Bus Decrypt",
+          "ok": true
+        }
+      ],
+      "boot_support": {
+        "unrestricted": true,
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
+      },
+      "base_facts": {
+        "handler_va": 110752,
+        "boot_stub_va": 111512,
+        "boot_init_site": 1289998,
+        "de_off": 2015318,
+        "speed_gate": 113586,
+        "region_emitter": 0,
+        "ake_gate": 0,
+        "uhd_stub_va": 0,
+        "bd_stub_va": 0,
+        "hrl_sites": 0
+      },
       "r2_key": "MT1959/BP50NB40_1.03_3cdbdaca.bin",
-      "lineage": null,
-      "capability_status": "unsupported",
-      "unavailable_reason": "This operation did not write firmware to the drive. This firmware does not have enough safe space for the requested modifications. No output firmware was saved."
+      "lineage": "MT1959-lineage",
+      "capability_status": "supported",
+      "unavailable_reason": null
     },
     {
       "sha256": "e60a4ce02a588d15faa2a89f1d97d80c22dd2306cf62f0219515a6e9ca5ddff9",
@@ -4535,12 +4641,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -4559,7 +4665,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -4567,14 +4673,14 @@
       },
       "base_facts": {
         "handler_va": 1381092,
-        "boot_stub_va": 1381880,
+        "boot_stub_va": 1381852,
         "boot_init_site": 1288942,
         "de_off": 2015318,
         "speed_gate": 113586,
         "region_emitter": 1145026,
         "ake_gate": 1261658,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1382232,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BP55EB40_1.01_e60a4ce0.bin",
@@ -4613,12 +4719,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -4637,7 +4743,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -4645,14 +4751,14 @@
       },
       "base_facts": {
         "handler_va": 1381588,
-        "boot_stub_va": 1382376,
+        "boot_stub_va": 1382348,
         "boot_init_site": 1289430,
         "de_off": 2015318,
         "speed_gate": 113586,
         "region_emitter": 1145522,
         "ake_gate": 1262146,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1382728,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BP55EB40_1.02_e64c4ca5.bin",
@@ -4723,14 +4829,14 @@
       },
       "base_facts": {
         "handler_va": 1392720,
-        "boot_stub_va": 1393508,
+        "boot_stub_va": 1393480,
         "boot_init_site": 1300114,
         "de_off": 2015318,
         "speed_gate": 113584,
         "region_emitter": 1153252,
         "ake_gate": 1271684,
-        "uhd_stub_va": 1393828,
-        "bd_stub_va": 1393884,
+        "uhd_stub_va": 1393836,
+        "bd_stub_va": 1393896,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BP60NB10_1.00_f60b037f.bin",
@@ -4801,14 +4907,14 @@
       },
       "base_facts": {
         "handler_va": 1393024,
-        "boot_stub_va": 1393812,
+        "boot_stub_va": 1393784,
         "boot_init_site": 1300406,
         "de_off": 2015318,
         "speed_gate": 113584,
         "region_emitter": 1153580,
         "ake_gate": 1272004,
-        "uhd_stub_va": 1394132,
-        "bd_stub_va": 1394188,
+        "uhd_stub_va": 1394140,
+        "bd_stub_va": 1394200,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BP60NB10_1.01_fb9174aa.bin",
@@ -4879,14 +4985,14 @@
       },
       "base_facts": {
         "handler_va": 1390952,
-        "boot_stub_va": 1391740,
+        "boot_stub_va": 1391712,
         "boot_init_site": 1299496,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1153168,
         "ake_gate": 1271188,
-        "uhd_stub_va": 1392060,
-        "bd_stub_va": 1392116,
+        "uhd_stub_va": 1392068,
+        "bd_stub_va": 1392128,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_1.00_221ad35b.bin",
@@ -4957,14 +5063,14 @@
       },
       "base_facts": {
         "handler_va": 1390856,
-        "boot_stub_va": 1391644,
+        "boot_stub_va": 1391616,
         "boot_init_site": 1299776,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1151978,
         "ake_gate": 1270324,
-        "uhd_stub_va": 1391964,
-        "bd_stub_va": 1392020,
+        "uhd_stub_va": 1391972,
+        "bd_stub_va": 1392032,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_1.01_103b9da9.bin",
@@ -5035,14 +5141,14 @@
       },
       "base_facts": {
         "handler_va": 1392124,
-        "boot_stub_va": 1392912,
+        "boot_stub_va": 1392884,
         "boot_init_site": 1300116,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1153180,
         "ake_gate": 1271696,
-        "uhd_stub_va": 1393232,
-        "bd_stub_va": 1393288,
+        "uhd_stub_va": 1393240,
+        "bd_stub_va": 1393300,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_1.02_1bbeb535.bin",
@@ -5113,14 +5219,14 @@
       },
       "base_facts": {
         "handler_va": 1392092,
-        "boot_stub_va": 1392880,
+        "boot_stub_va": 1392852,
         "boot_init_site": 1300088,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1153152,
         "ake_gate": 1271668,
-        "uhd_stub_va": 1393200,
-        "bd_stub_va": 1393256,
+        "uhd_stub_va": 1393208,
+        "bd_stub_va": 1393268,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_1.02_97bee5c5.bin",
@@ -5191,14 +5297,14 @@
       },
       "base_facts": {
         "handler_va": 1392620,
-        "boot_stub_va": 1393408,
+        "boot_stub_va": 1393380,
         "boot_init_site": 1300604,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1153668,
         "ake_gate": 1272184,
-        "uhd_stub_va": 1393728,
-        "bd_stub_va": 1393784,
+        "uhd_stub_va": 1393736,
+        "bd_stub_va": 1393796,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_1.03_64688690.bin",
@@ -5269,14 +5375,14 @@
       },
       "base_facts": {
         "handler_va": 110752,
-        "boot_stub_va": 111540,
+        "boot_stub_va": 111512,
         "boot_init_site": 1301236,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1154292,
         "ake_gate": 1272816,
-        "uhd_stub_va": 1393508,
-        "bd_stub_va": 1393564,
+        "uhd_stub_va": 1393464,
+        "bd_stub_va": 1393524,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_1.04_5c1a4739.bin",
@@ -5347,14 +5453,14 @@
       },
       "base_facts": {
         "handler_va": 110752,
-        "boot_stub_va": 111540,
+        "boot_stub_va": 111512,
         "boot_init_site": 1305360,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1158492,
         "ake_gate": 1276940,
-        "uhd_stub_va": 1730164,
-        "bd_stub_va": 1730220,
+        "uhd_stub_va": 1730120,
+        "bd_stub_va": 1730180,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_1.05_fbfed0cc.bin",
@@ -5372,20 +5478,73 @@
       "vendor": "HL-DT-ST",
       "model": "BU40N",
       "rev": "A103",
-      "media": "",
+      "media": "BD/UHD",
       "variant": "D003600",
-      "modifiable": false,
-      "base_ok": false,
+      "modifiable": true,
+      "base_ok": true,
       "base_only": false,
-      "confidence": null,
-      "advertised": "stock",
-      "features": [],
-      "boot_support": null,
-      "base_facts": null,
+      "confidence": "build-verified",
+      "advertised": "features",
+      "features": [
+        {
+          "key": "Speed",
+          "name": "Speed",
+          "ok": true
+        },
+        {
+          "key": "Region",
+          "name": "Region-free",
+          "ok": true
+        },
+        {
+          "key": "UHD",
+          "name": "UHD",
+          "ok": true
+        },
+        {
+          "key": "BD",
+          "name": "BD",
+          "ok": true
+        },
+        {
+          "key": "HRL",
+          "name": "HRL Bypass",
+          "ok": true
+        },
+        {
+          "key": "AKE",
+          "name": "AKE Bypass",
+          "ok": true
+        },
+        {
+          "key": "Bus",
+          "name": "Bus Decrypt",
+          "ok": true
+        }
+      ],
+      "boot_support": {
+        "unrestricted": true,
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
+      },
+      "base_facts": {
+        "handler_va": 110752,
+        "boot_stub_va": 111512,
+        "boot_init_site": 1303482,
+        "de_off": 2015318,
+        "speed_gate": 113442,
+        "region_emitter": 0,
+        "ake_gate": 0,
+        "uhd_stub_va": 0,
+        "bd_stub_va": 0,
+        "hrl_sites": 0
+      },
       "r2_key": "MT1959/BU40N_A103_7d7f2465.bin",
-      "lineage": null,
-      "capability_status": "unsupported",
-      "unavailable_reason": "This operation did not write firmware to the drive. This firmware does not have enough safe space for the requested modifications. No output firmware was saved."
+      "lineage": "MT1959-lineage",
+      "capability_status": "supported",
+      "unavailable_reason": null
     },
     {
       "sha256": "5c01c1fda59f3db130bd14aa64fe97d4010376798716b16792dbffd59c488a95",
@@ -5450,14 +5609,14 @@
       },
       "base_facts": {
         "handler_va": 1386600,
-        "boot_stub_va": 1387388,
+        "boot_stub_va": 1387360,
         "boot_init_site": 1295168,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1147186,
         "ake_gate": 1265732,
-        "uhd_stub_va": 1387708,
-        "bd_stub_va": 1387764,
+        "uhd_stub_va": 1387716,
+        "bd_stub_va": 1387776,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BN11_5c01c1fd.bin",
@@ -5528,14 +5687,14 @@
       },
       "base_facts": {
         "handler_va": 1387040,
-        "boot_stub_va": 1387828,
+        "boot_stub_va": 1387800,
         "boot_init_site": 1295600,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1147618,
         "ake_gate": 1266164,
-        "uhd_stub_va": 1388148,
-        "bd_stub_va": 1388204,
+        "uhd_stub_va": 1388156,
+        "bd_stub_va": 1388216,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BN12_3d3badd6.bin",
@@ -5606,14 +5765,14 @@
       },
       "base_facts": {
         "handler_va": 1387064,
-        "boot_stub_va": 1387852,
+        "boot_stub_va": 1387824,
         "boot_init_site": 1295620,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1147638,
         "ake_gate": 1266184,
-        "uhd_stub_va": 1388172,
-        "bd_stub_va": 1388228,
+        "uhd_stub_va": 1388180,
+        "bd_stub_va": 1388240,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BN12_c4d995f0.bin",
@@ -5684,14 +5843,14 @@
       },
       "base_facts": {
         "handler_va": 1394040,
-        "boot_stub_va": 1394828,
+        "boot_stub_va": 1394800,
         "boot_init_site": 1302032,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1154142,
         "ake_gate": 1272644,
-        "uhd_stub_va": 1395148,
-        "bd_stub_va": 1395204,
+        "uhd_stub_va": 1395156,
+        "bd_stub_va": 1395216,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BU10_14d86e99.bin",
@@ -5762,14 +5921,14 @@
       },
       "base_facts": {
         "handler_va": 1394040,
-        "boot_stub_va": 1394828,
+        "boot_stub_va": 1394800,
         "boot_init_site": 1302032,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1154142,
         "ake_gate": 1272644,
-        "uhd_stub_va": 1395148,
-        "bd_stub_va": 1395204,
+        "uhd_stub_va": 1395156,
+        "bd_stub_va": 1395216,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BU10_58203b53.bin",
@@ -5840,14 +5999,14 @@
       },
       "base_facts": {
         "handler_va": 1394036,
-        "boot_stub_va": 1394824,
+        "boot_stub_va": 1394796,
         "boot_init_site": 1302024,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1153990,
         "ake_gate": 1272572,
-        "uhd_stub_va": 1395144,
-        "bd_stub_va": 1395200,
+        "uhd_stub_va": 1395152,
+        "bd_stub_va": 1395212,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BU11_08d14869.bin",
@@ -5918,14 +6077,14 @@
       },
       "base_facts": {
         "handler_va": 1394540,
-        "boot_stub_va": 1395328,
+        "boot_stub_va": 1395300,
         "boot_init_site": 1302512,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1154478,
         "ake_gate": 1273060,
-        "uhd_stub_va": 1395648,
-        "bd_stub_va": 1395704,
+        "uhd_stub_va": 1395656,
+        "bd_stub_va": 1395716,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BU12_920a89f9.bin",
@@ -5996,14 +6155,14 @@
       },
       "base_facts": {
         "handler_va": 1391956,
-        "boot_stub_va": 1392744,
+        "boot_stub_va": 1392716,
         "boot_init_site": 1300196,
         "de_off": 2015318,
         "speed_gate": 113486,
         "region_emitter": 1152698,
         "ake_gate": 1270744,
-        "uhd_stub_va": 1393064,
-        "bd_stub_va": 1393120,
+        "uhd_stub_va": 1393072,
+        "bd_stub_va": 1393132,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BW41_3b9dd9b4.bin",
@@ -6074,14 +6233,14 @@
       },
       "base_facts": {
         "handler_va": 1391956,
-        "boot_stub_va": 1392744,
+        "boot_stub_va": 1392716,
         "boot_init_site": 1300196,
         "de_off": 2015318,
         "speed_gate": 113486,
         "region_emitter": 1152698,
         "ake_gate": 1270744,
-        "uhd_stub_va": 1393064,
-        "bd_stub_va": 1393120,
+        "uhd_stub_va": 1393072,
+        "bd_stub_va": 1393132,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BW42_c68cd76b.bin",
@@ -6120,12 +6279,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -6144,7 +6303,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -6152,14 +6311,14 @@
       },
       "base_facts": {
         "handler_va": 1380772,
-        "boot_stub_va": 1381560,
+        "boot_stub_va": 1381532,
         "boot_init_site": 1290052,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1144902,
         "ake_gate": 1261878,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1381912,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BU40N_CB04_78f75561.bin",
@@ -6230,14 +6389,14 @@
       },
       "base_facts": {
         "handler_va": 1392328,
-        "boot_stub_va": 1393116,
+        "boot_stub_va": 1393088,
         "boot_init_site": 1301044,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1153074,
         "ake_gate": 1271632,
-        "uhd_stub_va": 1393436,
-        "bd_stub_va": 1393492,
+        "uhd_stub_va": 1393444,
+        "bd_stub_va": 1393504,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_FR07_4af842c0.bin",
@@ -6308,14 +6467,14 @@
       },
       "base_facts": {
         "handler_va": 1392772,
-        "boot_stub_va": 1393560,
+        "boot_stub_va": 1393532,
         "boot_init_site": 1301162,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1152998,
         "ake_gate": 1271712,
-        "uhd_stub_va": 1393880,
-        "bd_stub_va": 1393936,
+        "uhd_stub_va": 1393888,
+        "bd_stub_va": 1393948,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_TK03_c328b656.bin",
@@ -6386,14 +6545,14 @@
       },
       "base_facts": {
         "handler_va": 1394196,
-        "boot_stub_va": 1394984,
+        "boot_stub_va": 1394956,
         "boot_init_site": 1302184,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1154114,
         "ake_gate": 1272732,
-        "uhd_stub_va": 1395304,
-        "bd_stub_va": 1395360,
+        "uhd_stub_va": 1395312,
+        "bd_stub_va": 1395372,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_U101_5f9abd3f.bin",
@@ -6464,14 +6623,14 @@
       },
       "base_facts": {
         "handler_va": 1392092,
-        "boot_stub_va": 1392880,
+        "boot_stub_va": 1392852,
         "boot_init_site": 1300088,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1153152,
         "ake_gate": 1271668,
-        "uhd_stub_va": 1393200,
-        "bd_stub_va": 1393256,
+        "uhd_stub_va": 1393208,
+        "bd_stub_va": 1393268,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU50N_1.00_20425a8a.bin",
@@ -6542,14 +6701,14 @@
       },
       "base_facts": {
         "handler_va": 1391404,
-        "boot_stub_va": 1392192,
+        "boot_stub_va": 1392164,
         "boot_init_site": 1299740,
         "de_off": 2015318,
         "speed_gate": 113486,
         "region_emitter": 1152330,
         "ake_gate": 1270288,
-        "uhd_stub_va": 1392512,
-        "bd_stub_va": 1392568,
+        "uhd_stub_va": 1392520,
+        "bd_stub_va": 1392580,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU50N_BW51_d1e4d3d7.bin",
@@ -6588,12 +6747,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -6612,7 +6771,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -6620,14 +6779,14 @@
       },
       "base_facts": {
         "handler_va": 1403164,
-        "boot_stub_va": 1403952,
+        "boot_stub_va": 1403924,
         "boot_init_site": 1310834,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1165442,
         "ake_gate": 1282278,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1404304,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BW-16D1H_A203_e9d8bcdd.bin",
@@ -6666,12 +6825,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -6690,7 +6849,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -6698,14 +6857,14 @@
       },
       "base_facts": {
         "handler_va": 1403292,
-        "boot_stub_va": 1404080,
+        "boot_stub_va": 1404052,
         "boot_init_site": 1310950,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1165558,
         "ake_gate": 1282394,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1404432,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BW-16D1H_A204_223e7e38.bin",
@@ -6744,12 +6903,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -6768,7 +6927,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -6776,14 +6935,14 @@
       },
       "base_facts": {
         "handler_va": 1403092,
-        "boot_stub_va": 1403880,
+        "boot_stub_va": 1403852,
         "boot_init_site": 1310738,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1165574,
         "ake_gate": 1282282,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1404232,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BW-16D1HT_3.02_784e017f.bin",
@@ -6822,12 +6981,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -6846,7 +7005,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -6854,14 +7013,14 @@
       },
       "base_facts": {
         "handler_va": 1403092,
-        "boot_stub_va": 1403880,
+        "boot_stub_va": 1403852,
         "boot_init_site": 1310738,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1165574,
         "ake_gate": 1282282,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1404232,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BW-16D1HT_3.02_83ea24bb.bin",
@@ -6900,12 +7059,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -6924,7 +7083,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -6932,14 +7091,14 @@
       },
       "base_facts": {
         "handler_va": 1403036,
-        "boot_stub_va": 1403824,
+        "boot_stub_va": 1403796,
         "boot_init_site": 1310710,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1165318,
         "ake_gate": 1282154,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1404176,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BW-16D1HT_3.03_1d57260b.bin",
@@ -6978,12 +7137,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -7002,7 +7161,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -7010,14 +7169,14 @@
       },
       "base_facts": {
         "handler_va": 1403172,
-        "boot_stub_va": 1403960,
+        "boot_stub_va": 1403932,
         "boot_init_site": 1310830,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1165438,
         "ake_gate": 1282274,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1404312,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/BW-16D1HT_3.10_37a32bfd.bin",
@@ -7056,12 +7215,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -7080,7 +7239,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -7088,14 +7247,14 @@
       },
       "base_facts": {
         "handler_va": 98396,
-        "boot_stub_va": 99184,
+        "boot_stub_va": 99156,
         "boot_init_site": 1555516,
         "de_off": 2015318,
         "speed_gate": 101090,
         "region_emitter": 1335444,
         "ake_gate": 1491070,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1635756,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/CH12NS40_1.01_731bcf7a.bin",
@@ -7134,12 +7293,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -7158,7 +7317,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -7166,14 +7325,14 @@
       },
       "base_facts": {
         "handler_va": 98396,
-        "boot_stub_va": 99184,
+        "boot_stub_va": 99156,
         "boot_init_site": 1555020,
         "de_off": 2015318,
         "speed_gate": 101090,
         "region_emitter": 1334948,
         "ake_gate": 1490574,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1635236,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/UH12NS40_1.01_fbe641e5.bin",
@@ -7191,20 +7350,62 @@
       "vendor": "HL-DT-ST",
       "model": "UH12NS40",
       "rev": "1.03",
-      "media": "",
+      "media": "BD",
       "variant": "N001800",
-      "modifiable": false,
+      "modifiable": true,
       "base_ok": false,
       "base_only": false,
       "confidence": null,
-      "advertised": "stock",
-      "features": [],
-      "boot_support": null,
+      "advertised": "features",
+      "features": [
+        {
+          "key": "Speed",
+          "name": "Speed",
+          "ok": true
+        },
+        {
+          "key": "Region",
+          "name": "Region-free",
+          "ok": true
+        },
+        {
+          "key": "UHD",
+          "name": "UHD",
+          "ok": true
+        },
+        {
+          "key": "BD",
+          "name": "BD",
+          "ok": true
+        },
+        {
+          "key": "HRL",
+          "name": "HRL Bypass",
+          "ok": true
+        },
+        {
+          "key": "AKE",
+          "name": "AKE Bypass",
+          "ok": true
+        },
+        {
+          "key": "Bus",
+          "name": "Bus Decrypt",
+          "ok": true
+        }
+      ],
+      "boot_support": {
+        "unrestricted": true,
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
+      },
       "base_facts": null,
       "r2_key": "MT1959/UH12NS40_1.03_eeb1c948.bin",
-      "lineage": null,
-      "capability_status": "unsupported",
-      "unavailable_reason": "This operation did not write firmware to the drive. This firmware does not have enough safe space for the requested modifications. No output firmware was saved."
+      "lineage": "MT1959-lineage",
+      "capability_status": "supported",
+      "unavailable_reason": null
     },
     {
       "sha256": "648a16d024eea31ef4901f3ac2180cbfffeda1161d70f9096335d8a6097445bc",
@@ -7237,12 +7438,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -7261,7 +7462,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -7269,14 +7470,14 @@
       },
       "base_facts": {
         "handler_va": 1404164,
-        "boot_stub_va": 1404952,
+        "boot_stub_va": 1404924,
         "boot_init_site": 1311410,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1167112,
         "ake_gate": 1283846,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1405304,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/WH14NS40_1.02_648a16d0.bin",
@@ -7315,12 +7516,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -7339,7 +7540,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -7347,14 +7548,14 @@
       },
       "base_facts": {
         "handler_va": 1403980,
-        "boot_stub_va": 1404768,
+        "boot_stub_va": 1404740,
         "boot_init_site": 1311246,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1166780,
         "ake_gate": 1283630,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1405120,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/WH14NS40_1.03_de13d8d0.bin",
@@ -7393,12 +7594,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -7417,7 +7618,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -7425,14 +7626,14 @@
       },
       "base_facts": {
         "handler_va": 1404116,
-        "boot_stub_va": 1404904,
+        "boot_stub_va": 1404876,
         "boot_init_site": 1311374,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1166908,
         "ake_gate": 1283758,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1405256,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/WH14NS40_1.04_164e2475.bin",
@@ -7450,20 +7651,73 @@
       "vendor": "HL-DT-ST",
       "model": "WH14NS40",
       "rev": "1.05",
-      "media": "",
+      "media": "BD/UHD",
       "variant": "N003900",
-      "modifiable": false,
-      "base_ok": false,
+      "modifiable": true,
+      "base_ok": true,
       "base_only": false,
-      "confidence": null,
-      "advertised": "stock",
-      "features": [],
-      "boot_support": null,
-      "base_facts": null,
+      "confidence": "build-verified",
+      "advertised": "features",
+      "features": [
+        {
+          "key": "Speed",
+          "name": "Speed",
+          "ok": true
+        },
+        {
+          "key": "Region",
+          "name": "Region-free",
+          "ok": true
+        },
+        {
+          "key": "UHD",
+          "name": "UHD",
+          "ok": true
+        },
+        {
+          "key": "BD",
+          "name": "BD",
+          "ok": true
+        },
+        {
+          "key": "HRL",
+          "name": "HRL Bypass",
+          "ok": true
+        },
+        {
+          "key": "AKE",
+          "name": "AKE Bypass",
+          "ok": true
+        },
+        {
+          "key": "Bus",
+          "name": "Bus Decrypt",
+          "ok": true
+        }
+      ],
+      "boot_support": {
+        "unrestricted": true,
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
+      },
+      "base_facts": {
+        "handler_va": 98420,
+        "boot_stub_va": 99180,
+        "boot_init_site": 1312146,
+        "de_off": 2015318,
+        "speed_gate": 101122,
+        "region_emitter": 0,
+        "ake_gate": 0,
+        "uhd_stub_va": 0,
+        "bd_stub_va": 0,
+        "hrl_sites": 0
+      },
       "r2_key": "MT1959/WH14NS40_1.05_38a70ac2.bin",
-      "lineage": null,
-      "capability_status": "unsupported",
-      "unavailable_reason": "This operation did not write firmware to the drive. This firmware does not have enough safe space for the requested modifications. No output firmware was saved."
+      "lineage": "MT1959-lineage",
+      "capability_status": "supported",
+      "unavailable_reason": null
     },
     {
       "sha256": "87790f053877e3e1bdd22969d70a7b1b6ed36624bb474bfcdee6526ac6e227c0",
@@ -7496,12 +7750,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -7520,7 +7774,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -7528,14 +7782,14 @@
       },
       "base_facts": {
         "handler_va": 1404012,
-        "boot_stub_va": 1404800,
+        "boot_stub_va": 1404772,
         "boot_init_site": 1311258,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1166960,
         "ake_gate": 1283694,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1405152,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/WH16NS40_1.02_87790f05.bin",
@@ -7574,12 +7828,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -7598,7 +7852,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -7606,14 +7860,14 @@
       },
       "base_facts": {
         "handler_va": 1403836,
-        "boot_stub_va": 1404624,
+        "boot_stub_va": 1404596,
         "boot_init_site": 1311106,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1166640,
         "ake_gate": 1283490,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1404976,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/WH16NS40_1.03_3e3b227e.bin",
@@ -7631,20 +7885,73 @@
       "vendor": "HL-DT-ST",
       "model": "WH16NS40",
       "rev": "1.05",
-      "media": "",
+      "media": "BD",
       "variant": "N003900",
-      "modifiable": false,
-      "base_ok": false,
+      "modifiable": true,
+      "base_ok": true,
       "base_only": false,
-      "confidence": null,
-      "advertised": "stock",
-      "features": [],
-      "boot_support": null,
-      "base_facts": null,
+      "confidence": "build-verified",
+      "advertised": "features",
+      "features": [
+        {
+          "key": "Speed",
+          "name": "Speed",
+          "ok": true
+        },
+        {
+          "key": "Region",
+          "name": "Region-free",
+          "ok": true
+        },
+        {
+          "key": "UHD",
+          "name": "UHD",
+          "ok": true
+        },
+        {
+          "key": "BD",
+          "name": "BD",
+          "ok": true
+        },
+        {
+          "key": "HRL",
+          "name": "HRL Bypass",
+          "ok": true
+        },
+        {
+          "key": "AKE",
+          "name": "AKE Bypass",
+          "ok": true
+        },
+        {
+          "key": "Bus",
+          "name": "Bus Decrypt",
+          "ok": true
+        }
+      ],
+      "boot_support": {
+        "unrestricted": true,
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
+      },
+      "base_facts": {
+        "handler_va": 98420,
+        "boot_stub_va": 99180,
+        "boot_init_site": 1312010,
+        "de_off": 2015318,
+        "speed_gate": 101122,
+        "region_emitter": 0,
+        "ake_gate": 0,
+        "uhd_stub_va": 0,
+        "bd_stub_va": 0,
+        "hrl_sites": 0
+      },
       "r2_key": "MT1959/WH16NS40_1.05_ffde0e55.bin",
-      "lineage": null,
-      "capability_status": "unsupported",
-      "unavailable_reason": "This operation did not write firmware to the drive. This firmware does not have enough safe space for the requested modifications. No output firmware was saved."
+      "lineage": "MT1959-lineage",
+      "capability_status": "supported",
+      "unavailable_reason": null
     },
     {
       "sha256": "4041c0f122a902288ca8439888f68f7760616a0a37c366b825d6497b51157e46",
@@ -7677,12 +7984,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -7701,7 +8008,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -7709,14 +8016,14 @@
       },
       "base_facts": {
         "handler_va": 1415412,
-        "boot_stub_va": 1416200,
+        "boot_stub_va": 1416172,
         "boot_init_site": 1323368,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1168748,
         "ake_gate": 1285888,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1416552,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/WH16NS58_1.V1_4041c0f1.bin",
@@ -7755,12 +8062,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -7779,7 +8086,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -7787,14 +8094,14 @@
       },
       "base_facts": {
         "handler_va": 1415596,
-        "boot_stub_va": 1416384,
+        "boot_stub_va": 1416356,
         "boot_init_site": 1323544,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1168924,
         "ake_gate": 1286064,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1416736,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/WH16NS58_1.V2_3018997b.bin",
@@ -7833,12 +8140,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -7857,7 +8164,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -7865,14 +8172,14 @@
       },
       "base_facts": {
         "handler_va": 1416268,
-        "boot_stub_va": 1417056,
+        "boot_stub_va": 1417028,
         "boot_init_site": 1324220,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1169600,
         "ake_gate": 1286740,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1417408,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/WH16NS58_1.V5_e2406018.bin",
@@ -7911,12 +8218,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -7935,7 +8242,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -7943,14 +8250,14 @@
       },
       "base_facts": {
         "handler_va": 98420,
-        "boot_stub_va": 99208,
+        "boot_stub_va": 99180,
         "boot_init_site": 1325696,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1171068,
         "ake_gate": 1288216,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1778800,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/WH16NS58_1.V7_569cea9b.bin",
@@ -7989,12 +8296,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -8013,7 +8320,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -8021,14 +8328,14 @@
       },
       "base_facts": {
         "handler_va": 98420,
-        "boot_stub_va": 99208,
+        "boot_stub_va": 99180,
         "boot_init_site": 1325872,
         "de_off": 2015318,
         "speed_gate": 101122,
         "region_emitter": 1171228,
         "ake_gate": 1288392,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1778780,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/WH16NS58_1.V9_97b28707.bin",
@@ -8099,14 +8406,14 @@
       },
       "base_facts": {
         "handler_va": 1388420,
-        "boot_stub_va": 1389208,
+        "boot_stub_va": 1389180,
         "boot_init_site": 1295350,
         "de_off": 2015318,
         "speed_gate": 113410,
         "region_emitter": 1148104,
         "ake_gate": 1266512,
-        "uhd_stub_va": 1389528,
-        "bd_stub_va": 1389584,
+        "uhd_stub_va": 1389536,
+        "bd_stub_va": 1389596,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/WH16NS60_1.00_d1338932.bin",
@@ -8177,14 +8484,14 @@
       },
       "base_facts": {
         "handler_va": 1388344,
-        "boot_stub_va": 1389132,
+        "boot_stub_va": 1389104,
         "boot_init_site": 1295274,
         "de_off": 2015318,
         "speed_gate": 113410,
         "region_emitter": 1147896,
         "ake_gate": 1266420,
-        "uhd_stub_va": 1389452,
-        "bd_stub_va": 1389508,
+        "uhd_stub_va": 1389460,
+        "bd_stub_va": 1389520,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/WH16NS60_1.01_aea98763.bin",
@@ -8255,14 +8562,14 @@
       },
       "base_facts": {
         "handler_va": 1388424,
-        "boot_stub_va": 1389212,
+        "boot_stub_va": 1389184,
         "boot_init_site": 1295338,
         "de_off": 2015318,
         "speed_gate": 113410,
         "region_emitter": 1147960,
         "ake_gate": 1266484,
-        "uhd_stub_va": 1389532,
-        "bd_stub_va": 1389588,
+        "uhd_stub_va": 1389540,
+        "bd_stub_va": 1389600,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/WH16NS60_1.02_12c4ee6f.bin",
@@ -8291,7 +8598,7 @@
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
@@ -8328,15 +8635,15 @@
         "unrestricted": false,
         "hrl": false,
         "encryption": false,
-        "speed": false,
+        "speed": true,
         "region": false
       },
       "base_facts": {
         "handler_va": 110724,
-        "boot_stub_va": 111512,
+        "boot_stub_va": 111484,
         "boot_init_site": 1296246,
         "de_off": 2015318,
-        "speed_gate": 0,
+        "speed_gate": 113410,
         "region_emitter": 0,
         "ake_gate": 0,
         "uhd_stub_va": 0,
@@ -8379,12 +8686,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -8403,7 +8710,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -8411,14 +8718,14 @@
       },
       "base_facts": {
         "handler_va": 1381092,
-        "boot_stub_va": 1381880,
+        "boot_stub_va": 1381852,
         "boot_init_site": 1288942,
         "de_off": 2015318,
         "speed_gate": 113586,
         "region_emitter": 1145026,
         "ake_gate": 1261658,
         "uhd_stub_va": 0,
-        "bd_stub_va": 1382232,
+        "bd_stub_va": 0,
         "hrl_sites": 1
       },
       "r2_key": "MT1959/WP50NB40_1.01_bea3a823.bin",
@@ -8436,20 +8743,73 @@
       "vendor": "HL-DT-ST",
       "model": "WP50NB40",
       "rev": "1.03",
-      "media": "",
+      "media": "BD/UHD",
       "variant": "N009800",
-      "modifiable": false,
-      "base_ok": false,
+      "modifiable": true,
+      "base_ok": true,
       "base_only": false,
-      "confidence": null,
-      "advertised": "stock",
-      "features": [],
-      "boot_support": null,
-      "base_facts": null,
+      "confidence": "build-verified",
+      "advertised": "features",
+      "features": [
+        {
+          "key": "Speed",
+          "name": "Speed",
+          "ok": true
+        },
+        {
+          "key": "Region",
+          "name": "Region-free",
+          "ok": true
+        },
+        {
+          "key": "UHD",
+          "name": "UHD",
+          "ok": true
+        },
+        {
+          "key": "BD",
+          "name": "BD",
+          "ok": true
+        },
+        {
+          "key": "HRL",
+          "name": "HRL Bypass",
+          "ok": true
+        },
+        {
+          "key": "AKE",
+          "name": "AKE Bypass",
+          "ok": true
+        },
+        {
+          "key": "Bus",
+          "name": "Bus Decrypt",
+          "ok": true
+        }
+      ],
+      "boot_support": {
+        "unrestricted": true,
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
+      },
+      "base_facts": {
+        "handler_va": 110752,
+        "boot_stub_va": 111512,
+        "boot_init_site": 1289998,
+        "de_off": 2015318,
+        "speed_gate": 113586,
+        "region_emitter": 0,
+        "ake_gate": 0,
+        "uhd_stub_va": 0,
+        "bd_stub_va": 0,
+        "hrl_sites": 0
+      },
       "r2_key": "MT1959/WP50NB40_1.03_263994ab.bin",
-      "lineage": null,
-      "capability_status": "unsupported",
-      "unavailable_reason": "This operation did not write firmware to the drive. This firmware does not have enough safe space for the requested modifications. No output firmware was saved."
+      "lineage": "MT1959-lineage",
+      "capability_status": "supported",
+      "unavailable_reason": null
     }
   ]
 }

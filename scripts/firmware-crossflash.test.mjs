@@ -133,3 +133,17 @@ test('future-only graphs list targets without requiring an available link', () =
   const source = data.identities.find(i => i.key === 'pioneer:8510:ID19');
   assert.deepEqual(crossflashTargets(data, source).map(t => t.identity.key), ['pioneer:9201:ID43']);
 });
+
+test('implemented hardware-dependent routes are directional and distinct from Future', () => {
+  const data = buildFinderData({ catalog: familyCatalog(), crossflash: {
+    format: 'freemkv-crossflash-links', version: 2, links: {}, future: {},
+    conditional: { [sha('E')]: [sha('A')] },
+  } });
+  const source = data.identities.find(i => i.key === 'pioneer:8510:ID19');
+  const target = data.identities.find(i => i.key === 'pioneer:8A10:ID40');
+  assert.deepEqual(crossflashTargets(data, source)[0].revisions[0], { revision: '1.14', complete: false, conditional: true });
+  assert.deepEqual(crossflashTargets(data, target), []);
+  const page = finderPageData(data);
+  assert.deepEqual(page.identities.find(i => i.n === 'BDR-UD03').x[0][2][0].slice(2), [0, 2]);
+  assert.deepEqual(crossflashSummary(data, page), { total: 0, uhd: 0 });
+});
