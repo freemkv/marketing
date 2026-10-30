@@ -165,17 +165,21 @@ export async function fullArchive(directory, archive) {
 export function checkCrossflashLinks(links, catalog) {
   const map = value => value !== null && typeof value === 'object' && !Array.isArray(value);
   if (links?.format !== 'freemkv-crossflash-links' || ![1, 2].includes(links.version) || !map(links.links) || ((links.version === 2 || links.future !== undefined) && !map(links.future))) throw new Error('Invalid crossflash links');
+  if (links.conditional !== undefined && !map(links.conditional)) throw new Error('Invalid conditional crossflash links');
   if (links.evaluated_packages !== undefined) validateCrossflashCoverage(catalog, links);
   const shas = new Set();
   for (const i of catalog.identities) for (const r of i.revisions ?? []) for (const p of r.packages ?? []) shas.add(p.sha256);
-  for (const graph of [links.links, links.future ?? {}]) {
+  for (const graph of [links.links, links.future ?? {}, links.conditional ?? {}]) {
     for (const [from, to] of Object.entries(graph)) {
       if (!Array.isArray(to) || to.some(s => typeof s !== 'string')) throw new Error('Invalid crossflash targets');
       for (const s of [from, ...to]) if (!shas.has(s)) throw new Error(`Crossflash link names a package not in the catalogue: ${s}`);
     }
   }
-  for (const [from, to] of Object.entries(links.future ?? {})) {
-    if (to.some(s => (links.links[from] ?? []).includes(s))) throw new Error('Crossflash pair cannot be both available and future');
+  const seen = new Set();
+  for (const graph of [links.links, links.future ?? {}, links.conditional ?? {}]) for (const [from, targets] of Object.entries(graph)) for (const to of targets) {
+    const pair = `${from}:${to}`;
+    if (seen.has(pair)) throw new Error('Crossflash pair cannot be both available and future or conditional');
+    seen.add(pair);
   }
 }
 const V1_MEMBERS = ['publish-manifest.json','pioneer-firmware-index.json','firmware-index.json'];

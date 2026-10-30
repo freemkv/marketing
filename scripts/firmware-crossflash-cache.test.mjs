@@ -56,3 +56,14 @@ test('failed incremental checks leave last complete cache intact', async t => {
   await assert.rejects(crossflashGraph({...f,run:async()=>JSON.stringify({status:'unknown'})}),/verdict/);
   assert.equal(await fs.readFile(f.cacheFile,'utf8'),before);
 });
+
+test('conditional routes survive incremental caching without inventing a reverse route', async t => {
+  const f = await fixture(t);
+  await seedCrossflashCache({ ...f, file: f.cacheFile, objects: f.objects.slice(0, 1), graph: { ...f.graph, links: {} } });
+  const result = await crossflashGraph({ ...f, run: async args => JSON.stringify({ status: args[2].includes(f.objects[0].sha256) ? 'conditional' : 'hard_no' }) });
+  assert.deepEqual(result.graph.conditional, { [f.objects[0].sha256]: [f.objects[1].sha256] });
+  assert.deepEqual(result.graph.links, {});
+  assert.deepEqual(result.graph.future, {});
+  const hit = await crossflashGraph({ ...f, run: async () => assert.fail('cache hit') });
+  assert.deepEqual(hit.graph.conditional, result.graph.conditional);
+});

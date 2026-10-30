@@ -38,3 +38,10 @@ test('crossflash schema validates both graphs, target arrays and disjoint pairs'
     assert.throws(() => checkCrossflashLinks({ ...graph(), ...patch }, catalog));
   }
 });
+
+test('conditional graph validates references and remains disjoint from other verdicts', () => {
+  assert.doesNotThrow(() => checkCrossflashLinks({ ...graph(), conditional: { b: ['a'] } }, catalog));
+  for (const conditional of [null, [], { b: ['missing'] }, { a: ['b'] }, { a: ['c'] }]) {
+    assert.throws(() => checkCrossflashLinks({ ...graph(), conditional }, catalog));
+  }
+});
