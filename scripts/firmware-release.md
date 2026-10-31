@@ -206,3 +206,5 @@ objects still linked by the production catalogue. Orphan cleanup is a separate
 operation after production has switched catalogues.
 
 Site deployment depends on complete per-object SHA-256 verification, not on full-archive retention. The archive job independently materializes the verified inventory and serializes writers across all branches with `firmware-archive-latest`; it never cancels an active archive upload. Pages concurrency is scoped to each deployment branch, so preview maintenance cannot hold up production. A failed archive job remains visible as a failed workflow and can be rerun without rolling back a verified site.
+
+Full-archive verification reads ordered 16 MiB ranges with at most four requests in flight. Each request is conditional on the captured object ETag and must return the exact requested range and length. Interrupted ranges retry independently; the complete downloaded SHA-256 must still match the local archive.

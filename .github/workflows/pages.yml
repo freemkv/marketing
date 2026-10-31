@@ -154,6 +154,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           node scripts/firmware-release.mjs archive "$RUNNER_TEMP/firmware-stage" "$RUNNER_TEMP/firmware-download/firmware-full.tar.gz"
+          python -m unittest discover -s scripts -p test_firmware_archive_upload.py
           python -m pip install boto3==1.43.109
           python scripts/firmware-archive-upload.py "$RUNNER_TEMP/firmware-download/firmware-full.tar.gz"
       - name: Remove temporary GitHub firmware archive
