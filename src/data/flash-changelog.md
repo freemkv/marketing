@@ -3,6 +3,20 @@
 Customer-visible changes to freemkv Flash and freemkv Modify, newest first.
 Versions are independent of the freemkv ripping applications.
 
+## [0.16.0] - 2026-10-31
+
+### freemkv Modify
+
+- Expand media conversion for supported classic MT1939 and older MT1959 firmware,
+  with per-image Speed, Region, Encryption, HRL and Unrestricted settings. Refuse
+  incomplete conversions and unsupported firmware layouts.
+- Preserve boot settings and private media identity across supported startup and
+  reset paths, with stronger checks before producing modified firmware.
+- Reduce firmware analysis and creation time while preserving generated output.
+- Physical UHD reading is not yet confirmed for the newly supported conversions.
+  Some authentication differences remain unresolved. Hardware reports for
+  BH16NS48 1.02 and ASUS BW-16D1HT running WH16NS58 1.V9 are pending.
+
 ## [0.15.4] - 2026-10-30
 
 ### freemkv Flash
