@@ -3,6 +3,23 @@
 Customer-visible changes to freemkv Flash and freemkv Modify, newest first.
 Versions are independent of the freemkv ripping applications.
 
+## [0.16.1] - 2026-10-31
+
+### freemkv Flash
+
+- Use consistent stage terminology in flashing interfaces and bridge classification.
+
+- Use prepared stages for direct and intermediate firmware updates, including
+  downgrade markers, startup settings and receiver-specific transfer formats.
+- Prepare recognized Pioneer Kernel-handoff bridges from firmware evidence,
+  retaining the installed Normal for the bridge before writing the requested
+  target. These new bridge routes still require physical hardware qualification.
+- Validate the complete sequence before writing, verify each stage, and retain
+  completed-stage information if a later stage fails. Show bridge requirements
+  consistently in Flash and Recovery.
+- Consolidate MediaTek direct and packaged-intermediate execution while retaining
+  existing receiver checks, transfer encoding and verification behavior.
+
 ## [0.16.0] - 2026-10-31
 
 ### freemkv Modify
