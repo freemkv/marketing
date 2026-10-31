@@ -312,12 +312,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -347,7 +347,7 @@
         "chipset": "MT1939",
         "media": "BD",
         "variant": "N002601",
-        "confidence": null,
+        "confidence": "build-verified",
         "baseOnly": false,
         "advertised": "features",
         "modifiable": true,
@@ -355,37 +355,37 @@
           {
             "key": "Speed",
             "name": "Speed",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -418,12 +418,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -644,12 +644,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -697,12 +697,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -750,12 +750,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -810,12 +810,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -863,12 +863,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -916,12 +916,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1202,12 +1202,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1255,12 +1255,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1308,12 +1308,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1467,12 +1467,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1573,12 +1573,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1739,12 +1739,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -1792,12 +1792,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -2410,12 +2410,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -4243,11 +4243,47 @@
         "chipset": "MT1939",
         "media": "BD/UHD",
         "variant": "W170600",
-        "confidence": null,
+        "confidence": "build-verified",
         "baseOnly": false,
-        "advertised": "stock",
-        "modifiable": false,
-        "features": []
+        "advertised": "features",
+        "modifiable": true,
+        "features": [
+          {
+            "key": "Speed",
+            "name": "Speed",
+            "ok": true
+          },
+          {
+            "key": "Region",
+            "name": "Region-free",
+            "ok": true
+          },
+          {
+            "key": "UHD",
+            "name": "UHD",
+            "ok": true
+          },
+          {
+            "key": "BD",
+            "name": "BD",
+            "ok": true
+          },
+          {
+            "key": "HRL",
+            "name": "HRL Bypass",
+            "ok": true
+          },
+          {
+            "key": "AKE",
+            "name": "AKE Bypass",
+            "ok": true
+          },
+          {
+            "key": "Bus",
+            "name": "Bus Decrypt",
+            "ok": true
+          }
+        ]
       },
       {
         "rev": "3.02",
@@ -4539,7 +4575,7 @@
         "chipset": "MT1939",
         "media": "BD/UHD",
         "variant": "N0002A0",
-        "confidence": null,
+        "confidence": "build-verified",
         "baseOnly": false,
         "advertised": "features",
         "modifiable": true,
@@ -4547,37 +4583,37 @@
           {
             "key": "Speed",
             "name": "Speed",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       },
@@ -4592,7 +4628,7 @@
         "chipset": "MT1939",
         "media": "BD/UHD",
         "variant": "N0004A0",
-        "confidence": null,
+        "confidence": "build-verified",
         "baseOnly": false,
         "advertised": "features",
         "modifiable": true,
@@ -4600,37 +4636,37 @@
           {
             "key": "Speed",
             "name": "Speed",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       }
@@ -4783,12 +4819,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -4836,12 +4872,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -4889,12 +4925,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -5048,12 +5084,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -5214,12 +5250,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -5267,12 +5303,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -5320,12 +5356,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -5373,12 +5409,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
@@ -5574,7 +5610,7 @@
         "chipset": "MT1939",
         "media": "BD/UHD",
         "variant": "N007700",
-        "confidence": null,
+        "confidence": "build-verified",
         "baseOnly": false,
         "advertised": "features",
         "modifiable": true,
@@ -5582,37 +5618,37 @@
           {
             "key": "Speed",
             "name": "Speed",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       }
@@ -6078,32 +6114,32 @@
           {
             "key": "Region",
             "name": "Region-free",
-            "ok": false
+            "ok": true
           },
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": false
+            "ok": true
           },
           {
             "key": "HRL",
             "name": "HRL Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "AKE",
             "name": "AKE Bypass",
-            "ok": false
+            "ok": true
           },
           {
             "key": "Bus",
             "name": "Bus Decrypt",
-            "ok": false
+            "ok": true
           }
         ]
       }

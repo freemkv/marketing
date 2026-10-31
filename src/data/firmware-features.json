@@ -1,5 +1,5 @@
 {
-  "note": "Exact-image capabilities from freemkv-fw 0.15.4; every published MediaTek hash was queried and every supported output built, audited and checked by Flash. Unsupported inputs are retained explicitly.",
+  "note": "Exact-image capabilities from freemkv-fw 0.16.0; every published MediaTek hash was queried and every supported output built, audited and checked by Flash. Unsupported inputs are retained explicitly.",
   "flags": [
     "Speed",
     "Region",
@@ -12,19 +12,19 @@
   "counts": {
     "total": 114,
     "base_only": 0,
-    "feature_bearing": 113,
-    "stock_only": 1,
+    "feature_bearing": 114,
+    "stock_only": 0,
     "hardware_verified": 0,
-    "build_verified": 108
+    "build_verified": 113
   },
   "per_flag": {
-    "Speed": 109,
-    "Region-free": 108,
-    "UHD": 84,
-    "BD": 84,
-    "HRL Bypass": 108,
-    "AKE Bypass": 108,
-    "Bus Decrypt": 108
+    "Speed": 114,
+    "Region-free": 114,
+    "UHD": 114,
+    "BD": 114,
+    "HRL Bypass": 114,
+    "AKE Bypass": 114,
+    "Bus Decrypt": 114
   },
   "images": [
     {
@@ -58,12 +58,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -82,7 +82,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -118,57 +118,68 @@
       "media": "BD",
       "variant": "N002601",
       "modifiable": true,
-      "base_ok": false,
+      "base_ok": true,
       "base_only": false,
-      "confidence": null,
+      "confidence": "build-verified",
       "advertised": "features",
       "features": [
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
-        "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "unrestricted": true,
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
-      "base_facts": null,
+      "base_facts": {
+        "handler_va": 1750960,
+        "boot_stub_va": 1751712,
+        "boot_init_site": 1667366,
+        "de_off": 2015318,
+        "speed_gate": 0,
+        "region_emitter": 1430308,
+        "ake_gate": 1589856,
+        "uhd_stub_va": 0,
+        "bd_stub_va": 0,
+        "hrl_sites": 1
+      },
       "r2_key": "MT1939/BE14NU40_1.01_2f023084.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -203,12 +214,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -227,7 +238,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -281,12 +292,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -305,7 +316,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -359,12 +370,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -383,7 +394,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -437,12 +448,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -461,7 +472,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -515,12 +526,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -539,7 +550,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -593,12 +604,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -617,7 +628,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -671,12 +682,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -695,7 +706,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -749,12 +760,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -773,7 +784,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -827,12 +838,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -851,7 +862,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -905,12 +916,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -929,7 +940,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -983,12 +994,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -1007,7 +1018,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1061,12 +1072,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -1085,7 +1096,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1139,12 +1150,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -1163,7 +1174,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1217,12 +1228,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -1241,7 +1252,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1295,12 +1306,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -1319,7 +1330,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1354,17 +1365,70 @@
       "rev": "1.01",
       "media": "BD/UHD",
       "variant": "W170600",
-      "modifiable": false,
-      "base_ok": false,
+      "modifiable": true,
+      "base_ok": true,
       "base_only": false,
-      "confidence": null,
-      "advertised": "stock",
-      "features": [],
-      "boot_support": null,
-      "base_facts": null,
+      "confidence": "build-verified",
+      "advertised": "features",
+      "features": [
+        {
+          "key": "Speed",
+          "name": "Speed",
+          "ok": true
+        },
+        {
+          "key": "Region",
+          "name": "Region-free",
+          "ok": true
+        },
+        {
+          "key": "UHD",
+          "name": "UHD",
+          "ok": true
+        },
+        {
+          "key": "BD",
+          "name": "BD",
+          "ok": true
+        },
+        {
+          "key": "HRL",
+          "name": "HRL Bypass",
+          "ok": true
+        },
+        {
+          "key": "AKE",
+          "name": "AKE Bypass",
+          "ok": true
+        },
+        {
+          "key": "Bus",
+          "name": "Bus Decrypt",
+          "ok": true
+        }
+      ],
+      "boot_support": {
+        "unrestricted": true,
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
+      },
+      "base_facts": {
+        "handler_va": 1747480,
+        "boot_stub_va": 1748232,
+        "boot_init_site": 1663934,
+        "de_off": 2015318,
+        "speed_gate": 0,
+        "region_emitter": 1404056,
+        "ake_gate": 1572536,
+        "uhd_stub_va": 0,
+        "bd_stub_va": 0,
+        "hrl_sites": 1
+      },
       "r2_key": "MT1939/BW-16D1HT_1.01_3f436c31.bin",
-      "lineage": null,
-      "capability_status": "unchanged",
+      "lineage": "MT1959-lineage",
+      "capability_status": "supported",
       "unavailable_reason": null
     },
     {
@@ -1380,57 +1444,68 @@
       "media": "BD/UHD",
       "variant": "N0002A0",
       "modifiable": true,
-      "base_ok": false,
+      "base_ok": true,
       "base_only": false,
-      "confidence": null,
+      "confidence": "build-verified",
       "advertised": "features",
       "features": [
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
-        "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "unrestricted": true,
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
-      "base_facts": null,
+      "base_facts": {
+        "handler_va": 1534880,
+        "boot_stub_va": 98928,
+        "boot_init_site": 1462132,
+        "de_off": 2015318,
+        "speed_gate": 0,
+        "region_emitter": 1224972,
+        "ake_gate": 1393364,
+        "uhd_stub_va": 0,
+        "bd_stub_va": 0,
+        "hrl_sites": 1
+      },
       "r2_key": "MT1939/UH12NS30_1.01_84fecc29.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -1447,57 +1522,68 @@
       "media": "BD/UHD",
       "variant": "N0004A0",
       "modifiable": true,
-      "base_ok": false,
+      "base_ok": true,
       "base_only": false,
-      "confidence": null,
+      "confidence": "build-verified",
       "advertised": "features",
       "features": [
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
-        "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "unrestricted": true,
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
-      "base_facts": null,
+      "base_facts": {
+        "handler_va": 1534944,
+        "boot_stub_va": 98928,
+        "boot_init_site": 1462196,
+        "de_off": 2015318,
+        "speed_gate": 0,
+        "region_emitter": 1225036,
+        "ake_gate": 1393428,
+        "uhd_stub_va": 0,
+        "bd_stub_va": 0,
+        "hrl_sites": 1
+      },
       "r2_key": "MT1939/UH12NS30_1.02_d98c2e11.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -1532,12 +1618,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -1556,7 +1642,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1610,12 +1696,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -1634,7 +1720,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1688,12 +1774,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -1712,7 +1798,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1766,12 +1852,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -1790,7 +1876,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1844,12 +1930,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -1868,7 +1954,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1922,12 +2008,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -1946,7 +2032,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2000,12 +2086,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -2024,7 +2110,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2078,12 +2164,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
@@ -2102,7 +2188,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": false,
+        "unrestricted": true,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2138,57 +2224,68 @@
       "media": "BD/UHD",
       "variant": "N007700",
       "modifiable": true,
-      "base_ok": false,
+      "base_ok": true,
       "base_only": false,
-      "confidence": null,
+      "confidence": "build-verified",
       "advertised": "features",
       "features": [
         {
           "key": "Speed",
           "name": "Speed",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
-        "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
-        "speed": false,
-        "region": false
+        "unrestricted": true,
+        "hrl": true,
+        "encryption": true,
+        "speed": true,
+        "region": true
       },
-      "base_facts": null,
+      "base_facts": {
+        "handler_va": 1754636,
+        "boot_stub_va": 1755388,
+        "boot_init_site": 1670622,
+        "de_off": 2015318,
+        "speed_gate": 0,
+        "region_emitter": 1411080,
+        "ake_gate": 1580040,
+        "uhd_stub_va": 0,
+        "bd_stub_va": 0,
+        "hrl_sites": 1
+      },
       "r2_key": "MT1939/WH16NS48_1.D3_46b41f15.bin",
-      "lineage": "MT1939-classic",
+      "lineage": "MT1959-lineage",
       "capability_status": "supported",
       "unavailable_reason": null
     },
@@ -4439,7 +4536,7 @@
       },
       "base_facts": {
         "handler_va": 1381092,
-        "boot_stub_va": 1381852,
+        "boot_stub_va": 1383944,
         "boot_init_site": 1288942,
         "de_off": 2015318,
         "speed_gate": 113586,
@@ -4517,7 +4614,7 @@
       },
       "base_facts": {
         "handler_va": 1381564,
-        "boot_stub_va": 1382324,
+        "boot_stub_va": 1384416,
         "boot_init_site": 1289406,
         "de_off": 2015318,
         "speed_gate": 113586,
@@ -4673,7 +4770,7 @@
       },
       "base_facts": {
         "handler_va": 1381092,
-        "boot_stub_va": 1381852,
+        "boot_stub_va": 1383944,
         "boot_init_site": 1288942,
         "de_off": 2015318,
         "speed_gate": 113586,
@@ -4751,7 +4848,7 @@
       },
       "base_facts": {
         "handler_va": 1381588,
-        "boot_stub_va": 1382348,
+        "boot_stub_va": 1384440,
         "boot_init_site": 1289430,
         "de_off": 2015318,
         "speed_gate": 113586,
@@ -5609,7 +5706,7 @@
       },
       "base_facts": {
         "handler_va": 1386600,
-        "boot_stub_va": 1387360,
+        "boot_stub_va": 1389500,
         "boot_init_site": 1295168,
         "de_off": 2015318,
         "speed_gate": 113442,
@@ -5687,7 +5784,7 @@
       },
       "base_facts": {
         "handler_va": 1387040,
-        "boot_stub_va": 1387800,
+        "boot_stub_va": 1389940,
         "boot_init_site": 1295600,
         "de_off": 2015318,
         "speed_gate": 113442,
@@ -5765,7 +5862,7 @@
       },
       "base_facts": {
         "handler_va": 1387064,
-        "boot_stub_va": 1387824,
+        "boot_stub_va": 1389964,
         "boot_init_site": 1295620,
         "de_off": 2015318,
         "speed_gate": 113442,
@@ -6311,7 +6408,7 @@
       },
       "base_facts": {
         "handler_va": 1380772,
-        "boot_stub_va": 1381532,
+        "boot_stub_va": 1383624,
         "boot_init_site": 1290052,
         "de_off": 2015318,
         "speed_gate": 113442,
@@ -8603,40 +8700,40 @@
         {
           "key": "Region",
           "name": "Region-free",
-          "ok": false
+          "ok": true
         },
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": false
+          "ok": true
         },
         {
           "key": "HRL",
           "name": "HRL Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "AKE",
           "name": "AKE Bypass",
-          "ok": false
+          "ok": true
         },
         {
           "key": "Bus",
           "name": "Bus Decrypt",
-          "ok": false
+          "ok": true
         }
       ],
       "boot_support": {
-        "unrestricted": false,
-        "hrl": false,
-        "encryption": false,
+        "unrestricted": true,
+        "hrl": true,
+        "encryption": true,
         "speed": true,
-        "region": false
+        "region": true
       },
       "base_facts": {
         "handler_va": 110724,
@@ -8718,7 +8815,7 @@
       },
       "base_facts": {
         "handler_va": 1381092,
-        "boot_stub_va": 1381852,
+        "boot_stub_va": 1383944,
         "boot_init_site": 1288942,
         "de_off": 2015318,
         "speed_gate": 113586,
