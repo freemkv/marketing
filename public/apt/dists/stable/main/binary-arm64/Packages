@@ -1,5 +1,5 @@
 Package: freemkv
-Version: 1.8.6
+Version: 1.8.7
 Architecture: arm64
 Section: video
 Priority: optional
@@ -9,18 +9,18 @@ Depends: libadwaita-1-0 (>= 1.4~beta), libc6 (>= 2.39), libcairo2 (>= 1.2.4), li
 Conflicts: freemkv-cli
 Replaces: freemkv-cli
 Homepage: https://freemkv.org
-Filename: pool/main/freemkv/freemkv_1.8.6_arm64.deb
-Size: 5099552
-MD5sum: 25c9f838c6e5a28f9ec8fa6b7cefd870
-SHA1: 40d2dcec5a53b851463bedc94118ab5cc8916af1
-SHA256: 5132fb7dc8ac683d6f1f51a02f3e11d40c36fa43a8740fdb0e596514dcb2b904
+Filename: pool/main/freemkv/freemkv_1.8.7_arm64.deb
+Size: 5086480
+MD5sum: 239e469e0ee0321fdbd4495ea91ac2e7
+SHA1: 97e3214ded9313c58f037d1a7a40317eae5b572d
+SHA256: 858cf973576d6fced8cddc3bd35f0a32bf9248aaee0eca1ff6f35f186fe473db
 Description: Rip DVD, Blu-ray and UHD discs without re-encoding
  Native GTK4 desktop app and command-line interface for selecting titles,
  audio and subtitle tracks and saving them to MKV, MP4 or M2TS.
  Running freemkv without arguments opens the desktop app.
 
 Package: freemkv-cli
-Version: 1.8.6
+Version: 1.8.7
 Architecture: arm64
 Section: video
 Priority: optional
@@ -29,11 +29,11 @@ Installed-Size: 14580
 Conflicts: freemkv
 Replaces: freemkv
 Homepage: https://freemkv.org
-Filename: pool/main/freemkv-cli/freemkv-cli_1.8.6_arm64.deb
-Size: 4504304
-MD5sum: 204187657f43e4540118da2952218588
-SHA1: f6875e3457bb544ca40f46fdd454ddd3cfe0b82d
-SHA256: 1824497e9c40a2fc7fe4f78f4fd7cb43987ee8d6a31b7ff8ac5edb3f119d3f3e
+Filename: pool/main/freemkv-cli/freemkv-cli_1.8.7_arm64.deb
+Size: 4514124
+MD5sum: a290f898397134028293f3d134784fc2
+SHA1: 8316fbda01430e5f71d02708a8ccd5c5dfa7730b
+SHA256: e12e43e90cf66c0995d85ca32f33037be9fff4fd449ec0f754a6baa40b96358d
 Description: Rip DVD, Blu-ray and UHD discs without re-encoding (command line)
  Static command-line build of freemkv for selecting titles, audio and
  subtitle tracks and saving them to MKV, MP4 or M2TS. It has no desktop
