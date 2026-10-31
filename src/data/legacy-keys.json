@@ -3174,6 +3174,14 @@
     },
     {
       "basis": "projection",
+      "key": "pioneer/BDR-209MIO/SAT%208601/1.52/3f9e8553f613c925cb84269b785cafeef758b73fed4c9d2ef9e54fcc303ab614.tar",
+      "model": "BDR-209MIO",
+      "new_key": "fw/pioneer/3f9e8553f613c925cb84269b785cafeef758b73fed4c9d2ef9e54fcc303ab614.tar",
+      "sha256": "3f9e8553f613c925cb84269b785cafeef758b73fed4c9d2ef9e54fcc303ab614",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
       "key": "pioneer/BDR-209MIO/SAT%208601/1.54/2276a75d784008debc417c6b7a8a09d05a445864794b69bfda9e14308c52e534.tar",
       "model": "BDR-209MIO",
       "new_key": "fw/pioneer/2276a75d784008debc417c6b7a8a09d05a445864794b69bfda9e14308c52e534.tar",
@@ -12177,6 +12185,14 @@
       "model": "BDW-PR1EPDV",
       "new_key": "fw/pioneer/11e38c375765ac213a3b190c3f7b0e1a922b87905efa73696c07f6d309350157.tar",
       "sha256": "11e38c375765ac213a3b190c3f7b0e1a922b87905efa73696c07f6d309350157",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDW-PR1EPDVPP100/SAT%208680/1.00/5753598a8d1c460018cc442d2393b86a8bd358ec0b90175539822fe102af9003.tar",
+      "model": "BDW-PR1EPDVPP100",
+      "new_key": "fw/pioneer/5753598a8d1c460018cc442d2393b86a8bd358ec0b90175539822fe102af9003.tar",
+      "sha256": "5753598a8d1c460018cc442d2393b86a8bd358ec0b90175539822fe102af9003",
       "status": "published"
     },
     {

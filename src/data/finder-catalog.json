@@ -61126,6 +61126,127 @@
           "packages": [
             {
               "advertised_versions": [
+                "1.52"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1930240,
+              "components": [
+                {
+                  "identity_key": "pioneer:8601:ID13:1.54:kernel",
+                  "member": "components/S8601130.154.enc",
+                  "revision": "1.54",
+                  "role": "kernel",
+                  "sha256": "ca19d89af8e097d9b7cb1211fd55eb640375088ea3e54d02b02bf7aeeb3b895b"
+                },
+                {
+                  "identity_key": "pioneer:8601:ID13:1.52:normal",
+                  "member": "components/S8601131.152.enc",
+                  "revision": "1.52",
+                  "role": "normal",
+                  "sha256": "beab2339e5fb3d29a455bdc5b5499e3ae45aac546e77c2dfe2807bec1f1c6d52"
+                }
+              ],
+              "embedded_model": "BDR-209MIO",
+              "family_id": "463a127dcfbabc80",
+              "family_scheme": "pioneer.hardware.v4",
+              "filename": "BDR-209MIO_1.52_8601_ID13_3f9e8553.tar",
+              "generated_date": "19/01/11",
+              "is_uhd": false,
+              "kernel_revision": "1.54",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "ca19d89af8e097d9b7cb1211fd55eb640375088ea3e54d02b02bf7aeeb3b895b",
+              "key": "fw/pioneer/3f9e8553f613c925cb84269b785cafeef758b73fed4c9d2ef9e54fcc303ab614.tar",
+              "modifiable": false,
+              "normal_sha256": "beab2339e5fb3d29a455bdc5b5499e3ae45aac546e77c2dfe2807bec1f1c6d52",
+              "origin_details": [
+                {
+                  "approval": {
+                    "allow_hoard": true,
+                    "allow_publish": true,
+                    "approved_at": "2026-10-30",
+                    "approved_by": "matthew"
+                  },
+                  "category": "oem",
+                  "firmware": {
+                    "bytes": 70144,
+                    "filename": "S8601130.154.enc",
+                    "md5": "5f6772f3a70647a6aa950e60652d391f",
+                    "member": "components/S8601130.154.enc",
+                    "role": "kernel",
+                    "sha256": "ca19d89af8e097d9b7cb1211fd55eb640375088ea3e54d02b02bf7aeeb3b895b"
+                  },
+                  "originals": [
+                    {
+                      "bytes": 294154261,
+                      "filename": "Pioneer_BDR_firmware_pack_2022.11.03.zip",
+                      "filenames": [
+                        "Pioneer_BDR_firmware_pack_2022.11.03.zip"
+                      ],
+                      "md5": "af1de098352611faff83a4e06bbd5fd4",
+                      "sha256": "30eab27220c87ce7d9131b72c32f7973d4543d2da993630dcce5cdd495f7b1cf",
+                      "urls": []
+                    }
+                  ],
+                  "reconstruction": null,
+                  "source_kind": null
+                },
+                {
+                  "approval": {
+                    "allow_hoard": true,
+                    "allow_publish": true,
+                    "approved_at": "2026-10-30",
+                    "approved_by": "matthew"
+                  },
+                  "category": "dump",
+                  "firmware": {
+                    "bytes": 1858048,
+                    "filename": "S8601131.152.enc",
+                    "md5": "40e7c6521b29e92d39300eb502e49bcf",
+                    "member": "components/S8601131.152.enc",
+                    "role": "normal",
+                    "sha256": "beab2339e5fb3d29a455bdc5b5499e3ae45aac546e77c2dfe2807bec1f1c6d52"
+                  },
+                  "originals": [
+                    {
+                      "bytes": 1930240,
+                      "filename": "BD-RW_BDR-209MIO_1.52.candidate.tar",
+                      "filenames": [
+                        "BD-RW_BDR-209MIO_1.52.candidate.tar"
+                      ],
+                      "md5": "090643da77e814e2f59e68bf4ba6e02d",
+                      "sha256": "3f9e8553f613c925cb84269b785cafeef758b73fed4c9d2ef9e54fcc303ab614",
+                      "urls": []
+                    }
+                  ],
+                  "reconstruction": null,
+                  "source_kind": "drive-dump"
+                }
+              ],
+              "packageType": "pioneer-installer",
+              "product_identity": {
+                "model": "BDR-209MIO",
+                "product": "BD-RW BDR-209MIO",
+                "product_suffix": "",
+                "revision": "1.52",
+                "vendor": "PIONEER"
+              },
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                92416,
+                488192
+              ],
+              "recommended": true,
+              "revision": "1.52",
+              "selection": "source-contained",
+              "sha256": "3f9e8553f613c925cb84269b785cafeef758b73fed4c9d2ef9e54fcc303ab614"
+            }
+          ],
+          "revision": "1.52"
+        },
+        {
+          "packages": [
+            {
+              "advertised_versions": [
                 "1.54"
               ],
               "brand": "PIONEER",
@@ -61160,7 +61281,12 @@
               "normal_sha256": "0a9112de5114e8acf2bda06a18b339a92072e0a3a77d15f7ba7950657bcf06e9",
               "origin_details": [
                 {
-                  "approval": null,
+                  "approval": {
+                    "allow_hoard": true,
+                    "allow_publish": true,
+                    "approved_at": "2026-10-30",
+                    "approved_by": "matthew"
+                  },
                   "category": "oem",
                   "firmware": {
                     "bytes": 70144,
@@ -62669,6 +62795,127 @@
         "sat"
       ],
       "revisions": [
+        {
+          "packages": [
+            {
+              "advertised_versions": [
+                "1.00"
+              ],
+              "brand": "PIONEER",
+              "bytes": 1966592,
+              "components": [
+                {
+                  "identity_key": "pioneer:8680:ID79:0000:kernel",
+                  "member": "components/S8680790.000.enc",
+                  "revision": "0000",
+                  "role": "kernel",
+                  "sha256": "cab6d892628652bc965e8a668a1748786933d17fa4277b965592e58e6b4a41dd"
+                },
+                {
+                  "identity_key": "pioneer:8680:ID79:1.00:normal",
+                  "member": "components/S8680791.100.enc",
+                  "revision": "1.00",
+                  "role": "normal",
+                  "sha256": "e3b65062c8f6b0ed2e757bf8f01295b3c176a2c8d1b8007fc39c4e361a0a1bf2"
+                }
+              ],
+              "embedded_model": "BDW-PR1EPDVPP100",
+              "family_id": "526603674149e582",
+              "family_scheme": "pioneer.hardware.v4",
+              "filename": "BDW-PR1EPDVPP100_1.00_8680_ID79_5753598a.tar",
+              "generated_date": "15/11/27",
+              "is_uhd": false,
+              "kernel_revision": "0000",
+              "kernel_selection_reason": null,
+              "kernel_sha256": "cab6d892628652bc965e8a668a1748786933d17fa4277b965592e58e6b4a41dd",
+              "key": "fw/pioneer/5753598a8d1c460018cc442d2393b86a8bd358ec0b90175539822fe102af9003.tar",
+              "modifiable": false,
+              "normal_sha256": "e3b65062c8f6b0ed2e757bf8f01295b3c176a2c8d1b8007fc39c4e361a0a1bf2",
+              "origin_details": [
+                {
+                  "approval": {
+                    "allow_hoard": true,
+                    "allow_publish": true,
+                    "approved_at": "2026-10-30",
+                    "approved_by": "matthew"
+                  },
+                  "category": "dump",
+                  "firmware": {
+                    "bytes": 70144,
+                    "filename": "S8680790.000.enc",
+                    "md5": "8ca1b9638b8f0f0a2c64ba22772ca606",
+                    "member": "components/S8680790.000.enc",
+                    "role": "kernel",
+                    "sha256": "cab6d892628652bc965e8a668a1748786933d17fa4277b965592e58e6b4a41dd"
+                  },
+                  "originals": [
+                    {
+                      "bytes": 1966592,
+                      "filename": "BDW-PR1EPDVPP100_1.00.candidate.tar",
+                      "filenames": [
+                        "BDW-PR1EPDVPP100_1.00.candidate.tar"
+                      ],
+                      "md5": "2a14c526375e8fd586b1e24f1f29ad9e",
+                      "sha256": "5753598a8d1c460018cc442d2393b86a8bd358ec0b90175539822fe102af9003",
+                      "urls": []
+                    }
+                  ],
+                  "reconstruction": null,
+                  "source_kind": "drive-dump"
+                },
+                {
+                  "approval": {
+                    "allow_hoard": true,
+                    "allow_publish": true,
+                    "approved_at": "2026-10-30",
+                    "approved_by": "matthew"
+                  },
+                  "category": "dump",
+                  "firmware": {
+                    "bytes": 1894400,
+                    "filename": "S8680791.100.enc",
+                    "md5": "9b662fd8e92c77876dd95e646bb9a8c9",
+                    "member": "components/S8680791.100.enc",
+                    "role": "normal",
+                    "sha256": "e3b65062c8f6b0ed2e757bf8f01295b3c176a2c8d1b8007fc39c4e361a0a1bf2"
+                  },
+                  "originals": [
+                    {
+                      "bytes": 1966592,
+                      "filename": "BDW-PR1EPDVPP100_1.00.candidate.tar",
+                      "filenames": [
+                        "BDW-PR1EPDVPP100_1.00.candidate.tar"
+                      ],
+                      "md5": "2a14c526375e8fd586b1e24f1f29ad9e",
+                      "sha256": "5753598a8d1c460018cc442d2393b86a8bd358ec0b90175539822fe102af9003",
+                      "urls": []
+                    }
+                  ],
+                  "reconstruction": null,
+                  "source_kind": "drive-dump"
+                }
+              ],
+              "packageType": "pioneer-installer",
+              "product_identity": {
+                "model": "BDW-PR1EPDVPP100",
+                "product": "BDW-PR1EPDVPP100",
+                "product_suffix": "",
+                "revision": "1.00",
+                "vendor": "PIONEER"
+              },
+              "receiver_reverse": false,
+              "receiver_xor_offsets": [
+                92416,
+                488192
+              ],
+              "recommended": true,
+              "revision": "1.00",
+              "selection": "source-contained",
+              "sha256": "5753598a8d1c460018cc442d2393b86a8bd358ec0b90175539822fe102af9003"
+            }
+          ],
+          "revision": "1.00"
+        },
         {
           "packages": [
             {
