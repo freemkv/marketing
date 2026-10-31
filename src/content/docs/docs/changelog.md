@@ -12,6 +12,19 @@ one version number.
 Release downloads are also available on GitHub:
 [freemkv releases](https://github.com/freemkv/freemkv/releases).
 
+## 1.8.7
+
+<small>2026-10-31</small>
+
+### Changed
+
+- Decrypted ISO and folder backups now rename the disc's AACS folder to SCAA instead of renaming its key file, and leave every file in it exactly as on the disc. VLC and other players that use libaacs then play the backup as unencrypted. A backup made with 1.8.6 gets the new name when it is resumed or run again.
+
+### Fixed
+
+- Drives are named the same way everywhere: the drive letter (Windows) or device name (Linux) before the model.
+- Windows: dropdowns no longer close the moment you open them, and the log and drive list keep what you selected.
+
 ## 1.8.6
 
 <small>2026-10-29</small>
