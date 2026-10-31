@@ -3,6 +3,41 @@ title: Flash Changelog
 description: What's new in freemkv Flash and Modify - newest first.
 ---
 
+## 0.16.0
+
+<small>2026-10-31</small>
+
+### freemkv Modify
+
+- Expand media conversion for supported classic MT1939 and older MT1959 firmware,
+  with per-image Speed, Region, Encryption, HRL and Unrestricted settings. Refuse
+  incomplete conversions and unsupported firmware layouts.
+- Preserve boot settings and private media identity across supported startup and
+  reset paths, with stronger checks before producing modified firmware.
+- Reduce firmware analysis and creation time while preserving generated output.
+- Physical UHD reading is not yet confirmed for the newly supported conversions.
+  Some authentication differences remain unresolved. Hardware reports for
+  BH16NS48 1.02 and ASUS BW-16D1HT running WH16NS58 1.V9 are pending.
+
+## 0.15.4
+
+<small>2026-10-30</small>
+
+### freemkv Flash
+
+- Add a narrowly qualified BDR-UD02D 1.00 to BDR-UD04 1.14 route. Flash checks
+  the exact firmware, original-hardware evidence and live calibration before
+  offering the write. Other UD02/UD04 combinations remain unsupported.
+- Recognize additional complete Pioneer factory records and improve OEM backup
+  capture guidance when a raw drive dump cannot be reconstructed as a flashable
+  backup.
+
+### freemkv Modify
+
+- Expand exact-image MediaTek modification support and report available features
+  and boot settings for each firmware image. Experimental MT1939 UHD conversion
+  is not included in this release.
+
 ## 0.15.3
 
 <small>2026-10-25</small>

@@ -429,6 +429,14 @@
     },
     {
       "basis": "projection",
+      "key": "pioneer/BDE-PR1EP/SAT%208801/3.01/0109105c14b1c44cd1463f6931b49adc960461eb323e9216ff2c6e5ff85dbc6d.tar",
+      "model": "BDE-PR1EP",
+      "new_key": "fw/pioneer/0109105c14b1c44cd1463f6931b49adc960461eb323e9216ff2c6e5ff85dbc6d.tar",
+      "sha256": "0109105c14b1c44cd1463f6931b49adc960461eb323e9216ff2c6e5ff85dbc6d",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
       "key": "pioneer/BDE-PR1JAME/SAT%208801/1.01/424d43dcd33e38c7755d96302de5dd30562204505e0392e0150b9b74aab751a7.tar",
       "model": "BDE-PR1JAME",
       "new_key": "fw/pioneer/424d43dcd33e38c7755d96302de5dd30562204505e0392e0150b9b74aab751a7.tar",
@@ -3166,6 +3174,14 @@
     },
     {
       "basis": "projection",
+      "key": "pioneer/BDR-209MIO/SAT%208601/1.52/3f9e8553f613c925cb84269b785cafeef758b73fed4c9d2ef9e54fcc303ab614.tar",
+      "model": "BDR-209MIO",
+      "new_key": "fw/pioneer/3f9e8553f613c925cb84269b785cafeef758b73fed4c9d2ef9e54fcc303ab614.tar",
+      "sha256": "3f9e8553f613c925cb84269b785cafeef758b73fed4c9d2ef9e54fcc303ab614",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
       "key": "pioneer/BDR-209MIO/SAT%208601/1.54/2276a75d784008debc417c6b7a8a09d05a445864794b69bfda9e14308c52e534.tar",
       "model": "BDR-209MIO",
       "new_key": "fw/pioneer/2276a75d784008debc417c6b7a8a09d05a445864794b69bfda9e14308c52e534.tar",
@@ -5100,6 +5116,14 @@
       "model": "BDR-PR1EPDV",
       "new_key": "fw/pioneer/5e5b2e76c99bceba1f4bfa2d1b0680b4af3817ae3552a40ff235a6d5f1ac11b6.tar",
       "sha256": "5e5b2e76c99bceba1f4bfa2d1b0680b4af3817ae3552a40ff235a6d5f1ac11b6",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDR-PR1EPDVPP100/SAT%201031/1.00/d511103dbceca2cc57c75003ce4b650134e511c47afd6e2d1810478fa9e68a38.tar",
+      "model": "BDR-PR1EPDVPP100",
+      "new_key": "fw/pioneer/d511103dbceca2cc57c75003ce4b650134e511c47afd6e2d1810478fa9e68a38.tar",
+      "sha256": "d511103dbceca2cc57c75003ce4b650134e511c47afd6e2d1810478fa9e68a38",
       "status": "published"
     },
     {
@@ -12161,6 +12185,14 @@
       "model": "BDW-PR1EPDV",
       "new_key": "fw/pioneer/11e38c375765ac213a3b190c3f7b0e1a922b87905efa73696c07f6d309350157.tar",
       "sha256": "11e38c375765ac213a3b190c3f7b0e1a922b87905efa73696c07f6d309350157",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDW-PR1EPDVPP100/SAT%208680/1.00/5753598a8d1c460018cc442d2393b86a8bd358ec0b90175539822fe102af9003.tar",
+      "model": "BDW-PR1EPDVPP100",
+      "new_key": "fw/pioneer/5753598a8d1c460018cc442d2393b86a8bd358ec0b90175539822fe102af9003.tar",
+      "sha256": "5753598a8d1c460018cc442d2393b86a8bd358ec0b90175539822fe102af9003",
       "status": "published"
     },
     {
