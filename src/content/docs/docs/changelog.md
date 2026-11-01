@@ -12,6 +12,15 @@ one version number.
 Release downloads are also available on GitHub:
 [freemkv releases](https://github.com/freemkv/freemkv/releases).
 
+## 1.8.8
+
+<small>2026-11-01</small>
+
+### Fixed
+
+- Video DVDs now read at the drive's full speed instead of its slow default.
+- Decrypted DVD ISO and folder backups descramble the menus too, so players open them without libdvdcss.
+
 ## 1.8.7
 
 <small>2026-10-31</small>
