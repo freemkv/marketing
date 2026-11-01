@@ -2,18 +2,18 @@
   "schema": 1,
   "producer": {
     "tool": "freemkv-fw",
-    "version": "0.16.1",
-    "sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+    "version": "0.16.2",
+    "sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
     "capability_interface": "capabilities"
   },
   "flash": {
-    "sha256": "d1c2902004155cfcb3d683699ebe26b7c76cd2eb9b1cad217d27a99205d24fd2"
+    "sha256": "892aa8bb10449b5e3d82e7297c97ad1909ffd6a728add8d39d07c691053b66b8"
   },
   "images": [
     {
       "schema": 1,
       "input_sha256": "007ac6bfe4ea432c7d8e5b4bd1142a636abe452516e3cc36f67e4e13520fe40d",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -166,15 +166,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "16e1a44a55cf7cb1c6696837845bf02f8b95d812990fb952f39809ebcd4a9785",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "cd2e893b79d5c2f69da8390622d3d5b03fa6c61d7a555724dd9c6d2e68b33b4d",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "01c6a76a4d16c0c6b9aafa60ececccd331b73ac1a7f8b899b3f05e558c92c07c",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -327,15 +327,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "f2362ff1719d01d6f428994c09c325533a3d73e4e4c0597a48678308f0fbd31b",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "b707a8700587710840b388108204c992512fe6cb1d7429080d9e20c201323c81",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "08d14869e553b84a92c4f897a120559673e75eee6d786988d038471aa2f5369a",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -533,15 +533,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "c8459df3a68644227a49e00d74f7aecc8b4d2187e0839000bc718fc4fa7ea52c",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "49c6234ab9466613f94b38cbdc49189c596ec0d3d7259f97ed601b836fa6ed30",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "0b2cdb82ff520589d4c750fae726571798901bf41e433de0a7164f7d74927d5f",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -694,15 +694,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "cb20b51700b9812c1b9bd064d532480328ac691d2dddd92d82f54967c2fdf0d8",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "a4723ae4647094f05db7364246e0c06199b26e76c9f809cd7de0e3343e72b027",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "0bfdd3009ed1bc246f81aae50cfd9a5e4919c5295263e488c2a900500fe48728",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -894,15 +894,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "57d902050c6064648d456724e3400eecdfdb46f9f8240e00987b5793f35f96a0",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "175e6e78e21db378b44d975470fbd6db7375bfade5405b905759ee1e89a552e6",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "103b9da94c91212df6313b150d3cf7e10c6b891a4ab65c49773e891a05f96a2e",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -1100,15 +1100,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "7d9f721f9e790450b1404cea070813ec1a2cf435f1ffda93466bf436b04f717f",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "b0832970af70271cc81d27b48d20d5ceb983bbd7ac1d1f6838e951df2114f99e",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "12c4ee6fb88d4c5402e9e8fab0881a93fd1ab18e5a82bb87ecd4ef30c807cf53",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -1306,15 +1306,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "99e46a869f402d8777e6e9d0fb7568246b6103dd455a367749653e882573e6a6",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "9266cfc10c21b304cb5bd6d3165e78f35501272e23953e7e93d8e2245ceab065",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "1368766f8d384d0c86d4803d057b7aa1ca205542b9b6b0580e875aaa8bd015b3",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -1467,15 +1467,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "4842ebc653c342cd3b13d4ba7dfa16108ccc1b2b6c251927218627e1947de59b",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "bc5d101ccc73c8f4d1c90ae528fc87b6cb690ef53d9027e6f1582bdd3b2c47a4",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "14d86e9949d93126d6ec7eaa11eeaba512569f51a8ecfce9d707cb0cec6b5e24",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -1673,15 +1673,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "e9bc8578a892089a937d8b71774bbd34800964d1954c971034322e969e240165",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "98aaaffa4e0838d3a162b1cd0b3a763fe96c09a782478d74d5dd6279bb6e26a2",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "163fb6e0057d74f38e046cf9042981c137ec70c1aaa2d7b1c3ee1a62324aa146",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -1834,15 +1834,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "b891710969aae7aaf0418d5f8860f333aac3d10f8d54a71f0882725418fb4f3d",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "063bcf27a548eb7ff999065c367fbf8eeb1fcfacd345ea1c897f17f96fae5dc9",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "164e2475aea287ec5759ee07eb285697b52923ead1288f24358a70fc7ed3ec32",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -2034,15 +2034,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "f0cf6c7c6fd0415cea9e2e40853d7d62aa352731c258a8a14c5ccfaae36fc718",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "2d5379985f70ec033e8786b3257d460f9c9cf06e3941610ba6b06ac91aebbb2f",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "1bbeb5351dc0d69feaeefdac9ada7f3f48eed0ca4e2f879d9266679cec133396",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -2240,15 +2240,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "43a7c0438ebadc5bbc9fef8303247b59063e55e6b83dd821a319372053e6c9a8",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "818e4b44c891717d915ddd43671886fb9c542da98839230785d69ad222ed5d67",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "1d57260bf091dc89b6ab5b3e2cc7aa1b843d89227a3a4811e6244eaba353b764",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -2440,15 +2440,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "57b8015c8bd57e6f09f376236b03eb436c7f70261fe0ef41dec1deb313a67409",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "f596175a298a78172f2b83ea97a91d6f1f1c0ba84b7c246d8d2115ca5b3e151b",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "20425a8ade6bb5d24bbd76fb5d5d67e744cd49e24783be87e6a89d30dfcace95",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -2646,15 +2646,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "6ebb6e2be3b74fefb683392509ffc9284ccc642a87b6c729af81cf1a319c3536",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "35114974b1737d34c9c5dcf15f8a7d6d7882af9b95ceceb8b9be86044972da1c",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "208a80d0d30c1841ad0bd33d49be032dfe2110c7f50ba6298ec51851c69035b6",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -2807,15 +2807,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "7419e3f7a70d7731bd873849bc15c6c6cae1d4116ac4b1d62e6c06891ba8e25b",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "23f39b9574699f4b1a3379c40009ba1504f12907842299f55494f3d687e1f19d",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "221ad35b7edd402353e125841893ce651064e8fc6b90368fe84ff19a85a506f4",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -3013,15 +3013,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "c608cb35caa2ac219634e72ef27845ea81e23503057be81865ba132276c10896",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "ad6e93453ef10a9950ecf89e0f04500c719f109788be7fc407ff017ac4ab2ddd",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "223e7e38b85f0d27464de596d373464cb7bf77ca825b81f2351abaf8c6cefba1",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -3213,15 +3213,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "3705fadb9cb9168ac289bb779b08c673a80307bfcc6086592201864c1854ccb5",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "0e8ed6d4ad455df494dd15ed25b86055125adf930a2e3b9dbdc4d391ebaef95c",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "263994abefb0b5a757d7b7b677b4e24dffb537ff124a81ad54426948a83265f1",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -3416,15 +3416,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "9634fa7eb61548b5a9e5f3b84177c21fad51a3d006966fdc0db937089e6dc02e",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "73474141f4fb59f3a1fd5dca3025aeeb1cca5bb5a23cfdda3af0a33ae881f1f4",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "2b3ea41f87764ccc497059c9e362657df545fb169d6eeb2e78ccfbd7fafee533",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -3616,15 +3616,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "57fe76e4b0ac2868924017cab3fd8374b847841a2a016a6da7a5656923d5c4a6",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "01535372c695446989f482d8988092fa35761791cba85a3840f34dee628d5c2e",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "2f02308413c86c180ec863ada97fec3f594ebd7bf144e3159e91439518e57847",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -3777,15 +3777,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "1f18590707cdef726bb399a69fffa56ed6e5eb1b7902b0acf3353d9597b9855c",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "6f817006634a4775ef27cf3b31bae4c9d45bb0b8185bdf9028f7894fb9672aa9",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "3018997b63cc9a2f31618fd9b6b5c6bfe0cc921b891f4a80ac08ae3ef2b16504",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -3977,15 +3977,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "2b3df2f0ca12bcec4bc2a16410ec989c5b08d32ce45f005f00c8c7f035f16f67",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "5b56319a38af9fbb8e231741cbfe4de85affc51e855dc510c56a6bacc1b017cf",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "37a32bfd708b86c825877364d7e52c943d0a856ec3e5457953b61b7fa1c9a23f",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -4177,15 +4177,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "7be35224fca951be8ba7c6dfd22280c552964b211387b2c9679c59ae2ff1b77c",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "88efffd8b99850e16253b8ea8adf38223d954e983ec6375e48783c006e7d48d5",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "38a70ac234a1dfd67725890bdb82f1bf798262a6e345b8edc6633f5d980bfcb1",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -4380,15 +4380,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "25cc637b3d1840cf3ce8e15e81afd918fee8853b0cf77d196ead43dcb2111633",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "dca3bdbc89a74e24636034815ff36cd46afc6dd0d5e3b96e8692ee540c1b844f",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "394e6f8d6319b79fed26fb296a435e4d047c382bf8434cc870f89c6913fd27d7",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -4580,15 +4580,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "04817e42af35b55f159dff118472f45bdb0dad75512790f84948549bd1a03f37",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "fb816a74984271ef77d4c1c66543ab9ec444d556c573890534b61ebb7e89fb1e",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "3b8faae231f30afbdd3257d9cd2b7791a005a4616391ee0f8367dfa0db51abc3",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -4741,15 +4741,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "53ff74dfee3d9fcedcd7fd79a6d226833c7f601983e1828a5d1b7bde17618c66",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "e043ee161e64e5536b33635bd5a684744cbff45ef547f5ad31a4ac08403e7493",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "3b9dd9b4c9bd295b1b4cd9d94ce592522588e95a5569f529306b962b337d0e4b",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -4947,15 +4947,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "50c4effcf73242333f2b808aa5c1ffa2cfe32a519bfb115e2c748bf88ffab5e6",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "32e3d72a57f68110e4c3604a482424e36ae57ae10439257ff93773d62c914bb0",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "3cdbdacace5c6ed3d505bbbff65350274c5775ab871c42d130082fcf0ab56050",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -5150,15 +5150,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "60cd14c8e7bc728b7656ef64baece983cde426feaac03ec38c57ae71c7783401",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "7dbf1d0469177fb2417175f22b28b4d4621cec32d9c692a09b9cdc155d7e3414",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "3d3badd67d471b380e5566e747b42f7775abff7dd9fbbc2d0d21920a937b34d7",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -5356,15 +5356,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "08eb191679a6621c1d17bb66d9a2529f0529f6f7ba1b21132b6a5b8ea0417596",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "e332c9b0ef7daccbea9f2d4c8e4ddc781b6291d32f860fe24eeb01faebfcb62b",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "3e3b227e1338b5bc601ad6b2ce02fd1d375b7ea6179b055412ea0702ce54615c",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -5556,15 +5556,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "6e6fa9f284aea18166f1bf678a5635b03488aaed97e37be89ae03d26d044039e",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "db90d99a6c1f68a5fa9be67250b9ed3c69d6d7233bd2469355ba7f2242f50d31",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "3f436c31124f6b7bbe582c67370924077018eb14e768f27d9b7194904f099aa5",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -5717,15 +5717,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "3d1949918a71be2838b61c0d372bb3aaf02900d96601db00a8f3bf46539bb167",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "3ac55e0b3bcf5af4821ccd16990674eaead46e12c27561e831e525bcab0e9b3d",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "4041c0f122a902288ca8439888f68f7760616a0a37c366b825d6497b51157e46",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -5917,15 +5917,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "3aa2f4f41023975b46322981a6e6b820f7e1d842434c177baa326eba0479e7fd",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "bbddbb19ef14514a33254edd1d93f913eba0bfd9b583cb6049bda5f09194b15a",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "40eb760e23f100d55e86e9c061c73428d4087ef712294e4dbfcefa3093837a1a",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -6078,15 +6078,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "c64fc6880c45674050bba27f85ea2b39ea358e2b33a82aded79509494da38a88",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "7c09e246d925779f0250b2bfdd787c2ef84c4920fa14b1ea100c3bb307060b4f",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "43c484dccc37ccb36183e970c5a4f28e90d6ccb530c0efd3bd8f96943ba7dfe3",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -6239,15 +6239,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "e395a905c614a90052de5bd1b88c73e4a148caed35acf8d1d7bfe7689957c712",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "0379783084bcff9dd494064ef4e6edfd68e976e810b22fe1b75bfad7c82067ab",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "46b41f15e053b66daccb024cba4380c45f791c2d0c2b8258cd23253fc5f0b22a",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -6400,15 +6400,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "563e1fa09b7f4586de75e4edfae33bebac89259efc57d29f46a67153038948f9",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "92b3c1101cdae5ca3dc12d22bb61bfe0a4a8e5f21eb54825dc85e07872f67cd5",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "4af842c0acf4a9ff42b5554d6d1d320b245ab4973b174a8b7ccf1f941f7ab715",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -6606,15 +6606,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "0f968905b363cd2cd17848d0f949ec11767722133426aafdc994bf3003f42d9c",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "4d5ce96e9c6971fad25607cfaf58d98aaf3b0f51081d389c79631ea1f90fcfdb",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "4ef56002dd392733d15378e4535115f24ba891d3266a7c87420df14df0a7089d",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -6806,15 +6806,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "a3cceee0de4f37070c865d1ccff12574d10ea91e9f6c6b8b4815fa5ed95c72f3",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "b0c50a4ffbb19c4ed515021d902633d48236cd8d04a42d4b54cd9ac70e81dd8f",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "4f4e63cd5988f68f5729af21fe4033d0da2eeeec8f7576772f0f3a197f8eda21",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -7006,15 +7006,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "1df7ad26a3170ee7ae3a12c184c347642ad06ededc02f59fe244fb7c6154d458",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "7592707a66e098f9fa16d23532c2bdba11be4ee30e4b2cf3efd8418cb9b51431",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "53d2cdc32a2ae99864ec8fc4ea98a3a5218220aea990481f560112adaa871624",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -7206,15 +7206,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "ba3b188d7689b64f04f0649ac7a4f51512a62419b222336391005cd75f069812",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "8c9cb8847fa543a3a111dba425a152c5884f9789efe7ee8b03328c069cc3a93a",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "569cea9bb8add8b5638fbf0f5ea47b8014f851f007b2cbef2be44737d7cdbf68",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -7406,15 +7406,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "9f45f63d06e55e7392e853913c1e0a92d8bf6ed5d46d4b6d2c0df5a27fb372a1",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "0b0b9cdfb68c4753ce3f8856b51a5566795d228fd1993944c5d922e0ae8ab462",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "580d867cee3d219a6e61e460c11fa33e27ca43c912d1d2dc777039a6a8f3f7e9",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -7612,15 +7612,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "3e447eb33c7c77e5cb3a495c7e6c126a9dafdfc892ede6f39dad4da97e4a952b",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "4bf18fc7de5b7b854a80b68d670b18f9f5e1a28cf1984e3fa271009442ab2951",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "58203b539de096786cde232ee3b0ef3fe824b20d7768a96b30f6a96bdac77bfb",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -7818,15 +7818,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "e9bc8578a892089a937d8b71774bbd34800964d1954c971034322e969e240165",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "98aaaffa4e0838d3a162b1cd0b3a763fe96c09a782478d74d5dd6279bb6e26a2",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "5c01c1fda59f3db130bd14aa64fe97d4010376798716b16792dbffd59c488a95",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -8024,15 +8024,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "0107e9a3532c6d140a7cfab2da182e01b561a554268c85481a23f376869828a3",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "9ed6eb169bb3d65029ad3b669414a20378f644ab72b9f4ea653a94439ded6136",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "5c1a47392976add3f84aa90a9a17dcf835361cecda706e6d7d388d7b92a24b69",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -8230,15 +8230,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "2e4e45bd2fbbbe64199bd34b0ee348f7e4f5c4276aa7aafc179aecf0013af0c2",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "155e0d56ec03d6af6d508d24cf00e565810a70350e4feb45d532d1c5ee27f33d",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "5f3fa17d61118f8405248cf9d206e32824c2321c9bfda0739b75a8633c3a81e8",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -8430,15 +8430,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "ab2c8a958414b521f10e2d57a2c9a5b9322f0dedf93974ef12002f87f1c372b6",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "806c0bc2e74c8635424de7c127e89b5172bfc044d2492378cee52f14a9c62aeb",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "5f9abd3f7169b1d6525c47c5f406c1ddb13fca5b9f93fc646a1a924f13da9779",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -8636,15 +8636,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "f02e81834e24dc7536b2fbef2e923a5348613905bcbc94efca1cdfe7fac656b1",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "8c4c8ef5a838cddf030a5f1dc5994f432b4c1645919a83111dfb78d93d240b58",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "614b41f61837f84a46b73fe4da28ff9db13bf45fe291f2728a5197c67857446e",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -8797,15 +8797,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "7344b4588f9be706a621dc3e7ce8a99dbe0535bea16a673d87469e382dc40bca",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "f11d8ab8946c2bf0ed65ac492540e4081803e050e5324aaae6645df1f4f6ee99",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "64688690a2878c792833d9af8731004411f86d7a64ceb522a82368584d84282a",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -9003,15 +9003,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "956e67900915ce66879553f23b1d37d34ff3a021824a46ea1544b2036718388b",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "dc17c3d8aa21e7f93df2fcf4493af777bcc604c5bd206a1aa3d473b5d51eac6b",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "648a16d024eea31ef4901f3ac2180cbfffeda1161d70f9096335d8a6097445bc",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -9203,15 +9203,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "1caefdae22de784f15159824517365e741fd64e21a447be6dd156c592c44d219",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "67c9dc4f3cc9b8c9d1b17a0d1aa3ccd72b1e3fec6494fd233a586857731fe417",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "6a96f7267ba605eb85ead6999944069eaa5fc19bd57dca5becd79aa1525aba6e",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -9364,15 +9364,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "e50efcbb99fb8f4c1efad6c43e15312f9d4e26bdf719b2fc476124a3b775eacc",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "f84f846557a833e1c35bc8751c294dba29ac56f62e665e6108c844208d0c0667",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "6d9fdb2bd658165a073e6144c8938057e08d8cba7ca108274b120dd30c55328f",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -9564,15 +9564,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "213262859d7b1dcdcc919c5734e161b43dc85a2b3512bbc456097c1aae1735e2",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "fc426e362f406ca535e7e98cfee933ac763773c5c6a6e1e9728a48ef282b2f97",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "731bcf7aa48dacbcb5729f97576cf24b90d7a795a330c2ab8a801c57eb738f0e",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -9764,15 +9764,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "fe873a982f0ecdf0d3162020af481e109ececc696f16061b39fa290225f351d8",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "e0dc6688a01753a080333bd6dbcb2976a207b8dd54c3b659a169cf8aa8a5ef45",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "784e017fbacd2250fc37ee442869db82ccc8d637d78126b570ba33c0256d1715",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -9964,15 +9964,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "64d5f5db7aec6f12c1e9686ff5ea5d07ebf78b7a56f94fef43cb8a79580b9f48",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "d94c7680820ec7095db0943c03633d672fd892d9ed1d0b9a24057d1f9f2713a3",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "78f75561d474d09a4b3bd31ce346395600e2ed5d23431f6bfa02a500ccaee7d4",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -10164,15 +10164,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "6b3f835eea87cf4f7ed792ddc05ce7fcc0ca5007167e90e17777281807cd5941",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "bbb5321b9934d29bda89244be891ec8cc913a8d60f9fcee7410299937f0ba18a",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "7af021b026f8aef225b2211183885be211a66c1a4d64c9dad5c84661586144c7",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -10325,15 +10325,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "96cdde9ceec7c6792aa973471791ff2c581d61082efda006b04cf22d86a767e1",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "73ee08c94fe9dd34a9f6c21002c2206e0926505a8160e336b980e220f9ed0e90",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "7d7f2465feafbcc05b74fbaff1dced8a55b19ddb1c03297a8027e261045d2e9e",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -10534,15 +10534,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "a2614e4bd2364ce67a8e273498065627dda32d0ca342aa4824cd13944f340909",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "29971e351f205ed00a643ed08012374633bb2a0100d02373230c3b71063c6489",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "7dcc99d276008cf2cfc6214eb0f4b88ec5eb3937f21bb1853b53f2b8d42ea6c8",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -10737,15 +10737,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "8a0dd78109d1b328dd1d1f60b322d2480624713b54b8da66adb1240adcb7ea76",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "60c1d5929bf64208274dc5bfe9451558f7a71e0c918ce886b19b34183798449d",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "7f26c559774b87a8da10c42d5ce72b8f1af3aa369d14d64f7d880d2b20b0327a",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -10898,15 +10898,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "4842ebc653c342cd3b13d4ba7dfa16108ccc1b2b6c251927218627e1947de59b",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "bc5d101ccc73c8f4d1c90ae528fc87b6cb690ef53d9027e6f1582bdd3b2c47a4",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "7ff91816c192f4c0ba492b507c8119fafb71df7a25118d0e456682bb34e2e567",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -11059,15 +11059,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "7bc3b7280c738db9b7a06dd1716ed374d83b8a3a698975f0f8c7cceb2245aae4",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "6e9ca052d568983d86c2e8dd6fb76c3d85067a2dc2b83c8de1f468ca218084b4",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "83ea24bb07b8a7a451bba1856d1db18b7f54b1823b9d148e213f25daf2e0a1d2",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -11259,15 +11259,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "64d5f5db7aec6f12c1e9686ff5ea5d07ebf78b7a56f94fef43cb8a79580b9f48",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "d94c7680820ec7095db0943c03633d672fd892d9ed1d0b9a24057d1f9f2713a3",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "8489a3a5b34ea7ee6046fec6db02be825dee1205646c10ed7d11d4809c45deeb",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -11420,15 +11420,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "940f6bacd264bcad83cb9a69d61f2925e3cd0a40f66049c27ad7e3770e698c3a",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "6754790d7eef30701adef78a125bd1b2e69077601c7f2c5dd742095c53a5dbc6",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "84fecc2930d63cd4da8aa4759f63550d1eb1a642343d29adf1e370a2a861347e",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -11580,15 +11580,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "3f1408249e3dd8ece916c723b1f991bfd63f644edfa78ec97027e35751c18b91",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "ae9ff7a6ef3a14a56e2df684d5ded2c0e48eabef9d06ef61144c266678852cd0",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "87790f053877e3e1bdd22969d70a7b1b6ed36624bb474bfcdee6526ac6e227c0",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -11780,15 +11780,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "e766d95605aca7c7d1e89d16d8625823860dbd7609d4d5222d2eb983493521c9",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "a3291803d3141935a520ff88aab35a6c75c9392c25c8ea7c18556804f63e589d",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "8961b80b005c1b2ba7a8dbc10a4bd3fe6680bd2befcc71de95bd32de34bb4482",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -11980,15 +11980,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "53b89870ce82a7dd8bc02d7b221789b3d10cb1df7d40366b9866998d31a1470e",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "530f1c9b324c574c473a8387e82d068a565dcac0c258caa83d84daf5c708805a",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "8f5bf9536115fd6aece78d1ff6b6a7e51e3fc0d927f2ae8fd64d6121401a5dea",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -12141,15 +12141,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "fa1687604ac5183649131957eef09a1e0df8ab75174329626f2ba6f8af992bd3",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "ddb8ce3af68c992cab8865267c9c211bdee84f9e6115e46a6572c730bb1d98a3",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "920a89f98b69b144290cb37dc37a7019c8ee37cf577457f0941a43395dfa7801",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -12347,15 +12347,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "14aa9928ab361de8bb6ff606250bdf4b2de9b79eec51e37c2e2274634844f5a4",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "124b75e5e22a760ce14e149102ff2ec4744b52df22e74ccec12709743f1dcce9",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "93ea068da225140d9628c105d88d13088982c61024bf6cca03e0fe456d53a721",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -12547,15 +12547,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "78bbab17f4fe1ad4afdb25f90bee2270a5f5cd45bbb928f803a5f7da1d433c21",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "df35959d5bf2b50971746654df4505fc3d07051c0c0a7f00363ec5c67b06316c",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "961acab180c9a62966c54f24f3b5fa7e335941057c15613a876f4fceca010b70",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -12747,15 +12747,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "622f96121b749b0dca6dd41b4f7644fb94dd0d494e6384d6688f8f07e4b2e389",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "112370c4a2d3b8e6076279a992de8415f6fe7db67fc4bfefd10c84a4cfc6ef73",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "97b287072e20c9527de6f34f6d564c8edcc6afb3ecf5675c11b8262c11663061",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -12947,15 +12947,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "7037c9e3994d74513917d337449f43bf3efa1c438e22c43c1aace760daaa48e1",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "05c6b41645e5796b6345b7f29891062e80d9a68ecc62f8e1a9d606cd6e9951f8",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "97bee5c51fbeb7980c35539bdf44e5d2c1628908721815fcee4ea2b9f22e9263",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -13153,15 +13153,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "e6607e11040c8482a5e19e148b99d37bf1017247e9fe3d957c71be8d674eb105",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "052b7eac575ff3db0309ab31ce3e905a19086fc92584d081eb2a71a316e55d84",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "9c46e6972b7950004e9746256c97b79e8e681faad1a4174b542477ad6ff5257e",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -13353,15 +13353,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "8b862f87b5eb165388a28870d980a7fbb1a1590e6a61e0bcddbaeb0aba2a43dd",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "42c01255311aa38634a88fc0f42d82f5fe121192200d4cbc7bb6cfce728285e5",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "9f5bc003674065d4b5108ba45033c418cd38be4e46e5d218dc82409260c2f05c",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -13553,15 +13553,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "30b632a7debc247845bf9f88327d9a2f4f56553fd8a96793643419d4cd7f4878",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "f0ccb87cbcf7caf69484b2025ea9a9363bd6ae9b068cd40717099b2fa7e605fc",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "a344e289e0b1f34bd1a5ae66f0498df9f1a485ad1416f93592e40db2fb5409c7",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -13753,15 +13753,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "b0c422fbe903f3a75bd775976773f7e4b4672a534b77fe1e12c49b407aa5d130",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "a03cd8b0d5067451610cd629bf5bb1d7f2a3c1271887e306fb0305a880c6225d",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "a5bb75b8dbec1684e596f473aa53905f9f723b2b2f9c448550cb523145f90dd3",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -13953,15 +13953,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "a3e2d2583c138773f2437a6b5134dea90c8b301f6b2729e2dbebeb126079ae43",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "5a36008cf9c9fb080ac009837e957e5d1d258eeb1931f2f2b05247796ab993fb",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "aaeea1ba97d05fae0b4de1ff1b84076f8ba897cb15b45a398f9bc4c25fe1738b",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -14153,15 +14153,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "ba3b188d7689b64f04f0649ac7a4f51512a62419b222336391005cd75f069812",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "8c9cb8847fa543a3a111dba425a152c5884f9789efe7ee8b03328c069cc3a93a",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "ab21af6945e901c56b9f29755433cf4785e9cdc106bb123d943aea0e90d04d9e",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -14314,15 +14314,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "9ff9b30effc94f40dc5e65ada49b881f687c61917bf3e4a21ef5e2e3694fa09c",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "697f96188cc95eb3edb946003a68f86b136f3dad80b9b92b694d9841170ff2be",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "acbe782ebc3c4850a24f852b8dc2ec42059f6b131e29d96157b09505628c415b",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -14514,15 +14514,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "b204fbca49dda11baaeb31dc8bc93a3c130cfaa04f80400e68e127dd6d218528",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "e46af7d265b0d4cbb66a9c02cc06d801ae5eaef4d20529902a19be8777bd8086",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "adfd807cde847ae75315b9083be29d287f56d8a628d171eaf59d6023ee266d1c",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -14675,15 +14675,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "bf072f5f1d1a2ce4b220b2301d5edff58ec5dbf66f8f36be4306ea9ba0ed0111",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "57a623601cbc9d60374abcb85d6144fad6377c47b64cba1e0b755db94a0d61a3",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "ae0c03138570c73d0ba8ed6d7d5e9798ee54e6c22fcb4c815a86eea3301180f6",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -14875,15 +14875,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "7c308e5a6c00dbb962aac19727ff1deca278c3f82cebf4326f1ead30a3e9d964",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "10aa506ec40f890545c0520719ca1fbd4347dc1802c1ade214918bb5e445c0d6",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "aea98763cad71e8cfbd8d32963a63adf429e889bd13b749e7c4a792cc5b076a2",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -15081,15 +15081,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "73efdf0d5052371a7d85656c916d38e0554614678a8aa1ddfc4d63fa9a555fd2",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "b67e21d562c172564926d00e03a9cfed03a62e2c4b76afb6c335d26faf3dcd1f",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "b093a73656e58ee2a4367b5d92324fd7da3889f632a22b2f1be8802607cd3de4",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -15242,15 +15242,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "188d72fabb6acdd2b23849cd93e4f24b968dfa9eb35a4d88e2efcbe315b020ce",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "597c0a29f05f1c1f6bc6b82626cf76bfa7d1d387843b1afb9e6bfd6981a9f949",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "b7a368da0fcbe905e45a09c6523bdd6f80557ce455272238c73868aa4ae4bd41",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -15442,15 +15442,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "ab7a35f25e8baa294d1e5cf6c71f532583fb37a40c36b860a017b7d72d539d0e",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "ea878b9ebf3c50bf594a70f8a09b3efaefd0c7d38aadb3f6abcbd6356e1a62d6",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "bc4e6126b880475d58c21e8639ea81f33facc3d4c8284bf6a739d8e8f6c75921",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -15642,15 +15642,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "f26a5e1fff353ad34ea2268946c8ecd7508fa5c7e7ceaaa7d4a4b64dbaa5d1b1",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "38ebe2b3f10c9fc97cb783d5e02b01b4c47eca6473383e004a1ede45c868e524",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "bdfd6f290ba8172d4c46d8c822013255043f4ad30deb8604608fa0397bddb648",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -15842,15 +15842,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "e7e8ece43a7368005b97d4663b55ebe4c794d0faaac5847b4abb6a368e47089f",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "965a0fdff823bb0ed0c1c5709a03b7020e3d960312a69f7a8d514e4895f99286",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "bea3a823370a985afe37ce6a6aad4b67ef7af15307f622aaac1f76bc7a1dbb5c",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -16042,15 +16042,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "2eff8a0c07faa25dfca5877ab4cb0d069731e2ff3c4b6bde6edeee75531996d9",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "2873e57d85988c395055d72a2369639a72f6218ef2004214d532f57c3ed43bc3",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "beb8330e79d08824a62d5eb2b91a144ebb34c9acba8d393d8b32f2b2ae3196de",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -16242,15 +16242,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "b204fbca49dda11baaeb31dc8bc93a3c130cfaa04f80400e68e127dd6d218528",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "e46af7d265b0d4cbb66a9c02cc06d801ae5eaef4d20529902a19be8777bd8086",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "c328b6561228dc4c26f3eee901bd51af353b2f4eefb74d8be02da2c9a76606fb",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -16448,15 +16448,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "dd1542ea27ce7cc9cbdd3207bc3533237dfa69d5d1c8a52e7eb464916af810db",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "a7928f0fba08097a12d16e2f10f0494f4fff84a7b7a77dafe6d9c90c5c3ad01e",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "c4d995f031fe757d9823f7410f81c88ce7ba26e14b77e766792bff2e53a8b90f",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -16654,15 +16654,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "b1b4a07a60ce7ef069f66c1e7c05829f0a5f1c6c86b89016e03f44da1273635e",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "51412bc486513f2c99e6cf815f15236b961022b83bc515c141a346571ce5a7d9",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "c68cd76b6ca94c077ee7c1fd4ab4ebee06056683158f2259302fd687069e5dca",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -16860,15 +16860,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "0dbab62da526d530deae27ec4e8f7fe412b1d7c7e6ddf63b0e7423a3e21aa52f",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "c852d9391cb39faa0783e7e66977dea42a2efcef22dc5a07246cb305f2ad2777",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "c88a69013d557b9c4cf1a4d603c314585f51a258b9747c345184e866eef36306",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -17060,15 +17060,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "4dd67f50e464211a13b7ef3801b4baf4bca252fed2cf113bad7ae5b7d990a1dd",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "4efc9b1fa1ffa921f41f9ecdc681e3dff827fbb3e39b924d6daae4d08e96eb98",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "ca7e8db8576a0ab5f5376270159c133195ba1f60d90e7e7465dae7f4dacc3532",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -17260,15 +17260,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "a3b875de9a560aafbb9ca84e97226480d423c06b5d05bfc9afda42fa2e88b6bb",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "ebc650fba01ff329a11dd23a2aa73aeeb51e63d06d3ccffceb2a4fe3fad04e3a",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "ccc97e4f92e47b6fc1fab1e9baa1860020c7f104efa9ffb649321a173523adfb",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -17460,15 +17460,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "8c0cbec103ed1c5334a0793c93de3874ee59449cf1cc3a9a1a3b3fd4f995fcc8",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "5615ca6998c18dcef3ac76b88a50f68b92820a7dbae9f413a6a3bed6f2ee7ded",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "d133893209392b74cb0c3c1225cc4c0e8b1d927f1f671261ecc82525405e47e0",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -17666,15 +17666,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "e2406f2f3e6adcdde13ed7b7e19d300929c764f1836980f079187101748e1cc6",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "fd09fbb47ab1bf95544ae56283f8102c230a8eb58968075e9fcd898c7badabd1",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "d1e4d3d704c6f2f8ea200d64ff39e3a1a564769dfa66798039015c615536cf4b",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -17872,15 +17872,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "04ffb0938e43761b5860f8d1188d79938992f7ddccf6a13300b8a3a2d5ab8686",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "d39cf267e75f158d02de01ca215bd4eae1de39d51befaf912bde7d38fa29ded9",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "d8ab861b6fefa847223a1a95b53241c9838953ac298ff068d9243fc31587df87",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -18033,15 +18033,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "8321abc723c55701abb78a34e5bbb31f57bf07128595a539eee5c334af43a9ad",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "db80f9a3c704069fca57639e74bb08dac974ae2f5e4eacb0ce18a569f34072f0",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "d98c2e11f400cf54133289369f19064ccabc72c69ef189f9129fc19b2d700cc8",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -18193,15 +18193,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "5d5762217a1e2505178c9c8c675942e2496f550ecbcd6ce6f0291bff04804623",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "4a1f6c413ffdb835ce3add463b053a78484b60465ac20e0a4316c6261a359706",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "dd03cdae194de03a710b5f6e88dfedf421fd20667a3cc9ec58e828bd769ab2ed",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -18393,15 +18393,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "26baeb2f94b3697ebaa7ca42b4bb03d975c7d865ddfbb34987a94f7f4db70860",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "e22cabd1cc7060356bf01cd6f1ef7bc010f961f4c9ed3c4d7def0338558cec81",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "dd27dc3901ea0ef2e8704a54c8e0f3be44d11cbef061b202f69ef96f70522681",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -18593,15 +18593,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "26343b0437baf479d626d43c0fe7eec26c942a80dfc572d7060cbce1b94ff142",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "3e6bbf4ef8c9d8c768e69a9380c62e823fc92d6c8758196b6cbf6e8f3316361c",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "de13d8d0fd56ffa16ef6bcffcab946e3839cefd85975d8e925dfbb4e8e881f72",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -18793,15 +18793,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "fa8e3bd2744b5ec21559e574f10e39e08aa9a9a9a40fd3038c7cfdb3ef4088f5",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "9d0e63f2501d4b3df8e7c9bda669f22dd9c2fd8d1041d6fd3eb8e7beed5def5c",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "e24060184915a9860a84ea7d0ad23fee478e6eb31af86da589f5723c8e29a1cd",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -18993,15 +18993,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "47598c777d070189e40d98e612efabbe122f2a88de164a0800568b6f9e937d5c",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "e7680291ab62182e951d364a82d562482ea026df9bd0b7f7ae6ce335dbb24a43",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "e60a4ce02a588d15faa2a89f1d97d80c22dd2306cf62f0219515a6e9ca5ddff9",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -19193,15 +19193,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "60a5ca0d12a586634308192b1fe7c1531909703263d039ab63b0d47cbbc09f03",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "9cb9de2d916ddfa78f251d453ff4e09e7ee34439571c1458f94e5e53567be9bc",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "e64c4ca5244594d0b7943cbedf71a9cced2ae7c3d9b98624aa84d7e3130bac8a",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -19393,15 +19393,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "dc56e01be45c585d2410f6ff495eadf08fe81d2ab2f9b10fef4e1e617e3cac18",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "34f4a5855537df9e7ae80d486bad9905a2c4b241ba7d31b9283b421baf0bf577",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "e9d8bcddf85aab6627c90623efcb7a39ee97681a68b729ef58fea391bc99b33a",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -19593,15 +19593,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "e83c0ecc64807a3f50371e9b1c4265ed8a698e798ba96cb9769200653f33a1f4",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "66ef4ce3c189246f204c257bd20fe585770384c3b5bd8547028713b3c9ccd4b9",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "eb0e2e7275448919aa72bec63ed0cd24ca360fcb0a8347601e85c2750f0d173a",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -19793,15 +19793,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "f07a473d1f25498ce9f5ac6d0fbec460a86eff528b12dbf358cde639453c6240",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "76fe84917cdf36217900d957f2559ac1782c6bf3c8dad7831477d6546baca402",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "eeb1c948f1ed98245b7d21d03fe5e333a3349d28453690e2a60b4a8dc01765ba",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -19996,15 +19996,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "72fda034a96d93e1ade909bbeea39bbb938f5d678aa0dd6d6558d19d2382855c",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "69a67838bd21d1d0c46715d7d70e31aa4250a7ce8c96ffcaffd486bf62fb8e22",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "eee6563f68a414eb1dbc9048ab0820d01003320b080988437f762ca23d727e56",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -20157,15 +20157,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "96cdde9ceec7c6792aa973471791ff2c581d61082efda006b04cf22d86a767e1",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "73ee08c94fe9dd34a9f6c21002c2206e0926505a8160e336b980e220f9ed0e90",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "f1141a3295076c0d1a558e7ed396fee7709dc47f3ae277faed7068cd7ba66ce8",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -20318,15 +20318,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "2cfea704432a3046aab0852432022824fe58ec0203d634e73363e2341c938611",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "9c66c5d1eb9e58b5970d5378533e8ce1268b7dc53c6a147171fc639c95979b7d",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "f1cd257b8c4bb163c7f00610abb30704ea58d93a87be385f48afeb61de239814",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -20527,15 +20527,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "73035dbcb6da7cd0c3a1e857983f14d1cd9cd4c75398430c3486992fe5a149e7",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "4bb5319314889b0b57602c4cdcdfa19739edf87118750e54764479030de07002",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "f60b037fb29edecff5d0d8476cc5dcfd5acf96b2b985c1d841c2b5a1a41f7da8",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -20733,15 +20733,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "4dcfb739ffd6a89508b441eac0c0f7a62f9ea403a8cf8b54a4a9e13edbbec1f2",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "47de2be57dd7006a7a8e5149a29f957418eea802e3039313b8dc26960559a06d",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "f6a5a578f9b5347f6371a7ef1195ab84b1bea4d80b58c97efa23c8ddf0d6f6e9",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -20894,15 +20894,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "07d86ee010c1a156bdbf43b23af2318f326cbfe2f06d1b61d89cd6202f71539a",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "2862bd30b27768bac210744c4b0c25ddffafd86237de02cefad6452593f5f3ae",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "fb9174aa26153911120a92d95beb8cf598f1f860344af2ccf67e98a99f4ca049",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -21100,15 +21100,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "c4e068b6a6f9509eeaa649e4508011847f651a8061f0e153e895ed3886995e53",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "3901b4fb1915186c1211b4a920f035133a29666e39846bfb8749ebf1716f088c",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "fbe641e5e808e8127c0196e28bc8a10ba9d8ae61bd8645affff9f259b4a6b25c",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -21300,15 +21300,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "186b1ebdf8754649c2f0483d7ca403c4ffe18d0f49347f6bf751dfb1252eb690",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "d1bc1dcfafbf12af9810747fad32bf87e3d950de23b377e3ad357d44fc5d7790",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "fbfed0cc2d55bf823012d76cc7ac6d7fa742f059602d9d126b4866bdd8617d2d",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -21506,15 +21506,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "88c52587bb68a95a38f6a001c976e0c20d086e05a292fb4e73f712fe9c7c5e99",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "d7a34466ec0df279bc433c8d428f0ca4ef65249913f4f7462018f937d25c7fdd",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "fc3013be680340b6a413a7aa8773cc0bdd2bd1144d3ceb2002983bacfeff8442",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1939",
@@ -21667,15 +21667,15 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "abe0373db13d10c9c864892724c4ef94a24b099df6051845410c48eb2fd33807",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "82c0cc4cd68ef0d6b16f547e1305d94a580071e5ac3c87f170e9cc4a0c72dff6",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     },
     {
       "schema": 1,
       "input_sha256": "ffde0e55aed6484046d539a455e04dfd0765b927a57cce0af9018726fe23725f",
-      "producer_version": "0.16.1",
+      "producer_version": "0.16.2",
       "status": "supported",
       "identity": {
         "chip": "MT1959",
@@ -21870,8 +21870,8 @@
       },
       "reason": null,
       "detail": null,
-      "output_sha256": "4d421996c3d09e3051198eb4f070b26605593ca260badbe12d08dadef5092908",
-      "producer_sha256": "b5612dbdda50b1f35ffab702b6ccee404221baf44b385e7b0e65710bac42fb36",
+      "output_sha256": "ad188d3795e1c7215bc3a5096f728117e6a9bc78b94e383001592f5b09282ce5",
+      "producer_sha256": "73abc4fc4f8bb3ae2d9b736593c286c012d6accb55ba06f574014cbc11a5c060",
       "flash_admitted": true,
       "flash_reason": null
     }
