@@ -3,6 +3,31 @@ title: Flash Changelog
 description: What's new in freemkv Flash and Modify - newest first.
 ---
 
+## 0.17.0
+
+<small>2026-11-01</small>
+
+### freemkv Modify
+
+- Repair UHD disc-information handling, geometry and capacity calculations in supported classic MT1939 firmware, and apply source-validated UHD repairs to older MT1959 firmware. Preserve native UHD handling in newer MT1959 firmware.
+- Fix Modify skipping supported features because of drive-model capability labels. Detect support from validated firmware instructions, and report settings on already-modified firmware from its verified installed support record.
+- Clear stale authentication when Encryption changes from Off to On or OEM, including when settings are reset.
+- Correct the host setting values for maximum read speed and region-free DVD responses. Region-free reports DVD RPC-1; Blu-ray region forcing is not implemented.
+- Validate modified outputs for 123 OEM firmware inputs in software. Physical UHD reads, layer transitions and settings persistence still require hardware testing.
+
+### freemkv Flash
+
+- Allow matching Pioneer BDX-PR1ML and BDR-211M SAT 8801 platforms to share a hardware family. Preserve all other hardware evidence, raw register values and the existing settings requirements.
+
+## 0.16.2
+
+<small>2026-11-01</small>
+
+### freemkv Flash
+
+- Fix the supported BDR-UD02D 1.00 to BDR-UD04 1.14 conversion being rejected on UD02FAN units. Flash and Recovery now select this conversion by the certified firmware pair, without requiring a factory product code.
+- Preserve the required live mechanism setting, firmware integrity checks, verification and rollback. The certified converted firmware can return to stock UD02 1.00; native UD04 to UD02 remains unsupported.
+
 ## 0.16.1
 
 <small>2026-10-31</small>
