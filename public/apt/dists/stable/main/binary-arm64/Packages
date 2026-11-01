@@ -1,39 +1,39 @@
 Package: freemkv
-Version: 1.8.7
+Version: 1.8.8
 Architecture: arm64
 Section: video
 Priority: optional
 Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
-Installed-Size: 17786
+Installed-Size: 17787
 Depends: libadwaita-1-0 (>= 1.4~beta), libc6 (>= 2.39), libcairo2 (>= 1.2.4), libgcc-s1 (>= 4.2), libgdk-pixbuf-2.0-0 (>= 2.22.0), libglib2.0-0t64 (>= 2.54.0), libgtk-4-1 (>= 4.9.3), libpango-1.0-0 (>= 1.14.0), ca-certificates
 Conflicts: freemkv-cli
 Replaces: freemkv-cli
 Homepage: https://freemkv.org
-Filename: pool/main/freemkv/freemkv_1.8.7_arm64.deb
-Size: 5086480
-MD5sum: 239e469e0ee0321fdbd4495ea91ac2e7
-SHA1: 97e3214ded9313c58f037d1a7a40317eae5b572d
-SHA256: 858cf973576d6fced8cddc3bd35f0a32bf9248aaee0eca1ff6f35f186fe473db
+Filename: pool/main/freemkv/freemkv_1.8.8_arm64.deb
+Size: 5084866
+MD5sum: 2642b113fa484493ce1ce82c8c76f8bb
+SHA1: 6d1b76adc8b4a9fb96c122774b3391a3a54697c7
+SHA256: 4c72540a2788e31e476a56f085011802a79918b1617451885229251508e7abf3
 Description: Rip DVD, Blu-ray and UHD discs without re-encoding
  Native GTK4 desktop app and command-line interface for selecting titles,
  audio and subtitle tracks and saving them to MKV, MP4 or M2TS.
  Running freemkv without arguments opens the desktop app.
 
 Package: freemkv-cli
-Version: 1.8.7
+Version: 1.8.8
 Architecture: arm64
 Section: video
 Priority: optional
 Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
-Installed-Size: 14580
+Installed-Size: 14645
 Conflicts: freemkv
 Replaces: freemkv
 Homepage: https://freemkv.org
-Filename: pool/main/freemkv-cli/freemkv-cli_1.8.7_arm64.deb
-Size: 4514124
-MD5sum: a290f898397134028293f3d134784fc2
-SHA1: 8316fbda01430e5f71d02708a8ccd5c5dfa7730b
-SHA256: e12e43e90cf66c0995d85ca32f33037be9fff4fd449ec0f754a6baa40b96358d
+Filename: pool/main/freemkv-cli/freemkv-cli_1.8.8_arm64.deb
+Size: 4514464
+MD5sum: a292901ccc746015ef3b605c061935e2
+SHA1: f3ddf2bdbde972be2dbfd40e59a3ff7eb348ae86
+SHA256: ccd23e70ff0fa18c2f81e91eab4f6632f0405ac89b22d2ca73be0a14acd17935
 Description: Rip DVD, Blu-ray and UHD discs without re-encoding (command line)
  Static command-line build of freemkv for selecting titles, audio and
  subtitle tracks and saving them to MKV, MP4 or M2TS. It has no desktop
