@@ -80,12 +80,13 @@ jobs:
             done
             $pushed || { echo "::error::could not push the refreshed arch repository to dev"; exit 1; }
             git fetch -q origin main qa
-            if git merge-base --is-ancestor origin/main HEAD; then
-              git push -q origin HEAD:qa HEAD:main
-              gh workflow run pages.yml --ref main -R "$GITHUB_REPOSITORY"
-            else
-              echo "::warning::main is not an ancestor of dev; pushed to dev only, the site was not redeployed"
+            # Firmware releases merge straight to main: bring them into dev so main can fast-forward.
+            if ! git merge-base --is-ancestor origin/main HEAD; then
+              git merge -q --no-edit origin/main
+              git push -q origin HEAD:dev
             fi
+            git push -q origin HEAD:qa HEAD:main
+            gh workflow run pages.yml --ref main -R "$GITHUB_REPOSITORY"
           else
             echo "databases unchanged"
           fi
