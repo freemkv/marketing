@@ -3,6 +3,13 @@
 Customer-visible changes to freemkv Flash and freemkv Modify, newest first.
 Versions are independent of the freemkv ripping applications.
 
+## [0.16.2] - 2026-11-01
+
+### freemkv Flash
+
+- Fix the supported BDR-UD02D 1.00 to BDR-UD04 1.14 conversion being rejected on UD02FAN units. Flash and Recovery now select this conversion by the certified firmware pair, without requiring a factory product code.
+- Preserve the required live mechanism setting, firmware integrity checks, verification and rollback. The certified converted firmware can return to stock UD02 1.00; native UD04 to UD02 remains unsupported.
+
 ## [0.16.1] - 2026-10-31
 
 ### freemkv Flash
