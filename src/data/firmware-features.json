@@ -1,5 +1,5 @@
 {
-  "note": "Exact-image capabilities from freemkv-fw 0.16.2; every published MediaTek hash was queried and every supported output built, audited and checked by Flash. Unsupported inputs are retained explicitly.",
+  "note": "Exact-image capabilities from freemkv-fw 0.17.0; every published MediaTek hash was queried and every supported output built, audited and checked by Flash. Unsupported inputs are retained explicitly.",
   "flags": [
     "Speed",
     "Region",
@@ -15,7 +15,7 @@
     "feature_bearing": 114,
     "stock_only": 0,
     "hardware_verified": 0,
-    "build_verified": 113
+    "build_verified": 109
   },
   "per_flag": {
     "Speed": 114,
@@ -90,7 +90,7 @@
       },
       "base_facts": {
         "handler_va": 1740616,
-        "boot_stub_va": 1741368,
+        "boot_stub_va": 1741420,
         "boot_init_site": 1657218,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -168,7 +168,7 @@
       },
       "base_facts": {
         "handler_va": 1750960,
-        "boot_stub_va": 1751712,
+        "boot_stub_va": 1751764,
         "boot_init_site": 1667366,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -246,7 +246,7 @@
       },
       "base_facts": {
         "handler_va": 1749784,
-        "boot_stub_va": 1750536,
+        "boot_stub_va": 1750588,
         "boot_init_site": 1666170,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -324,7 +324,7 @@
       },
       "base_facts": {
         "handler_va": 1736784,
-        "boot_stub_va": 1737536,
+        "boot_stub_va": 1737588,
         "boot_init_site": 1653404,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -402,7 +402,7 @@
       },
       "base_facts": {
         "handler_va": 1743592,
-        "boot_stub_va": 1744344,
+        "boot_stub_va": 1744396,
         "boot_init_site": 1660074,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -480,7 +480,7 @@
       },
       "base_facts": {
         "handler_va": 1743664,
-        "boot_stub_va": 1744416,
+        "boot_stub_va": 1744468,
         "boot_init_site": 1660146,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -558,7 +558,7 @@
       },
       "base_facts": {
         "handler_va": 1740100,
-        "boot_stub_va": 1740852,
+        "boot_stub_va": 1740904,
         "boot_init_site": 1656706,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -636,7 +636,7 @@
       },
       "base_facts": {
         "handler_va": 1744080,
-        "boot_stub_va": 1744832,
+        "boot_stub_va": 1744884,
         "boot_init_site": 1660640,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -714,7 +714,7 @@
       },
       "base_facts": {
         "handler_va": 1747012,
-        "boot_stub_va": 1747764,
+        "boot_stub_va": 1747816,
         "boot_init_site": 1663480,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -792,7 +792,7 @@
       },
       "base_facts": {
         "handler_va": 1741028,
-        "boot_stub_va": 1741780,
+        "boot_stub_va": 1741832,
         "boot_init_site": 1657602,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -870,7 +870,7 @@
       },
       "base_facts": {
         "handler_va": 1743496,
-        "boot_stub_va": 1744248,
+        "boot_stub_va": 1744300,
         "boot_init_site": 1659978,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -948,7 +948,7 @@
       },
       "base_facts": {
         "handler_va": 1743568,
-        "boot_stub_va": 1744320,
+        "boot_stub_va": 1744372,
         "boot_init_site": 1660050,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1026,7 +1026,7 @@
       },
       "base_facts": {
         "handler_va": 1743944,
-        "boot_stub_va": 1744696,
+        "boot_stub_va": 1744748,
         "boot_init_site": 1660426,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1104,7 +1104,7 @@
       },
       "base_facts": {
         "handler_va": 1744644,
-        "boot_stub_va": 1745396,
+        "boot_stub_va": 1745448,
         "boot_init_site": 1660926,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1182,7 +1182,7 @@
       },
       "base_facts": {
         "handler_va": 1746736,
-        "boot_stub_va": 1747488,
+        "boot_stub_va": 1747540,
         "boot_init_site": 1663222,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1260,7 +1260,7 @@
       },
       "base_facts": {
         "handler_va": 1746784,
-        "boot_stub_va": 1747536,
+        "boot_stub_va": 1747588,
         "boot_init_site": 1663270,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1338,7 +1338,7 @@
       },
       "base_facts": {
         "handler_va": 1735528,
-        "boot_stub_va": 1736280,
+        "boot_stub_va": 1736332,
         "boot_init_site": 1652210,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1416,7 +1416,7 @@
       },
       "base_facts": {
         "handler_va": 1747480,
-        "boot_stub_va": 1748232,
+        "boot_stub_va": 1748284,
         "boot_init_site": 1663934,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1650,7 +1650,7 @@
       },
       "base_facts": {
         "handler_va": 1736784,
-        "boot_stub_va": 1737536,
+        "boot_stub_va": 1737588,
         "boot_init_site": 1653404,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1728,7 +1728,7 @@
       },
       "base_facts": {
         "handler_va": 1743592,
-        "boot_stub_va": 1744344,
+        "boot_stub_va": 1744396,
         "boot_init_site": 1660074,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1806,7 +1806,7 @@
       },
       "base_facts": {
         "handler_va": 1743664,
-        "boot_stub_va": 1744416,
+        "boot_stub_va": 1744468,
         "boot_init_site": 1660146,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1884,7 +1884,7 @@
       },
       "base_facts": {
         "handler_va": 1743992,
-        "boot_stub_va": 1744744,
+        "boot_stub_va": 1744796,
         "boot_init_site": 1660470,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -1962,7 +1962,7 @@
       },
       "base_facts": {
         "handler_va": 1743568,
-        "boot_stub_va": 1744320,
+        "boot_stub_va": 1744372,
         "boot_init_site": 1660050,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -2040,7 +2040,7 @@
       },
       "base_facts": {
         "handler_va": 1743568,
-        "boot_stub_va": 1744320,
+        "boot_stub_va": 1744372,
         "boot_init_site": 1660050,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -2118,7 +2118,7 @@
       },
       "base_facts": {
         "handler_va": 1743896,
-        "boot_stub_va": 1744648,
+        "boot_stub_va": 1744700,
         "boot_init_site": 1660374,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -2196,7 +2196,7 @@
       },
       "base_facts": {
         "handler_va": 1743896,
-        "boot_stub_va": 1744648,
+        "boot_stub_va": 1744700,
         "boot_init_site": 1660374,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -2274,7 +2274,7 @@
       },
       "base_facts": {
         "handler_va": 1754636,
-        "boot_stub_va": 1755388,
+        "boot_stub_va": 1755440,
         "boot_init_site": 1670622,
         "de_off": 2015318,
         "speed_gate": 0,
@@ -2352,7 +2352,7 @@
       },
       "base_facts": {
         "handler_va": 98396,
-        "boot_stub_va": 99156,
+        "boot_stub_va": 99212,
         "boot_init_site": 1550504,
         "de_off": 2015318,
         "speed_gate": 101090,
@@ -2430,7 +2430,7 @@
       },
       "base_facts": {
         "handler_va": 98396,
-        "boot_stub_va": 99156,
+        "boot_stub_va": 99212,
         "boot_init_site": 1550596,
         "de_off": 2015318,
         "speed_gate": 101090,
@@ -2508,7 +2508,7 @@
       },
       "base_facts": {
         "handler_va": 98336,
-        "boot_stub_va": 99096,
+        "boot_stub_va": 99152,
         "boot_init_site": 1550680,
         "de_off": 2015318,
         "speed_gate": 101090,
@@ -2586,7 +2586,7 @@
       },
       "base_facts": {
         "handler_va": 98396,
-        "boot_stub_va": 99156,
+        "boot_stub_va": 99212,
         "boot_init_site": 1550504,
         "de_off": 2015318,
         "speed_gate": 101090,
@@ -2664,7 +2664,7 @@
       },
       "base_facts": {
         "handler_va": 98396,
-        "boot_stub_va": 99156,
+        "boot_stub_va": 99212,
         "boot_init_site": 1550596,
         "de_off": 2015318,
         "speed_gate": 101090,
@@ -2742,7 +2742,7 @@
       },
       "base_facts": {
         "handler_va": 1404760,
-        "boot_stub_va": 1405520,
+        "boot_stub_va": 1405576,
         "boot_init_site": 1311970,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -2820,7 +2820,7 @@
       },
       "base_facts": {
         "handler_va": 1404592,
-        "boot_stub_va": 1405352,
+        "boot_stub_va": 1405408,
         "boot_init_site": 1311826,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -2898,10 +2898,10 @@
       },
       "base_facts": {
         "handler_va": 98420,
-        "boot_stub_va": 99180,
+        "boot_stub_va": 99236,
         "boot_init_site": 1312730,
         "de_off": 2015318,
-        "speed_gate": 101122,
+        "speed_gate": 0,
         "region_emitter": 0,
         "ake_gate": 0,
         "uhd_stub_va": 0,
@@ -2976,7 +2976,7 @@
       },
       "base_facts": {
         "handler_va": 1403980,
-        "boot_stub_va": 1404740,
+        "boot_stub_va": 1404796,
         "boot_init_site": 1311246,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -3054,7 +3054,7 @@
       },
       "base_facts": {
         "handler_va": 1406364,
-        "boot_stub_va": 1407124,
+        "boot_stub_va": 1407180,
         "boot_init_site": 1313598,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -3132,7 +3132,7 @@
       },
       "base_facts": {
         "handler_va": 1406364,
-        "boot_stub_va": 1407124,
+        "boot_stub_va": 1407180,
         "boot_init_site": 1313598,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -3210,7 +3210,7 @@
       },
       "base_facts": {
         "handler_va": 1406284,
-        "boot_stub_va": 1407044,
+        "boot_stub_va": 1407100,
         "boot_init_site": 1313542,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -3288,7 +3288,7 @@
       },
       "base_facts": {
         "handler_va": 1404012,
-        "boot_stub_va": 1404772,
+        "boot_stub_va": 1404828,
         "boot_init_site": 1311258,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -3366,7 +3366,7 @@
       },
       "base_facts": {
         "handler_va": 1404012,
-        "boot_stub_va": 1404772,
+        "boot_stub_va": 1404828,
         "boot_init_site": 1311258,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -3444,7 +3444,7 @@
       },
       "base_facts": {
         "handler_va": 1403836,
-        "boot_stub_va": 1404596,
+        "boot_stub_va": 1404652,
         "boot_init_site": 1311106,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -3522,7 +3522,7 @@
       },
       "base_facts": {
         "handler_va": 1403980,
-        "boot_stub_va": 1404740,
+        "boot_stub_va": 1404796,
         "boot_init_site": 1311234,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -3600,7 +3600,7 @@
       },
       "base_facts": {
         "handler_va": 98420,
-        "boot_stub_va": 99180,
+        "boot_stub_va": 99236,
         "boot_init_site": 1312010,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -3678,7 +3678,7 @@
       },
       "base_facts": {
         "handler_va": 1403836,
-        "boot_stub_va": 1404596,
+        "boot_stub_va": 1404652,
         "boot_init_site": 1311106,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -3756,7 +3756,7 @@
       },
       "base_facts": {
         "handler_va": 1404012,
-        "boot_stub_va": 1404772,
+        "boot_stub_va": 1404828,
         "boot_init_site": 1311258,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -3834,7 +3834,7 @@
       },
       "base_facts": {
         "handler_va": 1403836,
-        "boot_stub_va": 1404596,
+        "boot_stub_va": 1404652,
         "boot_init_site": 1311106,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -3912,7 +3912,7 @@
       },
       "base_facts": {
         "handler_va": 1403980,
-        "boot_stub_va": 1404740,
+        "boot_stub_va": 1404796,
         "boot_init_site": 1311234,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -3990,7 +3990,7 @@
       },
       "base_facts": {
         "handler_va": 98420,
-        "boot_stub_va": 99180,
+        "boot_stub_va": 99236,
         "boot_init_site": 1312014,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -4068,7 +4068,7 @@
       },
       "base_facts": {
         "handler_va": 98420,
-        "boot_stub_va": 99180,
+        "boot_stub_va": 99236,
         "boot_init_site": 1311982,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -4146,7 +4146,7 @@
       },
       "base_facts": {
         "handler_va": 1406212,
-        "boot_stub_va": 1406972,
+        "boot_stub_va": 1407028,
         "boot_init_site": 1313446,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -4224,7 +4224,7 @@
       },
       "base_facts": {
         "handler_va": 1406148,
-        "boot_stub_va": 1406908,
+        "boot_stub_va": 1406964,
         "boot_init_site": 1313406,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -4302,7 +4302,7 @@
       },
       "base_facts": {
         "handler_va": 1406276,
-        "boot_stub_va": 1407036,
+        "boot_stub_va": 1407092,
         "boot_init_site": 1313526,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -4380,14 +4380,14 @@
       },
       "base_facts": {
         "handler_va": 1388344,
-        "boot_stub_va": 1389104,
+        "boot_stub_va": 1389160,
         "boot_init_site": 1295274,
         "de_off": 2015318,
         "speed_gate": 113410,
         "region_emitter": 1147896,
         "ake_gate": 1266420,
-        "uhd_stub_va": 1389460,
-        "bd_stub_va": 1389520,
+        "uhd_stub_va": 1389516,
+        "bd_stub_va": 1389576,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BH16NS60_1.00_580d867c.bin",
@@ -4458,7 +4458,7 @@
       },
       "base_facts": {
         "handler_va": 1405676,
-        "boot_stub_va": 1406436,
+        "boot_stub_va": 1406492,
         "boot_init_site": 1314658,
         "de_off": 2015318,
         "speed_gate": 101282,
@@ -4536,7 +4536,7 @@
       },
       "base_facts": {
         "handler_va": 1381092,
-        "boot_stub_va": 1383944,
+        "boot_stub_va": 1384000,
         "boot_init_site": 1288942,
         "de_off": 2015318,
         "speed_gate": 113586,
@@ -4614,7 +4614,7 @@
       },
       "base_facts": {
         "handler_va": 1381564,
-        "boot_stub_va": 1384416,
+        "boot_stub_va": 1384472,
         "boot_init_site": 1289406,
         "de_off": 2015318,
         "speed_gate": 113586,
@@ -4642,9 +4642,9 @@
       "media": "BD/UHD",
       "variant": "N009800",
       "modifiable": true,
-      "base_ok": true,
+      "base_ok": false,
       "base_only": false,
-      "confidence": "build-verified",
+      "confidence": null,
       "advertised": "features",
       "features": [
         {
@@ -4690,18 +4690,7 @@
         "speed": true,
         "region": true
       },
-      "base_facts": {
-        "handler_va": 110752,
-        "boot_stub_va": 111512,
-        "boot_init_site": 1289998,
-        "de_off": 2015318,
-        "speed_gate": 113586,
-        "region_emitter": 0,
-        "ake_gate": 0,
-        "uhd_stub_va": 0,
-        "bd_stub_va": 0,
-        "hrl_sites": 0
-      },
+      "base_facts": null,
       "r2_key": "MT1959/BP50NB40_1.03_3cdbdaca.bin",
       "lineage": "MT1959-lineage",
       "capability_status": "supported",
@@ -4770,7 +4759,7 @@
       },
       "base_facts": {
         "handler_va": 1381092,
-        "boot_stub_va": 1383944,
+        "boot_stub_va": 1384000,
         "boot_init_site": 1288942,
         "de_off": 2015318,
         "speed_gate": 113586,
@@ -4848,7 +4837,7 @@
       },
       "base_facts": {
         "handler_va": 1381588,
-        "boot_stub_va": 1384440,
+        "boot_stub_va": 1384496,
         "boot_init_site": 1289430,
         "de_off": 2015318,
         "speed_gate": 113586,
@@ -4926,14 +4915,14 @@
       },
       "base_facts": {
         "handler_va": 1392720,
-        "boot_stub_va": 1393480,
+        "boot_stub_va": 1393536,
         "boot_init_site": 1300114,
         "de_off": 2015318,
         "speed_gate": 113584,
         "region_emitter": 1153252,
         "ake_gate": 1271684,
-        "uhd_stub_va": 1393836,
-        "bd_stub_va": 1393896,
+        "uhd_stub_va": 1393892,
+        "bd_stub_va": 1393952,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BP60NB10_1.00_f60b037f.bin",
@@ -5004,14 +4993,14 @@
       },
       "base_facts": {
         "handler_va": 1393024,
-        "boot_stub_va": 1393784,
+        "boot_stub_va": 1393840,
         "boot_init_site": 1300406,
         "de_off": 2015318,
         "speed_gate": 113584,
         "region_emitter": 1153580,
         "ake_gate": 1272004,
-        "uhd_stub_va": 1394140,
-        "bd_stub_va": 1394200,
+        "uhd_stub_va": 1394196,
+        "bd_stub_va": 1394256,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BP60NB10_1.01_fb9174aa.bin",
@@ -5082,14 +5071,14 @@
       },
       "base_facts": {
         "handler_va": 1390952,
-        "boot_stub_va": 1391712,
+        "boot_stub_va": 1391768,
         "boot_init_site": 1299496,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1153168,
         "ake_gate": 1271188,
-        "uhd_stub_va": 1392068,
-        "bd_stub_va": 1392128,
+        "uhd_stub_va": 1392124,
+        "bd_stub_va": 1392184,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_1.00_221ad35b.bin",
@@ -5160,14 +5149,14 @@
       },
       "base_facts": {
         "handler_va": 1390856,
-        "boot_stub_va": 1391616,
+        "boot_stub_va": 1391672,
         "boot_init_site": 1299776,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1151978,
         "ake_gate": 1270324,
-        "uhd_stub_va": 1391972,
-        "bd_stub_va": 1392032,
+        "uhd_stub_va": 1392028,
+        "bd_stub_va": 1392088,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_1.01_103b9da9.bin",
@@ -5238,14 +5227,14 @@
       },
       "base_facts": {
         "handler_va": 1392124,
-        "boot_stub_va": 1392884,
+        "boot_stub_va": 1392940,
         "boot_init_site": 1300116,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1153180,
         "ake_gate": 1271696,
-        "uhd_stub_va": 1393240,
-        "bd_stub_va": 1393300,
+        "uhd_stub_va": 1393296,
+        "bd_stub_va": 1393356,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_1.02_1bbeb535.bin",
@@ -5316,14 +5305,14 @@
       },
       "base_facts": {
         "handler_va": 1392092,
-        "boot_stub_va": 1392852,
+        "boot_stub_va": 1392908,
         "boot_init_site": 1300088,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1153152,
         "ake_gate": 1271668,
-        "uhd_stub_va": 1393208,
-        "bd_stub_va": 1393268,
+        "uhd_stub_va": 1393264,
+        "bd_stub_va": 1393324,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_1.02_97bee5c5.bin",
@@ -5394,14 +5383,14 @@
       },
       "base_facts": {
         "handler_va": 1392620,
-        "boot_stub_va": 1393380,
+        "boot_stub_va": 1393436,
         "boot_init_site": 1300604,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1153668,
         "ake_gate": 1272184,
-        "uhd_stub_va": 1393736,
-        "bd_stub_va": 1393796,
+        "uhd_stub_va": 1393792,
+        "bd_stub_va": 1393852,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_1.03_64688690.bin",
@@ -5472,14 +5461,14 @@
       },
       "base_facts": {
         "handler_va": 110752,
-        "boot_stub_va": 111512,
+        "boot_stub_va": 1393252,
         "boot_init_site": 1301236,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1154292,
         "ake_gate": 1272816,
-        "uhd_stub_va": 1393464,
-        "bd_stub_va": 1393524,
+        "uhd_stub_va": 1393520,
+        "bd_stub_va": 1393580,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_1.04_5c1a4739.bin",
@@ -5500,9 +5489,9 @@
       "media": "BD/UHD",
       "variant": "N085300",
       "modifiable": true,
-      "base_ok": true,
+      "base_ok": false,
       "base_only": false,
-      "confidence": "build-verified",
+      "confidence": null,
       "advertised": "features",
       "features": [
         {
@@ -5548,18 +5537,7 @@
         "speed": true,
         "region": true
       },
-      "base_facts": {
-        "handler_va": 110752,
-        "boot_stub_va": 111512,
-        "boot_init_site": 1305360,
-        "de_off": 2015318,
-        "speed_gate": 113442,
-        "region_emitter": 1158492,
-        "ake_gate": 1276940,
-        "uhd_stub_va": 1730120,
-        "bd_stub_va": 1730180,
-        "hrl_sites": 3
-      },
+      "base_facts": null,
       "r2_key": "MT1959/BU40N_1.05_fbfed0cc.bin",
       "lineage": "MT1959-lineage",
       "capability_status": "supported",
@@ -5578,9 +5556,9 @@
       "media": "BD/UHD",
       "variant": "D003600",
       "modifiable": true,
-      "base_ok": true,
+      "base_ok": false,
       "base_only": false,
-      "confidence": "build-verified",
+      "confidence": null,
       "advertised": "features",
       "features": [
         {
@@ -5626,18 +5604,7 @@
         "speed": true,
         "region": true
       },
-      "base_facts": {
-        "handler_va": 110752,
-        "boot_stub_va": 111512,
-        "boot_init_site": 1303482,
-        "de_off": 2015318,
-        "speed_gate": 113442,
-        "region_emitter": 0,
-        "ake_gate": 0,
-        "uhd_stub_va": 0,
-        "bd_stub_va": 0,
-        "hrl_sites": 0
-      },
+      "base_facts": null,
       "r2_key": "MT1959/BU40N_A103_7d7f2465.bin",
       "lineage": "MT1959-lineage",
       "capability_status": "supported",
@@ -5706,14 +5673,14 @@
       },
       "base_facts": {
         "handler_va": 1386600,
-        "boot_stub_va": 1389500,
+        "boot_stub_va": 1389556,
         "boot_init_site": 1295168,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1147186,
         "ake_gate": 1265732,
-        "uhd_stub_va": 1387716,
-        "bd_stub_va": 1387776,
+        "uhd_stub_va": 1387772,
+        "bd_stub_va": 1387832,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BN11_5c01c1fd.bin",
@@ -5784,14 +5751,14 @@
       },
       "base_facts": {
         "handler_va": 1387040,
-        "boot_stub_va": 1389940,
+        "boot_stub_va": 1389996,
         "boot_init_site": 1295600,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1147618,
         "ake_gate": 1266164,
-        "uhd_stub_va": 1388156,
-        "bd_stub_va": 1388216,
+        "uhd_stub_va": 1388212,
+        "bd_stub_va": 1388272,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BN12_3d3badd6.bin",
@@ -5862,14 +5829,14 @@
       },
       "base_facts": {
         "handler_va": 1387064,
-        "boot_stub_va": 1389964,
+        "boot_stub_va": 1390020,
         "boot_init_site": 1295620,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1147638,
         "ake_gate": 1266184,
-        "uhd_stub_va": 1388180,
-        "bd_stub_va": 1388240,
+        "uhd_stub_va": 1388236,
+        "bd_stub_va": 1388296,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BN12_c4d995f0.bin",
@@ -5940,14 +5907,14 @@
       },
       "base_facts": {
         "handler_va": 1394040,
-        "boot_stub_va": 1394800,
+        "boot_stub_va": 1394856,
         "boot_init_site": 1302032,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1154142,
         "ake_gate": 1272644,
-        "uhd_stub_va": 1395156,
-        "bd_stub_va": 1395216,
+        "uhd_stub_va": 1395212,
+        "bd_stub_va": 1395272,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BU10_14d86e99.bin",
@@ -6018,14 +5985,14 @@
       },
       "base_facts": {
         "handler_va": 1394040,
-        "boot_stub_va": 1394800,
+        "boot_stub_va": 1394856,
         "boot_init_site": 1302032,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1154142,
         "ake_gate": 1272644,
-        "uhd_stub_va": 1395156,
-        "bd_stub_va": 1395216,
+        "uhd_stub_va": 1395212,
+        "bd_stub_va": 1395272,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BU10_58203b53.bin",
@@ -6096,14 +6063,14 @@
       },
       "base_facts": {
         "handler_va": 1394036,
-        "boot_stub_va": 1394796,
+        "boot_stub_va": 1394852,
         "boot_init_site": 1302024,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1153990,
         "ake_gate": 1272572,
-        "uhd_stub_va": 1395152,
-        "bd_stub_va": 1395212,
+        "uhd_stub_va": 1395208,
+        "bd_stub_va": 1395268,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BU11_08d14869.bin",
@@ -6174,14 +6141,14 @@
       },
       "base_facts": {
         "handler_va": 1394540,
-        "boot_stub_va": 1395300,
+        "boot_stub_va": 1395356,
         "boot_init_site": 1302512,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1154478,
         "ake_gate": 1273060,
-        "uhd_stub_va": 1395656,
-        "bd_stub_va": 1395716,
+        "uhd_stub_va": 1395712,
+        "bd_stub_va": 1395772,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BU12_920a89f9.bin",
@@ -6252,14 +6219,14 @@
       },
       "base_facts": {
         "handler_va": 1391956,
-        "boot_stub_va": 1392716,
+        "boot_stub_va": 1392772,
         "boot_init_site": 1300196,
         "de_off": 2015318,
         "speed_gate": 113486,
         "region_emitter": 1152698,
         "ake_gate": 1270744,
-        "uhd_stub_va": 1393072,
-        "bd_stub_va": 1393132,
+        "uhd_stub_va": 1393128,
+        "bd_stub_va": 1393188,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BW41_3b9dd9b4.bin",
@@ -6330,14 +6297,14 @@
       },
       "base_facts": {
         "handler_va": 1391956,
-        "boot_stub_va": 1392716,
+        "boot_stub_va": 1392772,
         "boot_init_site": 1300196,
         "de_off": 2015318,
         "speed_gate": 113486,
         "region_emitter": 1152698,
         "ake_gate": 1270744,
-        "uhd_stub_va": 1393072,
-        "bd_stub_va": 1393132,
+        "uhd_stub_va": 1393128,
+        "bd_stub_va": 1393188,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_BW42_c68cd76b.bin",
@@ -6408,7 +6375,7 @@
       },
       "base_facts": {
         "handler_va": 1380772,
-        "boot_stub_va": 1383624,
+        "boot_stub_va": 1383680,
         "boot_init_site": 1290052,
         "de_off": 2015318,
         "speed_gate": 113442,
@@ -6486,14 +6453,14 @@
       },
       "base_facts": {
         "handler_va": 1392328,
-        "boot_stub_va": 1393088,
+        "boot_stub_va": 1393144,
         "boot_init_site": 1301044,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1153074,
         "ake_gate": 1271632,
-        "uhd_stub_va": 1393444,
-        "bd_stub_va": 1393504,
+        "uhd_stub_va": 1393500,
+        "bd_stub_va": 1393560,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_FR07_4af842c0.bin",
@@ -6564,14 +6531,14 @@
       },
       "base_facts": {
         "handler_va": 1392772,
-        "boot_stub_va": 1393532,
+        "boot_stub_va": 1393588,
         "boot_init_site": 1301162,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1152998,
         "ake_gate": 1271712,
-        "uhd_stub_va": 1393888,
-        "bd_stub_va": 1393948,
+        "uhd_stub_va": 1393944,
+        "bd_stub_va": 1394004,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_TK03_c328b656.bin",
@@ -6642,14 +6609,14 @@
       },
       "base_facts": {
         "handler_va": 1394196,
-        "boot_stub_va": 1394956,
+        "boot_stub_va": 1395012,
         "boot_init_site": 1302184,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1154114,
         "ake_gate": 1272732,
-        "uhd_stub_va": 1395312,
-        "bd_stub_va": 1395372,
+        "uhd_stub_va": 1395368,
+        "bd_stub_va": 1395428,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU40N_U101_5f9abd3f.bin",
@@ -6720,14 +6687,14 @@
       },
       "base_facts": {
         "handler_va": 1392092,
-        "boot_stub_va": 1392852,
+        "boot_stub_va": 1392908,
         "boot_init_site": 1300088,
         "de_off": 2015318,
         "speed_gate": 113442,
         "region_emitter": 1153152,
         "ake_gate": 1271668,
-        "uhd_stub_va": 1393208,
-        "bd_stub_va": 1393268,
+        "uhd_stub_va": 1393264,
+        "bd_stub_va": 1393324,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU50N_1.00_20425a8a.bin",
@@ -6798,14 +6765,14 @@
       },
       "base_facts": {
         "handler_va": 1391404,
-        "boot_stub_va": 1392164,
+        "boot_stub_va": 1392220,
         "boot_init_site": 1299740,
         "de_off": 2015318,
         "speed_gate": 113486,
         "region_emitter": 1152330,
         "ake_gate": 1270288,
-        "uhd_stub_va": 1392520,
-        "bd_stub_va": 1392580,
+        "uhd_stub_va": 1392576,
+        "bd_stub_va": 1392636,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/BU50N_BW51_d1e4d3d7.bin",
@@ -6876,7 +6843,7 @@
       },
       "base_facts": {
         "handler_va": 1403164,
-        "boot_stub_va": 1403924,
+        "boot_stub_va": 1403980,
         "boot_init_site": 1310834,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -6954,7 +6921,7 @@
       },
       "base_facts": {
         "handler_va": 1403292,
-        "boot_stub_va": 1404052,
+        "boot_stub_va": 1404108,
         "boot_init_site": 1310950,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -7032,7 +6999,7 @@
       },
       "base_facts": {
         "handler_va": 1403092,
-        "boot_stub_va": 1403852,
+        "boot_stub_va": 1403908,
         "boot_init_site": 1310738,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -7110,7 +7077,7 @@
       },
       "base_facts": {
         "handler_va": 1403092,
-        "boot_stub_va": 1403852,
+        "boot_stub_va": 1403908,
         "boot_init_site": 1310738,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -7188,7 +7155,7 @@
       },
       "base_facts": {
         "handler_va": 1403036,
-        "boot_stub_va": 1403796,
+        "boot_stub_va": 1403852,
         "boot_init_site": 1310710,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -7266,7 +7233,7 @@
       },
       "base_facts": {
         "handler_va": 1403172,
-        "boot_stub_va": 1403932,
+        "boot_stub_va": 1403988,
         "boot_init_site": 1310830,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -7344,7 +7311,7 @@
       },
       "base_facts": {
         "handler_va": 98396,
-        "boot_stub_va": 99156,
+        "boot_stub_va": 99212,
         "boot_init_site": 1555516,
         "de_off": 2015318,
         "speed_gate": 101090,
@@ -7422,7 +7389,7 @@
       },
       "base_facts": {
         "handler_va": 98396,
-        "boot_stub_va": 99156,
+        "boot_stub_va": 99212,
         "boot_init_site": 1555020,
         "de_off": 2015318,
         "speed_gate": 101090,
@@ -7567,7 +7534,7 @@
       },
       "base_facts": {
         "handler_va": 1404164,
-        "boot_stub_va": 1404924,
+        "boot_stub_va": 1404980,
         "boot_init_site": 1311410,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -7645,7 +7612,7 @@
       },
       "base_facts": {
         "handler_va": 1403980,
-        "boot_stub_va": 1404740,
+        "boot_stub_va": 1404796,
         "boot_init_site": 1311246,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -7723,7 +7690,7 @@
       },
       "base_facts": {
         "handler_va": 1404116,
-        "boot_stub_va": 1404876,
+        "boot_stub_va": 1404932,
         "boot_init_site": 1311374,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -7801,10 +7768,10 @@
       },
       "base_facts": {
         "handler_va": 98420,
-        "boot_stub_va": 99180,
+        "boot_stub_va": 99236,
         "boot_init_site": 1312146,
         "de_off": 2015318,
-        "speed_gate": 101122,
+        "speed_gate": 0,
         "region_emitter": 0,
         "ake_gate": 0,
         "uhd_stub_va": 0,
@@ -7879,7 +7846,7 @@
       },
       "base_facts": {
         "handler_va": 1404012,
-        "boot_stub_va": 1404772,
+        "boot_stub_va": 1404828,
         "boot_init_site": 1311258,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -7957,7 +7924,7 @@
       },
       "base_facts": {
         "handler_va": 1403836,
-        "boot_stub_va": 1404596,
+        "boot_stub_va": 1404652,
         "boot_init_site": 1311106,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -8035,10 +8002,10 @@
       },
       "base_facts": {
         "handler_va": 98420,
-        "boot_stub_va": 99180,
+        "boot_stub_va": 99236,
         "boot_init_site": 1312010,
         "de_off": 2015318,
-        "speed_gate": 101122,
+        "speed_gate": 0,
         "region_emitter": 0,
         "ake_gate": 0,
         "uhd_stub_va": 0,
@@ -8113,7 +8080,7 @@
       },
       "base_facts": {
         "handler_va": 1415412,
-        "boot_stub_va": 1416172,
+        "boot_stub_va": 1416228,
         "boot_init_site": 1323368,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -8191,7 +8158,7 @@
       },
       "base_facts": {
         "handler_va": 1415596,
-        "boot_stub_va": 1416356,
+        "boot_stub_va": 1416412,
         "boot_init_site": 1323544,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -8269,7 +8236,7 @@
       },
       "base_facts": {
         "handler_va": 1416268,
-        "boot_stub_va": 1417028,
+        "boot_stub_va": 1417084,
         "boot_init_site": 1324220,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -8347,7 +8314,7 @@
       },
       "base_facts": {
         "handler_va": 98420,
-        "boot_stub_va": 99180,
+        "boot_stub_va": 99236,
         "boot_init_site": 1325696,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -8425,7 +8392,7 @@
       },
       "base_facts": {
         "handler_va": 98420,
-        "boot_stub_va": 99180,
+        "boot_stub_va": 99236,
         "boot_init_site": 1325872,
         "de_off": 2015318,
         "speed_gate": 101122,
@@ -8503,14 +8470,14 @@
       },
       "base_facts": {
         "handler_va": 1388420,
-        "boot_stub_va": 1389180,
+        "boot_stub_va": 1389236,
         "boot_init_site": 1295350,
         "de_off": 2015318,
         "speed_gate": 113410,
         "region_emitter": 1148104,
         "ake_gate": 1266512,
-        "uhd_stub_va": 1389536,
-        "bd_stub_va": 1389596,
+        "uhd_stub_va": 1389592,
+        "bd_stub_va": 1389652,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/WH16NS60_1.00_d1338932.bin",
@@ -8581,14 +8548,14 @@
       },
       "base_facts": {
         "handler_va": 1388344,
-        "boot_stub_va": 1389104,
+        "boot_stub_va": 1389160,
         "boot_init_site": 1295274,
         "de_off": 2015318,
         "speed_gate": 113410,
         "region_emitter": 1147896,
         "ake_gate": 1266420,
-        "uhd_stub_va": 1389460,
-        "bd_stub_va": 1389520,
+        "uhd_stub_va": 1389516,
+        "bd_stub_va": 1389576,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/WH16NS60_1.01_aea98763.bin",
@@ -8659,14 +8626,14 @@
       },
       "base_facts": {
         "handler_va": 1388424,
-        "boot_stub_va": 1389184,
+        "boot_stub_va": 1389240,
         "boot_init_site": 1295338,
         "de_off": 2015318,
         "speed_gate": 113410,
         "region_emitter": 1147960,
         "ake_gate": 1266484,
-        "uhd_stub_va": 1389540,
-        "bd_stub_va": 1389600,
+        "uhd_stub_va": 1389596,
+        "bd_stub_va": 1389656,
         "hrl_sites": 3
       },
       "r2_key": "MT1959/WH16NS60_1.02_12c4ee6f.bin",
@@ -8737,10 +8704,10 @@
       },
       "base_facts": {
         "handler_va": 110724,
-        "boot_stub_va": 111484,
+        "boot_stub_va": 111540,
         "boot_init_site": 1296246,
         "de_off": 2015318,
-        "speed_gate": 113410,
+        "speed_gate": 0,
         "region_emitter": 0,
         "ake_gate": 0,
         "uhd_stub_va": 0,
@@ -8815,7 +8782,7 @@
       },
       "base_facts": {
         "handler_va": 1381092,
-        "boot_stub_va": 1383944,
+        "boot_stub_va": 1384000,
         "boot_init_site": 1288942,
         "de_off": 2015318,
         "speed_gate": 113586,
@@ -8843,9 +8810,9 @@
       "media": "BD/UHD",
       "variant": "N009800",
       "modifiable": true,
-      "base_ok": true,
+      "base_ok": false,
       "base_only": false,
-      "confidence": "build-verified",
+      "confidence": null,
       "advertised": "features",
       "features": [
         {
@@ -8891,18 +8858,7 @@
         "speed": true,
         "region": true
       },
-      "base_facts": {
-        "handler_va": 110752,
-        "boot_stub_va": 111512,
-        "boot_init_site": 1289998,
-        "de_off": 2015318,
-        "speed_gate": 113586,
-        "region_emitter": 0,
-        "ake_gate": 0,
-        "uhd_stub_va": 0,
-        "bd_stub_va": 0,
-        "hrl_sites": 0
-      },
+      "base_facts": null,
       "r2_key": "MT1959/WP50NB40_1.03_263994ab.bin",
       "lineage": "MT1959-lineage",
       "capability_status": "supported",
