@@ -3,6 +3,15 @@ title: Flash Changelog
 description: What's new in freemkv Flash and Modify - newest first.
 ---
 
+## 0.17.3
+
+<small>2026-11-02</small>
+
+### freemkv Flash
+
+- Support the audited BDR-212U 1.01 to BDR-213U 1.02 crossflash with a guarded startup-record conversion, verified drive-data backups, and a saved temporary-firmware recovery archive.
+- Preserve startup settings and refuse unvalidated persistent-record conversions, including when the hardware-family check is bypassed.
+
 ## 0.17.2
 
 <small>2026-11-02</small>

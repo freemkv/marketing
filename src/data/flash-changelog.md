@@ -3,7 +3,7 @@
 Customer-visible changes to freemkv Flash and freemkv Modify, newest first.
 Versions are independent of the freemkv ripping applications.
 
-## [0.17.3] - Unreleased
+## [0.17.3] - 2026-11-02
 
 ### freemkv Flash
 
