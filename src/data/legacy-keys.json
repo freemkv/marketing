@@ -10050,6 +10050,14 @@
       "status": "published"
     },
     {
+      "basis": "projection",
+      "key": "pioneer/BDR-XD07/SAT%208D30/1.00/32e9876a2f34f841e5c41647ab9ea76245a78196fd04696057599603b7688792.tar",
+      "model": "BDR-XD07",
+      "new_key": "fw/pioneer/32e9876a2f34f841e5c41647ab9ea76245a78196fd04696057599603b7688792.tar",
+      "sha256": "32e9876a2f34f841e5c41647ab9ea76245a78196fd04696057599603b7688792",
+      "status": "published"
+    },
+    {
       "basis": "projection+site",
       "key": "pioneer/BDR-XD07/SAT%208D30/1.01/92327cc148592ca533778bf50b5ee9708ca8422aba43ca54ab36a4f4abe25057.tar",
       "model": "BDR-XD07",
