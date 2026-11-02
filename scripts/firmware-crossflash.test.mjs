@@ -147,3 +147,35 @@ test('implemented hardware-dependent routes are directional and distinct from Fu
   assert.deepEqual(page.identities.find(i => i.n === 'BDR-UD03').x[0][2][0].slice(2), [0, 2]);
   assert.deepEqual(crossflashSummary(data, page), { total: 0, uhd: 0 });
 });
+
+test('route groups retain predicates and restrict each selected source package', () => {
+  const requirement = platform => ({kind:'original_hardware',platform,prefix:null,suffix:null});
+  const data = buildFinderData({catalog:familyCatalog(),crossflash:{format:'freemkv-crossflash-routes',version:1,groups:[
+    {source:sha('E'),status:'conditional',requirements:[requirement('UD02')],targets:[sha('A')]},
+    {source:sha('E'),status:'conditional',requirements:[requirement('UD03')],targets:[sha('A')]},
+  ]}});
+  const source = data.identities.find(i=>i.key==='pioneer:8510:ID19');
+  const target = data.identities.find(i=>i.key==='pioneer:8A10:ID40');
+  assert.deepEqual(crossflashTargets(data,target),[]);
+  assert.deepEqual(crossflashTargets(data,source,[]),[]);
+  const alternatives = crossflashTargets(data,source)[0].revisions[0].requirements;
+  assert.deepEqual(alternatives,[[requirement('UD02')],[requirement('UD03')]]);
+  const page = finderPageData(data);
+  const version = page.versions.find(v=>v.i===page.identities.findIndex(i=>i.key===source.key));
+  assert.deepEqual(version.x[0][2][0][4], alternatives);
+  for (const v of page.versions.filter(v=>v.i!==version.i)) assert.deepEqual(v.x,[]);
+});
+
+test('a route to a non-preferred target package cannot authorize the default View artifact', () => {
+  const cat = familyCatalog();
+  cat.identities[0].revisions[0].packages.push(pkg(sha('Z'),'1.14','BDR-UD04',{kn:true}));
+  const graph = {format:'freemkv-crossflash-routes',version:1,groups:[{source:sha('E'),status:'allowed',requirements:[],targets:[sha('Z')]}]};
+  const data=buildFinderData({catalog:cat,crossflash:graph});
+  const page=finderPageData(data);
+  const source=page.identities.find(i=>i.key==='pioneer:8510:ID19');
+  const target=page.identities.find(i=>i.key==='pioneer:8A10:ID40');
+  const targetVersion=page.versions[target.v[0]];
+  assert.equal(page.packages[targetVersion.p[0]].s,sha('A'));
+  assert.deepEqual(page.versions[source.v[0]].x,[]);
+  assert.deepEqual(source.x,[]);
+});

@@ -6,6 +6,7 @@ import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 const exec = promisify(execFile);
+import { routeGroups, canonicalRouteGroups } from '../src/lib/crossflash-routes.mjs';
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
 const FORMAT = 'freemkv-crossflash-cache-v1';
 const platforms = new Set(['pioneer', 'mediatek']);
@@ -19,19 +20,9 @@ function validate(body) {
     if (!sha(o.sha256) || !platforms.has(o.family) || o.key !== `fw/${o.family}/${o.sha256}.tar` || ids.has(o.sha256)) throw new Error('Invalid cached inventory');
     ids.add(o.sha256);
   }
-  const g = body.graph;
-  if (g?.format !== 'freemkv-crossflash-links' || g.version !== 2) throw new Error('Invalid cached graph');
-  for (const edges of [g.links, g.future, g.conditional ?? {}]) {
-    if (!edges || typeof edges !== 'object' || Array.isArray(edges)) throw new Error('Invalid cached edges');
-    for (const [from, to] of Object.entries(edges)) {
-      if (!ids.has(from) || !Array.isArray(to) || new Set(to).size !== to.length || to.some(id => !ids.has(id) || id === from)) throw new Error('Invalid cached edge');
-    }
-  }
-  const seen = new Set();
-  for (const edges of [g.links, g.future, g.conditional ?? {}]) for (const [from, targets] of Object.entries(edges)) for (const to of targets) {
-    const pair = `${from}:${to}`;
-    if (seen.has(pair)) throw new Error('Conflicting cached edge');
-    seen.add(pair);
+  const groups = routeGroups(body.graph);
+  for (const g of groups) {
+    if (!ids.has(g.source) || g.targets.some(id => !ids.has(id))) throw new Error('Invalid cached edge');
   }
   return body;
 }
@@ -74,18 +65,15 @@ export async function crossflashGraph({ engine, root, objects, cacheFile, concur
   for (const o of entries) if (digest(await fs.readFile(path.join(root, o.key))) !== o.sha256) throw new Error('Crossflash payload mismatch');
   const previous = await readCrossflashCache(cacheFile);
   let graph, evaluated = 0;
-  if (!previous || previous.engine !== fingerprint) {
+  if (!previous || previous.engine !== fingerprint || previous.graph.format !== 'freemkv-crossflash-routes') {
     onProgress('Crossflash engine changed or no complete cache; running full validation');
     graph = JSON.parse(await run([path.join(root, 'fw')]));
   } else {
     const old = new Map(previous.inventory.map(o => [o.key, o.sha256]));
     const kept = new Set(entries.map(o => o.sha256));
     const added = new Set(entries.filter(o => old.get(o.key) !== o.sha256).map(o => o.sha256));
-    graph = { ...previous.graph, links: {}, future: {}, conditional: {} };
-    for (const kind of ['links', 'future', 'conditional']) for (const [from, to] of Object.entries(previous.graph[kind] ?? {})) {
-      const targets = to.filter(id => kept.has(id));
-      if (kept.has(from) && targets.length) graph[kind][from] = targets;
-    }
+    graph = { ...previous.graph, groups: routeGroups(previous.graph)
+      .filter(g => kept.has(g.source)).map(g => ({...g, targets:g.targets.filter(id => kept.has(id))})).filter(g => g.targets.length) };
     const jobs = [];
     for (const from of entries) for (const to of entries) {
       if (from.sha256 !== to.sha256 && from.family === to.family && (added.has(from.sha256) || added.has(to.sha256))) jobs.push([from, to]);
@@ -96,16 +84,22 @@ export async function crossflashGraph({ engine, root, objects, cacheFile, concur
       while (cursor < jobs.length) {
         const [from, to] = jobs[cursor++];
         const result = JSON.parse(await run(['--why', '--json', path.join(root, from.key), path.join(root, to.key)]));
-        if (!['yes', 'conditional', 'soft_no', 'hard_no'].includes(result.status)) throw new Error('Invalid crossflash verdict');
-        const kind = result.status === 'yes' ? 'links' : result.status === 'soft_no' ? 'future' : result.status === 'conditional' ? 'conditional' : null;
-        if (kind) (graph[kind][from.sha256] ??= []).push(to.sha256);
+        if (!['yes', 'conditional', 'soft_no', 'hard_no'].includes(result.status) || !Array.isArray(result.routes)) throw new Error('Invalid crossflash verdict');
+        if ((result.status === 'hard_no') !== (result.routes.length === 0)) throw new Error('Invalid crossflash verdict routes');
+        for (const route of result.routes) {
+          const group = {source:from.sha256, status:route.status, requirements:route.requirements, targets:[to.sha256]};
+          routeGroups({format:'freemkv-crossflash-routes',version:1,groups:[group]});
+          graph.groups.push(group);
+        }
         evaluated++;
       }
     }));
-    for (const kind of ['links', 'future', 'conditional']) for (const targets of Object.values(graph[kind])) targets.sort();
+    graph.groups = canonicalRouteGroups(graph.groups);
   }
-  if (await engineHash(engine) !== fingerprint) throw new Error('Crossflash executable changed during validation');
+  if (graph.format !== 'freemkv-crossflash-routes' || graph.version !== 1) throw new Error('Crossflash engine did not emit route groups');
   graph.evaluated_packages = [...new Set(entries.map(o => o.sha256))].sort();
+  graph.groups = canonicalRouteGroups(routeGroups(graph));
+  if (await engineHash(engine) !== fingerprint) throw new Error('Crossflash executable changed during validation');
   graph.engine_sha256 = fingerprint;
   const body = { format: FORMAT, engine: fingerprint, inventory: entries, graph };
   await saveCrossflashCache(cacheFile, body);

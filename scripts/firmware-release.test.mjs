@@ -224,7 +224,7 @@ const out=a[a.indexOf('--out')+1];fs.cpSync(${JSON.stringify(template)},out,{rec
 `);await fs.chmod(fake,0o755);
  const fakeLinks=path.join(root,'freemkv-crossflash');
  await fs.writeFile(fakeLinks,`#!/usr/bin/env node
-process.stdout.write(JSON.stringify({format:'freemkv-crossflash-links',version:2,links:{},future:{}}));
+process.stdout.write(JSON.stringify({format:'freemkv-crossflash-routes',version:1,groups:[]}));
 `);await fs.chmod(fakeLinks,0o755);
  const previousLinks=process.env.FREEMKV_CROSSFLASH;process.env.FREEMKV_CROSSFLASH=fakeLinks;t.after(()=>{if(previousLinks===undefined)delete process.env.FREEMKV_CROSSFLASH;else process.env.FREEMKV_CROSSFLASH=previousLinks;});
  await fs.mkdir(path.join(root,'extractor'));const stage=path.join(root,'stage');const previous=process.env.FWEXT;process.env.FWEXT=fake;t.after(()=>{if(previous===undefined)delete process.env.FWEXT;else process.env.FWEXT=previous;});

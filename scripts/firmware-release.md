@@ -78,9 +78,14 @@ node --test scripts/*.test.mjs
 `prepare` requires `FREEMKV_FW` and `FREEMKV_CROSSFLASH`: the `freemkv-crossflash` binary from
 freemkv-firmware (`cargo build --release -p freemkv-flash --bin freemkv-crossflash`).
 It runs the flasher's own offline gates and writes `crossflash-links.json`
-(installed sha256 -> target sha256s) into the
-stage; `prepare` checks every link names a catalogue package. The finder lists
-exactly these links, so it never re-implements the crossflash rule. Diagnose
+as `freemkv-crossflash-routes` version 1. Each group names one exact installed
+package, an availability status (`allowed`, `conditional`, or `future`), typed
+requirements, and explicit target package hashes. Requirements in a group are
+AND; groups for the same directed pair are OR alternatives. Empty requirements
+represent an ordinary route. Groups never imply all-to-all links among targets.
+`prepare` checks every reference names a catalogue package. The finder lists
+these routes for the selected source package and displays original-hardware
+requirements; it never re-implements the crossflash rule. Diagnose
 one pair with `freemkv-crossflash --why <installed> <target>`.
 
 The graph records `evaluated_packages`, including packages with no admitted
@@ -95,7 +100,7 @@ The complete graph cache lives at `<hoard>/cache/website-crossflash.json`
 (`FIRMWARE_CROSSFLASH_CACHE` overrides it). It is bound to the SHA-256 of the
 actual flasher executable and every package's actual bytes. With the same
 engine, additions check both directions against every package of that platform;
-unchanged pairs retain their exact Yes/Future/refusal result. Removals prune
+unchanged pairs retain their complete alternatives and exact requirements. Removals prune
 edges. Engine changes or a missing cache run the full scan. A corrupt cache
 stops preparation; remove it to request a full scan. Partial scans never replace
 the last complete cache. Keep the validated executable between releases instead

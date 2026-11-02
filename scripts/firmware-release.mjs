@@ -11,6 +11,7 @@ import { firmwareObjectFetcher } from './firmware-object-fetch.mjs';
 import { LATEST_ARCHIVE_KEY } from '../src/lib/firmware-archive.mjs';
 import { crossflashGraph, seedCrossflashCache } from './firmware-crossflash-cache.mjs';
 import { validateCrossflashCoverage } from '../src/lib/finder.mjs';
+import { routeGroups } from '../src/lib/crossflash-routes.mjs';
 
 const PUBLIC_BASE = 'https://pub-10fe57a98db44568abcfb5db130d3b3f.r2.dev';
 const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -163,23 +164,20 @@ export async function fullArchive(directory, archive) {
 }
 /** Every crossflash link must name packages of this catalogue. */
 export function checkCrossflashLinks(links, catalog) {
-  const map = value => value !== null && typeof value === 'object' && !Array.isArray(value);
-  if (links?.format !== 'freemkv-crossflash-links' || ![1, 2].includes(links.version) || !map(links.links) || ((links.version === 2 || links.future !== undefined) && !map(links.future))) throw new Error('Invalid crossflash links');
-  if (links.conditional !== undefined && !map(links.conditional)) throw new Error('Invalid conditional crossflash links');
+  const groups = routeGroups(links);
+  if (links.format === 'freemkv-crossflash-links') {
+    const seen = new Set();
+    for (const group of groups) for (const target of group.targets) {
+      const pair = `${group.source}:${target}`;
+      if (seen.has(pair)) throw new Error('Crossflash pair cannot be both available and future or conditional');
+      seen.add(pair);
+    }
+  }
   if (links.evaluated_packages !== undefined) validateCrossflashCoverage(catalog, links);
   const shas = new Set();
   for (const i of catalog.identities) for (const r of i.revisions ?? []) for (const p of r.packages ?? []) shas.add(p.sha256);
-  for (const graph of [links.links, links.future ?? {}, links.conditional ?? {}]) {
-    for (const [from, to] of Object.entries(graph)) {
-      if (!Array.isArray(to) || to.some(s => typeof s !== 'string')) throw new Error('Invalid crossflash targets');
-      for (const s of [from, ...to]) if (!shas.has(s)) throw new Error(`Crossflash link names a package not in the catalogue: ${s}`);
-    }
-  }
-  const seen = new Set();
-  for (const graph of [links.links, links.future ?? {}, links.conditional ?? {}]) for (const [from, targets] of Object.entries(graph)) for (const to of targets) {
-    const pair = `${from}:${to}`;
-    if (seen.has(pair)) throw new Error('Crossflash pair cannot be both available and future or conditional');
-    seen.add(pair);
+  for (const group of groups) for (const sha of [group.source, ...group.targets]) {
+    if (!shas.has(sha)) throw new Error(`Crossflash link names a package not in the catalogue: ${sha}`);
   }
 }
 const V1_MEMBERS = ['publish-manifest.json','pioneer-firmware-index.json','firmware-index.json'];
