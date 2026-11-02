@@ -28,7 +28,7 @@ export function verificationCatalog(page) {
   for (const version of page.versions) {
     const build = builds.get(version.verification);
     if (!build) continue;
-    for (const [, , rows] of page.identities[version.i].x) for (const [, vi, incomplete, future] of rows) {
+    for (const [, , rows] of version.x ?? page.identities[version.i].x) for (const [, vi, incomplete, future] of rows) {
       const key = page.versions[vi].verification;
       if (!incomplete && !future && key && key !== version.verification) build.targets.add(key);
     }

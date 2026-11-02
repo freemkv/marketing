@@ -17,22 +17,22 @@ async function fixture(t) {
     await fs.mkdir(path.dirname(path.join(root,key)), {recursive:true}); await fs.writeFile(path.join(root,key),data);
     objects.push({family,key,sha256});
   }
-  const graph = { format:'freemkv-crossflash-links', version:2, freemkv_flash:'test', links:{[objects[0].sha256]:[objects[1].sha256]}, future:{} };
+  const graph = { format:'freemkv-crossflash-routes', version:1, freemkv_flash:'test', groups:[{source:objects[0].sha256,status:'allowed',requirements:[],targets:[objects[1].sha256]}] };
   return {engine,cacheFile,root,objects,graph,onProgress:()=>{}};
 }
 test('unchanged bytes reuse complete graph; one addition checks only both directions within platform', async t => {
   const f = await fixture(t);
-  await seedCrossflashCache({ ...f, file:f.cacheFile, objects:f.objects.slice(0,1), graph:{...f.graph,links:{}} });
+  await seedCrossflashCache({ ...f, file:f.cacheFile, objects:f.objects.slice(0,1), graph:{...f.graph,groups:[],evaluated_packages:[f.objects[0].sha256]} });
   const calls = [];
-  const result = await crossflashGraph({...f,run:async args => {calls.push(args); return JSON.stringify({status:args[2].includes(f.objects[0].sha256)?'yes':'soft_no'});}});
+  const result = await crossflashGraph({...f,run:async args => {calls.push(args); return JSON.stringify(args[2].includes(f.objects[0].sha256)?{status:'yes',routes:[{status:'allowed',requirements:[]}]}:{status:'soft_no',routes:[{status:'future',requirements:[]}]});}});
   assert.equal(calls.length,2); assert.equal(result.evaluated,2);
   assert.deepEqual(result.graph.evaluated_packages, f.objects.map(o => o.sha256).sort());
-  assert.deepEqual(result.graph.links[f.objects[0].sha256],[f.objects[1].sha256]);
-  assert.deepEqual(result.graph.future[f.objects[1].sha256],[f.objects[0].sha256]);
+  assert.ok(result.graph.groups.some(g=>g.source===f.objects[0].sha256 && g.status==='allowed' && g.targets.includes(f.objects[1].sha256)));
+  assert.ok(result.graph.groups.some(g=>g.source===f.objects[1].sha256 && g.status==='future' && g.targets.includes(f.objects[0].sha256)));
   const hit = await crossflashGraph({...f,run:async()=>assert.fail('unchanged graph must not run engine')});
   assert.deepEqual(hit.graph,result.graph);
   const removed = await crossflashGraph({...f,objects:[f.objects[0]],run:async()=>assert.fail('removal needs no new pairs')});
-  assert.deepEqual(removed.graph.links,{}); assert.deepEqual(removed.graph.future,{});
+  assert.deepEqual(removed.graph.groups,[]);
   assert.deepEqual(removed.graph.evaluated_packages, [f.objects[0].sha256]);
 });
 test('engine changes invalidate all cached decisions', async t => {
@@ -44,14 +44,14 @@ test('engine changes invalidate all cached decisions', async t => {
 });
 test('corrupt cache and changed payload bytes fail closed', async t => {
   const f=await fixture(t); await seedCrossflashCache({...f,file:f.cacheFile});
-  const doc=JSON.parse(await fs.readFile(f.cacheFile,'utf8'));doc.body.graph.links={};
+  const doc=JSON.parse(await fs.readFile(f.cacheFile,'utf8'));doc.body.graph.groups=[];
   await fs.writeFile(f.cacheFile,JSON.stringify(doc));
   await assert.rejects(readCrossflashCache(f.cacheFile),/checksum/);
   await fs.writeFile(path.join(f.root,f.objects[0].key),'wrong');
   await assert.rejects(crossflashGraph(f),/payload mismatch/);
 });
 test('failed incremental checks leave last complete cache intact', async t => {
-  const f=await fixture(t); await seedCrossflashCache({...f,file:f.cacheFile,objects:[f.objects[0]],graph:{...f.graph,links:{}}});
+  const f=await fixture(t); await seedCrossflashCache({...f,file:f.cacheFile,objects:[f.objects[0]],graph:{...f.graph,groups:[]}});
   const before=await fs.readFile(f.cacheFile,'utf8');
   await assert.rejects(crossflashGraph({...f,run:async()=>JSON.stringify({status:'unknown'})}),/verdict/);
   assert.equal(await fs.readFile(f.cacheFile,'utf8'),before);
@@ -59,11 +59,9 @@ test('failed incremental checks leave last complete cache intact', async t => {
 
 test('conditional routes survive incremental caching without inventing a reverse route', async t => {
   const f = await fixture(t);
-  await seedCrossflashCache({ ...f, file: f.cacheFile, objects: f.objects.slice(0, 1), graph: { ...f.graph, links: {} } });
-  const result = await crossflashGraph({ ...f, run: async args => JSON.stringify({ status: args[2].includes(f.objects[0].sha256) ? 'conditional' : 'hard_no' }) });
-  assert.deepEqual(result.graph.conditional, { [f.objects[0].sha256]: [f.objects[1].sha256] });
-  assert.deepEqual(result.graph.links, {});
-  assert.deepEqual(result.graph.future, {});
+  await seedCrossflashCache({ ...f, file: f.cacheFile, objects: f.objects.slice(0, 1), graph: { ...f.graph, groups: [] } });
+  const result = await crossflashGraph({ ...f, run: async args => JSON.stringify(args[2].includes(f.objects[0].sha256) ? {status:'conditional',routes:[{status:'conditional',requirements:[{kind:'original_hardware',platform:'UD02',prefix:null,suffix:null}]}]} : {status:'hard_no',routes:[]}) });
+  assert.deepEqual(result.graph.groups,[{source:f.objects[0].sha256,status:'conditional',requirements:[{kind:'original_hardware',platform:'UD02',prefix:null,suffix:null}],targets:[f.objects[1].sha256]}]);
   const hit = await crossflashGraph({ ...f, run: async () => assert.fail('cache hit') });
-  assert.deepEqual(hit.graph.conditional, result.graph.conditional);
+  assert.deepEqual(hit.graph.groups, result.graph.groups);
 });

@@ -219,7 +219,7 @@ import '../../styles/site.css';
       <section class="block">
         <div class="section-inner">
           <div class="picker">
-            <p class="block-note" id="drive-search-help">Select your current drive to see available firmware, including crossflash options.</p>
+            <p class="block-note" id="drive-search-help">Select your current drive to see firmware options admitted by freemkv Flash. Reviewed Pioneer settings adaptations may also depend on the drive's original hardware identity; Flash and Recovery check the exact route before writing.</p>
             <div class="picker-row">
               <label class="picker-label" for="drive-search">Your existing drive</label>
               <div class="combo" data-combo>
@@ -692,7 +692,7 @@ import '../../styles/site.css';
             // This model's own editions are already under Versions; leave them out here.
             var own = {};
             d.v.forEach(function (row) { own[versions[row[0]].i] = 1; });
-            var targets = ident.x.map(function (x) {
+            var targets = ver.x.map(function (x) {
               return [x[0], x[1], x[2].filter(function (row) { return !own[row[0]]; })];
             }).filter(function (x) { return x[2].length; });
             if (targets.length) {
@@ -702,7 +702,7 @@ import '../../styles/site.css';
                     return '<li><span class="fx-rev-num">' + escapeText(versions[row[1]].r) + '</span>' + editionHtml(identities[row[0]]) +
                       (row[2] ? '<span class="fx-viewing fx-incomplete">Incomplete - missing kernel</span>'
                         : '<button type="button" class="fx-dl fx-view" data-xf="' + row[0] + '" data-xv="' + row[1] + '">View</button>') +
-                      (row[3] === 1 ? '<span class="drive-fact drive-fact-future" title="Requires an intermediate transfer that is currently unavailable">Future</span>' : !row[2] ? verificationBox(versions[row[1]], ver) : '') + '</li>';
+                      (row[3] === 2 ? '<span class="drive-fact" title="' + escapeText((row[4] || []).map(function (all) { return all.map(function (r) { return 'Original hardware: ' + (r.prefix ? r.prefix + '-' : '') + r.platform + (r.suffix || ''); }).join(' and '); }).join(' or ') || 'Flash verifies the original factory hardware before writing') + '">Hardware check</span>' : row[3] === 1 ? '<span class="drive-fact drive-fact-future" title="Requires an intermediate transfer that is currently unavailable">Future</span>' : !row[2] ? verificationBox(versions[row[1]], ver) : '') + '</li>';
                   }).join('') + '</ul>';
               }).join('');
             }

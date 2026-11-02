@@ -364,3 +364,14 @@ test('Future and incomplete routes never enter the verification API allowlist', 
   const catalog = verificationCatalog(page);
   assert.deepEqual([...catalog.get('a').targets], ['b']);
 });
+
+test('verification targets follow the selected source version routes', () => {
+  const page={identities:[{brand:'Pioneer',n:'A',x:[['B',0,[[1,2,0]]]]},{brand:'Pioneer',n:'B',x:[]}],versions:[
+    {i:0,r:'1.00',verification:'a',x:[['B',0,[[1,2,0]]]]},
+    {i:0,r:'1.01',verification:'other',x:[]},
+    {i:1,r:'2.00',verification:'b',x:[]},
+  ]};
+  const catalog=verificationCatalog(page);
+  assert.deepEqual([...catalog.get('a').targets],['b']);
+  assert.deepEqual([...catalog.get('other').targets],[]);
+});

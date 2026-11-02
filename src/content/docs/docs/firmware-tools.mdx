@@ -210,6 +210,15 @@ paired INTM, Flash installs it first, confirms startup, then installs the final
 firmware. Failure stops the sequence. A standalone BIN flashes only that supplied
 image. Transfer encoding is detected automatically from the active receiver.
 
+For Pioneer, 0.17.2 adds reviewed settings adaptations for original UD02 hardware
+when changing to selected UD03 or UD04 firmware. Matching adapted routes can return
+to UD02 1.00; native UD03 and UD04 firmware also retains its reviewed OEM return
+route. The tool keeps the factory hardware identity through these changes and
+checks the exact source/target images and required live mechanism setting before
+writing. Other model and version combinations remain unsupported. The Firmware
+Finder lists ordinary compatible firmware pairs; Flash and Recovery make the
+final settings and hardware checks for each drive.
+
 ### recover
 
 MediaTek Recovery accepts a website TAR without a Current reference and creates no

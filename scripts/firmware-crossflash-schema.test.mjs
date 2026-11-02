@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { checkCrossflashLinks } from './firmware-release.mjs';
 import { validateCrossflashCoverage } from '../src/lib/finder.mjs';
+import { routeGroups } from '../src/lib/crossflash-routes.mjs';
 import { readFileSync } from 'node:fs';
 
 const catalog = { identities: [{ revisions: [{ packages: [{ sha256: 'a' }, { sha256: 'b' }, { sha256: 'c' }] }] }] };
@@ -27,7 +28,7 @@ test('published graph covers every package and every corrected replacement', () 
   }
   const ud03 = '18b57472eeac46db8437ab4e3745035d463ee39b5fdca2f56b00a0959d049d84';
   const ud04 = '349da8b41479735437872a898556c9bc9ddca135ddac0ef90a0684949f96dfb6';
-  assert.ok(graph.links[ud03]?.includes(ud04), 'corrected UD03 1.03 must retain its flasher-admitted UD04 route');
+  assert.ok(routeGroups(graph).some(g=>g.source===ud03 && g.targets.includes(ud04) && ['allowed','conditional'].includes(g.status)), 'corrected UD03 1.03 must retain its flasher-admitted UD04 route');
 });
 test('crossflash schema accepts legacy and classified graphs', () => {
   assert.doesNotThrow(() => checkCrossflashLinks(graph(), catalog));
@@ -43,5 +44,27 @@ test('conditional graph validates references and remains disjoint from other ver
   assert.doesNotThrow(() => checkCrossflashLinks({ ...graph(), conditional: { b: ['a'] } }, catalog));
   for (const conditional of [null, [], { b: ['missing'] }, { a: ['b'] }, { a: ['c'] }]) {
     assert.throws(() => checkCrossflashLinks({ ...graph(), conditional }, catalog));
+  }
+});
+
+const requirement = (platform='UD02') => ({kind:'original_hardware',platform,prefix:null,suffix:null});
+const routes = () => ({format:'freemkv-crossflash-routes',version:1,groups:[
+  {source:'a',status:'conditional',requirements:[requirement()],targets:['b']},
+  {source:'a',status:'conditional',requirements:[requirement('UD03')],targets:['b']},
+]});
+test('route groups preserve explicit directed targets and alternative hardware predicates', () => {
+  assert.doesNotThrow(()=>checkCrossflashLinks(routes(),catalog));
+  for (const patch of [
+    {status:'allowed'}, {requirements:[]}, {targets:['missing']}, {targets:['a']}, {targets:['b','b']},
+    {requirements:[{kind:'unknown',platform:'UD02'}]}, {requirements:[requirement(),requirement()]},
+    {requirements:[{...requirement(),prefix:undefined}]},
+  ]) assert.throws(()=>checkCrossflashLinks({...routes(),groups:[{...routes().groups[0],...patch}]},catalog));
+  assert.throws(()=>checkCrossflashLinks({...routes(),groups:[routes().groups[0],routes().groups[0]]},catalog));
+});
+
+test('route sources and every explicit target must have been evaluated', () => {
+  assert.doesNotThrow(()=>checkCrossflashLinks({...routes(),evaluated_packages:['a','b','c']},catalog));
+  for (const evaluated_packages of [['a','c'],['b','c']]) {
+    assert.throws(()=>checkCrossflashLinks({...routes(),evaluated_packages},catalog),/unevaluated/);
   }
 });

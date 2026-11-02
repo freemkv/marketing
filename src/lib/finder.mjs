@@ -5,6 +5,7 @@
 // Names (retail, OEM labels, drive-reported strings) are aliases that point at
 // one or more identities. A drive only takes firmware for its own identity;
 // other IDs on the same hardware are listed as cross-flash targets.
+import { routeGroups, routeMaps } from './crossflash-routes.mjs';
 import { publicOriginDetails } from './firmware-origin.mjs';
 import { verificationKey } from './firmware-verification-catalog.mjs';
 
@@ -212,7 +213,9 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], c
     for (const r of ident.revisions) r.packages.sort(packageOrder);
     ident.missing = ident.missing.filter(rev => !ident.revisions.some(r => r.revision === rev));
   }
-  return { identities: [...identities.values()], aliases: [...aliases.values()], crossflash: crossflash?.links ?? {}, crossflashFuture: crossflash?.future ?? {}, crossflashConditional: crossflash?.conditional ?? {} };
+  const routes = routeGroups(crossflash), maps = routeMaps(routes);
+  return { identities: [...identities.values()], aliases: [...aliases.values()], routes,
+    crossflash: maps.links, crossflashFuture: maps.future, crossflashConditional: maps.conditional };
 }
 
 /** Same shape as the extractor's catalogue filenames: MODEL_REV_sha8.ext */
@@ -279,18 +282,24 @@ export function indexFinder(data) {
  * out (e.g. a MediaTek INTM build the flasher refuses).
  * Returns [{ identity, revisions: [{ revision, complete, future?, conditional? }] }].
  */
-export function crossflashTargets(data, identity) {
-  const linked = new Set(identity.revisions.flatMap(r => r.packages.flatMap(p => data.crossflash[p.sha256] ?? [])));
-  const future = new Set(identity.revisions.flatMap(r => r.packages.flatMap(p => data.crossflashFuture?.[p.sha256] ?? [])));
-  const conditional = new Set(identity.revisions.flatMap(r => r.packages.flatMap(p => data.crossflashConditional?.[p.sha256] ?? [])));
+export function crossflashTargets(data, identity, sourcePackages = identity.revisions.flatMap(r => r.packages)) {
+  const sources = new Set(sourcePackages.map(p => p.sha256));
+  const groups = data.routes.filter(g => sources.has(g.source));
+  const targets = status => new Set(groups.filter(g => g.status === status).flatMap(g => g.targets));
+  const linked = targets('allowed'), future = targets('future'), conditional = targets('conditional');
+  const requirements = packages => {
+    const ids = new Set(packages.map(p => p.sha256));
+    const alternatives = groups.filter(g => g.status === 'conditional' && g.requirements.length && g.targets.some(t => ids.has(t))).map(g => g.requirements);
+    return [...new Map(alternatives.map(r => [JSON.stringify(r),r])).values()];
+  };
   if (!linked.size && !future.size && !conditional.size) return [];
   const missingKernel = (o, r) => o.family === 'pioneer' && !r.packages.some(p => p.components.includes('kernel') && p.components.includes('main'));
   return data.identities
     .filter(o => o !== identity)
     .map(o => ({ identity: o, revisions: o.revisions
-      .map(r => ({ revision: r.revision, complete: r.packages.some(p => linked.has(p.sha256)), future: r.packages.some(p => future.has(p.sha256)), conditional: r.packages.some(p => conditional.has(p.sha256)), missing: missingKernel(o, r) }))
+      .map(r => ({ revision: r.revision, complete: r.packages.some(p => linked.has(p.sha256)), future: r.packages.some(p => future.has(p.sha256)), conditional: r.packages.some(p => conditional.has(p.sha256)), missing: missingKernel(o, r), requirements: requirements(r.packages) }))
       .filter(r => r.complete || r.future || r.conditional || r.missing)
-      .map(({ revision, complete, future, conditional }) => ({ revision, complete, ...(!complete && conditional ? { conditional: true } : !complete && future ? { future: true } : {}) })) }))
+      .map(({ revision, complete, future, conditional, requirements }) => ({ revision, complete, ...(!complete && conditional ? { conditional: true, ...(requirements.length ? { requirements } : {}) } : !complete && future ? { future: true } : {}) })) }))
     .filter(t => t.revisions.some(r => r.complete || r.future || r.conditional));
 }
 
@@ -535,19 +544,42 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
   // the edition next to the revision), newest first. Every target shares the
   // source's hardware family, whatever its SAT.
   for (const { i, out } of identities) {
-    const byName = new Map();
-    for (const t of crossflashTargets(data, i)) {
-      const n = idIdx.get(t.identity.key);
-      const o = identities[n].out;
-      const g = byName.get(o.n) ?? byName.set(o.n, { uhd: 0, rows: [] }).get(o.n);
-      if (t.identity.uhd) g.uhd = 1;
-      for (const vi of o.v) {
-        const r = t.revisions.find(r => r.revision === versions[vi].r);
-        if (r) g.rows.push([n, vi, r.complete || r.future || r.conditional ? 0 : 1, ...(r.conditional ? [2] : r.future ? [1] : [])]);
+    const targetRows = sourcePackages => {
+      const sourceIds = new Set(sourcePackages.map(p => p.sha256));
+      const sourceRoutes = data.routes.filter(g => sourceIds.has(g.source));
+      const byName = new Map();
+      for (const t of crossflashTargets(data, i, sourcePackages)) {
+        const n = idIdx.get(t.identity.key);
+        const o = identities[n].out;
+        const g = byName.get(o.n) ?? byName.set(o.n, { uhd: 0, rows: [] }).get(o.n);
+        if (t.identity.uhd) g.uhd = 1;
+        for (const vi of o.v) {
+          const revision = t.revisions.find(r => r.revision === versions[vi].r);
+          if (!revision) continue;
+          // View opens this exact default artifact, not every package sharing
+          // its revision. A route to an alternate package cannot authorize it.
+          const targetSha = packages[versions[vi].p[0]].s;
+          const routes = sourceRoutes.filter(g => g.targets.includes(targetSha));
+          if (!routes.length) {
+            if (!revision.complete && !revision.future && !revision.conditional) g.rows.push([n, vi, 1]);
+            continue;
+          }
+          const allowed = routes.some(g => g.status === 'allowed');
+          const conditional = !allowed && routes.some(g => g.status === 'conditional');
+          const requirements = [...new Map(routes.filter(g => g.status === 'conditional' && g.requirements.length)
+            .map(g => [JSON.stringify(g.requirements), g.requirements])).values()];
+          g.rows.push([n, vi, 0, ...(conditional ? [2, ...(requirements.length ? [requirements] : [])] : !allowed ? [1] : [])]);
+        }
       }
+      return [...byName].filter(([,g]) => g.rows.some(row => !row[2])).sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true })).map(([name, g]) => [name, g.uhd,
+        g.rows.sort((a, b) => compareRevision(versions[b[1]].r, versions[a[1]].r) || compareEdition(identities[a[0]].out, identities[b[0]].out))]);
+    };
+    out.x = targetRows(i.revisions.flatMap(r => r.packages));
+    for (const vi of out.v) {
+      const selected = versions[vi];
+      const sha = packages[selected.p[0]].s;
+      selected.x = targetRows(i.revisions.flatMap(r => r.packages).filter(p => p.sha256 === sha));
     }
-    out.x = [...byName].sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true })).map(([name, g]) => [name, g.uhd,
-      g.rows.sort((a, b) => compareRevision(versions[b[1]].r, versions[a[1]].r) || compareEdition(identities[a[0]].out, identities[b[0]].out))]);
   }
 
   // Retail box names per Pioneer identity, from Pioneer's release titles and release
