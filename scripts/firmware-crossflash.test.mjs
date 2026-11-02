@@ -1,3 +1,4 @@
+import { canonicalRouteGroups } from '../src/lib/crossflash-routes.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildFinderData, crossflashTargets, finderPageData, crossflashSummary } from '../src/lib/finder.mjs';
@@ -194,4 +195,34 @@ test('normal route hides the same hardware-specific crossflash for the selected 
   const rows = page.versions[source.v[0]].x[0][2];
   assert.equal(rows.filter(row => row[2] === 0).length, 1);
   assert.deepEqual(rows[0].slice(2), [0]);
+});
+
+test('exported native UD02/UD03/UD04 routes are normal; removing a native reverse exposes only its hardware fallback', () => {
+  const cat = familyCatalog();
+  cat.identities.push(ident('8511', 'ID99', 'BDR-UD02', [
+    { revision: '1.00', packages: [pkg(sha('Z'), '1.00', 'BDR-UD02', { kn: true })] },
+  ]));
+  const ids = [sha('Z'), sha('E'), sha('A')];
+  const graph = { format:'freemkv-crossflash-routes', version:1, groups: ids.flatMap(source => ids.filter(target => target !== source).map(target => ({
+    source, targets:[target], status:'conditional', native_supported:true,
+    requirements:[{kind:'original_hardware',platform:'UD02',prefix:null,suffix:null}],
+  }))) };
+  graph.groups.push({ source:sha('A'), targets:[sha('Z')], status:'conditional', native_supported:false,
+    requirements:[{kind:'original_hardware',platform:'UD02',prefix:null,suffix:null}],
+  });
+  const page = () => finderPageData(buildFinderData({catalog:cat,crossflash:{...graph,groups:canonicalRouteGroups(graph.groups)}}));
+  const rows = (p, name) => p.versions[p.identities.find(i=>i.n===name).v[0]].x.flatMap(x=>x[2]).filter(r=>!r[2]);
+  const initial = page();
+  for (const model of ['BDR-UD02','BDR-UD03','BDR-UD04']) {
+    assert.equal(rows(initial,model).length,2);
+    assert.ok(rows(initial,model).every(r=>r[3]===undefined));
+  }
+  const index = graph.groups.findIndex(g=>g.source===sha('A') && g.targets.includes(sha('Z')) && g.native_supported);
+  const [native] = graph.groups.splice(index,1);
+  assert.equal(rows(page(),'BDR-UD04').filter(r=>r[3]===2).length,1);
+  graph.groups.push(native);
+  assert.ok(rows(page(),'BDR-UD04').every(r=>r[3]===undefined));
+  // Display names cannot grant native applicability; only exporter evidence can.
+  graph.groups.find(g=>g.source===sha('E') && g.targets.includes(sha('A'))).native_supported=false;
+  assert.equal(rows(page(),'BDR-UD03').filter(r=>r[3]===2).length,1);
 });

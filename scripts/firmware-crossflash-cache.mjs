@@ -87,7 +87,7 @@ export async function crossflashGraph({ engine, root, objects, cacheFile, concur
         if (!['yes', 'conditional', 'soft_no', 'hard_no'].includes(result.status) || !Array.isArray(result.routes)) throw new Error('Invalid crossflash verdict');
         if ((result.status === 'hard_no') !== (result.routes.length === 0)) throw new Error('Invalid crossflash verdict routes');
         for (const route of result.routes) {
-          const group = {source:from.sha256, status:route.status, requirements:route.requirements, targets:[to.sha256]};
+          const group = {source:from.sha256, status:route.status, requirements:route.requirements, ...(route.native_supported !== undefined ? {native_supported:route.native_supported} : {}), targets:[to.sha256]};
           routeGroups({format:'freemkv-crossflash-routes',version:1,groups:[group]});
           graph.groups.push(group);
         }

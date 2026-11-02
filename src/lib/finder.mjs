@@ -5,7 +5,7 @@
 // Names (retail, OEM labels, drive-reported strings) are aliases that point at
 // one or more identities. A drive only takes firmware for its own identity;
 // other IDs on the same hardware are listed as cross-flash targets.
-import { routeGroups, routeMaps } from './crossflash-routes.mjs';
+import { routeGroups, routeMaps, nativeRoute } from './crossflash-routes.mjs';
 import { publicOriginDetails } from './firmware-origin.mjs';
 import { verificationKey } from './firmware-verification-catalog.mjs';
 
@@ -285,7 +285,7 @@ export function indexFinder(data) {
 export function crossflashTargets(data, identity, sourcePackages = identity.revisions.flatMap(r => r.packages)) {
   const sources = new Set(sourcePackages.map(p => p.sha256));
   const groups = data.routes.filter(g => sources.has(g.source));
-  const targets = status => new Set(groups.filter(g => g.status === status).flatMap(g => g.targets));
+  const targets = status => new Set(groups.filter(g => status === 'allowed' ? nativeRoute(g) : g.status === status && !nativeRoute(g)).flatMap(g => g.targets));
   const linked = targets('allowed'), future = targets('future'), conditional = targets('conditional');
   const requirements = packages => {
     const ids = new Set(packages.map(p => p.sha256));
@@ -564,7 +564,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
             if (!revision.complete && !revision.future && !revision.conditional) g.rows.push([n, vi, 1]);
             continue;
           }
-          const allowed = routes.some(g => g.status === 'allowed');
+          const allowed = routes.some(nativeRoute);
           const conditional = !allowed && routes.some(g => g.status === 'conditional');
           const requirements = [...new Map(routes.filter(g => g.status === 'conditional' && g.requirements.length)
             .map(g => [JSON.stringify(g.requirements), g.requirements])).values()];

@@ -60,8 +60,8 @@ test('failed incremental checks leave last complete cache intact', async t => {
 test('conditional routes survive incremental caching without inventing a reverse route', async t => {
   const f = await fixture(t);
   await seedCrossflashCache({ ...f, file: f.cacheFile, objects: f.objects.slice(0, 1), graph: { ...f.graph, groups: [] } });
-  const result = await crossflashGraph({ ...f, run: async args => JSON.stringify(args[2].includes(f.objects[0].sha256) ? {status:'conditional',routes:[{status:'conditional',requirements:[{kind:'original_hardware',platform:'UD02',prefix:null,suffix:null}]}]} : {status:'hard_no',routes:[]}) });
-  assert.deepEqual(result.graph.groups,[{source:f.objects[0].sha256,status:'conditional',requirements:[{kind:'original_hardware',platform:'UD02',prefix:null,suffix:null}],targets:[f.objects[1].sha256]}]);
+  const result = await crossflashGraph({ ...f, run: async args => JSON.stringify(args[2].includes(f.objects[0].sha256) ? {status:'conditional',routes:[{status:'conditional',native_supported:true,requirements:[{kind:'original_hardware',platform:'UD02',prefix:null,suffix:null}]}]} : {status:'hard_no',routes:[]}) });
+  assert.deepEqual(result.graph.groups,[{source:f.objects[0].sha256,status:'conditional',native_supported:true,requirements:[{kind:'original_hardware',platform:'UD02',prefix:null,suffix:null}],targets:[f.objects[1].sha256]}]);
   const hit = await crossflashGraph({ ...f, run: async () => assert.fail('cache hit') });
   assert.deepEqual(hit.graph.groups, result.graph.groups);
 });

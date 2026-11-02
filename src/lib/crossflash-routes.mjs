@@ -3,7 +3,7 @@
 const map = x => x !== null && typeof x === 'object' && !Array.isArray(x);
 const token = x => typeof x === 'string' && /^[A-Za-z0-9]+$/.test(x);
 const requirementKey = r => JSON.stringify([r.kind,r.platform,r.prefix,r.suffix]);
-const key = group => JSON.stringify([group.source, group.status, group.requirements.map(requirementKey).sort()]);
+const key = group => JSON.stringify([group.source, group.status, group.native_supported ?? false, group.requirements.map(requirementKey).sort()]);
 function validateEvaluatedReferences(graph, groups) {
   if (graph.evaluated_packages === undefined) return groups;
   const evaluated = graph.evaluated_packages;
@@ -25,6 +25,7 @@ export function routeGroups(graph) {
         || !Array.isArray(group.requirements) || !Array.isArray(group.targets) || !group.targets.length
         || group.targets.some(t => typeof t !== 'string' || t === group.source) || new Set(group.targets).size !== group.targets.length)
         throw new Error('Invalid crossflash route group');
+      if (group.native_supported !== undefined && typeof group.native_supported !== 'boolean') throw new Error('Invalid native route classification');
       if ((group.status === 'allowed' && group.requirements.length) || (group.status === 'conditional' && !group.requirements.length))
         throw new Error('Invalid crossflash route requirements');
       const requirements = new Set();
@@ -71,12 +72,15 @@ export function canonicalRouteGroups(groups) {
   return [...combined.entries()].sort(([a],[b]) => a.localeCompare(b)).map(([,g]) => ({...g, targets:[...g.targets].sort()}));
 }
 
+// The exporter proves applicability on the source firmware's native hardware.
+export const nativeRoute = group => group.status === 'allowed' || (group.status === 'conditional' && group.native_supported === true);
+
 // Compatibility projection for older callers; the authoritative graph stays
 // in groups, and no projection grants a pair outside its explicit targets.
 export function routeMaps(groups) {
   const maps = {links:{},future:{},conditional:{}};
   for (const g of groups) for (const target of g.targets) {
-    const kind = {allowed:'links', future:'future', conditional:'conditional'}[g.status];
+    const kind = nativeRoute(g) ? 'links' : {future:'future', conditional:'conditional'}[g.status];
     (maps[kind][g.source] ??= new Set()).add(target);
   }
   for (const edges of Object.values(maps)) for (const [source,targets] of Object.entries(edges)) edges[source]=[...targets].sort();

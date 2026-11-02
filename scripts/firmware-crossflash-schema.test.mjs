@@ -68,3 +68,21 @@ test('route sources and every explicit target must have been evaluated', () => {
     assert.throws(()=>checkCrossflashLinks({...routes(),evaluated_packages},catalog),/unevaluated/);
   }
 });
+
+test('native applicability is explicit boolean evidence and distinct from return-only routes', () => {
+  const group={source:'a',targets:['b'],status:'conditional',requirements:[{kind:'original_hardware',platform:'UD02',prefix:null,suffix:null}]};
+  assert.doesNotThrow(()=>routeGroups({format:'freemkv-crossflash-routes',version:1,groups:[{...group,native_supported:true},{...group,native_supported:false}]}));
+  assert.throws(()=>routeGroups({format:'freemkv-crossflash-routes',version:1,groups:[{...group,native_supported:'true'}]}), /native route/);
+});
+
+test('published UD02/UD03/UD04 firmware pairs retain all six native crossflash directions', () => {
+  const graph = JSON.parse(readFileSync(new URL('../src/data/crossflash-links.json', import.meta.url)));
+  const packages = [
+    '0bc0cd7a85ddd14d8a90357f5c144e3cf0d44572316c3cd9017a74c0d1802011', // UD02D 1.00
+    '18b57472eeac46db8437ab4e3745035d463ee39b5fdca2f56b00a0959d049d84', // UD03 1.03
+    '349da8b41479735437872a898556c9bc9ddca135ddac0ef90a0684949f96dfb6', // UD04 1.14
+  ];
+  const groups = routeGroups(graph);
+  for (const source of packages) for (const target of packages) if (source !== target)
+    assert.ok(groups.some(g=>g.source===source && g.targets.includes(target) && g.native_supported===true), `${source} -> ${target} must have an exporter-proven native route`);
+});

@@ -696,19 +696,24 @@ import '../../styles/site.css';
               return [x[0], x[1], x[2].filter(function (row) { return !own[row[0]]; })];
             }).filter(function (x) { return x[2].length; });
             // Keep selected-version compatibility internal; each target appears once.
-            function crossflashList() {
+            function crossflashList(hardware) {
+              var normal = {};
+              targets.forEach(function (x) { x[2].forEach(function (row) {
+                if (!row[2] && !row[3]) normal[row[0] + ":" + row[1]] = true;
+              }); });
               var groups = targets.map(function (x) {
                 var seen = {};
                 return [x[0], x[1], x[2].filter(function (row) {
                   if (row[3] === 2 && !(row[4] && row[4].length)) return false;
                   var key = row[0] + ':' + row[1];
+                  if (hardware ? row[3] !== 2 || normal[key] : row[3] === 2) return false;
                   if (seen[key]) return false;
                   seen[key] = true;
                   return true;
                 })];
               }).filter(function (x) { return x[2].length; });
               if (!groups.length) return '';
-              return '<h4 class="fx-h">Cross Flash</h4>' + groups.map(function (x) {
+              return '<h4 class="fx-h">' + (hardware ? 'Hardware Cross Flash' : 'Cross Flash') + '</h4>' + groups.map(function (x) {
                 return '<p class="fx-vgroup">' + escapeText(x[0]) + (x[1] ? ' (UHD)' : '') + '</p><ul class="fx-list">' +
                   x[2].map(function (row) {
                     return '<li><span class="fx-rev-num">' + escapeText(versions[row[1]].r) + '</span>' + editionHtml(identities[row[0]]) +
@@ -718,7 +723,7 @@ import '../../styles/site.css';
                   }).join('') + '</ul>';
               }).join('');
             }
-            xf = crossflashList();
+            xf = crossflashList(false) + crossflashList(true);
 
             var modelName = ident.n || d.m;
             var name = ident.brand && compact(modelName).indexOf(compact(ident.brand)) !== 0 ? ident.brand + ' ' + modelName : modelName;
