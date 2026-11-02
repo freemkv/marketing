@@ -273,7 +273,7 @@ export function indexFinder(data) {
  * `freemkv-crossflash` tool's output, which runs the flasher's own offline gates
  * over every published package pair (`installed sha256 -> [target sha256]`). A
  * target identity is listed when any of this identity's packages links to it,
- * with its available revisions (`complete`), hardware checks (`conditional`),
+ * with its available revisions (`complete`), hardware-specific routes (`conditional`),
  * and known adapter candidates (`future`).
  * Future candidates require an intermediate transfer that is currently unavailable.
  * The only otherwise unlinked revision listed is a
@@ -540,7 +540,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
 
   // Cross flash: [name, uhd, rows] per target model name (its display name, so every
   // 211M edition lists as "BDR-211M"), headings alphabetical; rows = [identity index,
-  // version index, incomplete, optional status (1 Future, 2 hardware check)] with one row per revision and edition (the card shows
+  // version index, incomplete, optional status (1 Future, 2 hardware specific)] with one row per revision and edition (the card shows
   // the edition next to the revision), newest first. Every target shares the
   // source's hardware family, whatever its SAT.
   for (const { i, out } of identities) {

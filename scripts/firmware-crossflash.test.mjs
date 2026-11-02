@@ -179,3 +179,19 @@ test('a route to a non-preferred target package cannot authorize the default Vie
   assert.deepEqual(page.versions[source.v[0]].x,[]);
   assert.deepEqual(source.x,[]);
 });
+
+test('normal route hides the same hardware-specific crossflash for the selected revision', () => {
+  const data = buildFinderData({ catalog: familyCatalog(), crossflash: {
+    format: 'freemkv-crossflash-routes', version: 1, groups: [
+      { source: sha('E'), targets: [sha('A')], status: 'conditional', requirements: [
+        {kind:'original_hardware', platform:'UD02', prefix:null, suffix:null},
+      ] },
+      { source: sha('E'), targets: [sha('A')], status: 'allowed', requirements: [] },
+    ],
+  } });
+  const page = finderPageData(data);
+  const source = page.identities.find(i => i.key === 'pioneer:8510:ID19');
+  const rows = page.versions[source.v[0]].x[0][2];
+  assert.equal(rows.filter(row => row[2] === 0).length, 1);
+  assert.deepEqual(rows[0].slice(2), [0]);
+});
