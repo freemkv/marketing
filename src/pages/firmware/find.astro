@@ -64,7 +64,6 @@ import '../../styles/site.css';
     <script type="application/ld+json" set:html={graph(webPageNode({ path: '/firmware/find/', name: title, description }), breadcrumbNode('/firmware/find/', [['freemkv', '/'], ['Firmware', '/firmware/'], ['Find', '/firmware/find/']]), websiteNode(), orgNode())} />
     <style is:global>
       #drive-detail { scroll-margin-top: 6rem; }
-      .fx-hardware { color: var(--muted); font-size: 0.9rem; }
       .fx-view { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; }
       .fx-viewing { color: var(--muted); font-size: 0.9rem; }
       .fx-list .fx-view, .fx-list .fx-viewing { flex: 0 0 4rem; text-align: left; }
@@ -220,7 +219,7 @@ import '../../styles/site.css';
       <section class="block">
         <div class="section-inner">
           <div class="picker">
-            <p class="block-note" id="drive-search-help">Select your current drive to see available firmware and crossflash options. Hardware Specific Cross Flash lists the original hardware required.</p>
+            <p class="block-note" id="drive-search-help">Select your current drive to see available firmware and crossflash options.</p>
             <div class="picker-row">
               <label class="picker-label" for="drive-search">Your existing drive</label>
               <div class="combo" data-combo>
@@ -696,27 +695,30 @@ import '../../styles/site.css';
             var targets = ver.x.map(function (x) {
               return [x[0], x[1], x[2].filter(function (row) { return !own[row[0]]; })];
             }).filter(function (x) { return x[2].length; });
-            // A normal route supersedes its hardware-specific alternative in the
-            // data model. Only routes with explicit factory predicates can be offered.
-            function crossflashGroup(hardware) {
+            // Keep selected-version compatibility internal; each target appears once.
+            function crossflashList() {
               var groups = targets.map(function (x) {
+                var seen = {};
                 return [x[0], x[1], x[2].filter(function (row) {
-                  return hardware ? row[3] === 2 && row[4] && row[4].length : row[3] !== 2;
+                  if (row[3] === 2 && !(row[4] && row[4].length)) return false;
+                  var key = row[0] + ':' + row[1];
+                  if (seen[key]) return false;
+                  seen[key] = true;
+                  return true;
                 })];
               }).filter(function (x) { return x[2].length; });
               if (!groups.length) return '';
-              return '<h4 class="fx-h">' + (hardware ? 'Hardware Specific Cross Flash' : 'Cross Flash') + '</h4>' + groups.map(function (x) {
+              return '<h4 class="fx-h">Cross Flash</h4>' + groups.map(function (x) {
                 return '<p class="fx-vgroup">' + escapeText(x[0]) + (x[1] ? ' (UHD)' : '') + '</p><ul class="fx-list">' +
                   x[2].map(function (row) {
                     return '<li><span class="fx-rev-num">' + escapeText(versions[row[1]].r) + '</span>' + editionHtml(identities[row[0]]) +
-                      (hardware ? '<span class="fx-hardware">Required hardware: ' + escapeText(row[4].map(function (all) { return all.map(function (r) { return (r.prefix ? r.prefix + '-' : '') + r.platform + (r.suffix || ''); }).join(' and '); }).join(' or ')) + '</span>' : '') +
                       (row[2] ? '<span class="fx-viewing fx-incomplete">Incomplete - missing kernel</span>'
                         : '<button type="button" class="fx-dl fx-view" data-xf="' + row[0] + '" data-xv="' + row[1] + '">View</button>') +
                       (row[3] === 1 ? '<span class="drive-fact drive-fact-future" title="Requires an intermediate transfer that is currently unavailable">Future</span>' : !row[2] ? verificationBox(versions[row[1]], ver) : '') + '</li>';
                   }).join('') + '</ul>';
               }).join('');
             }
-            xf = crossflashGroup(false) + crossflashGroup(true);
+            xf = crossflashList();
 
             var modelName = ident.n || d.m;
             var name = ident.brand && compact(modelName).indexOf(compact(ident.brand)) !== 0 ? ident.brand + ' ' + modelName : modelName;
