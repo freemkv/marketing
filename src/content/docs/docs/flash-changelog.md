@@ -3,6 +3,17 @@ title: Flash Changelog
 description: What's new in freemkv Flash and Modify - newest first.
 ---
 
+## 0.17.1
+
+<small>2026-11-01</small>
+
+### freemkv Flash
+
+- Improve Pioneer crossflash compatibility checks.
+- Fix valid modified MediaTek Current firmware being rejected during flash planning.
+- Fix MediaTek recovery handling in boot mode.
+- Improve diagnostic logging for failed or blocked flash and recovery attempts.
+
 ## 0.17.0
 
 <small>2026-11-01</small>

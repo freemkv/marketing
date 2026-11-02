@@ -1,5 +1,5 @@
 {
-  "note": "Exact-image capabilities from freemkv-fw 0.17.0; every published MediaTek hash was queried and every supported output built, audited and checked by Flash. Unsupported inputs are retained explicitly.",
+  "note": "Exact-image capabilities from freemkv-fw 0.17.1; every published MediaTek hash was queried and every supported output built, audited and checked by Flash. Unsupported inputs are retained explicitly.",
   "flags": [
     "Speed",
     "Region",
