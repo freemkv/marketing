@@ -6,7 +6,8 @@ import {buildFinderData, finderPageData} from '../../src/lib/finder.mjs';
 import {verificationCatalog} from '../../src/lib/firmware-verification-catalog.mjs';
 import {firmwareVerification} from '../../src/lib/firmware-verification.mjs';
 
-const builds = verificationCatalog(finderPageData(buildFinderData({catalog, mediatek, crossflash}), {legacy, keys: false}));
+let builds;
 export function onRequest({request, env}) {
+  builds ??= verificationCatalog(finderPageData(buildFinderData({catalog, mediatek, crossflash}), {legacy, keys: false}));
   return firmwareVerification(request, env, builds);
 }
