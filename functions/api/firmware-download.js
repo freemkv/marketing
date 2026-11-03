@@ -3,8 +3,11 @@ import {downloadAllowlist, firmwareDownload} from '../../src/lib/firmware-downlo
 
 import {validateOriginDetails} from '../../src/lib/firmware-origin.mjs';
 
-validateOriginDetails(catalog);
-const allowlist = downloadAllowlist({catalog});
+let allowlist;
 export function onRequest({request, env}) {
+  if (!allowlist) {
+    validateOriginDetails(catalog);
+    allowlist = downloadAllowlist({catalog});
+  }
   return firmwareDownload(request, env, allowlist);
 }
