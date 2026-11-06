@@ -147,7 +147,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           FIRMWARE_R2_ACCESS: ${{ vars.FIRMWARE_R2_ACCESS }}
-        run: node scripts/firmware-release.mjs publish "$RUNNER_TEMP/firmware-stage" --keep-existing
+        run: node scripts/firmware-release.mjs publish "$RUNNER_TEMP/firmware-stage" --keep-existing --keep-local-payloads
       - name: Retain and verify latest full firmware archive
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -162,3 +162,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ inputs.firmware_release }}
         run: gh release delete-asset "$RELEASE_TAG" firmware-assets.tar.gz --repo "$GITHUB_REPOSITORY" --yes
+      - name: Remove local firmware payloads after verified archival
+        run: rm -rf "$RUNNER_TEMP/firmware-stage" "$RUNNER_TEMP/firmware-download"
