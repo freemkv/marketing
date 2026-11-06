@@ -285,3 +285,54 @@ test('missing, corrupt or invalid reused firmware stops a delta before any uploa
  await fs.writeFile(path.join(d,'transport.json'),JSON.stringify({format:'freemkv-firmware-delta-v1',included:['../bad']}));
  await assert.rejects(publish(d,async()=>assert.fail('must not write'),async()=>assert.fail('must not fetch')),/Invalid delta/);
 });
+
+const { cleanPreparedStorage, cleanPublishedStorage } = await import('./firmware-local-storage.mjs');
+test('cold prepared stage republishes identical bytes and releases local payloads after success', async t => {
+  const {d,objects,bytes}=await stageV2(t), archive=d+'.tar.gz';
+  t.after(()=>fs.rm(archive,{force:true}));
+  await fs.writeFile(path.join(d,'crossflash-links.json'),JSON.stringify({format:'freemkv-crossflash-routes',version:1,groups:[]}));
+  await transportArchive(d,archive,{format:'freemkv-finder-catalog',version:2,identities:[]});
+  await cleanPreparedStorage({extractor:d,hoard:d,directory:d,command:['unused',[]]});
+  for(const o of objects) await assert.rejects(fs.access(path.join(d,'payloads',o.key)), {code:'ENOENT'});
+  await fs.access(archive);
+  const fetcher=async url=>new Response(bytes.get(objects.find(o=>url.endsWith(o.key)).key));
+  assert.equal(await publish(d,async()=>assert.fail('already remote'),fetcher),objects.length);
+  for(const o of objects) assert.deepEqual(await fs.readFile(path.join(d,'payloads',o.key)),bytes.get(o.key));
+  await cleanPublishedStorage(d);
+  await assert.rejects(fs.access(archive),{code:'ENOENT'});
+  for(const o of objects) await assert.rejects(fs.access(path.join(d,'payloads',o.key)),{code:'ENOENT'});
+  await fs.access(path.join(d,'finder-catalog.json'));
+});
+test('failed publish keeps the recovery archive; changed transport is refused before upload', async t => {
+  const {d,objects}=await stageV2(t), archive=d+'.tar.gz';
+  t.after(()=>fs.rm(archive,{force:true}));
+  await fs.writeFile(path.join(d,'crossflash-links.json'),JSON.stringify({format:'freemkv-crossflash-routes',version:1,groups:[]}));
+  await transportArchive(d,archive,{format:'freemkv-finder-catalog',version:2,identities:[]});
+  await cleanPreparedStorage({extractor:d,hoard:d,directory:d,command:['unused',[]]});
+  await assert.rejects(publish(d,async()=>{throw new Error('upload failed');},async()=>new Response('',{status:404})),/upload failed/);
+  await fs.access(archive);
+  await fs.writeFile(archive,'corrupt');
+  await assert.rejects(publish(d,async()=>assert.fail('must not upload')),/archive changed/);
+  await assert.rejects(cleanPublishedStorage(d),/archive changed/);
+  for(const o of objects) await fs.access(path.join(d,'payloads',o.key));
+});
+test('cleanup refuses changed staged bytes before removing any payload', async t => {
+  const {d,objects}=await stageV2(t);
+  await fs.writeFile(path.join(d,'payloads',objects[1].key),'modified');
+  await assert.rejects(cleanPublishedStorage(d),/Changed staged payload/);
+  for(const o of objects) await fs.access(path.join(d,'payloads',o.key));
+});
+
+test('release handoff deletes the local transport only after remote readback matches', async t => {
+  const { submitPreparedStorage }=await import('./firmware-local-storage.mjs');
+  const {d}=await stageV2(t), archive=d+'.tar.gz';t.after(()=>fs.rm(archive,{force:true}));
+  await fs.writeFile(path.join(d,'crossflash-links.json'),JSON.stringify({format:'freemkv-crossflash-routes',version:1,groups:[]}));
+  await transportArchive(d,archive,{format:'freemkv-finder-catalog',version:2,identities:[]});
+  await cleanPreparedStorage({extractor:d,hoard:d,directory:d,command:['unused',[]]});
+  let uploaded;
+  const upload=async(tag,file)=>{assert.equal(tag,'firmware-test');uploaded=await fs.readFile(file);};
+  await assert.rejects(submitPreparedStorage(d,'firmware-test',{upload,download:async()=>({sha256:'bad',bytes:0})}),/verification failed/);
+  await fs.access(archive);
+  await submitPreparedStorage(d,'firmware-test',{upload,download:async()=>({sha256:sha(uploaded),bytes:uploaded.length})});
+  await assert.rejects(fs.access(archive),{code:'ENOENT'});
+});

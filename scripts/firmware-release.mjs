@@ -7,6 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn, spawnSync } from 'node:child_process';
 import { createGunzip } from 'node:zlib';
+import { cleanPreparedStorage, restorePreparedPayloads, cleanPublishedStorage, withStorageLease, submitPreparedStorage } from './firmware-local-storage.mjs';
 import { firmwareObjectFetcher } from './firmware-object-fetch.mjs';
 import { LATEST_ARCHIVE_KEY } from '../src/lib/firmware-archive.mjs';
 import { crossflashGraph, seedCrossflashCache } from './firmware-crossflash-cache.mjs';
@@ -137,6 +138,7 @@ export async function prepare(extractor, destination, hoard, { fullUpload = fals
   await checkStageCapabilities(destination, catalog);
   const baseline = fullUpload ? { format: 'freemkv-finder-catalog', version: 2, identities: [] } : await json(path.join(SITE, 'src/data/finder-catalog.json'));
   await transportArchive(destination, `${destination}.tar.gz`, baseline);
+  await cleanPreparedStorage({ extractor, hoard, directory: destination, command: [cmd, prefix] });
 }
 // The transport carries the full desired inventory but only changed payloads.
 // CI retrieves every omitted object from the fixed bucket and verifies its bytes
@@ -155,9 +157,20 @@ export async function transportArchive(directory, archive, baseline) {
   return included;
 }
 export async function fullArchive(directory, archive) {
+  await restorePreparedPayloads(directory, extract);
   const manifest = validateManifest(await json(path.join(directory, 'publish-manifest.json')));
   for (const o of manifest.objects) {
-    const raw = await fs.readFile(path.join(directory, 'payloads', o.key));
+    const file = path.join(directory, 'payloads', o.key);
+    try { await fs.access(file); } catch (e) {
+      if (e.code !== 'ENOENT') throw e;
+      const response = await firmwareObjectFetcher()(`${PUBLIC_BASE}/${o.key}`, {signal:AbortSignal.timeout(60000)});
+      if (!response.ok) { await response.body?.cancel(); throw new Error(`Archived firmware unavailable: ${o.key}`); }
+      const bytes = Buffer.from(await response.arrayBuffer());
+      if (bytes.length !== o.bytes || hash(bytes) !== o.sha256) throw new Error('Archive download hash/size mismatch');
+      await fs.mkdir(path.dirname(file), {recursive:true});
+      await fs.writeFile(file, bytes);
+    }
+    const raw = await fs.readFile(file);
     if (raw.length !== o.bytes || hash(raw) !== o.sha256) throw new Error('Full archive payload mismatch');
   }
   run('tar', ['--format=ustar', '-czf', archive, '-C', directory, ...(manifest.format === V2 ? V2_MEMBERS : V1_MEMBERS), ...manifest.objects.map(o => `payloads/${o.key}`)], {env:{...process.env,COPYFILE_DISABLE:'1'}});
@@ -219,6 +232,7 @@ export async function extract(archive, directory) {
   } finally { await handle?.close(); }
 }
 export async function publish(directory, upload, fetcher=fetch, pause=ms=>new Promise(resolve=>setTimeout(resolve,ms))) {
+  await restorePreparedPayloads(directory, extract);
   const manifest=validateManifest(await json(path.join(directory,'publish-manifest.json')));
   const objects=new Map(manifest.objects.map(o=>[o.key,o]));
   let transport;
@@ -377,13 +391,43 @@ async function main() {
     const positional = args.filter(arg => !['--refresh', '--full-upload'].includes(arg));
     if (positional.some(arg => arg.startsWith('--')) || positional.length < 2 || positional.length > 3)
       throw new Error('Usage: firmware-release.mjs release EXTRACTOR STAGE [V3_HOARD] [--refresh]');
-    return release(positional[0], positional[1], positional[2], { refresh, fullUpload });
+    return withStorageLease(positional[0], fwextCommand(positional[0]),
+      ['release', path.resolve(positional[0]), path.resolve(positional[1]), ...(positional[2] ? [path.resolve(positional[2])] : []), ...(refresh ? ['--refresh'] : []), ...(fullUpload ? ['--full-upload'] : [])],
+      () => release(positional[0], positional[1], positional[2], { refresh, fullUpload }));
   }
   if(command==='prepare' && a && b) {
     const args = process.argv.slice(3), fullUpload = args.includes('--full-upload');
     const positional = args.filter(arg => arg !== '--full-upload');
     if (positional.some(arg => arg.startsWith('--')) || positional.length < 2 || positional.length > 3) throw new Error('Usage: firmware-release.mjs prepare EXTRACTOR STAGE [V3_HOARD] [--full-upload]');
-    return prepare(positional[0],positional[1],positional[2],{fullUpload});
+    return withStorageLease(positional[0], fwextCommand(positional[0]),
+      ['prepare', path.resolve(positional[0]), path.resolve(positional[1]), ...(positional[2] ? [path.resolve(positional[2])] : []), ...(fullUpload ? ['--full-upload'] : [])],
+      () => prepare(positional[0],positional[1],positional[2],{fullUpload}));
+  }
+  if(command==='submit' && a && b) {
+    // The draft release must already exist. Uploading the exact standard asset
+    // name preserves the existing Pages workflow's transport contract.
+    await submitPreparedStorage(a, b, {
+      upload: async (tag, archive) => {
+        const existing = spawnSync('gh', ['release','view',tag,'--repo','freemkv/marketing','--json','assets'], {cwd:SITE,encoding:'utf8'});
+        if (existing.status !== 0) throw new Error('Cannot inspect draft firmware release');
+        if (JSON.parse(existing.stdout).assets.some(asset => asset.name === 'firmware-assets.tar.gz')) return;
+        const asset = path.join(path.dirname(archive), 'firmware-assets.tar.gz');
+        const same = path.resolve(asset) === path.resolve(archive);
+        if (!same) await fs.link(archive, asset);
+        try { run('gh', ['release', 'upload', tag, asset, '--repo', 'freemkv/marketing'], {cwd:SITE}); }
+        finally { if (!same) await fs.unlink(asset); }
+      },
+      download: tag => new Promise((resolve,reject) => {
+        const child = spawn('gh', ['release','download',tag,'--repo','freemkv/marketing','--pattern','firmware-assets.tar.gz','--output','-'], {cwd:SITE,stdio:['ignore','pipe','inherit']});
+        const hash = createHash('sha256'); let bytes = 0;
+        child.stdout.on('data', chunk => { hash.update(chunk); bytes += chunk.length; });
+        child.on('error', reject);
+        child.on('close', code => code === 0 ? resolve({sha256:hash.digest('hex'),bytes}) : reject(new Error('Uploaded transport readback failed')));
+      }),
+    });
+    run('gh', ['workflow','run','pages.yml','--repo','freemkv/marketing','-f',`firmware_release=${b}`], {cwd:SITE});
+    console.log(`Firmware publication dispatched for ${b}; local firmware payloads released`);
+    return;
   }
   if(command==='seed-crossflash-cache' && a && b) {
     const manifest = validateManifest(await json(path.join(a, 'publish-manifest.json')));
@@ -410,8 +454,9 @@ async function main() {
     // Only expose links to the build after every public object verifies.
     const files=manifest.format===V2?['finder-catalog.json','legacy-keys.json','crossflash-links.json', ...CAPABILITY_FILES]:['pioneer-firmware-index.json','firmware-index.json'];
     for(const file of files) await fs.copyFile(path.join(a,file),path.join(SITE,'src/data',file));
+    if (!process.argv.includes('--keep-local-payloads')) await cleanPublishedStorage(a);
     return;
   }
-  throw new Error('Usage: firmware-release.mjs release EXTRACTOR STAGE [V3_HOARD] | prepare EXTRACTOR STAGE [V3_HOARD] | extract ARCHIVE STAGE | publish STAGE');
+  throw new Error('Usage: firmware-release.mjs release EXTRACTOR STAGE [V3_HOARD] | prepare EXTRACTOR STAGE [V3_HOARD] | submit STAGE DRAFT_TAG | extract ARCHIVE STAGE | publish STAGE');
 }
 if(process.argv[1] && realpathSync(process.argv[1])===realpathSync(fileURLToPath(import.meta.url))) main().catch(e=>{console.error(e.message);process.exitCode=1;});

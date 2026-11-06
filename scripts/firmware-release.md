@@ -213,3 +213,31 @@ operation after production has switched catalogues.
 Site deployment depends on complete per-object SHA-256 verification, not on full-archive retention. The archive job independently materializes the verified inventory and serializes writers across all branches with `firmware-archive-latest`; it never cancels an active archive upload. Pages concurrency is scoped to each deployment branch, so preview maintenance cannot hold up production. A failed archive job remains visible as a failed workflow and can be rerun without rolling back a verified site.
 
 Full-archive verification reads ordered 16 MiB ranges with at most four requests in flight. Each request is conditional on the captured object ETag and must return the exact requested range and length. Interrupted ranges retry independently; the complete downloaded SHA-256 must still match the local archive.
+
+## Automatic local storage cleanup
+
+`release` and `prepare` hold the extractor's storage lock for the whole local
+pipeline. After the transport archive has been created, `fwext storage clean`
+confirms/uploads committed LFS objects and releases recoverable firmware inputs
+and generated output. Modified or untracked inputs remain local. Stage payloads
+are then removed, leaving metadata and a single `.tar.gz` transport. A subsequent
+`publish` restores that transport automatically; it does not require another
+manual extraction. Failed preparation or upload retains recovery data.
+
+After creating the draft GitHub release, use this handoff instead of manually
+uploading and dispatching:
+
+```sh
+node scripts/firmware-release.mjs submit /tmp/firmware-assets DRAFT_TAG
+```
+
+It uploads `firmware-assets.tar.gz`, streams it back to verify SHA-256 and size,
+removes the local archive, and dispatches `pages.yml` without waiting for CI.
+An existing asset is verified rather than overwritten. If dispatch fails after
+verified upload, the archive remains on the draft release and the workflow can
+be dispatched again with that tag.
+
+Successful `publish` also removes its local payloads. The full-archive CI job
+uses `--keep-local-payloads` until it has uploaded and verified the complete R2
+archive; it then removes its staging/download directories. Site catalogs,
+manifest formats, provenance checks and published download keys are unchanged.
