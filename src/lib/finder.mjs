@@ -124,6 +124,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], c
     }
     pushUnique(ident.brands, titleBrand(pkg.brand));
     pushUnique(ident.embeddedModels, pkg.embeddedModel);
+    if (pkg.internalModel) addAlias(pkg.internalModel, 'internal-firmware', [ident.key]);
   }
 
   const v2Shas = new Set();
@@ -145,7 +146,7 @@ export function buildFinderData({ catalog = null, mediatek = [], pioneer = [], c
             uhd: p.is_uhd === true, kernelRevision: p.kernel_revision ?? null, normalSha256: p.normal_sha256 ?? null,
             kernelSha256: p.kernel_sha256 ?? null, imageSha256: p.image_sha256 ?? null,
             advertisedVersions: [...(p.advertised_versions ?? [])], generatedDate: p.generated_date ?? null,
-            embeddedModel: p.embedded_model ?? null, brand: p.brand ?? null, buildId: p.build_id ?? null,
+            internalModel: p.internal_model ?? null, embeddedModel: p.embedded_model ?? null, brand: p.brand ?? null, buildId: p.build_id ?? null,
             originDetails: p.origin_details ?? [], recommended: p.recommended === true,
             provenance: typeof p.provenance === 'string' ? p.provenance : null,
             chipset: isPioneer ? 'Pioneer' : (src.platforms?.[0] ?? null),
@@ -372,6 +373,20 @@ export function hostedSummary(data) {
 // for search entries, card titles and Cross Flash headings. File/release names are
 // search terms only.
 const NAME_RANK = { inquiry: 0, retail: 1, legacy: 2, 'release-note': 3, oem: 4 };
+
+function releaseNames(display) {
+  const names = [];
+  for (const part of String(display).split(/\s*\/\s*|_{2,}/)) {
+    let name = part.replace(/^_+|_+$/g, '').trim();
+    if (!name) continue;
+    const previous = names.at(-1);
+    if (previous && /^[A-Z0-9]+$/.test(name) && name.length < previous.length)
+      name = previous.slice(0, previous.length - name.length) + name;
+    names.push(name);
+  }
+  return names;
+}
+
 const OEM_NAMES = { ASUS: 'ASUS', BUFFALO: 'Buffalo', HP: 'HP', TDK: 'TDK', TEAC: 'TEAC', MEMOREX: 'Memorex', MEDION: 'Medion', SONYDT: 'Sony' };
 
 /** Human label for an identity's destination: "ID43", an OEM name, or "" when unknown. */
@@ -482,7 +497,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
     for (const r of i.revisions) {
       const p = r.packages.map(pkg => {
         packages.push({ s: pkg.sha256, f: String(pkg.filename ?? '').replace(/_GENERAL(?=_)/, ''), ...(keys ? { k: pkg.file ?? pkg.key } : {}), b: bytesLabel(pkg.bytes),
-          variant: pkg.variant || '', origin: publicOriginDetails(pkg.originDetails ?? []), built: pkg.generatedDate || '', contents: contentsLabel(pkg), chips: chips(i, pkg) });
+          variant: pkg.variant || '', internalModel: pkg.internalModel || '', origin: publicOriginDetails(pkg.originDetails ?? []), built: pkg.generatedDate || '', contents: contentsLabel(pkg), chips: chips(i, pkg) });
         return packages.length - 1;
       });
       const best = r.packages[0];
@@ -491,7 +506,7 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
       v.push(versions.length - 1);
     }
     return { i, out: { key: i.key, n: '', brand: identityBrand(i), d: destinationLabel(i), g: versionGroup(i), pio: i.family === 'pioneer' ? 1 : 0,
-      h: i.family === 'pioneer' ? hardwareLabel(i) : '', e: editionLabel(i), v } };
+      h: i.family === 'pioneer' ? hardwareLabel(i) : '', e: editionLabel(i), v, names: [] } };
   });
 
   // Model names -> identity keys.
@@ -516,7 +531,13 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
   const terms = new Map(data.identities.map(i => [i.key, [hardwareLabel(i), i.hardware, destinationLabel(i), identityBrand(i), ...i.platforms, ...i.embeddedModels]]));
   for (const a of data.aliases) {
     const ks = a.targets.filter(k => idIdx.has(k));
-    for (const k of ks) terms.get(k).push(a.display);
+    for (const k of ks) {
+      terms.get(k).push(a.display);
+      const out = identities[idIdx.get(k)].out;
+      const role = ({ inquiry: 'Inquiry model', firmware: 'Inquiry model', retail: 'Retail model', release: 'Release label', 'release-note': 'Retail model', oem: 'OEM label' })[a.kind];
+      for (const name of ['release', 'release-note'].includes(a.kind) ? releaseNames(a.display) : [a.display])
+        if (role && !out.names.some(n => compact(n[1]) === compact(name))) out.names.push([role, name]);
+    }
     // Drive models are already normalized by the protocol identity API.
     const display = a.display;
     const protocolAlias = ks.length && ks.every(k => {

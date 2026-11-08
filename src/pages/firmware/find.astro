@@ -727,6 +727,22 @@ import '../../styles/site.css';
 
             var modelName = ident.n || d.m;
             var name = ident.brand && compact(modelName).indexOf(compact(ident.brand)) !== 0 ? ident.brand + ' ' + modelName : modelName;
+            var nameKey = function (value) {
+              var key = compact(value), brand = compact(ident.brand || '');
+              return brand && key.indexOf(brand) === 0 ? key.slice(brand.length) : key;
+            };
+            var seenNames = new Set([nameKey(modelName), nameKey(name)].concat((d.a || []).flatMap(function (group) { return group[1].map(nameKey); }))), secondaryNames = new Map();
+            var recordedNames = (ident.names || []).concat(p.internalModel ? [['Internal firmware model', p.internalModel]] : []);
+            recordedNames.forEach(function (n) {
+              var key = nameKey(n[1]);
+              if (!key || seenNames.has(key)) return;
+              seenNames.add(key);
+              var group = secondaryNames.get(n[0]) || [];
+              group.push(n[1]); secondaryNames.set(n[0], group);
+            });
+            var namesHtml = Array.from(secondaryNames).map(function (group) {
+              return '<p class="drive-aka">' + escapeText(group[0]) + ': ' + group[1].map(escapeText).join(', ') + '</p>';
+            }).join('');
             detail.innerHTML =
               '<div class="drive-detail-head">' +
               '<h3 class="card-title drive-title">' + escapeText(name) + '</h3>' +
@@ -736,6 +752,7 @@ import '../../styles/site.css';
               (d.a ? '<p class="drive-aka">Also sold as ' + d.a.map(function (a) {
                 return escapeText(a[1].join(', ')) + ' (' + escapeText(a[0]) + ')';
               }).join(' · ') + '</p>' : '') +
+              namesHtml +
               factsHtml +
               capsHtml +
               bodyHtml +

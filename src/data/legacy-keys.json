@@ -12300,6 +12300,14 @@
       "status": "published"
     },
     {
+      "basis": "projection",
+      "key": "pioneer/BDX-PR1ZL/SAT%208801/1.07/8e5ed5ca37edd6e5e2496ed066791c9b2180171ca40f32856b10df6a675bb25d.tar",
+      "model": "BDX-PR1ZL",
+      "new_key": "fw/pioneer/8e5ed5ca37edd6e5e2496ed066791c9b2180171ca40f32856b10df6a675bb25d.tar",
+      "sha256": "8e5ed5ca37edd6e5e2496ed066791c9b2180171ca40f32856b10df6a675bb25d",
+      "status": "published"
+    },
+    {
       "basis": "projection+site",
       "key": "pioneer/BRXL-6U2/SAT%201034/8.04/514e98c9b86a994955bf15826e19ddf97ed9ce2e77e9e7cd334f38f0405e26a6.tar",
       "model": "BRXL-6U2",
@@ -12321,6 +12329,22 @@
       "model": "BW-12D1S-U",
       "new_key": "fw/pioneer/286ef41cf1e582ccb5914688aa314b7decaf67646722934720e682eda95d5e53.tar",
       "sha256": "286ef41cf1e582ccb5914688aa314b7decaf67646722934720e682eda95d5e53",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BW-16D1H-U/SAT%208F00/E115/d7a4009a1b5752d569a224fbad4c538b9df1f1239626457d6d4e9a8440628cc2.tar",
+      "model": "BW-16D1H-U",
+      "new_key": "fw/pioneer/d7a4009a1b5752d569a224fbad4c538b9df1f1239626457d6d4e9a8440628cc2.tar",
+      "sha256": "d7a4009a1b5752d569a224fbad4c538b9df1f1239626457d6d4e9a8440628cc2",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BW-16D1H-U/SAT%208F00/E116/9733473bdf7851c8fac2daf70797f86dda8628be62e610dfd1bdd746b7aaf687.tar",
+      "model": "BW-16D1H-U",
+      "new_key": "fw/pioneer/9733473bdf7851c8fac2daf70797f86dda8628be62e610dfd1bdd746b7aaf687.tar",
+      "sha256": "9733473bdf7851c8fac2daf70797f86dda8628be62e610dfd1bdd746b7aaf687",
       "status": "published"
     },
     {

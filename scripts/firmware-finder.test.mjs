@@ -331,3 +331,31 @@ test('compressed S08 servo data restores S11JX SAT 8800 compatibility without ad
   pkg.features = [{ name: 'UHD', ok: false }];
   assert.equal('features' in version(finderPageData(built)), false);
  });
+
+
+test('inquiry, retail and decoded internal labels stay searchable with explicit roles', () => {
+  const c = catalog();
+  const identity = c.identities.find(i => i.family === 'pioneer');
+  identity.revisions[0].packages[0].internal_model = 'PIONEER INTERNAL-999';
+  c.aliases.push({ display: 'RETAIL-999', kind: 'retail', targets: [{ family: identity.family, hardware: identity.hardware, destination: identity.destination }] });
+  const data = buildFinderData({ catalog: c });
+  const d = finderPageData(data);
+  const retail = d.models.find(m => m.m === 'RETAIL-999');
+  assert.ok(retail.t.includes('internal999'));
+  const i = d.identities.find(i => i.key === identity.key);
+  assert.ok(i.names.some(n => n[0] === 'Retail model' && n[1] === 'RETAIL-999'));
+  const p = d.packages.find(p => p.s === identity.revisions[0].packages[0].sha256);
+  assert.equal(p.internalModel, 'PIONEER INTERNAL-999');
+  assert.ok(!data.routes.some(r => r.source === p.s));
+});
+
+
+test('secondary release labels expand source list notation without a model map', () => {
+  const c = catalog(), identity = c.identities.find(i => i.family === 'pioneer');
+  c.aliases.push({ display: 'ABC-X99EBK__UBK_', kind: 'release', targets: [{ family: identity.family, hardware: identity.hardware, destination: identity.destination }] });
+  const d = finderPageData(buildFinderData({ catalog: c }));
+  const names = d.identities.find(i => i.key === identity.key).names;
+  assert.ok(names.some(n => n[0] === 'Release label' && n[1] === 'ABC-X99EBK'));
+  assert.ok(names.some(n => n[0] === 'Release label' && n[1] === 'ABC-X99UBK'));
+  assert.ok(!names.some(n => n[1].includes('__')));
+});
