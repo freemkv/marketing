@@ -531,11 +531,12 @@ export function finderPageData(data, { legacy = [], keys = true } = {}) {
   const terms = new Map(data.identities.map(i => [i.key, [hardwareLabel(i), i.hardware, destinationLabel(i), identityBrand(i), ...i.platforms, ...i.embeddedModels]]));
   for (const a of data.aliases) {
     const ks = a.targets.filter(k => idIdx.has(k));
+    const displayNames = ['release', 'release-note'].includes(a.kind) ? releaseNames(a.display) : [a.display];
     for (const k of ks) {
-      terms.get(k).push(a.display);
+      terms.get(k).push(a.display, ...displayNames);
       const out = identities[idIdx.get(k)].out;
       const role = ({ inquiry: 'Inquiry model', firmware: 'Inquiry model', retail: 'Retail model', release: 'Release label', 'release-note': 'Retail model', oem: 'OEM label' })[a.kind];
-      for (const name of ['release', 'release-note'].includes(a.kind) ? releaseNames(a.display) : [a.display])
+      for (const name of displayNames)
         if (role && !out.names.some(n => compact(n[1]) === compact(name))) out.names.push([role, name]);
     }
     // Drive models are already normalized by the protocol identity API.

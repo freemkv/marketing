@@ -358,4 +358,7 @@ test('secondary release labels expand source list notation without a model map',
   assert.ok(names.some(n => n[0] === 'Release label' && n[1] === 'ABC-X99EBK'));
   assert.ok(names.some(n => n[0] === 'Release label' && n[1] === 'ABC-X99UBK'));
   assert.ok(!names.some(n => n[1].includes('__')));
+  const row = d.models.find(m => m.v.some(([v]) => d.identities[d.versions[v].i].key === identity.key));
+  assert.ok(row.t.includes('abcx99ubk'));
+  assert.ok(row.t.includes('abcx99ebk'));
 });
