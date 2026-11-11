@@ -94,7 +94,7 @@ default where supported; other features start at OEM settings — see
 |---|---|---|
 | Speed | Sets the read-speed / riplock ceiling — a settable cap, not just on/off | ready |
 | Region | Region-free (RPC-1, no ~5-change cap), or force a specific DVD region (1–8) or Blu-ray region (A/B/C) | ready |
-| Unrestricted (was UHD) | Opens the drive to read every disc type, including Blu-ray and Ultra HD Blu-ray (AACS 1.0/2.0). Same wire discriminant as the old `Uhd` name | ready |
+| Unrestricted (was UHD) | Widens the disc types the drive accepts, including Blu-ray and Ultra HD Blu-ray (AACS 1.0/2.0). On by default for MT1959 firmware; Ultra HD Blu-ray reading is not yet confirmed on a real drive, and `modify` reports it as `applies-unproven`. Not available for MT1939. Same wire discriminant as the old `Uhd` name | wip |
 | Revocation (HRL) | Skip the host-certificate revocation check, so a revoked-but-genuine certificate still works (non-destructive) | ready |
 | Encryption | Removes the drive's disc-encryption handshake so content reads back decrypted; the host applies the title keys | ready |
 | Downgrade versions | Enables supported downgrades; hardware and update-protocol constraints still apply | ready |

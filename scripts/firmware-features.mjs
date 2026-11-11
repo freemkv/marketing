@@ -119,7 +119,10 @@ export function featuresFor(report) {
       throw new Error(`Modify capability report is missing boot_settings.${key}.supported`);
     }
   }
-  return FLAGS.map(f => ({ ...f, ok: report.boot_settings[CAPABILITY[f.key]].supported }));
+  // UHD is advertised only when a drive confirmed this output reads it;
+  // Unrestricted can apply (and be on) while UHD reading is still unproven.
+  const confirmed = report.boot_settings.unrestricted.qualification === 'hardware-confirmed';
+  return FLAGS.map(f => ({ ...f, ok: report.boot_settings[CAPABILITY[f.key]].supported && (f.key !== 'UHD' || confirmed) }));
 }
 
 // ---------------------------------------------------------------------------

@@ -133,7 +133,10 @@ test('per-image supported controls determine features independently of lineage',
   assert.equal(lineageOf('MT1939', [lever('Speed', 'AlreadyPresent')]), 'MT1959-lineage');
   assert.equal(lineageOf('MT1939', [lever('Speed', { SignatureNotFound: {} })]), 'MT1939-classic');
   assert.equal(lineageOf('MT1939', []), 'MT1939-classic');
-  assert.equal(k(featuresFor(create())), 'Speed:1,Region:1,UHD:1,BD:1,HRL:1,AKE:1,Bus:1');
+  assert.equal(k(featuresFor(create())), 'Speed:1,Region:1,UHD:0,BD:1,HRL:1,AKE:1,Bus:1');
+  const qualified = q => { const r = create(); r.boot_settings.unrestricted.qualification = q; return k(featuresFor(r)); };
+  assert.equal(qualified('applies-unproven'), 'Speed:1,Region:1,UHD:0,BD:1,HRL:1,AKE:1,Bus:1');
+  assert.equal(qualified('hardware-confirmed'), 'Speed:1,Region:1,UHD:1,BD:1,HRL:1,AKE:1,Bus:1');
   assert.equal(k(featuresFor(create({ boot_settings: support({ unrestricted: false, speed: false }) }))), 'Speed:0,Region:1,UHD:0,BD:0,HRL:1,AKE:1,Bus:1');
   assert.deepEqual(featuresFor(create()).map(f => f.name), ['Speed', 'Region-free', 'UHD', 'BD', 'HRL Bypass', 'AKE Bypass', 'Bus Decrypt']);
 });
@@ -165,7 +168,7 @@ test('documents: counts, per_flag, index grouping and summary', () => {
   assert.equal(doc.counts.stock_only, 1);
   assert.equal(doc.counts.build_verified, 2);
   assert.equal(doc.counts.hardware_verified, 0);
-  assert.deepEqual(doc.per_flag, { Speed: 1, 'Region-free': 2, UHD: 1, BD: 1, 'HRL Bypass': 2, 'AKE Bypass': 2, 'Bus Decrypt': 2 });
+  assert.deepEqual(doc.per_flag, { Speed: 1, 'Region-free': 2, UHD: 0, BD: 1, 'HRL Bypass': 2, 'AKE Bypass': 2, 'Bus Decrypt': 2 });
   assert.match(doc.note, /3-entry/);
   assert.match(doc.note, /boot_settings.supported/);
   assert.deepEqual(doc.images.map(i => i.model), ['BH14NS40', 'BH16NS40', 'WH16NS60']);

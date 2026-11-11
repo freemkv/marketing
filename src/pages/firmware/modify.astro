@@ -120,7 +120,7 @@ const platforms = [
 const fwCapabilities = [
   { name: 'Speed', detail: 'Settable read-speed / riplock ceiling — lift the cap for full-rate ripping', status: 'ready' },
   { name: 'Region', detail: 'Region-free (RPC-1) across DVD and Blu-ray, or force a specific region', status: 'ready' },
-  { name: 'Unrestricted', detail: 'Opens the drive to read every disc type, including Blu-ray and Ultra HD Blu-ray (AACS 1.0/2.0)', status: 'ready' },
+  { name: 'Unrestricted', detail: 'Widens the disc types the drive accepts, including Blu-ray and Ultra HD Blu-ray (AACS 1.0/2.0). On by default for MT1959 firmware; Ultra HD Blu-ray reading is not yet confirmed on a real drive. Not available for MT1939', status: 'wip' },
   { name: 'Revocation (HRL)', detail: 'Skip the host-certificate revocation check (non-destructive)', status: 'ready' },
   { name: 'Encryption', detail: 'Removes the drive’s disc-encryption handshake so content reads back decrypted; the host applies the title keys', status: 'ready' },
   { name: 'Downgrade versions', detail: 'Enables you to flash any firmware version over any existing one', status: 'ready' },
