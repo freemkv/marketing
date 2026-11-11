@@ -12,6 +12,22 @@ one version number.
 Release downloads are also available on GitHub:
 [freemkv releases](https://github.com/freemkv/freemkv/releases).
 
+## 1.8.9
+
+<small>2026-11-11</small>
+
+### Changed
+
+- Titles... lets you pick a movie or tick TV episodes in order; a TV disc whose episodes are not certain waits for you to confirm them instead of guessing. (server)
+- TV episodes are named without a TMDB key, and an opt-in setting files rips into Movies and TV folders. (desktop app)
+- `freemkv info` shows where the layer count comes from and the DVD layer break; a dual-layer DVD copied to an ISO gets an ImgBurn `.dvd` file.
+
+### Fixed
+
+- Decrypted DVD copies no longer stop on discs whose menus have no key to crack, or that are partly unreadable.
+- The channel count of DTS tracks in MKV files is correct.
+- A new disc no longer inherits the last disc's title choice, and corrected movies file under the Library folder. (server)
+
 ## 1.8.8
 
 <small>2026-11-01</small>
