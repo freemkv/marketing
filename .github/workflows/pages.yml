@@ -10,6 +10,10 @@ name: Deploy site to Pages
 on:
   push:
     branches: [main]
+  # freemkv-firmware's tag release deploys the site before publishing its
+  # binaries; client_payload.provenance is that staged release's asset hashes.
+  repository_dispatch:
+    types: [freemkv-release]
   workflow_dispatch:
     inputs:
       firmware_release:
@@ -22,6 +26,8 @@ permissions:
 
 jobs:
   deploy:
+    env:
+      FREEMKV_RELEASE_PROVENANCE: ${{ github.event_name == 'repository_dispatch' && toJSON(github.event.client_payload.provenance) || '' }}
     concurrency:
       group: pages-${{ github.ref }}
       cancel-in-progress: true
