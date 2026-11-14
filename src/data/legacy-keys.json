@@ -300,6 +300,14 @@
       "status": "published"
     },
     {
+      "basis": "projection",
+      "key": "pioneer/BDC-207/SAT%201031/1.00/2fd9ca000455079c9044123e1d148a0531405c2e5e42d72475ea34932d39a078.tar",
+      "model": "BDC-207",
+      "new_key": "fw/pioneer/2fd9ca000455079c9044123e1d148a0531405c2e5e42d72475ea34932d39a078.tar",
+      "sha256": "2fd9ca000455079c9044123e1d148a0531405c2e5e42d72475ea34932d39a078",
+      "status": "published"
+    },
+    {
       "basis": "projection+site",
       "key": "pioneer/BDC-S02/SAT%201003/1.04/8fa348c7a6dd509523e9f3a74cc0b73dbdfe03e893fc21b5796ba68feed05556.tar",
       "model": "BDC-S02",
@@ -1357,6 +1365,14 @@
       "status": "published"
     },
     {
+      "basis": "projection",
+      "key": "pioneer/BDR-206/SAT%201030/1.56/ed03f3f50a3fa335d9d2d44c75f70372045ebc363f5de5612a9de481e332eb21.tar",
+      "model": "BDR-206",
+      "new_key": "fw/pioneer/ed03f3f50a3fa335d9d2d44c75f70372045ebc363f5de5612a9de481e332eb21.tar",
+      "sha256": "ed03f3f50a3fa335d9d2d44c75f70372045ebc363f5de5612a9de481e332eb21",
+      "status": "published"
+    },
+    {
       "basis": "projection+site",
       "key": "pioneer/BDR-206/SAT%201030/8.06/8d894b310dedabaea3ed5022b160c64876c0c6aff6fd0fec1e27995c6f67219a.tar",
       "model": "BDR-206",
@@ -2286,6 +2302,22 @@
     },
     {
       "basis": "projection",
+      "key": "pioneer/BDR-209/SAT%208600/1.10/37cdd5ad09831f02b0a2e6c080304f2b2adef8b87156f9478a0db600ff4ea744.tar",
+      "model": "BDR-209",
+      "new_key": "fw/pioneer/37cdd5ad09831f02b0a2e6c080304f2b2adef8b87156f9478a0db600ff4ea744.tar",
+      "sha256": "37cdd5ad09831f02b0a2e6c080304f2b2adef8b87156f9478a0db600ff4ea744",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDR-209/SAT%208600/1.34/4142b08e811e385f64e1c761b8dcb8f5c0ebeb1180fc839bbb6362f82c4ba41d.tar",
+      "model": "BDR-209",
+      "new_key": "fw/pioneer/4142b08e811e385f64e1c761b8dcb8f5c0ebeb1180fc839bbb6362f82c4ba41d.tar",
+      "sha256": "4142b08e811e385f64e1c761b8dcb8f5c0ebeb1180fc839bbb6362f82c4ba41d",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
       "key": "pioneer/BDR-209/SAT%208600/1.51/b627a41a482bba6815cc2f9f519ff735d0af793b1f5596042ea1bebee72bb9ac.tar",
       "model": "BDR-209",
       "new_key": "fw/pioneer/b627a41a482bba6815cc2f9f519ff735d0af793b1f5596042ea1bebee72bb9ac.tar",
@@ -3154,6 +3186,14 @@
       "model": "BDR-209M",
       "new_key": "fw/pioneer/c36367c71924170e5a16d4501293b4e34785719c5b5c1b7304a46cb5db7f906a.tar",
       "sha256": "c36367c71924170e5a16d4501293b4e34785719c5b5c1b7304a46cb5db7f906a",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDR-209M/SAT%208F00/1.53/fdf371dc04e008df5bf93baf0efda0d8c02b5e7096121fc44208dc27e67aed28.tar",
+      "model": "BDR-209M",
+      "new_key": "fw/pioneer/fdf371dc04e008df5bf93baf0efda0d8c02b5e7096121fc44208dc27e67aed28.tar",
+      "sha256": "fdf371dc04e008df5bf93baf0efda0d8c02b5e7096121fc44208dc27e67aed28",
       "status": "published"
     },
     {
@@ -4090,6 +4130,14 @@
       "model": "BDR-212",
       "new_key": "fw/pioneer/bfac84e29d2c183feeb96edb331853207f2ea3aff4519c11edd9e9947afde4bb.tar",
       "sha256": "bfac84e29d2c183feeb96edb331853207f2ea3aff4519c11edd9e9947afde4bb",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDR-212BK/SAT%208F00/1.00/cfa64555d1ef757f223cbb0952ee84741082790bfb1a4994883a613ea0c339bd.tar",
+      "model": "BDR-212BK",
+      "new_key": "fw/pioneer/cfa64555d1ef757f223cbb0952ee84741082790bfb1a4994883a613ea0c339bd.tar",
+      "sha256": "cfa64555d1ef757f223cbb0952ee84741082790bfb1a4994883a613ea0c339bd",
       "status": "published"
     },
     {
@@ -5064,6 +5112,38 @@
     },
     {
       "basis": "projection",
+      "key": "pioneer/BDR-L12SH/REC%208900/1.07/7035b6ed0a599c88a7cb9f0a93c98efce5effb6c356d8704658236745370f2b0.tar",
+      "model": "BDR-L12SH",
+      "new_key": "fw/pioneer/7035b6ed0a599c88a7cb9f0a93c98efce5effb6c356d8704658236745370f2b0.tar",
+      "sha256": "7035b6ed0a599c88a7cb9f0a93c98efce5effb6c356d8704658236745370f2b0",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDR-L13SH/REC%208C00/1.08/8cf7be9f03c31fa1791fcefcdbcbd30209c9f682fd168851004fc2d820ae4ab9.tar",
+      "model": "BDR-L13SH",
+      "new_key": "fw/pioneer/8cf7be9f03c31fa1791fcefcdbcbd30209c9f682fd168851004fc2d820ae4ab9.tar",
+      "sha256": "8cf7be9f03c31fa1791fcefcdbcbd30209c9f682fd168851004fc2d820ae4ab9",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDR-L13SH/REC%208C00/1.18/595e05f04e5d4b70633f6537b093cda21e006ff36c8dbb573c57afca49656eff.tar",
+      "model": "BDR-L13SH",
+      "new_key": "fw/pioneer/595e05f04e5d4b70633f6537b093cda21e006ff36c8dbb573c57afca49656eff.tar",
+      "sha256": "595e05f04e5d4b70633f6537b093cda21e006ff36c8dbb573c57afca49656eff",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDR-L13SH/REC%208C00/1.20/103db94d1e52bee5b3ef26c1a7de9ff4d4087cb875ef5f774f97e48648feed4c.tar",
+      "model": "BDR-L13SH",
+      "new_key": "fw/pioneer/103db94d1e52bee5b3ef26c1a7de9ff4d4087cb875ef5f774f97e48648feed4c.tar",
+      "sha256": "103db94d1e52bee5b3ef26c1a7de9ff4d4087cb875ef5f774f97e48648feed4c",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
       "key": "pioneer/BDR-PR1AME/SAT%208000/1.05/f4813c704d4a5e42591dbba70d2a6087efc6a8ea0a68e706d416ee184831cdb9.tar",
       "model": "BDR-PR1AME",
       "new_key": "fw/pioneer/f4813c704d4a5e42591dbba70d2a6087efc6a8ea0a68e706d416ee184831cdb9.tar",
@@ -5076,6 +5156,14 @@
       "model": "BDR-PR1AME",
       "new_key": "fw/pioneer/b8883fb44d7553cae424386b6c3eb1dfdeca0d9d210bf25c9df37c291b7e9196.tar",
       "sha256": "b8883fb44d7553cae424386b6c3eb1dfdeca0d9d210bf25c9df37c291b7e9196",
+      "status": "published"
+    },
+    {
+      "basis": "projection",
+      "key": "pioneer/BDR-PR1AME/SAT%208000/1.09/d66b4519c2b6b768357838b88c7c35fda18787fafc0b83ca36e8694d1150c6a9.tar",
+      "model": "BDR-PR1AME",
+      "new_key": "fw/pioneer/d66b4519c2b6b768357838b88c7c35fda18787fafc0b83ca36e8694d1150c6a9.tar",
+      "sha256": "d66b4519c2b6b768357838b88c7c35fda18787fafc0b83ca36e8694d1150c6a9",
       "status": "published"
     },
     {
@@ -8369,14 +8457,6 @@
       "status": "published"
     },
     {
-      "basis": "projection",
-      "key": "pioneer/BDR-TD05/SAT%208211/1.02/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
-      "model": "BDR-TD05",
-      "new_key": "fw/pioneer/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
-      "sha256": "f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca",
-      "status": "published"
-    },
-    {
       "basis": "projection+site",
       "key": "pioneer/BDR-TD05/SAT%208211/1.02EU/9d3154482b028422f7051e04983b34ab852e08e26effca2aa41d68ed23431897.tar",
       "model": "BDR-TD05",
@@ -8388,22 +8468,6 @@
       "basis": "projection",
       "key": "pioneer/BDR-TD05/SAT%208211/2.02/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
       "model": "BDR-TD05",
-      "new_key": "fw/pioneer/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
-      "sha256": "f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/BDR-TD05E1020474/SAT%208211/2.02/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
-      "model": "BDR-TD05E1020474",
-      "new_key": "fw/pioneer/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
-      "sha256": "f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca",
-      "status": "published"
-    },
-    {
-      "basis": "projection",
-      "key": "pioneer/BDR-TD05FUJITSU/SAT%208211/2.02/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
-      "model": "BDR-TD05FUJITSU",
       "new_key": "fw/pioneer/f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca.tar",
       "sha256": "f0ad07abee3b5067de39191b69556002379e0d913105c0949a33199ae81d60ca",
       "status": "published"
