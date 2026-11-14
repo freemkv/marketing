@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { checkCrossflashLinks } from './firmware-release.mjs';
 import { validateCrossflashCoverage } from '../src/lib/finder.mjs';
-import { routeGroups } from '../src/lib/crossflash-routes.mjs';
+import { routeGroups, nativeRoute } from '../src/lib/crossflash-routes.mjs';
 import { readFileSync } from 'node:fs';
 
 const catalog = { identities: [{ revisions: [{ packages: [{ sha256: 'a' }, { sha256: 'b' }, { sha256: 'c' }] }] }] };
@@ -62,6 +62,22 @@ test('route groups preserve explicit directed targets and alternative hardware p
   assert.throws(()=>checkCrossflashLinks({...routes(),groups:[routes().groups[0],routes().groups[0]]},catalog));
 });
 
+test('version 3 route groups carry parameter-word prerequisites and refuse version 1 requirement kinds', () => {
+  const word = (parameter=0x9f, value=0xffff) => ({kind:'parameter_word',filter:'pioneer',parameter,value});
+  const v3 = () => ({format:'freemkv-crossflash-routes',version:3,groups:[
+    {source:'a',status:'conditional',requirements:[word()],targets:['b']},
+    {source:'a',status:'conditional',requirements:[word(0x9f,0)],targets:['b']},
+    {source:'a',status:'allowed',requirements:[],targets:['c']},
+  ]});
+  assert.doesNotThrow(()=>checkCrossflashLinks(v3(),catalog));
+  for (const requirements of [
+    [requirement()], [{...word(),parameter:0x10000}], [{...word(),value:-1}], [{...word(),filter:''}],
+    [{...word(),extra:1}], [word(),word()],
+  ]) assert.throws(()=>checkCrossflashLinks({...v3(),groups:[{...v3().groups[0],requirements}]},catalog));
+  assert.throws(()=>checkCrossflashLinks({...routes(),version:3},catalog), /requirement/);
+  assert.throws(()=>checkCrossflashLinks({...v3(),version:2},catalog));
+});
+
 test('route sources and every explicit target must have been evaluated', () => {
   assert.doesNotThrow(()=>checkCrossflashLinks({...routes(),evaluated_packages:['a','b','c']},catalog));
   for (const evaluated_packages of [['a','c'],['b','c']]) {
@@ -84,5 +100,5 @@ test('published UD02/UD03/UD04 firmware pairs retain all six native crossflash d
   ];
   const groups = routeGroups(graph);
   for (const source of packages) for (const target of packages) if (source !== target)
-    assert.ok(groups.some(g=>g.source===source && g.targets.includes(target) && g.native_supported===true), `${source} -> ${target} must have an exporter-proven native route`);
+    assert.ok(groups.some(g=>g.source===source && g.targets.includes(target) && nativeRoute(g)), `${source} -> ${target} must have an exporter-proven native route`);
 });

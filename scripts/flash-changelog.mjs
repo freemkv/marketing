@@ -5,7 +5,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { fetchRelease } from '../src/lib/releases.mjs';
 
-const VERSION_HEADING = /^## \[(\d+\.\d+\.\d+)\](?: - (\d{4}-\d{2}-\d{2}|Unreleased))?\s*$/;
+const VERSION_HEADING = /^## \[(\d+\.\d+\.\d+)\](?: - (\d{4}-\d{2}-\d{2}|[Uu]nreleased))?\s*$/;
 const INTERNAL_HEADING = /^#{3,}\s+(?:development|build(?:s)?|ci(?:\/cd)?|testing|validation|internal|maintenance)\b/im;
 const compare = (a, b) => {
   const av = a.split('.').map(Number), bv = b.split('.').map(Number);
@@ -20,9 +20,9 @@ export function flashChangelog(source, release = {}) {
     if (/^## /.test(line)) {
       const match = VERSION_HEADING.exec(line);
       const published = match && match[1] === release.version;
-      current = match && (match[2] !== 'Unreleased' || published)
+      current = match && (!/^unreleased$/i.test(match[2] ?? "") || published)
         && (!release.version || compare(match[1], release.version) <= 0)
-        ? { version: match[1], date: match[2] === 'Unreleased' ? release.date : match[2], lines: [] }
+        ? { version: match[1], date: /^unreleased$/i.test(match[2] ?? "") ? release.date : match[2], lines: [] }
         : null;
       if (current) sections.push(current);
     } else if (current) current.lines.push(line);

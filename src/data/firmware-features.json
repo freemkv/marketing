@@ -1,5 +1,5 @@
 {
-  "note": "Exact-image capabilities from freemkv-fw 0.17.3; every published MediaTek hash was queried and every supported output built, audited and checked by Flash. Unsupported inputs are retained explicitly.",
+  "note": "Exact-image capabilities from freemkv-fw 0.18.1; every published MediaTek hash was queried and every supported output built, audited and checked by Flash. Unsupported inputs are retained explicitly.",
   "flags": [
     "Speed",
     "Region",
@@ -20,8 +20,8 @@
   "per_flag": {
     "Speed": 114,
     "Region-free": 114,
-    "UHD": 114,
-    "BD": 114,
+    "UHD": 0,
+    "BD": 85,
     "HRL Bypass": 114,
     "AKE Bypass": 114,
     "Bus Decrypt": 114
@@ -58,12 +58,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -82,7 +82,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -136,12 +136,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -160,7 +160,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -214,12 +214,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -238,7 +238,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -271,7 +271,7 @@
       "vendor": "HL-DT-ST",
       "model": "BH14NS40",
       "rev": "1.00",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N1524A4",
       "modifiable": true,
       "base_ok": true,
@@ -292,12 +292,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -316,7 +316,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -349,7 +349,7 @@
       "vendor": "HL-DT-ST",
       "model": "BH14NS40",
       "rev": "1.01",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N1722A1",
       "modifiable": true,
       "base_ok": true,
@@ -370,12 +370,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -394,7 +394,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -427,7 +427,7 @@
       "vendor": "HL-DT-ST",
       "model": "BH14NS40",
       "rev": "1.02",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N0002A0",
       "modifiable": true,
       "base_ok": true,
@@ -448,12 +448,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -472,7 +472,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -505,7 +505,7 @@
       "vendor": "HL-DT-ST",
       "model": "BH14NS48",
       "rev": "1.00",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N1524A4",
       "modifiable": true,
       "base_ok": true,
@@ -526,12 +526,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -550,7 +550,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -583,7 +583,7 @@
       "vendor": "HL-DT-ST",
       "model": "BH14NS48",
       "rev": "1.01",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N1663A0",
       "modifiable": true,
       "base_ok": true,
@@ -604,12 +604,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -628,7 +628,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -661,7 +661,7 @@
       "vendor": "HL-DT-ST",
       "model": "BH14NS48",
       "rev": "1.03",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N0002A0",
       "modifiable": true,
       "base_ok": true,
@@ -682,12 +682,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -706,7 +706,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -739,7 +739,7 @@
       "vendor": "HL-DT-ST",
       "model": "BH16NS40",
       "rev": "1.00",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N1669A2",
       "modifiable": true,
       "base_ok": true,
@@ -760,12 +760,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -784,7 +784,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -817,7 +817,7 @@
       "vendor": "HL-DT-ST",
       "model": "BH16NS40",
       "rev": "1.01",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N1722A1",
       "modifiable": true,
       "base_ok": true,
@@ -838,12 +838,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -862,7 +862,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -895,7 +895,7 @@
       "vendor": "HL-DT-ST",
       "model": "BH16NS40",
       "rev": "1.02",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N0002A0",
       "modifiable": true,
       "base_ok": true,
@@ -916,12 +916,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -940,7 +940,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -973,7 +973,7 @@
       "vendor": "HL-DT-ST",
       "model": "BH16NS40",
       "rev": "1.03",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N0013A0",
       "modifiable": true,
       "base_ok": true,
@@ -994,12 +994,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -1018,7 +1018,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1051,7 +1051,7 @@
       "vendor": "HL-DT-ST",
       "model": "BH16NS40",
       "rev": "1.03",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N0026C0",
       "modifiable": true,
       "base_ok": true,
@@ -1072,12 +1072,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -1096,7 +1096,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1129,7 +1129,7 @@
       "vendor": "HL-DT-ST",
       "model": "BH16NS48",
       "rev": "1.01",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N1722A1",
       "modifiable": true,
       "base_ok": true,
@@ -1150,12 +1150,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -1174,7 +1174,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1207,7 +1207,7 @@
       "vendor": "HL-DT-ST",
       "model": "BH16NS48",
       "rev": "1.02",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N0002A0",
       "modifiable": true,
       "base_ok": true,
@@ -1228,12 +1228,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -1252,7 +1252,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1285,7 +1285,7 @@
       "vendor": "hp",
       "model": "BH40N",
       "rev": "B7C6",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "P166800",
       "modifiable": true,
       "base_ok": true,
@@ -1306,12 +1306,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -1330,7 +1330,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1363,7 +1363,7 @@
       "vendor": "ASUS",
       "model": "BW-16D1HT",
       "rev": "1.01",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "W170600",
       "modifiable": true,
       "base_ok": true,
@@ -1384,12 +1384,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -1408,7 +1408,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1441,7 +1441,7 @@
       "vendor": "HL-DT-ST",
       "model": "UH12NS30",
       "rev": "1.01",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N0002A0",
       "modifiable": true,
       "base_ok": true,
@@ -1462,12 +1462,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -1486,7 +1486,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1519,7 +1519,7 @@
       "vendor": "HL-DT-ST",
       "model": "UH12NS30",
       "rev": "1.02",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N0004A0",
       "modifiable": true,
       "base_ok": true,
@@ -1540,12 +1540,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -1564,7 +1564,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1597,7 +1597,7 @@
       "vendor": "HL-DT-ST",
       "model": "WH14NS40",
       "rev": "1.00",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N1524A4",
       "modifiable": true,
       "base_ok": true,
@@ -1618,12 +1618,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -1642,7 +1642,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1675,7 +1675,7 @@
       "vendor": "HL-DT-ST",
       "model": "WH14NS40",
       "rev": "1.01",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N1722A1",
       "modifiable": true,
       "base_ok": true,
@@ -1696,12 +1696,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -1720,7 +1720,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1753,7 +1753,7 @@
       "vendor": "HL-DT-ST",
       "model": "WH14NS40",
       "rev": "1.02",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N0002A0",
       "modifiable": true,
       "base_ok": true,
@@ -1774,12 +1774,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -1798,7 +1798,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1831,7 +1831,7 @@
       "vendor": "HL-DT-ST",
       "model": "WH14NS40",
       "rev": "1.03",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N0009A0",
       "modifiable": true,
       "base_ok": true,
@@ -1852,12 +1852,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -1876,7 +1876,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -1930,12 +1930,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -1954,7 +1954,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2008,12 +2008,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -2032,7 +2032,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2086,12 +2086,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -2110,7 +2110,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2164,12 +2164,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -2188,7 +2188,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2221,7 +2221,7 @@
       "vendor": "HL-DT-ST",
       "model": "WH16NS48",
       "rev": "1.D3",
-      "media": "BD/UHD",
+      "media": "BD",
       "variant": "N007700",
       "modifiable": true,
       "base_ok": true,
@@ -2242,12 +2242,12 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
           "name": "BD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "HRL",
@@ -2266,7 +2266,7 @@
         }
       ],
       "boot_support": {
-        "unrestricted": true,
+        "unrestricted": false,
         "hrl": true,
         "encryption": true,
         "speed": true,
@@ -2320,7 +2320,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -2398,7 +2398,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -2476,7 +2476,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -2554,7 +2554,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -2632,7 +2632,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -2710,7 +2710,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -2788,7 +2788,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -2866,7 +2866,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -2944,7 +2944,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -3022,7 +3022,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -3100,7 +3100,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -3178,7 +3178,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -3256,7 +3256,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -3334,7 +3334,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -3412,7 +3412,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -3490,7 +3490,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -3568,7 +3568,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -3646,7 +3646,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -3724,7 +3724,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -3802,7 +3802,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -3880,7 +3880,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -3958,7 +3958,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -4036,7 +4036,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -4114,7 +4114,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -4192,7 +4192,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -4270,7 +4270,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -4348,7 +4348,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -4426,7 +4426,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -4504,7 +4504,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -4536,7 +4536,7 @@
       },
       "base_facts": {
         "handler_va": 1381092,
-        "boot_stub_va": 1384000,
+        "boot_stub_va": 1384032,
         "boot_init_site": 1288942,
         "de_off": 2015318,
         "speed_gate": 113586,
@@ -4582,7 +4582,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -4614,7 +4614,7 @@
       },
       "base_facts": {
         "handler_va": 1381564,
-        "boot_stub_va": 1384472,
+        "boot_stub_va": 1384504,
         "boot_init_site": 1289406,
         "de_off": 2015318,
         "speed_gate": 113586,
@@ -4660,7 +4660,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -4727,7 +4727,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -4759,7 +4759,7 @@
       },
       "base_facts": {
         "handler_va": 1381092,
-        "boot_stub_va": 1384000,
+        "boot_stub_va": 1384032,
         "boot_init_site": 1288942,
         "de_off": 2015318,
         "speed_gate": 113586,
@@ -4805,7 +4805,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -4837,7 +4837,7 @@
       },
       "base_facts": {
         "handler_va": 1381588,
-        "boot_stub_va": 1384496,
+        "boot_stub_va": 1384528,
         "boot_init_site": 1289430,
         "de_off": 2015318,
         "speed_gate": 113586,
@@ -4883,7 +4883,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -4961,7 +4961,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -5039,7 +5039,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -5117,7 +5117,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -5195,7 +5195,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -5273,7 +5273,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -5351,7 +5351,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -5429,7 +5429,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -5507,7 +5507,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -5574,7 +5574,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -5641,7 +5641,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -5673,7 +5673,7 @@
       },
       "base_facts": {
         "handler_va": 1386600,
-        "boot_stub_va": 1389556,
+        "boot_stub_va": 1389588,
         "boot_init_site": 1295168,
         "de_off": 2015318,
         "speed_gate": 113442,
@@ -5719,7 +5719,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -5751,7 +5751,7 @@
       },
       "base_facts": {
         "handler_va": 1387040,
-        "boot_stub_va": 1389996,
+        "boot_stub_va": 1390028,
         "boot_init_site": 1295600,
         "de_off": 2015318,
         "speed_gate": 113442,
@@ -5797,7 +5797,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -5829,7 +5829,7 @@
       },
       "base_facts": {
         "handler_va": 1387064,
-        "boot_stub_va": 1390020,
+        "boot_stub_va": 1390052,
         "boot_init_site": 1295620,
         "de_off": 2015318,
         "speed_gate": 113442,
@@ -5875,7 +5875,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -5953,7 +5953,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -6031,7 +6031,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -6109,7 +6109,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -6187,7 +6187,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -6265,7 +6265,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -6343,7 +6343,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -6375,7 +6375,7 @@
       },
       "base_facts": {
         "handler_va": 1380772,
-        "boot_stub_va": 1383680,
+        "boot_stub_va": 1383712,
         "boot_init_site": 1290052,
         "de_off": 2015318,
         "speed_gate": 113442,
@@ -6421,7 +6421,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -6499,7 +6499,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -6577,7 +6577,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -6655,7 +6655,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -6733,7 +6733,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -6811,7 +6811,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -6889,7 +6889,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -6967,7 +6967,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -7045,7 +7045,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -7123,7 +7123,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -7201,7 +7201,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -7279,7 +7279,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -7357,7 +7357,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -7435,7 +7435,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -7502,7 +7502,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -7580,7 +7580,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -7658,7 +7658,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -7736,7 +7736,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -7814,7 +7814,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -7892,7 +7892,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -7970,7 +7970,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -8048,7 +8048,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -8126,7 +8126,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -8204,7 +8204,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -8282,7 +8282,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -8360,7 +8360,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -8438,7 +8438,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -8516,7 +8516,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -8594,7 +8594,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -8672,7 +8672,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -8750,7 +8750,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",
@@ -8782,7 +8782,7 @@
       },
       "base_facts": {
         "handler_va": 1381092,
-        "boot_stub_va": 1384000,
+        "boot_stub_va": 1384032,
         "boot_init_site": 1288942,
         "de_off": 2015318,
         "speed_gate": 113586,
@@ -8828,7 +8828,7 @@
         {
           "key": "UHD",
           "name": "UHD",
-          "ok": true
+          "ok": false
         },
         {
           "key": "BD",

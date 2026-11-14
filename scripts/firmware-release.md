@@ -76,16 +76,24 @@ node --test scripts/*.test.mjs
 ```
 
 `prepare` requires `FREEMKV_FW` and `FREEMKV_CROSSFLASH`: the `freemkv-crossflash` binary from
-freemkv-firmware (`cargo build --release -p freemkv-flash --bin freemkv-crossflash`).
+freemkv-firmware. From 0.18.1 the release publishes it as a stable per-release
+asset (`freemkv-crossflash-cli-<arch>-<os>`); prefer that download so its route-graph
+cache (below) stays valid and `prepare` scans only changed packages instead of a
+full all-pairs rescan. A locally built binary (`cargo build --release -p
+freemkv-flash --bin freemkv-crossflash`) has an unstable SHA and forces a full
+scan (~1h on the current catalog); if you must build locally, keep that exact
+binary and its cache between releases rather than rebuilding.
 It runs the flasher's own offline gates and writes `crossflash-links.json`
-as `freemkv-crossflash-routes` version 1. Each group names one exact installed
+as `freemkv-crossflash-routes` version 3 (freemkv-flash 0.18.x; version 1 from
+0.17.x is still read). Each group names one exact installed
 package, an availability status (`allowed`, `conditional`, or `future`), typed
 requirements, and explicit target package hashes. Requirements in a group are
 AND; groups for the same directed pair are OR alternatives. Empty requirements
 represent an ordinary route. Groups never imply all-to-all links among targets.
 `prepare` checks every reference names a catalogue package. The finder lists
-these routes for the selected source package and displays original-hardware
-requirements; it never re-implements the crossflash rule. Diagnose
+these routes for the selected source package and lists conditional routes
+(version 1 original-hardware or version 3 parameter-word requirements) under
+Hardware Cross Flash; it never re-implements the crossflash rule. Diagnose
 one pair with `freemkv-crossflash --why <installed> <target>`.
 
 The graph records `evaluated_packages`, including packages with no admitted

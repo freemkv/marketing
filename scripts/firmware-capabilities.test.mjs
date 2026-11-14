@@ -43,3 +43,16 @@ test('unsupported firmware stays visible with a reason and no advertised feature
   delete manifest.images[0].reason;
   assert.throws(() => validateCapabilityCoverage(catalog, manifest, index), /explicit reason/);
 });
+
+test('UHD is declared only for hardware-confirmed Unrestricted, as the index shows it', () => {
+  const { catalog, manifest, index } = fixture();
+  const settings = manifest.images[0].report.boot_settings;
+  settings.unrestricted = { supported: true, qualification: 'applies-unproven', choices: ['oem', 'on', 'off'] };
+  const feature = key => index[0].versions[0].features.find(f => f.key === key);
+  feature('BD').ok = true;
+  assert.equal(validateCapabilityCoverage(catalog, manifest, index).size, 1);
+  feature('UHD').ok = true;
+  assert.throws(() => validateCapabilityCoverage(catalog, manifest, index), /UHD/);
+  settings.unrestricted.qualification = 'hardware-confirmed';
+  assert.equal(validateCapabilityCoverage(catalog, manifest, index).size, 1);
+});

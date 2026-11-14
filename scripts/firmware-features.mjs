@@ -346,7 +346,7 @@ export async function evaluate(cand, run, tmp, hardware = new Set(), flash = nul
 export async function generate({ hoard, fw, flash, outDir, eligible = null, hardware = new Set(), jobs = 8, exclusions, log = () => {} }) {
   if (eligible) {
     const { generatePublished } = await import('./firmware-published-capabilities.mjs');
-    return generatePublished({ hoard, fw, flash, outDir, eligible, hardware, log });
+    return generatePublished({ hoard, fw, flash, outDir, eligible, hardware, jobs, log });
   }
   const { candidates, excluded } = await loadCandidates(hoard, exclusions ?? await loadExclusions());
   const admitted = eligible ? candidates.filter(candidate => eligible.has(candidate.sha)) : candidates;

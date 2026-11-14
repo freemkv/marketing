@@ -33,7 +33,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -86,7 +86,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -146,7 +146,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -199,7 +199,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -252,7 +252,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -312,12 +312,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -365,12 +365,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -418,12 +418,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -478,7 +478,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -531,7 +531,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -584,7 +584,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -624,7 +624,7 @@
         "sha256": "d8ab861b6fefa847223a1a95b53241c9838953ac298ff068d9243fc31587df87",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N1524A4",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -644,12 +644,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -677,7 +677,7 @@
         "sha256": "007ac6bfe4ea432c7d8e5b4bd1142a636abe452516e3cc36f67e4e13520fe40d",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N1722A1",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -697,12 +697,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -730,7 +730,7 @@
         "sha256": "6a96f7267ba605eb85ead6999944069eaa5fc19bd57dca5becd79aa1525aba6e",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N0002A0",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -750,12 +750,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -790,7 +790,7 @@
         "sha256": "f1141a3295076c0d1a558e7ed396fee7709dc47f3ae277faed7068cd7ba66ce8",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N1524A4",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -810,12 +810,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -843,7 +843,7 @@
         "sha256": "adfd807cde847ae75315b9083be29d287f56d8a628d171eaf59d6023ee266d1c",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N1663A0",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -863,12 +863,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -896,7 +896,7 @@
         "sha256": "3b8faae231f30afbdd3257d9cd2b7791a005a4616391ee0f8367dfa0db51abc3",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N0002A0",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -916,12 +916,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -976,7 +976,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -1036,7 +1036,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -1089,7 +1089,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -1142,7 +1142,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -1182,7 +1182,7 @@
         "sha256": "ab21af6945e901c56b9f29755433cf4785e9cdc106bb123d943aea0e90d04d9e",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N1669A2",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -1202,12 +1202,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -1235,7 +1235,7 @@
         "sha256": "208a80d0d30c1841ad0bd33d49be032dfe2110c7f50ba6298ec51851c69035b6",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N1722A1",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -1255,12 +1255,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -1288,7 +1288,7 @@
         "sha256": "8f5bf9536115fd6aece78d1ff6b6a7e51e3fc0d927f2ae8fd64d6121401a5dea",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N0002A0",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -1308,12 +1308,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -1361,7 +1361,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -1414,7 +1414,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -1447,7 +1447,7 @@
         "sha256": "614b41f61837f84a46b73fe4da28ff9db13bf45fe291f2728a5197c67857446e",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N0013A0",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -1467,12 +1467,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -1520,7 +1520,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -1553,7 +1553,7 @@
         "sha256": "b093a73656e58ee2a4367b5d92324fd7da3889f632a22b2f1be8802607cd3de4",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N0026C0",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -1573,12 +1573,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -1626,7 +1626,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -1679,7 +1679,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -1719,7 +1719,7 @@
         "sha256": "163fb6e0057d74f38e046cf9042981c137ec70c1aaa2d7b1c3ee1a62324aa146",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N1722A1",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -1739,12 +1739,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -1772,7 +1772,7 @@
         "sha256": "43c484dccc37ccb36183e970c5a4f28e90d6ccb530c0efd3bd8f96943ba7dfe3",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N0002A0",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -1792,12 +1792,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -1852,7 +1852,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -1912,7 +1912,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -1965,7 +1965,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2018,7 +2018,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2071,7 +2071,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2124,7 +2124,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2184,7 +2184,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2237,7 +2237,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2290,7 +2290,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2350,7 +2350,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2390,7 +2390,7 @@
         "sha256": "0b2cdb82ff520589d4c750fae726571798901bf41e433de0a7164f7d74927d5f",
         "brand": "HP",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "P166800",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -2410,12 +2410,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -2470,7 +2470,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2523,7 +2523,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2576,7 +2576,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2629,7 +2629,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2689,7 +2689,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2742,7 +2742,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2802,7 +2802,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2855,7 +2855,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2915,7 +2915,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -2968,7 +2968,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3021,7 +3021,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3074,7 +3074,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3127,7 +3127,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3180,7 +3180,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3233,7 +3233,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3286,7 +3286,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3339,7 +3339,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3392,7 +3392,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3445,7 +3445,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3498,7 +3498,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3551,7 +3551,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3604,7 +3604,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3657,7 +3657,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3710,7 +3710,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3763,7 +3763,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3816,7 +3816,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3869,7 +3869,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3922,7 +3922,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -3975,7 +3975,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -4035,7 +4035,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -4088,7 +4088,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -4148,7 +4148,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -4201,7 +4201,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -4241,7 +4241,7 @@
         "sha256": "3f436c31124f6b7bbe582c67370924077018eb14e768f27d9b7194904f099aa5",
         "brand": "ASUS",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "W170600",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -4261,12 +4261,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -4314,7 +4314,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -4367,7 +4367,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -4420,7 +4420,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -4473,7 +4473,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -4533,7 +4533,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -4573,7 +4573,7 @@
         "sha256": "84fecc2930d63cd4da8aa4759f63550d1eb1a642343d29adf1e370a2a861347e",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N0002A0",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -4593,12 +4593,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -4626,7 +4626,7 @@
         "sha256": "d98c2e11f400cf54133289369f19064ccabc72c69ef189f9129fc19b2d700cc8",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N0004A0",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -4646,12 +4646,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -4706,7 +4706,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -4759,7 +4759,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -4799,7 +4799,7 @@
         "sha256": "8489a3a5b34ea7ee6046fec6db02be825dee1205646c10ed7d11d4809c45deeb",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N1524A4",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -4819,12 +4819,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -4852,7 +4852,7 @@
         "sha256": "fc3013be680340b6a413a7aa8773cc0bdd2bd1144d3ceb2002983bacfeff8442",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N1722A1",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -4872,12 +4872,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -4905,7 +4905,7 @@
         "sha256": "40eb760e23f100d55e86e9c061c73428d4087ef712294e4dbfcefa3093837a1a",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N0002A0",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -4925,12 +4925,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -4978,7 +4978,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -5031,7 +5031,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -5064,7 +5064,7 @@
         "sha256": "f6a5a578f9b5347f6371a7ef1195ab84b1bea4d80b58c97efa23c8ddf0d6f6e9",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N0009A0",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -5084,12 +5084,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -5137,7 +5137,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -5190,7 +5190,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -5250,12 +5250,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -5303,12 +5303,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -5356,12 +5356,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -5409,12 +5409,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -5462,7 +5462,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -5515,7 +5515,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -5568,7 +5568,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -5608,7 +5608,7 @@
         "sha256": "46b41f15e053b66daccb024cba4380c45f791c2d0c2b8258cd23253fc5f0b22a",
         "brand": "LG",
         "chipset": "MT1939",
-        "media": "BD/UHD",
+        "media": "BD",
         "variant": "N007700",
         "confidence": "build-verified",
         "baseOnly": false,
@@ -5628,12 +5628,12 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
             "name": "BD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "HRL",
@@ -5688,7 +5688,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -5741,7 +5741,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -5794,7 +5794,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -5847,7 +5847,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -5900,7 +5900,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -5960,7 +5960,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -6013,7 +6013,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -6066,7 +6066,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -6119,7 +6119,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -6179,7 +6179,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",
@@ -6232,7 +6232,7 @@
           {
             "key": "UHD",
             "name": "UHD",
-            "ok": true
+            "ok": false
           },
           {
             "key": "BD",

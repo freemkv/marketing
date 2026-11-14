@@ -10,6 +10,10 @@ name: Deploy site to Pages
 on:
   push:
     branches: [main]
+  # freemkv-firmware's tag release deploys the site before publishing its
+  # binaries; client_payload.provenance is that staged release's asset hashes.
+  repository_dispatch:
+    types: [freemkv-release]
   workflow_dispatch:
     inputs:
       firmware_release:
@@ -22,6 +26,8 @@ permissions:
 
 jobs:
   deploy:
+    env:
+      FREEMKV_RELEASE_PROVENANCE: ${{ github.event_name == 'repository_dispatch' && toJSON(github.event.client_payload.provenance) || '' }}
     concurrency:
       group: pages-${{ github.ref }}
       cancel-in-progress: true
@@ -44,6 +50,20 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
       - run: npm ci
+      # A freemkv-firmware release publishes the website data its QA run
+      # computed with the release binaries; nothing is recomputed here.
+      - name: Use the release's QA website data
+        if: github.event_name == 'repository_dispatch' && github.event.client_payload.provenance.qa_run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          QA_RUN: ${{ github.event.client_payload.provenance.qa_run }}
+        run: |
+          set -euo pipefail
+          gh run download "$QA_RUN" --repo freemkv/freemkv-firmware --name site-data --dir "$RUNNER_TEMP/site-data"
+          for f in crossflash-links.json firmware-capabilities.json firmware-features.json firmware-index.json firmware-features-summary.md; do
+            test -s "$RUNNER_TEMP/site-data/$f"
+            cp "$RUNNER_TEMP/site-data/$f" "src/data/$f"
+          done
       - name: Download staged firmware release
         if: inputs.firmware_release != ''
         env:
@@ -112,6 +132,20 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=freemkv --branch=${{ github.ref_name }}
+      # Record the deployed release data on main, so later site-only deploys
+      # keep serving it.
+      - name: Commit the deployed release website data
+        if: github.event_name == 'repository_dispatch' && github.event.client_payload.provenance.qa_run
+        env:
+          TAG: ${{ github.event.client_payload.provenance.tag }}
+          QA_RUN: ${{ github.event.client_payload.provenance.qa_run }}
+        run: |
+          set -euo pipefail
+          git add src/data/crossflash-links.json src/data/firmware-capabilities.json src/data/firmware-features.json src/data/firmware-index.json src/data/firmware-features-summary.md
+          if git diff --cached --quiet; then exit 0; fi
+          git -c user.name='freemkv release' -c user.email='release@freemkv.org' \
+            commit -m "Firmware ${TAG#v}: website data from QA run ${QA_RUN}"
+          git push origin HEAD:main
 
   archive:
     name: Retain full firmware archive

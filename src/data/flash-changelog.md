@@ -3,6 +3,41 @@
 Customer-visible changes to freemkv Flash and freemkv Modify, newest first.
 Versions are independent of the freemkv ripping applications.
 
+## [0.18.1] - unreleased
+
+### freemkv Flash
+
+- Pioneer cross-flashes no longer stop when the drive's persistent startup word is unset or differs. Flash now sets the word the incoming firmware checks for, in the same settings step that already corrected differing words. The drive's current word is read only to restore it if the update fails before firmware is written. Routes that previously needed a "read-only drive check" are now offered without one. Example: BDR-212U on BDR-L13SH 1.08 to BDX-PR1MA 1.03.
+- Flashing back from firmware that checks the startup word to firmware that never reads it resets the word to its unset state, so the drive ends as it shipped. Recovery skips this reset; it never writes the word.
+- `freemkv-crossflash --why` and the website can explain which hardware contracts keep two firmwares apart.
+- The firmware-route graph scan is about 400 times faster (about 2.5 ms per pair instead of about 1 s), so the website's route data refreshes quickly. Verdicts are unchanged.
+- Releases now publish the website's firmware routes before the downloads appear.
+
+## [0.18.0] - 2026-11-12
+
+### freemkv Flash
+
+- A valid MediaTek Current file can select the transfer format without matching its model, version or build to the drive. The actual drive is still checked independently; target compatibility, backup policy and staged-update checks still apply.
+- Pioneer cross-flashing admits more conversions: a difference between two firmware's hardware contracts is allowed only when a proven firmware correction covers it, and a differing persistent startup word is now corrected on the drive instead of refused. Supported corrections keep every other check and require any existing calibration or startup values to match; they do not write persistent settings. Cross-flashes to a controller board whose sensor inputs are wired differently are still refused. Compared with 0.17.3 over the same firmware, 960 new directions are offered.
+- Cross-flashes between builds that check flash capacity the same way are no longer refused as an unproven capacity relation when only their code layout differs.
+- Native phase corrections change the incoming firmware's output assignment while preserving its DSP program, waveform tables, calibration and motion behaviour. Architecture and output interface must agree; unsupported directions stay unavailable, and other hardware and startup requirements still apply.
+- Recognise the native hardware contracts of BDR-L12SH and BDR-L13SH firmware carrying REC tags, so their families and supported destinations appear correctly.
+- `flash --no-backup` skips the pre-flash backup; no rollback file is saved and cross-flashes that need one refuse. `--force-empty-tray` proceeds when a drive falsely reports a disc; an open tray still refuses.
+- Refreshing the drive list no longer freezes the window while a slow drive is scanned, and no longer replaces the log of an operation you just ran.
+- Failed or partly unreadable reads are reported as failures instead of looking like success, and a log saved after a failure keeps the right details.
+- Drives and file paths are recognised more reliably on Windows, including long and network paths.
+- Clearer messages when a drive cannot be identified, instead of reporting it as stock firmware.
+
+### freemkv Modify
+
+- MT1939 firmware never offers Unrestricted, and MT1939 drives are labelled BD rather than BD/UHD.
+- Unrestricted is on by default wherever it applies (MT1959) and reports say so; it stays unproven until a drive confirms it reads Ultra HD Blu-ray.
+- Boot settings are written after the drive's own initialization, so the MT1939 SRAM clear no longer resets them, and MT1939 settings stay within its 4 KiB of SRAM.
+- `info --full` no longer saves empty capture files or reports success when a memory region could not be read.
+- `verify` on a drive reports "NOT DETERMINED" once, with the reason, when the drive does not answer.
+- Firmware is never overwritten by accident through a different spelling of the same path, and new output files follow your normal file permissions.
+- The drive scan runs in the background, so the window stays responsive.
+
 ## [0.17.3] - 2026-11-02
 
 ### freemkv Flash
