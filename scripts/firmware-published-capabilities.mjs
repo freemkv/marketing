@@ -70,7 +70,8 @@ export async function legacyCapability({ run, file, output, hash, version, ident
     report, output_sha256: sha(await readOutput(output)), reason: null };
 }
 
-export async function generatePublished({ hoard, fw, flash, outDir, eligible, hardware = new Set(), log = () => {} }) {
+export async function generatePublished({ hoard, fw, flash, outDir, eligible, hardware = new Set(), jobs = 1, log = () => {} }) {
+  if (!Number.isInteger(jobs) || jobs < 1) throw new Error('Invalid capability jobs');
   if (!flash) throw new Error('The publisher requires the matching Flash admission tool');
   const binary = await fs.readFile(fw);
   const versionResult = await tool(fw, ['--version']);
@@ -93,7 +94,12 @@ export async function generatePublished({ hoard, fw, flash, outDir, eligible, ha
   const temp = await fs.mkdtemp(path.join(os.tmpdir(), 'modify-capabilities-'));
   const entries = [], images = [];
   try {
-    for (const hash of [...eligible].sort()) {
+    // Images are independent: query them concurrently (the runner's cores),
+    // then record them in hash order so the output does not depend on timing.
+    const order = [...eligible].sort(), results = new Array(order.length);
+    let next = 0, done = 0;
+    const worker = async () => { while (next < order.length) {
+      const i = next++, hash = order[i];
       const source = candidates.get(hash), file = path.join(hoard, source.path);
       const original = await fs.readFile(file);
       if (sha(original) !== hash) throw new Error(`Hoard source hash mismatch: ${hash}`);
@@ -136,9 +142,11 @@ export async function generatePublished({ hoard, fw, flash, outDir, eligible, ha
         modifiable: record.status === 'supported' && record.flash_admitted, base, hardwareVerified: hardware.has(hash) });
       entry.capability_status = record.status;
       entry.unavailable_reason = record.reason;
-      entries.push(entry); images.push(record);
-      log(`${images.length}/${eligible.size}: ${identity.model} ${identity.revision}: ${record.status}`);
-    }
+      results[i] = { entry, record };
+      log(`${++done}/${eligible.size}: ${identity.model} ${identity.revision}: ${record.status}`);
+    } };
+    await Promise.all(Array.from({ length: Math.min(jobs, order.length) }, worker));
+    for (const { entry, record } of results) { entries.push(entry); images.push(record); }
     const sorted = sortEntries(entries), index = buildIndex(sorted);
     if (sha(await fs.readFile(flash)) !== flashSha) throw new Error('Flash producer changed during generation');
     const manifest = { schema: 1, producer, flash: { sha256: flashSha }, images };
