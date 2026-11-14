@@ -2,7 +2,23 @@
 // are AND; groups covering the same pair are alternative OR choices.
 const map = x => x !== null && typeof x === 'object' && !Array.isArray(x);
 const token = x => typeof x === 'string' && /^[A-Za-z0-9]+$/.test(x);
-const requirementKey = r => JSON.stringify([r.kind,r.platform,r.prefix,r.suffix]);
+// Version 1 (freemkv-flash 0.17.x) requires matching original hardware;
+// version 3 (0.18.x) requires an existing native parameter word.
+export const ROUTE_VERSIONS = [1, 3];
+const REQUIREMENT_FIELDS = { original_hardware: ['platform', 'prefix', 'suffix'], parameter_word: ['filter', 'parameter', 'value'] };
+const requirementKey = r => JSON.stringify([r.kind, ...(REQUIREMENT_FIELDS[r.kind] ?? []).map(k => r[k])]);
+const word = x => Number.isInteger(x) && x >= 0 && x <= 0xffff;
+function validRequirement(r, version) {
+  if (!map(r)) return false;
+  if (version === 1 && r.kind === 'original_hardware')
+    return token(r.platform) && (r.prefix === null || token(r.prefix))
+      && (r.suffix === null || typeof r.suffix === 'string' && /^[A-Za-z0-9_.+/-]*$/.test(r.suffix))
+      && Object.keys(r).every(k => k === 'kind' || REQUIREMENT_FIELDS.original_hardware.includes(k));
+  if (version === 3 && r.kind === 'parameter_word')
+    return typeof r.filter === 'string' && /^[A-Za-z0-9_.:-]+$/.test(r.filter) && word(r.parameter) && word(r.value)
+      && Object.keys(r).every(k => k === 'kind' || REQUIREMENT_FIELDS.parameter_word.includes(k));
+  return false;
+}
 const key = group => JSON.stringify([group.source, group.status, group.native_supported ?? false, group.requirements.map(requirementKey).sort()]);
 function validateEvaluatedReferences(graph, groups) {
   if (graph.evaluated_packages === undefined) return groups;
@@ -17,7 +33,7 @@ function validateEvaluatedReferences(graph, groups) {
 
 export function routeGroups(graph) {
   if (!graph) return [];
-  if (graph.format === 'freemkv-crossflash-routes' && graph.version === 1) {
+  if (graph.format === 'freemkv-crossflash-routes' && ROUTE_VERSIONS.includes(graph.version)) {
     if (!Array.isArray(graph.groups)) throw new Error('Invalid crossflash route groups');
     const seen = new Set();
     for (const group of graph.groups) {
@@ -30,12 +46,8 @@ export function routeGroups(graph) {
         throw new Error('Invalid crossflash route requirements');
       const requirements = new Set();
       for (const r of group.requirements) {
-        if (!map(r) || r.kind !== 'original_hardware' || !token(r.platform)
-          || !(r.prefix === null || token(r.prefix))
-          || !(r.suffix === null || typeof r.suffix === 'string' && /^[A-Za-z0-9_.+/-]*$/.test(r.suffix))
-          || Object.keys(r).some(k => !['kind', 'platform', 'prefix', 'suffix'].includes(k)))
-          throw new Error('Invalid crossflash requirement');
-        const id = JSON.stringify([r.kind, r.platform, r.prefix, r.suffix]);
+        if (!validRequirement(r, graph.version)) throw new Error('Invalid crossflash requirement');
+        const id = requirementKey(r);
         if (requirements.has(id)) throw new Error('Duplicate crossflash requirement');
         requirements.add(id);
       }
@@ -62,7 +74,7 @@ export function routeGroups(graph) {
 export function canonicalRouteGroups(groups) {
   const combined = new Map();
   for (const group of groups) {
-    const requirements = group.requirements.map(r=>({kind:r.kind,platform:r.platform,prefix:r.prefix,suffix:r.suffix})).sort((a,b) => requirementKey(a).localeCompare(requirementKey(b)));
+    const requirements = group.requirements.map(r=>Object.fromEntries(['kind', ...REQUIREMENT_FIELDS[r.kind]].map(k => [k, r[k]]))).sort((a,b) => requirementKey(a).localeCompare(requirementKey(b)));
     const normalized = {...group, requirements};
     const id = key(normalized);
     const existing = combined.get(id) ?? {...normalized, targets: new Set()};

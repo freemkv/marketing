@@ -6,7 +6,7 @@ import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 const exec = promisify(execFile);
-import { routeGroups, canonicalRouteGroups } from '../src/lib/crossflash-routes.mjs';
+import { routeGroups, canonicalRouteGroups, ROUTE_VERSIONS } from '../src/lib/crossflash-routes.mjs';
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
 const FORMAT = 'freemkv-crossflash-cache-v1';
 const platforms = new Set(['pioneer', 'mediatek']);
@@ -88,7 +88,7 @@ export async function crossflashGraph({ engine, root, objects, cacheFile, concur
         if ((result.status === 'hard_no') !== (result.routes.length === 0)) throw new Error('Invalid crossflash verdict routes');
         for (const route of result.routes) {
           const group = {source:from.sha256, status:route.status, requirements:route.requirements, ...(route.native_supported !== undefined ? {native_supported:route.native_supported} : {}), targets:[to.sha256]};
-          routeGroups({format:'freemkv-crossflash-routes',version:1,groups:[group]});
+          routeGroups({format:'freemkv-crossflash-routes',version:graph.version,groups:[group]});
           graph.groups.push(group);
         }
         evaluated++;
@@ -96,7 +96,7 @@ export async function crossflashGraph({ engine, root, objects, cacheFile, concur
     }));
     graph.groups = canonicalRouteGroups(graph.groups);
   }
-  if (graph.format !== 'freemkv-crossflash-routes' || graph.version !== 1) throw new Error('Crossflash engine did not emit route groups');
+  if (graph.format !== 'freemkv-crossflash-routes' || !ROUTE_VERSIONS.includes(graph.version)) throw new Error('Crossflash engine did not emit route groups');
   graph.evaluated_packages = [...new Set(entries.map(o => o.sha256))].sort();
   graph.groups = canonicalRouteGroups(routeGroups(graph));
   if (await engineHash(engine) !== fingerprint) throw new Error('Crossflash executable changed during validation');

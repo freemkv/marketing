@@ -62,6 +62,22 @@ test('route groups preserve explicit directed targets and alternative hardware p
   assert.throws(()=>checkCrossflashLinks({...routes(),groups:[routes().groups[0],routes().groups[0]]},catalog));
 });
 
+test('version 3 route groups carry parameter-word prerequisites and refuse version 1 requirement kinds', () => {
+  const word = (parameter=0x9f, value=0xffff) => ({kind:'parameter_word',filter:'pioneer',parameter,value});
+  const v3 = () => ({format:'freemkv-crossflash-routes',version:3,groups:[
+    {source:'a',status:'conditional',requirements:[word()],targets:['b']},
+    {source:'a',status:'conditional',requirements:[word(0x9f,0)],targets:['b']},
+    {source:'a',status:'allowed',requirements:[],targets:['c']},
+  ]});
+  assert.doesNotThrow(()=>checkCrossflashLinks(v3(),catalog));
+  for (const requirements of [
+    [requirement()], [{...word(),parameter:0x10000}], [{...word(),value:-1}], [{...word(),filter:''}],
+    [{...word(),extra:1}], [word(),word()],
+  ]) assert.throws(()=>checkCrossflashLinks({...v3(),groups:[{...v3().groups[0],requirements}]},catalog));
+  assert.throws(()=>checkCrossflashLinks({...routes(),version:3},catalog), /requirement/);
+  assert.throws(()=>checkCrossflashLinks({...v3(),version:2},catalog));
+});
+
 test('route sources and every explicit target must have been evaluated', () => {
   assert.doesNotThrow(()=>checkCrossflashLinks({...routes(),evaluated_packages:['a','b','c']},catalog));
   for (const evaluated_packages of [['a','c'],['b','c']]) {
