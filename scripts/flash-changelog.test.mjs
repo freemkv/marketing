@@ -65,3 +65,9 @@ test('all customer histories omit development and release-process sections', () 
   assert.match(notes, /^## \[0\.13\.4\]/m);
   assert.doesNotMatch(flashChangelog(notes, release), /0\.14\.0/);
 });
+
+test('a lowercase unreleased heading publishes once its version is the release', () => {
+  const src = '## [0.18.1] - unreleased\n\n### freemkv Flash\n\n- New.\n\n## [0.18.0] - 2026-11-12\n\n- Old.\n';
+  assert.match(flashChangelog(src, { version: '0.18.1', date: '2026-11-14' }), /## 0\.18\.1\n\n<small>2026-11-14<\/small>/);
+  assert.doesNotMatch(flashChangelog(src, { version: '0.18.0' }), /0\.18\.1|unreleased/);
+});

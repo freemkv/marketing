@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { checkCrossflashLinks } from './firmware-release.mjs';
 import { validateCrossflashCoverage } from '../src/lib/finder.mjs';
-import { routeGroups } from '../src/lib/crossflash-routes.mjs';
+import { routeGroups, nativeRoute } from '../src/lib/crossflash-routes.mjs';
 import { readFileSync } from 'node:fs';
 
 const catalog = { identities: [{ revisions: [{ packages: [{ sha256: 'a' }, { sha256: 'b' }, { sha256: 'c' }] }] }] };
@@ -100,5 +100,5 @@ test('published UD02/UD03/UD04 firmware pairs retain all six native crossflash d
   ];
   const groups = routeGroups(graph);
   for (const source of packages) for (const target of packages) if (source !== target)
-    assert.ok(groups.some(g=>g.source===source && g.targets.includes(target) && g.native_supported===true), `${source} -> ${target} must have an exporter-proven native route`);
+    assert.ok(groups.some(g=>g.source===source && g.targets.includes(target) && nativeRoute(g)), `${source} -> ${target} must have an exporter-proven native route`);
 });
