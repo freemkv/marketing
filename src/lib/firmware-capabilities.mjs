@@ -44,7 +44,10 @@ export function validateCapabilityCoverage(catalog, manifest, index, { producerS
       if (version.modifiable !== modifiable) throw new Error(`Index disagrees with Modify: ${version.sha256}`);
       for (const [feature, setting] of Object.entries(FEATURE_SETTING)) {
         const actual = version.features?.find(f => f.key === feature)?.ok ?? false;
-        const declared = modifiable && record.report.boot_settings[setting].supported;
+        // UHD is advertised only when a drive confirmed the output reads it
+        // (featuresFor); Unrestricted alone may apply while UHD is unproven.
+        const declared = modifiable && record.report.boot_settings[setting].supported
+          && (feature !== 'UHD' || record.report.boot_settings.unrestricted.qualification === 'hardware-confirmed');
         if (actual !== declared) throw new Error(`Index feature disagrees with Modify: ${version.sha256}/${feature}`);
       }
     }
