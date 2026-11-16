@@ -76,13 +76,13 @@ node --test scripts/*.test.mjs
 ```
 
 `prepare` requires `FREEMKV_FW` and `FREEMKV_CROSSFLASH`: the `freemkv-crossflash` binary from
-freemkv-firmware. From 0.18.1 the release publishes it as a stable per-release
-asset (`freemkv-crossflash-cli-<arch>-<os>`); prefer that download so its route-graph
-cache (below) stays valid and `prepare` scans only changed packages instead of a
-full all-pairs rescan. A locally built binary (`cargo build --release -p
-freemkv-flash --bin freemkv-crossflash`) has an unstable SHA and forces a full
-scan (~1h on the current catalog); if you must build locally, keep that exact
-binary and its cache between releases rather than rebuilding.
+freemkv-firmware. It is internal website tooling, not a customer release asset.
+Use the `freemkv-crossflash` executable from the matching QA run's
+`site-tools-linux-x86_64` CI artifact. CI builds it only for the website runner;
+the customer release packages contain only the supported end-user tools.
+Keep that exact binary and its cache between runs: the route-graph cache (below)
+is keyed by executable SHA-256, so replacing it invalidates the cache and causes
+a full all-pairs rescan.
 It runs the flasher's own offline gates and writes `crossflash-links.json`
 as `freemkv-crossflash-routes` version 3 (freemkv-flash 0.18.x; version 1 from
 0.17.x is still read). Each group names one exact installed
