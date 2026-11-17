@@ -12,6 +12,20 @@ one version number.
 Release downloads are also available on GitHub:
 [freemkv releases](https://github.com/freemkv/freemkv/releases).
 
+## 1.8.10
+
+<small>2026-11-17</small>
+
+### Added
+
+- Select audio or subtitles by track number, such as `-a 1,3` or `-s 2`. Language names and codes still work; `freemkv info` shows the corresponding track numbers. (CLI)
+
+### Fixed
+
+- Linux dropdowns expand consistently beneath their fields, and application menus stay in a compact panel.
+- Linux title-tree branches align with titles, tracks and chapters, without blank checkbox gaps.
+- TV episode suggestions handle separate episode titles that share an intro or ending with Play All. Language alternatives are preserved, and uncertain selections still ask for confirmation. Existing Blue Planet II episode selections remain unchanged.
+
 ## 1.8.9
 
 <small>2026-11-11</small>
