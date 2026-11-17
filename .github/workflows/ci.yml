@@ -37,6 +37,8 @@ jobs:
           scripts/*.test.mjs
         env:
           GH_TOKEN: ${{ github.token }}
+      - name: Fuzz path, manifest and revision inputs
+        run: node scripts/fuzz-inputs.mjs 100000 20261117
       - run: npm run build
         env:
           GH_TOKEN: ${{ github.token }}
