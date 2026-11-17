@@ -22,9 +22,28 @@ jobs:
           node-version: 26
           cache: npm
       - run: npm ci
-      - run: npm run test:firmware
+      - name: Test application scripts with coverage
+        run: >-
+          node --test --experimental-test-coverage
+          --test-coverage-include='scripts/**/*.mjs'
+          --test-coverage-include='src/**/*.mjs'
+          --test-coverage-include='src/**/*.js'
+          --test-coverage-exclude='**/*.test.mjs'
+          --test-reporter=spec --test-reporter-destination=stdout
+          --test-reporter=lcov --test-reporter-destination=lcov.info
+          scripts/*.test.mjs
         env:
           GH_TOKEN: ${{ github.token }}
       - run: npm run build
         env:
           GH_TOKEN: ${{ github.token }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-lcov
+          path: lcov.info
+      - uses: codecov/codecov-action@v7
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: lcov.info
+          slug: freemkv/marketing
