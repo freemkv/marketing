@@ -1,172 +1,193 @@
 # freemkv.org
 
-Source for the [freemkv.org](https://freemkv.org) website — an Astro + Starlight site
-(landing splash + docs), deployed to Cloudflare Pages.
+Source for the [freemkv.org](https://freemkv.org) website: an Astro and
+Starlight site (landing page, download page, firmware finder and docs),
+deployed to Cloudflare Pages with a few Pages Functions for firmware downloads
+and flash reports. It also hosts the signed APT, RPM and Arch package
+repositories.
 
 ## Local development
 
 ```bash
 npm install
-npm run dev       # local dev server
-npm run build     # production build -> dist/
-npm run preview   # preview the built site
+npm run dev             # local dev server
+npm run preview         # preview a built site
+npm run test:firmware   # node --test scripts/*.test.mjs
 ```
 
-## Firmware finder data
+CI builds the site (`astro build`, output in `dist/`).
 
-Release packages with `npm run firmware:prepare -- /path/to/firmware-extractor /tmp/firmware-assets`.
-The [release workflow](scripts/firmware-release.md) uploads and verifies firmware before deploying QA, then main.
-Counts, download links, modification features, and the next step come from the generated indexes.
-Only downloadable versions appear in the finder.
+## Layout
 
-`src/data/firmware-index.json` is the existing MediaTek catalog. Its generator is
-`scripts/firmware-features.mjs` (see [firmware-release.md](scripts/firmware-release.md)). The page also reads `src/data/pioneer-firmware-index.json`.
-Build the latter from structurally complete Pioneer installer packages with:
+- `src/pages/` has the landing page (`index.astro`), `download.astro`, the
+  firmware pages (`firmware/`) and the flash report approval page.
+- `src/content/docs/docs/*.md` holds the documentation pages.
+- `src/data/` holds the firmware catalogs, capability data and the Flash
+  changelog.
+- `astro.config.mjs` sets the title, theme and docs sidebar.
+- `functions/api/` holds the Pages Functions (firmware download and
+  verification, flash reports, GitHub stars). `workers/firmware-email.mjs` is
+  the notification Worker.
+- `migrations/` holds the D1 schema migrations.
+- `scripts/` holds the firmware release tooling, its tests and the APT, RPM and
+  Arch repository builders.
+- `public/` is served at the site root: `CNAME`, `_redirects`, favicon,
+  screenshots and the `apt/`, `rpm/` and `arch/` repositories.
+
+## Deploy
+
+Pushing to `main` runs `.github/workflows/pages.yml`. It installs with
+`npm ci`, builds the site and uploads `dist/` to the Cloudflare Pages project
+`freemkv` with Wrangler. The same workflow also runs when a freemkv release
+dispatches `freemkv-release`, and by hand with an optional firmware release tag.
+
+- Set `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repository
+  secrets. The `freemkv.org` domain is managed in Cloudflare Pages.
+- Release badges come from each repository's latest stable GitHub release at
+  build time, including the publication date. A GitHub API failure stops the
+  build instead of publishing stale defaults. CI supplies `GH_TOKEN`; set it
+  locally to avoid unauthenticated rate limits.
+- `version-guard.yml` fails a push whose changelog advertises an unshipped app
+  release.
+
+### Package repositories
+
+`apt.yml`, `rpm.yml` and `arch.yml` rebuild the signed repositories at
+`freemkv.org/apt`, `/rpm` and `/arch` from the packages on the latest freemkv
+and freemkv-firmware releases. They run on a release dispatch, daily, or by
+hand. The packages themselves stay on GitHub, and `public/_redirects` points
+package URLs at the release assets. The workflows need the `APT_SIGNING_KEY`
+secret.
+
+## Firmware finder
+
+Firmware packages are prepared with the firmware extractor, then uploaded and
+verified before the site links to them. See
+[scripts/firmware-release.md](scripts/firmware-release.md) for the release
+steps.
 
 ```bash
-cargo run --manifest-path ../../firmware-extractor/Cargo.toml --features internal-tools \
-  --bin pioneer-finder-index -- /path/to/hoard/installers/pioneer \
-  --output src/data/pioneer-firmware-index.json
+npm run firmware:prepare -- /path/to/firmware-extractor /tmp/firmware-assets
 ```
 
-The importer reads only active rows from the packager's
-`hoard/installers/pioneer/INDEX.json`; stale tar files are ignored. Each active
-installer tar contains one Normal envelope and may contain one Kernel envelope.
-The tar has no manifest. The importer verifies the tar hash, member inventory,
-envelope headers and hashes against the local `INDEX.json` sidecar. That local
-index also records source downloads and selection evidence; source paths and
-source package hashes are omitted from the public website JSON. Source-contained,
-carried-forward, and Normal-only packages are shown with their actual component
-inventory.
-Entries remain unhosted until a JSON map of the package SHA-256 to an already
-published R2 object key is supplied with `--published map.json`. Example:
+Counts, download links, modification features and next steps all come from the
+generated indexes, and only downloadable versions appear in the finder.
+
+- `src/data/firmware-index.json` is the MediaTek catalog, generated by
+  `scripts/firmware-features.mjs`.
+- `src/data/pioneer-firmware-index.json` is the Pioneer catalog. Generate it
+  from Pioneer installer packages with the extractor's `pioneer-finder-index`
+  tool (the `internal-tools` feature of the firmware-extractor crate):
+
+  ```bash
+  pioneer-finder-index /path/to/hoard/installers/pioneer \
+    --output src/data/pioneer-firmware-index.json
+  ```
+
+The Pioneer importer reads only the active rows of the packager's
+`hoard/installers/pioneer/INDEX.json` and checks each tar's hash, member
+inventory and envelope headers against it. Source paths and source package
+hashes are left out of the public JSON. It does not upload or deploy anything.
+
+A package is listed as downloadable only when you pass a JSON map from its
+package SHA-256 to an already published R2 object key with
+`--published map.json`:
 
 ```json
 {"<package sha256>": "pioneer/BDR-UD04/SAT-8A10/1.14/package.installer.tar"}
 ```
 
-The site lists a package as downloadable only when that map provides its key.
-This is an inventory/hosting state, not a hardware flash-test claim. The
-importer does not upload or deploy anything.
-The current index uses the packager's source-backed public model. Its embedded
-model is preserved separately. Explicit combined source labels are expanded into separate public models.
-Generic family folders use the exact model named in an OEM updater filename
-when available; original source references remain in the local hoard. Ambiguous
-labels stay unchanged, and matching hardware alone does not establish compatibility.
-The finder searches every recorded alias and the package's decoded `internal_model`.
-Cards retain a primary inquiry/retail name and show distinct secondary names with
-their roles (retail, release, inquiry, OEM, or internal firmware model). The internal
-name is an observation from the decoded Normal descriptor, not a physical model or
-crossflash compatibility claim.
+Downloadable means hosted. It is not a claim that the firmware was flash-tested
+on hardware, and matching hardware alone does not establish compatibility.
 
-Pioneer `rev` is the advertised release label (for example `1.01EU`), while
-`embeddedRev` is the envelope's revision (`1.01`). The finder displays every
-release emitted by the extractor without hash-only filtering. Regional labels
-remain distinct even when the downloadable tars have identical bytes.
+The finder searches every recorded alias and the decoded `internal_model`.
+Cards show a primary inquiry or retail name plus secondary names with their
+roles (retail, release, inquiry, OEM, internal firmware model). The internal
+name is an observation from the decoded descriptor, not a physical model.
 
-## Structure
+Pioneer `rev` is the advertised release label (for example `1.01EU`).
+`embeddedRev` is the envelope's revision (`1.01`). Regional labels stay
+separate even when the downloadable tars are identical.
 
-- `src/pages/index.astro` — landing splash (hero + Download CTA + feature cards);
-  a standalone page outside the Starlight docs collection
-- `src/content/docs/docs/*.md` — documentation pages (Overview, Install, Components,
-  freemkv-library, AACS, Decryption Keys, License, and more)
-- `astro.config.mjs` — site config: title, logo, theme, and the docs sidebar
-- `src/assets/` — logo/icon SVGs used in the UI
-- `public/` — static files served at the site root: `CNAME` (freemkv.org),
-  `.nojekyll`, favicon, og image
+## Flash reports
 
-## Deploy
+The `/api/flash-reports/` Pages Functions take reports from the desktop app's
+Submit Report button. They use the `FIRMWARE_VERIFICATIONS` D1 binding, the
+`FIRMWARE_EMAIL_SERVICE` service binding and a private R2 bucket bound as
+`FLASH_REPORTS_BUCKET`.
 
-Deployment is automatic via GitHub Actions (`.github/workflows/pages.yml`):
+The app opens `/flash-report/approve/`, where the user chooses this session or
+all saved history. The app uploads a ZIP only after approval. The ZIP includes
+the current and target firmware files used in the selected operations and any
+pre-update capture. The notification email lists those files with their
+hashes, sizes and ZIP paths. Reports are never listed publicly, and the
+download endpoint refuses access after 90 days.
 
-1. Push to `main`. The workflow runs `npm ci` and `npm run build`, then uploads
-   `dist/` to the Cloudflare Pages project `freemkv` with Wrangler.
-2. Configure `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repository
-   secrets. The custom domain `freemkv.org` is managed in Cloudflare Pages.
-3. Release badges resolve published GitHub releases during the build. Deploy
-   documentation for a new tool release after that release is published.
+### Setup
 
-### Flash report intake (desktop app 0.15.2)
-
-The private `/api/flash-reports/` Pages Functions use the existing
-`FIRMWARE_VERIFICATIONS` D1 binding, the existing `FIRMWARE_EMAIL_SERVICE`
-service binding, and a new private R2 bucket binding named
-`FLASH_REPORTS_BUCKET`. Before enabling the desktop Submit Report button:
-
-Maintainers can run **Configure private flash reports** in GitHub Actions to
-perform the setup below with the repository's Cloudflare credentials. It refuses
+Maintainers can run **Configure private flash reports** in GitHub Actions to do
+all of the steps below with the repository's Cloudflare credentials. It refuses
 public custom domains, disables the bucket's public development URL, installs
-the retention rule and additive schema, configures bindings and the private
-notification worker, and sets the documented maintainer recipient. Run **Deploy
-site to Pages** afterward so the Pages Functions receive the updated bindings.
+the retention rule and schema, configures the bindings and the notification
+Worker, and sets the recipient. Run **Deploy site to Pages** afterward so the
+Functions pick up the new bindings.
 
-1. Create the private R2 bucket and its **90-day delete lifecycle rule** for
-   `flash-reports/`. Keep both the R2 public development URL and custom domains
-   disabled:
+To do it by hand:
+
+1. Create the private R2 bucket with a 90-day delete rule for `flash-reports/`.
+   Keep the public development URL and custom domains disabled.
 
    ```sh
    npx wrangler r2 bucket create freemkv-flash-reports
    npx wrangler r2 bucket lifecycle add freemkv-flash-reports reports-90d flash-reports/ --expire-days 90
    ```
 
-2. Apply the report table to both D1 databases already bound as
-   `FIRMWARE_VERIFICATIONS` in Pages preview and production:
+2. Apply the report table to the preview and production D1 databases:
 
    ```sh
    npx wrangler d1 execute freemkv-firmware-verifications-preview --remote --file=migrations/0002_flash_reports.sql
    npx wrangler d1 execute freemkv-firmware-verifications --remote --file=migrations/0002_flash_reports.sql
    ```
 
-   The setup workflow also applies the additive description and firmware input
-   metadata migrations. Pages deployments check for the metadata column and
-   apply `migrations/0005_flash_report_firmware_inputs.sql` before deploying
-   updated report endpoints.
+   The setup workflow also applies the later additive migrations. The Pages
+   deploy checks for the firmware input metadata column and applies
+   `migrations/0005_flash_report_firmware_inputs.sql` when it is missing.
 
-3. Set `CLOUDFLARE_ACCOUNT_ID` to the account containing the `freemkv` Pages
+3. Set `CLOUDFLARE_ACCOUNT_ID` to the account that holds the `freemkv` Pages
    project. Run `node scripts/flash-report-pages-setup.mjs` to inspect the
-   bindings, then run it with `--apply` to bind `FLASH_REPORTS_BUCKET` in both
-   environments and create separate random `FLASH_REPORT_SECRET` values. The
-   setup script leaves existing secrets and bindings in place on a repeat run.
-4. Deploy the updated `workers/firmware-email.mjs` with
-   `node scripts/firmware-email-setup.mjs --apply`. Set its `REPORT_TO` secret to
-   the maintainer's inbox with
-   `npx wrangler secret put REPORT_TO --name freemkv-verification-email`; enter
-   `matthew@pq.io` when prompted. The existing `EMAIL` sender binding remains
-   in place. Change the recipient later by updating only this Worker secret;
-   the desktop app needs no update.
-5. Deploy Pages after the D1 table, R2 binding and Pages secret are active.
-   The download endpoint independently refuses access after 90 days.
+   bindings, then add `--apply` to bind `FLASH_REPORTS_BUCKET` in both
+   environments and create a separate random `FLASH_REPORT_SECRET` for each.
+   Existing secrets and bindings are left alone on a repeat run.
+4. Deploy the notification Worker with
+   `node scripts/firmware-email-setup.mjs --apply`, then set its recipient:
 
-The app opens `/flash-report/approve/`, where the user chooses this session or
-all saved history. Version 0.15.2 also includes the exact current and target
-firmware files used in selected operations, plus any available pre-update
-capture. The private report email names those files, their hashes and sizes,
-and their ZIP paths. The app uploads a ZIP only after approval, and the server
-never lists reports publicly.
-Run `node --test scripts/flash-reports.test.mjs` to exercise approval, upload,
-download and expiry locally with in-memory bindings.
+   ```sh
+   npx wrangler secret put REPORT_TO --name freemkv-verification-email
+   ```
 
-### Release badges and announcements
+   Change the recipient later by updating only this secret. The desktop app
+   needs no update.
+5. Deploy Pages once the table, the R2 binding and the secret are in place.
+
+To exercise approval, upload, download and expiry locally with in-memory
+bindings, run `node --test scripts/flash-reports.test.mjs`.
+
+## Changelogs and announcements
 
 Public changelogs describe customer impact, required actions and limitations.
-Keep build machinery, CI, test counts, refactors and other development notes in
-commits or internal documentation. App history lives in
-`src/content/docs/docs/changelog.md`. Flash and Modify history is reviewed in
-`src/data/flash-changelog.md`; the build renders only published versions into
-the Flash Changelog page. A new stable release without reviewed notes fails the
-build. GitHub supplies release metadata, not the changelog body.
+Build machinery, CI, test counts and refactors belong in commits.
 
-Builds resolve the app and firmware tools from each repository’s GitHub latest
-stable release, including the publication date. GitHub API failures stop the
-build rather than publishing stale defaults. CI supplies `GH_TOKEN`; local
-builds can also use it to avoid unauthenticated rate limits. Browser refreshes
-remain enabled, but older cached versions cannot replace the built badge.
+- App history is in `src/content/docs/docs/changelog.md`.
+- Flash and Modify history is reviewed in `src/data/flash-changelog.md`. The
+  build renders only published versions into the Flash Changelog page, and a
+  new stable release without reviewed notes fails the build. GitHub supplies
+  release metadata, not the changelog body.
 
-Discord announcements are serialized and claimed once per app version using
-`refs/tags/discord-announced/vX.Y.Z`. Existing releases in
-`.github/announced-versions.txt` are excluded during migration. Manual dispatch
-uses the same protection. Claims are written before sending to avoid duplicate
-pings if Discord accepts a request but its response is lost. If a send fails,
-inspect Discord and the workflow log; only after confirming no message was
-posted should an operator delete that version’s claim tag and dispatch again.
-Do not remove a claim merely because a workflow is being retried.
+`announce.yml` posts each app release to Discord once, after the release is
+fully published (it runs on the `release-ready/vX.Y.Z` tag). Each version is
+claimed with a `refs/tags/discord-announced/vX.Y.Z` tag before sending, so a
+lost response cannot cause a duplicate ping. Releases listed in
+`.github/announced-versions.txt` are skipped. If a send fails, check Discord and
+the workflow log. Only delete that version's claim tag and dispatch again after
+confirming no message was posted. Do not remove a claim just because a workflow
+is being retried.
