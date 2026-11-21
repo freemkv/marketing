@@ -1,39 +1,39 @@
 Package: freemkv
-Version: 1.8.10
+Version: 1.8.11
 Architecture: arm64
 Section: video
 Priority: optional
 Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
-Installed-Size: 18493
-Depends: libadwaita-1-0 (>= 1.4~beta), libc6 (>= 2.39), libcairo-gobject2 (>= 1.10.0), libcairo2 (>= 1.2.4), libgcc-s1 (>= 4.2), libgdk-pixbuf-2.0-0 (>= 2.22.0), libglib2.0-0t64 (>= 2.54.0), libgraphene-1.0-0 (>= 1.5.4), libgtk-4-1 (>= 4.10.0), libpango-1.0-0 (>= 1.14.0), ca-certificates
+Installed-Size: 17536
+Depends: libadwaita-1-0 (>= 1.4~beta), libc6 (>= 2.39), libcairo2 (>= 1.2.4), libgcc-s1 (>= 4.2), libglib2.0-0t64 (>= 2.54.0), libgraphene-1.0-0 (>= 1.5.4), libgtk-4-1 (>= 4.9.3), ca-certificates
 Conflicts: freemkv-cli
 Replaces: freemkv-cli
 Homepage: https://freemkv.org
-Filename: pool/main/freemkv/freemkv_1.8.10_arm64.deb
-Size: 5233994
-MD5sum: 340659b1515d96cd0d8f735980105b71
-SHA1: c54ef5aa1f5396dc9d9c09def4b2a2e84d012948
-SHA256: d438d42ed5ab24f437bf24f2f145d4dc4db5d69b1a5c3831019d255b907ac1db
+Filename: pool/main/freemkv/freemkv_1.8.11_arm64.deb
+Size: 5207608
+MD5sum: 26cf9713c902a0c6cef2507f1e0daeef
+SHA1: 8ff6ddf2c7b2fce7727f60ed87a63fbaf9bf0994
+SHA256: 4ab4a9b4ccfcd2dd16c93c1c3a38993f3461613a6e28f2b3ad43c287e8798245
 Description: Rip DVD, Blu-ray and UHD discs without re-encoding
  Native GTK4 desktop app and command-line interface for selecting titles,
  audio and subtitle tracks and saving them to MKV, MP4 or M2TS.
  Running freemkv without arguments opens the desktop app.
 
 Package: freemkv-cli
-Version: 1.8.10
+Version: 1.8.11
 Architecture: arm64
 Section: video
 Priority: optional
 Maintainer: Matthew Jackson <1085847+MattJackson@users.noreply.github.com>
-Installed-Size: 14711
+Installed-Size: 14073
 Conflicts: freemkv
 Replaces: freemkv
 Homepage: https://freemkv.org
-Filename: pool/main/freemkv-cli/freemkv-cli_1.8.10_arm64.deb
-Size: 4533760
-MD5sum: 2ef57b4f58e28aa8bef4243520c7d946
-SHA1: 41de9f0747e3006b851797f580de23c9a3c86891
-SHA256: 8212693262898343425b8aad958d0705d4fd0d16a470c9a9626f7005631b667e
+Filename: pool/main/freemkv-cli/freemkv-cli_1.8.11_arm64.deb
+Size: 4501858
+MD5sum: a8356a1681e1191a6bf58072597d166a
+SHA1: 22b3761387790e75a04bd9540ed2eac45a593f51
+SHA256: ad5b6105b689885fdfaa5f6997091f32e584c68cd0b6c0846c74619f72df77ca
 Description: Rip DVD, Blu-ray and UHD discs without re-encoding (command line)
  Static command-line build of freemkv for selecting titles, audio and
  subtitle tracks and saving them to MKV, MP4 or M2TS. It has no desktop
