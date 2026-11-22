@@ -12,6 +12,29 @@ one version number.
 Release downloads are also available on GitHub:
 [freemkv releases](https://github.com/freemkv/freemkv/releases).
 
+## 1.8.11
+
+<small>2026-11-22</small>
+
+### Added
+
+- `--source-names` names each title's file after its source playlist, such as `disc_00024.mkv` instead of `disc_t1.mkv`. Contributed by @max-powers-87 (#78). (CLI)
+- Open a disc folder from the desktop app: File > Open Folder…, or the home screen (#105).
+
+### Changed
+
+- Linux: the disc page puts the title tree first. Kind, Titles, Audio and Subtitles share one row, and the output, Eject and Rip Now share one line below the tree (#98).
+- Linux: the start screen lists drives as rows that update as discs come and go (#101, #102).
+- Linux: choosers open directly below their field. Pick-one fields use radio buttons; pick-several fields use checkboxes.
+- Titles is now Automatic, Longest title, All titles or None, and Kind decides what Automatic picks. The choice is remembered across restarts (#99).
+- Lower memory and CPU use when scanning, ripping and muxing.
+
+### Fixed
+
+- Multi-title rips show each title's progress on the top bar and the whole job on the bottom bar (#103).
+- Linux: the native File/Edit/View/Help menu is back (#95), tree branch lines line up with the arrows (#97), and the "ready" line shows in the log again (#100).
+- macOS: progress bars reset cleanly between titles, and detail labels are no longer clipped.
+
 ## 1.8.10
 
 <small>2026-11-17</small>

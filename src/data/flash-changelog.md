@@ -3,7 +3,15 @@
 Customer-visible changes to freemkv Flash and freemkv Modify, newest first.
 Versions are independent of the freemkv ripping applications.
 
-## [0.18.1] - unreleased
+## [0.18.2] - unreleased
+
+### freemkv Flash
+
+- MediaTek drives flash without needing a copy of their current firmware or a pre-flash backup. freemkv confirms the drive's hardware family from the drive itself and detects the correct transfer format safely on the drive, so drives that refuse to reveal their installed firmware — and cannot be backed up — can now be flashed. A wrong detection cannot erase the drive: detection stops before the step that writes flash. A copy of the current firmware is still accepted as an optional override.
+- Saving all readable drive memory now also captures the small regions a locked-down MediaTek drive still exposes, instead of leaving them blank.
+- MediaTek compatibility is judged by hardware family rather than model name, so a rebadged drive can be flashed to another model of the same family. The drive then reports that model.
+
+## [0.18.1] - 2026-11-14
 
 ### freemkv Flash
 
