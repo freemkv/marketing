@@ -833,7 +833,7 @@
     "ffe99e17225adaced44a87c414118c42c26263443a4833a0ac605ac21fb31f9b"
   ],
   "format": "freemkv-crossflash-routes",
-  "freemkv_flash": "0.18.2",
+  "freemkv_flash": "0.18.3",
   "groups": [
     {
       "requirements": [],
@@ -30627,5 +30627,5 @@
     }
   ],
   "version": 3,
-  "engine_sha256": "fa4b24f252666541850c5f1ef8cde7e4ff9d52d7a5f59d68fc3dd6f1974d95b2"
+  "engine_sha256": "aa036821bf344fb896f94f40a1b685f48c80e7e074e44bf8c8da537f4c5b4488"
 }
