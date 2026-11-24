@@ -40,7 +40,7 @@ Description: Rip DVD, Blu-ray and UHD discs without re-encoding (command line)
  interface; install the freemkv package for the desktop app.
 
 Package: freemkv-flash
-Version: 0.18.2
+Version: 0.18.3
 Architecture: arm64
 Section: utils
 Priority: optional
@@ -49,18 +49,18 @@ Installed-Size: 9624
 Conflicts: freemkv-flash-gui
 Replaces: freemkv-flash-gui
 Homepage: https://freemkv.org/firmware/flash/
-Filename: pool/main/freemkv-flash/freemkv-flash_0.18.2_arm64.deb
-Size: 4120760
-MD5sum: d628d94888409cc483cac08bb53c19ab
-SHA1: 133408bb2072ef26e30637f2b070eb77c3059c4e
-SHA256: 006ed2dede6da04f99dd6e9fa4443b5fc96ba0df60864b2cd18e66816ee39236
+Filename: pool/main/freemkv-flash/freemkv-flash_0.18.3_arm64.deb
+Size: 4121134
+MD5sum: b6c4bb6eb6c8c4946627b6b6f56f3274
+SHA1: 6c77ccdb76ddcffcbc31b95a521272543227f3f4
+SHA256: 55e9569b4a030140640c3b8f2d5c0d85c7686625c21f77a24258b36857d73997
 Description: freemkv drive firmware flasher and dumper (command line)
  Reads, backs up and flashes optical-drive firmware (MediaTek MT19xx and
  Renesas; Pioneer live writes gated). info and dump are read-only; flash
  writes and can brick a drive given the wrong image.
 
 Package: freemkv-flash-gui
-Version: 0.18.2
+Version: 0.18.3
 Architecture: arm64
 Section: utils
 Priority: optional
@@ -71,17 +71,17 @@ Recommends: libvulkan1, xdg-desktop-portal
 Conflicts: freemkv-flash
 Replaces: freemkv-flash
 Homepage: https://freemkv.org/firmware/flash/
-Filename: pool/main/freemkv-flash-gui/freemkv-flash-gui_0.18.2_arm64.deb
-Size: 14774396
-MD5sum: 4396d626d1639e83ebded5bdc75ed7a5
-SHA1: 16e3cae12c10b68299f44da170f23f3a3056c6aa
-SHA256: e6f76089725eb9e2a5971ee8f0d4163b65a7b09b4c54994b932f0e4acb8aecdd
+Filename: pool/main/freemkv-flash-gui/freemkv-flash-gui_0.18.3_arm64.deb
+Size: 14792312
+MD5sum: d1cf452998dda816dc1cd435483b874e
+SHA1: 212a5f001899bc5be2f2f5c630386724adce1d40
+SHA256: 2405cc21bb2cf5ba5b75c7f22b92f45b1257fa356b5fabbe1868779b6c38691f
 Description: freemkv Flash desktop app
  Minimal desktop app for freemkv-flash: drive info, dump and flash. Also
  installs the freemkv-flash command-line tool.
 
 Package: freemkv-fw
-Version: 0.18.2
+Version: 0.18.3
 Architecture: arm64
 Section: utils
 Priority: optional
@@ -90,11 +90,11 @@ Installed-Size: 4512
 Conflicts: freemkv-fw-gui
 Replaces: freemkv-fw-gui
 Homepage: https://freemkv.org/firmware/modify/
-Filename: pool/main/freemkv-fw/freemkv-fw_0.18.2_arm64.deb
-Size: 1403218
-MD5sum: 106b6844ac9bc41113de112c7286e7f2
-SHA1: 5a76ee4896dd1e03878afdb524d8ae506d5eac10
-SHA256: f374398ea484e93101aaf9ef61c95799f582c75a105f35bbb5f4f02efc24d31c
+Filename: pool/main/freemkv-fw/freemkv-fw_0.18.3_arm64.deb
+Size: 1403358
+MD5sum: 9fa1f195d1e3eb85e868f4bab266a23a
+SHA1: c47a98c9cb787aaed5a57285ab3f087b92060618
+SHA256: cff1c7065dd7e7e4cf2088db721515de22a5e9b2b8fa8ef1969b99caeb50f3e3
 Description: freemkv drive firmware modifier (command line)
  Builds and verifies modified optical-drive firmware images offline
  (MediaTek MT19xx integrity tables). It only reads from a drive (verify,
@@ -102,7 +102,7 @@ Description: freemkv drive firmware modifier (command line)
  a modified image.
 
 Package: freemkv-fw-gui
-Version: 0.18.2
+Version: 0.18.3
 Architecture: arm64
 Section: utils
 Priority: optional
@@ -113,11 +113,11 @@ Recommends: libvulkan1, xdg-desktop-portal
 Conflicts: freemkv-fw
 Replaces: freemkv-fw
 Homepage: https://freemkv.org/firmware/modify/
-Filename: pool/main/freemkv-fw-gui/freemkv-fw-gui_0.18.2_arm64.deb
-Size: 8036376
-MD5sum: 8b639d48e292ecfa26961d2846f98f81
-SHA1: 4fb02e2b6eb0545d424ff6eaacdd31a97f27afa3
-SHA256: bf65308ec3b8142871b44cc4768df5063a139e6d2ad2e0fb9c37cca924c300ec
+Filename: pool/main/freemkv-fw-gui/freemkv-fw-gui_0.18.3_arm64.deb
+Size: 7987722
+MD5sum: 2302a499783f860cb1edb9c61aaa4340
+SHA1: 81eeef9d7b8d68be5ee7b62066c40f3151106b4a
+SHA256: 59f6a1dd50a96c6f2b28817c98c63d575e418148dc2dc4d89284b7ba0a543cb2
 Description: freemkv Modify desktop app
  Minimal desktop app for freemkv-fw: create, verify, sign and probe. Also
  installs the freemkv-fw command-line tool.

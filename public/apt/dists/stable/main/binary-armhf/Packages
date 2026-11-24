@@ -19,7 +19,7 @@ Description: Rip DVD, Blu-ray and UHD discs without re-encoding (command line)
  interface; install the freemkv package for the desktop app.
 
 Package: freemkv-flash
-Version: 0.18.2
+Version: 0.18.3
 Architecture: armhf
 Section: utils
 Priority: optional
@@ -28,18 +28,18 @@ Installed-Size: 9224
 Conflicts: freemkv-flash-gui
 Replaces: freemkv-flash-gui
 Homepage: https://freemkv.org/firmware/flash/
-Filename: pool/main/freemkv-flash/freemkv-flash_0.18.2_armhf.deb
-Size: 4084338
-MD5sum: f3c42cfb9bfbaee89ce8be431dd6c080
-SHA1: 60981573749491ec00505946fad8136e7ba80802
-SHA256: cf5fd6f1f4fd0ce16682cfb2e7ac6cace2ddb9322c18ea6e1b36aea58a6d1edc
+Filename: pool/main/freemkv-flash/freemkv-flash_0.18.3_armhf.deb
+Size: 4084754
+MD5sum: 4d4a08f6af9548c6f46c79b1726c58c7
+SHA1: 9d480c6febe99e5f7e482987834fc941f4eec278
+SHA256: 49f098247934474f2983aad75fdaa47b82bcfe2e0513a38645c6b3902b0d27ab
 Description: freemkv drive firmware flasher and dumper (command line)
  Reads, backs up and flashes optical-drive firmware (MediaTek MT19xx and
  Renesas; Pioneer live writes gated). info and dump are read-only; flash
  writes and can brick a drive given the wrong image.
 
 Package: freemkv-fw
-Version: 0.18.2
+Version: 0.18.3
 Architecture: armhf
 Section: utils
 Priority: optional
@@ -48,11 +48,11 @@ Installed-Size: 4380
 Conflicts: freemkv-fw-gui
 Replaces: freemkv-fw-gui
 Homepage: https://freemkv.org/firmware/modify/
-Filename: pool/main/freemkv-fw/freemkv-fw_0.18.2_armhf.deb
-Size: 1409310
-MD5sum: 6105647a0e54f1276e58f0e184f63ebd
-SHA1: 4e8f4a13530d65c9082f385d5b9f611bf341ba69
-SHA256: 591b5a84a4bc228d1a2d0972ecb5b4023199708e58f2d62dabd2eb3969688d5b
+Filename: pool/main/freemkv-fw/freemkv-fw_0.18.3_armhf.deb
+Size: 1409400
+MD5sum: f3418625fe380bbe7af14eff0eb14dc0
+SHA1: 83864264c62ede2db9dd8c994c46801c9e8e21e6
+SHA256: 3287c27af32a706b2a91ef13608c34e96ba3572c1832a94e2d411fbc8738aeb3
 Description: freemkv drive firmware modifier (command line)
  Builds and verifies modified optical-drive firmware images offline
  (MediaTek MT19xx integrity tables). It only reads from a drive (verify,
