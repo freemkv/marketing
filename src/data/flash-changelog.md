@@ -3,6 +3,12 @@
 Customer-visible changes to freemkv Flash and freemkv Modify, newest first.
 Versions are independent of the freemkv ripping applications.
 
+## [0.18.3] - 2026-11-24
+
+### freemkv Flash
+
+- Fix MediaTek flashing on drives that validate trailing SCSI CDB bytes, such as the ASUS SBW-06D2X-U (BU50N). The final commit command included non-zero bytes beyond the defined fields; strict drives rejected it with an ILLEGAL REQUEST error.
+
 ## [0.18.2] - unreleased
 
 ### freemkv Flash
