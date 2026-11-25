@@ -289,14 +289,12 @@ test('MediaTek release packages replace legacy bins and inherit final image feat
   assert.ok(packages[0].filename.endsWith('.tar'));
 });
 
-test('published BDR-205 to BDR-206 routes are available through prepared bridges', () => {
+test('BDR-205 to BDR-206 routes are withdrawn: different SAT 1xxx loading-tray hardware', () => {
   const page = realPage();
   const installed = page.identities.find(i => i.n === 'BDR-205' && i.e === 'ID43');
-  const target = installed.x.find(([name]) => name === 'BDR-206');
-  assert.ok(target, 'prepared bridge route stays discoverable');
-  const rows = target[2].filter(([t]) => page.identities[t].e === 'ID43');
-  assert.ok(rows.length > 0);
-  for (const row of rows) assert.deepEqual(row.slice(2), [0], 'implemented bridge is an available route');
+  assert.ok(installed, 'published BDR-205 identity');
+  assert.ok(!installed.x.some(([name]) => name === 'BDR-206'),
+    'sat1-loading-input separates SAT 1014 from SAT 1030, so no route is offered');
 });
 
 
