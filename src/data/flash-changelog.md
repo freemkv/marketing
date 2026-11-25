@@ -3,6 +3,14 @@
 Customer-visible changes to freemkv Flash and freemkv Modify, newest first.
 Versions are independent of the freemkv ripping applications.
 
+## [0.18.4] - 2026-11-25
+
+### freemkv Flash
+
+- Pioneer SAT 1xxx drives are no longer offered cross-flashes between different loading-tray hardware. Flash now reads which tray input pins each firmware uses, so routes such as BDR-205 (PX-B940SA) to BDR-206 are withdrawn; those images left the tray unable to open or load discs. Routes between firmware with the same tray wiring, such as BDR-206 to its sibling SAT 1031 models, remain available.
+- "Bypass family check" now ignores a family mismatch completely, as its name says, so a drive left on the wrong firmware can be flashed back to its own. Every other check stays enforced, including the persistent-startup-word check.
+- Flash explains a refused route by the tray-input mismatch when that is the reason.
+
 ## [0.18.3] - 2026-11-24
 
 ### freemkv Flash
